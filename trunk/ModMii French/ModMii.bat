@@ -9,7 +9,7 @@ set agreedversion=
 if exist settings.bat call settings.bat
 
 ::Update name is also used in the following update link http://nusad.googlecode.com/files/%UPDATENAME%
-set UPDATENAME=ModMiiFrenchUpdate.txt
+set UPDATENAME=ModMiiFrenchUpdate
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del updatetemp.bat>nul
 
