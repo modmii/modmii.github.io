@@ -9,7 +9,7 @@ set UPDATENAME=ModMiiFrenchUpdate
 set AUTOUPDATE=off
 set ModMiiInstallerpath=%cd%
 
-set InstallerVersion=2.6
+set InstallerVersion=2.7
 
 set ModMiimin=/min 
 
