@@ -1,11 +1,12 @@
 @echo off
 setlocal
 :top
-set currentversion=4.7.1
+set currentversion=4.7.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
 
+if not exist support cd..
 set cygwin=nodosfilewarning
 set ModMiipath=%cd%
 
@@ -21,7 +22,1187 @@ if exist "%ModMiiInstallerpath%"\%UPDATENAME%.bat attrib -h "%ModMiiInstallerpat
 if exist "%ModMiiInstallerpath%"\%UPDATENAME%.bat del "%ModMiiInstallerpath%"\%UPDATENAME%.bat>nul
 :notfreshinstall
 
-title ModMii
+::-------------------CMD LINE SUPPORT----------------------
+
+
+::how to pass variables to ModMii via command line
+::"ModMii" a b c d e f g h i
+::equals
+::"ModMii" %1 %2 %3 %4 %5 %6 %7 %8 %9
+set one=%1
+set two=%2
+set three=%3
+set four=%4
+set five=%5
+set six=%6
+set seven=%7
+set eight=%8
+set nine=%9
+set cmdinput=%*
+
+if "%one%"=="" (goto:notcmd)
+
+set cmdlinemode=Y
+
+if /i "%one%" EQU "W" goto:hardcodedoptions
+if /i "%one%" EQU "HS" goto:hardcodedoptions
+if /i "%one%" EQU "S" goto:hardcodedoptions
+if /i "%one%" EQU "SE" goto:hardcodedoptions
+if /i "%one%" EQU "U" goto:hardcodedoptions
+if /i "%one%" EQU "E" goto:hardcodedoptions
+if /i "%one%" EQU "L" goto:hardcodedoptions
+
+if not "%one%"=="" (goto:cmdlinehelp)
+
+
+
+:cmdlinehelp
+title ModMii Command Line Help
+cls
+support\sfk echo [Green]ModMii Command Line Usage
+echo =========================
+echo.
+
+support\sfk echo [Red]ModMii Wizard Express Mode Usage
+
+echo --------------------------------
+echo ModMii.exe W CurrentFirm Region DesiredFirm RegionChanged2 Extras Options
+echo.
+echo ModMii.exe 1 2 3 4 5 Extras Options
+echo.
+echo 1) Wizard "W"
+echo 2) CurrentFirmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
+echo 3) Region: "U","E","J","K","RC" [Region Changed from Korean to other]
+echo.       If your Wii was Region Changed but not originally Korean,
+echo        select the Region you are currently on
+echo 4) DesiredFirmware: "4.1", "4.2", "4.3"
+echo 5) RegionChanged2: What has your Korean Region been changed to? "U","E","J"
+echo                    IGNORE IF your Wii was not formerly Korean.
+echo Extras:
+echo         "Prot" Extra Brick Protection
+echo.
+echo         "Red" Red Theme [cannot be used simultaneously with other themes]
+echo         "Green" Green Theme [cannot be used simultaneously with other themes]
+echo         "Blue" Blue Theme [cannot be used simultaneously with other themes]
+echo         "Orange" Orange Theme [cannot be used simultaneously with other themes]
+echo.
+echo         "CH" All Wii Channels [ie. Photo, Weather, News, etc.]
+echo             "PHOTO" Photo Channel
+echo             "SHOP" Shopping Channel [and IOS56]
+echo             "MII" Mii Channel
+echo             "SPEAK" Wii Speak Channel [not applicable to Korean NANDs]
+echo             "NEWS" News Channel [not applicable to Korean NANDs]
+echo             "NET" Internet Channel [not applicable to Korean NANDs]
+echo             "WEATHER" Weather Channel [not applicable to Korean NANDs]
+echo.
+echo         "USB" Set-up a USB-loader [choose no more than one of each A, B and C]
+echo          A - "FAT32" Format HDD as FAT32 [default]
+echo              "NTFS" Format HDD as NTFS
+echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
+echo              "WBFS" HDD already formatted as WBFS
+echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
+echo          B - "CFG" Use Configurable USB-Loader [default]
+echo              "FLOW" Use WiiFlow
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
+echo              "SDConfig" Save USB-Loader Config files to SD Card
+echo.
+echo          "Min" Minimal Update - Choose one or more of the following updates:
+echo               "HBC" Homebrew Channel and\or BootMii
+echo               "REC" Recommended cIOSs (and cMIOS if enabled in options)
+echo               "YAWMM" Yet Another Wad Manager Mod
+echo               "236" IOS236
+echo               "Pri" Priiloader v0.7 and hacks_hash.ini
+echo.
+echo         "Guide" Generate Guide ONLY
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe W 3.X U 4.1
+echo ModMii.exe W 4.2 U 4.2 Prot Blue CH USB
+echo ModMii.exe W 4.1 J 4.1 Prot Green USB NTFS Flow SDConfig
+echo ModMii.exe W 4.3 E 4.3 Shop Speak Min 236 REC Green
+echo ModMii.exe W 4.2 RC 4.2 U
+echo.
+support\sfk echo [Red]ModMii USB-Loader Set-up Express Mode Usage
+echo -------------------------------------------
+echo ModMii.exe U Extras Options
+echo.
+echo Extras:
+echo         Choose no more than one of each A, B and C:
+echo          A - "FAT32" Format HDD as FAT32 [default]
+echo              "NTFS" Format HDD as NTFS
+echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
+echo              "WBFS" HDD already formatted as WBFS
+echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
+echo          B - "CFG" Use Configurable USB-Loader [default]
+echo              "FLOW" Use WiiFlow
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
+echo              "SDConfig" Save USB-Loader Config files to SD Card
+echo.
+echo         "Guide" Generate Guide ONLY
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe U
+echo ModMii.exe U NTFS Flow
+echo ModMii.exe U FAT32-NTFS CFG-Flow SDConfig
+echo.
+support\sfk echo [Red]ModMii HackMii Solutions Express Mode Usage
+echo -------------------------------------------
+echo ModMii.exe HS Firmware Extras Options
+echo.
+echo ModMii.exe 1 2 Extras Options
+echo.
+echo 1) HackMii Solutions "HS"
+echo 2) Firmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5]
+echo.
+echo Extras:
+echo         "Guide" Generate Guide ONLY
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe HS 4.3
+echo ModMii.exe HS 4.1
+echo ModMii.exe HS 3.X
+echo.
+support\sfk echo [Red]ModMii SNEEK Installation Express Mode Usage
+echo --------------------------------------------
+echo ModMii.exe S SNEEK-TYPE Options
+echo.
+echo SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe S S
+echo ModMii.exe S U
+echo ModMii.exe S SD
+echo ModMii.exe S UD
+echo.
+echo Note: You can install S\UNEEK and simultaneously build an emulated
+echo       NAND using the Emulated NAND builder instructions below.
+echo.
+support\sfk echo [Red]ModMii Emulated NAND Builder Express Mode Usage
+echo -----------------------------------------------
+echo ModMii.exe E SNEEK-TYPE Firmware Region Serial Extras Options
+echo.
+echo ModMii.exe 1 2 3 4 5 Extras Options
+echo.
+echo 1) Emulated NAND Builder "E" [or "SE" to install S\UNEEK AND build a NAND]
+echo 2) SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
+echo 3) Firmware: "4.1", "4.2", "4.3" [4.1 only available for SNEEK and UNEEK]
+echo 4) Region: "U","E","J","K" [J/K only available for SNEEK and UNEEK]
+echo 5) Serial: None "N", "D" for default, or the actual serial #
+echo.
+echo Extras:
+echo         "Red" Red Theme [cannot be used simultaneously with other themes]
+echo         "Green" Green Theme [cannot be used simultaneously with other themes]
+echo         "Blue" Blue Theme [cannot be used simultaneously with other themes]
+echo         "Orange" Orange Theme [cannot be used simultaneously with other themes]
+echo.
+echo         "HBF" Homebrew Filter
+echo         "249" cIOS249 rev14
+echo         "NMM" No More Memory Cards [cannot be used simultaneously with DML]
+echo         "DML" Dios Mios Lite [only for SNEEK+DI]
+echo         "S2U" Switch2Uneek [only for UNEEK or UNEEK+DI]
+echo         "Pri" Priiloader v0.4 and hacks.ini
+echo         "Joy" JoyFlow Forwarder and App [only for UNEEK or UNEEK+DI]
+echo.
+echo         "CH" All Wii Channels [ie. Photo, Weather, News, etc.]
+echo             "PHOTO" Photo Channel
+echo             "SHOP" Shopping Channel [and IOS56]
+echo             "MII" Mii Channel
+echo             "SPEAK" Wii Speak Channel [not applicable to Korean NANDs]
+echo             "NEWS" News Channel [not applicable to Korean NANDs]
+echo             "NET" Internet Channel [not applicable to Korean NANDs]
+echo             "WEATHER" Weather Channel [not applicable to Korean NANDs]
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe E U 4.3 U D
+echo ModMii.exe E SD 4.2 E LEH133789940 Blue HBF 249 DML Pri Joy Photo
+echo ModMii.exe SE UD 4.2 U D Orange HBF 249 NMM S2U Pri Joy CH
+echo.
+support\sfk echo [Red]ModMii Download Queue Express Mode Usage
+echo ----------------------------------------
+echo ModMii.exe L DownloadQueue Options
+echo.
+echo Note: Download Queue must exist and be saved in temp\DownloadQueues\
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe L cIOSs
+echo ModMii.exe L "My Fav Themes"
+echo ModMii.exe L My Fav Themes.bat
+echo.
+support\sfk echo [Red]Options
+echo =======
+echo Define ModMii's options using the following commands.
+echo.
+echo Note: If an option is not defined ModMii will use saved\default settings.
+echo       Saved\default settings will be restored after each command.
+echo       If you're unsure of what an option does, read the description
+echo       in ModMii's options page.
+echo.
+support\sfk echo [Cyan]Drive Letter or Path setting for SD Card
+echo ----------------------------------------
+echo ModMii.exe [base command] Drive:Path?
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe [base command] Drive:new folder?
+echo ModMii.exe [base command] Drive:E:?
+echo.
+echo Note: do not forget the "?" which marks the end of the path
+echo.
+support\sfk echo [Cyan]Drive Letter or Path setting for USB Hard Drive
+echo -----------------------------------------------
+echo ModMii.exe [base command] DriveU:Path?
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe [base command] DriveU:new folder?
+echo ModMii.exe [base command] DriveU:H:?
+echo.
+echo Note: do not forget the "?" which marks the end of the path
+echo.
+support\sfk echo [Cyan]PC Program Save Location
+echo ------------------------
+echo ModMii.exe [base command] PC:A
+echo ModMii.exe [base command] PC:L
+echo ModMii.exe [base command] PC:P
+echo.
+echo Where;
+echo A = Auto, L = Local, and P = Portable
+echo.
+support\sfk echo [Cyan]Root Save
+echo ---------
+echo ModMii.exe [base command] RS:E
+echo ModMii.exe [base command] RS:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]Channel Effect
+echo --------------
+echo ModMii.exe [base command] CE:NS
+echo ModMii.exe [base command] CE:S
+echo ModMii.exe [base command] CE:FS
+echo.
+echo Where;
+echo NS = No Spin, S = Spin and FS = Fast Spin
+echo.
+support\sfk echo [Cyan]Keep 00000001 Folder and\or NUS Folder
+echo --------------------------------------
+echo ModMii.exe [base command] 1:0
+echo ModMii.exe [base command] 1:1
+echo ModMii.exe [base command] 1:N
+echo ModMii.exe [base command] 1:A
+echo.
+echo Where;
+echo 0 = do not keep, 1 = keep 00000001, N = keep NUS and A = keep All
+echo.
+support\sfk echo [Cyan]Update Active IOSs
+echo ------------------
+echo ModMii.exe [base command] UIOS:E
+echo ModMii.exe [base command] UIOS:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]Include IOS36v3608 in ModMii Wizard Downloads
+echo ---------------------------------------------
+echo ModMii.exe [base command] IOS36:E
+echo ModMii.exe [base command] IOS36:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]Include cMIOS in ModMii Wizard Downloads
+echo ----------------------------------------
+echo ModMii.exe [base command] CMIOS:E
+echo ModMii.exe [base command] CMIOS:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]Verbose Output for wget and SNEEK Installer
+echo -------------------------------------------
+echo ModMii.exe [base command] VERBOSE:E
+echo ModMii.exe [base command] VERBOSE:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]SNEEK and SNEEK+DI SD Access
+echo ----------------------------
+echo ModMii.exe [base command] SSD:E
+echo ModMii.exe [base command] SSD:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]SNEEK Verbose Output
+echo --------------------
+echo ModMii.exe [base command] SNKVERBOSE:E
+echo ModMii.exe [base command] SNKVERBOSE:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+support\sfk echo [Cyan]Font.bin Colour for SNEEK+DI/UNEEK+DI
+echo -------------------------------------
+echo ModMii.exe [base command] Font:B
+echo ModMii.exe [base command] Font:W
+echo.
+echo Where;
+echo B = Black and W = White
+echo.
+echo.
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
+
+::this will stop the batch file from opening, and keep the cmd box open
+::cmd.exe
+
+
+
+::-----------------------------------
+:hardcodedoptions
+echo %cmdinput%>temp\cmdinput.txt
+findStr /I ":" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 goto:hardcodedoptionsfinish
+
+::backup current settings (in order to revert after cmd)
+if not exist support\settings.bat echo ::ModMii Settings >support\settings.bat
+copy /y support\settings.bat support\settings.bak>nul
+
+
+
+::-----------DRIVE: (ie. DRIVE:whatever_ test?)---------------
+findStr /I " Drive:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:nodrivecmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+::check if a ? was entered
+findStr /I "?" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (echo Please mark the end of your Drive setting using a question mark "?", try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* DRIVE:"__ -rep _\x3f*__ -write -yes>nul
+
+set /p DRIVE= <temp\cmdinput2.txt
+
+:doublecheckcmd
+set fixslash=
+if /i "%DRIVE:~-1%" EQU "\" set fixslash=yes
+if /i "%DRIVE:~-1%" EQU "/" set fixslash=yes
+if /i "%fixslash%" EQU "yes" set DRIVE=%DRIVE:~0,-1%
+if /i "%fixslash%" EQU "yes" goto:doublecheckcmd
+
+::if second char is ":" check if drive exists
+if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
+if exist "%DRIVE:~0,2%" (goto:skipcheck) else (echo "%DRIVE:~0,2%" doesn't exist, please try again...)
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+@ping 127.0.0.1 -n 5 -w 1000> nul
+exit
+:skipcheck
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set Drive=" -write -yes>nul
+echo Set Drive=%DRIVE%>>Support\settings.bat
+
+::remove from temp\cmdinput.txt (compensate for _'s by replacing them with \x5f)
+support\sfk -spat filter temp\cmdinput2.txt -rep _\x5f_\x22_ -write -yes>nul
+support\sfk filter -quiet temp\cmdinput2.txt -rep _"""_\x5f_ -write -yes
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk -spat filter temp\cmdinput.txt -rep _" Drive:%removeme%?"__ -write -yes>nul
+:nodrivecmd
+
+
+
+
+::-----------DRIVEU: (ie. DRIVEU:whatever_ test?)---------------
+findStr /I " DRIVEU:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noDRIVEUcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+::check if a ? was entered
+findStr /I "?" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (echo Please mark the end of your DriveU setting using a question mark "?", try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* DRIVEU:"__ -rep _\x3f*__ -write -yes>nul
+
+set /p DRIVEU= <temp\cmdinput2.txt
+
+:doublecheckcmd
+set fixslash=
+if /i "%DRIVEU:~-1%" EQU "\" set fixslash=yes
+if /i "%DRIVEU:~-1%" EQU "/" set fixslash=yes
+if /i "%fixslash%" EQU "yes" set DRIVEU=%DRIVEU:~0,-1%
+if /i "%fixslash%" EQU "yes" goto:doublecheckcmd
+
+::if second char is ":" check if DRIVEU exists
+if /i "%DRIVEU:~1,1%" NEQ ":" goto:skipcheck
+if exist "%DRIVEU:~0,2%" (goto:skipcheck) else (echo "%DRIVEU:~0,2%" doesn't exist, please try again...)
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+@ping 127.0.0.1 -n 5 -w 1000> nul
+exit
+:skipcheck
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set DRIVEU=" -write -yes>nul
+echo Set DRIVEU=%DRIVEU%>>Support\settings.bat
+
+::remove from temp\cmdinput.txt (compensate for _'s by replacing them with \x5f)
+support\sfk -spat filter temp\cmdinput2.txt -rep _\x5f_\x22_ -write -yes>nul
+support\sfk filter -quiet temp\cmdinput2.txt -rep _"""_\x5f_ -write -yes
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk -spat filter temp\cmdinput.txt -rep _" DRIVEU:%removeme%?"__ -write -yes>nul
+:noDRIVEUcmd
+
+::-----------PC: Option---------------
+findStr /I " PC:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noPCcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* PC:"__ -rep _\x20*__ -write -yes>nul
+
+set /p PCSAVEcmd= <temp\cmdinput2.txt
+
+if /i "%PCSAVEcmd%" EQU "A" set PCSAVE=Auto
+if /i "%PCSAVEcmd%" EQU "L" set PCSAVE=Local
+if /i "%PCSAVEcmd%" EQU "P" set PCSAVE=Portable
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set PCSAVE=" -write -yes>nul
+echo Set PCSAVE=%PCSAVE%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" PC:%removeme%"__ -write -yes>nul
+:noPCcmd
+
+
+::-----------RS: Option---------------
+findStr /I " RS:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noRScmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* RS:"__ -rep _\x20*__ -write -yes>nul
+
+set /p ROOTSAVEcmd= <temp\cmdinput2.txt
+
+if /i "%ROOTSAVEcmd%" EQU "E" set ROOTSAVE=ON
+if /i "%ROOTSAVEcmd%" EQU "D" set ROOTSAVE=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set ROOTSAVE=" -write -yes>nul
+echo Set ROOTSAVE=%ROOTSAVE%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" RS:%removeme%"__ -write -yes>nul
+:noRScmd
+
+
+::-----------CE: Option---------------
+findStr /I " CE:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noCEcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* CE:"__ -rep _\x20*__ -write -yes>nul
+
+set /p effectcmd= <temp\cmdinput2.txt
+
+if /i "%effectcmd%" EQU "NS" set effect=no-spin
+if /i "%effectcmd%" EQU "S" set effect=spin
+if /i "%effectcmd%" EQU "FS" set effect=fast-spin
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set effect=" -write -yes>nul
+echo Set effect=%effect%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" CE:%removeme%"__ -write -yes>nul
+:noCEcmd
+
+
+::-----------keep *01 or NUS Folders---------------
+findStr /I " 1:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:no1cmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* 1:"__ -rep _\x20*__ -write -yes>nul
+
+set /p Option1cmd= <temp\cmdinput2.txt
+
+if /i "%Option1cmd%" EQU "0" set Option1=off
+if /i "%Option1cmd%" EQU "1" set Option1=on
+if /i "%Option1cmd%" EQU "N" set Option1=nus
+if /i "%Option1cmd%" EQU "A" set Option1=all
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set Option1=" -write -yes>nul
+echo Set Option1=%Option1%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" 1:%removeme%"__ -write -yes>nul
+:no1cmd
+
+
+::-----------UIOS: Option---------------
+findStr /I " UIOS:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noUIOScmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* UIOS:"__ -rep _\x20*__ -write -yes>nul
+
+set /p ACTIVEIOScmd= <temp\cmdinput2.txt
+
+if /i "%ACTIVEIOScmd%" EQU "E" set ACTIVEIOS=ON
+if /i "%ACTIVEIOScmd%" EQU "D" set ACTIVEIOS=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set ACTIVEIOS=" -write -yes>nul
+echo Set ACTIVEIOS=%ACTIVEIOS%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" UIOS:%removeme%"__ -write -yes>nul
+:noUIOScmd
+
+
+::-----------IOS36: Option---------------
+findStr /I " IOS36:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noIOS36cmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* IOS36:"__ -rep _\x20*__ -write -yes>nul
+
+set /p Option36cmd= <temp\cmdinput2.txt
+
+if /i "%Option36cmd%" EQU "E" set Option36=ON
+if /i "%Option36cmd%" EQU "D" set Option36=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set Option36=" -write -yes>nul
+echo Set Option36=%Option36%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" IOS36:%removeme%"__ -write -yes>nul
+:noIOS36cmd
+
+
+::-----------CMIOS: Option---------------
+findStr /I " CMIOS:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noCMIOScmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* CMIOS:"__ -rep _\x20*__ -write -yes>nul
+
+set /p CMIOSOPTIONcmd= <temp\cmdinput2.txt
+
+if /i "%CMIOSOPTIONcmd%" EQU "E" set CMIOSOPTION=ON
+if /i "%CMIOSOPTIONcmd%" EQU "D" set CMIOSOPTION=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set CMIOSOPTION=" -write -yes>nul
+echo Set CMIOSOPTION=%CMIOSOPTION%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" CMIOS:%removeme%"__ -write -yes>nul
+:noCMIOScmd
+
+
+::-----------VERBOSE: Option---------------
+findStr /I " VERBOSE:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noVERBOSEcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* VERBOSE:"__ -rep _\x20*__ -write -yes>nul
+
+set /p ModMiiverbosecmd= <temp\cmdinput2.txt
+
+if /i "%ModMiiverbosecmd%" EQU "E" set ModMiiverbose=ON
+if /i "%ModMiiverbosecmd%" EQU "D" set ModMiiverbose=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set ModMiiverbose=" -write -yes>nul
+echo Set ModMiiverbose=%ModMiiverbose%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" VERBOSE:%removeme%"__ -write -yes>nul
+:noVERBOSEcmd
+
+
+::-----------SSD: Option---------------
+findStr /I " SSD:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noSSDcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* SSD:"__ -rep _\x20*__ -write -yes>nul
+
+set /p SSDcmd= <temp\cmdinput2.txt
+
+if /i "%SSDcmd%" EQU "E" set SSD=ON
+if /i "%SSDcmd%" EQU "D" set SSD=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set SSD=" -write -yes>nul
+echo Set SSD=%SSD%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" SSD:%removeme%"__ -write -yes>nul
+:noSSDcmd
+
+
+::-----------snkverbose: Option---------------
+findStr /I " snkverbose:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:nosnkverbosecmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* snkverbose:"__ -rep _\x20*__ -write -yes>nul
+
+set /p sneekverbosecmd= <temp\cmdinput2.txt
+
+if /i "%sneekverbosecmd%" EQU "E" set sneekverbose=ON
+if /i "%sneekverbosecmd%" EQU "D" set sneekverbose=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set sneekverbose=" -write -yes>nul
+echo Set sneekverbose=%sneekverbose%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" snkverbose:%removeme%"__ -write -yes>nul
+:nosnkverbosecmd
+
+
+::-----------Font: Option---------------
+findStr /I " Font:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noFontcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* Font:"__ -rep _\x20*__ -write -yes>nul
+
+set /p SNKFONTcmd= <temp\cmdinput2.txt
+
+if /i "%SNKFONTcmd%" EQU "B" set SNKFONT=B
+if /i "%SNKFONTcmd%" EQU "W" set SNKFONT=W
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set SNKFONT=" -write -yes>nul
+echo Set SNKFONT=%SNKFONT%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" Font:%removeme%"__ -write -yes>nul
+:noFontcmd
+
+
+:hardcodedoptionsfinish
+
+::remove hard options from %cmdinput% to avoid conflict
+set /p cmdinput= <temp\cmdinput.txt
+
+if /i "%one%" EQU "W" goto:cmdlinewizard
+if /i "%one%" EQU "HS" goto:cmdlinehackmiisolutions
+if /i "%one%" EQU "S" goto:cmdlinesneekinstaller
+if /i "%one%" EQU "U" goto:cmdlineUSBLoaderSetup
+if /i "%one%" EQU "SE" goto:cmdlineemunandbuilder
+if /i "%one%" EQU "E" goto:cmdlineemunandbuilder
+if /i "%one%" EQU "L" goto:cmdlineloadqueue
+
+::-----------------------------------
+:cmdlinewizard
+set MENU1=%one%
+set VIRGIN=Y
+
+
+if /i "%two%" EQU "4.3" set FIRMSTART=%two%
+if /i "%two%" EQU "4.2" set FIRMSTART=%two%
+if /i "%two%" EQU "4.1" set FIRMSTART=%two%
+if /i "%two%" EQU "4.0" set FIRMSTART=%two%
+if /i "%two%" EQU "3.X" set FIRMSTART=%two%
+if /i "%two%" EQU "o" set FIRMSTART=%two%
+if "%firmstart%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+if /i "%three%" EQU "U" set REGION=%three%
+if /i "%three%" EQU "E" set REGION=%three%
+if /i "%three%" EQU "J" set REGION=%three%
+if /i "%three%" EQU "K" set REGION=%three%
+if /i "%three%" EQU "RC" set REGION=%three%
+if "%region%"=="" (echo "%three%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+
+if /i "%four%" EQU "4.3" set FIRM=%four%
+if /i "%four%" EQU "4.2" set FIRM=%four%
+if /i "%four%" EQU "4.1" set FIRM=%four%
+if "%firm%"=="" (echo "%four%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+
+if /i "%REGION%" NEQ "RC" goto:notRC
+if /i "%five%" EQU "U" set REGIONCHANGE=%five%
+if /i "%five%" EQU "E" set REGIONCHANGE=%five%
+if /i "%five%" EQU "J" set REGIONCHANGE=%five%
+if /i "%five%" EQU "K" set REGIONCHANGE=%five%
+if "%REGIONCHANGE%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+:notRC
+
+::----EXtras------
+::set defaults
+set protect=N
+set ThemeSelection=N
+set MIIQ=N
+set PIC=N
+set NET=N
+set WEATHER=N
+set NEWS=N
+set SHOP=N
+set SPEAK=N
+set USBGUIDE=N
+
+
+findStr /I " Prot" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set protect=N) else (set protect=Y)
+
+findStr /I " Guide" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
+if /i "%cmdguide%" EQU "G" set settings=G
+
+
+::----themes----
+findStr /I " Red" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=R)
+if /i "%ThemeSelection%" EQU "R" goto:donecmdthemes
+
+findStr /I " Green" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=G)
+if /i "%ThemeSelection%" EQU "G" goto:donecmdthemes
+
+findStr /I " Blue" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=BL)
+if /i "%ThemeSelection%" EQU "BL" goto:donecmdthemes
+
+findStr /I " Orange" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=O)
+if /i "%ThemeSelection%" EQU "O" goto:donecmdthemes
+:donecmdthemes
+
+
+findStr /I " CH" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set MIIQ=N) else (set MIIQ=Y)
+::if /i "%MIIQ%" EQU "Y" set MIIQ=Y
+if /i "%MIIQ%" EQU "Y" set PIC=Y
+if /i "%MIIQ%" EQU "Y" set SHOP=Y
+if /i "%REGION%" EQU "K" goto:nomoreKchannels
+if /i "%MIIQ%" EQU "Y" set NET=Y
+if /i "%MIIQ%" EQU "Y" set WEATHER=Y
+if /i "%MIIQ%" EQU "Y" set NEWS=Y
+if /i "%MIIQ%" EQU "Y" set SPEAK=Y
+:nomoreKchannels
+if /i "%MIIQ%" EQU "Y" goto:alreadygotallchannels
+
+
+findStr /I " PHOTO" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set PIC=N) else (set PIC=Y)
+
+findStr /I " SHOP" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SHOP=N) else (set SHOP=Y)
+
+findStr /I " MII" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set MIIQ=N) else (set MIIQ=Y)
+
+
+if /i "%REGION%" EQU "K" goto:alreadygotallchannels
+
+findStr /I " SPEAK" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SPEAK=N) else (set SPEAK=Y)
+
+findStr /I " NEWS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set NEWS=N) else (set NEWS=Y)
+
+findStr /I " NET" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set NET=N) else (set NET=Y)
+
+findStr /I " WEATHER" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set WEATHER=N) else (set WEATHER=Y)
+:alreadygotallchannels
+
+findStr /I " USB" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noUSBcmd) else (set USBGUIDE=Y)
+
+::FORMAT - FAT32 (or 1) is default
+findStr /I " FAT32-NTFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=3)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " WBFS-FAT32" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=5)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " NTFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=2)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " WBFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
+:donecmdformat
+
+::Loader - CFG (or 1) is default
+findStr /I " CFG-FLOW" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=ALL)
+if /i "%LOADER%" NEQ "CFG" goto:donecmdloader
+
+findStr /I " FLOW" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=FLOW)
+:donecmdloader
+
+::USB-Loader Config files (USB is default)
+findStr /I " SDConfig" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set USBCONFIG=USB) else (set USBCONFIG=SD)
+:noUSBcmd
+
+
+
+
+findStr /I " Min" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:notminupdate) else (set VIRGIN=N)
+
+findStr /I " HBC" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set HMInstaller=N) else (set HMInstaller=Y)
+
+findStr /I " REC" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set RECCIOS=N) else (set RECCIOS=Y)
+
+findStr /I " YAWMM" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set yawmQ=N) else (set yawmQ=Y)
+
+findStr /I " 236" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set IOS236InstallerQ=N) else (set IOS236InstallerQ=Y)
+
+findStr /I " Pri" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set PRIQ=N) else (set PRIQ=Y)
+:notminupdate
+
+
+::go to CMD LINE BOMB
+if /i "%firmstart%" NEQ "4.3" goto:skipbomb
+if /i "%HMInstaller%" EQU "N" goto:skipbomb
+set exploit=BOMB
+goto:cmdlineBOMB
+:skipbomb
+
+goto:go
+
+
+::---------------------------------
+:cmdlinehackmiisolutions
+set MENU1=H
+
+
+if /i "%two%" EQU "4.3" set FIRMSTART=%two%
+if /i "%two%" EQU "4.2" set FIRMSTART=%two%
+if /i "%two%" EQU "4.1" set FIRMSTART=%two%
+if /i "%two%" EQU "4.0" set FIRMSTART=%two%
+if /i "%two%" EQU "3.X" set FIRMSTART=%two%
+if "%firmstart%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+findStr /I " Guide" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
+if /i "%cmdguide%" EQU "G" set settings=G
+If /i "%FIRMSTART%" EQU "4.3" set exploit=BOMB
+
+if /i "%firmstart%" EQU "4.3" (goto:cmdlineBOMB) else (goto:go)
+
+
+:cmdlineBOMB
+start http://please.hackmii.com
+echo.
+echo    ModMii should have just opened your browser to http://please.hackmii.com
+echo.
+echo    On this webpage, enter your System Menu region and MAC address
+echo.
+echo         Note: to find your Wii's MAC address, turn on your Wii, click the
+echo               Wii button in the bottom left of the main system menu,
+echo               then click Wii Settings, then Internet, then Console Information.
+echo.
+echo    Uncheck Bundle the HackMii Installer for Me, fill in the captcha and cut
+echo    either wire. It will download a small ZIP file, open this file, and you
+echo    will see a private folder, copy and paste it into the root of the sd card.
+echo.
+echo    ModMii will generate a guide for your assuming you've done this correctly.
+echo.
+echo.
+echo    Press any key when you're ready to continue...
+echo.
+pause>nul
+goto:go
+
+::---------------------------------
+:cmdlineUSBLoaderSetup
+set MENU1=%one%
+
+
+::FORMAT - FAT32 (or 1) is default
+findStr /I " FAT32-NTFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=3)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " WBFS-FAT32" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=5)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " NTFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=2)
+if /i "%FORMAT%" NEQ "1" goto:donecmdformat
+
+findStr /I " WBFS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
+:donecmdformat
+
+::Loader - CFG (or 1) is default
+findStr /I " CFG-FLOW" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=ALL)
+if /i "%LOADER%" NEQ "CFG" goto:donecmdloader
+
+findStr /I " FLOW" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=FLOW)
+:donecmdloader
+
+::USB-Loader Config files (USB is default)
+findStr /I " SDConfig" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set USBCONFIG=USB) else (set USBCONFIG=SD)
+
+
+findStr /I " Guide" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
+if /i "%cmdguide%" EQU "G" set settings=G
+
+
+goto:go
+::---------------------------------
+:cmdlineloadqueue
+
+
+set MENU1=%one%
+
+set two=%cmdinput:~2%
+
+if "%two:~-4%" EQU ".bat" set two=%two:~0,-4%
+
+if exist "temp\DownloadQueues\%two%.bat" set DLQUEUE=%two%
+if "%DLQUEUE%"=="" (echo %two% does not exist, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+set CurrentQueue=%DLQUEUE%.bat
+
+goto:go
+
+::---------------------------------
+:cmdlinesneekinstaller
+
+::if not "%three%"=="" goto:cmdlineemunandbuilder
+
+set MENU1=S
+set SNEEKSELECT=1
+
+if /i "%two%" EQU "S" set SNEEKTYPE=%two%
+if /i "%two%" EQU "U" set SNEEKTYPE=%two%
+if /i "%two%" EQU "SD" set SNEEKTYPE=%two%
+if /i "%two%" EQU "UD" set SNEEKTYPE=%two%
+if "%SNEEKTYPE%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+goto:go
+
+
+
+::---------------------------------
+:cmdlineemunandbuilder
+
+set MENU1=S
+
+if /i "%one%" EQU "E" set SNEEKSELECT=2
+if /i "%one%" EQU "SE" set SNEEKSELECT=3
+
+
+if /i "%two%" EQU "S" set SNEEKTYPE=%two%
+if /i "%two%" EQU "U" set SNEEKTYPE=%two%
+if /i "%two%" EQU "SD" set SNEEKTYPE=%two%
+if /i "%two%" EQU "UD" set SNEEKTYPE=%two%
+if "%SNEEKTYPE%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+set DITYPE=off
+if /i "%SNEEKTYPE%" EQU "UD" set DITYPE=on
+if /i "%SNEEKTYPE%" EQU "SD" set DITYPE=on
+
+
+if /i "%three%" EQU "4.3" set SNKVERSION=%three%
+if /i "%three%" EQU "4.2" set SNKVERSION=%three%
+if /i "%SNEEKTYPE:~1%" EQU "D" goto:isDI
+if /i "%three%" EQU "4.1" set SNKVERSION=%three%
+:isDI
+if "%SNKVERSION%"=="" (echo "%three%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+if /i "%four%" EQU "U" set REGION=%four%
+if /i "%four%" EQU "E" set REGION=%four%
+if /i "%SNEEKTYPE:~1%" EQU "D" goto:isDI
+if /i "%four%" EQU "J" set REGION=%four%
+if /i "%four%" EQU "K" set REGION=%four%
+:isDI
+if "%region%"=="" (echo "%four%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+
+if /i "%five%" EQU "N" (set SNKSERIAL=%five%) & (goto:doneserial)
+
+::-------SNKSERIAL--------
+if /i "%five%" NEQ "D" goto:notdefault
+if /i "%REGION%" EQU "U" set SNKSERIAL=LU521175683
+if /i "%REGION%" EQU "E" set SNKSERIAL=LEH133789940
+if /i "%REGION%" EQU "J" set SNKSERIAL=LJM101175683
+if /i "%REGION%" EQU "K" set SNKSERIAL=LJM101175683
+goto:doneserial
+:notdefault
+
+::limit user input to X# of digits
+if "%five:~2%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~3%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~4%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~5%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~6%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~7%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~8%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~9%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+if "%five:~10%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+
+if /i "%REGION%" EQU "U" goto:skip
+if "%five:~11%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+:skip
+
+if not "%five:~12%"=="" (echo "%five%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (exit)
+set SNKSERIAL=%five%
+:doneserial
+
+
+::----------Other-----------
+::set defaults
+
+set ThemeSelection=N
+set SNKHBF=N
+set SNKCIOS=N
+set SNKcBC=N
+set SNKPRI=N
+set SNKJOY=N
+set SNKS2U=N
+set MIIQ=N
+set PIC=N
+set NET=N
+set WEATHER=N
+set NEWS=N
+set SHOP=N
+set SPEAK=N
+
+
+if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:notUorUD
+findStr /I " S2U" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKS2U=N) else (set SNKS2U=Y)
+:notUorUD
+
+findStr /I " CH" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set MIIQ=N) else (set MIIQ=Y)
+::if /i "%MIIQ%" EQU "Y" set MIIQ=Y
+if /i "%MIIQ%" EQU "Y" set PIC=Y
+if /i "%MIIQ%" EQU "Y" set SHOP=Y
+if /i "%REGION%" EQU "K" goto:nomoreKchannels
+if /i "%MIIQ%" EQU "Y" set NET=Y
+if /i "%MIIQ%" EQU "Y" set WEATHER=Y
+if /i "%MIIQ%" EQU "Y" set NEWS=Y
+if /i "%MIIQ%" EQU "Y" set SPEAK=Y
+:nomoreKchannels
+if /i "%MIIQ%" EQU "Y" goto:alreadygotallchannels
+
+
+findStr /I " PHOTO" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set PIC=N) else (set PIC=Y)
+
+findStr /I " SHOP" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SHOP=N) else (set SHOP=Y)
+
+findStr /I " MII" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set MIIQ=N) else (set MIIQ=Y)
+
+
+if /i "%REGION%" EQU "K" goto:alreadygotallchannels
+
+findStr /I " SPEAK" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SPEAK=N) else (set SPEAK=Y)
+
+findStr /I " NEWS" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set NEWS=N) else (set NEWS=Y)
+
+findStr /I " NET" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set NET=N) else (set NET=Y)
+
+findStr /I " WEATHER" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set WEATHER=N) else (set WEATHER=Y)
+:alreadygotallchannels
+
+
+
+findStr /I " HBF" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKHFF=N) else (set SNKHFF=Y)
+
+findStr /I " 249" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKcIOS=N) else (set SNKcIOS=Y)
+
+findStr /I " NMM" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKcBC=N) else (set SNKcBC=NMM)
+
+::DML only if using SNEEK+DI and if NMM is not also selected
+if /i "%SNKcBC%" EQU "NMM" goto:skipDMLcmd
+if /i "%SNEEKTYPE%" NEQ "SD" goto:skipDMLcmd
+findStr /I " DML" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKcBC=N) else (set SNKcBC=DML)
+:skipDMLcmd
+
+findStr /I " Pri" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKPRI=N) else (set SNKPRI=Y)
+
+
+::joyflow only for uneek or uneek+di
+if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:skipjoycmd
+findStr /I " JOY" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set SNKJOY=N) else (set SNKJOY=Y)
+:skipjoycmd
+
+
+::----themes----
+findStr /I " Red" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=R)
+if /i "%ThemeSelection%" EQU "R" goto:donecmdthemes
+
+findStr /I " Green" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=G)
+if /i "%ThemeSelection%" EQU "G" goto:donecmdthemes
+
+findStr /I " Blue" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=BL)
+if /i "%ThemeSelection%" EQU "BL" goto:donecmdthemes
+
+findStr /I " Orange" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=O)
+if /i "%ThemeSelection%" EQU "O" goto:donecmdthemes
+
+
+:donecmdthemes
+
+
+
+
+goto:go
+::---------------------------------
+:go
+::title ModMii
+if exist temp\cmdinput.txt del temp\cmdinput.txt>nul
+if exist temp\cmdinput2.txt del temp\cmdinput2.txt>nul
+mode con cols=85 lines=54
+color 1f
+goto:defaultsettings
+:notcmd
+::---------------------------------------------------------
+
+
+
+::title ModMii
 mode con cols=85 lines=54
 color 1f
 
@@ -204,7 +1385,7 @@ pause>nul
 :skipframeworkinstallation
 
 if /i "%ModMiiverbose%" EQU "off" (set ModMiimin=/min ) else (set ModMiimin=)
-if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
+
 
 ::check for supporting apps that AVs are known to remove
 if not exist support\libWiiSharp.dll (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
@@ -218,6 +1399,11 @@ if not exist support\wit.exe (echo One or more of ModMii's supporting files are 
 if not exist support\fvc.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 if not exist support\sfk.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 if not exist support\nusd.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
+
+
+if /i "%cmdlinemode%" EQU "Y" goto:noupdateincmdlinemode
+if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
+:noupdateincmdlinemode
 ::......................................................MAIN MENU..............................................
 
 :MENU
@@ -245,7 +1431,10 @@ Set Option1TEMP=%Option1%
 if /i "%ModMiiverbose%" EQU "off" (set ModMiimin=/min ) else (set ModMiimin=)
 
 
-::variable that interfere with cmd line wizard
+::variables that interfere with cmd line wizard
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" EQU "Y" goto:MENUafterbadvars
+
 SET VIRGIN=
 SET FIRMSTART=
 set STUB=
@@ -258,8 +1447,16 @@ set SPEAK=
 set MIIQ=
 set REGION=
 set UpdatesIOSQ=
+set SNEEKTYPE=
+set SNEEKSELECT=
+set USBGUIDE=
+set UPAGE1=
+set LOADER=
+set FORMAT=NONE
+set cfgfullrelease=NONE
+SET EXPLOIT=default
+if /i "%USBCONFIG%" EQU "USB" set DRIVE=%DRIVETEMP%
 :MENUafterbadvars
-
 
 mode con cols=85 lines=54
 SET lines=54
@@ -272,24 +1469,22 @@ SET CONFIRM=
 set loadorgo=go
 set SMAPP=
 
-SET EXPLOIT=default
+::SET EXPLOIT=default
 set exploitselection=
 set COPY=
 set DLTOTAL=0
 set OPTIONS=
 set DB=N
-set FORMAT=NONE
-set cfgfullrelease=NONE
-set SNEEKTYPE=
-if /i "%USBCONFIG%" EQU "USB" set DRIVE=%DRIVETEMP%
-set USBGUIDE=
-set UPAGE1=
-set LOADER=
-set SNEEKTYPE=
-set SNEEKSELECT=
+::set FORMAT=NONE
+::set cfgfullrelease=NONE
+
+::if /i "%USBCONFIG%" EQU "USB" set DRIVE=%DRIVETEMP%
+::set USBGUIDE=
+::set UPAGE1=
+::set LOADER=
+::set SNEEKTYPE=
+::set SNEEKSELECT=
 set patchIOSnum=36 or 236
-
-
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
@@ -570,18 +1765,18 @@ set DarkWii_Blue_4.3K=
 set DarkWii_Blue_4.2K=
 set DarkWii_Blue_4.1K=
 
-set DarkWii_Orange_4.3U=
-set DarkWii_Orange_4.2U=
-set DarkWii_Orange_4.1U=
-set DarkWii_Orange_4.3E=
-set DarkWii_Orange_4.2E=
-set DarkWii_Orange_4.1E=
-set DarkWii_Orange_4.3J=
-set DarkWii_Orange_4.2J=
-set DarkWii_Orange_4.1J=
-set DarkWii_Orange_4.3K=
-set DarkWii_Orange_4.2K=
-set DarkWii_Orange_4.1K=
+set darkwii_orange_4.3U=
+set darkwii_orange_4.2U=
+set darkwii_orange_4.1U=
+set darkwii_orange_4.3E=
+set darkwii_orange_4.2E=
+set darkwii_orange_4.1E=
+set darkwii_orange_4.3J=
+set darkwii_orange_4.2J=
+set darkwii_orange_4.1J=
+set darkwii_orange_4.3K=
+set darkwii_orange_4.2K=
+set darkwii_orange_4.1K=
 set cIOS222[38]-v4=
 set cIOS223[37-38]-v4=
 set cBC=
@@ -668,13 +1863,47 @@ SET COUNT7=1
 SET COUNT8=1
 SET CURRENTDL=0
 
-::for cmdlineDLwizard
-if /i "%one%" EQU "W" goto:DOWNLOAD
-
 if not exist temp mkdir temp
 
 :Clear simplelog
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
+
+::--------for cmdlineDLwizard----------
+if /i "%one%" EQU "W" goto:DOWNLOAD
+if /i "%one%" EQU "HS" goto:HACKMIISOLUTION
+if /i "%one%" EQU "L" goto:forcmdlineL
+if /i "%one%" EQU "U" goto:DLCOUNT
+if /i "%one%" EQU "S" goto:extravars
+if /i "%one%" EQU "E" goto:extravars
+if /i "%one%" EQU "SE" goto:extravars
+goto:noextravars
+:extravars
+::random vars required for everything to work
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
+if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
+
+if exist "%nandpath%"\title\00000001\00000002\data\setting.txt (set settingtxtExist=yes) else (set settingtxtExist=no)
+
+set nandexist=no
+if exist "%nandpath%"\title set nandexist=yes
+if exist "%nandpath%"\ticket set nandexist=yes
+if exist "%nandpath%"\sys set nandexist=yes
+if exist "%nandpath%"\shared1 set nandexist=yes
+
+if /i "%SNKS2U%" NEQ "Y" goto:quickskip
+SET NANDcount=0
+:NANDnamecmd
+SET /a NANDcount=%NANDcount%+1
+if not exist "%nandpath%\nands\nand%NANDcount%" (set nandpath=%nandpath%\nands\nand%NANDcount%) & goto:quickskip
+goto:NANDnamecmd
+:quickskip
+
+if /i "%one%" EQU "S" goto:SNEEKINSTALLER
+if /i "%one%" EQU "SE" goto:SNEEKINSTALLER
+if /i "%one%" EQU "E" goto:SNKNANDBUILDER
+:noextravars
+::---------------------------------------
+
 
 set MENU1=
 
@@ -1132,7 +2361,7 @@ echo   your translator because it truly is a LOT of work to do.
 echo.
 echo   French Translators: mamule, xav91 and ketufe
 echo   Dutch Translator: Hielkenator
-echo   Italian Translators: Wasabi and Step
+echo   Italian Translators: Wasabi, Step and Robylin
 echo.
 if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
 set /p CREDIT6=     Press the "Enter" Key to continue: 
@@ -1236,7 +2465,7 @@ echo.
 echo   What can I say about THE "DeadlyFoez" on a personal level. He's always
 echo   getting me into trouble but his friendship is worth every fiasco! It's
 echo   unreal how he became one of my best friends. Just goes to show you not
-echo   everyone you meet online is totally crazy; in his case... just a litte crazy.
+echo   everyone you meet online is totally crazy; in his case... just a little crazy.
 echo   But seriously, thanks to DeadlyFoez for always being there for me to bounce
 echo   ModMii ideas off of, for hosting the first two Team Your Mom meetings and
 echo   for introducing me to his awesome family and friends. There's no one else
@@ -1461,8 +2690,8 @@ if /i "%ModMiiverbose%" EQU "on" echo           V = Verbose Output maximized whe
 echo.
 
 
-if /i "%SSD%" EQU "off" echo          SSD = SNEEK and SNEEK+DI SD Access (Disabled)
-if /i "%SSD%" EQU "on" echo          SSD = SNEEK and SNEEK+DI SD Access (Enabled)
+if /i "%SSD%" EQU "off" echo         SSD = SNEEK and SNEEK+DI SD Access (Disabled)
+if /i "%SSD%" EQU "on" echo         SSD = SNEEK and SNEEK+DI SD Access (Enabled)
 echo.
 
 
@@ -3039,27 +4268,6 @@ echo.
 echo.
 
 
-if /i "%FIRMSTART%" NEQ "O" goto:skipupdatewarning
-echo.
-echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Note to Korean Users:
-echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] If you perform an online update to v4.3 you will require
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] a Korean copy of Super Smash Bros. Brawl to softmod your Wii
-echo.
-:skipupdatewarning
-
-
-
-if /i "%VIRGIN%" NEQ "Y" goto:SkipOtherRegions
-if /i "%FIRMSTART%" EQU "4.3" echo.
-if /i "%FIRMSTART%" EQU "4.3" echo.
-if /i "%FIRMSTART%" EQU "4.3" support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Note to Korean Users:
-if /i "%FIRMSTART%" EQU "4.3" echo.
-if /i "%FIRMSTART%" EQU "4.3" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] Virgin Korean 4.3 Wii's can only be softmodded
-if /i "%FIRMSTART%" EQU "4.3" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] with a Korean copy of Super Smash Bros. Brawl
-:SkipOtherRegions
-
 echo.
 echo.
 echo                B = Back
@@ -3151,7 +4359,7 @@ set exploitselection=
 if /i "%VIRGIN%" EQU "N" goto:WPAGE3D
 
 if /i "%FIRMSTART%" EQU "4.3" goto:WPAGE3Cnext
-if /i "%FIRMSTART%" EQU "o" goto:WPAGE3CnextLATER
+if /i "%FIRMSTART%" EQU "o" goto:WPAGE3Cnext
 
 
 goto:WPAGE4
@@ -3159,15 +4367,6 @@ goto:WPAGE4
 
 ::Only virgin 4.3 U/E/J wii's or <2.2 U/E/J Wii's will make it this far
 :WPAGE3Cnext
-
-
-::VIRGIN Korean 4.3 Wii's auto-select smashstack
-if /i "%REGION%" EQU "K" set EXPLOIT=?
-::this is so "B" works when selecting new firmware
-if /i "%REGION%" EQU "K" set exploitselection=yes
-if /i "%REGION%" EQU "K" goto:WPAGE3D
-
-:WPAGE3CnextLATER
 
 set backb4HACKMIISOLUTION=WPAGE3c
 
@@ -3203,6 +4402,8 @@ echo                ? = If you're not sure, download all of the above and decide
 echo.
 echo.
 echo.
+
+if /i "%FIRMSTART%" EQU "o" goto:skipbomb
 echo      ATTENTION: A new discless exploit called LetterBomb has been released but
 echo                 ModMii cannot prepare it for you yet. If you would like to use
 echo                 this exploit with a little bit of ModMii's help, type "BOMB"
@@ -3210,7 +4411,7 @@ echo.
 echo             BOMB = LetterBomb
 echo.
 echo.
-
+:skipbomb
 
 if /i "%FIRMSTART%" NEQ "o" goto:skipOmsg
 support\sfk echo -spat \x20 [Red] Important Notes:
@@ -3277,6 +4478,7 @@ if /i "%EXPLOIT%" EQU "TOS" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "?" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "S" goto:WPAGE3D
 
+if /i "%FIRMSTART%" EQU "o" goto:notbomb
 if /i "%EXPLOIT%" NEQ "BOMB" goto:notbomb
 start http://please.hackmii.com
 cls
@@ -3865,6 +5067,8 @@ echo.
 echo           * Extra Brick Protection
 echo.
 echo           * A System Menu Theme
+echo.
+echo           * USB-Loader
 echo.
 echo.
 echo                Y = Yes
@@ -4690,7 +5894,6 @@ set wbm=*
 if /i "%LOADER%" EQU "1" set LOADER=CFG
 if /i "%LOADER%" EQU "2" set LOADER=FLOW
 if /i "%LOADER%" EQU "3" set LOADER=ALL
-
 
 if /i "%LOADER%" EQU "CFG" set usbfolder=*
 if /i "%LOADER%" EQU "ALL" set usbfolder=*
@@ -5834,9 +7037,9 @@ goto:SKIPSM
 :skip
 
 if /i "%ThemeSelection%" NEQ "O" goto:skip
-if /i "%SNKVERSION%" EQU "4.3" set DarkWii_Orange_4.3U=*
-if /i "%SNKVERSION%" EQU "4.2" set DarkWii_Orange_4.2U=*
-if /i "%SNKVERSION%" EQU "4.1" set DarkWii_Orange_4.1U=*
+if /i "%SNKVERSION%" EQU "4.3" set darkwii_orange_4.3U=*
+if /i "%SNKVERSION%" EQU "4.2" set darkwii_orange_4.2U=*
+if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1U=*
 goto:SKIPSM
 :skip
 
@@ -5882,9 +7085,9 @@ goto:SKIPSM
 :skip
 
 if /i "%ThemeSelection%" NEQ "O" goto:skip
-if /i "%SNKVERSION%" EQU "4.3" set DarkWii_Orange_4.3E=*
-if /i "%SNKVERSION%" EQU "4.2" set DarkWii_Orange_4.2E=*
-if /i "%SNKVERSION%" EQU "4.1" set DarkWii_Orange_4.1E=*
+if /i "%SNKVERSION%" EQU "4.3" set darkwii_orange_4.3E=*
+if /i "%SNKVERSION%" EQU "4.2" set darkwii_orange_4.2E=*
+if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1E=*
 goto:SKIPSM
 :skip
 
@@ -5929,9 +7132,9 @@ goto:SKIPSM
 :skip
 
 if /i "%ThemeSelection%" NEQ "O" goto:skip
-if /i "%SNKVERSION%" EQU "4.3" set DarkWii_Orange_4.3J=*
-if /i "%SNKVERSION%" EQU "4.2" set DarkWii_Orange_4.2J=*
-if /i "%SNKVERSION%" EQU "4.1" set DarkWii_Orange_4.1J=*
+if /i "%SNKVERSION%" EQU "4.3" set darkwii_orange_4.3J=*
+if /i "%SNKVERSION%" EQU "4.2" set darkwii_orange_4.2J=*
+if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1J=*
 goto:SKIPSM
 :skip
 
@@ -5976,9 +7179,9 @@ goto:SKIPSM
 :skip
 
 if /i "%ThemeSelection%" NEQ "O" goto:skip
-if /i "%SNKVERSION%" EQU "4.3" set DarkWii_Orange_4.3K=*
-if /i "%SNKVERSION%" EQU "4.2" set DarkWii_Orange_4.2K=*
-if /i "%SNKVERSION%" EQU "4.1" set DarkWii_Orange_4.1K=*
+if /i "%SNKVERSION%" EQU "4.3" set darkwii_orange_4.3K=*
+if /i "%SNKVERSION%" EQU "4.2" set darkwii_orange_4.2K=*
+if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1K=*
 goto:SKIPSM
 :skip
 
@@ -7909,27 +9112,27 @@ echo     WWW = View DarkWii Orange Theme on youtube
 echo.
 support\sfk echo -spat \x20 [Red]DarkWii Orange CSMs \x20 \x20 \x20 DarkWii Orange System Menus \x20 \x20 Original Wii Themes
 echo.
-echo    %DarkWii_Orange_4.3U% 3U = 4.3U                    %SM4.3U-DWO% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
-echo    %DarkWii_Orange_4.2U% 2U = 4.2U                    %SM4.2U-DWO% 4.2U = 4.2U            %A87% 87 = 87.app SM4.2U
-echo    %DarkWii_Orange_4.1U% 1U = 4.1U                    %SM4.1U-DWO% 4.1U = 4.1U            %A7b% 7b = 7b.app SM4.1U
+echo    %darkwii_orange_4.3U% 3U = 4.3U                    %SM4.3U-DWO% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
+echo    %darkwii_orange_4.2U% 2U = 4.2U                    %SM4.2U-DWO% 4.2U = 4.2U            %A87% 87 = 87.app SM4.2U
+echo    %darkwii_orange_4.1U% 1U = 4.1U                    %SM4.1U-DWO% 4.1U = 4.1U            %A7b% 7b = 7b.app SM4.1U
 echo                                                          %A72% 72 = 72.app SM4.0U
 echo                                                          %A42% 42 = 42.app SM3.2U
 echo.
-echo    %DarkWii_Orange_4.3E% 3E = 4.3E                    %SM4.3E-DWO% 4.3E = 4.3E            %A9a% 9a = 9a.app SM4.3E
-echo    %DarkWii_Orange_4.2E% 2E = 4.2E                    %SM4.2E-DWO% 4.2E = 4.2E            %A8a% 8a = 8a.app SM4.2E
-echo    %DarkWii_Orange_4.1E% 1E = 4.1E                    %SM4.1E-DWO% 4.1E = 4.1E            %A7e% 7e = 7e.app SM4.1E
+echo    %darkwii_orange_4.3E% 3E = 4.3E                    %SM4.3E-DWO% 4.3E = 4.3E            %A9a% 9a = 9a.app SM4.3E
+echo    %darkwii_orange_4.2E% 2E = 4.2E                    %SM4.2E-DWO% 4.2E = 4.2E            %A8a% 8a = 8a.app SM4.2E
+echo    %darkwii_orange_4.1E% 1E = 4.1E                    %SM4.1E-DWO% 4.1E = 4.1E            %A7e% 7e = 7e.app SM4.1E
 echo                                                          %A75% 75 = 75.app SM4.0E
 echo                                                          %A45% 45 = 45.app SM3.2E
 echo.
-echo    %DarkWii_Orange_4.3J% 3J = 4.3J                    %SM4.3J-DWO% 4.3J = 4.3J            %A94% 94 = 94.app SM4.3J
-echo    %DarkWii_Orange_4.2J% 2J = 4.2J                    %SM4.2J-DWO% 4.2J = 4.2J            %A84% 84 = 84.app SM4.2J
-echo    %DarkWii_Orange_4.1J% 1J = 4.1J                    %SM4.1J-DWO% 4.1J = 4.1J            %A78% 78 = 78.app SM4.1J
+echo    %darkwii_orange_4.3J% 3J = 4.3J                    %SM4.3J-DWO% 4.3J = 4.3J            %A94% 94 = 94.app SM4.3J
+echo    %darkwii_orange_4.2J% 2J = 4.2J                    %SM4.2J-DWO% 4.2J = 4.2J            %A84% 84 = 84.app SM4.2J
+echo    %darkwii_orange_4.1J% 1J = 4.1J                    %SM4.1J-DWO% 4.1J = 4.1J            %A78% 78 = 78.app SM4.1J
 echo                                                          %A70% 70 = 70.app SM4.0J
 echo                                                          %A40% 40 = 40.app SM3.2J
 echo.
-echo    %DarkWii_Orange_4.3K% 3K = 4.3K                    %SM4.3K-DWO% 4.3K = 4.3K            %A9d% 9d = 9d.app SM4.3K
-echo    %DarkWii_Orange_4.2K% 2K = 4.2K                    %SM4.2K-DWO% 4.2K = 4.2K            %A8d% 8d = 8d.app SM4.2K
-echo    %DarkWii_Orange_4.1K% 1K = 4.1K                    %SM4.1K-DWO% 4.1K = 4.1K            %A81% 81 = 81.app SM4.1K
+echo    %darkwii_orange_4.3K% 3K = 4.3K                    %SM4.3K-DWO% 4.3K = 4.3K            %A9d% 9d = 9d.app SM4.3K
+echo    %darkwii_orange_4.2K% 2K = 4.2K                    %SM4.2K-DWO% 4.2K = 4.2K            %A8d% 8d = 8d.app SM4.2K
+echo    %darkwii_orange_4.1K% 1K = 4.1K                    %SM4.1K-DWO% 4.1K = 4.1K            %A81% 81 = 81.app SM4.1K
 :skipOrange
 
 
@@ -8082,18 +9285,18 @@ if /i "%LIST3%" EQU "4.1K" goto:SwitchSM4.1K-DWB
 if /i "%selectedtheme%" NEQ "O" goto:skipOrange
 if /i "%LIST3%" EQU "S" (set selectedtheme=R)&&(goto:LIST3)
 if /i "%LIST3%" EQU "WWW" (start www.youtube.com/watch?v=g66UasiFEhg)&&(goto:LIST3)
-if /i "%LIST3%" EQU "3U" goto:SwitchDarkWii_Orange_4.3U
-if /i "%LIST3%" EQU "2U" goto:SwitchDarkWii_Orange_4.2U
-if /i "%LIST3%" EQU "1U" goto:SwitchDarkWii_Orange_4.1U
-if /i "%LIST3%" EQU "3E" goto:SwitchDarkWii_Orange_4.3E
-if /i "%LIST3%" EQU "2E" goto:SwitchDarkWii_Orange_4.2E
-if /i "%LIST3%" EQU "1E" goto:SwitchDarkWii_Orange_4.1E
-if /i "%LIST3%" EQU "3J" goto:SwitchDarkWii_Orange_4.3J
-if /i "%LIST3%" EQU "2J" goto:SwitchDarkWii_Orange_4.2J
-if /i "%LIST3%" EQU "1J" goto:SwitchDarkWii_Orange_4.1J
-if /i "%LIST3%" EQU "3K" goto:SwitchDarkWii_Orange_4.3K
-if /i "%LIST3%" EQU "2K" goto:SwitchDarkWii_Orange_4.2K
-if /i "%LIST3%" EQU "1K" goto:SwitchDarkWii_Orange_4.1K
+if /i "%LIST3%" EQU "3U" goto:Switchdarkwii_orange_4.3U
+if /i "%LIST3%" EQU "2U" goto:Switchdarkwii_orange_4.2U
+if /i "%LIST3%" EQU "1U" goto:Switchdarkwii_orange_4.1U
+if /i "%LIST3%" EQU "3E" goto:Switchdarkwii_orange_4.3E
+if /i "%LIST3%" EQU "2E" goto:Switchdarkwii_orange_4.2E
+if /i "%LIST3%" EQU "1E" goto:Switchdarkwii_orange_4.1E
+if /i "%LIST3%" EQU "3J" goto:Switchdarkwii_orange_4.3J
+if /i "%LIST3%" EQU "2J" goto:Switchdarkwii_orange_4.2J
+if /i "%LIST3%" EQU "1J" goto:Switchdarkwii_orange_4.1J
+if /i "%LIST3%" EQU "3K" goto:Switchdarkwii_orange_4.3K
+if /i "%LIST3%" EQU "2K" goto:Switchdarkwii_orange_4.2K
+if /i "%LIST3%" EQU "1K" goto:Switchdarkwii_orange_4.1K
 if /i "%LIST3%" EQU "4.3U" goto:SwitchSM4.3U-DWO
 if /i "%LIST3%" EQU "4.2U" goto:SwitchSM4.2U-DWO
 if /i "%LIST3%" EQU "4.1U" goto:SwitchSM4.1U-DWO
@@ -8417,52 +9620,52 @@ if /i "%SM4.1K-DWB%" EQU "*" (set SM4.1K-DWB=) else (set SM4.1K-DWB=*)
 goto:LIST3
 
 
-:SwitchDarkWii_Orange_4.3U
-if /i "%DarkWii_Orange_4.3U%" EQU "*" (set DarkWii_Orange_4.3U=) else (set DarkWii_Orange_4.3U=*)
+:Switchdarkwii_orange_4.3U
+if /i "%darkwii_orange_4.3U%" EQU "*" (set darkwii_orange_4.3U=) else (set darkwii_orange_4.3U=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.2U
-if /i "%DarkWii_Orange_4.2U%" EQU "*" (set DarkWii_Orange_4.2U=) else (set DarkWii_Orange_4.2U=*)
+:Switchdarkwii_orange_4.2U
+if /i "%darkwii_orange_4.2U%" EQU "*" (set darkwii_orange_4.2U=) else (set darkwii_orange_4.2U=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.1U
-if /i "%DarkWii_Orange_4.1U%" EQU "*" (set DarkWii_Orange_4.1U=) else (set DarkWii_Orange_4.1U=*)
+:Switchdarkwii_orange_4.1U
+if /i "%darkwii_orange_4.1U%" EQU "*" (set darkwii_orange_4.1U=) else (set darkwii_orange_4.1U=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.3E
-if /i "%DarkWii_Orange_4.3E%" EQU "*" (set DarkWii_Orange_4.3E=) else (set DarkWii_Orange_4.3E=*)
+:Switchdarkwii_orange_4.3E
+if /i "%darkwii_orange_4.3E%" EQU "*" (set darkwii_orange_4.3E=) else (set darkwii_orange_4.3E=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.2E
-if /i "%DarkWii_Orange_4.2E%" EQU "*" (set DarkWii_Orange_4.2E=) else (set DarkWii_Orange_4.2E=*)
+:Switchdarkwii_orange_4.2E
+if /i "%darkwii_orange_4.2E%" EQU "*" (set darkwii_orange_4.2E=) else (set darkwii_orange_4.2E=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.1E
-if /i "%DarkWii_Orange_4.1E%" EQU "*" (set DarkWii_Orange_4.1E=) else (set DarkWii_Orange_4.1E=*)
+:Switchdarkwii_orange_4.1E
+if /i "%darkwii_orange_4.1E%" EQU "*" (set darkwii_orange_4.1E=) else (set darkwii_orange_4.1E=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.1J
-if /i "%DarkWii_Orange_4.1J%" EQU "*" (set DarkWii_Orange_4.1J=) else (set DarkWii_Orange_4.1J=*)
+:Switchdarkwii_orange_4.1J
+if /i "%darkwii_orange_4.1J%" EQU "*" (set darkwii_orange_4.1J=) else (set darkwii_orange_4.1J=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.2J
-if /i "%DarkWii_Orange_4.2J%" EQU "*" (set DarkWii_Orange_4.2J=) else (set DarkWii_Orange_4.2J=*)
+:Switchdarkwii_orange_4.2J
+if /i "%darkwii_orange_4.2J%" EQU "*" (set darkwii_orange_4.2J=) else (set darkwii_orange_4.2J=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.3J
-if /i "%DarkWii_Orange_4.3J%" EQU "*" (set DarkWii_Orange_4.3J=) else (set DarkWii_Orange_4.3J=*)
+:Switchdarkwii_orange_4.3J
+if /i "%darkwii_orange_4.3J%" EQU "*" (set darkwii_orange_4.3J=) else (set darkwii_orange_4.3J=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.1K
-if /i "%DarkWii_Orange_4.1K%" EQU "*" (set DarkWii_Orange_4.1K=) else (set DarkWii_Orange_4.1K=*)
+:Switchdarkwii_orange_4.1K
+if /i "%darkwii_orange_4.1K%" EQU "*" (set darkwii_orange_4.1K=) else (set darkwii_orange_4.1K=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.2K
-if /i "%DarkWii_Orange_4.2K%" EQU "*" (set DarkWii_Orange_4.2K=) else (set DarkWii_Orange_4.2K=*)
+:Switchdarkwii_orange_4.2K
+if /i "%darkwii_orange_4.2K%" EQU "*" (set darkwii_orange_4.2K=) else (set darkwii_orange_4.2K=*)
 goto:LIST3
 
-:SwitchDarkWii_Orange_4.3K
-if /i "%DarkWii_Orange_4.3K%" EQU "*" (set DarkWii_Orange_4.3K=) else (set DarkWii_Orange_4.3K=*)
+:Switchdarkwii_orange_4.3K
+if /i "%darkwii_orange_4.3K%" EQU "*" (set darkwii_orange_4.3K=) else (set darkwii_orange_4.3K=*)
 goto:LIST3
 
 
@@ -8600,9 +9803,9 @@ if /i "%selectedtheme%" EQU "G" set DarkWii_Green_4.1U=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.3U=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.2U=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.1U=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.3U=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.2U=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.1U=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.3U=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.2U=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.1U=*
 if /i "%LIST3%" EQU "U" goto:LIST3
 
 :ETHEMES
@@ -8615,9 +9818,9 @@ if /i "%selectedtheme%" EQU "G" set DarkWii_Green_4.1E=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.3E=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.2E=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.1E=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.3E=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.2E=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.1E=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.3E=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.2E=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.1E=*
 if /i "%LIST3%" EQU "E" goto:LIST3
 
 :JTHEMES
@@ -8630,9 +9833,9 @@ if /i "%selectedtheme%" EQU "G" set DarkWii_Green_4.1J=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.3J=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.2J=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.1J=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.3J=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.2J=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.1J=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.3J=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.2J=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.1J=*
 if /i "%LIST3%" EQU "J" goto:LIST3
 
 :KTHEMES
@@ -8645,9 +9848,9 @@ if /i "%selectedtheme%" EQU "G" set DarkWii_Green_4.1K=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.3K=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.2K=*
 if /i "%selectedtheme%" EQU "B" set DarkWii_Blue_4.1K=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.3K=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.2K=*
-if /i "%selectedtheme%" EQU "O" set DarkWii_Orange_4.1K=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.3K=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.2K=*
+if /i "%selectedtheme%" EQU "O" set darkwii_orange_4.1K=*
 if /i "%LIST3%" EQU "K" goto:LIST3
 
 :SMUTHEMES
@@ -10676,6 +11879,8 @@ echo.
 echo.
 set /p path-0=     Enter Selection Here: 
 
+if "%path-0%"=="" goto:badkey
+
 if /i "%path-0%" EQU "M" goto:MENU
 
 if /i "%path-0%" NEQ "B" goto:notback
@@ -12119,9 +13324,9 @@ if /i "%FIRM%" EQU "4.1" set DarkWii_Blue_4.1U=*
 
 if /i "%ThemeSelection%" NEQ "O" goto:SKIPOrangeSM
 set MyM=*
-if /i "%FIRM%" EQU "4.3" set DarkWii_Orange_4.3U=*
-if /i "%FIRM%" EQU "4.2" set DarkWii_Orange_4.2U=*
-if /i "%FIRM%" EQU "4.1" set DarkWii_Orange_4.1U=*
+if /i "%FIRM%" EQU "4.3" set darkwii_orange_4.3U=*
+if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2U=*
+if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1U=*
 :SKIPOrangeSM
 
 :SKIPSM
@@ -12197,9 +13402,9 @@ if /i "%FIRM%" EQU "4.1" set DarkWii_Blue_4.1E=*
 
 if /i "%ThemeSelection%" NEQ "O" goto:SKIPOrangeSM
 set MyM=*
-if /i "%FIRM%" EQU "4.3" set DarkWii_Orange_4.3E=*
-if /i "%FIRM%" EQU "4.2" set DarkWii_Orange_4.2E=*
-if /i "%FIRM%" EQU "4.1" set DarkWii_Orange_4.1E=*
+if /i "%FIRM%" EQU "4.3" set darkwii_orange_4.3E=*
+if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2E=*
+if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1E=*
 :SKIPOrangeSM
 
 :SKIPSM
@@ -12275,9 +13480,9 @@ if /i "%FIRM%" EQU "4.1" set DarkWii_Blue_4.1J=*
 
 if /i "%ThemeSelection%" NEQ "O" goto:SKIPOrangeSM
 set MyM=*
-if /i "%FIRM%" EQU "4.3" set DarkWii_Orange_4.3J=*
-if /i "%FIRM%" EQU "4.2" set DarkWii_Orange_4.2J=*
-if /i "%FIRM%" EQU "4.1" set DarkWii_Orange_4.1J=*
+if /i "%FIRM%" EQU "4.3" set darkwii_orange_4.3J=*
+if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2J=*
+if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1J=*
 :SKIPOrangeSM
 
 :SKIPSM
@@ -12353,9 +13558,9 @@ if /i "%FIRM%" EQU "4.1" set DarkWii_Blue_4.1K=*
 
 if /i "%ThemeSelection%" NEQ "O" goto:SKIPOrangeSM
 set MyM=*
-if /i "%FIRM%" EQU "4.3" set DarkWii_Orange_4.3K=*
-if /i "%FIRM%" EQU "4.2" set DarkWii_Orange_4.2K=*
-if /i "%FIRM%" EQU "4.1" set DarkWii_Orange_4.1K=*
+if /i "%FIRM%" EQU "4.3" set darkwii_orange_4.3K=*
+if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2K=*
+if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1K=*
 :SKIPOrangeSM
 
 :SKIPSM
@@ -12478,7 +13683,7 @@ set SIP=*
 set IOS36=*
 
 set cIOS202[60]-v5.1R=*
-set cIOS222[38]-v5=*
+set cIOS222[38]-v4=*
 set cIOS223[37-38]-v4=*
 set cIOS224[57]-v5.1R=*
 set cIOS249[56]-d2x-v6=*
@@ -12534,7 +13739,7 @@ if /i "%IOS236InstallerQ%" EQU "Y" set IOS36=*
 if /i "%IOS236InstallerQ%" EQU "Y" set IOS236Installer=*
 
 if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
-if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v5=*
+if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS223[37-38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS224[57]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS249[56]-d2x-v6=*
@@ -12639,6 +13844,7 @@ goto:EOF
 :quickskip
 del temp\list.txt>nul
 mode con cols=85 lines=54
+:forcmdlineL
 call "temp\DownloadQueues\%CurrentQueue%"
 goto:DownloadQueue
 
@@ -12655,6 +13861,9 @@ goto:PICKDOWNLOADQUEUE
 ::...................................Download Queue...............................
 :DOWNLOADQUEUE
 set settings=
+
+if /i "%cmdguide%" EQU "G" set settings=G
+
 
 set d2x-beta-rev=6
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
@@ -12742,6 +13951,18 @@ set loadorgo=go
 
 if exist temp\DLnames.txt del temp\DLnames.txt>nul
 if exist temp\DLgotos.txt del temp\DLgotos.txt>nul
+
+
+::---------------CMD LINE MODE-------------
+if /i "%one%" NEQ "U" goto:nocmdlineusbloadersettings
+if /i "%LOADER%" EQU "CFG" set usbfolder=*
+if /i "%LOADER%" EQU "ALL" set usbfolder=*
+if /i "%LOADER%" EQU "FLOW" set FLOW=*
+if /i "%LOADER%" EQU "ALL" set FLOW=*
+set wbm=*
+if /i "%FORMAT%" EQU "1" set f32=*
+if /i "%FORMAT%" EQU "3" set f32=*
+:nocmdlineusbloadersettings
 
 
 
@@ -12863,18 +14084,18 @@ if /i "%DarkWii_Blue_4.1K%" EQU "*" (echo "DarkWii Blue Theme (4.1K) - %effect%"
 if /i "%DarkWii_Blue_4.2K%" EQU "*" (echo "DarkWii Blue Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2K">>temp\DLgotos.txt)
 if /i "%DarkWii_Blue_4.3K%" EQU "*" (echo "DarkWii Blue Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3K">>temp\DLgotos.txt)
 
-if /i "%DarkWii_Orange_4.1U%" EQU "*" (echo "DarkWii Orange Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.1U">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.2U%" EQU "*" (echo "DarkWii Orange Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.2U">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.3U%" EQU "*" (echo "DarkWii Orange Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.3U">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.1E%" EQU "*" (echo "DarkWii Orange Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.1E">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.2E%" EQU "*" (echo "DarkWii Orange Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.2E">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.3E%" EQU "*" (echo "DarkWii Orange Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.3E">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.1J%" EQU "*" (echo "DarkWii Orange Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.1J">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.2J%" EQU "*" (echo "DarkWii Orange Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.2J">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.3J%" EQU "*" (echo "DarkWii Orange Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.3J">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.1K%" EQU "*" (echo "DarkWii Orange Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.1K">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.2K%" EQU "*" (echo "DarkWii Orange Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.2K">>temp\DLgotos.txt)
-if /i "%DarkWii_Orange_4.3K%" EQU "*" (echo "DarkWii Orange Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Orange_4.3K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1U%" EQU "*" (echo "DarkWii Orange Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2U%" EQU "*" (echo "DarkWii Orange Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3U%" EQU "*" (echo "DarkWii Orange Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1E%" EQU "*" (echo "DarkWii Orange Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2E%" EQU "*" (echo "DarkWii Orange Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3E%" EQU "*" (echo "DarkWii Orange Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1J%" EQU "*" (echo "DarkWii Orange Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2J%" EQU "*" (echo "DarkWii Orange Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3J%" EQU "*" (echo "DarkWii Orange Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1K%" EQU "*" (echo "DarkWii Orange Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2K%" EQU "*" (echo "DarkWii Orange Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3K%" EQU "*" (echo "DarkWii Orange Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3K">>temp\DLgotos.txt)
 
 if /i "%IOS30%" EQU "*" (echo "IOS30v2576">>temp\DLnames.txt) & (echo "IOS30">>temp\DLgotos.txt)
 if /i "%IOS30P60%" EQU "*" (echo "IOS30v16174(IOS60v6174[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS30P60">>temp\DLgotos.txt)
@@ -13149,6 +14370,12 @@ SET /a LINES=%DLTOTAL%+22
 
 if /i "%MENU1%" EQU "L" SET /a LINES=%LINES%+14
 
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" EQU "Y" goto:DLSettings
+
+
+
 if %LINES% LEQ 54 goto:noresize
 mode con cols=85 lines=%LINES%
 :noresize
@@ -13173,7 +14400,7 @@ if /i "%OPTION1%" NEQ "%OPTION1TEMP%" set match1=Red
 echo.
 echo                                 Download Queue Loaded:
 echo.
-echo                                 %CurrentQueue%
+echo                                 %CurrentQueue:~0,-4%
 echo.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 Queue Options appear [Red]Red [def]when they differ from
@@ -13769,18 +14996,18 @@ if /i "%DarkWii_Blue_4.3K%" EQU "*" echo SET DarkWii_Blue_4.3K=%DarkWii_Blue_4.3
 if /i "%DarkWii_Blue_4.2K%" EQU "*" echo SET DarkWii_Blue_4.2K=%DarkWii_Blue_4.2K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%DarkWii_Blue_4.1K%" EQU "*" echo SET DarkWii_Blue_4.1K=%DarkWii_Blue_4.1K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
-if /i "%DarkWii_Orange_4.3U%" EQU "*" echo SET DarkWii_Orange_4.3U=%DarkWii_Orange_4.3U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.2U%" EQU "*" echo SET DarkWii_Orange_4.2U=%DarkWii_Orange_4.2U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.1U%" EQU "*" echo SET DarkWii_Orange_4.1U=%DarkWii_Orange_4.1U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.3E%" EQU "*" echo SET DarkWii_Orange_4.3E=%DarkWii_Orange_4.3E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.2E%" EQU "*" echo SET DarkWii_Orange_4.2E=%DarkWii_Orange_4.2E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.1E%" EQU "*" echo SET DarkWii_Orange_4.1E=%DarkWii_Orange_4.1E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.3J%" EQU "*" echo SET DarkWii_Orange_4.3J=%DarkWii_Orange_4.3J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.2J%" EQU "*" echo SET DarkWii_Orange_4.2J=%DarkWii_Orange_4.2J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.1J%" EQU "*" echo SET DarkWii_Orange_4.1J=%DarkWii_Orange_4.1J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.3K%" EQU "*" echo SET DarkWii_Orange_4.3K=%DarkWii_Orange_4.3K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.2K%" EQU "*" echo SET DarkWii_Orange_4.2K=%DarkWii_Orange_4.2K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%DarkWii_Orange_4.1K%" EQU "*" echo SET DarkWii_Orange_4.1K=%DarkWii_Orange_4.1K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.3U%" EQU "*" echo SET darkwii_orange_4.3U=%darkwii_orange_4.3U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.2U%" EQU "*" echo SET darkwii_orange_4.2U=%darkwii_orange_4.2U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.1U%" EQU "*" echo SET darkwii_orange_4.1U=%darkwii_orange_4.1U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.3E%" EQU "*" echo SET darkwii_orange_4.3E=%darkwii_orange_4.3E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.2E%" EQU "*" echo SET darkwii_orange_4.2E=%darkwii_orange_4.2E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.1E%" EQU "*" echo SET darkwii_orange_4.1E=%darkwii_orange_4.1E%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.3J%" EQU "*" echo SET darkwii_orange_4.3J=%darkwii_orange_4.3J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.2J%" EQU "*" echo SET darkwii_orange_4.2J=%darkwii_orange_4.2J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.1J%" EQU "*" echo SET darkwii_orange_4.1J=%darkwii_orange_4.1J%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.3K%" EQU "*" echo SET darkwii_orange_4.3K=%darkwii_orange_4.3K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.2K%" EQU "*" echo SET darkwii_orange_4.2K=%darkwii_orange_4.2K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%darkwii_orange_4.1K%" EQU "*" echo SET darkwii_orange_4.1K=%darkwii_orange_4.1K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
 support\sfk filter "temp\DownloadQueues\%DLQUEUENAME%.bat" -unique -write -yes>nul
 
@@ -15196,7 +16423,6 @@ echo.
 goto:download_mym2
 :nocheckexisting
 
-
 start %ModMiimin%/wait support\wget -t 3 "http://nusad.googlecode.com/files/%mym0%"
 if exist "%mym0%" move /Y "%mym0%" temp>nul
 
@@ -15652,7 +16878,24 @@ if not exist %Drive%\apps\USBLoader_cfg mkdir %Drive%\apps\USBLoader_cfg
 
 support\7za e -aoa Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip -o"%Drive%\apps\USBLoader_cfg" Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\apps\USBLoader\* -r
 
-support\7za e -aoa Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip -o"%Drive%\USB-Loader" Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\* -r
+support\7za x -aoa Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip -o"%Drive%" Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\* -r
+
+::move all files
+move /y "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\*" "%Drive%\usb-loader">nul
+
+::move all folders
+dir "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader" /a:d /b>temp\list.txt
+
+::Loop through the the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\list.txt) do call :processlist %%A
+goto:quickskipthis
+:processlist
+set CurrentDIR=%*
+move /y "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\%CurrentDIR%" "%Drive%\usb-loader\%CurrentDIR%">nul
+goto:EOF
+:quickskipthis
+
+rd /s /q "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%"
 
 del Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip>nul
 
@@ -18190,7 +19433,6 @@ if exist autoit-v3-sfx.exe del autoit-v3-sfx.exe>nul
 :AlreadyinTemp
 echo.
 
-
 echo Downloading 0000000e.app from IOS80
 if exist temp\0000000e_IOS80.app goto:AlreadyinTemp
 
@@ -18286,7 +19528,6 @@ if not exist temp\fsmodule-sd.elf goto:sneekwarning
 echo.
 
 
-
 if /i "%SNEEKTYPE:~0,1%" EQU "U" goto:SSDoff
 if /i "%SSD%" EQU "on" goto:SSDon
 
@@ -18314,7 +19555,6 @@ if exist temp\esmodule-sdon.elf copy /Y temp\esmodule-sdon.elf temp\esmodule.elf
 
 if not exist temp\esmodule.elf goto:sneekwarning
 echo.
-
 
 
 echo Downloading armboot.bin
@@ -18351,8 +19591,9 @@ echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:2]","%ModMiipath
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:3]","%ModMiipath%\temp")>>custom.au3
 
 
+set DRIVEabsolute=%ModMiipath%\%DRIVE%
+if /i "%DRIVE:~1,1%" EQU ":" set DRIVEabsolute=%DRIVE%
 
-if /i "%DRIVE:~1,1%" EQU ":" (set DRIVEabsolute=%DRIVE%) else (set DRIVEabsolute=%ModMiipath%\%DRIVE%)
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsolute%")>>custom.au3
 
 ::how to only change field if empty
@@ -18362,7 +19603,9 @@ echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsol
 if /i "%SNEEKTYPE%" EQU "S" goto:skip
 if /i "%SNEEKTYPE%" EQU "SD" goto:skip
 
-if /i "%DRIVEU:~1,1%" EQU ":" (set DRIVEUabsolute=%DRIVEU%) else (set DRIVEUabsolute=%ModMiipath%\%DRIVEU%)
+set DRIVEUabsolute=%ModMiipath%\%DRIVEU%
+if /i "%DRIVEU:~1,1%" EQU ":" set DRIVEUabsolute=%DRIVEU%
+
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:4]","%DRIVEUabsolute%")>>custom.au3
 :skip
 
@@ -18433,11 +19676,24 @@ goto:finishsneekinstall3
 
 
 :sneekwarning
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+echo WARNING: Some files Required for the SNEEK install are missing. >temp\ModMii_CMD_LINE_Log_Errors.txt
+echo Aborting SNEEK Installation, check your internet connection >>temp\ModMii_CMD_LINE_Log_Errors.txt
+echo Then repeat the SNEEK Installation to try again. >>temp\ModMii_CMD_LINE_Log_Errors.txt
+start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
+exit
+:notcmdfinish
+
 echo.
 support\sfk echo -spat \x20 [Yellow] WARNING: Some files Required for the SNEEK install are missing.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Aborting SNEEK Installation, check your internet connection
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Then repeat the SNEEK Installation to try again.
 echo.
+
+
 echo Press any key to return to the Main Menu.
 pause>nul
 goto:MENU
@@ -18457,7 +19713,8 @@ support\sfk filter support\common-key.txt +hextobin support\common-key.bin>nul
 del support\common-key.txt>nul
 :commonkeyalreadythere
 
-if /i "%nandpath:~1,1%" EQU ":" (set nandpathadj=%nandpath%) else (set nandpathadj=..\%nandpath%)
+set nandpathadj=..\%nandpath%
+if /i "%nandpath:~1,1%" EQU ":" set nandpathadj=%nandpath%
 
 set line1="<?xml version='1.0' standalone='yes'?>"
 set line2="<ShowMiiWads>"
@@ -18618,7 +19875,9 @@ cd support
 ioskpatch.exe "%nandpathadj%"\title\00000001\00000002\content\%SMAPP%_original.app "%nandpathadj%"\title\00000001\00000002\content\%SMAPP%.app -p >nul
 cd..
 
-del "%nandpath%"\title\00000001\00000002\content\%SMAPP%_original.app >nul
+if exist "%nandpath%\title\00000001\00000002\content\%SMAPP%.app" del "%nandpath%"\title\00000001\00000002\content\%SMAPP%_original.app >nul
+
+if not exist "%nandpath%\title\00000001\00000002\content\%SMAPP%.app" move /y "%nandpath%\title\00000001\00000002\content\%SMAPP%_original.app" "%nandpath%\title\00000001\00000002\content\%SMAPP%.app" >nul
 
 :skippatchSMios
 
@@ -18641,7 +19900,8 @@ if exist Priiloader-v0.4.app move /Y Priiloader-v0.4.app temp\Priiloader-v0.4.ap
 
 if not exist temp\Priiloader-v0.4.app (echo Unable to download Priiloader-v0.4.app, Emulated NAND will not have priiloader installed) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:finishsneekinstall)
 
-move /y "%nandpath%"\title\00000001\00000002\content\%SMAPP%.app "%nandpath%"\title\00000001\00000002\content\1%SMAPP:~1%.app >nul
+
+move /y "%nandpath%\title\00000001\00000002\content\%SMAPP%.app" "%nandpath%\title\00000001\00000002\content\1%SMAPP:~1%.app" >nul
 
 copy /Y temp\Priiloader-v0.4.app "%nandpath%"\title\00000001\00000002\content\%SMAPP%.app>nul
 
@@ -18659,6 +19919,8 @@ if exist temp\JoyFlow(emulators)-v11.dol move /y temp\JoyFlow(emulators)-v11.dol
 :skipSNKpri
 
 if exist temp\JoyFlow(emulators)-v11.dol del temp\JoyFlow(emulators)-v11.dol>nul
+
+copy /y temp\ModMii_Log.bat temp\ModMii_Log_SNK.bat>nul
 
 goto:finishsneekinstall
 
@@ -18689,6 +19951,47 @@ if /i "%SNKS2U%" EQU "Y" set MMM=*
 goto:DLCOUNT
 
 :finishsneekinstall3
+
+::check for errors - do not do if ONLY installing sneek
+if /i "%SNEEKSELECT%" EQU "1" goto:nocheck
+
+if exist temp\ModMii_Log_SNK.bat del temp\ModMii_Log_SNK.bat>nul
+
+support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"""__ -write -yes
+
+::count # of problematic downloads
+support\sfk filter -quiet "temp\ModMii_Log.bat" -+"[Red]" -write -yes
+set problematicDLs=0
+
+setlocal ENABLEDELAYEDEXPANSION
+for /f "delims=" %%i in (temp\ModMii_Log.bat) do set /a problematicDLs=!problematicDLs!+1
+setlocal DISABLEDELAYEDEXPANSION
+
+if /i "%problematicDLs%" EQU "0" (set snksuccess= Successfully) else (set snksuccess=)
+
+if /i "%problematicDLs%" EQU "0" (set snkfailure=) else (set snkfailure= but with errors)
+
+::resize window
+SET /a LINES=%problematicDLs%+54
+
+if %LINES% LEQ 54 set lines=54
+mode con cols=85 lines=%LINES%
+
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+if /i "%problematicDLs%" EQU "0" exit
+support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
+move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log_Errors.txt">nul
+start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
+exit
+:notcmdfinish
+
+:nocheck
+
+if /i "%cmdlinemode%" EQU "Y" exit
+
 set MENUREAL=
 
 cls
@@ -18698,10 +20001,10 @@ echo.
 
 ::both sneek install and nand build
 if /i "%SNEEKSELECT%" NEQ "3" goto:skip
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have installed UNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "S" echo    You have installed SNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "U" echo    You have installed UNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
 
 ::only install sneek
@@ -18714,17 +20017,21 @@ if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK rev%sn
 
 ::only build nand
 if /i "%SNEEKSELECT%" NEQ "2" goto:skip
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully built a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully built a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
+
+::list problematic Download
+if /i "%SNEEKSELECT%" EQU "1" goto:noproblems
+if /i "%problematicDLs%" NEQ "0" echo.
+if /i "%problematicDLs%" NEQ "0" echo The following file(s) failed to download properly:
+if /i "%problematicDLs%" NEQ "0" call temp\ModMii_Log.bat
+:noproblems
 
 
 echo.
-
-
-
 if /i "%SNEEKSELECT%" NEQ "2" goto:skip
 if /i "%SNEEKTYPE%" EQU "U" goto:skipsdmsg
 if /i "%SNEEKTYPE%" EQU "UD" goto:skipsdmsg
@@ -18799,6 +20106,21 @@ echo.
 echo        * For more SNEEK info, like formatting a USB Hard Drive for SNEEK,
 echo          or installing the HBC to an emulated NAND, visit: tinyurl.com/SNEEK-DI
 echo.
+
+
+
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+echo After Reviewing Your Tips - Press Any Key to Exit
+pause>nul
+exit
+:notcmdfinish
+
+
+
+
 echo Press any key to return to the Main Menu.
 pause>nul
 
@@ -18817,9 +20139,13 @@ if exist temp\DLgotos.txt del temp\DLgotos.txt>nul
 if /i "%MENU1%" EQU "S" goto:wad2nand
 if /i "%MENUREAL%" EQU "S" goto:finishsneekinstall3
 
-::force non-donators to view credits
+
+
+
+::force non-donators to view credits (but not in cmd line mode)
 if exist support\skipscam.txt goto:finish2
 if exist support\ipromisetodonate.txt goto:finish2
+if /i "%cmdlinemode%" EQU "Y" goto:FINISH2
 goto:credit1
 :FINISH2
 
@@ -18922,6 +20248,24 @@ echo          private folder names.
 echo.
 echo.
 
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+
+if /i "%problematicDLs%" EQU "0" echo * %DLTOTAL% file(s) downloaded succcessfully>>temp\ModMii_Log.bat
+if /i "%problematicDLs%" EQU "0" goto:noproblemscmd
+echo * %problematicDLs% of %DLTOTAL% file(s) are Invalid, Missing or were Not Updated properly>>temp\ModMii_Log.bat
+:noproblemscmd
+
+support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
+move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log.txt">nul
+if /i "%problematicDLs%" NEQ "0" start notepad "temp\ModMii_CMD_LINE_Log.txt"
+exit
+:notcmdfinish
+
+
+
 if exist "%DRIVE%" echo          O = Open File Location (%Drive%)
 
 if /i "%DB%" NEQ "C" goto:miniskip
@@ -19011,7 +20355,7 @@ if /i "%FINISH%" EQU "S" goto:SaveDownloadQueue
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
-goto:FINISH
+goto:FINISH2
 
 ::..........................DOWNLOAD SETTINGS................................
 :DLSETTINGS
@@ -19025,7 +20369,9 @@ if /i "%MENU1%" EQU "H" goto:HMguide
 if /i "%MENU1%" EQU "U" goto:USBguide
 :DLSETTINGS2
 cls
+if exist temp\ModMii_Log_SNK.bat goto:donotdeletelog
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
+:donotdeletelog
 SET CURRENTDL=0
 
 
@@ -23575,13 +24921,13 @@ goto:downloadstart
 
 ::---Dark Wii Orange Themes and SM WADs----
 
-:DarkWii_Orange_4.1U
+:darkwii_orange_4.1U
 set name=DarkWii Orange Theme (4.1U) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.1U
+set wadname=darkwii_orange_%effect%_4.1U
 if /i "%effect%" EQU "No-Spin" set md5=182f9ab83657ef9686748c9ee7a9d1a5
 if /i "%effect%" EQU "Spin" set md5=c3b081369bf61806ca92eaf415d413f4
 if /i "%effect%" EQU "Fast-Spin" set md5=8a2a79eebea6de941ed70897b605ea89
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 ::000000**.app
 set version=7b
@@ -23589,13 +24935,13 @@ set md5base=6b939de8222800733f4c44ae4eadb325
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.2U
+:darkwii_orange_4.2U
 set name=DarkWii Orange Theme (4.2U) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.2U
+set wadname=darkwii_orange_%effect%_4.2U
 if /i "%effect%" EQU "No-Spin" set md5=b2d56a6caeddf9649b1b8b4f891824de
 if /i "%effect%" EQU "Spin" set md5=335acf5e2b24993f5cc6b9cf010d0178
 if /i "%effect%" EQU "Fast-Spin" set md5=c91baaab09749ad6e3134423d31caae2
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 ::000000**.app
 set version=87
@@ -23603,13 +24949,13 @@ set md5base=7079948c6aed8aae6009e4fdf27c7171
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.3U
+:darkwii_orange_4.3U
 set name=DarkWii Orange Theme (4.3U) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.3U
+set wadname=darkwii_orange_%effect%_4.3U
 if /i "%effect%" EQU "No-Spin" set md5=8b7d60fcb44d56ca04e7ffa2c2afc16b
 if /i "%effect%" EQU "Spin" set md5=29ab50721b49366451f445db1f9b190c
 if /i "%effect%" EQU "Fast-Spin" set md5=83038f2915f6d4c52e53ec478876eb53
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 ::000000**.app
 set version=97
@@ -23617,13 +24963,13 @@ set md5base=f388c9b11543ac2fe0912ab96064ee37
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.1E
+:darkwii_orange_4.1E
 set name=DarkWii Orange Theme (4.1E) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.1E
+set wadname=darkwii_orange_%effect%_4.1E
 if /i "%effect%" EQU "No-Spin" set md5=d5623a36f737c8aa257e2fa69a23ebcc
 if /i "%effect%" EQU "Spin" set md5=2fac1a3b125aa087c478c1dc8ac00e24
 if /i "%effect%" EQU "Fast-Spin" set md5=ac305f7c034a09f6cdc41769aeb7dc06
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 ::000000**.app
 set version=7e
@@ -23631,13 +24977,13 @@ set md5base=574a3a144971ea0ec61bf8cef8d7ff80
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.2E
+:darkwii_orange_4.2E
 set name=DarkWii Orange Theme (4.2E) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.2E
+set wadname=darkwii_orange_%effect%_4.2E
 if /i "%effect%" EQU "No-Spin" set md5=368490ba87d60b1de5131d23fe4d5a2a
 if /i "%effect%" EQU "Spin" set md5=1a7c4598b8e11519ec29606fba889ef4
 if /i "%effect%" EQU "Fast-Spin" set md5=e079ad7aaafacaad1dd9fc40bd85e521
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 ::000000**.app
 set version=8a
@@ -23645,13 +24991,13 @@ set md5base=7e7994f78941afb51e9a20085deac305
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.3E
+:darkwii_orange_4.3E
 set name=DarkWii Orange Theme (4.3E) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.3E
+set wadname=darkwii_orange_%effect%_4.3E
 if /i "%effect%" EQU "No-Spin" set md5=1ddfe43b14f051238498569bf22ae5e5
 if /i "%effect%" EQU "Spin" set md5=f328c8a0d5f063958e6aa59dd0d00cc8
 if /i "%effect%" EQU "Fast-Spin" set md5=a5646376ace20d785991be06ff98f68c
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 ::000000**.app
 set version=9a
@@ -23659,13 +25005,13 @@ set md5base=41310f79497c56850c37676074ee1237
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.1J
+:darkwii_orange_4.1J
 set name=DarkWii Orange Theme (4.1J) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.1J
+set wadname=darkwii_orange_%effect%_4.1J
 if /i "%effect%" EQU "No-Spin" set md5=b7d9374de99a544bedf432bc80fefcde
 if /i "%effect%" EQU "Spin" set md5=46674210e56fe6dd3445b0c39f8a4713
 if /i "%effect%" EQU "Fast-Spin" set md5=48992863043ff22c3a5673eb9e895832
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 ::000000**.app
 set version=78
@@ -23673,13 +25019,13 @@ set md5base=f2eadf12d18e793373060222b870057d
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.2J
+:darkwii_orange_4.2J
 set name=DarkWii Orange Theme (4.2J) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.2J
+set wadname=darkwii_orange_%effect%_4.2J
 if /i "%effect%" EQU "No-Spin" set md5=b82f57f2ea4f6be39818b90dd444d6ff
 if /i "%effect%" EQU "Spin" set md5=a3d9a36be73d59b60719c5e1c9aded80
 if /i "%effect%" EQU "Fast-Spin" set md5=47a1e88fdfc13186d084fb748ccf6e87
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 ::000000**.app
 set version=84
@@ -23687,13 +25033,13 @@ set md5base=b08998e582c48afba3a14f6d9e1e9373
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.3J
+:darkwii_orange_4.3J
 set name=DarkWii Orange Theme (4.3J) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.3J
+set wadname=darkwii_orange_%effect%_4.3J
 if /i "%effect%" EQU "No-Spin" set md5=8f7128135c4692e4bb76b6d7ea92f242
 if /i "%effect%" EQU "Spin" set md5=40b07305665167b3cbed44bb980b6b99
 if /i "%effect%" EQU "Fast-Spin" set md5=a3cd673b496c9381444b5c8ad35ff633
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 ::000000**.app
 set version=94
@@ -23701,13 +25047,13 @@ set md5base=5b3ee6942a3cda716badbce3665076fc
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.1K
+:darkwii_orange_4.1K
 set name=DarkWii Orange Theme (4.1K) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.1K
+set wadname=darkwii_orange_%effect%_4.1K
 if /i "%effect%" EQU "No-Spin" set md5=391b4441ffa2d268b2a07d2a7828d50d
 if /i "%effect%" EQU "Spin" set md5=eddeb1d07c5276ee8080441a2c3bb0dc
 if /i "%effect%" EQU "Fast-Spin" set md5=6232bcce9908e52b029035aae7eeaa77
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 ::000000**.app
 set version=81
@@ -23715,13 +25061,13 @@ set md5base=7eedbf1a146b29b63edbb55e04f81f98
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.2K
+:darkwii_orange_4.2K
 set name=DarkWii Orange Theme (4.2K) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.2K
+set wadname=darkwii_orange_%effect%_4.2K
 if /i "%effect%" EQU "No-Spin" set md5=f02a1fec1e4dead15ecfe16772db84c3
 if /i "%effect%" EQU "Spin" set md5=ccd7234c7531a90184363e67ed20d64c
 if /i "%effect%" EQU "Fast-Spin" set md5=fed85eba8bd1f389f326ff71ac93a97f
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 ::000000**.app
 set version=8d
@@ -23729,13 +25075,13 @@ set md5base=9d72a1966370e44cb4c456c17a077bec
 set category=themes
 goto:downloadstart
 
-:DarkWii_Orange_4.3K
+:darkwii_orange_4.3K
 set name=DarkWii Orange Theme (4.3K) - %effect%
-set wadname=DarkWii_Orange_%effect%_4.3K
+set wadname=darkwii_orange_%effect%_4.3K
 if /i "%effect%" EQU "No-Spin" set md5=e6c000cc6aa319179a3ed98d6960504c
 if /i "%effect%" EQU "Spin" set md5=bea48b7f5f452f73abd2485adbaf72c6
 if /i "%effect%" EQU "Fast-Spin" set md5=17db3ac98b7832bb1a473cd335a2cbcd
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 ::000000**.app
 set version=9d
@@ -23761,7 +25107,7 @@ set md5base=4f5c63e3fd1bf732067fa4c439c68a97
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 set version=513
 set lastbasemodule=00000001
@@ -23782,7 +25128,7 @@ set md5base=4ac52b981845473bd3655e4836d7442b
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 set version=481
 set lastbasemodule=00000001
@@ -23803,7 +25149,7 @@ set md5base=38a95a9acd257265294be41b796f6239
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_us.mym
+set mym1=darkwii_orange_us.mym
 set md5mym1=b7ced216faff9ddf08f0562a015db184
 set version=449
 set lastbasemodule=00000001
@@ -23824,7 +25170,7 @@ set md5base=2ec2e6fbdfc52fe5174749e7032f1bad
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 set version=514
 set lastbasemodule=00000001
@@ -23845,7 +25191,7 @@ set md5base=7d77be8b6df5ac893d24652db33d02cd
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 set version=482
 set lastbasemodule=00000001
@@ -23866,7 +25212,7 @@ set md5base=688cc78b8eab4e30da04f01a81a3739f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_pal.mym
+set mym1=darkwii_orange_pal.mym
 set md5mym1=7a12ec9293ed353879b14d089fdc4f94
 set version=450
 set lastbasemodule=00000001
@@ -23887,7 +25233,7 @@ set md5base=df67ed4bd8f8f117741fef7952ee5c17
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 set version=512
 set lastbasemodule=00000001
@@ -23908,7 +25254,7 @@ set md5base=0413a9aed208b193fea85db908bbdabf
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 set version=480
 set lastbasemodule=00000001
@@ -23929,7 +25275,7 @@ set md5base=6edb4b3f7ca26c643c6bc662d159ec2e
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_jap.mym
+set mym1=darkwii_orange_jap.mym
 set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
 set version=448
 set lastbasemodule=00000001
@@ -23951,7 +25297,7 @@ set md5base=6ed8f9e75b0a54eacfbacce57c20136d
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 set version=518
 set lastbasemodule=00000001
@@ -23972,7 +25318,7 @@ set md5base=40c0bf90ea07b02d610edae1d7aea39f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 set version=486
 set lastbasemodule=00000001
@@ -23993,7 +25339,7 @@ set md5base=c0e5d5c4914e76e7df7495ccf28ef869
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_Orange_kor.mym
+set mym1=darkwii_orange_kor.mym
 set md5mym1=6ed046f6a4e0463bf09efcef464082d6
 set version=454
 set lastbasemodule=00000001
@@ -25176,6 +26522,13 @@ echo CHECK OUT MY CRAZY INTRO VIDEOS HERE (tinyurl.com/crazyintro)>>"%Drive%"\%g
 
 support\sfk filter "%Drive%"\%guidename% -lsrep _.__ -write -yes>nul
 start notepad "%Drive%\%guidename%"
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if /i "%cmdguide%" NEQ "G" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+exit
+:notcmdfinish
 
 
 if /i "%SETTINGS%" EQU "G" goto:DOWNLOADQUEUE
