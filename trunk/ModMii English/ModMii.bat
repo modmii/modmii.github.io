@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=4.7.3
+set currentversion=4.7.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -11292,6 +11292,7 @@ echo "set versionname=%versionname%">>temp\AdvDL%AdvNumber%.bat
 echo "set versioncode=%versioncode%">>temp\AdvDL%AdvNumber%.bat
 echo "set cIOSFamilyName=%cIOSFamilyName%">>temp\AdvDL%AdvNumber%.bat
 echo "set cIOSversionNum=%cIOSversionNum%">>temp\AdvDL%AdvNumber%.bat
+echo "set PATCHCODE=%PATCHCODE%">>temp\AdvDL%AdvNumber%.bat
 
 ::echo "goto:downloadstart">>temp\AdvDL%AdvNumber%.bat
 
@@ -11652,7 +11653,7 @@ echo.
 echo.
 echo.
 echo.
-echo                1 = SD\USB Forwarder (v11)
+echo                1 = SD\USB Forwarder (v11b)
 echo.
 echo                2 = URL Forwarder (Requires Internet Channel)
 echo.
@@ -13170,22 +13171,22 @@ if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 findStr /I /C:"Homebrew Channel 1.0.8 running on IOS58" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set HM=*) else (set HM=)
 
-findStr /I /C:"IOS202[60] (rev 65535, Info: hermesrodries-v6.0)" "%sysCheckName%" >nul
+findStr /I /C:"IOS202[60] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
 
-findStr /I /C:"IOS222[38] (rev 4, Info: hermes-v4.0)" "%sysCheckName%" >nul
+findStr /I /C:"IOS222[38] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS222[38]-v4=*) else (set cIOS222[38]-v4=)
 
-findStr /I /C:"IOS223[75] (rev 4, Info: hermes-v4.0)" "%sysCheckName%" >nul
+findStr /I /C:"IOS223[75] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS223[37-38]-v4=*) else (set cIOS223[37-38]-v4=)
 
-findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6.0)" "%sysCheckName%" >nul
+findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
-findStr /I /C:"IOS249[56] (rev 21006, Info: d2x-v6)" "%sysCheckName%" >nul
+findStr /I /C:"IOS249[56] (rev 21006, Info: d2x-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v6=*) else (set cIOS249[56]-d2x-v6=)
 
-findStr /I /C:"IOS250[57] (rev 21006, Info: d2x-v6)" "%sysCheckName%" >nul
+findStr /I /C:"IOS250[57] (rev 21006, Info: d2x-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v6=*) else (set cIOS250[57]-d2x-v6=)
 
 if /i "%syscheckversion%" NEQ "2.0.1" goto:skipv2.0.1
@@ -19081,7 +19082,7 @@ goto:next
 
 if not exist "%Drive%\DOLS" mkdir "%Drive%\DOLS"
 
-if /i "%FORWARDERTYPE:~0,1%" EQU "1" copy /y support\DOLS\SDUSBFORWARDER_v11.dol "%Drive%\DOLS\%wadname%.dol">nul
+if /i "%FORWARDERTYPE:~0,1%" EQU "1" copy /y support\DOLS\SDUSBFORWARDER_v11b.dol "%Drive%\DOLS\%wadname%.dol">nul
 if /i "%FORWARDERTYPE:~0,1%" EQU "2" copy /y support\DOLS\INTERNETFORWARDER.dol "%Drive%\DOLS\%wadname%.dol">nul
 if /i "%FORWARDERTYPE:~0,1%" EQU "3" copy /y support\DOLS\CHANNELFORWARDER.dol "%Drive%\DOLS\%wadname%.dol">nul
 
@@ -19097,7 +19098,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-1%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x682d6=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68276=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-1
 
@@ -19111,7 +19112,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-2%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x683dd=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x6837d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-2
 
@@ -19125,7 +19126,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-3%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x684e1=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68481=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-3
 
@@ -19139,7 +19140,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-4%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x685e5=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68585=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-4
 
@@ -19153,7 +19154,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-5%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x686e9=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68689=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-5
 
@@ -19167,7 +19168,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-6%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x687ed=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x6878d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-6
 
@@ -19181,7 +19182,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-7%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x688f1=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68891=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-7
 
@@ -19195,7 +19196,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-8%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x689f5=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68995=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-8
 
@@ -19209,7 +19210,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-9%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68af9=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68a99=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-9
 
@@ -19223,7 +19224,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-10%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68bfd=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68b9d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-10
 
@@ -19462,7 +19463,10 @@ if exist "%DRIVE%"\WAD\%wadnameless%%patchname%%slotname%%versionname%.wad (goto
 echo.
 cd support
 if /i "%DRIVE:~1,1%" EQU ":" (set DRIVEadj=%DRIVE%) else (set DRIVEadj=..\%DRIVE%)
+
+
 patchios "%DRIVEadj%"\WAD\%wadnameless%%patchname%%slotname%%versionname%.wad%PATCHCODE%%slotcode%%versioncode%
+
 cd..
 echo.
 echo Note: Patches are not always successful, read the PatchIOS log above for details
@@ -22878,14 +22882,14 @@ goto:downloadstart
 
 
 :USBX
-set name=USB-Loader Forwarder Channel v11
+set name=USB-Loader Forwarder Channel v11b
 set code1=ZIP
-set code2="http://nusad.googlecode.com/files/USBLoader(s)-ahbprot58-SD-USB-v11-IDCL.zip"
+set code2="http://nusad.googlecode.com/files/USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL.zip"
 set version=*
-set dlname=USBLoader(s)-ahbprot58-SD-USB-v11-IDCL.zip
-set wadname=USBLoader(s)-ahbprot58-SD-USB-v11-IDCL.zip
-set filename=USBLoader(s)-ahbprot58-SD-USB-v11-IDCL.wad
-set md5=6612e353543ce2f6592f049f5ac9678a
+set dlname=USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL.zip
+set wadname=USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL.zip
+set filename=USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL.wad
+set md5=43f1ea1dbd52ea5188fea2f13c422e12
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -26625,7 +26629,7 @@ if /i "%IOS58%" EQU "*" echo      * IOS58-64-v6176>>"%Drive%"\%guidename%
 if /i "%IOS61%" EQU "*" echo      * IOS61-64-v5662>>"%Drive%"\%guidename%
 if /i "%IOS236%" EQU "*" echo      * IOS236v65535(IOS36v3351[FS-ES-NP-VP])>>"%Drive%"\%guidename%
 if /i "%USBX%" NEQ "*" goto:nousbx
-echo      * USBLoader(s)-ahbprot58-SD-USB-v9-IDCL>>"%Drive%"\%guidename%
+echo      * USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL>>"%Drive%"\%guidename%
 echo        This is a forwarder channel that will load the first file it finds from the following list:>>"%Drive%"\%guidename%
 echo                    SD+USB:\apps\usbloader\boot.dol>>"%Drive%"\%guidename%
 echo                    SD+USB:\apps\usbloader\boot.elf>>"%Drive%"\%guidename%
