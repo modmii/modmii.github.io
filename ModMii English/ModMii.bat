@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=4.7.4
+set currentversion=4.7.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -2039,8 +2039,7 @@ if /i "%MENU1%" EQU "V" goto:openwebpage
 
 if not exist temp\DownloadQueues\*.bat goto:noload
 if /i "%MENU1%" NEQ "L" goto:noload
-if exist temp\DLname
-DV.txt del temp\DLnamesADV.txt>nul
+if exist temp\DLnameDV.txt del temp\DLnamesADV.txt>nul
 if exist temp\DLgotosADV.txt del temp\DLgotosADV.txt>nul
 set BACKB4QUEUE=Menu
 goto:PICKDOWNLOADQUEUE
@@ -7576,7 +7575,7 @@ del temp.bat>nul
 ::Support\wit x --sneek --recurse "%ISOFOLDER%" "%DRIVEUfix%/games/%%14T [%%I]" --progress
 ::Support\wit x --sneek --recurse "%ISOFOLDER%" --DEST "%DRIVEUfix%/games/%%14T [%%I]" --progress
 
-Support\wit x --sneek --recurse "%ISOFOLDER%" --DEST "%DRIVEUfix%/games/%%I" --progress
+Support\wit x --neek --recurse "%ISOFOLDER%" --DEST "%DRIVEUfix%/games/%%I" --progress
 
 ::an empty cygdrive folder may be created previous directory, so delete it!
 ::cd ..
