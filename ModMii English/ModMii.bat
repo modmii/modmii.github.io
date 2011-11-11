@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=4.7.5
+set currentversion=4.7.6
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -352,16 +352,24 @@ echo.
 echo Where;
 echo E = Enabled and D = Disabled
 echo.
-support\sfk echo [Cyan]SNEEK and SNEEK+DI SD Access
 
+support\sfk echo [Cyan]NEEK2O - build NEEK2O mod of s\uneek by OverjoY and obcd
+echo ModMii.exe [base command] NEEK:E
+echo ModMii.exe [base command] NEEK:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+
+support\sfk echo [Cyan]SNEEK and SNEEK+DI SD Access
 echo ModMii.exe [base command] SSD:E
 echo ModMii.exe [base command] SSD:D
 echo.
 echo Where;
 echo E = Enabled and D = Disabled
 echo.
-support\sfk echo [Cyan]SNEEK Verbose Output
 
+support\sfk echo [Cyan]SNEEK Verbose Output
 echo ModMii.exe [base command] SNKVERBOSE:E
 echo ModMii.exe [base command] SNKVERBOSE:D
 echo.
@@ -671,6 +679,29 @@ echo Set ModMiiverbose=%ModMiiverbose%>>Support\settings.bat
 set /p removeme= <temp\cmdinput2.txt
 support\sfk filter temp\cmdinput.txt -rep _" VERBOSE:%removeme%"__ -write -yes>nul
 :noVERBOSEcmd
+
+
+
+::-----------ON: Option---------------
+findStr /I " ON:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noNEEKcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* ON:"__ -rep _\x20*__ -write -yes>nul
+
+set /p NEEKcmd= <temp\cmdinput2.txt
+
+if /i "%NEEKcmd%" EQU "E" set NEEK2O=ON
+if /i "%NEEKcmd%" EQU "D" set NEEK2O=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set NEEK2O=" -write -yes>nul
+echo Set NEEK2O=%NEEK2O%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" ON:%removeme%"__ -write -yes>nul
+:noNEEKcmd
+
 
 
 ::-----------SSD: Option---------------
@@ -1347,8 +1378,9 @@ IF "%DriveU%"=="" set DriveU=COPY_TO_USB
 IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
 IF "%AUTOUPDATE%"=="" set AUTOUPDATE=on
 IF "%ModMiiverbose%"=="" set ModMiiverbose=off
-IF "%SSD%"=="" set SSD=off
 IF "%sneekverbose%"=="" set sneekverbose=off
+IF "%NEEK2O%"=="" set NEEK2O=on
+IF "%SSD%"=="" set SSD=off
 ::IF "%discexverify%"=="" set discexverify=off
 IF "%SNKFONT%"=="" set SNKFONT=B
 IF "%overwritecodes%"=="" set overwritecodes=off
@@ -2312,11 +2344,12 @@ echo.
 echo                                        CREDITS
 echo                                      ===========
 echo.
-support\sfk echo -spat \x20 [Red]OverJoy
-echo   =======
-echo   OverJoy created JoyFlow, a modification of WiiFlow that runs on s\uneek.
-echo   He's also accomplished some seriously amazing things, like building a custom
-echo   DI module for s\uneek that allows it to load Wii games in wbfs format.
+support\sfk echo -spat \x20 [Red]OverjoY and obcd
+echo   ================
+echo   OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek.
+echo   He then teamed up with obcd to accomplish some seriously amazing things,
+echo   like building their mod of s\uneek, NEEK2O, that allows it to load games
+echo   in wbfs format and select from multiple emulated NANDs.
 echo.
 support\sfk echo -spat \x20 [Red]Arikado and the Dop-Mii Team
 echo   ============================
@@ -2415,6 +2448,7 @@ echo.
 echo   French Translators: mamule, xav91 and ketufe
 echo   Dutch Translator: Hielkenator
 echo   Italian Translators: Wasabi, Step and Robylin
+echo   Spanish Translators: ledebene and Burton
 echo.
 if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
 set /p CREDIT6=     Press the "Enter" Key to continue: 
@@ -2750,10 +2784,15 @@ if /i "%ModMiiverbose%" EQU "on" echo           V = Verbose Output maximized whe
 echo.
 
 
+if /i "%NEEK2O%" EQU "off" echo        NEEK = NEEK2O - build mod of s\uneek (Disabled)
+if /i "%NEEK2O%" EQU "on" echo        NEEK = NEEK2O - build mod of s\uneek (Enabled)
+echo.
+
+if /i "%NEEK2O%" EQU "on" goto:skip
 if /i "%SSD%" EQU "off" echo         SSD = SNEEK and SNEEK+DI SD Access (Disabled)
 if /i "%SSD%" EQU "on" echo         SSD = SNEEK and SNEEK+DI SD Access (Enabled)
 echo.
-
+:skip
 
 if /i "%sneekverbose%" EQU "off" echo          SV = SNEEK Verbose Output (Disabled)
 if /i "%sneekverbose%" EQU "on" echo          SV = SNEEK Verbose Output (Enabled)
@@ -2789,8 +2828,13 @@ if /i "%OPTIONS%" EQU "36" goto:Option36
 if /i "%OPTIONS%" EQU "CM" goto:CMIOSOPTION
 if /i "%OPTIONS%" EQU "FWD" goto:FWDOPTION
 if /i "%OPTIONS%" EQU "sv" goto:OptionSneekverbose
+if /i "%OPTIONS%" EQU "NEEK" goto:OptionNEEK2O
 if /i "%OPTIONS%" EQU "v" goto:OptionModMiiverbose
+
+if /i "%NEEK2O%" EQU "on" goto:skip
 if /i "%OPTIONS%" EQU "SSD" goto:OptionSSD
+:skip
+
 if /i "%OPTIONS%" EQU "f" goto:Optionfont
 
 if not exist "%DRIVE%" goto:nodrivefolder2
@@ -2846,6 +2890,7 @@ goto:OPTIONS
 
 
 
+
 :RestoreSettings
 set ROOTSAVE=off
 set effect=No-Spin
@@ -2861,6 +2906,7 @@ set AUTOUPDATE=on
 Set ModMiiverbose=off
 Set SSD=off
 Set sneekverbose=off
+Set NEEK2O=on
 Set SNKFONT=B
 
 :defaultcheatsettings
@@ -2916,6 +2962,7 @@ echo Set AUTOUPDATE=%AUTOUPDATE%>> Support\settings.bat
 echo Set ModMiiverbose=%ModMiiverbose%>> Support\settings.bat
 echo Set SSD=%SSD%>> Support\settings.bat
 echo Set sneekverbose=%sneekverbose%>> Support\settings.bat
+echo Set NEEK2O=%NEEK2O%>> Support\settings.bat
 echo Set SNKFONT=%SNKFONT%>> Support\settings.bat
 echo Set wiicheat=%wiicheat%>> Support\settings.bat
 echo Set WiiWarecheat=%WiiWarecheat%>> Support\settings.bat
@@ -3004,6 +3051,15 @@ goto:OPTIONS
 
 :OptionSneekverboseoff
 Set sneekverbose=off
+goto:OPTIONS
+
+:OptionNEEK2O
+if /i "%NEEK2O%" EQU "on" goto:OptionNEEK2Ooff
+Set NEEK2O=on
+goto:OPTIONS
+
+:OptionNEEK2Ooff
+Set NEEK2O=off
 goto:OPTIONS
 
 :OptionModMiiverbose
@@ -5011,7 +5067,7 @@ set HMInstaller=
 set RECCIOS=
 set yawmQ=
 set PRIQ=
-set ThemeSelection=
+set ThemeSelection=N
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -5397,6 +5453,7 @@ if /i "%ThemeSelection%" EQU "N" goto:WPAGE21
 :forsneeknand
 if /i "%MENU1%" NEQ "S" goto:quickskip
 if /i "%ThemeSelection%" NEQ "B" goto:quickskip
+if /i "%NEEK2O%" EQU "on" goto:SNKPAGE4c
 if /i "%SNEEKTYPE:~0,1%" EQU "U" (goto:SNKPAGE4d) else (goto:SNKPAGE4b)
 :quickskip
 
@@ -5916,10 +5973,14 @@ echo.
 echo         * SNEEK+DI and UNEEK+DI always uses the 1st partition if multiple are found.
 echo.
 echo.
+
+if /i "%NEEK2O%" EQU "on" (set neekURL=http://code.google.com/p/custom-di/) else (set neekURL=http://code.google.com/p/sneek/)
+
+
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] WARNING: SNEEK is not directly supported by ModMii.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Any problems you have with SNEEK that are not a direct result
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] of ModMii should be reported here: http://code.google.com/p/sneek/
+support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] of ModMii should be reported here: %neekURL%
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] This is also a great place to learn more about SNEEK in general.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Another great resource is the guide here: tinyurl.com/SNEEK-DI
@@ -6520,6 +6581,9 @@ goto:SNKPAGE4c
 
 set SNKS2U=
 
+::skip this page if NEEK2O is enabled
+if /i "%NEEK2O%" EQU "on" (set SNKS2U=N) & (goto:SNKPAGE5)
+
 ::skip this page if sneektype not uneek or uneek+di
 if /i "%SNEEKTYPE:~0,1%" EQU "S" (set SNKS2U=N) & (goto:SNKPAGE5)
 
@@ -6584,7 +6648,9 @@ goto:SNKPAGE4d
 if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
 if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
 
+if /i "%NEEK2O%" EQU "ON" goto:DOIT
 if /i "%SNKS2U%" EQU "N" goto:quickskip
+:DOIT
 SET NANDcount=0
 :NANDname
 SET /a NANDcount=%NANDcount%+1
@@ -6621,6 +6687,10 @@ if /i "%SNEEKTYPE%" EQU "SD" echo         You are about to install SNEEK+DI and 
 if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to install UNEEK+DI and build a %SNKVERSION%%REGION% Emulated Nand
 if /i "%SNEEKTYPE%" EQU "S" echo         You are about to install SNEEK and build a %SNKVERSION%%REGION% Emulated Nand
 if /i "%SNEEKTYPE%" EQU "U" echo         You are about to install UNEEK and build a %SNKVERSION%%REGION% Emulated Nand
+
+echo.
+if /i "%NEEK2O%" EQU "on" echo         NEEK2O Enabled (can be changed in options)
+if /i "%NEEK2O%" NEQ "on" echo         NEEK2O Disabled (can be changed in options)
 goto:skip
 
 :notalsoinstalling
@@ -6632,6 +6702,9 @@ if /i "%SNEEKTYPE%" EQU "SD" echo         You are about to build SNEEK+DI
 if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to build UNEEK+DI
 if /i "%SNEEKTYPE%" EQU "U" echo         You are about to build UNEEK
 if /i "%SNEEKTYPE%" EQU "S" echo         You are about to build SNEEK
+echo.
+if /i "%NEEK2O%" EQU "on" echo         NEEK2O Enabled (can be changed in options)
+if /i "%NEEK2O%" NEQ "on" echo         NEEK2O Disabled (can be changed in options)
 echo.
 echo.
 echo.
@@ -13485,6 +13558,7 @@ goto:clear
 :DownloadSettings
 set cleardownloadsettings=
 
+
 set firmwarechange=yes
 if /i "%FIRM%" EQU "%FIRMSTART%" set firmwarechange=no
 
@@ -18587,7 +18661,8 @@ goto:skipnormalextraction
 if /i "%filename%" NEQ "WiiBackupManager.exe" goto:notWBM
 if exist "%DRIVE%"\WiiBackupManager rd /s /q "%DRIVE%"\WiiBackupManager
 support\7za x -aoa temp\%wadname% -o"%Drive%" -r
-rename "%Drive%"\%dlname:~0,-4% WiiBackupManager
+rename "%Drive%"\%dlname:~6,-4% WiiBackupManager
+
 
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
@@ -19550,41 +19625,6 @@ if exist "%DRIVEU%"\SNEEK\font.bin del "%DRIVEU%"\SNEEK\font.bin>nul
 
 
 
-::get sneek rev number
-
-set sneekrev=0
-set tempsneekrev=none
-set usesneektemp=off
-
-start %ModMiimin%/wait support\wget http://code.google.com/p/sneek/downloads/list
-if exist list move /y list sneekrev.bat>nul
-
-if not exist sneekrev.bat goto:skip
-support\sfk filter -quiet "sneekrev.bat" -rep _"*FS-SD module r"_"set sneekrev="_ -write -yes
-support\sfk filter -quiet "sneekrev.bat" -+"set sneekrev" -write -yes
-support\sfk filter -quiet "sneekrev.bat" -rep _" </a>*"__ -write -yes
-call sneekrev.bat
-del sneekrev.bat>nul
-:skip
-
-if not exist temp\tempsneekrev.bat goto:NoTempSneekFiles
-call temp\tempsneekrev.bat
-
-::if temp files are equal to the new ones, use temp files
-if /i "%TEMPSNEEKREV%" EQU "%SNEEKREV%" set usesneektemp=on
-
-::if no internet and temp files exist, use temp files
-if /i "%SNEEKREV%" EQU "0" set usesneektemp=on
-if /i "%TEMPSNEEKREV%" EQU "none" set usesneektemp=off
-:NoTempSneekFiles
-
-if /i "%SNEEKREV%" NEQ "0" echo set tempsneekrev=%sneekrev%>temp\tempsneekrev.bat
-if not exist temp\tempsneekrev.bat goto:sneekwarning
-
-if /i "%sneekrev%" EQU "0" set sneekrev=%tempsneekrev%
-
-
-
 
 ::get sneekY rev number
 
@@ -19600,6 +19640,7 @@ if not exist sneekYrev.bat goto:skip
 support\sfk filter -quiet "sneekYrev.bat" -spat -rep _"*fsmodule-usb\x5fr"_"set sneekYrev="_ -write -yes
 support\sfk filter -quiet "sneekYrev.bat" -+"set sneekYrev" -write -yes
 support\sfk filter -quiet "sneekYrev.bat" -rep _" </a>*"__ -write -yes
+support\sfk filter "sneekYrev.bat" -unique -write -yes>nul
 call sneekYrev.bat
 del sneekYrev.bat>nul
 :skip
@@ -19613,9 +19654,11 @@ if /i "%TEMPsneekYREV%" EQU "%sneekYREV%" set usesneekYtemp=on
 ::if no internet and temp files exist, use temp files
 if /i "%sneekYREV%" EQU "0" set usesneekYtemp=on
 if /i "%TEMPsneekYREV%" EQU "none" set usesneekYtemp=off
+if /i "%usesneekYtemp%" EQU "on" set sneekYREV=%TEMPsneekYREV%
 :NoTempsneekYFiles
 
-if /i "%sneekYREV%" NEQ "0" echo set tempsneekYrev=%sneekYrev%>temp\tempsneekYrev.bat
+if /i "%sneekYREV%" NEQ "0" (echo set tempsneekYrev=%sneekYrev%>temp\tempsneekYrev.bat) & (support\sfk filter -quiet "temp\tempsneekYrev.bat" -rep _=*_"=%sneekYrev%"_ -write -yes)
+
 if not exist temp\tempsneekYrev.bat goto:sneekwarning
 
 if /i "%sneekYrev%" EQU "0" set sneekYrev=%tempsneekYrev%
@@ -19623,15 +19666,63 @@ if /i "%sneekYrev%" EQU "0" set sneekYrev=%tempsneekYrev%
 
 
 
+::get NEEK2O rev number
+
+if /i "%NEEK2O%" NEQ "on" goto:skipNEEK2OREV
+
+set NEEK2Orev=0
+set tempNEEK2Orev=none
+set useNEEK2Otemp=off
+
+start %ModMiimin%/wait support\wget http://code.google.com/p/custom-di/downloads/list
+if exist list move /y list NEEK2Orev.bat>nul
+
+if not exist NEEK2Orev.bat goto:skip
+support\sfk filter -quiet "NEEK2Orev.bat" -rep _"*module V"_"set NEEK2Orev="_ -write -yes
+support\sfk filter -quiet "NEEK2Orev.bat" -+"set NEEK2Orev" -write -yes
+support\sfk filter -quiet "NEEK2Orev.bat" -rep _" </a>*"__ -write -yes
+support\sfk filter "NEEK2Orev.bat" -unique -write -yes>nul
+call NEEK2Orev.bat
+del NEEK2Orev.bat>nul
+:skip
+
+if not exist temp\tempNEEK2Orev.bat goto:NoTempNEEK2OFiles
+call temp\tempNEEK2Orev.bat
+
+::if temp files are equal to the new ones, use temp files
+if /i "%TEMPNEEK2OREV%" EQU "%NEEK2OREV%" set useNEEK2Otemp=on
+
+::if no internet and temp files exist, use temp files
+if /i "%NEEK2OREV%" EQU "0" set useNEEK2Otemp=on
+if /i "%TEMPNEEK2OREV%" EQU "none" set useNEEK2Otemp=off
+if /i "%useNEEK2Otemp%" EQU "on" set NEEK2OREV=%TEMPNEEK2OREV%
+:NoTempNEEK2OFiles
+
+if /i "%NEEK2OREV%" NEQ "0" (echo set tempNEEK2Orev=%NEEK2Orev% >temp\tempNEEK2Orev.bat) & (support\sfk filter -quiet "temp\tempNEEK2Orev.bat" -rep _=*_"=%NEEK2Orev%"_ -write -yes)
+
+if not exist temp\tempNEEK2Orev.bat goto:NEEK2Owarning
+
+:skipNEEK2OREV
 
 
-
-
+if /i "%NEEK2O%" EQU "on" goto:NEEK2Obuild 
 if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK rev%sneekYREV%
+goto:skipNEEK2Obuild
+:NEEK2Obuild
 
+
+if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK NEEK2O rev%NEEK2OREV%
+
+:skipNEEK2Obuild
+echo.
+if /i "%NEEK2O%" EQU "on" echo NEEK2O Enabled (can be changed in options)
+if /i "%NEEK2O%" NEQ "on" echo NEEK2O Disabled (can be changed in options)
 
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
@@ -19737,43 +19828,62 @@ echo.
 :DLDIMODULE
 echo Downloading dimodule.elf
 
+if /i "%NEEK2O%" EQU "on" goto:NEEK2ODLDIMODULE
+
 if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
 
+if exist dimodule.elf move /Y dimodule.elf temp\sneeky-dimodule.elf>nul
 
-if exist dimodule.elf move /Y dimodule.elf temp\dimodule.elf>nul
+if not exist temp\sneeky-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
 
-if not exist temp\dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
+if exist dimodule.elf move /Y dimodule.elf temp\sneeky-dimodule.elf>nul
 
-if exist dimodule.elf move /Y dimodule.elf temp\dimodule.elf
-
-if not exist temp\dimodule.elf goto:sneekwarning
+if not exist temp\sneeky-dimodule.elf (goto:sneekwarning) else (copy /y temp\sneeky-dimodule.elf temp\dimodule.elf>nul)
 echo.
+goto:skipDL01
+
+
+:NEEK2ODLDIMODULE
+if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
+
+if exist dimodule.elf move /Y dimodule.elf temp\NEEK2O-dimodule.elf>nul
+
+if not exist temp\NEEK2O-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
+
+if exist dimodule.elf move /Y dimodule.elf temp\NEEK2O-dimodule.elf>nul
+
+if not exist temp\NEEK2O-dimodule.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-dimodule.elf temp\dimodule.elf>nul)
+echo.
+
 :skipDL01
 
 
 
+if /i "%NEEK2O%" EQU "on" goto:NEEK2OMOREMODULES
+
 echo Downloading fsmodule-usb.elf
 if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
 
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\fsmodule-usb.elf>nul
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\sneeky-fsmodule-usb.elf>nul
 
-if not exist temp\fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
+if not exist temp\sneeky-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
 
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\fsmodule-usb.elf>nul
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\sneeky-fsmodule-usb.elf>nul
 
-if not exist temp\fsmodule-usb.elf goto:sneekwarning
+if not exist temp\sneeky-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\sneeky-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
+
 echo.
 
 
 
 echo Downloading fsmodule-sd.elf
 if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\fsmodule-sd.elf>nul
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\sneeky-fsmodule-sd.elf>nul
 
-if not exist temp\fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\fsmodule-sd.elf>nul
+if not exist temp\sneeky-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-sd.elf
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\sneeky-fsmodule-sd.elf>nul
 
-if not exist temp\fsmodule-sd.elf goto:sneekwarning
+if not exist temp\sneeky-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\sneeky-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
 echo.
 
 
@@ -19788,7 +19898,7 @@ if exist temp\esmodule-sdoff.elf copy /Y temp\esmodule-sdoff.elf temp\esmodule.e
 
 if not exist temp\esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule.elf
 if exist esmodule.elf move /Y esmodule.elf temp\esmodule-sdoff.elf>nul
-if exist temp\esmodule-sdoff.elf copy /Y temp\esmodule-sdoff.elf temp\esmodule.elf>nul
+if exist temp\esmodule-sdoff.elf (copy /Y temp\esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
 goto:skipSSDon
 
 :SSDon
@@ -19799,11 +19909,81 @@ if exist temp\esmodule-sdon.elf copy /Y temp\esmodule-sdon.elf temp\esmodule.elf
 
 if not exist temp\esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule-sdon.elf
 if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\esmodule-sdon.elf>nul
-if exist temp\esmodule-sdon.elf copy /Y temp\esmodule-sdon.elf temp\esmodule.elf>nul
+if exist temp\esmodule-sdon.elf (copy /Y temp\esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
 :skipSSDon
 
-if not exist temp\esmodule.elf goto:sneekwarning
 echo.
+
+goto:skipNEEK2OMOREMODULES
+
+
+
+
+:NEEK2OMOREMODULES
+
+
+echo Downloading fsmodule-usb.elf
+if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
+
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\NEEK2O-fsmodule-usb.elf>nul
+
+if not exist temp\NEEK2O-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
+
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\NEEK2O-fsmodule-usb.elf>nul
+
+if not exist temp\NEEK2O-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
+
+echo.
+
+
+
+echo Downloading fsmodule-sd.elf
+if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\NEEK2O-fsmodule-sd.elf>nul
+
+if not exist temp\NEEK2O-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\NEEK2O-fsmodule-sd.elf>nul
+
+if not exist temp\NEEK2O-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
+echo.
+
+
+
+if /i "%NEEK2O%" EQU "ON" goto:SSDoff
+
+if /i "%SNEEKTYPE:~0,1%" EQU "U" goto:SSDoff
+if /i "%SSD%" EQU "on" goto:SSDon
+
+:SSDoff
+echo Downloading esmodule.elf
+if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
+if exist esmodule.elf move /Y esmodule.elf temp\NEEK2O-esmodule-sdoff.elf>nul
+if exist temp\NEEK2O-esmodule-sdoff.elf copy /Y temp\NEEK2O-esmodule-sdoff.elf temp\esmodule.elf>nul
+
+if not exist temp\NEEK2O-esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
+if exist esmodule.elf move /Y esmodule.elf temp\NEEK2O-esmodule-sdoff.elf>nul
+if exist temp\NEEK2O-esmodule-sdoff.elf (copy /Y temp\NEEK2O-esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
+goto:skipSSDon
+
+:SSDon
+echo Downloading esmodule.elf (with SD Access On)
+if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
+if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\NEEK2O-esmodule-sdon.elf>nul
+if exist temp\NEEK2O-esmodule-sdon.elf copy /Y temp\NEEK2O-esmodule-sdon.elf temp\esmodule.elf>nul
+
+if not exist temp\NEEK2O-esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
+if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\NEEK2O-esmodule-sdon.elf>nul
+if exist temp\NEEK2O-esmodule-sdon.elf (copy /Y temp\NEEK2O-esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
+:skipSSDon
+
+echo.
+
+
+
+
+:skipNEEK2OMOREMODULES
+
+
 
 
 echo Downloading armboot.bin
@@ -19883,37 +20063,85 @@ rename "%DRIVE%\bootmii" "bootmiiuneek"
 
 
 ::save rev information
+
+if /i "%NEEK2O%" EQU "on" goto:NEEK2Orevinfo
+
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On)rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV%>"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV%>"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV%>"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV%>"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV%>"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
+:skipsneekverbose
+goto:skipNEEK2Orevinfo
+
+
+:NEEK2Orevinfo
+
+if /i "%sneekverbose%" EQU "on" goto:sneekverbose
+
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+
+::NEEK2O sd access temporarily always disabled
+goto:miniskip
+
+if /i "%SSD%" EQU "off" goto:miniskip
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+:miniskip
+
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+goto:skipsneekverbose
+
+:sneekverbose
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+
+::NEEK2O sd access temporarily always disabled
+goto:miniskip
+
+if /i "%SSD%" EQU "off" goto:miniskip
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+:miniskip
+
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
 :skipsneekverbose
 
+
+:skipNEEK2Orevinfo
 
 
 
@@ -20066,7 +20294,6 @@ if exist temp\WAD\cIOS249-v14.wad del temp\WAD\cIOS249-v14.wad>nul
 if exist temp\WAD\cBC-NMMv0.2a.wad del temp\WAD\cBC-NMMv0.2a.wad>nul
 if exist temp\WAD\cBC-DML.wad del temp\WAD\cBC-DML.wad>nul
 
-
 move temp\WAD\*.wad temp\>nul
 
 ::Build setting.txt
@@ -20105,6 +20332,12 @@ if exist temp\ModThemes rd /s /q temp\ModThemes
 if exist temp\WAD rd /s /q temp\WAD
 
 
+::---------if building uneek+di or sneek+di add games\wbfs folder to usb---------
+if /i "%SNEEKTYPE:~1,1%" NEQ "D" goto:notDI
+if not exist "%DRIVEU%\games" mkdir "%DRIVEU%\games" >nul
+if /i "%NEEK2O%" EQU "off" goto:notDI
+if not exist "%DRIVEU%\wbfs" mkdir "%DRIVEU%\wbfs" >nul
+:notDI
 
 
 ::---------building cdf.vff----------
@@ -20226,19 +20459,42 @@ echo.
 
 ::both sneek install and nand build
 if /i "%SNEEKSELECT%" NEQ "3" goto:skip
+if /i "%NEEK2O%" EQU "on" goto:NEEK2O3report
+
 if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+goto:skip
+
+:NEEK2O3report
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
 
 ::only install sneek
 if /i "%SNEEKSELECT%" NEQ "1" goto:skip
+if /i "%NEEK2O%" EQU "on" goto:NEEK2O1report
+
 if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK rev%sneekYREV%
+goto:skip
+
+:NEEK2O1report
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK NEEK2O rev%NEEK2OREV%
+
 :skip
+
+
+
+
 
 ::only build nand
 if /i "%SNEEKSELECT%" NEQ "2" goto:skip
@@ -20281,7 +20537,7 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] WARNING: SNEEK is not directly supported by ModMii.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Any problems you have with SNEEK that are not a direct result
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] of ModMii should be reported here: http://code.google.com/p/sneek/
+support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] of ModMii should be reported here: %neekURL%
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] This is also a great place to learn more about SNEEK in general.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Another great resource is the guide here: tinyurl.com/SNEEK-DI
@@ -20320,13 +20576,16 @@ echo        * When using SNEEK+DI or UNEEK+DI, you can access the Game/DI Menu
 echo          by pressing "1" on the WiiMote. To access other settings
 echo          (including Region Options), you must press "+" from within the DI Menu.
 echo.
+
 echo        * To add Games to the Game/DI Menu, you can use ModMii to extract
 echo          Wii Games to your FAT32 USB External Hard Drive.
+if /i "%NEEK2O%" EQU "on" echo          NEEK2O is also able to load games from USB:\WBFS
+if /i "%NEEK2O%" EQU "on" echo          which means you can also use WiiBackupManager.
 echo.
 echo        * ShowMiiWads can be used to decrypt your real Wii's BootMii NAND
 echo          dump (nand.bin) to use as an emulated NAND, and it can add custom
 echo          channels/WADs to an emulated NAND.
-echo          ShowMiiWads is available here: http://code.google.com/p/showmiiwads/
+echo          ShowMiiWads is available on ModMii's Download Page 2.
 echo.
 echo        * For more SNEEK info, like formatting a USB Hard Drive for SNEEK,
 echo          or installing the HBC to an emulated NAND, visit: tinyurl.com/SNEEK-DI
@@ -22760,14 +23019,14 @@ goto:downloadstart
 
 :MyM
 set name=MyMenuifyMod
-set category=fullextract
+::set category=fullextract
 set code1=URL
-set code2=http://mymenuifymod.googlecode.com/files/MyMenuifyModv1.3.dols.rar
+set code2=http://mymenuifymod.googlecode.com/files/MyMenuifyModv1.4.zip
 set version=*
-set dlname=MyMenuifyModv1.3.dols.rar
-set wadname=MyMenuifyModv1.3.dols.rar
+set dlname=MyMenuifyModv1.4.zip
+set wadname=MyMenuifyModv1.4.zip
 set filename=boot.dol
-set md5=b4886e823647c5fd41a07982178ce116
+set md5=52bf835b36893e669fb0aa41f22899b6
 set path1=apps\MyMenuifyMod\
 goto:downloadstart
 
@@ -22867,15 +23126,15 @@ goto:downloadstart
 
 
 :WBM
-set name=Wii Backup Manager v0.3.8 build60
+set name=Wii Backup Manager v0.3.8 build69
 set category=fullextract
 set code1=URL
-set code2="http://nusad.googlecode.com/files/WiiBackupManager-0.3.8Build60.zip"
+set code2="http://filetrip.net/d26675-Wii-Backup-Manager-0-4-3-build-69.html"
 set version=*
-set dlname=WiiBackupManager-0.3.8Build60.zip
+set dlname=26675-WiiBackupManager-0.3.8Build69.zip
 set wadname=WiiBackupManager.zip
 set filename=WiiBackupManager.exe
-set md5=d6619d36060f1d3215682ab860399e79
+set md5=33d03403440e005b0d155ce9185307ad
 set path1=WiiBackupManager\
 goto:downloadstart
 
