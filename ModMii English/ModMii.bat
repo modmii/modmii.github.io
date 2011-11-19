@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=4.7.6
+set currentversion=4.8.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -9,6 +9,8 @@ if exist Support\settings.bat call Support\settings.bat
 if not exist support cd..
 set cygwin=nodosfilewarning
 set ModMiipath=%cd%
+
+chcp 1252>nul
 
 set UPDATENAME=NUSAutoUpdate
 if exist Updatetemp.bat attrib -h Updatetemp.bat
@@ -86,10 +88,10 @@ echo         "CH" All Wii Channels [ie. Photo, Weather, News, etc.]
 echo             "PHOTO" Photo Channel
 echo             "SHOP" Shopping Channel [and IOS56]
 echo             "MII" Mii Channel
-echo             "SPEAK" Wii Speak Channel [not applicable to Korean NANDs]
-echo             "NEWS" News Channel [not applicable to Korean NANDs]
-echo             "NET" Internet Channel [not applicable to Korean NANDs]
-echo             "WEATHER" Weather Channel [not applicable to Korean NANDs]
+echo             "SPEAK" Wii Speak Channel [not applicable to Korean Wiis]
+echo             "NEWS" News Channel [not applicable to Korean Wiis]
+echo             "NET" Internet Channel [not applicable to Korean Wiis]
+echo             "WEATHER" Weather Channel [not applicable to Korean Wiis]
 echo.
 echo         "USB" Set-up a USB-loader [choose no more than one of each A, B and C]
 echo          A - "FAT32" Format HDD as FAT32 [default]
@@ -205,8 +207,8 @@ echo ModMii.exe 1 2 3 4 Extras Options
 echo.
 echo 1) Emulated NAND Builder "E" [or "SE" to install S\UNEEK AND build a NAND]
 echo 2) SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
-echo 3) Firmware: "4.1", "4.2", "4.3" [4.1 only available for SNEEK and UNEEK]
-echo 4) Region: "U","E","J","K" [J/K only available for SNEEK and UNEEK]
+echo 3) Firmware: "4.1", "4.2", "4.3"
+echo 4) Region: "U","E","J","K"
 echo.
 echo Extras:
 echo         "Red" Red Theme [cannot be used simultaneously with other themes]
@@ -218,7 +220,7 @@ echo         "HBF" Homebrew Filter
 echo         "249" cIOS249 rev14
 echo         "NMM" No More Memory Cards [cannot be used simultaneously with DML]
 echo         "DML" Dios Mios Lite [only for SNEEK+DI]
-echo         "S2U" Switch2Uneek [only for UNEEK or UNEEK+DI]
+echo         "S2U" Switch2Uneek [only for UNEEK or UNEEK+DI when neek2o disabled]
 echo         "Pri" Priiloader v0.4 and hacks.ini
 echo         "Joy" JoyFlow Forwarder and App [only for UNEEK or UNEEK+DI]
 echo.
@@ -353,9 +355,9 @@ echo Where;
 echo E = Enabled and D = Disabled
 echo.
 
-support\sfk echo [Cyan]NEEK2O - build NEEK2O mod of s\uneek by OverjoY and obcd
-echo ModMii.exe [base command] NEEK:E
-echo ModMii.exe [base command] NEEK:D
+support\sfk echo [Cyan]neek2o - build neek2o mod of s\uneek by OverjoY and obcd
+echo ModMii.exe [base command] n2o:E
+echo ModMii.exe [base command] n2o:D
 echo.
 echo Where;
 echo E = Enabled and D = Disabled
@@ -682,24 +684,24 @@ support\sfk filter temp\cmdinput.txt -rep _" VERBOSE:%removeme%"__ -write -yes>n
 
 
 
-::-----------ON: Option---------------
-findStr /I " ON:" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (goto:noNEEKcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+::-----------n2o: Option---------------
+findStr /I " n2o:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:non2ocmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
 
-support\sfk filter -spat temp\cmdinput2.txt -rep _"* ON:"__ -rep _\x20*__ -write -yes>nul
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* n2o:"__ -rep _\x20*__ -write -yes>nul
 
 set /p NEEKcmd= <temp\cmdinput2.txt
 
-if /i "%NEEKcmd%" EQU "E" set NEEK2O=ON
-if /i "%NEEKcmd%" EQU "D" set NEEK2O=OFF
+if /i "%NEEKcmd%" EQU "E" set neek2o=ON
+if /i "%NEEKcmd%" EQU "D" set neek2o=OFF
 
 ::overwrite option in settings.bat
-support\sfk filter Support\settings.bat -!"Set NEEK2O=" -write -yes>nul
-echo Set NEEK2O=%NEEK2O%>>Support\settings.bat
+support\sfk filter Support\settings.bat -!"Set neek2o=" -write -yes>nul
+echo Set neek2o=%neek2o%>>Support\settings.bat
 
 ::remove hard option from cmdinput.txt
 set /p removeme= <temp\cmdinput2.txt
-support\sfk filter temp\cmdinput.txt -rep _" ON:%removeme%"__ -write -yes>nul
+support\sfk filter temp\cmdinput.txt -rep _" n2o:%removeme%"__ -write -yes>nul
 :noNEEKcmd
 
 
@@ -1138,17 +1140,15 @@ if /i "%SNEEKTYPE%" EQU "SD" set DITYPE=on
 
 if /i "%three%" EQU "4.3" set SNKVERSION=%three%
 if /i "%three%" EQU "4.2" set SNKVERSION=%three%
-if /i "%SNEEKTYPE:~1%" EQU "D" goto:isDI
 if /i "%three%" EQU "4.1" set SNKVERSION=%three%
-:isDI
+
 if "%SNKVERSION%"=="" (echo "%three%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if /i "%four%" EQU "U" set REGION=%four%
 if /i "%four%" EQU "E" set REGION=%four%
-if /i "%SNEEKTYPE:~1%" EQU "D" goto:isDI
 if /i "%four%" EQU "J" set REGION=%four%
 if /i "%four%" EQU "K" set REGION=%four%
-:isDI
+
 if "%region%"=="" (echo "%four%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 
@@ -1379,7 +1379,7 @@ IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
 IF "%AUTOUPDATE%"=="" set AUTOUPDATE=on
 IF "%ModMiiverbose%"=="" set ModMiiverbose=off
 IF "%sneekverbose%"=="" set sneekverbose=off
-IF "%NEEK2O%"=="" set NEEK2O=on
+IF "%neek2o%"=="" set neek2o=on
 IF "%SSD%"=="" set SSD=off
 ::IF "%discexverify%"=="" set discexverify=off
 IF "%SNKFONT%"=="" set SNKFONT=B
@@ -1688,7 +1688,6 @@ set HM=
 set IOS236Installer=
 set SIP=
 set JOY=
-set Y4M=
 set dop=
 set syscheck=
 set sysCheckBeta=
@@ -1707,6 +1706,7 @@ set ROTJ=
 set TOS=
 set smash=
 set mmm=
+set wiimod=
 set yawm=
 set neogamma=
 set cfg249=
@@ -1729,6 +1729,7 @@ set CM=
 set USBX=
 set JOYF=
 set S2U=
+set nswitch=
 set HBF=
 set Pri=
 set HAX=
@@ -1924,6 +1925,9 @@ set cIOS250[57]-d2x-v6=
 set cIOS250[58]-d2x-v6=
 
 if /i "%MENUREAL%" EQU "S" goto:finishsneekinstall2
+
+set nswitchFound=
+set BCtype=
 
 if /i "%cleardownloadsettings%" EQU "yes" goto:DownloadSettings
 
@@ -2348,7 +2352,7 @@ support\sfk echo -spat \x20 [Red]OverjoY and obcd
 echo   ================
 echo   OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek.
 echo   He then teamed up with obcd to accomplish some seriously amazing things,
-echo   like building their mod of s\uneek, NEEK2O, that allows it to load games
+echo   like building their mod of s\uneek, neek2o, that allows it to load games
 echo   in wbfs format and select from multiple emulated NANDs.
 echo.
 support\sfk echo -spat \x20 [Red]Arikado and the Dop-Mii Team
@@ -2418,6 +2422,12 @@ echo   =====
 echo   Thanks to Wiimm for creating Wiimms ISO Tools, including wit.exe which
 echo   ModMii uses to convert Wii Games to s/uneek format as well as build
 echo   forwarder ISOs.
+echo.
+support\sfk echo -spat \x20 [Red]jskyboo
+echo   =======
+echo   Thanks to jskyboo for creating WiiMod. His app can do a lot of different
+echo   things, and it was the first ahbprot enabled WAD Manager to incorporate
+echo   davebaol's ahbprot bugfix.
 echo.
 support\sfk echo -spat \x20 [Red]diddy81 and symular syn of the Wii Theme Team
 echo   =============================================
@@ -2784,15 +2794,14 @@ if /i "%ModMiiverbose%" EQU "on" echo           V = Verbose Output maximized whe
 echo.
 
 
-if /i "%NEEK2O%" EQU "off" echo        NEEK = NEEK2O - build mod of s\uneek (Disabled)
-if /i "%NEEK2O%" EQU "on" echo        NEEK = NEEK2O - build mod of s\uneek (Enabled)
+if /i "%neek2o%" EQU "off" echo         n2o = neek2o - build mod of s\uneek instead of original (Disabled)
+if /i "%neek2o%" EQU "on" echo         n2o = neek2o - build mod of s\uneek instead of original (Enabled)
 echo.
 
-if /i "%NEEK2O%" EQU "on" goto:skip
+
 if /i "%SSD%" EQU "off" echo         SSD = SNEEK and SNEEK+DI SD Access (Disabled)
 if /i "%SSD%" EQU "on" echo         SSD = SNEEK and SNEEK+DI SD Access (Enabled)
 echo.
-:skip
 
 if /i "%sneekverbose%" EQU "off" echo          SV = SNEEK Verbose Output (Disabled)
 if /i "%sneekverbose%" EQU "on" echo          SV = SNEEK Verbose Output (Enabled)
@@ -2828,12 +2837,9 @@ if /i "%OPTIONS%" EQU "36" goto:Option36
 if /i "%OPTIONS%" EQU "CM" goto:CMIOSOPTION
 if /i "%OPTIONS%" EQU "FWD" goto:FWDOPTION
 if /i "%OPTIONS%" EQU "sv" goto:OptionSneekverbose
-if /i "%OPTIONS%" EQU "NEEK" goto:OptionNEEK2O
+if /i "%OPTIONS%" EQU "n2o" goto:Optionneek2o
 if /i "%OPTIONS%" EQU "v" goto:OptionModMiiverbose
-
-if /i "%NEEK2O%" EQU "on" goto:skip
 if /i "%OPTIONS%" EQU "SSD" goto:OptionSSD
-:skip
 
 if /i "%OPTIONS%" EQU "f" goto:Optionfont
 
@@ -2906,7 +2912,7 @@ set AUTOUPDATE=on
 Set ModMiiverbose=off
 Set SSD=off
 Set sneekverbose=off
-Set NEEK2O=on
+Set neek2o=on
 Set SNKFONT=B
 
 :defaultcheatsettings
@@ -2962,7 +2968,7 @@ echo Set AUTOUPDATE=%AUTOUPDATE%>> Support\settings.bat
 echo Set ModMiiverbose=%ModMiiverbose%>> Support\settings.bat
 echo Set SSD=%SSD%>> Support\settings.bat
 echo Set sneekverbose=%sneekverbose%>> Support\settings.bat
-echo Set NEEK2O=%NEEK2O%>> Support\settings.bat
+echo Set neek2o=%neek2o%>> Support\settings.bat
 echo Set SNKFONT=%SNKFONT%>> Support\settings.bat
 echo Set wiicheat=%wiicheat%>> Support\settings.bat
 echo Set WiiWarecheat=%WiiWarecheat%>> Support\settings.bat
@@ -3053,13 +3059,13 @@ goto:OPTIONS
 Set sneekverbose=off
 goto:OPTIONS
 
-:OptionNEEK2O
-if /i "%NEEK2O%" EQU "on" goto:OptionNEEK2Ooff
-Set NEEK2O=on
+:Optionneek2o
+if /i "%neek2o%" EQU "on" goto:Optionneek2ooff
+Set neek2o=on
 goto:OPTIONS
 
-:OptionNEEK2Ooff
-Set NEEK2O=off
+:Optionneek2ooff
+Set neek2o=off
 goto:OPTIONS
 
 :OptionModMiiverbose
@@ -3664,6 +3670,7 @@ if exist "%DRIVE%"\00010001 SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\private\wii\title\aktn SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\DOP-Mii SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MMM SET /a cleanitems=%cleanitems%+1
+if exist "%DRIVE%"\apps\WiiMod SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MIOSPatcher SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\Priiloader SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\YAWMM SET /a cleanitems=%cleanitems%+1
@@ -4030,6 +4037,7 @@ if /i "%YUGIE%" EQU "on" echo          * YU-GI-OWNED (EURO)
 if /i "%YUGIJ%" EQU "on" echo          * YU-GI-OWNED (JAP)
 if exist "%DRIVE%"\apps\DOP-Mii echo          * apps\DOP-Mii
 if exist "%DRIVE%"\apps\MMM echo          * apps\MMM
+if exist "%DRIVE%"\apps\WiiMOd echo          * apps\WiiMod
 if exist "%DRIVE%"\apps\MIOSPatcher echo          * apps\MIOSPatcher
 if exist "%DRIVE%"\apps\Priiloader echo          * apps\Priiloader
 if exist "%DRIVE%"\apps\YAWMM echo          * apps\YAWMM
@@ -4101,6 +4109,7 @@ if exist "%DRIVE%"\00010001 rd /s /q "%DRIVE%"\00010001> nul
 if exist "%DRIVE%"\private\wii\title\aktn rd /s /q "%DRIVE%"\private\wii\title\aktn> nul
 if exist "%DRIVE%"\apps\DOP-Mii rd /s /q "%DRIVE%"\apps\DOP-Mii> nul
 if exist "%DRIVE%"\apps\MMM rd /s /q "%DRIVE%"\apps\MMM> nul
+if exist "%DRIVE%"\apps\WiiMod rd /s /q "%DRIVE%"\apps\WiiMod> nul
 if exist "%DRIVE%"\apps\MIOSPatcher rd /s /q "%DRIVE%"\apps\MIOSPatcher> nul
 if exist "%DRIVE%"\apps\Priiloader rd /s /q "%DRIVE%"\apps\Priiloader> nul
 if exist "%DRIVE%"\apps\YAWMM rd /s /q "%DRIVE%"\apps\YAWMM> nul
@@ -4228,7 +4237,7 @@ set HMInstaller=
 set RECCIOS=
 set yawmQ=
 set PRIQ=
-set ThemeSelection=
+set ThemeSelection=N
 
 
 
@@ -4650,9 +4659,9 @@ echo.
 echo.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 [Red] Warning:[def] installing firmware below 4.0 on boot2v4 wii's results in Brick.
-echo             But, Yet Another Wad Manager (YAWMM) or MMM will not permit you to
-echo             (un)install anything that will brick you.
-echo             You can manually check your boot2 version using MMM, DOP-Mii or Bootmii.
+echo             But, Yet Another Wad Manager (YAWMM) or WiiMod or MMM will not permit
+echo             you to (un)install anything that will brick you.
+echo             You can manually check your boot2 version using WiiMod, MMM or Bootmii.
 echo.
 echo.
 echo.
@@ -4759,7 +4768,12 @@ if /i "%MORE%" EQU "B" goto:WPAGE4
 if /i "%MORE%" EQU "N" goto:WPAGE13
 
 :forsneeknand
-if /i "%MORE%" EQU "B" goto:WPAGE20
+if /i "%MORE%" NEQ "B" goto:notback
+if /i "%SNEEKSELECT%" NEQ "5" goto:WPAGE20
+if "%SMAPP%"=="" (goto:SNKPAGE4c) else (goto:WPAGE20)
+:notback
+
+
 if /i "%MORE%" EQU "A" set B4SNKCONFIRM=WPAGE5
 if /i "%MORE%" EQU "N" set B4SNKCONFIRM=WPAGE5
 if /i "%MORE%" EQU "N" goto:SNKNANDCONFIRM
@@ -5298,12 +5312,6 @@ echo.
 echo      Would you like to install IOS236?
 echo.
 echo.
-echo      This will download the following files:
-echo      ---------------------------------------
-echo.
-echo      * IOS236 Installer
-echo      * Simple IOS Patcher
-echo      * IOS36v3351
 echo.
 echo.
 echo      Note: IOS236 is used to install other things, like WADs, Priiloader, etc.
@@ -5382,6 +5390,10 @@ goto:WPAGE19
 :WPAGE20
 set ThemeSelection=
 
+if /i "%SNEEKSELECT%" NEQ "5" goto:nocheck
+if "%SMAPP%"=="" goto:WPAGE5
+:nocheck
+
 cls
 
 echo                                        ModMii                                v%currentversion%
@@ -5415,8 +5427,10 @@ echo                O = DarkWii Orange Theme - %effect%
 echo             WWWO = View DarkWii Orange Theme on youtube
 echo.
 echo.
-echo                N = No, I want the same old boring, boring System Menu
+if /i "%SNEEKSELECT%" EQU "5" (echo                N = No, do not change the theme) else (echo                N = No, I want the same old boring, boring System Menu)
 echo.
+if /i "%SNEEKSELECT%" EQU "5" echo.
+if /i "%SNEEKSELECT%" EQU "5" echo                D = Default Theme (restore original theme to the Emulated NAND)
 echo.
 echo.
 echo.
@@ -5443,7 +5457,6 @@ if /i "%ThemeSelection%" EQU "WWWO" (start http://www.youtube.com/watch?v=g66Uas
 if /i "%ThemeSelection%" EQU "CE" goto:OptionCEwizard
 
 if /i "%MENU1%" EQU "S" goto:forsneeknand
-::if /i "%ThemeSelection%" EQU "B" goto:WPAGE19
 if /i "%ThemeSelection%" EQU "R" goto:WPAGE21
 if /i "%ThemeSelection%" EQU "G" goto:WPAGE21
 if /i "%ThemeSelection%" EQU "BL" goto:WPAGE21
@@ -5453,7 +5466,7 @@ if /i "%ThemeSelection%" EQU "N" goto:WPAGE21
 :forsneeknand
 if /i "%MENU1%" NEQ "S" goto:quickskip
 if /i "%ThemeSelection%" NEQ "B" goto:quickskip
-if /i "%NEEK2O%" EQU "on" goto:SNKPAGE4c
+if /i "%neek2o%" EQU "on" goto:SNKPAGE4c
 if /i "%SNEEKTYPE:~0,1%" EQU "U" (goto:SNKPAGE4d) else (goto:SNKPAGE4b)
 :quickskip
 
@@ -5463,6 +5476,9 @@ if /i "%ThemeSelection%" EQU "BL" goto:WPAGE5
 if /i "%ThemeSelection%" EQU "O" goto:WPAGE5
 if /i "%ThemeSelection%" EQU "N" goto:WPAGE5
 
+if /i "%SNEEKSELECT%" NEQ "5" goto:miniskip
+if /i "%ThemeSelection%" EQU "D" goto:WPAGE5
+:miniskip
 
 if /i "%Advanced%" EQU "Y" goto:Back2PRI
 if /i "%Advanced%" EQU "N" goto:Back2Advanced2
@@ -5937,6 +5953,7 @@ goto:UPAGE2
 :SNKPAGE1
 set SNEEKSELECT=
 set SNKS2U=
+set PRIIFOUND=
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -5957,6 +5974,9 @@ echo                4 = Game Bulk Extractor (for SNEEK)
 echo                    * Supported formats include ISO, CISO and WBFS files
 echo.
 echo.
+echo                5 = Emulated NAND Modifer
+echo                    * Edit your existing Emulated NAND
+echo.
 echo.
 echo   Requirements:
 echo.
@@ -5964,17 +5984,17 @@ echo         * Your Wii must have BootMii installed in order to run SNEEK. If yo
 echo           don't have it installed, run ModMii's Download Wizard.
 echo.
 echo         * To optimize the speed of your SNEEK or SNEEK+DI emulated nand,
-echo           your SD card should be formatted using 64KB sector sizes.
+echo           your SD card should be formatted using 32KB sector sizes.
 echo.
 echo         * UNEEK and UNEEK+DI require the External Hard Drive be formatted 
-echo           as FAT32 using cluster sizes 32K or lower. If you don't know how to
+echo           as FAT32 using cluster sizes 32KB or lower. If you don't know how to
 echo           format your drive this way, run ModMii's USB-Loader Setup.
 echo.
 echo         * SNEEK+DI and UNEEK+DI always uses the 1st partition if multiple are found.
 echo.
 echo.
 
-if /i "%NEEK2O%" EQU "on" (set neekURL=http://code.google.com/p/custom-di/) else (set neekURL=http://code.google.com/p/sneek/)
+if /i "%neek2o%" EQU "on" (set neekURL=tinyurl.com/neeek2o) else (set neekURL=http://code.google.com/p/sneek)
 
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] WARNING: SNEEK is not directly supported by ModMii.
@@ -5991,8 +6011,6 @@ echo.
 echo                M = Main Menu
 echo.
 echo.
-echo.
-echo.
 set /p SNEEKSELECT=     Enter Selection Here: 
 
 if /i "%SNEEKSELECT%" EQU "B" goto:MENU
@@ -6001,6 +6019,7 @@ if /i "%SNEEKSELECT%" EQU "1" goto:SNKPAGE2
 if /i "%SNEEKSELECT%" EQU "2" goto:SNKPAGE2
 if /i "%SNEEKSELECT%" EQU "3" goto:SNKPAGE2
 if /i "%SNEEKSELECT%" EQU "4" goto:SNKDISCEX
+if /i "%SNEEKSELECT%" EQU "5" goto:SNKNANDSELECTOR
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -6020,13 +6039,9 @@ if /i "%SNEEKSELECT%" NEQ "2" echo         What type of SNEEK would you like to 
 if /i "%SNEEKSELECT%" EQU "2" echo         What type of SNEEK would you like to build an emulated NAND for?
 echo.
 echo.
-if /i "%SNEEKSELECT%" NEQ "1" echo   Note: NANDs built for any type of SNEEK work with any other type of SNEEK except
-if /i "%SNEEKSELECT%" NEQ "1" echo           UNEEK+DI and SNEEK+DI which require 4.2U/E or 4.3U/E emulated NANDs.
+if /i "%SNEEKSELECT%" NEQ "1" echo   Note: NANDs built for any type of SNEEK work with any other type of SNEEK.
 if /i "%SNEEKSELECT%" NEQ "1" echo           However, ANY region Wii can use ANY region emulated NAND
 if /i "%SNEEKSELECT%" NEQ "1" echo.
-if /i "%SNEEKSELECT%" NEQ "1" echo   Advanced Users: If you self-compile SNEEK+DI/UNEEK+DI with hacks to support
-if /i "%SNEEKSELECT%" NEQ "1" echo                   System Menu's other than those mentioned in the note above,
-if /i "%SNEEKSELECT%" NEQ "1" echo                   you can select "S" or "U" to unlock more NAND building options
 echo.
 echo         UD = UNEEK+DI
 echo              * Emulated Wii nand/memory is on FAT32 External Hard Drive
@@ -6034,7 +6049,6 @@ echo              * Load Wii games off your FAT32 External Hard Drive
 echo              * You can load apps off an SD Card via the Homebrew Channel
 echo              * DVD-Drive access is disabled for games while running UNEEK+DI
 echo                but can be used in apps (ie. WiiXplorer)
-echo              * Only works with 4.2U/E and 4.3E emulated NANDs
 echo.
 echo         SD = SNEEK+DI
 echo              * Emulated Wii nand/memory is on SD Card
@@ -6043,7 +6057,6 @@ echo              * Load GameCube games off your SD Card using DML
 echo              * You can load apps off a FAT32 USB HDD via the Homebrew Channel
 echo              * DVD-Drive access is disabled for games while running SNEEK+DI
 echo                but can be used in apps (ie. WiiXplorer)
-echo              * Only works with 4.2U/E and 4.3E emulated NANDs
 echo.
 echo          U = UNEEK
 echo              * Emulated Wii nand/memory is on FAT32 External Hard Drive
@@ -6062,9 +6075,11 @@ echo              * DVD-Drive access is enabled
 echo              * Backup disc loading requires DarkCorp installed on emulated nand
 echo                (Newer Wii's have a DVD-Drive that prevents backup disc loading)
 echo.
+echo.
 echo          B = Back
 echo.
 echo          M = Main Menu
+echo.
 echo.
 set /p SNEEKTYPE=     Enter Selection Here: 
 
@@ -6122,22 +6137,23 @@ echo.
 echo         What Region would you like to make your emulated NAND?
 echo.
 echo.
-echo         Note: SNEEK+DI and UNEEK+DI only work with 4.2U/E or 4.3U/E emulated NANDs.
-echo               However, ANY region Wii can use ANY region emulated NAND.
-echo.
 echo.
 echo         Note: If you want your wiimotes be synced up to your real NAND
 echo               and your emulated NAND simultaneously, then you must choose
 echo               the real region of your Wii
-echo               (in addition to using the setting.txt for your Wii)
 echo.
+if /i "%neek2o%" EQU "ON" goto:skip
+support\sfk echo -spat \x20 \x20 [Red] Warning:[def] JAP and Korean NANDs specifically do NOT have Region Free hacks enabled by default.
+echo               This only applies to WiiWare/VC Games (aka Channels), 
+echo               the DI/Game Menu can still play Wii Games of All Regions.
+echo               However, you can still enable region free hacks using Priiloader.
+:skip
 echo.
-
 echo.
 echo                U = USA
 echo                E = Euro (PAL)
-if /i "%DITYPE%" EQU "off" echo                J = JAP
-if /i "%DITYPE%" EQU "off" echo                K = Korean
+echo                J = JAP
+echo                K = Korean
 echo.
 echo.
 echo.
@@ -6169,11 +6185,8 @@ if /i "%REGION%" EQU "U" (set serialdigits=11 or 12) else (set serialdigits=12)
 
 if /i "%REGION%" EQU "U" goto:SNKPAGE4
 if /i "%REGION%" EQU "E" goto:SNKPAGE4
-
-if /i "%DITYPE%" EQU "on" goto:skip
 if /i "%REGION%" EQU "J" goto:SNKPAGE4
 if /i "%REGION%" EQU "K" goto:SNKPAGE4
-:skip
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -6207,23 +6220,20 @@ echo.
 echo         What Firmware Version would you like your SNEEK emulated NAND to be?
 echo.
 echo.
-echo         Note: SNEEK+DI and UNEEK+DI only work with 4.2U/E or 4.3U/E emulated NANDs.
-echo               However, ANY region Wii can use ANY region emulated NAND.
+echo         Note: ANY region Wii can use ANY region emulated NAND.
 echo.
-if /i "%DITYPE%" EQU "OFF" goto:skip
-if /i "%REGION%" EQU "U" support\sfk echo -spat \x20 \x20 [Red] Warning:[def] 4.3U specifically does NOT have Region Free hacks enabled by default.
+if /i "%neek2o%" EQU "ON" goto:skip
+if /i "%REGION%" EQU "U" support\sfk echo -spat \x20 \x20 [Red] Warning:[def] 4.2U and 4.1U specifically do NOT have Region Free hacks enabled by default.
 if /i "%REGION%" EQU "U" echo               This only applies to WiiWare/VC Games (aka Channels), 
 if /i "%REGION%" EQU "U" echo               the DI/Game Menu can still play Wii Games of All Regions.
+if /i "%REGION%" EQU "U" echo               However, you can still enable region free hacks using Priiloader.
 :skip
 echo.
 echo.
 echo.
 echo                4.3 = 4.3
 echo                4.2 = 4.2
-::anything under 4.2 is not an option for NANDs for DI
-if /i "%DITYPE%" EQU "ON" goto:skip
 echo                4.1 = 4.1
-:skip
 echo.
 echo.
 echo.
@@ -6244,11 +6254,7 @@ if /i "%SNKVERSION%" EQU "B" goto:SNKPAGE3
 
 if /i "%SNKVERSION%" EQU "4.3" goto:SNKPAGE4a
 if /i "%SNKVERSION%" EQU "4.2" goto:SNKPAGE4a
-
-if /i "%SNEEKTYPE%" EQU "SD" goto:skip
-if /i "%SNEEKTYPE%" EQU "UD" goto:skip
 if /i "%SNKVERSION%" EQU "4.1" goto:SNKPAGE4a
-:skip
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -6301,7 +6307,10 @@ echo.
 set /p SNKHBF=     Enter Selection Here: 
 
 
-if /i "%SNKHBF%" EQU "B" goto:SNKPAGE4
+if /i "%SNKHBF%" NEQ "B" goto:miniskip
+if /i "%SNEEKSELECT%" EQU "5" (goto:SNKNANDSELECTOR) else (goto:SNKPAGE4)
+:miniskip
+
 if /i "%SNKHBF%" EQU "M" goto:MENU
 if /i "%SNKHBF%" EQU "Y" goto:SNKPAGE4a2
 if /i "%SNKHBF%" EQU "N" goto:SNKPAGE4a2
@@ -6373,6 +6382,8 @@ goto:SNKPAGE4a2
 
 set SNKcBC=
 
+if /i "%SNEEKSELECT%" EQU "5" set sneektype=SD
+
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -6388,7 +6399,8 @@ echo.
 
 if /i "%SNEEKTYPE%" EQU "SD" echo         DML (Dios Mios Lite) is a tool which allows you to run Gamecube games
 if /i "%SNEEKTYPE%" EQU "SD" echo         from an SD Card. Compatability is not 100% and it only works with
-if /i "%SNEEKTYPE%" EQU "SD" echo         SNEEK+DI.
+if /i "%SNEEKTYPE%" EQU "SD" echo         SNEEK+DI. For best results your SD card should be formatted
+if /i "%SNEEKTYPE%" EQU "SD" echo         using 64KB sector sizes when running DML.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
 
@@ -6399,7 +6411,18 @@ echo.
 echo.
 if /i "%SNEEKTYPE%" EQU "SD" echo         Note: NMM and DML cannot both be installed at the same time
 echo.
+if /i "%SNEEKSELECT%" EQU "5" echo         Note: DML only works when using SNEEK+DI
 echo.
+echo.
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:nowarning
+if /i "%BCTYPE%" EQU "BC" goto:nowarning
+if /i "%BCTYPE%" EQU "NONE" goto:nowarning
+support\sfk echo -spat \x20 \x20 [Yellow] WARNING: Answering No will remove %BCtype% from the Emulated NAND.
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]To keep %BCtype% on your Emulated NAND enter %BCtype%
+:nowarning
+
 echo.
 echo.
 
@@ -6443,6 +6466,11 @@ goto:SNKPAGE4a3
 
 set SNKPRI=
 
+if /i "%SNEEKSELECT%" EQU "5" (set sneektype=) else (goto:nocheck)
+if "%SMAPP%"=="" goto:SNKPAGE4c
+:nocheck
+
+
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -6457,13 +6485,17 @@ echo         Doing this will allow you to enable system menu hacks on your emula
 echo         It will also permit autobooting sneek to apps of your choice (ie. JoyFlow).
 echo.
 echo.
-
 echo         Note: to access Priiloader on your emulated NAND, hold reset just as
 echo               your emulated NAND is booting up.
 echo.
 echo.
 
-support\sfk echo -spat \x20 \x20 [Red] WARNING: In some cases you may have about 10 seconds to exit Priiloader 
+if /i "%SNEEKSELECT%" NEQ "5" goto:tinyskip
+if /i "%PRIIFOUND%" EQU "YES" support\sfk echo -spat \x20 \x20 [Yellow] WARNING: Answering No will remove Priiloader from the Emulated NAND.
+if /i "%PRIIFOUND%" EQU "yes" echo.
+:tinyskip
+
+support\sfk echo -spat \x20 \x20 [Red] WARNING: In some cases you may have about 10 seconds to exit Priiloader
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](on your emulated NAND) before it becomes unresponsive.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]You will have to save your Priiloader settings quickly and it
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]may take a few tries to save all your settings a little bit at a time.
@@ -6511,12 +6543,12 @@ goto:SNKPAGE4b
 
 ::...................................SNEEK Page4c - JoyFlow...............................
 :SNKPAGE4c
-
 set SNKJOY=
 
+if /i "%SNEEKSELECT%" EQU "5" goto:tinyskip
 ::skip this page if sneektype not uneek or uneek+di
 if /i "%SNEEKTYPE:~0,1%" EQU "S" (set SNKJOY=N) & (goto:SNKPAGE4d)
-
+:tinyskip
 
 cls
 echo                                        ModMii                                v%currentversion%
@@ -6564,7 +6596,11 @@ echo.
 set /p SNKJOY=     Enter Selection Here: 
 
 
-if /i "%SNKJOY%" EQU "B" goto:SNKPAGE4b
+if /i "%SNKJOY%" NEQ "B" goto:notback
+if /i "%SNEEKSELECT%" NEQ "5" goto:SNKPAGE4b
+if "%SMAPP%"=="" (goto:SNKPAGE4a3) else (goto:SNKPAGE4b)
+:notback
+
 if /i "%SNKJOY%" EQU "M" goto:MENU
 if /i "%SNKJOY%" EQU "Y" goto:SNKPAGE4d
 if /i "%SNKJOY%" EQU "N" goto:SNKPAGE4d
@@ -6581,8 +6617,8 @@ goto:SNKPAGE4c
 
 set SNKS2U=
 
-::skip this page if NEEK2O is enabled
-if /i "%NEEK2O%" EQU "on" (set SNKS2U=N) & (goto:SNKPAGE5)
+::skip this page if neek2o is enabled
+if /i "%neek2o%" EQU "on" (set SNKS2U=N) & (goto:SNKPAGE5)
 
 ::skip this page if sneektype not uneek or uneek+di
 if /i "%SNEEKTYPE:~0,1%" EQU "S" (set SNKS2U=N) & (goto:SNKPAGE5)
@@ -6604,7 +6640,7 @@ echo         your Emulated Uneek Nand and your Real Nand.
 echo.
 echo.
 echo         If you answer "Y", you must access UNEEK by launching switch2uneek
-echo         from the Homebrew Channel. Alternatively, can use MMM to install
+echo         from the Homebrew Channel. Alternatively, can use WiiMod to install
 echo         the switch2uneek forwarder channel that will be saved to your SD card.
 echo.
 echo.
@@ -6645,10 +6681,12 @@ goto:SNKPAGE4d
 ::...................................SNEEK Page4 - SNEEK SERIAL...............................
 :SNKPAGE5
 
+if /i "%SNEEKSELECT%" EQU "5" (set nandexist=no) & (goto:WPAGE20)
+
 if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
 if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
 
-if /i "%NEEK2O%" EQU "ON" goto:DOIT
+if /i "%neek2o%" EQU "ON" goto:DOIT
 if /i "%SNKS2U%" EQU "N" goto:quickskip
 :DOIT
 SET NANDcount=0
@@ -6682,6 +6720,8 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
+if /i "%SNEEKSELECT%" EQU "5" echo         You are about to make the following changes to your Emulated NAND
+
 if /i "%SNEEKSELECT%" NEQ "3" goto:notalsoinstalling
 if /i "%SNEEKTYPE%" EQU "SD" echo         You are about to install SNEEK+DI and build a %SNKVERSION%%REGION% Emulated Nand
 if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to install UNEEK+DI and build a %SNKVERSION%%REGION% Emulated Nand
@@ -6689,8 +6729,8 @@ if /i "%SNEEKTYPE%" EQU "S" echo         You are about to install SNEEK and buil
 if /i "%SNEEKTYPE%" EQU "U" echo         You are about to install UNEEK and build a %SNKVERSION%%REGION% Emulated Nand
 
 echo.
-if /i "%NEEK2O%" EQU "on" echo         NEEK2O Enabled (can be changed in options)
-if /i "%NEEK2O%" NEQ "on" echo         NEEK2O Disabled (can be changed in options)
+if /i "%neek2o%" EQU "on" echo         neek2o Enabled (can be changed in options)
+if /i "%neek2o%" NEQ "on" echo         neek2o Disabled (can be changed in options)
 goto:skip
 
 :notalsoinstalling
@@ -6703,8 +6743,8 @@ if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to build UNEEK+DI
 if /i "%SNEEKTYPE%" EQU "U" echo         You are about to build UNEEK
 if /i "%SNEEKTYPE%" EQU "S" echo         You are about to build SNEEK
 echo.
-if /i "%NEEK2O%" EQU "on" echo         NEEK2O Enabled (can be changed in options)
-if /i "%NEEK2O%" NEQ "on" echo         NEEK2O Disabled (can be changed in options)
+if /i "%neek2o%" EQU "on" echo         neek2o Enabled (can be changed in options)
+if /i "%neek2o%" NEQ "on" echo         neek2o Disabled (can be changed in options)
 echo.
 echo.
 echo.
@@ -6717,7 +6757,7 @@ if not exist temp\WAD mkdir temp\WAD
 
 echo.
 echo.
-echo    Install wads from: temp\WAD\
+echo    Install WADs from: temp\WAD\
 echo     to Emulated Nand: %nandpath%\
 echo.
 IF not "%addwadfolder%"=="" echo    Install wads from custom folder: %addwadfolder%\
@@ -6725,51 +6765,98 @@ IF "%addwadfolder%"=="" (echo    A = Add custom folder of wads to install to the
 echo.
 echo.
 
+IF "%addwadfolder%"=="" (set emuitems=0) else (set emuitems=1)
+set emuwadcount=%emuitems%
 
-
-
+if /i "%SNKHBF%" EQU "Y" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKHBF%" EQU "Y" echo           * Install Homebrew Filter Channel
 if /i "%SNKHBF%" EQU "Y" echo.
 
+if /i "%SNKCIOS%" EQU "Y" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKCIOS%" EQU "Y" echo           * Install cIOS249 rev14
 if /i "%SNKCIOS%" EQU "Y" echo.
 
+if /i "%SNEEKSELECT%" NEQ "5" goto:skipthis
+if /i "%BCtype%" EQU "BC" goto:skipthis
+if /i "%BCtype%" EQU "NONE" goto:skipthis
+if /i "%SNKcBC%" EQU "N" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%SNKcBC%" EQU "N" echo           * Uninstall %BCTYPE%
+if /i "%SNKcBC%" EQU "N" echo.
+:skipthis
 
+if /i "%BCtype%" EQU "NMM" goto:noNMM
+if /i "%SNKcBC%" EQU "NMM" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKcBC%" EQU "NMM" echo           * Install NMM (No More Memory-Cards)
 if /i "%SNKcBC%" EQU "NMM" echo.
+:noNMM
 
+if /i "%BCtype%" EQU "DML" goto:noDML
+if /i "%SNKcBC%" EQU "DML" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKcBC%" EQU "DML" echo           * Install DML (Dios Mios Lite)
 if /i "%SNKcBC%" EQU "DML" echo.
+:noDML
 
+set uninstallprii=
+if /i "%SNEEKSELECT%" NEQ "5" goto:not5
+if /i "%PRIIFOUND%" EQU "YES" (goto:priifound) else (goto:not5)
+:priifound
+if /i "%SNKPRI%" EQU "Y" echo           * Priiloader already Installed
+if /i "%SNKPRI%" EQU "Y" echo.
+if /i "%SNKPRI%" EQU "N" SET /a emuitems=%emuitems%+1
+if /i "%SNKPRI%" EQU "N" echo           * Uninstall Priiloader
+if /i "%SNKPRI%" EQU "N" echo.
+if /i "%SNKPRI%" EQU "N" set uninstallprii=yes
+goto:miniskip
+:not5
+
+if /i "%SNKPRI%" EQU "Y" SET /a emuitems=%emuitems%+1
 if /i "%SNKPRI%" EQU "Y" echo           * Install Priiloader v0.4
 if /i "%SNKPRI%" EQU "Y" echo.
+:miniskip
 
+if /i "%SNKJOY%" EQU "Y" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKJOY%" EQU "Y" echo           * Install JoyFlow
 if /i "%SNKJOY%" EQU "Y" echo.
 
+if /i "%SNKS2U%" EQU "Y" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
 if /i "%SNKS2U%" EQU "Y" echo           * Install Switch2Uneek
 if /i "%SNKS2U%" EQU "Y" echo.
 
+if /i "%ThemeSelection%" NEQ "N" SET /a emuitems=%emuitems%+1
 if /i "%ThemeSelection%" EQU "R" echo           * Install Dark Wii Red Theme
 if /i "%ThemeSelection%" EQU "G" echo           * Install Dark Wii Green Theme
 if /i "%ThemeSelection%" EQU "BL" echo           * Install Dark Wii Blue Theme
 if /i "%ThemeSelection%" EQU "O" echo           * Install Dark Wii Orange Theme
+if /i "%ThemeSelection%" EQU "D" echo           * Restore Original\Default Theme
 if /i "%ThemeSelection%" NEQ "N" echo.
 
-if /i "%PIC%" EQU "Y" echo           * Install Photo Channel
-if /i "%NET%" EQU "Y" echo           * Install Internet Channel
-if /i "%WEATHER%" EQU "Y" echo           * Install Weather Channel
-if /i "%NEWS%" EQU "Y" echo           * Install News Channel
-if /i "%MIIQ%" EQU "Y" echo           * Install Mii Channel
-if /i "%Shop%" EQU "Y" echo           * Install Shopping Channel
-if /i "%Speak%" EQU "Y" echo           * Install Wii Speak Channel
+if /i "%PIC%" EQU "Y" (echo           * Install Photo Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%NET%" EQU "Y" (echo           * Install Internet Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%WEATHER%" EQU "Y" (echo           * Install Weather Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%NEWS%" EQU "Y" (echo           * Install News Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%MIIQ%" EQU "Y" (echo           * Install Mii Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%Shop%" EQU "Y" (echo           * Install Shopping Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+if /i "%Speak%" EQU "Y" (echo           * Install Wii Speak Channel) & (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
+
+
+
 echo.
 if /i "%nandexist%" EQU "yes" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]WARNING: An emulated nand already exists in:
 if /i "%nandexist%" EQU "yes" echo                   %nandpath%
 if /i "%nandexist%" EQU "yes" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]Existing emulated nand will be Deleted\Replaced
 :nonandinstallation
 echo.
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:skip5
+if /i "%emuitems%" NEQ "0" goto:skip5
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow] No changes to the Emulated NAND have been selected.
+echo.
+echo.
+goto:noyes
+:skip5
 echo                Y = Yes, do it now!
+:noyes
+
 echo.
 echo                N = No
 echo.
@@ -6791,11 +6878,17 @@ if /i "%SNKNANDCONFIRM%" EQU "N" goto:MENU
 if /i "%SNEEKSELECT%" EQU "1" goto:skip
 if /i "%SNKNANDCONFIRM%" EQU "A" goto:addwadfolder
 if /i "%SNKNANDCONFIRM%" EQU "R" (set addwadfolder=) & (goto:SNKNANDCONFIRM)
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:skip5
+if /i "%emuitems%" EQU "0" goto:badkey
+:skip5
+
 if /i "%SNEEKSELECT%" EQU "3" goto:skip
 if /i "%SNKNANDCONFIRM%" EQU "Y" goto:SNKNANDBUILDER
 :skip
 if /i "%SNKNANDCONFIRM%" EQU "Y" goto:SNEEKINSTALLER
 
+:badkey
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:SNKNANDCONFIRM
@@ -6851,8 +6944,9 @@ if /i "%fixslash%" EQU "yes" goto:doublecheckwad
 if not exist "%addwadfolder%" (echo.) & (echo %addwadfolder% doesn't exist, please try again...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:addwadfolder)
 
 ::make sure second char is ":"
-if /i "%addwadfolder:~1,1%" NEQ ":" (echo.) & (echo Enter the full path including the driver letter, please try again...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:addwadfolder)
+if /i "%addwadfolder:~1,1%" NEQ ":" (echo.) & (echo Enter the full path including the drive letter, please try again...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:addwadfolder)
 
+if not exist "%addwadfolder%\*.wad" (echo.) & (echo No Wads found, please try a different folder...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:addwadfolder)
 
 goto:SNKNANDCONFIRM
 
@@ -6869,6 +6963,7 @@ goto:SNKNANDCONFIRM
 if not exist "%nandpath%" mkdir "%nandpath%"
 ::if not exist temp\WAD mkdir temp\WAD
 
+if /i "%SNEEKSELECT%" EQU "5" goto:quickskip
 
 ::delete existing nand if exists
 if exist "%nandpath%"\title echo.
@@ -6916,8 +7011,6 @@ if exist "%DRIVEU%"\wfs move /y "%DRIVEU%"\wfs "%DRIVEU%\nands\nand%NANDcountPLU
 ::all
 if /i "%MIIQ%" EQU "Y" set MII=*
 
-
-
 if /i "%REGION%" EQU "U" goto:SNKU
 if /i "%REGION%" EQU "E" goto:SNKE
 if /i "%REGION%" EQU "J" goto:SNKJ
@@ -6954,6 +7047,13 @@ if /i "%ThemeSelection%" NEQ "O" goto:skip
 if /i "%SNKVERSION%" EQU "4.3" set darkwii_orange_4.3U=*
 if /i "%SNKVERSION%" EQU "4.2" set darkwii_orange_4.2U=*
 if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1U=*
+goto:SKIPSM
+:skip
+
+if /i "%ThemeSelection%" NEQ "D" goto:skip
+if /i "%SNKVERSION%" EQU "4.3" set A97=*
+if /i "%SNKVERSION%" EQU "4.2" set A87=*
+if /i "%SNKVERSION%" EQU "4.1" set A7b=*
 goto:SKIPSM
 :skip
 
@@ -7005,8 +7105,14 @@ if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1E=*
 goto:SKIPSM
 :skip
 
-:SKIPSM
+if /i "%ThemeSelection%" NEQ "D" goto:skip
+if /i "%SNKVERSION%" EQU "4.3" set A9a=*
+if /i "%SNKVERSION%" EQU "4.2" set A8a=*
+if /i "%SNKVERSION%" EQU "4.1" set A7e=*
+goto:SKIPSM
+:skip
 
+:SKIPSM
 if /i "%SNKVERSION%" EQU "4.3" set SMAPP=0000009b
 if /i "%SNKVERSION%" EQU "4.2" set SMAPP=0000008b
 if /i "%SNKVERSION%" EQU "4.1" set SMAPP=0000007f
@@ -7052,8 +7158,14 @@ if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1J=*
 goto:SKIPSM
 :skip
 
-:SKIPSM
+if /i "%ThemeSelection%" NEQ "D" goto:skip
+if /i "%SNKVERSION%" EQU "4.3" set A94=*
+if /i "%SNKVERSION%" EQU "4.2" set A84=*
+if /i "%SNKVERSION%" EQU "4.1" set A78=*
+goto:SKIPSM
+:skip
 
+:SKIPSM
 if /i "%SNKVERSION%" EQU "4.3" set SMAPP=00000095
 if /i "%SNKVERSION%" EQU "4.2" set SMAPP=00000085
 if /i "%SNKVERSION%" EQU "4.1" set SMAPP=00000079
@@ -7099,8 +7211,14 @@ if /i "%SNKVERSION%" EQU "4.1" set darkwii_orange_4.1K=*
 goto:SKIPSM
 :skip
 
-:SKIPSM
+if /i "%ThemeSelection%" NEQ "D" goto:skip
+if /i "%SNKVERSION%" EQU "4.3" set A9d=*
+if /i "%SNKVERSION%" EQU "4.2" set A8d=*
+if /i "%SNKVERSION%" EQU "4.1" set A81=*
+goto:SKIPSM
+:skip
 
+:SKIPSM
 if /i "%SNKVERSION%" EQU "4.3" set SMAPP=0000009e
 if /i "%SNKVERSION%" EQU "4.2" set SMAPP=0000008e
 if /i "%SNKVERSION%" EQU "4.1" set SMAPP=00000082
@@ -7109,6 +7227,8 @@ if /i "%SHOP%" EQU "Y" set SK=*
 
 
 :SNKBUGGEDSMIOS
+if /i "%SNEEKSELECT%" EQU "5" goto:skipthis
+
 if /i "%SNKVERSION%" EQU "4.1" set IOS60P=*
 if /i "%SNKVERSION%" EQU "4.2" set IOS70K=*
 if /i "%SNKVERSION%" EQU "4.3" set IOS80K=*
@@ -7145,23 +7265,41 @@ set IOS57=*
 set IOS58=*
 set IOS61=*
 
-if /i "%SNKcBC%" EQU "NMM" set cBC=*
-if /i "%SNKcBC%" EQU "DML" set DML=*
-if /i "%SNKcBC%" EQU "N" set BC=*
-
-if /i "%SNKCIOS%" EQU "Y" set cIOS249-v14=*
-
 if /i "%REGION%" EQU "U" set EULAU=*
 if /i "%REGION%" EQU "E" set EULAE=*
 if /i "%REGION%" EQU "J" set EULAJ=*
 if /i "%REGION%" EQU "K" set EULAK=*
 
+:skipthis
+
+if /i "%SHOP%" EQU "Y" set IOS56=*
+
+if /i "%SNEEKSELECT%" EQU "5" (set SM4.3U=) & (set SM4.2U=) & (set SM4.1U=) & (set SM4.3E=) & (set SM4.2E=) & (set SM4.1E=) & (set SM4.3J=) & (set SM4.2J=) & (set SM4.1J=) & (set SM4.3K=) & (set SM4.2K=) & (set SM4.1K=)
+
+if /i "%SNKcBC%" EQU "NMM" set cBC=*
+if /i "%SNKcBC%" EQU "DML" set DML=*
+if /i "%SNKcBC%" EQU "N" set BC=*
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:skipdeselect
+if /i "%BCtype%" EQU "BC" set BC=
+if /i "%BCtype%" EQU "DML" set DML=
+if /i "%BCtype%" EQU "NMM" set cBC=
+:skipdeselect
+
+
+if /i "%SNKCIOS%" EQU "Y" set cIOS249-v14=*
+
+if /i "%PRIIFOUND%" EQU "Yes" goto:skip1line
 if /i "%SNKPRI%" EQU "Y" set HAX=*
+:skip1line
+
 if /i "%SNKJOY%" EQU "Y" set JOYF=*
 if /i "%SNKHBF%" EQU "Y" set HBF=*
 if /i "%SNKS2U%" EQU "Y" set S2U=*
+if /i "%SNKS2U%" NEQ "Y" set nSwitch=*
+if /i "%nswitchFound%" EQU "Yes" set nSwitch=
 
-
+IF "%SMAPP%"=="" goto:miniskip
 
 ::subract 1 from %SMAPP% to get %SMTHEMEAPP%
 support\sfk dec %SMAPP%>dec.txt
@@ -7200,9 +7338,262 @@ if /i "%SMTHEMEAPP:~-1%" EQU "D" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%d
 if /i "%SMTHEMEAPP:~-1%" EQU "E" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%e
 if /i "%SMTHEMEAPP:~-1%" EQU "F" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%f
 
+:miniskip
 
 goto:DLCOUNT
 
+
+::..............................Emulated NAND Modifer - SNK NAND Selector....................
+:SNKNANDSELECTOR
+set drivetemp=
+set NANDPATH=
+set REGION=
+set SMAPP=
+set SMTHEMEAPP=
+set SNKVERSION=
+set PRIIFOUND=
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo                                EMULATED NAND MODIFIER
+echo.
+echo.
+echo.
+echo          Enter the Path of your Emulated NAND
+echo.
+echo.
+echo.
+echo.
+echo          Note: * You can drag and drop the Drive/folder into this
+echo                  window to save yourself having to manually type it
+echo.
+echo.
+echo.
+echo         EXAMPLES
+echo.
+echo.
+echo            L:
+echo.
+echo            H:\nands\nand1
+echo.
+echo.
+echo.
+echo.
+echo         B = Back
+echo.
+echo         M = Main Menu
+echo.
+echo.
+set /p DRIVETEMP=     Enter Selection Here: 
+
+
+::remove quotes from variable (if applicable)
+echo "set DRIVETEMP=%DRIVETEMP%">temp.txt
+support\sfk filter -quiet temp.txt -rep _""""__>temp.bat
+call temp.bat
+del temp.bat>nul
+del temp.txt>nul
+
+if /i "%DRIVETEMP%" EQU "B" goto:SNKPAGE1
+if /i "%DRIVETEMP%" EQU "M" goto:MENU
+
+
+
+:doublecheckNANDPATH
+set fixslash=
+if /i "%DRIVETEMP:~-1%" EQU "\" set fixslash=yes
+if /i "%DRIVETEMP:~-1%" EQU "/" set fixslash=yes
+if /i "%fixslash%" EQU "yes" set DRIVETEMP=%DRIVETEMP:~0,-1%
+if /i "%fixslash%" EQU "yes" goto:doublecheckNANDPATH
+
+if not exist "%DRIVETEMP%" goto:notexist
+
+if not exist "%DRIVETEMP%\title" goto:notexistnand
+if not exist "%DRIVETEMP%\sys" goto:notexistnand
+if not exist "%DRIVETEMP%\ticket" goto:notexistnand
+if not exist "%DRIVETEMP%\shared1" goto:notexistnand
+
+
+::Get NAND Info
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000098.app" (set REGION=U) & (set SNKVERSION=4.3) & (set SMAPP=00000098)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000088.app" (set REGION=U) & (set SNKVERSION=4.2) & (set SMAPP=00000088)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000007c.app" (set REGION=U) & (set SNKVERSION=4.1) & (set SMAPP=0000007c)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000009b.app" (set REGION=E) & (set SNKVERSION=4.3) & (set SMAPP=0000009b)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000008b.app" (set REGION=E) & (set SNKVERSION=4.2) & (set SMAPP=0000008b)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000007f.app" (set REGION=E) & (set SNKVERSION=4.1) & (set SMAPP=0000007f)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000095.app" (set REGION=J) & (set SNKVERSION=4.3) & (set SMAPP=00000095)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000085.app" (set REGION=J) & (set SNKVERSION=4.2) & (set SMAPP=00000085)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000079.app" (set REGION=J) & (set SNKVERSION=4.1) & (set SMAPP=00000079)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000009e.app" (set REGION=K) & (set SNKVERSION=4.3) & (set SMAPP=0000009e)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\0000008e.app" (set REGION=K) & (set SNKVERSION=4.2) & (set SMAPP=0000008e)
+
+if exist "%DRIVETEMP%\title\00000001\00000002\content\00000082.app" (set REGION=K) & (set SNKVERSION=4.1) & (set SMAPP=00000082)
+
+::check for priiloader
+if exist "%DRIVETEMP%\title\00000001\00000002\content\1%SMAPP:~1%.app" (set PRIIFOUND=YES) else (set PRIIFOUND=NO)
+
+::check for nswitch channel (title\00010001\4e4b324f\content\00000000.app)
+if exist "%DRIVETEMP%\title\00010001\4e4b324f\content\00000000.app" (set nSwitchFOUND=YES) else (set nSwitchFOUND=NO)
+
+
+
+::check for BC, NMM or DML
+set BCtype=
+set BCmd5=eb1b69f3d747145651aa834078c2aacd
+set DMLmd5=88720d0de8c7db7bf00f5053b76ae66b
+set NMMmd5=8663c24ab33540af6a818920a3a47c4a
+if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+
+if not exist "%DRIVETEMP%\title\00000001\00000100\content\00000008.app" (set BCtype=None) & (goto:noBCcheck)
+
+set md5check=
+support\sfk md5 -quiet -verify %BCmd5% "%DRIVETEMP%\title\00000001\00000100\content\00000008.app"
+if not errorlevel 1 set BCtype=BC
+
+set md5check=
+support\sfk md5 -quiet -verify %DMLmd5% "%DRIVETEMP%\title\00000001\00000100\content\00000008.app"
+if not errorlevel 1 set BCtype=DML
+
+set md5check=
+support\sfk md5 -quiet -verify %NMMmd5% "%DRIVETEMP%\title\00000001\00000100\content\00000008.app"
+if not errorlevel 1 set BCtype=NMM
+
+:noBCcheck
+
+
+
+
+IF "%SMAPP%"=="" goto:miniskip
+
+::subract 1 from %SMAPP% to get %SMTHEMEAPP%
+support\sfk dec %SMAPP%>dec.txt
+
+::Loop through the the following once for EACH line in whatever.txt
+for /F "tokens=*" %%A in (dec.txt) do call :processdec %%A
+goto:nextstep
+
+:processdec
+set dec=%*
+goto:EOF
+:nextstep
+
+del dec.txt>nul
+SET /a dec=%dec%-1
+support\sfk hex %dec% -digits=8 >hex.txt
+
+::Loop through the the following once for EACH line in whatever.txt
+for /F "tokens=*" %%A in (hex.txt) do call :processhexapp %%A
+goto:nextstep
+
+:processhexapp
+::this is repeated for each line of the txt.file
+::"%*" (no quotes) is the variable for each line as it passes through the loop
+set SMTHEMEAPP=%*
+goto:EOF
+:nextstep
+
+del hex.txt>nul
+
+::change caps to lower case for hex numbers if applicable
+if /i "%SMTHEMEAPP:~-1%" EQU "A" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%a
+if /i "%SMTHEMEAPP:~-1%" EQU "B" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%b
+if /i "%SMTHEMEAPP:~-1%" EQU "C" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%c
+if /i "%SMTHEMEAPP:~-1%" EQU "D" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%d
+if /i "%SMTHEMEAPP:~-1%" EQU "E" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%e
+if /i "%SMTHEMEAPP:~-1%" EQU "F" set SMTHEMEAPP=%SMTHEMEAPP:~0,-1%f
+
+:miniskip
+
+
+set NANDPATH=%DRIVETEMP%
+
+::echo NANDPATH=%NANDPATH%
+::echo REGION=%REGION%
+::echo SMAPP=%SMAPP%
+::echo SMTHEMEAPP=%SMTHEMEAPP%
+::echo SNKVERSION=%SNKVERSION%
+::echo PRIIFOUND=%PRIIFOUND%
+
+
+if "%REGION%"=="" (goto:FOLLOWUPQ) else (goto:SNKPAGE4a)
+
+:notexist
+echo The folder you selected does not exist
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:SNKNANDSELECTOR
+
+:notexistnand
+echo The folder you selected does not contain an Emulated NAND
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:SNKNANDSELECTOR
+
+::-----Unable to determine region, ask user-----
+::..............................Emulated NAND Modifer - SNK NAND Selector....................
+:FOLLOWUPQ
+set REGION=
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo                                EMULATED NAND MODIFIER
+echo.
+echo.
+echo.
+echo          ModMii is unable to determine the Region of your NAND.
+echo.
+echo          What Region is your Emulated NAND?
+echo.
+echo.
+echo.
+echo.
+echo          Note: * Theme and Priiloader modifiers are disabled
+echo                  for Emulated NANDs 4.0 or less
+echo.
+echo.
+echo.
+echo                U = USA
+echo                E = Euro (PAL)
+echo                J = JAP
+echo                K = Korean
+echo.
+echo.
+echo.
+echo.
+echo         B = Back
+echo.
+echo         M = Main Menu
+echo.
+echo.
+set /p REGION=     Enter Selection Here: 
+
+
+if /i "%REGION%" EQU "U" goto:SNKPAGE4a
+if /i "%REGION%" EQU "E" goto:SNKPAGE4a
+if /i "%REGION%" EQU "J" goto:SNKPAGE4a
+if /i "%REGION%" EQU "K" goto:SNKPAGE4a
+
+if /i "%REGION%" EQU "M" goto:MENU
+if /i "%REGION%" EQU "B" goto:SNKNANDSELECTOR
+
+:badkey
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:FOLLOWUPQ
 
 
 ::...................................SNEEK SNK DISC EXtractor...............................
@@ -7654,6 +8045,10 @@ Support\wit x --neek --recurse "%ISOFOLDER%" --DEST "%DRIVEUfix%/games/%%I" --pr
 ::cd ..
 if exist cygdrive rd /s /q cygdrive
 ::cd /d %ModMiipath%
+
+
+::delete diconfig.bin if found (needs to be reconstructed on next boot to see new games)
+if exist "%DriveU%\sneek\diconfig.bin" del "%DriveU%\sneek\diconfig.bin" >nul
 
 
 ::-----create csv list of all games in "%DRIVEU%"\games\ -----
@@ -8529,7 +8924,7 @@ echo                                             %locked% LA = Locked HBC Folder
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]PC Programs [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %JOYF% JFF = Joy Flow Forwarder Channel/dol
 echo                                             %JOY% JF = Joy Flow
 echo      %F32% F32 = FAT32 GUI Formatter            %S2U% S2U = Switch2Uneek
-echo      %wbm% WBM = WiiBackupManager
+echo      %wbm% WBM = WiiBackupManager                %nswitch% NS = nSwitch
 echo     %WiiGSC% WGSC = Wii Game Shortcut Creator
 echo      %SMW% SMW = ShowMiiWads
 echo       %CM% CM = Customize Mii
@@ -8544,16 +8939,15 @@ echo      %MMM% MMM = Multi-Mod Manager               %Smash% SS = Smash Stack (
 echo      %dop% DOP = Dop-Mii                         %YUGI% YU = YU-GI-OWNED (USA\EUR\JAP)
 echo      %IOS236Installer% 236 = IOS236 Installer                %BATHAXX% BH = BATHAXX (USA\EUR\JAP)
 echo      %SIP% SIP = Simple IOS Patcher              %ROTJ% RJ = Return of the JODI (USA\EUR\JAP)
-echo      %Pri% Pri = Priiloader v0.7 (236 Mod)      %Twi% Twi = Twilight Hack (USA\EUR\JAP)
+echo      %Pri% Pri = Priiloader v0.7                %Twi% Twi = Twilight Hack (USA\EUR\JAP)
 echo      %HAX% HAX = Priiloader Hacks.ini            %TOS% EH = Eri HaKawai (USA\EUR\JAP)
 echo      %HBF% HBF = Homebrew Filter
-::echo     %Y4M% Y4M = YAWMM 4 ModMii
 echo       %syscheck% SC = sysCheck
 echo      %sysCheckBeta% SCB = sysCheckBeta
+echo       %WiiMod% WM = WiiMod
 echo.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] LEGEND:[def] \x22=\x22 Auto-Updating Downloads
-echo.
 echo.
 echo.
 echo.
@@ -8603,6 +8997,7 @@ if /i "%OLDLIST%" EQU "RJ" goto:SwitchROTJ
 if /i "%OLDLIST%" EQU "EH" goto:SwitchTOS
 if /i "%OLDLIST%" EQU "ss" goto:Switchsmash
 if /i "%OLDLIST%" EQU "mmm" goto:Switchmmm
+if /i "%OLDLIST%" EQU "WM" goto:SwitchWiiMOd
 if /i "%OLDLIST%" EQU "236" goto:SwitchIOS236Installer
 if /i "%OLDLIST%" EQU "SIP" goto:SwitchSIP
 if /i "%OLDLIST%" EQU "JF" goto:SwitchJOY
@@ -8629,6 +9024,7 @@ if /i "%OLDLIST%" EQU "FLOW" goto:SwitchFLOW
 if /i "%OLDLIST%" EQU "USBX" goto:SwitchUSBX
 if /i "%OLDLIST%" EQU "JFF" goto:SwitchJOYF
 if /i "%OLDLIST%" EQU "S2U" goto:SwitchS2U
+if /i "%OLDLIST%" EQU "NS" goto:SwitchnSwitch
 if /i "%OLDLIST%" EQU "HBF" goto:SwitchHBF
 if /i "%OLDLIST%" EQU "Pri" goto:SwitchPri
 if /i "%OLDLIST%" EQU "HAX" goto:SwitchHAX
@@ -8717,6 +9113,10 @@ goto:OLDLIST
 if /i "%mmm%" EQU "*" (set mmm=) else (set mmm=*)
 goto:OLDLIST
 
+:SwitchWiiMod
+if /i "%WiiMod%" EQU "*" (set WiiMod=) else (set WiiMod=*)
+goto:OLDLIST
+
 :SwitchIOS236Installer
 if /i "%IOS236Installer%" EQU "*" (set IOS236Installer=) else (set IOS236Installer=*)
 goto:OLDLIST
@@ -8789,6 +9189,10 @@ goto:OLDLIST
 if /i "%S2U%" EQU "*" (set S2U=) else (set S2U=*)
 goto:OLDLIST
 
+:Switchnswitch
+if /i "%nswitch%" EQU "*" (set nswitch=) else (set nswitch=*)
+goto:OLDLIST
+
 :SwitchHBF
 if /i "%HBF%" EQU "*" (set HBF=) else (set HBF=*)
 goto:OLDLIST
@@ -8829,9 +9233,6 @@ goto:OLDLIST
 if /i "%HAX%" EQU "*" (set HAX=) else (set HAX=*)
 goto:OLDLIST
 
-:SwitchY4M
-if /i "%Y4M%" EQU "*" (set Y4M=) else (set Y4M=*)
-goto:OLDLIST
 
 :SELECTALLOLD
 
@@ -8857,6 +9258,7 @@ if /i "%OLDLIST%" EQU "PC" goto:OLDLIST
 
 :WiiAppSelect
 set mmm=*
+set WiiMod=*
 set HM=*
 set dop=*
 set syscheck=*
@@ -8864,7 +9266,6 @@ set sysCheckBeta=*
 set yawm=*
 set Pri=*
 set HAX=*
-::set Y4M=*
 set IOS236Installer=*
 set SIP=*
 set HBF=*
@@ -8885,6 +9286,7 @@ set locked=*
 set JOYF=*
 set JOY=*
 set S2U=*
+set nswitch=*
 if /i "%OLDLIST%" EQU "J" goto:OLDLIST
 
 
@@ -13382,8 +13784,11 @@ IF ERRORLEVEL 1 (set IOS56=*) else (set IOS56=)
 findStr /I /C:"IOS57 (rev 5919): No Patches" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set IOS57=*) else (set IOS57=)
 
-findStr /I /C:"IOS58 (rev 6176)" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS58=*) else (set IOS58=)
+set IOS58=*
+findStr /I /C:"IOS58 (rev 6176): No Patches" "%sysCheckName%" >nul
+IF not ERRORLEVEL 1 set IOS58=
+findStr /I /C:"IOS58 (rev 6176): USB 2.0" "%sysCheckName%" >nul
+IF not ERRORLEVEL 1 set IOS58=
 
 findStr /I /C:"IOS61 (rev 5662): No Patches" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set IOS61=*) else (set IOS61=)
@@ -13438,51 +13843,50 @@ IF ERRORLEVEL 1 (set M10=*) else (set M10=)
 
 ::IOS236
 findStr /I /C:"IOS236" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS236Installer=*) else (set IOS236Installer=)
-if /i "%IOS236Installer%" EQU "*" (set SIP=*) else (set SIP=)
-if /i "%IOS236Installer%" EQU "*" (set IOS36=*) else (set IOS36=)
+IF ERRORLEVEL 1 (set IOS236=*) else (set IOS236=)
 
 
-set mmm=
+set WiiMod=
 set RECCIOS=
-if /i "%cIOS202[60]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS222[38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS223[37-38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS224[57]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS249[56]-d2x-v6%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS250[57]-d2x-v6%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%IOS9%" EQU "*" set mmm=*
-if /i "%IOS12%" EQU "*" set mmm=*
-if /i "%IOS13%" EQU "*" set mmm=*
-if /i "%IOS14%" EQU "*" set mmm=*
-if /i "%IOS15%" EQU "*" set mmm=*
-if /i "%IOS17%" EQU "*" set mmm=*
-if /i "%IOS21%" EQU "*" set mmm=*
-if /i "%IOS22%" EQU "*" set mmm=*
-if /i "%IOS28%" EQU "*" set mmm=*
-if /i "%IOS31%" EQU "*" set mmm=*
-if /i "%IOS33%" EQU "*" set mmm=*
-if /i "%IOS34%" EQU "*" set mmm=*
-if /i "%IOS35%" EQU "*" set mmm=*
-if /i "%IOS36v3608%" EQU "*" set mmm=*
-if /i "%IOS37%" EQU "*" set mmm=*
-if /i "%IOS38%" EQU "*" set mmm=*
-if /i "%IOS41%" EQU "*" set mmm=*
-if /i "%IOS48v4124%" EQU "*" set mmm=*
-if /i "%IOS43%" EQU "*" set mmm=*
-if /i "%IOS45%" EQU "*" set mmm=*
-if /i "%IOS46%" EQU "*" set mmm=*
-if /i "%IOS53%" EQU "*" set mmm=*
-if /i "%IOS55%" EQU "*" set mmm=*
-if /i "%IOS56%" EQU "*" set mmm=*
-if /i "%IOS57%" EQU "*" set mmm=*
-if /i "%IOS58%" EQU "*" set mmm=*
-if /i "%IOS61%" EQU "*" set mmm=*
-if /i "%IOS60P%" EQU "*" set mmm=*
-if /i "%IOS70K%" EQU "*" set mmm=*
-if /i "%IOS80K%" EQU "*" set mmm=*
-if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" set mmm=*
-if /i "%M10%" EQU "*" set mmm=*
+if /i "%cIOS202[60]-v5.1R%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%cIOS222[38]-v4%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%cIOS223[37-38]-v4%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%cIOS224[57]-v5.1R%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%cIOS249[56]-d2x-v6%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%cIOS250[57]-d2x-v6%" EQU "*" (set WiiMod=*) & (set RECCIOS=Y)
+if /i "%IOS9%" EQU "*" set WiiMod=*
+if /i "%IOS12%" EQU "*" set WiiMod=*
+if /i "%IOS13%" EQU "*" set WiiMod=*
+if /i "%IOS14%" EQU "*" set WiiMod=*
+if /i "%IOS15%" EQU "*" set WiiMod=*
+if /i "%IOS17%" EQU "*" set WiiMod=*
+if /i "%IOS21%" EQU "*" set WiiMod=*
+if /i "%IOS22%" EQU "*" set WiiMod=*
+if /i "%IOS28%" EQU "*" set WiiMod=*
+if /i "%IOS31%" EQU "*" set WiiMod=*
+if /i "%IOS33%" EQU "*" set WiiMod=*
+if /i "%IOS34%" EQU "*" set WiiMod=*
+if /i "%IOS35%" EQU "*" set WiiMod=*
+if /i "%IOS36v3608%" EQU "*" set WiiMod=*
+if /i "%IOS37%" EQU "*" set WiiMod=*
+if /i "%IOS38%" EQU "*" set WiiMod=*
+if /i "%IOS41%" EQU "*" set WiiMod=*
+if /i "%IOS48v4124%" EQU "*" set WiiMod=*
+if /i "%IOS43%" EQU "*" set WiiMod=*
+if /i "%IOS45%" EQU "*" set WiiMod=*
+if /i "%IOS46%" EQU "*" set WiiMod=*
+if /i "%IOS53%" EQU "*" set WiiMod=*
+if /i "%IOS55%" EQU "*" set WiiMod=*
+if /i "%IOS56%" EQU "*" set WiiMod=*
+if /i "%IOS57%" EQU "*" set WiiMod=*
+if /i "%IOS58%" EQU "*" set WiiMod=*
+if /i "%IOS61%" EQU "*" set WiiMod=*
+if /i "%IOS60P%" EQU "*" set WiiMod=*
+if /i "%IOS70K%" EQU "*" set WiiMod=*
+if /i "%IOS80K%" EQU "*" set WiiMod=*
+if /i "%IOS236%" EQU "*" set WiiMod=*
+if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" set WiiMod=*
+if /i "%M10%" EQU "*" set WiiMod=*
 
 
 set BACKB4QUEUE=sysCheckName
@@ -13517,7 +13921,7 @@ set IOS58=*
 
 set HM=*
 set bootmiisd=*
-set mmm=*
+set WiiMod=*
 if /i "%FIRMSTART%" EQU "4.1" set BB1=*
 if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
@@ -13976,11 +14380,10 @@ if /i "%REGION%" NEQ "K" set ROTJ=*
 if /i "%REGION%" NEQ "K" set TOS=*
 :notallexploits
 
-::set Y4M=*
-::set IOS236=*
-set IOS236Installer=*
-set SIP=*
-set IOS36=*
+set IOS236=*
+::set IOS236Installer=*
+::set SIP=*
+::set IOS36=*
 
 set cIOS202[60]-v5.1R=*
 set cIOS222[38]-v4=*
@@ -13995,7 +14398,7 @@ if /i "%CMIOSOPTION%" EQU "on" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=
 if /i "%CMIOSOPTION%" EQU "on" set M10=
 set pri=*
 ::set HAX=*
-set mmm=*
+set WiiMod=*
 
 goto:DOWNLOADQUEUE
 
@@ -14003,9 +14406,7 @@ goto:DOWNLOADQUEUE
 
 :notvirgin
 
-set mmm=*
-::set Y4M=*
-
+set WiiMod=*
 
 
 if /i "%HMInstaller%" NEQ "Y" goto:noHMInstallerforNonVirgin
@@ -14034,9 +14435,9 @@ if /i "%REGION%" NEQ "K" set TOS=*
 
 :noHMInstallerforNonVirgin
 
-if /i "%IOS236InstallerQ%" EQU "Y" set SIP=*
-if /i "%IOS236InstallerQ%" EQU "Y" set IOS36=*
-if /i "%IOS236InstallerQ%" EQU "Y" set IOS236Installer=*
+::if /i "%IOS236InstallerQ%" EQU "Y" set SIP=*
+if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236=*) & (set WiiMod=*)
+::if /i "%IOS236InstallerQ%" EQU "Y" set IOS236Installer=*
 
 if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
@@ -14415,8 +14816,8 @@ if /i "%IOS80%" EQU "*" (echo "IOS80v6944">>temp\DLnames.txt) & (echo "IOS80">>t
 if /i "%IOS80P%" EQU "*" (echo "IOS80v16944(IOS80v6944[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS80P">>temp\DLgotos.txt)
 
 if /i "%mmm%" EQU "*" (echo "Multi-Mod Manager (MMM) v13.4">>temp\DLnames.txt) & (echo "mmm">>temp\DLgotos.txt)
+if /i "%WiiMod%" EQU "*" (echo "WiiMod">>temp\DLnames.txt) & (echo "WiiMod">>temp\DLgotos.txt)
 if /i "%yawm%" EQU "*" (echo "Yet Another Wad Manager Mod">>temp\DLnames.txt) & (echo "yawm">>temp\DLgotos.txt)
-if /i "%Y4M%" EQU "*" (echo "YAWMM 4 ModMii">>temp\DLnames.txt) & (echo "Y4M">>temp\DLgotos.txt)
 if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\DLgotos.txt)
 
 if /i "%syscheck%" EQU "*" (echo "sysCheck">>temp\DLnames.txt) & (echo "sysCheck">>temp\DLgotos.txt)
@@ -14436,7 +14837,7 @@ if /i "%Twi%" EQU "*" (echo "Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)"
 
 if /i "%IOS236Installer%" EQU "*" (echo "IOS236 Installer v5 Mod">>temp\DLnames.txt) & (echo "IOS236Installer">>temp\DLgotos.txt)
 if /i "%SIP%" EQU "*" (echo "Simple IOS Patcher">>temp\DLnames.txt) & (echo "SIP">>temp\DLgotos.txt)
-if /i "%Pri%" EQU "*" (echo "Priiloader v0.7 (236 Mod)">>temp\DLnames.txt) & (echo "Priiloader">>temp\DLgotos.txt)
+if /i "%Pri%" EQU "*" (echo "Priiloader v0.7 ">>temp\DLnames.txt) & (echo "Priiloader">>temp\DLgotos.txt)
 if /i "%HAX%" EQU "*" (echo "Priiloader Hacks">>temp\DLnames.txt) & (echo "PriiHacks">>temp\DLgotos.txt)
 if /i "%MyM%" EQU "*" (echo "MyMenuifyMod">>temp\DLnames.txt) & (echo "Mym">>temp\DLgotos.txt)
 
@@ -14476,7 +14877,7 @@ if /i "%JOY%" EQU "*" (echo "JoyFlow">>temp\DLnames.txt) & (echo "JOY">>temp\DLg
 if /i "%JOYF%" EQU "*" (echo "Joy Flow Forwarder Channel\dol">>temp\DLnames.txt) & (echo "JOYF">>temp\DLgotos.txt)
 if /i "%HBF%" EQU "*" (echo "Homebrew Filter r32">>temp\DLnames.txt) & (echo "HBF">>temp\DLgotos.txt)
 if /i "%S2U%" EQU "*" (echo "Switch2Uneek">>temp\DLnames.txt) & (echo "S2U">>temp\DLgotos.txt)
-
+if /i "%nSwitch%" EQU "*" (echo "nSwitch">>temp\DLnames.txt) & (echo "nSwitch">>temp\DLgotos.txt)
 if /i "%WiiMC%" EQU "*" (echo "WiiMC - Media Player (Most Recent Release)">>temp\DLnames.txt) & (echo "WIIMC">>temp\DLgotos.txt)
 if /i "%fceugx%" EQU "*" (echo "FCEUGX - NES Emulator for the Wii (Most Recent Release)">>temp\DLnames.txt) & (echo "fceugx">>temp\DLgotos.txt)
 if /i "%snes9xgx%" EQU "*" (echo "SNES9xGX - SNES Emulator for the Wii (Most Recent Release)">>temp\DLnames.txt) & (echo "snes9xgx">>temp\DLgotos.txt)
@@ -15079,7 +15480,6 @@ if /i "%BB2%" EQU "*" echo SET BB2=%BB2%>> "temp\DownloadQueues\%DLQUEUENAME%.ba
 if /i "%HM%" EQU "*" echo SET HM=%HM%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%IOS236Installer%" EQU "*" echo SET IOS236Installer=%IOS236Installer%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%SIP%" EQU "*" echo SET SIP=%SIP%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%Y4M%" EQU "*" echo SET Y4M=%Y4M%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%dop%" EQU "*" echo SET dop=%dop%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%syscheck%" EQU "*" echo SET syscheck=%syscheck%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%sysCheckBeta%" EQU "*" echo SET sysCheckBeta=%sysCheckBeta%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -15098,6 +15498,7 @@ if /i "%ROTJ%" EQU "*" echo SET ROTJ=%ROTJ%>> "temp\DownloadQueues\%DLQUEUENAME%
 if /i "%TOS%" EQU "*" echo SET TOS=%TOS%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%smash%" EQU "*" echo SET smash=%smash%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%mmm%" EQU "*" echo SET mmm=%mmm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%WiiMod%" EQU "*" echo SET WiiMod=%WiiMod%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%yawm%" EQU "*" echo SET yawm=%yawm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%neogamma%" EQU "*" echo SET neogamma=%neogamma%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cfg249%" EQU "*" echo SET cfg249=%cfg249%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -15121,6 +15522,7 @@ if /i "%FLOW%" EQU "*" echo SET FLOW=%FLOW%>> "temp\DownloadQueues\%DLQUEUENAME%
 if /i "%USBX%" EQU "*" echo SET USBX=%USBX%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%JOYF%" EQU "*" echo SET JOYF=%JOYF%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%S2U%" EQU "*" echo SET S2U=%S2U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%nSwitch%" EQU "*" echo SET nSwitch=%nSwitch%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%HBF%" EQU "*" echo SET HBF=%HBF%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%JOY%" EQU "*" echo SET JOY=%JOY%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cfgr%" EQU "*" echo SET cfgr=%cfgr%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -18462,7 +18864,7 @@ if /i "%code1%" EQU "SNEEKAPP" goto:DownloadApp2
 
 :DownloadURL2
 if not exist temp\%wadname% start %ModMiimin%/wait support\wget %code2%
-if exist %dlname% move /y %dlname% temp\%wadname%
+if exist %dlname% move /y %dlname% temp\%wadname% >nul
 support\7za e -aoa temp\%wadname% -o"%Drive%"/%path1% *.%version% -r
 
 ::save identifier for bannerbombs
@@ -18587,6 +18989,7 @@ goto:NEXT
 if exist "temp\%wadname%" goto:FullExtractZipAlreadyExists
 if not exist temp\%dlname% start %ModMiimin%/wait support\wget %code2%
 if exist %dlname% move /y %dlname% "temp\%wadname%">nul
+
 :FullExtractZipAlreadyExists
 
 ::extract selected apps differently...
@@ -18650,6 +19053,13 @@ del dump.txt>nul
 goto:skipnormalextraction
 :skipS2U
 
+
+if /i "%name%" NEQ "nSwitch" goto:skipnSwitch
+if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
+copy /y "temp\%wadname%" "%Drive%\WAD\%wadname%" >nul
+goto:skipnormalextraction
+:skipnSwitch
+
 if /i "%wadname:~0,15%" NEQ "Homebrew_Filter" goto:skipHBF
 if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
 if /i "%MENU1%" NEQ "S" copy /y "temp\%wadname%" "%Drive%\%path1%%wadname%">nul
@@ -18658,18 +19068,21 @@ goto:skipnormalextraction
 :skipHBF
 
 
-if /i "%filename%" NEQ "WiiBackupManager.exe" goto:notWBM
+if /i "%wadname%" NEQ "WiiBackupManager.zip" goto:notWBM
 if exist "%DRIVE%"\WiiBackupManager rd /s /q "%DRIVE%"\WiiBackupManager
-support\7za x -aoa temp\%wadname% -o"%Drive%" -r
-rename "%Drive%"\%dlname:~6,-4% WiiBackupManager
+mkdir "%DRIVE%"\WiiBackupManager
+support\7za x -aoa temp\%wadname% -o"%Drive%\WiiBackupManager" -r
 
+
+::rename "%Drive%"\%dlname:~6,-4% WiiBackupManager
 
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager.exe" "~$folder.desktop$" "WiiBackupManager"
-support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager.exe" "~$folder.programs$\WiiBackupManager" "WiiBackupManager"
+if exist "%homedrive%\Program Files (x86)" (set OSbit=64) else (set OSbit=32)
+support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.desktop$" "WiiBackupManager"
+support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.programs$\WiiBackupManager" "WiiBackupManager"
 :skip
 goto:skipnormalextraction
 :notWBM
@@ -19145,9 +19558,9 @@ if /i "%REGION%" EQU "K" goto:RenameBootToHackMii
 goto:next
 
 
-::-----Bannerbomb MMM instead of HackMii installer------
+::-----Bannerbomb WiiMod instead of HackMii installer------
 :RenameBootToHackMii
-if exist "%Drive%"\apps\MMM\MMMv13.4boot.elf copy /Y "%Drive%"\apps\MMM\MMMv13.4boot.elf "%Drive%"\boot.elf >nul
+if exist "%Drive%"\apps\WiiMod\boot.elf copy /Y "%Drive%"\apps\WiiMod\boot.elf "%Drive%"\boot.elf >nul
 goto:next
 
 
@@ -19666,63 +20079,63 @@ if /i "%sneekYrev%" EQU "0" set sneekYrev=%tempsneekYrev%
 
 
 
-::get NEEK2O rev number
+::get neek2o rev number
 
-if /i "%NEEK2O%" NEQ "on" goto:skipNEEK2OREV
+if /i "%neek2o%" NEQ "on" goto:skipneek2oREV
 
-set NEEK2Orev=0
-set tempNEEK2Orev=none
-set useNEEK2Otemp=off
+set neek2orev=0
+set tempneek2orev=none
+set useneek2otemp=off
 
 start %ModMiimin%/wait support\wget http://code.google.com/p/custom-di/downloads/list
-if exist list move /y list NEEK2Orev.bat>nul
+if exist list move /y list neek2orev.bat>nul
 
-if not exist NEEK2Orev.bat goto:skip
-support\sfk filter -quiet "NEEK2Orev.bat" -rep _"*module V"_"set NEEK2Orev="_ -write -yes
-support\sfk filter -quiet "NEEK2Orev.bat" -+"set NEEK2Orev" -write -yes
-support\sfk filter -quiet "NEEK2Orev.bat" -rep _" </a>*"__ -write -yes
-support\sfk filter "NEEK2Orev.bat" -unique -write -yes>nul
-call NEEK2Orev.bat
-del NEEK2Orev.bat>nul
+if not exist neek2orev.bat goto:skip
+support\sfk filter -quiet "neek2orev.bat" -rep _"*module V"_"set neek2orev="_ -write -yes
+support\sfk filter -quiet "neek2orev.bat" -+"set neek2orev" -write -yes
+support\sfk filter -quiet "neek2orev.bat" -rep _" </a>*"__ -write -yes
+support\sfk filter "neek2orev.bat" -unique -write -yes>nul
+call neek2orev.bat
+del neek2orev.bat>nul
 :skip
 
-if not exist temp\tempNEEK2Orev.bat goto:NoTempNEEK2OFiles
-call temp\tempNEEK2Orev.bat
+if not exist temp\tempneek2orev.bat goto:NoTempneek2oFiles
+call temp\tempneek2orev.bat
 
 ::if temp files are equal to the new ones, use temp files
-if /i "%TEMPNEEK2OREV%" EQU "%NEEK2OREV%" set useNEEK2Otemp=on
+if /i "%TEMPneek2oREV%" EQU "%neek2oREV%" set useneek2otemp=on
 
 ::if no internet and temp files exist, use temp files
-if /i "%NEEK2OREV%" EQU "0" set useNEEK2Otemp=on
-if /i "%TEMPNEEK2OREV%" EQU "none" set useNEEK2Otemp=off
-if /i "%useNEEK2Otemp%" EQU "on" set NEEK2OREV=%TEMPNEEK2OREV%
-:NoTempNEEK2OFiles
+if /i "%neek2oREV%" EQU "0" set useneek2otemp=on
+if /i "%TEMPneek2oREV%" EQU "none" set useneek2otemp=off
+if /i "%useneek2otemp%" EQU "on" set neek2oREV=%TEMPneek2oREV%
+:NoTempneek2oFiles
 
-if /i "%NEEK2OREV%" NEQ "0" (echo set tempNEEK2Orev=%NEEK2Orev% >temp\tempNEEK2Orev.bat) & (support\sfk filter -quiet "temp\tempNEEK2Orev.bat" -rep _=*_"=%NEEK2Orev%"_ -write -yes)
+if /i "%neek2oREV%" NEQ "0" (echo set tempneek2orev=%neek2orev% >temp\tempneek2orev.bat) & (support\sfk filter -quiet "temp\tempneek2orev.bat" -rep _=*_"=%neek2orev%"_ -write -yes)
 
-if not exist temp\tempNEEK2Orev.bat goto:NEEK2Owarning
+if not exist temp\tempneek2orev.bat goto:neek2owarning
 
-:skipNEEK2OREV
+:skipneek2oREV
 
 
-if /i "%NEEK2O%" EQU "on" goto:NEEK2Obuild 
+if /i "%neek2o%" EQU "on" goto:neek2obuild 
 if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK rev%sneekYREV%
-goto:skipNEEK2Obuild
-:NEEK2Obuild
+goto:skipneek2obuild
+:neek2obuild
 
 
-if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK NEEK2O rev%NEEK2OREV%
+if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK neek2o rev%neek2oREV%
 
-:skipNEEK2Obuild
+:skipneek2obuild
 echo.
-if /i "%NEEK2O%" EQU "on" echo NEEK2O Enabled (can be changed in options)
-if /i "%NEEK2O%" NEQ "on" echo NEEK2O Disabled (can be changed in options)
+if /i "%neek2o%" EQU "on" echo neek2o Enabled (can be changed in options)
+if /i "%neek2o%" NEQ "on" echo neek2o Disabled (can be changed in options)
 
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
@@ -19828,7 +20241,7 @@ echo.
 :DLDIMODULE
 echo Downloading dimodule.elf
 
-if /i "%NEEK2O%" EQU "on" goto:NEEK2ODLDIMODULE
+if /i "%neek2o%" EQU "on" goto:neek2oDLDIMODULE
 
 if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
 
@@ -19843,23 +20256,23 @@ echo.
 goto:skipDL01
 
 
-:NEEK2ODLDIMODULE
-if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
+:neek2oDLDIMODULE
+if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
 
-if exist dimodule.elf move /Y dimodule.elf temp\NEEK2O-dimodule.elf>nul
+if exist dimodule.elf move /Y dimodule.elf temp\neek2o-dimodule.elf>nul
 
-if not exist temp\NEEK2O-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
+if not exist temp\neek2o-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
 
-if exist dimodule.elf move /Y dimodule.elf temp\NEEK2O-dimodule.elf>nul
+if exist dimodule.elf move /Y dimodule.elf temp\neek2o-dimodule.elf>nul
 
-if not exist temp\NEEK2O-dimodule.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-dimodule.elf temp\dimodule.elf>nul)
+if not exist temp\neek2o-dimodule.elf (goto:sneekwarning) else (copy /y temp\neek2o-dimodule.elf temp\dimodule.elf>nul)
 echo.
 
 :skipDL01
 
 
 
-if /i "%NEEK2O%" EQU "on" goto:NEEK2OMOREMODULES
+if /i "%neek2o%" EQU "on" goto:neek2oMOREMODULES
 
 echo Downloading fsmodule-usb.elf
 if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
@@ -19914,66 +20327,64 @@ if exist temp\esmodule-sdon.elf (copy /Y temp\esmodule-sdon.elf temp\esmodule.el
 
 echo.
 
-goto:skipNEEK2OMOREMODULES
+goto:skipneek2oMOREMODULES
 
 
 
 
-:NEEK2OMOREMODULES
+:neek2oMOREMODULES
 
 
 echo Downloading fsmodule-usb.elf
-if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
+if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
 
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\NEEK2O-fsmodule-usb.elf>nul
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\neek2o-fsmodule-usb.elf>nul
 
-if not exist temp\NEEK2O-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
+if not exist temp\neek2o-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
 
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\NEEK2O-fsmodule-usb.elf>nul
+if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\neek2o-fsmodule-usb.elf>nul
 
-if not exist temp\NEEK2O-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
+if not exist temp\neek2o-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\neek2o-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
 
 echo.
 
 
 
 echo Downloading fsmodule-sd.elf
-if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\NEEK2O-fsmodule-sd.elf>nul
+if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\neek2o-fsmodule-sd.elf>nul
 
-if not exist temp\NEEK2O-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\NEEK2O-fsmodule-sd.elf>nul
+if not exist temp\neek2o-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
+if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\neek2o-fsmodule-sd.elf>nul
 
-if not exist temp\NEEK2O-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\NEEK2O-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
+if not exist temp\neek2o-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\neek2o-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
 echo.
 
 
-
-if /i "%NEEK2O%" EQU "ON" goto:SSDoff
 
 if /i "%SNEEKTYPE:~0,1%" EQU "U" goto:SSDoff
 if /i "%SSD%" EQU "on" goto:SSDon
 
 :SSDoff
 echo Downloading esmodule.elf
-if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\NEEK2O-esmodule-sdoff.elf>nul
-if exist temp\NEEK2O-esmodule-sdoff.elf copy /Y temp\NEEK2O-esmodule-sdoff.elf temp\esmodule.elf>nul
+if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
+if exist esmodule.elf move /Y esmodule.elf temp\neek2o-esmodule-sdoff.elf>nul
+if exist temp\neek2o-esmodule-sdoff.elf copy /Y temp\neek2o-esmodule-sdoff.elf temp\esmodule.elf>nul
 
-if not exist temp\NEEK2O-esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\NEEK2O-esmodule-sdoff.elf>nul
-if exist temp\NEEK2O-esmodule-sdoff.elf (copy /Y temp\NEEK2O-esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
+if not exist temp\neek2o-esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
+if exist esmodule.elf move /Y esmodule.elf temp\neek2o-esmodule-sdoff.elf>nul
+if exist temp\neek2o-esmodule-sdoff.elf (copy /Y temp\neek2o-esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
 goto:skipSSDon
 
 :SSDon
 echo Downloading esmodule.elf (with SD Access On)
-if /i "%useNEEK2Otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\NEEK2O-esmodule-sdon.elf>nul
-if exist temp\NEEK2O-esmodule-sdon.elf copy /Y temp\NEEK2O-esmodule-sdon.elf temp\esmodule.elf>nul
+if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
+if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\neek2o-esmodule-sdon.elf>nul
+if exist temp\neek2o-esmodule-sdon.elf copy /Y temp\neek2o-esmodule-sdon.elf temp\esmodule.elf>nul
 
-if not exist temp\NEEK2O-esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\NEEK2O-esmodule-sdon.elf>nul
-if exist temp\NEEK2O-esmodule-sdon.elf (copy /Y temp\NEEK2O-esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
+if not exist temp\neek2o-esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
+if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\neek2o-esmodule-sdon.elf>nul
+if exist temp\neek2o-esmodule-sdon.elf (copy /Y temp\neek2o-esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
 :skipSSDon
 
 echo.
@@ -19981,7 +20392,7 @@ echo.
 
 
 
-:skipNEEK2OMOREMODULES
+:skipneek2oMOREMODULES
 
 
 
@@ -20061,10 +20472,14 @@ if exist "%DRIVE%\bootmiiuneek" rd /s /q "%DRIVE%\bootmiiuneek"
 rename "%DRIVE%\bootmii" "bootmiiuneek"
 :noswitch2uneek
 
+if /i "%neek2o%" EQU "off" goto:norename
+if exist "%DRIVE%\bootmiineek" rd /s /q "%DRIVE%\bootmiineek"
+rename "%DRIVE%\bootmii" "bootmiineek"
+:norename
 
 ::save rev information
 
-if /i "%NEEK2O%" EQU "on" goto:NEEK2Orevinfo
+if /i "%neek2o%" EQU "on" goto:neek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
@@ -20096,52 +20511,50 @@ if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV% >"%DRIVEU%"\
 if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
 if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
 :skipsneekverbose
-goto:skipNEEK2Orevinfo
+goto:skipneek2orevinfo
 
 
-:NEEK2Orevinfo
+:neek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
 
-::NEEK2O sd access temporarily always disabled
-goto:miniskip
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
 
-::NEEK2O sd access temporarily always disabled
+::neek2o sd access temporarily always disabled
 goto:miniskip
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) NEEK2O rev%NEEK2OREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
 :skipsneekverbose
 
 
-:skipNEEK2Orevinfo
+:skipneek2orevinfo
 
 
 
@@ -20273,6 +20686,11 @@ support\sfk filter -quiet "support\ShowMiiWads.cfg" -rep _"'"_"""_ -write -yes
 
 
 cls
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:tinyskip
+if /i "%emuwadcount%" EQU "0" goto:skipSMW
+:tinyskip
+
 echo Loading ShowMiiWads
 echo.
 echo installing wads from: temp\WAD\
@@ -20285,8 +20703,6 @@ cd support
 SMW-Mod.exe
 cd..
 
-del support\ShowMiiWads.cfg>nul
-
 ::---delete non-temp files---
 if exist temp\WAD\JoyFlowHNv11-HBJF.wad del temp\WAD\JoyFlowHNv11-HBJF.wad>nul
 if exist temp\WAD\switch2uneek(emulators)-4EMUNand-v11-S2RL.wad del temp\WAD\switch2uneek(emulators)-4EMUNand-v11-S2RL.wad>nul
@@ -20296,6 +20712,12 @@ if exist temp\WAD\cBC-DML.wad del temp\WAD\cBC-DML.wad>nul
 
 move temp\WAD\*.wad temp\>nul
 
+:skipSMW
+
+if exist support\ShowMiiWads.cfg del support\ShowMiiWads.cfg>nul
+
+
+if /i "%SNEEKSELECT%" EQU "5" goto:skip
 ::Build setting.txt
 if /i "%REGION%" EQU "U" set SNKSERIAL=LU521175683
 if /i "%REGION%" EQU "E" set SNKSERIAL=LEH133789940
@@ -20316,8 +20738,9 @@ if /i "%REGION%" NEQ "U" del USAsetting.txt>nul
 
 :skip
 
-
+if "%ThemeSelection%"=="" goto:quickskip2
 if /i "%ThemeSelection%" EQU "N" goto:quickskip
+if /i "%ThemeSelection%" EQU "D" goto:quickskip
 echo.
 echo Copying over Custom Theme
 
@@ -20325,21 +20748,37 @@ if /i "%ThemeSelection%" EQU "R" set themecolour=Red
 if /i "%ThemeSelection%" EQU "G" set themecolour=Green
 if /i "%ThemeSelection%" EQU "BL" set themecolour=Blue
 if /i "%ThemeSelection%" EQU "O" set themecolour=Orange
+
 move /y "temp\ModThemes\DarkWii_%themecolour%_%effect%_%SNKVERSION%%REGION%.csm" "%nandpath%"\title\00000001\00000002\content\%SMTHEMEAPP%.app>nul
+
+goto:quickskip2
 :quickskip
+
+
+if /i "%ThemeSelection%" NEQ "D" goto:quickskip2
+echo.
+echo Restoring Original Theme
+move /y "temp\ModThemes\%SMTHEMEAPP%_%SNKVERSION%%REGION%.app" "%nandpath%"\title\00000001\00000002\content\%SMTHEMEAPP%.app>nul
+:quickskip2
+
+
 
 if exist temp\ModThemes rd /s /q temp\ModThemes
 if exist temp\WAD rd /s /q temp\WAD
 
 
+::disable wbfs and games folder creation for now
+goto:notDI
+if /i "%SNEEKSELECT%" EQU "5" goto:skip
 ::---------if building uneek+di or sneek+di add games\wbfs folder to usb---------
 if /i "%SNEEKTYPE:~1,1%" NEQ "D" goto:notDI
 if not exist "%DRIVEU%\games" mkdir "%DRIVEU%\games" >nul
-if /i "%NEEK2O%" EQU "off" goto:notDI
+if /i "%neek2o%" EQU "off" goto:notDI
 if not exist "%DRIVEU%\wbfs" mkdir "%DRIVEU%\wbfs" >nul
 :notDI
 
 
+if /i "%SNEEKSELECT%" EQU "5" goto:skip
 ::---------building cdf.vff----------
 echo.
 echo Building cdb.vff to speed up the time required to launch s\uneek the first time
@@ -20348,8 +20787,10 @@ writecbd.exe
 cd..
 if exist support\cdb.vff move /y support\cdb.vff "%nandpath%"\title\00000001\00000002\data\cdb.vff>nul
 
+:skip
 
 
+if /i "%PRIIFOUND%" EQU "Yes" goto:skipSNKpri
 if /i "%SNKPRI%" NEQ "Y" goto:skipSNKpri
 echo.
 echo Downloading Priiloader-v0.4.app
@@ -20374,12 +20815,35 @@ echo Adding JoyFlow forwarder dol to Priiloader's installed file.
 echo.
 
 if exist temp\JoyFlow(emulators)-v11.dol move /y temp\JoyFlow(emulators)-v11.dol "%nandpath%"\title\00000001\00000002\data\main.bin>nul
-
 :skipSNKpri
+
+
+if /i "%uninstallprii%" NEQ "yes" goto:skippriiuninstall
+echo.
+echo Removing Priiloader from emulated NAND
+echo.
+move /y "%nandpath%\title\00000001\00000002\content\1%SMAPP:~1%.app" "%nandpath%\title\00000001\00000002\content\%SMAPP%.app" >nul
+if exist "%nandpath%"\title\00000001\00000002\data\hacks.ini del "%nandpath%"\title\00000001\00000002\data\hacks.ini >nul
+if exist "%nandpath%"\title\00000001\00000002\data\main.bin del "%nandpath%"\title\00000001\00000002\data\main.bin >nul
+:skippriiuninstall
+
 
 if exist temp\JoyFlow(emulators)-v11.dol del temp\JoyFlow(emulators)-v11.dol>nul
 
 copy /y temp\ModMii_Log.bat temp\ModMii_Log_SNK.bat>nul
+
+
+
+if /i "%SNEEKSELECT%" EQU "2" goto:newnand
+if /i "%SNEEKSELECT%" EQU "3" (goto:newnand) else (goto:nonewnand)
+:newnand
+if exist "%nandpath%\sneek\nandcfg.bin" del "%nandpath%\sneek\nandcfg.bin" >nul
+echo %SNKVERSION%%REGION% Emulated NAND >"%nandpath%\nandinfo.txt"
+:nonewnand
+
+
+::small pause
+@ping 127.0.0.1 -n 2 -w 1000> nul
 
 goto:finishsneekinstall
 
@@ -20405,7 +20869,15 @@ set MENU1=1
 ::queue up files that need to TRULY be saved to %Drive%
 if /i "%SNKJOY%" EQU "Y" set JOY=*
 if /i "%SNKS2U%" EQU "Y" set S2U=*
-if /i "%SNKS2U%" EQU "Y" set MMM=*
+set WiiMod=*
+
+if /i "%SNEEKSELECT%" NEQ "5" goto:tinyskip
+if /i "%emuwadcount%" EQU "0" set WiiMod=
+:tinyskip
+
+
+if /i "%SNKS2U%" NEQ "Y" set nSwitch=*
+if /i "%nswitchFound%" EQU "Yes" set nSwitch=
 goto:DLCOUNT
 
 :finishsneekinstall3
@@ -20414,6 +20886,8 @@ goto:DLCOUNT
 if /i "%SNEEKSELECT%" EQU "1" goto:nocheck
 
 if exist temp\ModMii_Log_SNK.bat del temp\ModMii_Log_SNK.bat>nul
+
+if not exist "temp\ModMii_Log.bat" (set problematicDLs=0) & (goto:nocounting)
 
 support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"""__ -write -yes
 
@@ -20424,6 +20898,7 @@ set problematicDLs=0
 setlocal ENABLEDELAYEDEXPANSION
 for /f "delims=" %%i in (temp\ModMii_Log.bat) do set /a problematicDLs=!problematicDLs!+1
 setlocal DISABLEDELAYEDEXPANSION
+:nocounting
 
 if /i "%problematicDLs%" EQU "0" (set snksuccess= Successfully) else (set snksuccess=)
 
@@ -20459,7 +20934,7 @@ echo.
 
 ::both sneek install and nand build
 if /i "%SNEEKSELECT%" NEQ "3" goto:skip
-if /i "%NEEK2O%" EQU "on" goto:NEEK2O3report
+if /i "%neek2o%" EQU "on" goto:neek2o3report
 
 if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
@@ -20467,16 +20942,16 @@ if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK rev%sne
 if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 goto:skip
 
-:NEEK2O3report
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK NEEK2O rev%NEEK2OREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+:neek2o3report
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
 
 ::only install sneek
 if /i "%SNEEKSELECT%" NEQ "1" goto:skip
-if /i "%NEEK2O%" EQU "on" goto:NEEK2O1report
+if /i "%neek2o%" EQU "on" goto:neek2o1report
 
 if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI rev%sneekYREV%
 if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI rev%sneekYREV%
@@ -20484,11 +20959,11 @@ if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK rev%sn
 if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK rev%sneekYREV%
 goto:skip
 
-:NEEK2O1report
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK NEEK2O rev%NEEK2OREV%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK NEEK2O rev%NEEK2OREV%
+:neek2o1report
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK neek2o rev%neek2oREV%
 
 :skip
 
@@ -20504,11 +20979,16 @@ if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% built a %SNKVERSION%%RE
 if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
 
+
+if /i "%SNEEKSELECT%" EQU "5" echo    Emulated Nand has been modified %snkfailure%
+
+
 ::list problematic Download
 if /i "%SNEEKSELECT%" EQU "1" goto:noproblems
-if /i "%problematicDLs%" NEQ "0" echo.
-if /i "%problematicDLs%" NEQ "0" echo The following file(s) failed to download properly:
-if /i "%problematicDLs%" NEQ "0" call temp\ModMii_Log.bat
+if /i "%problematicDLs%" EQU "0" goto:noproblems
+echo.
+echo The following file(s) failed to download properly:
+call temp\ModMii_Log.bat
 :noproblems
 
 
@@ -20542,7 +21022,6 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] This is also a great place to learn more about SNEEK in general.
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Another great resource is the guide here: tinyurl.com/SNEEK-DI
 :skip
-
 echo.
 echo    SOME QUICK SNEEK TIPS:
 echo.
@@ -20555,19 +21034,19 @@ echo          but it will be much quicker the second time around.
 echo.
 
 if /i "%SNKS2U%" EQU "Y" goto:quickskip
-echo        * If you have BootMii as Boot2, SNEEK will start immediately
-echo          when the Wii powers on. To stop this from happening, rename
-echo          the BootMii folder on the SD Card to something else.
+echo        * If you have BootMii as Boot2, SNEEK can be started immediately
+echo          when the Wii powers on. rename the BootMiiNeek folder to
+echo          BootMii on the SD Card.
 echo.
-echo        * If you have BootMii as IOS, you will need to launch BootMii as IOS
-echo          to start SNEEK. You can do so manually from the Homebrew Channel (HBC),
-echo          or automatically via Priiloader's Autoboot Settings.
+echo        * Install the nSwitch channel using WiiMod then launch the channel
+echo          in order to start NEEK. You can also use this channel to return
+echo          to your real NAND.
 echo.
 :quickskip
 
 if /i "%SNKS2U%" NEQ "Y" goto:quickskip
 echo        * Access UNEEK/UNEEK+DI by launching switch2uneek from the
-echo          Homebrew Channel. Alternatively, can use MMM to install the
+echo          Homebrew Channel. Alternatively, can use WiiMod to install the
 echo          switch2uneek forwarder channel that ModMii saved to your SD card.
 echo.
 :quickskip
@@ -20579,8 +21058,8 @@ echo.
 
 echo        * To add Games to the Game/DI Menu, you can use ModMii to extract
 echo          Wii Games to your FAT32 USB External Hard Drive.
-if /i "%NEEK2O%" EQU "on" echo          NEEK2O is also able to load games from USB:\WBFS
-if /i "%NEEK2O%" EQU "on" echo          which means you can also use WiiBackupManager.
+if /i "%neek2o%" EQU "on" echo          neek2o is also able to load games from USB:\WBFS
+if /i "%neek2o%" EQU "on" echo          which means you can also use WiiBackupManager.
 echo.
 echo        * ShowMiiWads can be used to decrypt your real Wii's BootMii NAND
 echo          dump (nand.bin) to use as an emulated NAND, and it can add custom
@@ -20590,6 +21069,7 @@ echo.
 echo        * For more SNEEK info, like formatting a USB Hard Drive for SNEEK,
 echo          or installing the HBC to an emulated NAND, visit: tinyurl.com/SNEEK-DI
 echo.
+
 
 
 
@@ -22821,6 +23301,18 @@ set md5=6d5167f976b5c35b2b2a12c3aa3e7766
 set path1=apps\mmm\
 goto:downloadstart
 
+:WiiMod
+set name=WiiMod
+set code1=URL
+set code2="http://nusad.googlecode.com/files/wiimod_v3_0.zip"
+set version=*
+set dlname="wiimod_v3_0.zip"
+set wadname=wiimod_v3_0.zip
+set filename=boot.dol
+set md5=7e78d0326696080e26b7ef0ac5df5878
+set path1=apps\WiiMod\
+goto:downloadstart
+
 
 :HackmiiInstaller
 set name=HackMii Installer
@@ -23069,18 +23561,6 @@ set md5=e475232c74f630aae3444e67e17d5f27
 set path1=apps\yawmm\
 goto:downloadstart
 
-:Y4M
-set name=YAWMM 4 ModMii
-set code1=URL
-set code2=http://yawmm.googlecode.com/files/YAWMM.zip
-set version=*
-set dlname="YAWMM.zip"
-set wadname=YAWMM.zip
-set filename=boot.dol
-set md5=842507bb33184ac96bb093ceb6cd8826
-set path1=apps\YAWMM4ModMii\
-goto:downloadstart
-
 :usbfolder
 set name=Configurable USB-Loader (Most recent Full 249 version)
 set wadname=Configurable USB-Loader (Most recent Full 249 version)
@@ -23126,15 +23606,15 @@ goto:downloadstart
 
 
 :WBM
-set name=Wii Backup Manager v0.3.8 build69
+set name=Wii Backup Manager v0.4.4 build 73
 set category=fullextract
 set code1=URL
-set code2="http://filetrip.net/d26675-Wii-Backup-Manager-0-4-3-build-69.html"
+set code2="http://filetrip.net/d26684-Wii-Backup-Manager-0-4-4-build-73.html"
 set version=*
-set dlname=26675-WiiBackupManager-0.3.8Build69.zip
+set dlname=26684-WiiBackupManager_Build73.zip
 set wadname=WiiBackupManager.zip
-set filename=WiiBackupManager.exe
-set md5=33d03403440e005b0d155ce9185307ad
+set filename=WiiBackupManager_Win32.exe
+set md5=c4a9cc2fce5019b49604bba379d98669
 set path1=WiiBackupManager\
 goto:downloadstart
 
@@ -23172,12 +23652,12 @@ goto:downloadstart
 :JOY
 set name=JoyFlow
 set code1=URL
-set code2="http://filetrip.net/d24722-JoyFlow-1-0-rev2.html"
+set code2="http://custom-di.googlecode.com/files/JoYflow.zip"
 set version=*
-set dlname=24722-JoYflow_1_0_pb_3.zip
-set wadname=JoYflow_1_0_pb_3.zip
+set dlname=JoYflow.zip
+set wadname=JoYflow.zip
 set filename=boot.dol
-set md5=40aa7b59ad7e4f64ff79981761190680
+set md5=550a75cf41509dee648b8c6e9fddd2cd
 set path1=apps\JoYflow\
 goto:downloadstart
 
@@ -23200,6 +23680,21 @@ set filename=switch2uneek(emulators)-4EMUNand-v11-S2RL.wad
 set md5=5f339cbb874161808e1414dee1166965
 set md5alt=%md5%
 ::set path1=\
+goto:downloadstart
+
+
+:nSwitch
+set name=nSwitch
+set code1=ZIP
+set code2="http://custom-di.googlecode.com/files/neek2o_NK2O.wad"
+set version=*
+set dlname=neek2o_NK2O.wad
+set wadname=neek2o_NK2O.wad
+set filename=neek2o_NK2O.wad
+set md5=8843c0f7b5d844a5abb5627d14b68b7f
+set md5alt=%md5%
+set category=fullextract
+set path1=WAD\
 goto:downloadstart
 
 
@@ -23393,14 +23888,14 @@ goto:downloadstart
 
 
 :Priiloader
-set name=Priiloader v0.7 (236 Mod)
+set name=Priiloader v0.7
 set code1=URL
-set code2="http://nusad.googlecode.com/files/Priiloader-v0.7-236.zip"
+set code2="http://nusad.googlecode.com/files/Priiloader-v0.7-Fix.zip"
 set version=*
-set dlname=Priiloader-v0.7-236.zip
-set wadname=Priiloader-v0.7-236.zip
+set dlname=Priiloader-v0.7-Fix.zip
+set wadname=Priiloader-v0.7-Fix.zip
 set filename=boot.dol
-set md5=09bf03164e884bdbbd013e4ff150dd7d
+set md5=ee8758e7cbb6f48f6eb014b553d2b30b
 set path1=apps\Priiloader\
 goto:downloadstart
 
@@ -26064,8 +26559,8 @@ echo .>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) LAUNCH Multi-Mod Manager (MMM) USING BANNERBOMB>>"%Drive%"\%guidename%
-echo    ===============================================>>"%Drive%"\%guidename%
+echo %COUNT7%) LAUNCH WiiMod USING BANNERBOMB>>"%Drive%"\%guidename%
+echo    ==============================>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 
 echo .>>"%Drive%"\%guidename%
@@ -26075,7 +26570,7 @@ If /i "%BB1%" EQU "*" echo Run BannerBomb v1 by going to Settings, Data Manageme
 echo Note: If it doesn't work for you, visit http://bannerbomb.qoid.us/ for more variations of either version of bannerbomb.>>"%DRIVE%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
-echo This will launch Multi-Mod Manager.>>"%Drive%"\%guidename%
+echo This will launch WiiMod.>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
@@ -26084,13 +26579,13 @@ echo .>>"%Drive%"\%guidename%
 
 
 :KOREANEXTRA
-echo %COUNT7%) INSTALL IOS58 USING Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ===========================================>>"%Drive%"\%guidename%
+echo %COUNT7%) INSTALL IOS58 USING WiiMod>>"%Drive%"\%guidename%
+echo    ==========================>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 echo .>>"%Drive%"\%guidename%
 
-echo In Multi-Mod Manager's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
-
+echo In WiiMod's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
+echo Select "Wii SD Slot" as the source device.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 echo Now install IOS58v6176.>>"%Drive%"\%guidename%
@@ -26103,7 +26598,7 @@ echo .>>"%Drive%"\%guidename%
 
 
 echo Make sure the file installed properly.>>"%Drive%"\%guidename%
-echo Only move onto the next step after successfully installing the wad, but do NOT exit MMM.>>"%Drive%"\%guidename%
+echo Only move onto the next step after successfully installing the wad, but do NOT exit WiiMod.>>"%Drive%"\%guidename%
 
 
 echo .>>"%Drive%"\%guidename%
@@ -26118,9 +26613,10 @@ SET /a COUNT7=%COUNT7%+1
 
 echo .>>"%Drive%"\%guidename%
 
-echo Back in the MMM main menu, choose "App Manager" and press A.>>"%Drive%"\%guidename%
+echo Back in the WiiMod main menu, choose "Apploader" and press A.>>"%Drive%"\%guidename%
+echo Select "Wii SD Slot" as the source device.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
-echo Launch the HackMii_Installer>>"%Drive%"\%guidename%
+echo Select SD:\apps\HackMii_Installer\boot.elf>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 echo This runs the Hackmii Installer (and silently/automatically installs BootMii as IOS). Use the installer to install the Homebrew Channel (HBC) and Bootmii as Boot2 if possible.>>"%DRIVE%"\%guidename%
 
@@ -26182,7 +26678,7 @@ echo .>>"%Drive%"\%guidename%
 echo If using BootMii as Boot2 to install the HBC, copy the 'BootMii' folder from your previous BootMii installation to the root of your SD Card (or download it using ModMii). Then boot your wii, BootMii will load, go To the SD menu, load bootmini.elf. This will load the Hackmii Installer allowing you to reinstall the HBC.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo If using a Forwarder Channel, just save the boot.elf/dol from the app you want to load (ie. SD:\apps\hackmii_installer\boot.elf or SD:\apps\MMM\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the Hackmii Installer will load allowing you to reinstall the HBC. Note, if your forwarder channel only loads dol's and not elf's, launch MMM's boot.dol, then use its "App Manager" to load the Hackmii Installer.>>"%Drive%"\%guidename%
+echo If using a Forwarder Channel, just save the boot.elf/dol from the app you want to load (ie. SD:\apps\hackmii_installer\boot.elf or SD:\apps\WiiMod\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the Hackmii Installer will load allowing you to reinstall the HBC. Note, if your forwarder channel only loads dol's and not elf's, launch WiiMod's boot.dol, then use its "Apploader" to load the Hackmii Installer.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 
@@ -26561,67 +27057,9 @@ echo .>>"%Drive%"\%guidename%
 ::----------------------------RESTORING THE TRUCHA BUG (using IOS236 Installer)--------------------------
 :TBRGUIDE
 
-If /i "%IOS236Installer%" NEQ "*" goto:PRIIGUIDE
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) INSTALL A PATCHED IOS236>>"%Drive%"\%guidename%
-echo    ========================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
+goto:PRIIGUIDE
 
 
-echo Start the Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo VERY IMPORTANT!>>"%Drive%"\%guidename%
-echo In the Homebrew channel, if you do not have a working internet connection already set up, you will see an icon flashing in the bottom right corner of the screen indicating its inability to initialize the network. You MUST wait for the icon to stop flashing OR let it flash for 30-60 seconds before proceeding otherwise these apps will error shortly after being launched. If you encounter this harmless error, power off the Wii and repeat this step from the beginning. To increase your chances of success, add a working internet connection to your Wii via the official Wii Settings Menu, but be sure to say "No" when asked to perform an update.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo You only need to perform ONE of the below methods.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Method A: Using IOS236 Installer>>"%Drive%"\%guidename%
-echo -------------------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "IOS236 Installer v5 MOD". >>"%Drive%"\%guidename%
-echo      Note: This app must be launched using HBC v1.0.7 or higher in order to work properly.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo It should say "IOS236 installation is complete!" and return to The Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If you experience errors, keep trying and it should eventually work.>>"%Drive%"\%guidename%
-echo If you continue to experience errors you can try using Simple IOS Patcher instead.>>"%Drive%"\%guidename%
-echo Once either method successfully installs IOS236, you can move onto the next step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Method B: Using Simple IOS Patcher>>"%Drive%"\%guidename%
-echo ---------------------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "IOS236 Installer". >>"%Drive%"\%guidename%
-echo      Note: This app must be launched using HBC v1.0.7 or higher in order to work properly.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Choose "IOS36" (already selected by default) and push A,>>"%Drive%"\%guidename%
-echo Select "Install IOS to slot" and choose 236,>>"%Drive%"\%guidename%
-echo Select "Install patched IOS36" leaving the 4 patches set to "yes" and press A,>>"%Drive%"\%guidename%
-echo Choose "Load IOS from SD card".>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Confirm your choice with the A button,>>"%Drive%"\%guidename%
-echo When prompted, push A to continue the installation.>>"%Drive%"\%guidename%
-echo When the installation is over you'll be back at the Main Menu,>>"%Drive%"\%guidename%
-echo Then push B button to exit.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo If you experience errors, keep trying and it should eventually work.>>"%Drive%"\%guidename%
-echo If you continue to experience errors you can try using IOS236 Installer instead.>>"%Drive%"\%guidename%
-echo Once either method successfully installs IOS236, you can move onto the next step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
 ::--------------------------INSTALL PRIILOADER-------------------------------
 :PRIIGUIDE
@@ -26642,13 +27080,11 @@ SET /a COUNT7=%COUNT7%+1
 
 echo .>>"%Drive%"\%guidename%
 
-echo Launch "Priiloader 236 Mod" via the Homebrew Channel>>"%Drive%"\%guidename%
+echo Launch "Priiloader" via the Homebrew Channel>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 echo After the Priiloader Installer loads, press + to install it.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
-
-echo You may get an error for "loader.ini" and/or "password.txt" simply ignore these.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 echo After successfully installing Priiloader, access it by powering off the Wii,>>"%Drive%"\%guidename%
@@ -26673,19 +27109,19 @@ echo .>>"%Drive%"\%guidename%
 if /i "%installwads%" EQU "done" goto:reinstallHBC
 
 
-::----------------------Install Wads (MMM)-----------------------------
+::----------------------Install Wads (WiiMod)-----------------------------
 
 :installwads
 
-if /i "%mmm%" NEQ "*" goto:SKIP
+if /i "%WiiMod%" NEQ "*" goto:SKIP
 
 ::---------CREATE MMMCONFIG To Autoload 236--------
 set patchIOSnum=236
-if /i "%SETTINGS%" EQU "G" goto:skipmmmfly
-if /i "%SETTINGSHM%" EQU "G" goto:skipmmmfly
-echo ;MMMCONFIG (By ModMii)> "%Drive%"\mmmconfig.txt
-echo AutoLoadIOS=%patchIOSnum%>> "%Drive%"\mmmconfig.txt
-:skipmmmfly
+::if /i "%SETTINGS%" EQU "G" goto:skipmmmfly
+::if /i "%SETTINGSHM%" EQU "G" goto:skipmmmfly
+::echo ;MMMCONFIG (By ModMii)> "%Drive%"\mmmconfig.txt
+::echo AutoLoadIOS=%patchIOSnum%>> "%Drive%"\mmmconfig.txt
+:::skipmmmfly
 
 echo .>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
@@ -26696,39 +27132,15 @@ echo    ============>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 echo .>>"%Drive%"\%guidename%
 
-::MMM Instructions
-echo Load Multi-Mod Manager (MMM) via the HomeBrew Channel.>>"%Drive%"\%guidename%
-echo If IOS%patchIOSnum% is not already loaded, select "Load another IOS", then select IOS%patchIOSnum% >>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Note: If this step fails with error -ret 2011 or other, you may need to retry patching IOS%patchIOSnum%. If the Wii was previously softmodded, you can try loading cIOS250 (or others like 202,222,223,224,236,249)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo In Multi-Mod Manager's main menu, go down to select "WAD Manager".>>"%Drive%"\%guidename%
-
-
-goto:skipy4m
-::YAWMM 4 ModMii Instructions
-echo Start the Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo VERY IMPORTANT!>>"%Drive%"\%guidename%
-echo In the Homebrew channel, if you do not have an internet connection set up, you will see an icon flashing in the bottom right corner of the screen indicating its inability to initialize the network.>>"%Drive%"\%guidename%
-echo You MUST wait for the icon to stop flashing OR let it flash for 30-60 seconds before proceeding otherwise this specific app will freeze shortly after being launched. >>"%Drive%"\%guidename%
+::WiiMod Instructions
+echo Load WiiMod via the HomeBrew Channel.>>"%Drive%"\%guidename%
+::echo If IOS%patchIOSnum% is not already loaded, select "Load another IOS", then select IOS%patchIOSnum% >>"%Drive%"\%guidename%
+::echo .>>"%Drive%"\%guidename%
+::echo Note: If this step fails with error -ret 2011 or other, you may need to retry patching IOS%patchIOSnum%. If the Wii was previously softmodded, you can try loading cIOS250 (or others like 202,222,223,224,236,249)>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "YAWMM 4 ModMii". >>"%Drive%"\%guidename%
-echo      Note: This app must be launched using HBC v1.0.7 or higher in order to work properly.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Press "A" to continue.>>"%Drive%"\%guidename%
-echo Press "A" again to read from the SD slot. >>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo VERY IMPORTANT!>>"%Drive%"\%guidename%
-echo Wait for 30-60 seconds to see if the app freezes. If so, power off the Wii and repeat this step from the beginning. If after waiting 30-60 seconds, the app still doesn't freeze, this confirms that it is safe to use.>>"%Drive%"\%guidename%
-:skipy4m
-
-
-
+echo In WiiMod's main menu, go down to select "WAD Manager".>>"%Drive%"\%guidename%
+echo Select "Wii SD Slot" as the source device.>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
 echo Install the following WADs from the WAD folder (this list of WADs is unique to the information you provided ModMii).>>"%Drive%"\%guidename%
@@ -26737,9 +27149,18 @@ echo .>>"%Drive%"\%guidename%
 echo Be careful not to install any additional wads that may have been previously saved in this folder (they may be safe, but I cannot say for sure).>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
-echo Hold + for 2 seconds to select all the WADs in the folder. Then Press A twice to install them all.>>"%Drive%"\%guidename%
 
-echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
+echo If you are sure all the WADs should be installed press "1" then "A" to begin the installation.>>"%Drive%"\%guidename%
+echo If you need to unselect a few WADs press "1", then press "B" to return to the list.>>"%Drive%"\%guidename%
+echo Notice all the WADs are selected. For each WAD that is not listed below simply select it using Up/Down and press "+" to deselect it.>>"%Drive%"\%guidename%
+echo When you are ready press "A" to begin the installation.>>"%Drive%"\%guidename%
+echo .>>"%Drive%"\%guidename%
+echo When done, press home to exit WiiMod.>>"%Drive%"\%guidename%
+
+
+echo .>>"%Drive%"\%guidename%
+echo If any files fail to install properly, retry installing those files.>>"%Drive%"\%guidename%
+::echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
 ::echo After the installation finishes read the install report to make sure all the files installed properly.>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
@@ -26760,6 +27181,7 @@ if /i "%IOS70P%" EQU "*" echo      * IOS70v16687(IOS70v6687[FS-ES-NP-VP])>>"%Dri
 if /i "%IOS70K%" EQU "*" echo      * IOS70v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
 if /i "%IOS80P%" EQU "*" echo      * IOS80v6944[FS-ES-NP-VP]>>"%Drive%"\%guidename%
 if /i "%IOS80K%" EQU "*" echo      * IOS80v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
+
 
 
 if /i "%SM4.1U%" EQU "*" echo      * SystemMenu_4.1U_v449>>"%Drive%"\%guidename%
@@ -26982,12 +27404,12 @@ echo.>>"%Drive%"\%guidename%
 
 
 echo Navigate to the theme you would like to install>>"%Drive%"\%guidename%
-echo that corresponds to your specific System Menu Version>>"%Drive%"\%guidename%
+echo that corresponds to your specific System Menu Version (%FIRM%%REGION%) >>"%Drive%"\%guidename%
 echo then press A to install it.>>"%Drive%"\%guidename%
 
 echo.>>"%Drive%"\%guidename%
 echo If you ever decide to restore the original Menu Wii theme,>>"%Drive%"\%guidename%
-echo simply launch MyMenuifyMod again press the start button.>>"%Drive%"\%guidename%
+echo simply launch MyMenuifyMod again, navigate to 000000XX_%FIRM%%REGION%.app and press "A" to install it.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 :noMyM
 
@@ -27166,15 +27588,15 @@ If /i "%BATHAXX%" EQU "*" SET /a exploitnum=%exploitnum%+1
 If /i "%ROTJ%" EQU "*" SET /a exploitnum=%exploitnum%+1
 If /i "%TOS%" EQU "*" SET /a exploitnum=%exploitnum%+1
 
-echo %COUNT7%) LAUNCH Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ==============================>>"%Drive%"\%guidename%
+echo %COUNT7%) LAUNCH WiiMod>>"%Drive%"\%guidename%
+echo    =============>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 echo .>>"%Drive%"\%guidename%
 
-echo Start the Homebrew Channel (HBC) and load Multi-Mod Manager (MMM). Once you've loaded MMM, move onto the next step.>>"%Drive%"\%guidename%
+echo Start the Homebrew Channel (HBC) and load WiiMod. Once you've loaded WiiMod, move onto the next step.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo If you are missing the HBC or it is failing to load any apps (just blackscreens), you will need to launch MMM using another method.>>"%Drive%"\%guidename%
+echo If you are missing the HBC or it is failing to load any apps (just blackscreens), you will need to launch WiiMod using another method.>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
 
@@ -27189,7 +27611,7 @@ If /i "%exploitnum%" GEQ "2" echo.>>"%Drive%"\%guidename%
 
 If /i "%BB1%" EQU "*" goto:skipforwardersolution
 If /i "%BB2%" EQU "*" goto:skipforwardersolution
-echo Note: if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch MMM instead of an exploit. Just save the boot.dol from the app you want to load (ie. SD:\apps\MMM\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the app will load.>>"%Drive%"\%guidename%
+echo Note: if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch WiiMod instead of an exploit. Just save the boot.dol from the app you want to load (ie. SD:\apps\WiiMod\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the app will load.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 
@@ -27216,21 +27638,22 @@ echo .>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 
-echo %COUNT7%) INSTALL SOME IOSs USING Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ===============================================>>"%Drive%"\%guidename%
+echo %COUNT7%) INSTALL SOME IOSs USING WiiMod>>"%Drive%"\%guidename%
+echo    ==============================>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 echo .>>"%Drive%"\%guidename%
 
-echo In Multi-Mod Manager's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
+echo In WiiMod's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
+echo Select "Wii SD Slot" as the source device.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo If you cannot load your SD card, select "Load another IOS", then select IOS36.>>"%Drive%"\%guidename%
+echo If you cannot load your SD card, select "Change IOS", then select IOS36.>>"%Drive%"\%guidename%
 echo If the Wii was previously softmodded, try loading cIOS250 (or others like 202,222,223,224,236,249).>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
 
 echo Now mark each of the following WADs for installation by navigating to each WAD and hitting +>>"%Drive%"\%guidename%
-echo Alternatively, you can hold + to mark all the WADs in the list for installation.>>"%Drive%"\%guidename%
+::echo Alternatively, you can hold + to mark all the WADs in the list for installation.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
 if /i "%IOS30P60%" EQU "*" echo      * IOS30v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
@@ -27247,10 +27670,10 @@ echo Be careful not to install any additional wads that may have been previously
 
 echo .>>"%Drive%"\%guidename%
 
+echo If any files fail to install properly, retry installing those files.>>"%Drive%"\%guidename%
+::echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
 
-echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
-
-echo Only move onto the next step after successfully installing the above WADs, but do NOT exit MMM.>>"%Drive%"\%guidename%
+echo Only move onto the next step after successfully installing the above WADs, but do NOT exit WiiMod.>>"%Drive%"\%guidename%
 
 
 echo .>>"%Drive%"\%guidename%
@@ -27263,7 +27686,12 @@ echo    ==================================>>"%Drive%"\%guidename%
 SET /a COUNT7=%COUNT7%+1
 echo .>>"%Drive%"\%guidename%
 
-echo In MMM's main menu, select "App Manager" and then select the HackMii_Installer.>>"%Drive%"\%guidename%
+echo Back in the WiiMod main menu, choose "Apploader" and press A.>>"%Drive%"\%guidename%
+echo Select "Wii SD Slot" as the source device.>>"%Drive%"\%guidename%
+echo .>>"%Drive%"\%guidename%
+echo Select SD:\apps\HackMii_Installer\boot.elf>>"%Drive%"\%guidename%
+echo .>>"%Drive%"\%guidename%
+echo This runs the Hackmii Installer (and silently/automatically installs BootMii as IOS).>>"%DRIVE%"\%guidename%
 
 echo Use the Hackmii Installer to fix/re-install the HBC. If you haven't done so already, you should also install BootMii as Boot2 (if possible).>>"%Drive%"\%guidename%
 
@@ -27273,10 +27701,10 @@ echo Once you've successfully reinstalled the HBC, you are finished with this gu
 echo .>>"%Drive%"\%guidename%
 
 
-echo If you already exited MMM, you can load the HackMii_Installer from the Homebrew Channel.>>"%Drive%"\%guidename%
+echo If you already exited WiiMod, you can load the HackMii_Installer from the Homebrew Channel.>>"%Drive%"\%guidename%
 echo .>>"%Drive%"\%guidename%
 
-echo If the HBC is failing to load any apps (just blackscreens), instead launch MMM using the method described in Step 1, then in MMM's main menu, select "App Manager" and then select the HackMii_Installer.>>"%Drive%"\%guidename%
+echo If the HBC is failing to load any apps (just blackscreens), instead launch WiiMod using the method described in Step 1, then in WiiMod's main menu, select "Apploader" and then select the SD:\apps\HackMii_Installer\boot.elf.>>"%Drive%"\%guidename%
 
 echo .>>"%Drive%"\%guidename%
 echo This will launch the HackMii Installer, use it to reinstall your Homebrew Channel.>>"%Drive%"\%guidename%
@@ -27577,8 +28005,8 @@ goto:noportableWBM
 
 :portableWBM
 echo Launch WiiBackupManager.exe saved here:>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager >>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager >>"%Drive%"\%guidename%
 :noportableWBM
 
 echo .>>"%Drive%"\%guidename%
