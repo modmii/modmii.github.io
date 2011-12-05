@@ -14096,7 +14096,9 @@ IF ERRORLEVEL 1 (set M10=*) else (set M10=)
 
 ::IOS236
 findStr /I /C:"IOS236" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS236=*) else (set IOS236=)
+IF ERRORLEVEL 1 (set IOS236Installer=*) else (set IOS236Installer=)
+if /i "%IOS236Installer%" EQU "*" (set SIP=*) else (set SIP=)
+if /i "%IOS236Installer%" EQU "*" (set IOS36=*) else (set IOS36=)
 
 
 set mmm=
