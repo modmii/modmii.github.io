@@ -1,0 +1,11 @@
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/DaESnuMzzbU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/HBCIOS.gif" border="0"/></a><br>
+<br>
+In the HomeBrew Channel, hit the "home" button. In the top right corner you will see the IOS used by the HBC.<br>
+
+If the HBC is using IOS58 and your HBC is not upside-down, you can skip this step.<br>
+<br>
+If the HBC is not using IOS58 or it is upside-down, you should continue with this step to reinstall it.<br>
+<br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/vRlj4GXCk1g?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/ReinstallHBC.gif" border="0"/></a><br>
+Launch the HackMii_Installer via the HBC.<br>
+Use the Hackmii Installer to fix/re-install the HBC (using IOS58). Once you've successfully reinstalled the HBC, you can move onto the next step of the guide.<br>

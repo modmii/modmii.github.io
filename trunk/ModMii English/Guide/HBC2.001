@@ -1,0 +1,7 @@
+<!-----------------------Hackmii installer below----------------------------------->
+<br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/HackMii.gif" border="0"/></a><br>
+This runs the Hackmii Installer (and silently/automatically installs BootMii as IOS). Use the installer to install the Homebrew Channel (HBC) and Bootmii as Boot2 if possible.<br>
+<b>Note:</b> If you get a "no vulnerable IOS" error message, run ModMii again and this time select the "Hackmii Solutions" option and follow the new instructions before continuing this guide.<br>
+<br>
+<!--------------------------hackmii installer above-------------------------------->

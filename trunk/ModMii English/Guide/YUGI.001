@@ -1,0 +1,11 @@
+<b>Yu-Gi Owned</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/rnfzVAADujM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Yu-GiOwned.gif" border="0"/></a><br>
+Requirements: A copy of "Yu-Gi-Oh! 5D's", a standard SD card (will not work with an SDHC card), and a nunchuck or classic controller.<br>
+<ol type="A"><li>Load the Yu-Gi-Oh game at least once (otherwise you won't be able to copy over the hack).</li>
+<li>Delete or move\backup your personal "Yu-Gi-Oh! 5D's" save file before copying the files to your SD Card.</li>
+<li>Copy the ModMii files to the root of your SD card (if you haven’t already) and insert it into your Wii.</li>
+<li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Yu-Gi-Oh" save that corresponds to your region.</li>
+<li>Start the Yu-Gi-Oh game. The exploit is launched after continuing past
+the opening menu.</li></ol><br>
+
+<b>Note to European Users:</b> The default Yu-Gi Owned PAL exploit is 60Hz. If it does not work on your 50Hz TV, navigate to "SD:\private\wii\title\" and rename "RYOP" to something else then rename "RYOP-50hz" to "RYOP" and try again.

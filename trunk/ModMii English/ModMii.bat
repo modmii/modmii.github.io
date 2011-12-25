@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=4.8.2
+set currentversion=5.0.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -54,6 +54,7 @@ if /i "%one%" EQU "U" goto:hardcodedoptions
 if /i "%one%" EQU "E" goto:hardcodedoptions
 if /i "%one%" EQU "L" goto:hardcodedoptions
 if /i "%one%" EQU "SU" goto:hardcodedoptions
+if /i "%cmdinput:~-4%" EQU ".csv" (set one=SU) & (set cmdlinemodeswitchoff=Y) & (goto:hardcodedoptions)
 
 if not "%one%"=="" (goto:cmdlinehelp)
 
@@ -1008,9 +1009,23 @@ if /i "%firmstart%" EQU "4.3" (goto:cmdlineBOMB) else (goto:go)
 
 
 :cmdlineBOMB
-start http://please.hackmii.com
+
+::start http://please.hackmii.com
+
+cd /d SUPPORT
+start LetterBombFrames.html
+cd /d %ModMiipath%
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
 echo.
 echo    ModMii should have just opened your browser to http://please.hackmii.com
+echo.
+echo    An instructional video on properly downloading Letterbomb can be found
+echo    in the panel next to the webpage.
+echo.
 echo.
 echo    On this webpage, enter your System Menu region and MAC address
 echo.
@@ -1025,10 +1040,17 @@ echo.
 echo    ModMii will generate a guide for your assuming you've done this correctly.
 echo.
 echo.
-echo    Press any key when you're ready to continue...
+echo    Waiting a few seconds...
 echo.
-pause>nul
+@ping 127.0.0.1 -n 5 -w 1000> nul
+
 goto:go
+
+
+
+
+
+
 
 ::---------------------------------
 :cmdlineUSBLoaderSetup
@@ -1087,8 +1109,10 @@ copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul
 support\sfk filter -spat temp\cmdinput2.txt -rep _".csv*"_".csv"_ -write -yes>nul
 
 set /p sysCheckName= <temp\cmdinput2.txt
-set syscheckname=%syscheckname:~3%
+
+if /i "%syscheckname:~0,3%" EQU "SU " set syscheckname=%syscheckname:~3%
 ::echo %sysCheckName%
+
 
 if not exist "%sysCheckName%" (echo The csv file identified does not exist, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
@@ -1212,7 +1236,7 @@ if "%SNKSERIAL:~9%"=="" (goto:badsnkkey)
 if "%SNKSERIAL:~10%"=="" (goto:badsnkkey)
 
 if /i "%REGION%" EQU "U" goto:skip
-if "%SNKSERIAL:~11%"=="" (goto:badsnkkey)
+::if "%SNKSERIAL:~11%"=="" (goto:badsnkkey)
 :skip
 
 if not "%SNKSERIAL:~12%"=="" (goto:badsnkkey)
@@ -1654,6 +1678,12 @@ set DB=N
 ::set SNEEKSELECT=
 set patchIOSnum=36 or 236
 
+::--followup--
+IF "%Drive%"=="" set Drive=COPY_TO_SD
+IF "%DriveU%"=="" set DriveU=COPY_TO_USB
+set USBCONFIG=
+
+
 ::if second char is ":" check if drive exists
 if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
 if not exist "%DRIVE:~0,2%" set DRIVE=COPY_TO_SD
@@ -1672,6 +1702,8 @@ set basewadb=none
 set AdvNumber=0
 if exist temp\DLnamesADV.txt del temp\DLnamesADV.txt>nul
 if exist temp\DLgotosADV.txt del temp\DLgotosADV.txt>nul
+
+
 
 set EULAU=
 set EULAE=
@@ -1786,7 +1818,7 @@ set bootmiisd=
 set pwns=
 set twi=
 set YUGI=
-set BATHAXX=
+set Bathaxx=
 set ROTJ=
 set TOS=
 set smash=
@@ -2165,7 +2197,16 @@ if /i "%MENU1%" EQU "FC" goto:DRIVECHANGE
 if /i "%MENU1%" EQU "C" goto:CONFIGFILEMENU
 
 
-if /i "%MENU1%" EQU "CR" goto:Credit1
+::if /i "%MENU1%" EQU "CR" goto:Credit1
+
+if /i "%MENU1%" NEQ "CR" goto:skipcred
+cd /d SUPPORT
+start Credits.html
+cd /d %ModMiipath%
+goto:MENU
+:skipcred
+
+
 if /i "%MENU1%" EQU "V" goto:openwebpage
 
 
@@ -2226,7 +2267,18 @@ echo.
 
 support\sfk echo -spat \x20 [Green]ModMii Donations can be sent via paypal to: \x20 XFlak40@hotmail.com
 echo.
-support\sfk echo -spat \x20 [Red]Anyone who donates $1 or more to ModMii will get a functional ModMii Easter Egg!
+::support\sfk echo -spat \x20 [Red]Anyone who donates $1 or more to ModMii will get a functional ModMii Easter Egg!
+
+
+support\sfk echo -spat \x20 [Red]If you donate $1 or more to XFlak40@hotmail.com, as my way of saying thanks I'll
+support\sfk echo -spat \x20 [Red]reply to you via email with a functional Easter Egg guaranteed to be helpful
+support\sfk echo -spat \x20 [Red]every time you use ModMii.
+echo.
+support\sfk echo -spat \x20 [Red]I will still email you ModMii's Easter Egg if you prefer to donate to someone else
+support\sfk echo -spat \x20 [Red]listed in the credits ONLY IF you ask THEM to send confirmation of your donation
+support\sfk echo -spat \x20 [Red]to XFlak40@hotmail.com.
+
+
 echo.
 support\sfk echo -spat \x20 [Green]$ = Open ModMii's donation webpage (paypal) and get your Easter Egg!
 echo.
@@ -2346,21 +2398,32 @@ echo   it corrected many bugs and added features that were previously thought to
 echo   impossible (ie. Support for IOS Reloading Games). WiiPower was also heavily
 echo   influential in achieving IOS Reload Support.
 echo.
-support\sfk echo -spat \x20 [Red]Rodries
-echo   =======
-echo   Thanks to Rodries for improving upon Hermes v5.1 cIOSs.
-echo.
 support\sfk echo -spat \x20 [Red]WiiGator
 echo   ========
 echo   WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans
 echo   owe a big thank you to WiiGator for his work.
 echo.
-support\sfk echo -spat \x20 [Red]WiiPower
-echo   ========
-echo   WiiPower created Neogamma, hands down the best backup disc loader for the Wii.
-echo   He also modified WiiGators cMIOS and created what is today considered the
-echo   ultimate cMIOS. Furthermore he's contributed code to many other popular
-echo   usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs.
+
+support\sfk echo -spat \x20 [Red]DeadlyFoez
+echo   ==========
+echo   DeadlyFoez is legendary for his Wii Repairs and infectus tutorial.
+echo   Anyone who's broken their Wii can email deadlyfoez@yahoo.com to have it fixed.
+echo.
+echo   DeadlyFoez played a key role in the ModMii v5.0.0 update not only by helping come
+echo   up with the idea for using html guides but also creating the template for ModMii's
+echo   custom guides and recording almost all of the videos and images they use. Within
+echo   1.5 weeks since our initial conversation we were able to collaborate and bring the
+echo   idea to life in time to release it for Christmas. Working with him on this was a
+echo   truly rewarding and fun experience.
+echo.
+echo   What can I say about THE "DeadlyFoez" on a personal level. He's always
+echo   getting me into trouble but his friendship is worth every fiasco! It's
+echo   unreal how he became one of my best friends. Just goes to show you not
+echo   everyone you meet online is totally crazy; in his case... just a little crazy.
+echo   But seriously, thanks to DeadlyFoez for always being there for me to bounce
+echo   ModMii ideas off of, for hosting the first two Team Your Mom meetings and
+echo   for introducing me to his awesome family and friends. There's no one else
+echo   I'd rather geek out with and I'll always have your back.
 echo.
 if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
 set /p CREDIT3=     Press the "Enter" Key to continue: 
@@ -2650,19 +2713,16 @@ echo   "XFlak" would have died many years ago if not for him. Thanks Violator, f
 echo   getting me interested in this stuff, and for all the awesome music you
 echo   recorded for my Top Wii Channels!
 echo.
-support\sfk echo -spat \x20 [Red]DeadlyFoez
-echo   ==========
-echo   DeadlyFoez is legendary for his Wii Repairs and infectus tutorial.
-echo   Anyone who's broken their Wii can email deadlyfoez@yahoo.com to have it fixed.
+support\sfk echo -spat \x20 [Red]WiiPower
+echo   ========
+echo   WiiPower created Neogamma, hands down the best backup disc loader for the Wii.
+echo   He also modified WiiGators cMIOS and created what is today considered the
+echo   ultimate cMIOS. Furthermore he's contributed code to many other popular
+echo   usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs.
 echo.
-echo   What can I say about THE "DeadlyFoez" on a personal level. He's always
-echo   getting me into trouble but his friendship is worth every fiasco! It's
-echo   unreal how he became one of my best friends. Just goes to show you not
-echo   everyone you meet online is totally crazy; in his case... just a little crazy.
-echo   But seriously, thanks to DeadlyFoez for always being there for me to bounce
-echo   ModMii ideas off of, for hosting the first two Team Your Mom meetings and
-echo   for introducing me to his awesome family and friends. There's no one else
-echo   I'd rather geek out with and I'll always have your back.
+support\sfk echo -spat \x20 [Red]Rodries
+echo   =======
+echo   Thanks to Rodries for improving upon Hermes v5.1 cIOSs.
 echo.
 support\sfk echo -spat \x20 [Red]All My Beta Testers!
 echo   ====================
@@ -2671,6 +2731,10 @@ echo   ModMii is developed entirely in notepad without any kind of debugger or
 echo   developer tools; it's pretty remarkable that ModMii has always been bug-free
 echo   (albeit with a couple minor exceptions). Thanks for your never-ending
 echo   devotion to quality control!
+echo.
+echo   Here's a list of ModMii's current beta testing group (in no particular order):
+echo   scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08,
+echo   geovalley, undeadsquirrel, mauifrog and FIX94.
 echo.
 support\sfk echo -spat \x20 [Red]You!
 echo   ====
@@ -3900,34 +3964,34 @@ set SmashJCheck=off
 if /i "%match%" EQU "YES" set SmashJCheck=on
 if /i "%match%" EQU "YES" SET /a cleanitems=%cleanitems%+1
 
-::BATHAXX USA
+::Bathaxx USA
 set path2clean=%DRIVE%\private\wii\title\rlbe\data.bin
 set md5=5dac3152baabbc6ca17bedfd5b7350c9
 set nextgoto=cleancheck13
 goto:markmatch
 :cleancheck13
-set BATHAXXU=off
-if /i "%match%" EQU "YES" set BATHAXXU=on
+set BathaxxU=off
+if /i "%match%" EQU "YES" set BathaxxU=on
 if /i "%match%" EQU "YES" SET /a cleanitems=%cleanitems%+1
 
-::BATHAXX JAP
+::Bathaxx JAP
 set path2clean=%DRIVE%\private\wii\title\rlbj\data.bin
 set md5=8ce86646c463565798dda77ea93118eb
 set nextgoto=cleancheck14
 goto:markmatch
 :cleancheck14
-set BATHAXXJ=off
-if /i "%match%" EQU "YES" set BATHAXXJ=on
+set BathaxxJ=off
+if /i "%match%" EQU "YES" set BathaxxJ=on
 if /i "%match%" EQU "YES" SET /a cleanitems=%cleanitems%+1
 
-::BATHAXX EURO
+::Bathaxx EURO
 set path2clean=%DRIVE%\private\wii\title\rlbp\data.bin
 set md5=1f44f39d7aad36c7c93a7592e52fa217
 set nextgoto=cleancheck15
 goto:markmatch
 :cleancheck15
-set BATHAXXE=off
-if /i "%match%" EQU "YES" set BATHAXXE=on
+set BathaxxE=off
+if /i "%match%" EQU "YES" set BathaxxE=on
 if /i "%match%" EQU "YES" SET /a cleanitems=%cleanitems%+1
 
 ::ROTJ USA
@@ -4113,13 +4177,13 @@ if /i "%PWNSU%" EQU "on" echo          * Indiana Pwns (USA)
 if /i "%PWNSE%" EQU "on" echo          * Indiana Pwns (EURO)
 if /i "%PWNSJ%" EQU "on" echo          * Indiana Pwns (JAP)
 
-if /i "%BATHAXXU%" EQU "on" echo          * BATHAXX (USA)
-if /i "%BATHAXXE%" EQU "on" echo          * BATHAXX (EURO)
-if /i "%BATHAXXJ%" EQU "on" echo          * BATHAXX (JAP)
+if /i "%BathaxxU%" EQU "on" echo          * Bathaxx (USA)
+if /i "%BathaxxE%" EQU "on" echo          * Bathaxx (EURO)
+if /i "%BathaxxJ%" EQU "on" echo          * Bathaxx (JAP)
 
-if /i "%ROTJU%" EQU "on" echo          * Return of the JODI (USA)
-if /i "%ROTJE%" EQU "on" echo          * Return of the JODI (EURO)
-if /i "%ROTJJ%" EQU "on" echo          * Return of the JODI (JAP)
+if /i "%ROTJU%" EQU "on" echo          * Return of the Jodi (USA)
+if /i "%ROTJE%" EQU "on" echo          * Return of the Jodi (EURO)
+if /i "%ROTJJ%" EQU "on" echo          * Return of the Jodi (JAP)
 
 if /i "%TOSU%" EQU "on" echo          * Eri HaKawai (USA)
 if /i "%TOSE%" EQU "on" echo          * Eri HaKawai (EURO)
@@ -4231,9 +4295,9 @@ if /i "%PWNSU%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlie> nul
 if /i "%PWNSJ%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlij> nul
 if /i "%PWNSE%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlip> nul
 
-if /i "%BATHAXXU%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbe> nul
-if /i "%BATHAXXJ%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbj> nul
-if /i "%BATHAXXE%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbp> nul
+if /i "%BathaxxU%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbe> nul
+if /i "%BathaxxJ%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbj> nul
+if /i "%BathaxxE%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlbp> nul
 
 if /i "%ROTJU%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlge> nul
 if /i "%ROTJJ%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\rlgj> nul
@@ -4396,6 +4460,7 @@ if /i "%MENU1%" EQU "H" echo.
 echo         What is your current firmware version?
 echo.
 echo.
+echo         For an instructional video on checking your firmware enter "Help"
 echo.
 echo         Note: to check this, turn on your wii, click the Wii button in the
 echo               bottom left of the main system menu, click Wii Settings,
@@ -4433,6 +4498,13 @@ set /p FIRMSTART=     Enter Selection Here:
 
 
 if /i "%FIRMSTART%" EQU "M" goto:MENU
+
+if /i "%FIRMSTART%" NEQ "Help" goto:nohelp
+cd /d SUPPORT
+start SMver.html
+cd /d %ModMiipath%
+goto:WPAGE2
+:nohelp
 
 
 if /i "%FIRMSTART%" EQU "4.2" goto:WPAGE3
@@ -4542,14 +4614,24 @@ echo                                       by XFlak
 echo.
 echo.
 
-if /i "%MENU1%" NEQ "H" echo      You must own, rent, or borrow one of the following games to mod your Wii
-if /i "%MENU1%" EQU "H" echo      If your homebrew channel can't load apps properly, you must own, rent,
-if /i "%MENU1%" EQU "H" echo      or borrow one of the following two games to fix the problem.
-echo.
-echo      Select the game you wish to use:
+
+echo      Select the Exploit you would like to use to mod your Wii.
 echo.
 echo.
+if /i "%FIRMSTART%" EQU "o" goto:skipbomb
+echo      ATTENTION: LetterBomb is the only discless exploit for 4.3 Wii's but
+echo                 ModMii cannot prepare it for you yet. If you would like to use
+echo                 this exploit with a little bit of ModMii's help, type "BOMB"
 echo.
+echo.
+echo.
+echo             BOMB = LetterBomb
+echo.
+echo.
+echo      The following 4.3 exploits require you own one of the following games:
+:skipbomb
+
+
 echo.
 echo                S = Super Smash Brothers Brawl
 if /i "%REGION%" NEQ "K" echo                L = LEGO Indiana Jones
@@ -4566,15 +4648,7 @@ echo.
 echo.
 echo.
 
-if /i "%FIRMSTART%" EQU "o" goto:skipbomb
-echo      ATTENTION: A new discless exploit called LetterBomb has been released but
-echo                 ModMii cannot prepare it for you yet. If you would like to use
-echo                 this exploit with a little bit of ModMii's help, type "BOMB"
-echo.
-echo             BOMB = LetterBomb
-echo.
-echo.
-:skipbomb
+
 
 if /i "%FIRMSTART%" NEQ "o" goto:skipOmsg
 support\sfk echo -spat \x20 [Red] Important Notes:
@@ -4619,8 +4693,22 @@ if /i "%EXPLOIT%" EQU "?" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "S" goto:WPAGE3D
 
 if /i "%FIRMSTART%" EQU "o" goto:notbomb
-if /i "%EXPLOIT%" NEQ "BOMB" goto:notbomb
-start http://please.hackmii.com
+if /i "%EXPLOIT%" EQU "BOMB" goto:bombinfo
+:notbomb
+
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:WPAGE3C
+
+
+
+:bombinfo
+::start http://please.hackmii.com
+
+cd /d SUPPORT
+start LetterBombFrames.html
+cd /d %ModMiipath%
+
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -4628,13 +4716,15 @@ echo.
 echo.
 echo    ModMii should have just opened your browser to http://please.hackmii.com
 echo.
+echo    An instructional video on properly downloading Letterbomb can be found
+echo    in the panel next to the webpage.
+echo.
+echo.
 echo    On this webpage, enter your System Menu region and MAC address
 echo.
 echo         Note: to find your Wii's MAC address, turn on your Wii, click the
 echo               Wii button in the bottom left of the main system menu,
 echo               then click Wii Settings, then Internet, then Console Information.
-echo.
-echo.
 echo.
 echo    Uncheck Bundle the HackMii Installer for Me, fill in the captcha and cut
 echo    either wire. It will download a small ZIP file, open this file, and you
@@ -4646,13 +4736,9 @@ echo.
 echo    Press any key when you're ready to continue...
 echo.
 pause>nul
+
 goto:WPAGE3D
-:notbomb
 
-
-echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:WPAGE3C
 
 
 
@@ -4796,20 +4882,14 @@ if /i "%FIRM%" EQU "4.2" goto:WPAGE5
 if /i "%FIRM%" EQU "4.1" goto:WPAGE5
 if /i "%FIRM%" EQU "4.3" goto:WPAGE5
 
-
-if /i "%exploitselection%" EQU "yes" goto:backtoExploits
-if /i "%VIRGIN%" EQU "N" goto:backtoExploits
-
-if /i "%FIRM%" EQU "B" goto:wpage3
-
-:backtoExploits
-if /i "%ACTIVEIOS%" EQU "off" goto:backtowpage3c
-if /i "%FIRMSTART%" EQU "o" goto:backtowpage3c
-if /i "%FIRMSTART%" NEQ "4.3" goto:backtowpage3b
-if /i "%FIRM%" EQU "B" goto:wpage3D
-
-:backtowpage3c
-if /i "%FIRM%" EQU "B" goto:wpage3C
+if /i "%FIRM%" NEQ "B" goto:notback
+if /i "%FIRMSTART%" EQU "o" goto:wpage3c
+if /i "%FIRMSTART%" NEQ "4.3" goto:wpage3
+if /i "%VIRGIN%" EQU "N" goto:noexploits
+if /i "%ACTIVEIOS%" EQU "off" (goto:wpage3c) else (goto:WPAGE3D)
+:noexploits
+if /i "%ACTIVEIOS%" EQU "off" (goto:wpage3) else (goto:WPAGE3D)
+:notback
 
 
 echo You Have Entered an Incorrect Key
@@ -5251,22 +5331,28 @@ echo                                       by XFlak
 echo.
 echo.
 echo      Would you like to install and\or update the Homebrew Channel and\or BootMii?
+echo.
+echo      Note: This will download the HackMii Installer and IOS58
+echo.
+echo.
+echo.
+echo      For an instructional video on checking your HBC version enter "Help"
+echo.
+echo.
 
-echo.
-echo.
-echo      This will download the following files:
-echo      ---------------------------------------
-echo.
-echo      * HackMii Installer
-if /i "%FIRMSTART%" EQU "o" echo      * All available exploits
-if /i "%FIRMSTART%" EQU "3.X" echo      * BannerBomb v1
-if /i "%FIRMSTART%" EQU "4.0" echo      * BannerBomb v1
-if /i "%FIRMSTART%" EQU "4.1" echo      * BannerBomb v1
-if /i "%FIRMSTART%" EQU "4.2" echo      * BannerBomb v2
-if /i "%FIRMSTART%" EQU "4.3" echo      * All available exploits
-echo      * IOS58
 
-if /i "%FIRMSTART%" EQU "4.3" (echo.) & (echo      Note: Letterbomb exploit available here - http://please.hackmii.com)
+::echo      This will download the following files:
+::echo      ---------------------------------------
+::echo.
+::echo      * HackMii Installer
+::if /i "%FIRMSTART%" EQU "o" echo      * All available exploits
+::if /i "%FIRMSTART%" EQU "3.X" echo      * BannerBomb v1
+::if /i "%FIRMSTART%" EQU "4.0" echo      * BannerBomb v1
+::if /i "%FIRMSTART%" EQU "4.1" echo      * BannerBomb v1
+::if /i "%FIRMSTART%" EQU "4.2" echo      * BannerBomb v2
+::if /i "%FIRMSTART%" EQU "4.3" echo      * All available exploits
+::echo      * IOS58
+::if /i "%FIRMSTART%" EQU "4.3" (echo.) & (echo      Note: Letterbomb exploit available here - http://please.hackmii.com)
 
 echo.
 echo.
@@ -5290,6 +5376,13 @@ if /i "%HMInstaller%" EQU "N" goto:WPAGE14
 if /i "%HMInstaller%" EQU "M" goto:MENU
 if /i "%HMInstaller%" EQU "B" goto:WPAGE13
 
+
+if /i "%HMInstaller%" NEQ "Help" goto:nohelp
+cd /d SUPPORT
+start HBCIOS.html
+cd /d %ModMiipath%
+goto:WPAGE13B
+:nohelp
 
 
 echo You Have Entered an Incorrect Key
@@ -5506,32 +5599,27 @@ echo.
 echo      Would you like to install a custom Theme on your Wii?
 echo.
 echo.
+echo         WWW = View All Available Themes on Youtube
+echo.
+echo.
+echo          CE = Channel Effect for custom system menu themes: %effect%
+echo               * Choose from 3 effects: No-Spin, Spin and Fast-Spin
+echo.
+echo.
 echo.
 echo                R = DarkWii Red Theme - %effect%
-echo             WWWR = View DarkWii Red Theme on youtube
-echo.
 echo.
 echo                G = DarkWii Green Theme - %effect%
-echo             WWWG = View DarkWii Green Theme on youtube
-echo.
 echo.
 echo               BL = DarkWii Blue Theme - %effect%
-echo             WWWB = View DarkWii Blue Theme on youtube
-echo.
 echo.
 echo                O = DarkWii Orange Theme - %effect%
-echo             WWWO = View DarkWii Orange Theme on youtube
 echo.
 echo.
 if /i "%SNEEKSELECT%" EQU "5" (echo                N = No, do not change the theme) else (echo                N = No, I want the same old boring, boring System Menu)
 echo.
 if /i "%SNEEKSELECT%" EQU "5" echo.
 if /i "%SNEEKSELECT%" EQU "5" echo                D = Default Theme (restore original theme to the Emulated NAND)
-echo.
-echo.
-echo.
-echo          CE = Channel Effect for custom system menu themes: %effect%
-echo               * Choose from 3 effects: No-Spin, Spin and Fast-Spin
 echo.
 echo.
 echo.
@@ -5546,10 +5634,16 @@ echo.
 set /p ThemeSelection=     Enter Selection Here: 
 
 if /i "%ThemeSelection%" EQU "M" goto:MENU
-if /i "%ThemeSelection%" EQU "WWWR" (start www.youtube.com/watch?v=qFliF-K-epM)&&(goto:WPAGE20)
-if /i "%ThemeSelection%" EQU "WWWG" (start http://www.youtube.com/watch?v=Rn0CnTo5kRI)&&(goto:WPAGE20)
-if /i "%ThemeSelection%" EQU "WWWB" (start http://www.youtube.com/watch?v=oSMkswfXe_w)&&(goto:WPAGE20)
-if /i "%ThemeSelection%" EQU "WWWO" (start http://www.youtube.com/watch?v=g66UasiFEhg)&&(goto:WPAGE20)
+
+
+if /i "%ThemeSelection%" NEQ "WWW" goto:novid
+cd /d SUPPORT
+start WiiThemes.html
+cd /d %ModMiipath%
+goto:WPAGE20
+:novid
+
+
 if /i "%ThemeSelection%" EQU "CE" goto:OptionCEwizard
 
 if /i "%MENU1%" EQU "S" goto:forsneeknand
@@ -5739,7 +5833,7 @@ if exist Wizard_Settings.bat echo                    Existing Wizard_Settings.ba
 echo.
 :skip
 echo                Y = Yes
-echo                N = No \ Main Menu
+::echo                N = No \ Main Menu
 echo.
 echo                B = Back
 echo                M = Main Menu
@@ -5754,8 +5848,9 @@ if /i "%WLAST%" EQU "S" goto:SaveWizardSettings
 :skip
 if /i "%WLAST%" EQU "Y" set BACKB4DRIVE=WPAGELAST
 if /i "%WLAST%" EQU "Y" goto:DriveChange
-if /i "%WLAST%" EQU "N" goto:Menu
+::if /i "%WLAST%" EQU "N" goto:Menu
 if /i "%WLAST%" EQU "M" goto:MENU
+
 if /i "%Advanced%" EQU "N" goto:Back2Advanced
 if /i "%Advanced%" EQU "Y" goto:Back2USB
 if /i "%MORE%" EQU "N" goto:Back2USB
@@ -6276,8 +6371,8 @@ if /i "%REGION%" EQU "E" set defaultserial=LEH133789940
 if /i "%REGION%" EQU "J" set defaultserial=LJM101175683
 if /i "%REGION%" EQU "K" set defaultserial=LJM101175683
 
-
-if /i "%REGION%" EQU "U" (set serialdigits=11 or 12) else (set serialdigits=12)
+set serialdigits=11 or 12
+::if /i "%REGION%" EQU "U" (set serialdigits=11 or 12) else (set serialdigits=12)
 
 if /i "%REGION%" EQU "U" goto:SNKPAGE4
 if /i "%REGION%" EQU "E" goto:SNKPAGE4
@@ -6805,7 +6900,7 @@ if /i "%settingtxtExist%" EQU "yes" echo                                  %nandp
 if /i "%settingtxtExist%" EQU "yes" support\sfk echo -spat \x20 [Red] Leave the selection blank to keep using this setting.txt
 echo.
 echo.
-echo         Enter your %serialdigits% digit serial number now
+echo         Enter your serial number now
 echo.
 echo               Example: %defaultserial%
 echo.
@@ -6865,7 +6960,7 @@ if "%SNKSERIAL:~9%"=="" (goto:badkey)
 if "%SNKSERIAL:~10%"=="" (goto:badkey)
 
 if /i "%REGION%" EQU "U" goto:skip
-if "%SNKSERIAL:~11%"=="" (goto:badkey)
+::if "%SNKSERIAL:~11%"=="" (goto:badkey)
 :skip
 
 if not "%SNKSERIAL:~12%"=="" (goto:badkey)
@@ -7042,8 +7137,8 @@ goto:noyes
 echo                Y = Yes, do it now!
 :noyes
 
-echo.
-echo                N = No
+::echo.
+::echo                N = No
 echo.
 echo.
 echo                B = Back
@@ -7056,7 +7151,7 @@ set /p SNKNANDCONFIRM=     Enter Selection Here:
 
 if /i "%SNKNANDCONFIRM%" EQU "B" goto:%B4SNKCONFIRM%
 if /i "%SNKNANDCONFIRM%" EQU "M" goto:MENU
-if /i "%SNKNANDCONFIRM%" EQU "N" goto:MENU
+::if /i "%SNKNANDCONFIRM%" EQU "N" goto:MENU
 
 
 
@@ -7640,7 +7735,7 @@ if exist "%DRIVETEMP%\title\00000001\00000002\content\1%SMAPP:~1%.app" (set PRII
 
 ::check for current nswitch channel
 set nSwitchFOUND=NO
-set nswitchmd5=2ff286563b0695358801e80fdf2aef71
+set nswitchmd5=9f5ee8d0ea57c144c07d685ef0dee4da
 if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 if not exist "%DRIVETEMP%\title\00010001\4e4b324f\content\00000001.app" goto:nonswitchcheck
 support\sfk md5 -quiet -verify %nswitchmd5% "%DRIVETEMP%\title\00010001\4e4b324f\content\00000001.app"
@@ -9137,11 +9232,11 @@ echo      %bootmiisd% BSD = BootMii SD Files              %BB2% BB2 = Bannerbom
 echo     %yawm% YAWM = Yet Another Wad Manager Mod   %Pwns% PWNS = Indiana Pwns (USA\EUR\JAP)
 echo      %MMM% MMM = Multi-Mod Manager               %Smash% SS = Smash Stack (USA\EUR\JAP\KOR)
 echo      %dop% DOP = Dop-Mii                         %YUGI% YU = YU-GI-OWNED (USA\EUR\JAP)
-echo      %IOS236Installer% 236 = IOS236 Installer                %BATHAXX% BH = BATHAXX (USA\EUR\JAP)
-echo      %SIP% SIP = Simple IOS Patcher              %ROTJ% RJ = Return of the JODI (USA\EUR\JAP)
+echo      %IOS236Installer% 236 = IOS236 Installer                %Bathaxx% BH = Bathaxx (USA\EUR\JAP)
+echo      %SIP% SIP = Simple IOS Patcher              %ROTJ% RJ = Return of the Jodi (USA\EUR\JAP)
 echo      %Pri% Pri = Priiloader v0.7 (236 Mod)      %Twi% Twi = Twilight Hack (USA\EUR\JAP)
 echo      %HAX% HAX = Priiloader Hacks                %TOS% EH = Eri HaKawai (USA\EUR\JAP)
-echo      %PLC% PLC = Post Loader Channel
+echo      %PLC% PLC = Post Loader Channel            BOMB = Letterbomb (4.3 USA\EUR\JAP\KOR)
 echo       %PL% PL = Postloader
 echo       %syscheck% SC = sysCheck
 echo      %sysCheckBeta% SCB = sysCheckBeta
@@ -9160,6 +9255,14 @@ if /i "%OLDLIST%" EQU "D" goto:DOWNLOADQUEUE
 if /i "%OLDLIST%" EQU "DR" set BACKB4DRIVE=OLDLIST
 if /i "%OLDLIST%" EQU "DR" goto:DRIVECHANGE
 if /i "%OLDLIST%" EQU "C" goto:CLEAR
+
+
+if /i "%OLDLIST%" NEQ "BOMB" goto:notbomb
+cd /d SUPPORT
+start LetterBombFrames.html
+cd /d %ModMiipath%
+:notbomb
+
 
 if /i "%OLDLIST%" EQU "A" goto:SelectAllOLD
 if /i "%OLDLIST%" EQU "J" goto:SelectJust4FunOLD
@@ -9192,7 +9295,7 @@ if /i "%OLDLIST%" EQU "WSX" goto:SwitchWIISX
 if /i "%OLDLIST%" EQU "pwns" goto:Switchpwns
 if /i "%OLDLIST%" EQU "Twi" goto:SwitchTwi
 if /i "%OLDLIST%" EQU "Yu" goto:SwitchYUGI
-if /i "%OLDLIST%" EQU "BH" goto:SwitchBATHAXX
+if /i "%OLDLIST%" EQU "BH" goto:SwitchBathaxx
 if /i "%OLDLIST%" EQU "RJ" goto:SwitchROTJ
 if /i "%OLDLIST%" EQU "EH" goto:SwitchTOS
 if /i "%OLDLIST%" EQU "ss" goto:Switchsmash
@@ -9266,8 +9369,8 @@ goto:OLDLIST
 if /i "%YUGI%" EQU "*" (set YUGI=) else (set YUGI=*)
 goto:OLDLIST
 
-:SwitchBATHAXX
-if /i "%BATHAXX%" EQU "*" (set BATHAXX=) else (set BATHAXX=*)
+:SwitchBathaxx
+if /i "%Bathaxx%" EQU "*" (set Bathaxx=) else (set Bathaxx=*)
 goto:OLDLIST
 
 :SwitchROTJ
@@ -9501,7 +9604,7 @@ set BB1=*
 set BB2=*
 set Twi=*
 set YUGI=*
-set BATHAXX=*
+set Bathaxx=*
 set ROTJ=*
 set TOS=*
 set smash=*
@@ -9549,11 +9652,10 @@ echo           * Choose from 3 effects: No-Spin, Spin and Fast-Spin
 echo.
 echo    %MyM% MyM = MyMenuifyMod
 echo.
-
+echo     WWW = View All Available Themes on Youtube
+echo.
 
 if /i "%selectedtheme%" NEQ "R" goto:skipred
-echo     WWW = View DarkWii Red Theme on youtube
-echo.
 support\sfk echo -spat \x20 [Red]DarkWii Red CSMs \x20 \x20 \x20 \x20 \x20 DarkWii Red System Menus \x20 \x20 Original Wii Themes
 echo.
 echo    %DarkWii_Red_4.3U% 3U = 4.3U                    %SM4.3U-DWR% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
@@ -9581,8 +9683,6 @@ echo    %DarkWii_Red_4.1K% 1K = 4.1K                    %SM4.1K-DWR% 4.1K = 4.1K
 
 
 if /i "%selectedtheme%" NEQ "G" goto:skipgreen
-echo     WWW = View DarkWii Green Theme on youtube
-echo.
 support\sfk echo -spat \x20 [Red]DarkWii Green CSMs \x20 \x20 \x20 DarkWii Green System Menus \x20 \x20 Original Wii Themes
 echo.
 echo    %DarkWii_Green_4.3U% 3U = 4.3U                    %SM4.3U-DWG% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
@@ -9610,8 +9710,6 @@ echo    %DarkWii_Green_4.1K% 1K = 4.1K                    %SM4.1K-DWG% 4.1K = 4.
 
 
 if /i "%selectedtheme%" NEQ "B" goto:skipBlue
-echo     WWW = View DarkWii Blue Theme on youtube
-echo.
 support\sfk echo -spat \x20 [Red]DarkWii Blue CSMs \x20 \x20 \x20 DarkWii Blue System Menus \x20 \x20 Original Wii Themes
 echo.
 echo    %DarkWii_Blue_4.3U% 3U = 4.3U                    %SM4.3U-DWB% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
@@ -9639,8 +9737,6 @@ echo    %DarkWii_Blue_4.1K% 1K = 4.1K                    %SM4.1K-DWB% 4.1K = 4.1
 
 
 if /i "%selectedtheme%" NEQ "O" goto:skipOrange
-echo     WWW = View DarkWii Orange Theme on youtube
-echo.
 support\sfk echo -spat \x20 [Red]DarkWii Orange CSMs \x20 \x20 \x20 DarkWii Orange System Menus \x20 \x20 Original Wii Themes
 echo.
 echo    %darkwii_orange_4.3U% 3U = 4.3U                    %SM4.3U-DWO% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
@@ -9689,6 +9785,16 @@ if /i "%LIST3%" EQU "ADV" goto:ADVANCED
 IF "%LIST3%"=="" goto:LIST4
 
 ::common
+
+if /i "%LIST3%" NEQ "WWW" goto:novid
+cd /d SUPPORT
+start WiiThemes.html
+cd /d %ModMiipath%
+goto:LIST3
+:novid
+
+
+
 if /i "%LIST3%" EQU "CE" goto:OptionCEp3
 if /i "%LIST3%" EQU "A" goto:SelectAll4
 if /i "%LIST3%" EQU "U" goto:UTHEMES
@@ -9722,7 +9828,6 @@ if /i "%LIST3%" EQU "9d" goto:switchA9d
 ::Red
 if /i "%selectedtheme%" NEQ "R" goto:skipred
 if /i "%LIST3%" EQU "S" (set selectedtheme=G)&&(goto:LIST3)
-if /i "%LIST3%" EQU "WWW" (start www.youtube.com/watch?v=qFliF-K-epM)&&(goto:LIST3)
 if /i "%LIST3%" EQU "3U" goto:SwitchDarkWii_Red_4.3U
 if /i "%LIST3%" EQU "2U" goto:SwitchDarkWii_Red_4.2U
 if /i "%LIST3%" EQU "1U" goto:SwitchDarkWii_Red_4.1U
@@ -9784,7 +9889,6 @@ if /i "%LIST3%" EQU "4.1K" goto:SwitchSM4.1K-DWG
 ::Blue
 if /i "%selectedtheme%" NEQ "B" goto:skipBlue
 if /i "%LIST3%" EQU "S" (set selectedtheme=O)&&(goto:LIST3)
-if /i "%LIST3%" EQU "WWW" (start www.youtube.com/watch?v=oSMkswfXe_w)&&(goto:LIST3)
 if /i "%LIST3%" EQU "3U" goto:SwitchDarkWii_Blue_4.3U
 if /i "%LIST3%" EQU "2U" goto:SwitchDarkWii_Blue_4.2U
 if /i "%LIST3%" EQU "1U" goto:SwitchDarkWii_Blue_4.1U
@@ -9815,7 +9919,6 @@ if /i "%LIST3%" EQU "4.1K" goto:SwitchSM4.1K-DWB
 ::Orange
 if /i "%selectedtheme%" NEQ "O" goto:skipOrange
 if /i "%LIST3%" EQU "S" (set selectedtheme=R)&&(goto:LIST3)
-if /i "%LIST3%" EQU "WWW" (start www.youtube.com/watch?v=g66UasiFEhg)&&(goto:LIST3)
 if /i "%LIST3%" EQU "3U" goto:Switchdarkwii_orange_4.3U
 if /i "%LIST3%" EQU "2U" goto:Switchdarkwii_orange_4.2U
 if /i "%LIST3%" EQU "1U" goto:Switchdarkwii_orange_4.1U
@@ -13887,9 +13990,35 @@ goto:Prisyscheck
 :nopriconfirmation
 
 
+
+
 set d2x-beta-rev=7-final
 set ciosversion=21007
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+
+echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
+support\sfk filter -spat temp\cIOSrev.bat -rep _\x22__ -rep _"-*"__ -write -yes>nul
+call temp\cIOSrev.bat
+del temp\cIOSrev.bat>nul
+
+
+set string1=%cIOSversionNum%
+set versionlength=1
+::letter by letter loop
+:loopy2
+    if /i "%string1%" EQU "" goto:endloopy2
+    set string1=%string1:~1%
+    set /A versionlength=%versionlength%+1
+    goto:loopy2
+:endloopy2
+
+
+echo set cIOSsubversion=@d2x-beta-rev:~%versionlength%,16@>temp\cIOSsubversion.bat
+support\sfk filter temp\cIOSsubversion.bat -spat -rep _@_%%_ -write -yes>nul
+call temp\cIOSsubversion.bat
+del temp\cIOSsubversion.bat>nul
+:tinyjump
+
 
 
 ::check for recommended cIOSs and HBC
@@ -13910,10 +14039,10 @@ IF ERRORLEVEL 1 (set cIOS223[37-38]-v4=*) else (set cIOS223[37-38]-v4=)
 findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
-findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%d2x-beta-rev%" "%sysCheckName%" >nul
+findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v7-final=*) else (set cIOS249[56]-d2x-v7-final=)
 
-findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%d2x-beta-rev%" "%sysCheckName%" >nul
+findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v7-final=*) else (set cIOS250[57]-d2x-v7-final=)
 
 if /i "%syscheckversion%" NEQ "2.0.1" goto:skipv2.0.1
@@ -14159,14 +14288,14 @@ set BB1=
 set BB2=
 set SMASH=
 set PWNS=
-set BATHAXX=
+set Bathaxx=
 set ROTJ=
 set TOS=
 set TWI=
 set YUGI=
 
 
-set IOS30P60=*
+::set IOS30P60=*
 set IOS31=*
 set IOS33=*
 set IOS34=*
@@ -14184,12 +14313,12 @@ if /i "%FIRMSTART%" EQU "4.2" set BB2=*
 
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
-if /i "%EXPLOIT%" EQU "LB" set BATHAXX=*
+if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
 if /i "%EXPLOIT%" EQU "LS" set ROTJ=*
 if /i "%EXPLOIT%" EQU "TOS" set TOS=*
 if /i "%EXPLOIT%" EQU "T" set TWI=*
 if /i "%EXPLOIT%" EQU "Y" set YUGI=*
-if /i "%EXPLOIT%" EQU "LB" set BATHAXX=*
+if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
 
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits2
 if /i "%FIRMSTART%" EQU "o" set Twi=*
@@ -14197,7 +14326,7 @@ set SMASH=*
 
 if /i "%REGION%" NEQ "K" set PWNS=*
 if /i "%REGION%" NEQ "K" set YUGI=*
-if /i "%REGION%" NEQ "K" set BATHAXX=*
+if /i "%REGION%" NEQ "K" set Bathaxx=*
 if /i "%REGION%" NEQ "K" set ROTJ=*
 if /i "%REGION%" NEQ "K" set TOS=*
 :notallexploits2
@@ -14622,7 +14751,7 @@ if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "T" set Twi=*
 if /i "%EXPLOIT%" EQU "Y" set YUGI=*
-if /i "%EXPLOIT%" EQU "LB" set BATHAXX=*
+if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
 if /i "%EXPLOIT%" EQU "LS" set ROTJ=*
 if /i "%EXPLOIT%" EQU "TOS" set TOS=*
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits
@@ -14630,7 +14759,7 @@ if /i "%FIRMSTART%" EQU "o" set Twi=*
 set SMASH=*
 if /i "%REGION%" NEQ "K" set PWNS=*
 if /i "%REGION%" NEQ "K" set YUGI=*
-if /i "%REGION%" NEQ "K" set BATHAXX=*
+if /i "%REGION%" NEQ "K" set Bathaxx=*
 if /i "%REGION%" NEQ "K" set ROTJ=*
 if /i "%REGION%" NEQ "K" set TOS=*
 :notallexploits
@@ -14668,24 +14797,24 @@ if /i "%HMInstaller%" NEQ "Y" goto:noHMInstallerforNonVirgin
 set HM=*
 set bootmiisd=*
 set IOS58=*
-if /i "%FIRMSTART%" EQU "4.1" set BB1=*
-if /i "%FIRMSTART%" EQU "4.0" set BB1=*
-if /i "%FIRMSTART%" EQU "3.x" set BB1=*
-if /i "%FIRMSTART%" EQU "3.2" set BB1=*
-if /i "%FIRMSTART%" EQU "4.2" set BB2=*
+::if /i "%FIRMSTART%" EQU "4.1" set BB1=*
+::if /i "%FIRMSTART%" EQU "4.0" set BB1=*
+::if /i "%FIRMSTART%" EQU "3.x" set BB1=*
+::if /i "%FIRMSTART%" EQU "3.2" set BB1=*
+::if /i "%FIRMSTART%" EQU "4.2" set BB2=*
 
 if /i "%FIRMSTART%" EQU "o" goto:gonow
 if /i "%FIRMSTART%" EQU "4.3" goto:gonow
 goto:skipextra2
 
 :gonow
-if /i "%FIRMSTART%" EQU "o" set TWI=*
-set SMASH=*
-if /i "%REGION%" NEQ "K" set PWNS=*
-if /i "%REGION%" NEQ "K" set YUGI=*
-if /i "%REGION%" NEQ "K" set BATHAXX=*
-if /i "%REGION%" NEQ "K" set ROTJ=*
-if /i "%REGION%" NEQ "K" set TOS=*
+::if /i "%FIRMSTART%" EQU "o" set TWI=*
+::set SMASH=*
+::if /i "%REGION%" NEQ "K" set PWNS=*
+::if /i "%REGION%" NEQ "K" set YUGI=*
+::if /i "%REGION%" NEQ "K" set Bathaxx=*
+::if /i "%REGION%" NEQ "K" set ROTJ=*
+::if /i "%REGION%" NEQ "K" set TOS=*
 :skipextra2
 
 :noHMInstallerforNonVirgin
@@ -15084,8 +15213,8 @@ if /i "%BB1%" EQU "*" (echo "Bannerbomb v1">>temp\DLnames.txt) & (echo "BannerBo
 if /i "%BB2%" EQU "*" (echo "Bannerbomb v2">>temp\DLnames.txt) & (echo "BannerBomb2">>temp\DLgotos.txt)
 if /i "%smash%" EQU "*" (echo "Smash Stack (USA, PAL, JAP and KOR)">>temp\DLnames.txt) & (echo "smash">>temp\DLgotos.txt)
 if /i "%pwns%" EQU "*" (echo "Indiana Pwns">>temp\DLnames.txt) & (echo "pwns">>temp\DLgotos.txt)
-if /i "%BATHAXX%" EQU "*" (echo "BATHAXX (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "BATHAXX">>temp\DLgotos.txt)
-if /i "%ROTJ%" EQU "*" (echo "Return of the JODI (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "ROTJ">>temp\DLgotos.txt)
+if /i "%Bathaxx%" EQU "*" (echo "Bathaxx (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "Bathaxx">>temp\DLgotos.txt)
+if /i "%ROTJ%" EQU "*" (echo "Return of the Jodi (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "ROTJ">>temp\DLgotos.txt)
 if /i "%TOS%" EQU "*" (echo "Eri HaKawai (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "TOS">>temp\DLgotos.txt)
 if /i "%YUGI%" EQU "*" (echo "YU-GI-OWNED (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "YUGI">>temp\DLgotos.txt)
 if /i "%Twi%" EQU "*" (echo "Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)">>temp\DLnames.txt) & (echo "Twi">>temp\DLgotos.txt)
@@ -15342,6 +15471,7 @@ goto:sysCheckName
 :miniskip
 
 ::---------------CMD LINE MODE-------------
+if /i "%cmdlinemodeswitchoff%" EQU "Y" (set cmdlinemode=) & (set one=) & (set two=)
 if /i "%cmdlinemode%" EQU "Y" goto:DLSettings
 
 
@@ -15404,6 +15534,9 @@ if /i "%USBGUIDE%" NEQ "Y" goto:skip
 if /i "%USBCONFIG%" EQU "USB" (echo      The following %DLTOTAL% files will be downloaded to "%DRIVE%" or "%DRIVEU%":) else (echo      The following %DLTOTAL% files will be downloaded to "%DRIVE%":)
 goto:skipall
 :skip
+
+
+if /i "%MENU1%" EQU "SU" (echo      According to your sysCheck log the following files are required) & (echo      in order to update your softmod.) & (echo.)
 
 echo      The following %DLTOTAL% files will be downloaded to "%DRIVE%":
 :skipall
@@ -15749,7 +15882,7 @@ if /i "%bootmiisd%" EQU "*" echo SET bootmiisd=%bootmiisd%>> "temp\DownloadQueue
 if /i "%pwns%" EQU "*" echo SET pwns=%pwns%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%Twi%" EQU "*" echo SET Twi=%Twi%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%YUGI%" EQU "*" echo SET YUGI=%YUGI%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%BATHAXX%" EQU "*" echo SET BATHAXX=%BATHAXX%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%Bathaxx%" EQU "*" echo SET Bathaxx=%Bathaxx%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%ROTJ%" EQU "*" echo SET ROTJ=%ROTJ%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%TOS%" EQU "*" echo SET TOS=%TOS%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%smash%" EQU "*" echo SET smash=%smash%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -21594,8 +21727,8 @@ set REALDRIVE=%DRIVE%
 
 
 if /i "%MENU1%" EQU "W" goto:guide
-if /i "%MENU1%" EQU "H" goto:HMguide
-if /i "%MENU1%" EQU "U" goto:USBguide
+if /i "%MENU1%" EQU "H" goto:guide
+if /i "%MENU1%" EQU "U" goto:guide
 if /i "%MENU1%" EQU "SU" goto:guide
 :DLSETTINGS2
 cls
@@ -23667,9 +23800,9 @@ set md5=704bd625ea5b42d7ac06fc937af74d38
 set path1=private\wii\title\rzdp\
 goto:downloadstart
 
-:BATHAXX
+:Bathaxx
 set category=fullextract
-set name=BATHAXX (USA, PAL and JAP)
+set name=Bathaxx (USA, PAL and JAP)
 set code1=URL
 set code2="http://wien.tomnetworks.com/wii/bathaxx.zip"
 set version=*
@@ -23683,7 +23816,7 @@ goto:downloadstart
 
 :ROTJ
 set category=fullextract
-set name=Return of the JODI (USA, PAL and JAP)
+set name=Return of the Jodi (USA, PAL and JAP)
 set code1=URL
 set code2="http://static.hackmii.com/return-jodi.zip"
 set version=*
@@ -23956,7 +24089,7 @@ set version=*
 set dlname="neek2o NK2O_1 .wad"
 set wadname=neek2o_NK2O_1.wad
 set filename=neek2o_NK2O_1.wad
-set md5=af24770e48dff21dbfc1403f26e86f72
+set md5=bdca7faf1910fe332e6c464e899bbe1c
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -26664,17 +26797,190 @@ goto:downloadstart
 
 ::--------------------------------------Custom Guide (for DL Wizard only)-------------------------------------
 
+:spoileropeningtag
+support\sfk echo -spat \x3cdiv style=\x22margin: 5px 10px 10px;\x22\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cdiv class=\x22smallfont\x22 style=\x22margin-bottom: 2px;\x22\x3e\x3cinput value=\x22%spoilername%\x22 style=\x22margin: 0px; padding: 0px; width: >>"%Drive%"\%guidename% 
+support\sfk echo -spat 200px; font-size: 11px;\x22 onclick=\x22if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != >>"%Drive%"\%guidename% 
+support\sfk echo -spat '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; >>"%Drive%"\%guidename% 
+support\sfk echo -spat this.value = '%spoilername%'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = >>"%Drive%"\%guidename% 
+support\sfk echo -spat 'none'; this.innerText = ''; this.value = '%spoilername%'; }\x22 type=\x22button\x22\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3c/div\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cdiv class=\x22alt2\x22 style=\x22border: 0px inset ; margin: 0px; padding: 2px;\x22\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cdiv style=\x22display: none;\x22\x3e>>"%Drive%"\%guidename%
+goto:%spoilerback%
+
+
+
+
+::---------------------------EXPLOITS GUIDES------------------------------
+:EXPLOITS
+
+::title for multiple exploits
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3cfont size="4"\x3e\x3cb\x3eLaunch an Exploit\x3c/b\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat You only need to perform ONE of the following exploits\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
+::BB1
+If /i "%BB1%" NEQ "*" goto:noBB1
+if /i "%EXPLOIT%" NEQ "?" goto:afterBB1spoiler
+set spoilername=BannerBomb v1 Exploit Instructions
+set spoilerback=afterBB1spoiler
+goto:spoileropeningtag
+:afterBB1spoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\BBv1.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noBB1
+
+
+
+
+::BB2
+If /i "%BB2%" NEQ "*" goto:noBB2
+if /i "%EXPLOIT%" NEQ "?" goto:afterBB2spoiler
+set spoilername=BannerBomb v2 Exploit Instructions
+set spoilerback=afterBB2spoiler
+goto:spoileropeningtag
+:afterBB2spoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\BBv2.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noBB2
+
+
+
+::SMASH
+If /i "%SMASH%" NEQ "*" goto:noSMASH
+if /i "%EXPLOIT%" NEQ "?" goto:afterSMASHspoiler
+set spoilername=Smash Stack Exploit Instructions
+set spoilerback=afterSMASHspoiler
+goto:spoileropeningtag
+:afterSMASHspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\SmashStack.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noSMASH
+
+
+
+
+::PWNS
+If /i "%PWNS%" NEQ "*" goto:noPWNS
+if /i "%EXPLOIT%" NEQ "?" goto:afterPWNSspoiler
+set spoilername=Indiana Pwns Exploit Instructions
+set spoilerback=afterPWNSspoiler
+goto:spoileropeningtag
+:afterPWNSspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\PWNS.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noPWNS
+
+
+
+::YUGI
+If /i "%YUGI%" NEQ "*" goto:noYUGI
+if /i "%EXPLOIT%" NEQ "?" goto:afterYUGIspoiler
+set spoilername=Yu-Gi Owned Exploit Instructions
+set spoilerback=afterYUGIspoiler
+goto:spoileropeningtag
+:afterYUGIspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\YUGI.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noYUGI
+
+
+
+::Bathaxx
+If /i "%Bathaxx%" NEQ "*" goto:noBathaxx
+if /i "%EXPLOIT%" NEQ "?" goto:afterBathaxxspoiler
+set spoilername=Bathaxx Exploit Instructions
+set spoilerback=afterBathaxxspoiler
+goto:spoileropeningtag
+:afterBathaxxspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\Bathaxx.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noBathaxx
+
+
+
+::ROTJ
+If /i "%ROTJ%" NEQ "*" goto:noROTJ
+if /i "%EXPLOIT%" NEQ "?" goto:afterROTJspoiler
+set spoilername=Return of the Jodi Exploit Instructions
+set spoilerback=afterROTJspoiler
+goto:spoileropeningtag
+:afterROTJspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\ROTJ.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noROTJ
+
+
+
+
+::TOS
+If /i "%TOS%" NEQ "*" goto:noTOS
+if /i "%EXPLOIT%" NEQ "?" goto:afterTOSspoiler
+set spoilername=Eri HaKawai Exploit Instructions
+set spoilerback=afterTOSspoiler
+goto:spoileropeningtag
+:afterTOSspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\EriHaKawai.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noTOS
+
+
+
+
+::TWI
+If /i "%TWI%" NEQ "*" goto:noTWI
+if /i "%EXPLOIT%" NEQ "?" goto:afterTWIspoiler
+set spoilername=Twilight Hack Exploit Instructions
+set spoilerback=afterTWIspoiler
+goto:spoileropeningtag
+:afterTWIspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\Twilight.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noTWI
+
+
+
+::BOMB
+If /i "%Exploit%" NEQ "BOMB" goto:noBOMB
+if /i "%EXPLOIT%" NEQ "?" goto:afterBOMBspoiler
+set spoilername=Letterbomb Exploit Instructions
+set spoilerback=afterBOMBspoiler
+goto:spoileropeningtag
+:afterBOMBspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\letterbomb.001 "%Drive%"\%guidename%>nul
+::spoilerclosingtag
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
+:noBOMB
+
+
+
+::If /i "%MENU1%" EQU "H" goto:HMsolution2
+
+goto:%afterexploit%
+
+
+
+
 :guide
 set installwads=
 
-if /i "%MENU1%" EQU "U" goto:USBguide
-if /i "%MENU1%" EQU "H" goto:HMguide
-
 :guidestart
-set guidename=ModMiiGuide.txt
+set guidename=ModMii_Wizard_Guide.html
+set tabname=ModMii Wizard Guide
 
-
-if /i "%MENU1%" EQU "SU" set guidename=ModMii_sysCheck_Updater_Guide.txt
+if /i "%MENU1%" EQU "H" (set guidename=ModMii_HackMii_Solutions_Guide.html) & (set tabname=ModMii HackMii Solutions Guide)
+if /i "%MENU1%" EQU "U" (set guidename=ModMii_USBLoader_Setup_Guide.html) & (set tabname=ModMii USB-Loader Setup Guide)
+if /i "%MENU1%" EQU "SU" (set guidename=ModMii_sysCheck_Updater_Guide.html) & (set tabname=ModMii sysCheck Updater Guide)
 
 
 SET COUNT7=1
@@ -26685,80 +26991,100 @@ if /i "%SETTINGS%" NEQ "G" echo Generating Guide, please wait, your downloads wi
 if not exist "%DRIVE%" mkdir "%DRIVE%" >nul
 if not exist "%Drive%"\%guidename% goto:norename
 SET /a COUNT6=%COUNT6%+1
-if exist "%DRIVE%"\%guidename:~0,-4%%COUNT6%.txt goto:guide
-move /y "%Drive%"\%guidename% "%DRIVE%"\%guidename:~0,-4%%COUNT6%.txt >nul
+if exist "%DRIVE%"\%guidename:~0,-5%%COUNT6%.html goto:guide
+move /y "%Drive%"\%guidename% "%DRIVE%"\%guidename:~0,-5%%COUNT6%.html >nul
 :norename
 
 
 
-echo ModMii %currentversion% Custom Guide>"%Drive%"\%guidename%
-echo Generated on %DATE% - %TIME%>>"%Drive%"\%guidename%
-echo Check for updates at tinyurl.com/ModMiiNow>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This Guide was generated using the following parameters:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-if /i "%VIRGIN%" EQU "Y" echo                * Install and\or update all recommended softmods>>"%Drive%"\%guidename%
+::HTML HEADER
 
-if /i "%REGION%" EQU "K" goto:Koreansetting
-if /i "%FIRMSTART%" NEQ "o" echo                * Current firmware is %FIRMSTART%%REGION%>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo                * Current firmware is less than 2.2%REGION%>>"%Drive%"\%guidename%
-goto:skipKoreansetting
 
-echo .>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3chtml\x3e >"%Drive%"\%guidename%
+support\sfk echo -spat \x3chead\x3e >>"%Drive%"\%guidename%
+support\sfk echo -spat \x3ctitle\x3e%tabname%\x3c/title\x3e >>"%Drive%"\%guidename%
+support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22http://nusad.googlecode.com/files/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
 
-:Koreansetting
-if /i "%FIRMSTART%" NEQ "o" echo                * Current firmware is %FIRMSTART%K>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo                * Current firmware is less than 2.2K (Korean Wii's are hacked differently than Wii's from other regions.)>>"%Drive%"\%guidename%
-:skipKoreansetting
-echo                * Desired firmware is %FIRM%%REGION%>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cstyle type=\x22text/css\x22\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat body { font-family: Calibri, Arial, Helvetica, \x22Century Gothic\x22, sans-serif; }>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3c/style\x3e>>"%Drive%"\%guidename%
 
-if /i "%PIC%" EQU "Y" echo                * Install Photo Channel>>"%Drive%"\%guidename%
-if /i "%NET%" EQU "Y" echo                * Install Internet Channel>>"%Drive%"\%guidename%
-if /i "%WEATHER%" EQU "Y" echo                * Install Weather Channel>>"%Drive%"\%guidename%
-if /i "%NEWS%" EQU "Y" echo                * Install News Channel>>"%Drive%"\%guidename%
-if /i "%MIIQ%" EQU "Y" echo                * Install Mii Channel>>"%Drive%"\%guidename%
-if /i "%Shop%" EQU "Y" echo                * Install Shopping Channel (and IOS56)>>"%Drive%"\%guidename%
-if /i "%Speak%" EQU "Y" echo                * Install Wii Speak Channel>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3c/head\x3e >>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cbody style=\x22margin:5px 5px 5px 35px;\x22\x3e >>"%Drive%"\%guidename%
+support\sfk echo -spat Guide Generated on %DATE% - %TIME:~0,-6% \x3cbr\x3e\x3cbr\x3e >>"%Drive%"\%guidename%
+
+
+
+copy /y "%Drive%"\%guidename%+Support\Guide\sprint-paramstart.001 "%Drive%"\%guidename%>nul
+
+if /i "%MENU1%" EQU "U" (set USBGUIDE=Y) & (goto:usbparam)
+
+if /i "%VIRGIN%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall and\or update all recommended softmods\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
+if /i "%MENU1%" EQU "SU" goto:miniskip
+if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FIRMSTART%" EQU "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is less than 2.2%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
+if /i "%MENU1%" EQU "H" goto:skipusb
+
+
+
+
+support\sfk echo -spat \x3cli\x3eDesired firmware is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
+
+
+if /i "%PIC%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Photo Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NET%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Internet Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WEATHER%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Weather Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NEWS%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall News Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%MIIQ%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Mii Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%Shop%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Shopping Channel (and IOS56)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%Speak%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Wii Speak Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+
+:miniskip
 
 if /i "%VIRGIN%" EQU "Y" goto:skipvirginstandard
-if /i "%HM%" EQU "*" echo                * Install and\or update the Homebrew Channel and BootMii>>"%Drive%"\%guidename%
+if /i "%HM%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall and\or update the Homebrew Channel and BootMii\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%RECCIOS%" NEQ "Y" goto:smallskip
-if /i "%CMIOSOPTION%" EQU "on" (echo                * Install recommended cIOSs and cMIOS>>"%Drive%"\%guidename%) else (echo                * Install recommended cIOSs>>"%Drive%"\%guidename%)
+if /i "%CMIOSOPTION%" EQU "on" (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs and cMIOS\x3c/li\x3e>>"%Drive%"\%guidename%) else (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs\x3c/li\x3e>>"%Drive%"\%guidename%)
 :smallskip
-if /i "%yawm%" EQU "*" echo                * Download Yet Another Wad Manager Mod (YAWMM)>>"%Drive%"\%guidename%
-if /i "%IOS236Installer%" EQU "*" echo                * Install IOS236 >>"%Drive%"\%guidename%
-if /i "%pri%" EQU "*" echo                * Install and\or update Priiloader>>"%Drive%"\%guidename%
+if /i "%yawm%" EQU "*" support\sfk echo -spat \x3cli\x3eDownload Yet Another Wad Manager Mod (YAWMM)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS236Installer%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall IOS236 \x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%pri%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall and\or update Priiloader\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipvirginstandard
 
-if /i "%ThemeSelection%" EQU "R" echo                * Install Dark Wii Red Theme>>"%Drive%"\%guidename%
-if /i "%ThemeSelection%" EQU "G" echo                * Install Dark Wii Green Theme>>"%Drive%"\%guidename%
-if /i "%ThemeSelection%" EQU "BL" echo                * Install Dark Wii Blue Theme>>"%Drive%"\%guidename%
-if /i "%ThemeSelection%" EQU "O" echo                * Install Dark Wii Orange Theme>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "R" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Red Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "G" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Green Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "BL" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Blue Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "O" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Orange Theme\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%ACTIVEIOS%" NEQ "ON" goto:skipupdatelog
 if /i "%UpdatesIOSQ%" EQU "N" goto:skipupdatelog
-echo                * Update active IOSs (can be disabled in options)>>"%Drive%"\%guidename%
-if /i "%OPTION36%" EQU "off" echo                * Do not update IOS36 (can be enabled in options)>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eUpdate active IOSs (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%OPTION36%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not update IOS36 (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 goto:skip
 :skipupdatelog
-echo                * Do not update active IOSs (can be enabled in options)>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eDo not update active IOSs (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :skip
 
 if /i "%RECCIOS%" EQU "Y" goto:semiskip
 if /i "%VIRGIN%" EQU "N" goto:tinyskip
-if /i "%CMIOSOPTION%" EQU "on" echo                * Install a cMIOS (can be disabled in Options)>>"%Drive%"\%guidename%
+if /i "%CMIOSOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall a cMIOS (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :semiskip
-if /i "%CMIOSOPTION%" EQU "off" echo                * Do not Install a cMIOS (can be enabled in Options)>>"%Drive%"\%guidename%
+if /i "%CMIOSOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not Install a cMIOS (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :tinyskip
 
-if /i "%FWDOPTION%" EQU "off" echo                * Do not install a USB-Loader Forwarder Channel (can be enabled in options)>>"%Drive%"\%guidename%
-if /i "%FWDOPTION%" EQU "on" echo                * Install a USB-Loader Forwarder Channel (can be disabled in options)>>"%Drive%"\%guidename%
+if /i "%FWDOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install a USB-Loader Forwarder Channel (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FWDOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall a USB-Loader Forwarder Channel (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
 
 ::---------
 if /i "%USBGUIDE%" NEQ "Y" goto:skipusb
-echo .>>"%Drive%"\%guidename%
+:usbparam
 
 if /i "%FORMAT%" EQU "1" set FORMATNAME=FAT32
 if /i "%FORMAT%" EQU "2" set FORMATNAME=NTFS
@@ -26768,63 +27094,90 @@ if /i "%FORMAT%" EQU "5" set FORMATNAME=Part FAT32 and Part WBFS
 
 if /i "%FORMAT%" EQU "4" goto:skip
 if /i "%FORMAT%" EQU "5" goto:skip
-echo                * External Hard Drive to be Formatted as %FORMATNAME%>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eExternal Hard Drive to be Formatted as %FORMATNAME%\x3c/li\x3e>>"%Drive%"\%guidename%
 goto:skip2
 :skip
-echo                * External Hard Drive already Formatted as %FORMATNAME%>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eExternal Hard Drive already Formatted as %FORMATNAME%\x3c/li\x3e>>"%Drive%"\%guidename%
 :skip2
 
-if /i "%LOADER%" EQU "CFG" echo                * Download Configurable USB-Loader>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "FLOW" echo                * Download WiiFlow>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" echo                * Download Configurable USB-Loader and WiiFlow>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo                * USB-Loader Settings and config files saved to USB Hard Drive>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo                * USB-Loader Settings and config files saved to SD Card>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "CFG" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to USB Hard Drive\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to SD Card\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipusb
 
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This software is not for sale. If you paid for this software or a "bundle" you have been scammed.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.>>"%Drive%"\%guidename%
-echo NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!>>"%Drive%"\%guidename%
-echo USE THIS AT YOUR OWN RISK!>>"%Drive%"\%guidename%
+::closing tag and linebreak: </ul><br>
+support\sfk echo -spat \x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+:Important notes title and bullet opening tag
+support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3e\x3ca name=\x22Notes\x22\x3eImportant Notes\x3c/a\x3e\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3cul\x3e>>"%Drive%"\%guidename%
 
-echo IMPORTANT NOTES:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo *This guide does NOT require a Wifi connection on your Wii.>>"%Drive%"\%guidename%
-echo *An SD card formatted to FAT(32) required (Best results are with non-SDHC cards, SDHC will only work on 4.0 or above).>>"%DRIVE%"\%guidename%
-echo *If you get errors during any of the steps reformat your SD card as FAT or FAT32>>"%Drive%"\%guidename%
-echo *Turn off WiiConnect24 and take out all gamecube memory cards/controllers when modding the Wii (unless instructed otherwise).>>"%DRIVE%"\%guidename%
-echo *If your Wii ever freezes, hold the power button on the Wii for 5 seconds to power it off then try again.>>"%Drive%"\%guidename%
-echo *Don’t ever accept a new Nintendo update without first googling to see if it’s safe. The last update (to 4.3) was released in late June 2010. If you accept an official Nintendo update after modding the Wii, you may lose some or all of your modifications.>>"%Drive%"\%guidename%
-echo *Never uninstall a system menu or IOS>>"%Drive%"\%guidename%
-echo *Do not install untested wads/themes without Bootmii or Priiloader installed.>>"%Drive%"\%guidename%
+if /i "%MENU1%" NEQ "U" copy /y "%Drive%"\%guidename%+Support\Guide\softmodnotes.001 "%Drive%"\%guidename%>nul
+
+
 
 ::----USB-Loader Notes----
 if /i "%USBGUIDE%" NEQ "Y" goto:skipall
 if /i "%cIOS223[37-38]-v4%" EQU "*" goto:skipthis
 
-echo *cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.>>"%Drive%"\%guidename%
-echo *cIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222 rev4 or higher also works, but you would need to download the 222 version of configurable usb-loader or modify your config.txt file for configurable USB-Loader)>>"%Drive%"\%guidename%
+
+support\sfk echo -spat \x3cli\x3ecIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.\x3c/li\x3e>>"%Drive%"\%guidename%
+
+support\sfk echo -spat \x3cli\x3ecIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222\223\224 rev4 or higher also works).\x3c/li\x3e>>"%Drive%"\%guidename%
+
 :skipthis
 
-echo *Not all external hard drive's are compatible with the Wii, for a list of which USB Hard Drive's are compatible, see this webpage: http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List>>"%Drive%"\%guidename%
-echo *If you have questions, a more detailed guide can be found here: www.sites.google.com/site/completesg/>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eNot all external hard drive's are compatible with the Wii, for a list of which USB hard drive's are compatible, see this webpage: \x3ca href="http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank"\x3ehttp://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List\x3c/a\x3e\x3c/li\x3e>>"%Drive%"\%guidename%
+
 :skipall
 ::-------------------------
 
-echo *This custom guide is great start, but Wii modding is always evolving. Check for updates online, and remember, google is your friend.>>"%Drive%"\%guidename%
-echo *If you have questions, a more detailed guide can be found here: www.sites.google.com/site/completesg/>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+::common important note, end bullet tag and line break
+support\sfk echo -spat \x3cli\x3eIf you have questions, a more detailed guide can be found at \x3ca href=\x22http://www.sites.google.com/site/completesg/\x22 taget=\x22_blank\x22\x3ewww.sites.google.com/site/completesg/\x3c/a\x3e\x3c/li\x3e\x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
+
+if /i "%MENU1%" EQU "U" goto:USBGUIDESTEP1
+
+
+::Start of hacking steps listings. This must be here for the hacking guide
+copy /y "%Drive%"\%guidename%+Support\Guide\softmodheader.001 "%Drive%"\%guidename%>nul
+
+
+
+
+
+::-----------------------------------------virgin Korean non-4.3 Wiis-----------------------------------
+If /i "%MENU1%" NEQ "H" goto:nothackmiisolutions
+
+::launch MMM using an exploit
+
+copy /y "%Drive%"\%guidename%+Support\Guide\HMSolutions.001 "%Drive%"\%guidename%>nul
+
+
+set afterexploit=continueHMsolutions
+goto:exploits
+:continueHMsolutions
+
+support\sfk echo -spat This will launch Multi-Mod Manager.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
+copy /y "%Drive%"\%guidename%+Support\Guide\WADHMheader.001 "%Drive%"\%guidename%>nul
+
+goto:wadlist
+
+:HMafterwadlist
+
+copy /y "%Drive%"\%guidename%+Support\Guide\HMSolutions2.001 "%Drive%"\%guidename%>nul
+
+::--------End of hacking steps listings (and line break). This must be here for the hacking guide------------
+support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+GOTO:supportxflak
+
+:nothackmiisolutions
 
 
 
@@ -26833,72 +27186,14 @@ If /i "%VIRGIN%" NEQ "Y" goto:nonkorean
 If /i "%REGION%" NEQ "K" goto:nonkorean
 If /i "%FIRMSTART%" EQU "4.3" goto:nonkorean
 
-::---------------------------------RESTORING THE TRUCHA BUG for Korean Wiis (4.2 and under)-------------------------
+::launch MMM using an exploit
+support\sfk echo -spat \x3cfont size="5"\x3e\x3cli\x3eLaunch Multi-Mod Manager\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
+set afterexploit=continueKorean
+goto:exploits
+:continueKorean
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) LAUNCH Multi-Mod Manager (MMM) USING BANNERBOMB>>"%Drive%"\%guidename%
-echo    ===============================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-If /i "%BB2%" EQU "*" echo Run BannerBomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo Run BannerBomb v1 by going to Settings, Data Management, Channels, SD Card and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-echo Note: If it doesn't work for you, visit http://bannerbomb.qoid.us/ for more variations of either version of bannerbomb.>>"%DRIVE%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo This will launch Multi-Mod Manager.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-:KOREANEXTRA
-echo %COUNT7%) INSTALL IOS58 USING Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ===========================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo In Multi-Mod Manager's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo Now install IOS58v6176.>>"%Drive%"\%guidename%
-echo Navigate to the wad and hit A twice to install the IOS individually.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Be careful not to install any additional wads that may have been previously saved in this folder (they may be safe, but I cannot say for sure).>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-
-echo Make sure the file installed properly.>>"%Drive%"\%guidename%
-echo Only move onto the next step after successfully installing the wad, but do NOT exit MMM.>>"%Drive%"\%guidename%
-
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-echo %COUNT7%) INSTALLING THE HOMEBREW CHANNEL (HBC) and BOOTMII>>"%Drive%"\%guidename%
-echo    =================================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-echo Back in the MMM main menu, choose "App Manager" and press A.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Launch the HackMii_Installer>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This runs the Hackmii Installer (and silently/automatically installs BootMii as IOS). Use the installer to install the Homebrew Channel (HBC) and Bootmii as Boot2 if possible.>>"%DRIVE%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\KoreanStart.001 "%Drive%"\%guidename%>nul
 
 goto:nandbackup
 
@@ -26912,426 +27207,23 @@ goto:nandbackup
 
 If /i "%HM%" NEQ "*" goto:TBRGUIDE
 
-
 If /i "%MENU1%" NEQ "SU" goto:miniskip
 If /i "%IOS236Installer%" NEQ "*" goto:TBRGUIDE
 :miniskip
 
+copy /y "%Drive%"\%guidename%+Support\Guide\HBC.001 "%Drive%"\%guidename%>nul
 
+set afterexploit=continueHBC
+goto:exploits
+:continueHBC
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) INSTALLING THE HOMEBREW CHANNEL (HBC) AND BOOTMII>>"%Drive%"\%guidename%
-echo    =================================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-
-::---------------------------EXPLOITS GUIDES------------------------------
-:EXPLOITS
-
-set exploitnum=0
-If /i "%BB1%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%BB2%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%TWI%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%YUGI%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%PWNS%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%SMASH%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%BATHAXX%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%ROTJ%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%TOS%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%exploitnum%" GEQ "2" echo EXPLOITS>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo -------->>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo You only need to perform ONE of the following exploits>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo.>>"%Drive%"\%guidename%
-
-
-If /i "%BB1%" EQU "*" goto:skipforwardersolution
-If /i "%BB2%" EQU "*" goto:skipforwardersolution
-echo Note: if this Wii was previously modified, and it has either the HBC, BootMii as Boot2, or a Forwarder Channel installed, you can use that instead of an exploit.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If using BootMii as Boot2 to install the HBC, copy the 'BootMii' folder from your previous BootMii installation to the root of your SD Card (or download it using ModMii). Then boot your wii, BootMii will load, go To the SD menu, load bootmini.elf. This will load the Hackmii Installer allowing you to reinstall the HBC.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If using a Forwarder Channel, just save the boot.elf/dol from the app you want to load (ie. SD:\apps\hackmii_installer\boot.elf or SD:\apps\MMM\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the Hackmii Installer will load allowing you to reinstall the HBC. Note, if your forwarder channel only loads dol's and not elf's, launch MMM's boot.dol, then use its "Apploader" to load the Hackmii Installer.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-if /i "%FIRMSTART%" EQU "o" echo Alternatively, you can update your Wii to v3.0-4.2 using a DISC (ie. NSMBW). Then repeat the ModMii Wizard using your new Firmware and then you will be able to use the BannerBomb Exploit (which does not require a specific disc to work)>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo.>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo WARNING: Online update to v4.3 makes Korean Wii's unhackable (unless it previously had HBC v1.0.7, BootMii as Boot2v4, or a forwarder channel installed)>>"%DRIVE%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo .>>"%Drive%"\%guidename%
-:skipforwardersolution
-
-:EXPLOITSNOW
-
-echo.>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo Run BannerBomb v1 by going to Settings, Data Management, Channels, SD Card and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo Note: If it doesn't work for you, visit http://bannerbomb.qoid.us/ for more variations of either version of bannerbomb.>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo .>>"%Drive%"\%guidename%
-
-
-
-
-If /i "%BB2%" EQU "*" echo Run BannerBomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo Note: If it doesn't work for you, visit http://bannerbomb.qoid.us/ for more variations of either version of bannerbomb.>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo .>>"%Drive%"\%guidename%
-
-
-
-If /i "%SMASH%" NEQ "*" goto:skipSmashStackGuide
-
-echo SMASH STACK EXPLOIT>>"%Drive%"\%guidename%
-echo ------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of "Super Smash Brothers Brawl">>"%Drive%"\%guidename%
-echo               * A non-SDHC card (SDHC cards don't work)>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Insert the Super Smash Brothers Brawl Game.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Launch the game withOUT the SD card in your wii, create a save file if you don't have one already,>>"%Drive%"\%guidename%
-echo Then go into the stage builder and delete all the stages. Then exit the game.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Afterwards, insert your SD Card, start the game and go to the stage builder,>>"%Drive%"\%guidename%
-echo it should launch the boot.elf/dol file saved on the root of your SD card.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo If you forgot to delete the stages, you will experience an annoying but harmless crash.>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipSmashStackGuide
-
-
-
-If /i "%PWNS%" NEQ "*" goto:skipPWNSGuide
-
-echo INDIANA PWNS EXPLOIT>>"%Drive%"\%guidename%
-echo -------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of LEGO Indiana Jones>>"%Drive%"\%guidename%
-echo               * A non-SDHC card (SDHC cards don't work)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the LEGO Indiana Jones game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal LEGO Indiana Jones save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your Indiana save, click on it, click "Copy", and click Yes. Now erase the save file from the Wii.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii - SD Card>>"%Drive%"\%guidename%
-echo    then copy over the "Indiana Pwns" save that corresponds to your region.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo E. Play the Lego Indiana Jones game. Load the new save file.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo    You will be in the Main hall, walk towards the camera,>>"%Drive%"\%guidename%
-echo    enter the first door on the right (Indy's left) and go into the 'Courtyard'.>>"%Drive%"\%guidename%
-echo    Walk to the end and enter the 'Art Room', you will see a podium with 2 characters on it, talk to the left one.>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo    Hit left twice (scrolling through his items) to choose the switch option (Black silhouette with a white arrow to another black silhouette)>>"%Drive%"\%guidename%
-echo    Hit A to launch the boot.elf/dol file saved on the root of your SD card.>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipPWNSGuide
-
-
-
-If /i "%YUGI%" NEQ "*" goto:skipYUGIGuide
-
-echo YU-GI-OWNED EXPLOIT>>"%Drive%"\%guidename%
-echo ------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of "Yu-Gi-Oh! 5D's">>"%Drive%"\%guidename%
-echo               * A non-SDHC card (SDHC cards don't work)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the Yu-Gi-Oh game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal Yu-Gi-Oh save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your Yu-Gi-Oh save, click on it, click "Copy", and click Yes. Now erase the save file from the Wii.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii - SD Card>>"%Drive%"\%guidename%
-echo    then copy over the "Yu-Gi-Oh" save that corresponds to your region.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo E. Start the Yu-Gi-Oh game. The exploit is launched after continuing past the opening menu.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-if /i "%REGION%" EQU "E" echo .>>"%Drive%"\%guidename%
-if /i "%REGION%" EQU "E" echo Note to European Users: The default YU-GI-OWNED PAL exploit is 60Hz. If it does not work on your 50Hz TV, navigate to "SD:\private\wii\title\" and rename "RYOP" to something else then rename "RYOP-50hz" to "RYOP" and try again. >>"%Drive%"\%guidename%
-
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipYUGIGuide
-
-
-
-
-If /i "%BATHAXX%" NEQ "*" goto:skipBATHAXXGuide
-
-echo BATHAXX EXPLOIT>>"%Drive%"\%guidename%
-echo --------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of "LEGO Batman">>"%Drive%"\%guidename%
-echo               * SD card (not SHDC) formatted as FAT16 or FAT32>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the LEGO Batman game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal LEGO Batman save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your LEGO Batman save, click on it, click "Copy", and click Yes. Now erase the save file from the Wii.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii - SD Card>>"%Drive%"\%guidename%
-echo    then copy over the "LEGO Batman" save that corresponds to your region.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo E. Start the LEGO Batman game. Load the new save file.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo    You are now in the batcave, take the elevator on the right side.>>"%Drive%"\%guidename%
-echo    Then in the trophy room, go to the upper corner and go through the door>>"%Drive%"\%guidename%
-echo    to the "Wayne Manor". Now you can select a character.>>"%Drive%"\%guidename%
-echo    Choose the last enabled character in the lowest row to launch the exploit.>>"%Drive%"\%guidename%
-
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipBATHAXXGuide
-
-
-If /i "%ROTJ%" NEQ "*" goto:skipROTJGuide
-
-echo RETURN OF THE JODI EXPLOIT>>"%Drive%"\%guidename%
-echo -------------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of "LEGO Star Wars">>"%Drive%"\%guidename%
-echo               * SD card (not SHDC) formatted as FAT16 or FAT32>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the LEGO Star Wars game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal LEGO Star Wars save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your LEGO Star Wars save, click on it, click "Copy", and click Yes. Now erase the save file from the Wii.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii - SD Card>>"%Drive%"\%guidename%
-echo    then copy over the "LEGO Star Wars" save that corresponds to your region.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo E. Start the LEGO Star Wars. Load the first save slot (on the left, at 0.0 percent). >>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo    As soon as the level loads, run to the right and you'll see two floating characters >>"%Drive%"\%guidename%
-echo    Go to the area in front of them and you'll see 'Return of JODI' show up >>"%Drive%"\%guidename%
-echo    press the "A" button to launch the exploit. >>"%Drive%"\%guidename%
-
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipROTJGuide
-
-
-If /i "%TOS%" NEQ "*" goto:skipTOSGuide
-
-echo ERI HAKAWAI EXPLOIT>>"%Drive%"\%guidename%
-echo ------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of "Tales of Symphonia: Dawn of the New World">>"%Drive%"\%guidename%
-echo               * SD card (not SHDC) formatted as FAT16 or FAT32>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the Tales of Symphonia game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal Tales of Symphonia save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your Tales of Symphonia save, click on it, click "Copy", and click Yes. Now erase the save file from the Wii.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii - SD Card>>"%Drive%"\%guidename%
-echo    then copy over the "Tales of Symphonia" save that corresponds to your region.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo E. Start Tales of Symphonia and load the save data. >>"%Drive%"\%guidename%
-
-
-If /i "%REGION%" NEQ "J" goto:quickskip
-echo    For Jap users, there are 2 different versions of the game.>>"%Drive%"\%guidename%
-echo    If your game is version "RVL-RT4J-0A-0 JPN" use the top save,>>"%Drive%"\%guidename%
-echo    if you have "RVL-RT4J-0A-1 JPN" use the second save.>>"%Drive%"\%guidename%
-echo    If you have any other version of the disc, it probably won't work.>>"%Drive%"\%guidename%
-:quickskip
-
-echo .>>"%Drive%"\%guidename%
-echo    Once the game starts (and you see a dog waving at you) press PLUS to enter the game's menu.>>"%Drive%"\%guidename%
-echo    Scroll down to "Status" and press A.>>"%Drive%"\%guidename%
-
-
-If /i "%REGION%" EQU "U" goto:noskip
-If /i "%REGION%" EQU "J" goto:noskip
-goto:quickskip
-:noskip
-echo    Then scroll down to the second character (named "Giantpune"). Highlight him, and press A.>>"%Drive%"\%guidename%
-:quickskip
-
-If /i "%REGION%" NEQ "E" goto:quickskip
-echo    Then scroll down to the second character (named "Eri HaKawai"). Highlight him, and press A.>>"%Drive%"\%guidename%
-:quickskip
-
-
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo .>>"%Drive%"\%guidename%
-:skipTOSGuide
-
-
-
-If /i "%TWI%" NEQ "*" goto:skipTWIGuide
-
-echo TWILIGHT HACK/EXPLOIT>>"%Drive%"\%guidename%
-echo --------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * A copy of The Legend of Zelda: Twilight Princess>>"%Drive%"\%guidename%
-echo               * A non-SDHC card (SDHC cards don't work)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo A. Load the Twilight Princess game at least once>>"%Drive%"\%guidename%
-echo    (otherwise you won't be able to copy over the hack).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo B. Backup your personal Twilight Princess save file before copying the files to your SD Card (if applicable):>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo   a) Put your SD card in your Wii and turn it on.>>"%Drive%"\%guidename%
-echo   b) Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo   c) Find your Twilight Princess save, click on it, click "Copy", and click Yes.>>"%Drive%"\%guidename%
-echo   d) Put your SD card in your computer, and copy the "private" folder from the card to a safe place. Alternatively you can temporarily rename it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo C. Copy the files from the %DRIVE% to the root of your SD card (if you haven’t already) and insert it into your Wii>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo D. Go into Wii Options - Data Management - Save Data - Wii>>"%Drive%"\%guidename%
-echo    Now delete the Zelda save file on the Wii.>>"%Drive%"\%guidename%
-echo    Switch to the SD card tab and select the "Twilight Hack" save that corresponds to your game region.>>"%Drive%"\%guidename%
-echo    Click copy and then yes. Now exit out of the menu.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo E. Insert the The Legend of Zelda: Twilight Princess disc and run the game.>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo .>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo Note: Look at the bottom of the game disc first.>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo       If it has RVL-RZDE-0A-2 USA in its inner ring, you'll have to load TwilightHack2 in the next step.>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo       If it says something else, load TwilightHack0.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo F. On the title screen of the game, press A and B to go to the main menu.>>"%Drive%"\%guidename%
-If /i "%REGION%" NEQ "U" echo    Now load the twilight hack save file.>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo    Now load the twilight hack save file (see the note above!).>>"%Drive%"\%guidename%
-
-If /i "%REGION%" EQU "U" echo    If you accidentally load the wrong file and continue with the hack, the game will freeze but do not panic,>>"%Drive%"\%guidename%
-If /i "%REGION%" EQU "U" echo    just hold down the power button for 5 seconds to turn it off, then turn it back on, and start over.>>"%DRIVE%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo G. The game will start like normal. To execute the hack, talk to the first character you see, or try to leave the room.>>"%DRIVE%"\%guidename%
-:skipTWIGuide
-
-
-
-
-
-If /i "%Exploit%" NEQ "BOMB" goto:skipbombGuide
-
-echo LETTERBOMB EXPLOIT>>"%Drive%"\%guidename%
-echo ------------------>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo REQUIREMENTS: * AN SD or SDHC Card>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Go to the "Messageboard" on your Wii and navigate to Yesterday>>"%Drive%"\%guidename%
-echo (depending on your timezone, it could also show up under Today).>>"%Drive%"\%guidename%
-echo Click on the envelope with the pink Bomb icon.>>"%Drive%"\%guidename%
-:skipbombGuide
-
-
-echo .>>"%Drive%"\%guidename%
-
-If /i "%MENU1%" EQU "H" goto:HMsolution2
-
-
-:HACKMIIGUIDE
-If /i "%HM%" NEQ "*" goto:PRIIGUIDE
-
-echo .>>"%Drive%"\%guidename%
-echo This runs the Hackmii Installer (and silently/automatically installs BootMii as IOS). Use the installer to install the Homebrew Channel (HBC) and Bootmii as Boot2 if possible.>>"%DRIVE%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo Note: If you get a 'no vulnerable IOS' error message, run ModMii again and this time select the 'Hackmii Solutions' option and follow the new instructions before continuing this guide.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo After you exit the hackmii installer, you will be taken to the HBC.>>"%Drive%"\%guidename%
-
-
-echo Hit the home button. In the top right corner you will see the IOS used by the HBC.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo If the HBC is using an IOS other than IOS58 or your homebrew channel is upside-down, make a note of it as it applies later in the guide (you will have to reinstall the HBC).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo If it is using IOS58 and your HBC is not upside-down, you can skip the Reinstall The Homebrew Channel step when you get to it.>>"%DRIVE%"\%guidename%
-
-
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\HBC2.001 "%Drive%"\%guidename%>nul
 
 
 
 :nandbackup
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) MAKING A NAND BACKUP>>"%Drive%"\%guidename%
-echo    ====================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-
-
-echo While inside the Homebrew Channel, load BootMii by pressing home and clicking Launch Bootmii.>>"%Drive%"\%guidename%
-echo Press the power button on the wii 3 times to get to the last option, then press the reset button. [You can also navigate with a Gamecube controller]>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Press reset to choose the first option, then follow the directions on the screen to make your NAND backup. [Bad blocks are no problem.]>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Backup the Bootmii folder, NAND.bin, and keys.bin elsewhere and erase from the sd card (or rename it). You'll need these in case of emergencies, so don't lose them.>>"%Drive%"\%guidename%
-echo Go back to The Homebrew Channel.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Note: if Bootmii was installed as boot2, then it will show up as soon as the Wii is turned on AS LONG AS it finds the bootmii folder (mentioned above) on the root of the SD card.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\NANDBACKUP.001 "%Drive%"\%guidename%>nul
 
 
 ::----------------------------RESTORING THE TRUCHA BUG (using IOS236 Installer)--------------------------
@@ -27339,66 +27231,8 @@ echo .>>"%Drive%"\%guidename%
 
 If /i "%IOS236Installer%" NEQ "*" goto:PRIIGUIDE
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) INSTALL A PATCHED IOS236>>"%Drive%"\%guidename%
-echo    ========================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-
-echo Start the Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo VERY IMPORTANT!>>"%Drive%"\%guidename%
-echo In the Homebrew channel, if you do not have a working internet connection already set up, you will see an icon flashing in the bottom right corner of the screen indicating its inability to initialize the network. You MUST wait for the icon to stop flashing OR let it flash for 30-60 seconds before proceeding otherwise these apps will error shortly after being launched. If you encounter this harmless error, power off the Wii and repeat this step from the beginning. To increase your chances of success, add a working internet connection to your Wii via the official Wii Settings Menu, but be sure to say "No" when asked to perform an update.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo You only need to perform ONE of the below methods.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Method A: Using IOS236 Installer>>"%Drive%"\%guidename%
-echo -------------------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "IOS236 Installer v5 MOD". >>"%Drive%"\%guidename%
-echo      Note: This app must be launched using HBC v1.0.7 or higher in order to work properly.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo It should say "IOS236 installation is complete!" and return to The Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If you experience errors, keep trying and it should eventually work.>>"%Drive%"\%guidename%
-echo If you continue to experience errors you can try using Simple IOS Patcher instead.>>"%Drive%"\%guidename%
-echo Once either method successfully installs IOS236, you can move onto the next step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Method B: Using Simple IOS Patcher>>"%Drive%"\%guidename%
-echo ---------------------------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "IOS236 Installer". >>"%Drive%"\%guidename%
-echo      Note: This app must be launched using HBC v1.0.7 or higher in order to work properly.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Choose "IOS36" (already selected by default) and push A,>>"%Drive%"\%guidename%
-echo Select "Install IOS to slot" and choose 236,>>"%Drive%"\%guidename%
-echo Select "Install patched IOS36" leaving the 4 patches set to "yes" and press A,>>"%Drive%"\%guidename%
-echo Choose "Load IOS from SD card".>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Confirm your choice with the A button,>>"%Drive%"\%guidename%
-echo When prompted, push A to continue the installation.>>"%Drive%"\%guidename%
-echo When the installation is over you'll be back at the Main Menu,>>"%Drive%"\%guidename%
-echo Then push B button to exit.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo If you experience errors, keep trying and it should eventually work.>>"%Drive%"\%guidename%
-echo If you continue to experience errors you can try using IOS236 Installer instead.>>"%Drive%"\%guidename%
-echo Once either method successfully installs IOS236, you can move onto the next step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
+copy /y "%Drive%"\%guidename%+Support\Guide\IOS236.001 "%Drive%"\%guidename%>nul
 
 
 ::--------------------------INSTALL PRIILOADER-------------------------------
@@ -27410,40 +27244,7 @@ if /i "%PRI%" NEQ "*" goto:installwads
 :skip
 if /i "%PRI%" NEQ "*" goto:reinstallHBC
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) INSTALL PRIILOADER>>"%Drive%"\%guidename%
-echo    ==================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
-
-echo Launch "Priiloader 236 Mod" via the Homebrew Channel>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo After the Priiloader Installer loads, press + to install it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo After successfully installing Priiloader, access it by powering off the Wii,>>"%Drive%"\%guidename%
-echo then powering it back on while holding reset until you see the Priiloader menu.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo You should install some system menu hacks now (by going to System Menu hacks option).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo RECOMMENDED HACKS: Block Disc Updates, Block Online Updates, Replace Health Screen, Auto-Press A at Health Screen, Region-Free Everything, remove no copy save file protection, and Move Disc Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo The priiloader menu is white by default, you can change it to black in the Priiloader settings if you prefer.>>"%Drive%"\%guidename%
-
-
-echo .>>"%Drive%"\%guidename%
-
-echo One of the special functions of Priiloader is that it can autoboot any app/file instead of the system menu. Some apps (like crazyIntro) can't be used without it.>>"%Drive%"\%guidename%
-echo For details on how to do so, visit www.sites.google.com/site/completesg/system-hacks/priiloader>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\Priiloader.001 "%Drive%"\%guidename%>nul
 
 if /i "%installwads%" EQU "done" goto:reinstallHBC
 
@@ -27462,207 +27263,163 @@ echo ;MMMCONFIG (By ModMii)> "%Drive%"\mmmconfig.txt
 echo AutoLoadIOS=%patchIOSnum%>> "%Drive%"\mmmconfig.txt
 :skipmmmfly
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) INSTALL WADS>>"%Drive%"\%guidename%
-echo    ============>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\WADheader.001 "%Drive%"\%guidename%>nul
 
-::MMM Instructions
-echo Load Multi-Mod Manager (MMM) via the HomeBrew Channel.>>"%Drive%"\%guidename%
-echo If IOS%patchIOSnum% is not already loaded, select "Load another IOS", then select IOS%patchIOSnum% >>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Note: If this step fails with error -ret 2011 or other, you may need to retry patching IOS%patchIOSnum%. If the Wii was previously softmodded, you can try loading cIOS250 (or others like 202,222,223,224,236,249)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+:wadlist
 
-echo In Multi-Mod Manager's main menu, go down to select "WAD Manager".>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Install the following WADs from the WAD folder (this list of WADs is unique to the information you provided ModMii).>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Be careful not to install any additional wads that may have been previously saved in this folder (they may be safe, but I cannot say for sure).>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo Hold + for 2 seconds to select all the WADs in the folder. Then Press A twice to install them all.>>"%Drive%"\%guidename%
-
-echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo      Your unique list of wads to install are as follows:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+if /i "%IOS11P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS11v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS20P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS20v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS30P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS30v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS40P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS40v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS50P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS50v14889(IOS50v4889[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS52P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS52v15661(IOS52v5661[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS60P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS60v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS70P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16687(IOS70v6687[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS70K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS80P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v6944[FS-ES-NP-VP]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS80K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 
-if /i "%IOS11P60%" EQU "*" echo      * IOS11v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS20P60%" EQU "*" echo      * IOS20v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS30P60%" EQU "*" echo      * IOS30v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS40P60%" EQU "*" echo      * IOS40v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS50P%" EQU "*" echo      * IOS50v14889(IOS50v4889[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS52P%" EQU "*" echo      * IOS52v15661(IOS52v5661[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS60P%" EQU "*" echo      * IOS60v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS70P%" EQU "*" echo      * IOS70v16687(IOS70v6687[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS70K%" EQU "*" echo      * IOS70v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS80P%" EQU "*" echo      * IOS80v6944[FS-ES-NP-VP]>>"%Drive%"\%guidename%
-if /i "%IOS80K%" EQU "*" echo      * IOS80v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
+if /i "%SM4.1U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%SM4.1U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%SM4.1U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%SM4.1U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%SM4.1U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.1K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.2K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SM4.3K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
+if /i "%cIOS202[60]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS202[60]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS222[38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS222[38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS223[37-38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS223[37-38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS224[57]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS224[57]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 
-if /i "%SM4.1U%" EQU "*" echo      * SystemMenu_4.1U_v449>>"%Drive%"\%guidename%
-if /i "%SM4.2U%" EQU "*" echo      * SystemMenu_4.2U_v481>>"%Drive%"\%guidename%
-if /i "%SM4.3U%" EQU "*" echo      * SystemMenu_4.3U_v513>>"%Drive%"\%guidename%
-if /i "%SM4.1E%" EQU "*" echo      * SystemMenu_4.1E_v450>>"%Drive%"\%guidename%
-if /i "%SM4.2E%" EQU "*" echo      * SystemMenu_4.2E_v482>>"%Drive%"\%guidename%
-if /i "%SM4.3E%" EQU "*" echo      * SystemMenu_4.3E_v514>>"%Drive%"\%guidename%
-if /i "%SM4.1J%" EQU "*" echo      * SystemMenu_4.1J_v448>>"%Drive%"\%guidename%
-if /i "%SM4.2J%" EQU "*" echo      * SystemMenu_4.2J_v480>>"%Drive%"\%guidename%
-if /i "%SM4.3J%" EQU "*" echo      * SystemMenu_4.3J_v512>>"%Drive%"\%guidename%
-if /i "%SM4.1K%" EQU "*" echo      * SystemMenu_4.1K_v454>>"%Drive%"\%guidename%
-if /i "%SM4.2K%" EQU "*" echo      * SystemMenu_4.2K_v486>>"%Drive%"\%guidename%
-if /i "%SM4.3K%" EQU "*" echo      * SystemMenu_4.3K_v518>>"%Drive%"\%guidename%
+if /i "%MII%" EQU "*" support\sfk echo -spat \x3cli\x3eMii-Channel-NUS-v6\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%P%" EQU "*" support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%PK%" EQU "*" support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%S%" EQU "*" support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v20\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%SK%" EQU "*" support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v20[K]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IU%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IE%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IJ%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WU%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WE%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WJ%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NU%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NE%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NJ%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WSU%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WSE%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WSJ%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%
 
-if /i "%SM4.1U-DWR%" EQU "*" echo      * SystemMenu_4.1U_v449_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWR%" EQU "*" echo      * SystemMenu_4.2U_v481_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWR%" EQU "*" echo      * SystemMenu_4.3U_v513_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWR%" EQU "*" echo      * SystemMenu_4.1E_v450_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWR%" EQU "*" echo      * SystemMenu_4.2E_v482_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWR%" EQU "*" echo      * SystemMenu_4.3E_v514_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWR%" EQU "*" echo      * SystemMenu_4.1J_v448_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWR%" EQU "*" echo      * SystemMenu_4.2J_v480_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWR%" EQU "*" echo      * SystemMenu_4.3J_v512_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWR%" EQU "*" echo      * SystemMenu_4.1K_v454_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWR%" EQU "*" echo      * SystemMenu_4.2K_v486_DarkWiiRed>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWR%" EQU "*" echo      * SystemMenu_4.3K_v518_DarkWiiRed>>"%Drive%"\%guidename%
+if /i "%M10%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-mios-v10\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS9%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS9-64-v1034\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS12%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS12-64-v526\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS13%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS13-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS14%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS14-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS15%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS15-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS17%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS17-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS21%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS21-64-v1039\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS22%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS22-64-v1294\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS28%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS28-64-v1807\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS31%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS31-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS33%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS33-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS34%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS34-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS35%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS35-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS36v3608%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS36-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS37%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS37-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS38%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS38-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS41%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS41-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS43%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS43-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS45%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS45-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS46%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS46-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS48v4124%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS48-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS53%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS53-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS55%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS55-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS56%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS56-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS57%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS57-64-v5919\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS58%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS58-64-v6176\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS61%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS61-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS236%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS236v65535(IOS36v3351[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
 
-if /i "%SM4.1U-DWG%" EQU "*" echo      * SystemMenu_4.1U_v449_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWG%" EQU "*" echo      * SystemMenu_4.2U_v481_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWG%" EQU "*" echo      * SystemMenu_4.3U_v513_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWG%" EQU "*" echo      * SystemMenu_4.1E_v450_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWG%" EQU "*" echo      * SystemMenu_4.2E_v482_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWG%" EQU "*" echo      * SystemMenu_4.3E_v514_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWG%" EQU "*" echo      * SystemMenu_4.1J_v448_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWG%" EQU "*" echo      * SystemMenu_4.2J_v480_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWG%" EQU "*" echo      * SystemMenu_4.3J_v512_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWG%" EQU "*" echo      * SystemMenu_4.1K_v454_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWG%" EQU "*" echo      * SystemMenu_4.2K_v486_DarkWiiGreen>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWG%" EQU "*" echo      * SystemMenu_4.3K_v518_DarkWiiGreen>>"%Drive%"\%guidename%
+::add closing bullet tag and line break if no usbloader
+if /i "%USBX%" NEQ "*" support\sfk echo -spat \x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%SM4.1U-DWB%" EQU "*" echo      * SystemMenu_4.1U_v449_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWB%" EQU "*" echo      * SystemMenu_4.2U_v481_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWB%" EQU "*" echo      * SystemMenu_4.3U_v513_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWB%" EQU "*" echo      * SystemMenu_4.1E_v450_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWB%" EQU "*" echo      * SystemMenu_4.2E_v482_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWB%" EQU "*" echo      * SystemMenu_4.3E_v514_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWB%" EQU "*" echo      * SystemMenu_4.1J_v448_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWB%" EQU "*" echo      * SystemMenu_4.2J_v480_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWB%" EQU "*" echo      * SystemMenu_4.3J_v512_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWB%" EQU "*" echo      * SystemMenu_4.1K_v454_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWB%" EQU "*" echo      * SystemMenu_4.2K_v486_DarkWiiBlue>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWB%" EQU "*" echo      * SystemMenu_4.3K_v518_DarkWiiBlue>>"%Drive%"\%guidename%
-
-if /i "%SM4.1U-DWO%" EQU "*" echo      * SystemMenu_4.1U_v449_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWO%" EQU "*" echo      * SystemMenu_4.2U_v481_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWO%" EQU "*" echo      * SystemMenu_4.3U_v513_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWO%" EQU "*" echo      * SystemMenu_4.1E_v450_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWO%" EQU "*" echo      * SystemMenu_4.2E_v482_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWO%" EQU "*" echo      * SystemMenu_4.3E_v514_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWO%" EQU "*" echo      * SystemMenu_4.1J_v448_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWO%" EQU "*" echo      * SystemMenu_4.2J_v480_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWO%" EQU "*" echo      * SystemMenu_4.3J_v512_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWO%" EQU "*" echo      * SystemMenu_4.1K_v454_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWO%" EQU "*" echo      * SystemMenu_4.2K_v486_DarkWiiOrange>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWO%" EQU "*" echo      * SystemMenu_4.3K_v518_DarkWiiOrange>>"%Drive%"\%guidename%
+if /i "%USBX%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\ForwarderWAD.001 "%Drive%"\%guidename%>nul
 
 
-if /i "%cIOS202[60]-v5.1R%" EQU "*" echo      * cIOS202[60]-v5.1R>>"%Drive%"\%guidename%
-if /i "%cIOS222[38]-v4%" EQU "*" echo      * cIOS222[38]-v4>>"%Drive%"\%guidename%
-if /i "%cIOS223[37-38]-v4%" EQU "*" echo      * cIOS223[37-38]-v4>>"%Drive%"\%guidename%
-if /i "%cIOS224[57]-v5.1R%" EQU "*" echo      * cIOS224[57]-v5.1R>>"%Drive%"\%guidename%
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" echo      * cIOS249[56]-d2x-v%d2x-beta-rev%>>"%Drive%"\%guidename%
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" echo      * cIOS250[57]-d2x-v%d2x-beta-rev%>>"%Drive%"\%guidename%
-
-if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" echo      * RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2>>"%Drive%"\%guidename%
+if /i "%MENU1%" EQU "H" goto:HMafterwadlist
 
 
+if /i "%FIRM%" NEQ "%FIRMSTART%" support\sfk echo -spat \x3cbr\x3e\x3cb\x3eNote:\x3c/b\x3e Whenever you install a new System Menu, Priiloader is uninstalled. So be sure to reinstall it afterwards (especially if you do not have bootmii as boot2)\x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%MII%" EQU "*" echo      * Mii-Channel-NUS-v6>>"%Drive%"\%guidename%
-if /i "%P%" EQU "*" echo      * Photo-Channel-1.1-NUS-v3>>"%Drive%"\%guidename%
-if /i "%PK%" EQU "*" echo      * Photo-Channel-1.1-NUS-v3[K]>>"%Drive%"\%guidename%
-if /i "%S%" EQU "*" echo      * Shopping-Channel-NUS-v20>>"%Drive%"\%guidename%
-if /i "%SK%" EQU "*" echo      * Shopping-Channel-NUS-v20[K]>>"%Drive%"\%guidename%
-if /i "%IU%" EQU "*" echo      * Opera-Internet-Channel-NUS[U]>>"%Drive%"\%guidename%
-if /i "%IE%" EQU "*" echo      * Opera-Internet-Channel-NUS[E]>>"%Drive%"\%guidename%
-if /i "%IJ%" EQU "*" echo      * Opera-Internet-Channel-NUS[J]>>"%Drive%"\%guidename%
-if /i "%WU%" EQU "*" echo      * Weather-Channel-NUS-v7[U]>>"%Drive%"\%guidename%
-if /i "%WE%" EQU "*" echo      * Weather-Channel-NUS-v7[E]>>"%Drive%"\%guidename%
-if /i "%WJ%" EQU "*" echo      * Weather-Channel-NUS-v7[J]>>"%Drive%"\%guidename%
-if /i "%NU%" EQU "*" echo      * NEWS-Channel-NUS-v7[U]>>"%Drive%"\%guidename%
-if /i "%NE%" EQU "*" echo      * NEWS-Channel-NUS-v7[E]>>"%Drive%"\%guidename%
-if /i "%NJ%" EQU "*" echo      * NEWS-Channel-NUS-v7[J]>>"%Drive%"\%guidename%
-if /i "%WSU%" EQU "*" echo      * Wii-Speak-Channel-NUS[U]>>"%Drive%"\%guidename%
-if /i "%WSE%" EQU "*" echo      * Wii-Speak-Channel-NUS[E]>>"%Drive%"\%guidename%
-if /i "%WSJ%" EQU "*" echo      * Wii-Speak-Channel-NUS[J]>>"%Drive%"\%guidename%
-
-if /i "%M10%" EQU "*" echo      * RVL-mios-v10>>"%Drive%"\%guidename%
-if /i "%IOS9%" EQU "*" echo      * IOS9-64-v1034>>"%Drive%"\%guidename%
-if /i "%IOS12%" EQU "*" echo      * IOS12-64-v526>>"%Drive%"\%guidename%
-if /i "%IOS13%" EQU "*" echo      * IOS13-64-v1032>>"%Drive%"\%guidename%
-if /i "%IOS14%" EQU "*" echo      * IOS14-64-v1032>>"%Drive%"\%guidename%
-if /i "%IOS15%" EQU "*" echo      * IOS15-64-v1032>>"%Drive%"\%guidename%
-if /i "%IOS17%" EQU "*" echo      * IOS17-64-v1032>>"%Drive%"\%guidename%
-if /i "%IOS21%" EQU "*" echo      * IOS21-64-v1039>>"%Drive%"\%guidename%
-if /i "%IOS22%" EQU "*" echo      * IOS22-64-v1294>>"%Drive%"\%guidename%
-if /i "%IOS28%" EQU "*" echo      * IOS28-64-v1807>>"%Drive%"\%guidename%
-if /i "%IOS31%" EQU "*" echo      * IOS31-64-v3608>>"%Drive%"\%guidename%
-if /i "%IOS33%" EQU "*" echo      * IOS33-64-v3608>>"%Drive%"\%guidename%
-if /i "%IOS34%" EQU "*" echo      * IOS34-64-v3608>>"%Drive%"\%guidename%
-if /i "%IOS35%" EQU "*" echo      * IOS35-64-v3608>>"%Drive%"\%guidename%
-if /i "%IOS36v3608%" EQU "*" echo      * IOS36-64-v3608>>"%Drive%"\%guidename%
-if /i "%IOS37%" EQU "*" echo      * IOS37-64-v5663>>"%Drive%"\%guidename%
-if /i "%IOS38%" EQU "*" echo      * IOS38-64-v4124>>"%Drive%"\%guidename%
-if /i "%IOS41%" EQU "*" echo      * IOS41-64-v3607>>"%Drive%"\%guidename%
-if /i "%IOS43%" EQU "*" echo      * IOS43-64-v3607>>"%Drive%"\%guidename%
-if /i "%IOS45%" EQU "*" echo      * IOS45-64-v3607>>"%Drive%"\%guidename%
-if /i "%IOS46%" EQU "*" echo      * IOS46-64-v3607>>"%Drive%"\%guidename%
-if /i "%IOS48v4124%" EQU "*" echo      * IOS48-64-v4124>>"%Drive%"\%guidename%
-if /i "%IOS53%" EQU "*" echo      * IOS53-64-v5663>>"%Drive%"\%guidename%
-if /i "%IOS55%" EQU "*" echo      * IOS55-64-v5663>>"%Drive%"\%guidename%
-if /i "%IOS56%" EQU "*" echo      * IOS56-64-v5662>>"%Drive%"\%guidename%
-if /i "%IOS57%" EQU "*" echo      * IOS57-64-v5919>>"%Drive%"\%guidename%
-if /i "%IOS58%" EQU "*" echo      * IOS58-64-v6176>>"%Drive%"\%guidename%
-if /i "%IOS61%" EQU "*" echo      * IOS61-64-v5662>>"%Drive%"\%guidename%
-if /i "%IOS236%" EQU "*" echo      * IOS236v65535(IOS36v3351[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%USBX%" NEQ "*" goto:nousbx
-echo      * USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL>>"%Drive%"\%guidename%
-echo        This is a forwarder channel that will load the first file it finds from the following list:>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader\boot.dol>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader\boot.elf>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usb-loader\boot.dol>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usb-loader\boot.elf>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader_cfg\boot.dol>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader_cfg\boot.elf>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\WiiFlow\boot.dol>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\WiiFlow\boot.elf>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader_gx\boot.dol>>"%Drive%"\%guidename%
-echo                    SD+USB:\apps\usbloader_gx\boot.elf>>"%Drive%"\%guidename%
-echo       Notes: IOS58 is required to launch apps from an SD Card and hard drives formatted as>>"%Drive%"\%guidename%
-echo              FAT32, NTFS, ext2, ext3 and ext4. It also supports meta.xml arguments>>"%Drive%"\%guidename%
-echo              and is able to launch apps with direct hardware access.>>"%Drive%"\%guidename%
-echo.
-echo        You should always have at least one forwarder channel installed on your Wii,>>"%Drive%"\%guidename%
-echo        that way, in the event of accidental update, you will be able to rehack your Wii without relying on a disc based exploit>>"%Drive%"\%guidename%
-:nousbx
-
-echo .>>"%Drive%"\%guidename%
-
-if /i "%FIRM%" EQU "%FIRMSTART%" goto:SKIP
-echo Note: Whenever you install a new System Menu, Priiloader is uninstalled. So be sure to reinstall it afterwards (especially if you do not have bootmii as boot2)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-:SKIP
+::extra line break
+support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
 
 set installwads=done
 if /i "%FIRM%" NEQ "%FIRMSTART%" goto:PRIIGUIDE
@@ -27672,151 +27429,70 @@ if /i "%FIRM%" NEQ "%FIRMSTART%" goto:PRIIGUIDE
 :reinstallHBC
 If /i "%HM%" NEQ "*" goto:MyMGuide
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-if /i "%MENU1%" EQU "SU" echo %COUNT7%) REINSTALL THE HOMEBREW CHANNEL>>"%Drive%"\%guidename%
-if /i "%MENU1%" EQU "SU" echo    ==============================>>"%Drive%"\%guidename%
-if /i "%MENU1%" EQU "SU" goto:skipsomestuff
 
-if /i "%MENU1%" NEQ "SU" echo %COUNT7%) REINSTALL THE HOMEBREW CHANNEL (if applicable)>>"%Drive%"\%guidename%
-if /i "%MENU1%" NEQ "SU" echo    ==============================================>>"%Drive%"\%guidename%
+if /i "%MENU1%" NEQ "SU" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eReinstall the Homebrew Channel (if applicable)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo .>>"%Drive%"\%guidename%
+if /i "%MENU1%" EQU "SU" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eReinstall the Homebrew Channel\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo Earlier you should have checked what IOS is used by the Homebrew Channel (HBC). If the IOS used by your HBC is IOS58 and your HBC is not upside-down, you can skip this step.>>"%Drive%"\%guidename%
 
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\HBCreinstall.001 "%Drive%"\%guidename%>nul
 
-echo If the HBC is using an IOS other than IOS58 or your HBC is upside-down, you should reinstall the HBC.>>"%Drive%"\%guidename%
 
-:skipsomestuff
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
+if /i "%MENU1%" NEQ "SU" support\sfk echo -spat If the HBC is failing to load the HackMii_Installer (just blackscreens), instead launch the Hackmii Installer using the method described in the first Step.\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo Launch the HackMii_Installer via the HBC.>>"%Drive%"\%guidename%
-echo Use the Hackmii Installer to fix/re-install the HBC (using IOS58). Once you've successfully reinstalled the HBC, you can move onto the next step of the guide.>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
 
-If /i "%MENU1%" NEQ "SU" goto:miniskip
-If /i "%IOS236Installer%" NEQ "*" echo .>>"%Drive%"\%guidename%
-If /i "%IOS236Installer%" NEQ "*" echo You should also install BootMii as Boot2 if possible (if you haven't done so already).>>"%Drive%"\%guidename%
-:miniskip
 
-echo .>>"%Drive%"\%guidename%
-
-if /i "%MENU1%" NEQ "SU" echo If the HBC is failing to load the HackMii_Installer (just blackscreens), instead launch the Hackmii Installer using the method described in the First Step>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
 
 
 
 ::------------------------Install Custom Theme Using MyMenuify----------------------------
 :MyMGuide
+
 If /i "%MyM%" NEQ "*" goto:noMyM
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eInstall Custom Wii Menu Theme using MyMenuifyMod (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo %COUNT7%) INSTALL CUSTOM WII MENU THEME USING MYMENUIFYMOD (OPTIONAL)>>"%Drive%"\%guidename%
-echo    ===========================================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
+copy /y "%Drive%"\%guidename%+Support\Guide\MyMenuify.001 "%Drive%"\%guidename%>nul
 
-echo .>>"%Drive%"\%guidename%
-echo WARNING: DO NOT INSTALL THEMES WITHOUT PROTECTION (BOOTMII, PRIILOADER AND NAND BACKUP)>>"%Drive%"\%guidename%
-echo          AND ONLY INSTALL THEMES FOR YOUR SPECIFIC SYSTEM MENU VERSION AND REGION!>>"%Drive%"\%guidename%
-echo.>>"%Drive%"\%guidename%
-echo Launch MyMenuifyMod from the HBC.>>"%Drive%"\%guidename%
-echo.>>"%Drive%"\%guidename%
+support\sfk echo -spat Navigate to the theme you would like to install that corresponds to your specific System Menu Version (%FIRM%%REGION%) then press A to install it.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
+support\sfk echo -spat If you ever decide to restore the original Menu Wii theme, simply launch MyMenuifyMod again, navigate to 000000XX_%FIRM%%REGION%.app and press \x22A\x22 to install it.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo Navigate to the theme you would like to install>>"%Drive%"\%guidename%
-echo that corresponds to your specific System Menu Version (%FIRM%%REGION%) >>"%Drive%"\%guidename%
-echo then press A to install it.>>"%Drive%"\%guidename%
-
-echo.>>"%Drive%"\%guidename%
-echo If you ever decide to restore the original Menu Wii theme,>>"%Drive%"\%guidename%
-echo simply launch MyMenuifyMod again, navigate to 000000XX_%FIRM%%REGION%.app and press "A" to install it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 :noMyM
 
+
+
+::--------End of hacking steps listings (and line break). This must be here for the hacking guide------------
+support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
 if /i "%USBGUIDE%" EQU "Y" goto:USBGUIDESTEP1
+
+
 
 
 ::--------------------After Modding-----------------------
 :AFTERMODDING
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) AFTER MODDING>>"%Drive%"\%guidename%
-echo    =============>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\AfterModding.001 "%Drive%"\%guidename%>nul
 
 
-echo After you are done modding your Wii, you can optionally delete any unnecesarry files>>"%Drive%"\%guidename%
-echo by using ModMii's "File Cleanup" Feature. >>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-If /i "%BB1%" EQU "*" echo If you choose not to use the File Cleanup feature, in order to avoid having your Wii freeze when accessing the SD Card Menu, you should delete the 'aktn' folder where bannerbomb is saved (SD:\private\wii\title\aktn), or rename the entire 'private' folder.>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo .>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo If you choose not to use the File Cleanup feature, in order to avoid having your Wii freeze when accessing the SD Card Menu, you should delete the 'aktn' folder where bannerbomb is saved (SD:\private\wii\title\aktn), or rename the entire 'private' folder.>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo .>>"%Drive%"\%guidename%
-
-echo At this point you're practically done.>>"%Drive%"\%guidename%
-echo Now you should be downloading the latest homebrew applications and setting them up on>>"%Drive%"\%guidename%
-echo your SD Card (or FAT32 USB Hard Drive) so they can be launched via the HBC.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-if /i "%USBGUIDE%" EQU "Y" goto:skip
-echo For playing your backups off a USB hard drive, run the USB-Loader Setup feature from ModMii's Main Menu>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-:skip
-
-echo For downloading applications, you should:>>"%Drive%"\%guidename%
-echo * Check out ModMii's batch download pages as it has many popular apps available for download.>>"%Drive%"\%guidename%
-echo * Download Homebrew Browser via ModMii to get many popular apps, but this is an online only Wii application (www.sites.google.com/site/completesg/how-to-use/hbb)>>"%Drive%"\%guidename%
-echo * For those without internet on their Wii, check out this list of Homebrew applications (wiibrew.org/wiki/List_of_all_homebrew).>>"%Drive%"\%guidename%
-echo Another great resource is webrewwii.blogspot.com>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo After getting whatever apps you want, you should get a boot.dol file and possibly a icon.png and meta.xml.>>"%Drive%"\%guidename%
-echo For HBC to read your SD/USB correctly, your card must be structured SD:/apps/application name/boot.dol>>"%Drive%"\%guidename%
-echo If you have a *.dol not named boot.dol, rename it boot.dol, otherwise it will not be recognized by the HBC.>>"%Drive%"\%guidename%
-echo (optional: the icon.png and meta.xml should be saved in the same place as the boot.dol)>>"%Drive%"\%guidename%
-
-
-::---------------------support XFLAK-----------------------
+::---------------------credits and support XFLAK-----------------------
 :supportxflak
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\Credits-XFlak-End.001 "%Drive%"\%guidename%>nul
 
-echo %COUNT7%) SUPPORT XFLAK>>"%Drive%"\%guidename%
-echo    =============>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
 
-echo IF MODMII WORKED FOR YOU, PLEASE VOTE IN FAVOUR OF THE PROGRAM HERE (tinyurl.com/ModMiiNow)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo DONATIONS CAN OPTIONALLY BE MADE VIA PAYPAL TO XFLAK40@HOTMAIL.COM>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+::guide finish, remove carriage returns and open
+support\sfk filter "%Drive%"\%guidename% -lsrep _.__ -rep _"printbutton {"_".printbutton {"_ -write -yes>nul
 
-echo CHECK OUT MY TOP CHANNELS HERE (tinyurl.com/topchannels)>>"%Drive%"\%guidename%
+cd /d "%Drive%"
+start %guidename%
+cd /d %ModMiipath%
 
-echo .>>"%Drive%"\%guidename%
-
-echo CHECK OUT MY CRAZY INTRO VIDEOS HERE (tinyurl.com/crazyintro)>>"%Drive%"\%guidename%
-
-support\sfk filter "%Drive%"\%guidename% -lsrep _.__ -write -yes>nul
-start notepad "%Drive%\%guidename%"
 
 ::---------------CMD LINE MODE-------------
 if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
@@ -27832,359 +27508,21 @@ if /i "%SETTINGSHM%" EQU "G" goto:HACKMIISOLUTION
 goto:DLSETTINGS2
 
 
-
-
-
-::--------------------------------------HACKMII SOLUTIONS GUIDE--------------------------------------
-:HMguide
-set guidename=ModMiiGuide_HackMiiFix.txt
-
-SET COUNT7=1
-cls
-if /i "%SETTINGS%" EQU "G" echo Generating Guide, please wait.
-if /i "%SETTINGS%" NEQ "G" echo Generating Guide, please wait, your downloads will begin shortly.
-
-if not exist "%Drive%" mkdir "%Drive%" >nul
-if not exist "%Drive%"\%guidename% goto:norename1
-SET /a COUNT6=%COUNT6%+1
-if exist "%Drive%"\ModMiiGuide_HackMiiFix%COUNT6%.txt goto:HMguide
-move "%Drive%"\%guidename% "%Drive%"\ModMiiGuide_HackMiiFix%count6%.txt >nul
-:norename1
-
-
-
-
-echo ModMii %currentversion% HackMii Solutions Guide>"%Drive%"\%guidename%
-echo Generated on %DATE% - %TIME%>>"%Drive%"\%guidename%
-echo Check for updates at tinyurl.com/ModMiiNow>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This Guide was generated using the following parameters:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-if /i "%FIRMSTART%" NEQ "o" echo                * Current firmware is %FIRMSTART%%REGION%>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo                * Current firmware is less than 2.2>>"%Drive%"\%guidename%
-
-
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This software is not for sale. If you paid for this software or a "bundle" you have been scammed.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.>>"%Drive%"\%guidename%
-echo NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!>>"%Drive%"\%guidename%
-echo USE THIS AT YOUR OWN RISK!>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-echo IMPORTANT NOTES:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo *This guide does NOT require a Wifi connection on your Wii.>>"%Drive%"\%guidename%
-echo *An SD card formatted to FAT(32) required (Best results are with non-SDHC cards, SDHC will only work on 4.0 or above).>>"%Drive%"\%guidename%
-echo *If you get errors during any of the steps reformat your SD card as FAT or FAT32>>"%Drive%"\%guidename%
-echo *Turn off WiiConnect24 and take out all gamecube memory cards/controllers when modding the Wii (unless instructed otherwise).>>"%Drive%"\%guidename%
-echo *If your Wii ever freezes, hold the power button on the Wii for 5 seconds to power it off then try again.>>"%Drive%"\%guidename%
-echo *Don’t ever accept a new Nintendo update without first googling to see if it’s safe. The last update (to 4.3) was released in late June 2010. If you accept an official Nintendo update after modding the Wii, you may lose some or all of your modifications.>>"%Drive%"\%guidename%
-echo *Never uninstall a system menu or IOS>>"%Drive%"\%guidename%
-echo *Do not install untested wads/themes without Bootmii or Priiloader installed.>>"%Drive%"\%guidename%
-echo *This custom guide is great start, but Wii modding is always evolving. Check for updates online, and remember, google is your friend.>>"%Drive%"\%guidename%
-echo *If you have questions, a more detailed guide can be found here: www.sites.google.com/site/completesg/>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-set exploitnum=0
-If /i "%BB1%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%BB2%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%TWI%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%YUGI%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%PWNS%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%SMASH%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%BATHAXX%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%ROTJ%" EQU "*" SET /a exploitnum=%exploitnum%+1
-If /i "%TOS%" EQU "*" SET /a exploitnum=%exploitnum%+1
-
-echo %COUNT7%) LAUNCH Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ==============================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo Start the Homebrew Channel (HBC) and load Multi-Mod Manager (MMM). Once you've loaded MMM, move onto the next step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If you are missing the HBC or it is failing to load any apps (just blackscreens), you will need to launch MMM using another method.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-
-
-
-If /i "%exploitnum%" GEQ "2" echo EXPLOITS>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo You only need to perform ONE of the following exploits>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-If /i "%exploitnum%" GEQ "2" echo.>>"%Drive%"\%guidename%
-
-
-If /i "%BB1%" EQU "*" goto:skipforwardersolution
-If /i "%BB2%" EQU "*" goto:skipforwardersolution
-echo Note: if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch MMM instead of an exploit. Just save the boot.dol from the app you want to load (ie. SD:\apps\MMM\boot.dol) to the location used by your SPECIFIC Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the app will load.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-if /i "%FIRMSTART%" EQU "o" echo Alternatively, you can update your Wii to v3.0-4.2 using a DISC (ie. NSMBW). Then repeat the ModMii Wizard using your new Firmware and then you will be able to use the BannerBomb Exploit (which does not require a specific disc to work)>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo.>>"%Drive%"\%guidename%
-
-if /i "%REGION%" EQU "U" goto:skipforwardersolution
-if /i "%REGION%" EQU "E" goto:skipforwardersolution
-if /i "%FIRMSTART%" EQU "o" echo WARNING: Online update to v4.3 makes Korean Wii's unhackable (unless it previously had HBC v1.0.7, BootMii as Boot2v4, or a forwarder channel installed.>>"%DRIVE%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" echo .>>"%Drive%"\%guidename%
-:skipforwardersolution
-
-goto:EXPLOITSNOW
-
-
-:HMsolution2
-
-::If /i "%BB2%" EQU "*" echo Run BannerBomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-::If /i "%BB1%" EQU "*" echo Run BannerBomb v1 by going to Settings, Data Management, Channels, SD Card and choosing yes to load boot.dol/elf>>"%Drive%"\%guidename%
-::echo Note: If it doesn't work for you, visit http://bannerbomb.qoid.us/ for more variations of either version of bannerbomb.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-echo %COUNT7%) INSTALL SOME IOSs USING Multi-Mod Manager (MMM)>>"%Drive%"\%guidename%
-echo    ===============================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo In Multi-Mod Manager's main menu, Go down to select "WAD Manager".>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If you cannot load your SD card, select "Load another IOS", then select IOS36.>>"%Drive%"\%guidename%
-echo If the Wii was previously softmodded, try loading cIOS250 (or others like 202,222,223,224,236,249).>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo Now mark each of the following WADs for installation by navigating to each WAD and hitting +>>"%Drive%"\%guidename%
-echo Alternatively, you can hold + to mark all the WADs in the list for installation.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-if /i "%IOS30P60%" EQU "*" echo      * IOS30v16174(IOS60v6174[FS-ES-NP-VP])>>"%Drive%"\%guidename%
-if /i "%IOS31%" EQU "*" echo      * IOS31v3608>>"%Drive%"\%guidename%
-if /i "%IOS33%" EQU "*" echo      * IOS33v3608>>"%Drive%"\%guidename%
-if /i "%IOS34%" EQU "*" echo      * IOS34v3608>>"%Drive%"\%guidename%
-if /i "%IOS35%" EQU "*" echo      * IOS35v3608>>"%Drive%"\%guidename%
-if /i "%IOS36v3608%" EQU "*" echo      * IOS36v3608>>"%Drive%"\%guidename%
-if /i "%IOS58%" EQU "*" echo      * IOS58v6176>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo After you've marked the above WADs, press 'A' twice to install them all.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Be careful not to install any additional wads that may have been previously saved in this folder (they may be safe, but I cannot say for sure).>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-
-echo If any files fail to install properly, they will remain marked for installation, so just retry installing those files.>>"%Drive%"\%guidename%
-
-echo Only move onto the next step after successfully installing the above WADs, but do NOT exit MMM.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-echo %COUNT7%) INSTALL THE HOMEBREW CHANNEL (HBC)>>"%Drive%"\%guidename%
-echo    ==================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo In MMM's main menu, select "App Manager" and then select the HackMii_Installer.>>"%Drive%"\%guidename%
-
-echo Use the Hackmii Installer to fix/re-install the HBC. If you haven't done so already, you should also install BootMii as Boot2 (if possible).>>"%Drive%"\%guidename%
-
-
-echo Once you've successfully reinstalled the HBC, you are finished with this guide.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-
-echo If you already exited MMM, you can load the HackMii_Installer from the Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo If the HBC is failing to load any apps (just blackscreens), instead launch MMM using the method described in Step 1, then in MMM's main menu, select "App Manager" and then select the HackMii_Installer.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo This will launch the HackMii Installer, use it to reinstall your Homebrew Channel.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-If /i "%BB1%" EQU "*" echo After you are done modding your Wii, in order to avoid having your Wii freeze when accessing the SD Card Menu, you should either delete the 'aktn' folder where  bannerbomb is saved (SD:\private\wii\title\aktn), or rename the entire 'private' folder.>>"%Drive%"\%guidename%
-If /i "%BB1%" EQU "*" echo .>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo After you are done modding your Wii, in order to avoid having your Wii freeze when accessing the SD Card Menu, you should either delete the 'aktn' folder where  bannerbomb is saved (SD:\private\wii\title\aktn), or rename the entire 'private' folder.>>"%Drive%"\%guidename%
-If /i "%BB2%" EQU "*" echo .>>"%Drive%"\%guidename%
-
-GOTO:supportxflak
-
-
-
-::--------------------------------------------USB-Loader Set-Up Guide------------------------------------------
-:USBguide
-set guidename=ModMiiGuide_USBLoaderSetup.txt
-
-if /i "%FORMAT%" EQU "1" set FORMATNAME=FAT32
-if /i "%FORMAT%" EQU "2" set FORMATNAME=NTFS
-if /i "%FORMAT%" EQU "3" set FORMATNAME=Part FAT32 and Part NTFS
-if /i "%FORMAT%" EQU "4" set FORMATNAME=WBFS
-if /i "%FORMAT%" EQU "5" set FORMATNAME=Part FAT32 and Part WBFS
-
-
-SET COUNT7=1
-cls
-if /i "%SETTINGS%" EQU "G" echo Generating Guide, please wait.
-if /i "%SETTINGS%" NEQ "G" echo Generating Guide, please wait, your downloads will begin shortly.
-
-if not exist "%Drive%" mkdir "%Drive%" >nul
-if not exist "%Drive%"\%guidename% goto:norename
-SET /a COUNT6=%COUNT6%+1
-if exist "%Drive%"\ModMiiGuide_USBLoaderSetup%COUNT6%.txt goto:usbguide
-move "%Drive%"\%guidename% "%Drive%"\ModMiiGuide_USBLoaderSetup%count6%.txt >nul
-:norename
-
-echo ModMii %currentversion% USB-Loader Setup Custom Guide>"%Drive%"\%guidename%
-echo Generated on %DATE% - %TIME%>>"%Drive%"\%guidename%
-echo Check for updates at tinyurl.com/ModMiiNow>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-
-
-echo This Guide was generated using the following parameters:>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-if /i "%FORMAT%" EQU "4" goto:skip
-if /i "%FORMAT%" EQU "5" goto:skip
-echo                * External Hard Drive to be Formatted as %FORMATNAME%>>"%Drive%"\%guidename%
-goto:skip2
-:skip
-echo                * External Hard Drive already Formatted as %FORMATNAME%>>"%Drive%"\%guidename%
-:skip2
-if /i "%USBFolder%" EQU "*" echo                * Download Configurable USB-Loader>>"%Drive%"\%guidename%
-if /i "%FLOW%" EQU "*" echo                * Download WiiFlow>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo                * USB-Loader Settings and config files saved to USB Hard Drive>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo                * USB-Loader Settings and config files saved to SD Card>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo This software is not for sale. If you paid for this software or a "bundle" you have been scammed.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.>>"%Drive%"\%guidename%
-echo NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!>>"%Drive%"\%guidename%
-echo USE THIS AT YOUR OWN RISK!>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo IMPORTANT NOTES:>>"%Drive%"\%guidename%
-echo ---------------->>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo *cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.>>"%Drive%"\%guidename%
-echo *cIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222 rev4 or higher also works, but you would need to download the 222 version of configurable usb-loader or modify your config.txt file for configurable USB-Loader)>>"%Drive%"\%guidename%
-echo *Not all external hard drive's are compatible with the Wii, for a list of which USB Hard Drive's are compatible, see this webpage: http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List>>"%Drive%"\%guidename%
-echo *If you have questions, a more detailed guide can be found here: www.sites.google.com/site/completesg/>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
-
+::-------------USB-Loader Setup Steps--------------
 :USBGUIDESTEP1
 
-if /i "%MENU1%" NEQ "W" goto:skip
+support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3eUSB Loader and Hard Drive setup\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+if /i "%MENU1%" EQU "W" support\sfk echo -spat The rest of the guide is performed on your computer in order to set up your USB-Loader\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo ======================================================================================>>"%Drive%"\%guidename%
-echo THE REST OF THE GUIDE IS PERFORMED ON YOUR COMPUTER IN ORDER TO SET UP YOUR USB-LOADER>>"%Drive%"\%guidename%
-echo ======================================================================================>>"%Drive%"\%guidename%
-
-:skip
+support\sfk echo -spat \x3col\x3e>>"%Drive%"\%guidename%
 
 
 
+::-------------FAT32 + NTFS-----------------------
 if /i "%FORMAT%" NEQ "3" goto:skippartition
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) PARTITION AND FORMAT THE EXTERNAL HARD DRIVE>>"%Drive%"\%guidename%
-echo    ============================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you complete this step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo Right-click 'My Computer' and select 'Manage', a new window will open, on left panel click 'Disk Management'.>>"%Drive%"\%guidename%
-echo Right-click the drive you want to partition (make sure you select the right drive!), then select 'Delete Volume...'>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo On the lower half menu of the window, locate the unallocated space, right-click it, and select 'New Simple Volume...'>>"%Drive%"\%guidename%
-echo Enter the 'volume size' you want your FAT32 partition to be, and click 'Next'.>>"%Drive%"\%guidename%
-echo Choose a Drive letter for this partition, and click 'Next' (Make note of the drive letter, as it will be needed later)>>"%Drive%"\%guidename%
-echo You will likely not be able to change the file system to FAT32 (it will only be an option if the volume size is under 32GB)>>"%Drive%"\%guidename%
-echo If FAT32 isn't an option, select 'Do not format this volume', and click 'Next'>>"%Drive%"\%guidename%
-echo (it doesn't matter if you format the volume because you are going to format it as FAT32 later on)>>"%Drive%"\%guidename%
-
-
-echo .>>"%Drive%"\%guidename%
-
-echo On the lower half menu of the window, locate the remaining unallocated space (for the NTFS partition), right-click it, and select 'New Simple Volume....>>"%Drive%"\%guidename%
-echo Click 'Next' (to format the all remaining space on the drive).>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo Choose a Drive letter for this partition, and click 'Next'.>>"%Drive%"\%guidename%
-echo Ensure the file system is set to NTFS then name the partition/volume,>>"%Drive%"\%guidename%
-echo You may optionally uncheck the 'Perform a quick format' box, click 'Next', then click 'Finish'.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-::-----FAT32 format on unformatted partition------
-echo If you managed to format the first partition as FAT32, then you can skip the remainder of this step.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-::echo Launch WiiBackupManager.exe saved here:>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::echo .>>"%Drive%"\%guidename%
-::echo At the top of the WiiBackupManager window, navigate to: Tools--Format Drives...>>"%Drive%"\%guidename%
-::echo Make sure you select the drive letter corresponding to the partition you want to format as FAT32.>>"%Drive%"\%guidename%
-::echo Make sure the file system is set at FAT32 and the cluster size is 32KB, then click start.>>"%Drive%"\%guidename%
-
-
-
-
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32-NTFS.001 "%Drive%"\%guidename%>nul
 
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
@@ -28196,55 +27534,21 @@ echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%
 goto:noportableF32
 
 :portableF32
-echo Launch FAT32_GUI_Formatter.exe saved here:>>"%Drive%"\%guidename%
+support\sfk echo -spat Launch FAT32_GUI_Formatter.exe saved here:\x3cbr\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
 :noportableF32
 
-
-
-echo .>>"%Drive%"\%guidename%
-echo Make sure you select the drive letter corresponding to the partition you want to format as FAT32.>>"%Drive%"\%guidename%
-echo You may optionally uncheck the 'Quick Format' box, then click start.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32-NTFSend.001 "%Drive%"\%guidename%>nul
 
 :skippartition
 
 
-if /i "%FORMAT%" EQU "3" goto:skipformat
-if /i "%FORMAT%" EQU "4" goto:skipcopytousb
-if /i "%FORMAT%" EQU "5" goto:skipcopytousb
 
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
+::-------------FAT32---------------
+if /i "%FORMAT%" NEQ "1" goto:notfat32
 
-echo %COUNT7%) FORMAT THE EXTERNAL HARD DRIVE (if applicable)>>"%Drive%"\%guidename%
-echo    ==============================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo First check if your drive needs to be formatted by checking the current Format\File-System of the drive.>>"%Drive%"\%guidename%
-echo Open 'My Computer', right-click the external hard drive you want to use, then select 'properties'.>>"%Drive%"\%guidename%
-echo Make note of the Drive Letter of the external hard drive as this will be important later.>>"%Drive%"\%guidename%
-echo If the 'File-System' is already %FORMATNAME%, you can skip this step.>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-if /i "%FORMAT%" EQU "2" goto:formatNTFS
-::echo Launch WiiBackupManager.exe saved here:>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::echo .>>"%Drive%"\%guidename%
-
-::echo At the top of the WiiBackupManager window, navigate to: Tools--Format Drives...>>"%Drive%"\%guidename%
-::echo Make sure you select the drive letter corresponding to the partition you want to format as FAT32.>>"%Drive%"\%guidename%
-::echo Make sure the file system is set at FAT32 and the cluster size is 32KB, then click start.>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32.001 "%Drive%"\%guidename%>nul
 
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
@@ -28256,64 +27560,33 @@ echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%
 goto:noportableF32
 
 :portableF32
-echo Launch FAT32_GUI_Formatter.exe saved here:>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" echo Launch FAT32_GUI_Formatter.exe saved here: %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" echo Launch FAT32_GUI_Formatter.exe saved here: %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
 :noportableF32
 
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32end.001 "%Drive%"\%guidename%>nul
 
-echo .>>"%Drive%"\%guidename%
-echo Make sure you select the drive letter corresponding to your external hard drive.>>"%Drive%"\%guidename%
-echo You may optionally uncheck the 'Quick Format' box, then click start.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-goto:notformatNTFS
-
-:formatNTFS
-::echo Launch WiiBackupManager.exe saved here:>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager\WiiBackupManager.exe>>"%Drive%"\%guidename%
-::echo .>>"%Drive%"\%guidename%
-
-::echo At the top of the WiiBackupManager window, navigate to: Tools--Format Drives...>>"%Drive%"\%guidename%
-::echo Make sure you select the drive letter corresponding to the partition you want to format as NTFS.>>"%Drive%"\%guidename%
-::echo Make sure the file system is set at NTFS, then click start.>>"%Drive%"\%guidename%
-
-echo Right-click 'My Computer' and select 'Manage', a new window will open, on left panel click 'Disk Management'.>>"%Drive%"\%guidename%
-echo Right-click the drive you want to format (make sure you select the right drive!), then select 'Format...'>>"%Drive%"\%guidename%
-echo Select 'NTFS' as the File system to use and input a name for the Hard-Drive/Volume.>>"%Drive%"\%guidename%
-echo You may optionally uncheck the 'Perform a quick format' box, then click 'OK', then click 'OK' again.>>"%Drive%"\%guidename%
-
-:notformatNTFS
+:notfat32
 
 
-:skipformat
+::-------------NTFS---------------
+if /i "%FORMAT%" EQU "2" copy /y "%Drive%"\%guidename%+Support\Guide\NTFS.001 "%Drive%"\%guidename%>nul
 
+
+
+::------------copy file to usb--------
+if /i "%FORMAT%" EQU "4" goto:skipcopytousb
+if /i "%FORMAT%" EQU "5" goto:skipcopytousb
 
 if /i "%USBCONFIG%" NEQ "USB" goto:skipcopytousb
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) COPY FILES TO HARD DRIVE>>"%Drive%"\%guidename%
-echo    ========================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
-
-echo Copy everything inside the %DRIVEU% folder to the root of your FAT32 hard-drive\partition.>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eCopy Files to the Hard Drive\x3c/li\x3e\x3c/font\x3e\x3cbr\x3eCopy everything inside the %DRIVEU% folder to the root of your FAT32 hard-drive\partition.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 :skipcopytousb
 
+::-------------WiiBackupManager--------------
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eManage Wii backups using Wii Backup Manager (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-
-echo %COUNT7%) MANAGE WII BACKUPS USING WII BACKUP MANAGER (OPTIONAL)>>"%Drive%"\%guidename%
-echo    ======================================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
 
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableWBM
@@ -28321,67 +27594,47 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" NEQ "%ModMiipath:~0,2%" goto:portableWBM
 :skip
 
-echo Launch WiiBackupManager from shortcuts on your Start Menu or Desktop>>"%Drive%"\%guidename%
+support\sfk echo -spat Launch WiiBackupManager from shortcuts on your Start Menu or Desktop\x3cbr\x3e>>"%Drive%"\%guidename%
 goto:noportableWBM
 
 :portableWBM
-echo Launch WiiBackupManager.exe saved here:>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\WiiBackupManager >>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\WiiBackupManager >>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat Launch WiiBackupManager.exe saved here: %DRIVEU%\WiiBackupManager\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat Launch WiiBackupManager.exe saved here: %DRIVE%\WiiBackupManager\x3cbr\x3e>>"%Drive%"\%guidename%
 :noportableWBM
 
-echo .>>"%Drive%"\%guidename%
 
-echo You can use this program to manage/transfer your electronic backups of Wii Games.>>"%Drive%"\%guidename%
-echo It is very simple to use, but a detailed tutorial on using Wii Backup Manager can be found here:>>"%Drive%"\%guidename%
-echo www.sites.google.com/site/completesg/backup-launchers/iso/wbfs-managers/wii-backup-manager>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo Note: Original Wii Disc's cannot be read/copied by using a computer (unless you have one of the rare LG Drives that is capable of doing so)>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo To copy ORIGINAL Wii Disc's, insert the disc into your Wii and...>>"%Drive%"\%guidename%
-if /i "%USBFOLDER%" EQU "*" echo       - Launch Configurable USB-Loader, and hit the plus sign '+'.>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" echo         OR>>"%Drive%"\%guidename%
-if /i "%FLOW%" EQU "*" echo       - Launch WiiFlow, go to page 2 of WiiFlow's Settings and select "Install", then select "Go".>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-if /i "%FORMAT%" EQU "2" echo Warning: Ripping to NTFS is VERY unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.>>"%Drive%"\%guidename%
-if /i "%FORMAT%" EQU "3" echo Warning: Ripping to NTFS is VERY unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\WBM.001 "%Drive%"\%guidename%>nul
 
 
+if /i "%USBFOLDER%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch Configurable USB-Loader, and hit the plus sign \x22\x2b\x22. \x3cbr\x3e>>"%Drive%"\%guidename%
 
+if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow, go to page 2 of WiiFlow's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
+
+support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
+
+if /i "%FORMAT%" EQU "2" support\sfk echo -spat \x3cb\x3eWarning\x3c/b\x3e: Ripping to NTFS is \x3cu\x3every\x3c/u\x3e unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
+if /i "%FORMAT%" EQU "3" support\sfk echo -spat \x3cb\x3eWarning\x3c/b\x3e: Ripping to NTFS is \x3cu\x3every\x3c/u\x3e unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
+::-------------CONFIGURE/CUSTOMIZE CONFIGURABLE USB-LOADER (OPTIONAL)-------------
 if /i "%USBFOLDER%" NEQ "*" goto:skip
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
 
-echo %COUNT7%) CONFIGURE/CUSTOMIZE CONFIGURABLE USB-LOADER (OPTIONAL)>>"%Drive%"\%guidename%
-echo    ======================================================>>"%Drive%"\%guidename%
-SET /a COUNT7=%COUNT7%+1
-echo .>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eConfigure/Customize Configurable USB-Loader (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo To Configure/Customize your USB-Loader, use the Configurator for Configurable USB-Loader found here:>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat To Configure/Customize your USB-Loader, use the Configurator for Configurable USB-Loader found here: %DRIVEU%\usb-loader\CfgLoaderConfigurator.exe\x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\usb-loader\CfgLoaderConfigurator.exe>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\usb-loader\CfgLoaderConfigurator.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat To Configure/Customize your USB-Loader, use the Configurator for Configurable USB-Loader found here: %DRIVE%\usb-loader\CfgLoaderConfigurator.exe\x3cbr\x3e>>"%Drive%"\%guidename%
 
-echo .>>"%Drive%"\%guidename%
 
-echo Optional: additional themes can be found here:>>"%Drive%"\%guidename%
-echo http://wii.spiffy360.com/themes.php>>"%Drive%"\%guidename%
-
-echo .>>"%Drive%"\%guidename%
-
-echo * IMPORTANT NOTES ON DEFAULT SETTINGS:>>"%Drive%"\%guidename%
-echo   ------------------------------------>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo Two potentially dangerous features have been locked:>>"%Drive%"\%guidename%
-echo      1) The ability to remove/delete games>>"%Drive%"\%guidename%
-echo      2) the ability to format a hard drive.>>"%Drive%"\%guidename%
-echo .>>"%Drive%"\%guidename%
-echo To unlock these features, while in the configurable USB-Loader menu, hold '1' for 5 seconds, then enter the password to unlock these features. The password is 'AAAA', you can change the password/settings by using the Configurator for Configurable USB-Loader. Hold '1' again for 5 seconds to lock the USB-Loader again (or it will lock automatically again once you exit the USB-Loader).>>"%Drive%"\%guidename%
-
+copy /y "%Drive%"\%guidename%+Support\Guide\CustomizeCFG.001 "%Drive%"\%guidename%>nul
 :skip
+
+
+::ADD end of ordered list and line break for ALL usb-loader guides (</ol><br>)
+support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
 
 if /i "%MENU1%" EQU "W" goto:AFTERMODDING
 

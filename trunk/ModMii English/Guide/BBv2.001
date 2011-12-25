@@ -1,0 +1,5 @@
+<b>Bannerbomb v2</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/X5pyC07Vw3o?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/BannerbombV2.gif" border="0"/></a><br>
+Requirements: an SD or SDHC card<br>
+Run BannerBomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf.<br>
+<b>Note:</b> If it doesn't work for you, visit <a href="http://bannerbomb.qoid.us/" target="_blank">http://bannerbomb.qoid.us/</a> for more variations of either version of bannerbomb.<br>

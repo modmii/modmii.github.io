@@ -1,0 +1,18 @@
+<!--------------------------------------NTFS BELOW------------------------------------>
+<font size="5"><li>Partition and Format the External Hard Drive for NTFS</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-K-VBFhUlqc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Partition.gif" border="0"/></a><br>
+First check if your drive needs to be formatted by checking the current Format\File-System of the drive.<br>
+Open "My Computer", right-click the external hard drive you want to use, then select "properties".<br>
+Make note of the Drive Letter of the external hard drive as this will be important later.<br>
+If the "File-System" is already NTFS, you can skip this step.<br>
+<br>
+If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.<br>
+<br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/C5ieEHT4jtw?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/NTFS.gif" border="0"/></a><br>
+<br>
+Right-click "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".<br>
+Right-click the drive you want to format (make sure you select the right drive!), then select "Format..."<br>
+Select "NTFS" as the File system to use and input a name for the Hard-Drive/Volume.<br>
+You may optionally uncheck the "Perform a quick format" box, then click "OK", then click "OK" again.<br>
+<br>
+<!--------------------------------------NTFS ABOVE------------------------------------>

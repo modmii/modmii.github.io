@@ -1,0 +1,11 @@
+<!--------------------------------------FAT32 BELOW----------------------------------->
+<font size="5"><li>Partition and Format the External Hard Drive for FAT32</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-K-VBFhUlqc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Partition.gif" border="0"/></a><br>
+First check if your drive needs to be formatted by checking the current Format\File-System of the drive.<br>
+Open "My Computer", right-click the external hard drive you want to use, then select "properties".<br>
+Make note of the Drive Letter of the external hard drive as this will be important later.<br>
+If the "File-System" is already FAT32, you can skip this step.<br>
+<br>
+If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.<br>
+<br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/hFoA57I_ggY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/FAT32.gif" border="0"/></a><br>
