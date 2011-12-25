@@ -1,0 +1,7 @@
+<b>Smash Stack</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/3_dqzcxqPAc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/SmashStack.gif" border="0"/></a><br>
+Requirements: A copy of "Super Smash Brothers Brawl" and a standard SD card (will not work with an SDHC card).<br>
+<ol type="A"><li>Insert the Super Smash Brothers Brawl Game.</li>
+<li>Launch the game <b>without</b> the SD card in your Wii, create a save file if you don't have one already, then go into the stage builder and delete all the stages. Then exit the game.</li>
+<li>Afterwards, insert your SD Card, start the game and go to the stage builder, it should launch the boot.elf/dol file saved on the root of your SD card.</li>
+<li>If you forgot to delete the stages, you will experience an annoying but harmless crash.</li></ol>

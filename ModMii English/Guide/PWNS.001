@@ -1,0 +1,12 @@
+<b>Indiana Pwns</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-GN4cdhxjsI?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/IndianaPwns.gif" border="0"/></a><br>
+Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC card), and a nunchuck.<br>
+<ol type="A"><li>Load the "LEGO Indiana Jones" game at least once (otherwise you won't be able to copy over the hack).</li>
+<li>Delete or move\backup your personal LEGO Indiana Jones save file before copying the files to your SD Card.</li>
+<li>Copy the ModMii files to the root of your SD card (if you haven’t already) and insert it into your Wii.</li>
+<li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Indiana Pwns" save that corresponds to your region.</li>
+<li>Play the Lego Indiana Jones game. Load the new save file.</li>
+<li>You will be in the Main hall, walk towards the camera, enter the first door on the right (Indy's left) and go into the "Courtyard".</li>
+<li>Walk to the end and enter the "Art Room", you will see a podium with 2 characters on it, talk to the left one.</li>
+<li>Hit left twice (scrolling through his items) to choose the switch option (Black silhouette with a white arrow to another black silhouette).</li>
+<li>Hit A to launch the boot.elf/dol file saved on the root of your SD card.</li></ol>

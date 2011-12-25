@@ -1,0 +1,25 @@
+<!---------------------------Install Priiloader below------------------------------>
+<font size="5"><li>Install Priiloader</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/If1XSrEVhfY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Priiloader.gif" border="0"/></a><br>
+Launch "Priiloader 236 Mod" via the Homebrew Channel<br>
+After the Priiloader Installer loads, press + to install it.<br>
+After successfully installing Priiloader, access it by powering off the Wii, then powering it back on while holding reset until you see the Priiloader menu.<br>
+You should install some system menu hacks now (by going to System Menu hacks option).<br>
+<br>
+<b>RECOMMENDED HACKS</b>
+<ul>
+<li>Block Disc Updates</li>
+<li>Block Online Updates</li>
+<li>Replace Health Screen</li>
+<li>Auto-Press A at Health Screen</li>
+<li>Region-Free Everything</li>
+<li>Remove no copy save file protection</li>
+<li>Move Disc Channel</li>
+</ul>
+<br>
+The priiloader menu is white by default, you can change it to black in the Priiloader settings if you prefer.<br>
+<br>
+One of the special functions of Priiloader is that it can autoboot any app/file instead of the system menu. Some apps (like crazyIntro) can't be used without it.<br>
+For details on how to do so, visit <a href="http://www.sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">www.sites.google.com/site/completesg/system-hacks/priiloader</a><br>
+<br>
+<!---------------------------Install Priiloader above------------------------------>

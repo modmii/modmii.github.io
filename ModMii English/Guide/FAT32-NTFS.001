@@ -1,0 +1,21 @@
+<!----------------------------------FAT32 + NTFS BELOW-------------------------------->
+<font size="5"><li>Partition and Format the External Hard Drive for FAT32 + NTFS</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/ujM7c5MCVq4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/FAT32NTFS.gif" border="0"/></a><br>
+If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you complete this step.<br>
+<br>
+Right-click "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".<br>
+Right-click the drive you want to partition (make sure you select the right drive!), then select "Delete Volume..."<br>
+<br>
+On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume..."<br>
+Enter the "volume size" you want your FAT32 partition to be, and click "Next".<br>
+Choose a Drive letter for this partition, and click "Next" (Make note of the drive letter, as it will be needed later).<br>
+You will likely not be able to change the file system to FAT32 (it will only be an option if the volume size is under 32GB).<br>
+If FAT32 isn't an option, select "Do not format this volume", and click "Next" (it doesn't matter if you format the volume because you are going to format it as FAT32 later on).<br>
+<br>
+On the lower half menu of the window, locate the remaining unallocated space (for the NTFS partition), right-click it, and select "New Simple Volume...."<br>
+Click "Next" (to format the all remaining space on the drive).<br>
+Choose a Drive letter for this partition, and click "Next".<br>
+Ensure the file system is set to NTFS then name the partition/volume, you may optionally uncheck the "Perform a quick format" box, click "Next", then click "Finish".<br>
+<br>
+If you managed to format the first partition as FAT32, then you can skip the remainder of this step.<br>
+<br>

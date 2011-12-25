@@ -1,0 +1,12 @@
+<!---------------------------------SOFTMOD NOTES BELOW----------------------------------->
+<li>This guide does NOT require a Wifi connection on your Wii.</li>
+<li>An SD card formatted to FAT32 required (best results are with SD cards, SDHC cards will only work on System Menu's 4.0 or above).</li>
+<li>If you get errors during any of the steps reformat your SD card as FAT or FAT32</li>
+<li>Turn off WiiConnect24 and take out all gamecube memory cards/controllers when modding the Wii (unless instructed otherwise).</li>
+<li>If your Wii ever freezes, hold the power button on the Wii for 5 seconds to power it off then try again.</li>
+<li>Don’t ever accept a new Nintendo update without first googling to see if it’s safe. The last update (to 4.3) was released in late June 2010. If you accept an official Nintendo update after modding the Wii, you may lose some or all of your modifications.</li>
+<li>Never uninstall a system menu or IOS.</li>
+<li>Do not install untested WADs/themes without Bootmii or Priiloader installed.</li>
+<li>This custom guide is great start, but Wii modding is always evolving. Check for updates online, and remember, google is your friend.</li>
+<!---------------------------------SOFTMOD NOTES ABOVE----------------------------------->
+
