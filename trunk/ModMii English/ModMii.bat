@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.0.0
+set currentversion=5.1.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -46,15 +46,44 @@ if "%one%"=="" (goto:notcmd)
 
 set cmdlinemode=Y
 
+if /i "%two%" EQU "Help" goto:specificCMDhelp
+
+if /i "%one%" EQU "O" goto:cmdlineOPTIONShelp
 if /i "%one%" EQU "W" goto:hardcodedoptions
 if /i "%one%" EQU "HS" goto:hardcodedoptions
+if /i "%one%" EQU "RC" goto:hardcodedoptions
 if /i "%one%" EQU "S" goto:hardcodedoptions
 if /i "%one%" EQU "SE" goto:hardcodedoptions
 if /i "%one%" EQU "U" goto:hardcodedoptions
 if /i "%one%" EQU "E" goto:hardcodedoptions
+
 if /i "%one%" EQU "L" goto:hardcodedoptions
+if /i "%cmdinput:~-4%" EQU ".bat" (set one=L) & (set cmdlinemodeswitchoff=Y) & (goto:hardcodedoptions)
+
 if /i "%one%" EQU "SU" goto:hardcodedoptions
 if /i "%cmdinput:~-4%" EQU ".csv" (set one=SU) & (set cmdlinemodeswitchoff=Y) & (goto:hardcodedoptions)
+
+if exist "%cmdinput%\title\00000001\00000002\content\title.tmd" set DRIVETEMP=%cmdinput%
+if exist "%cmdinput%\title\00000001\00000002\content\title.tmd" (SET MENU1=S) & (set SNEEKSELECT=5) &(set one=EMUMOD) & (set cmdlinemodeswitchoff=Y) & (goto:go)
+
+::drag and drop for file cleanup
+if exist "%cmdinput%\apps" set DRIVEtemp=%cmdinput%
+if exist "%cmdinput%\WAD" set DRIVEtemp=%cmdinput%
+if exist "%cmdinput%\private" set DRIVEtemp=%cmdinput%
+if not "%DRIVEtemp%"=="" (SET MENU1=FC) & (set cmdlinemodeswitchoff=Y) & (goto:go)
+
+
+:specificCMDhelp
+if /i "%one%" EQU "W" goto:cmdlinewizardhelp
+if /i "%one%" EQU "RC" goto:cmdlineRegionChangehelp
+if /i "%one%" EQU "HS" goto:cmdlineHMhelp
+if /i "%one%" EQU "S" goto:cmdlineSNEEKhelp
+if /i "%one%" EQU "SE" goto:cmdlineEMUNANDhelp
+if /i "%one%" EQU "U" goto:cmdlineUSBhelp
+if /i "%one%" EQU "E" goto:cmdlineEMUNANDhelp
+if /i "%one%" EQU "L" goto:cmdlineDLQUEUEhelp
+if /i "%one%" EQU "SU" goto:cmdlineSYSCHECKhelp
+if /i "%one%" EQU "O" goto:cmdlineOPTIONShelp
 
 if not "%one%"=="" (goto:cmdlinehelp)
 
@@ -62,12 +91,69 @@ if not "%one%"=="" (goto:cmdlinehelp)
 
 :cmdlinehelp
 title ModMii Command Line Help
-cls
-support\sfk echo [Green]ModMii Command Line Usage
+
+support\sfk echo [Red]ModMii %currentversion% - by XFlak
 echo.
+echo  Command Line Usage: ModMii [function] [parameters] [Options]
+echo.
+echo  Functions:
+echo.
+echo        W          Wizard
+echo        U          USB-Loader Set-up
+echo        HS         HackMii Solutions
+echo        SU         sysCheck Updater
+echo        RC         Region Change
+echo        S          SNEEK Installation
+echo        E          Emulated NAND Builder
+echo        SE         SNEEK Installation + Emulated NAND Builder
+echo        L          Load ModMii Download Queue
+echo.
+echo        O          ModMii Options: Options cannot be used by themselves
+echo                   but they can be applied to other functions. Saved\default
+echo                   settings will be restored after each command. If an
+echo                   option is not defined saved\default settings are used.
+echo.
+echo       NOTE: Too see detailed descriptions and parameters for any of the above,
+echo             use 'ModMii [function] Help'
+echo.
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
+
+
+:cmdlineRegionChangehelp
+title ModMii Region Change Command Line Help
+
+support\sfk echo [Red]ModMii Region Change Express Mode Usage
+echo.
+echo ModMii.exe RC DesiredSystemMenu Extras Options
+echo.
+echo DesiredSystemMenu: #.#X
+echo    where; "#.#" can be "4.1", "4.2" or "4.3" and "X" can be "U", "E", "J", "K"
+echo.
+echo Extras:
+echo         "Red" Red Theme [cannot be used simultaneously with other themes]
+echo         "Green" Green Theme [cannot be used simultaneously with other themes]
+echo         "Blue" Blue Theme [cannot be used simultaneously with other themes]
+echo         "Orange" Orange Theme [cannot be used simultaneously with other themes]
+echo.
+echo         "Guide" Generate Guide ONLY
+echo.
+support\sfk echo [Blue]Examples:
+echo ModMii.exe RC 4.1U
+echo ModMii.exe RC 4.2E Red
+echo ModMii.exe RC 4.3J Orange Guide
+echo.
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
+
+
+:cmdlinewizardhelp
+title ModMii Wizard Command Line Help
 
 support\sfk echo [Red]ModMii Wizard Express Mode Usage
-
+echo.
 echo ModMii.exe W CurrentFirm Region DesiredFirm Extras Options
 echo.
 echo ModMii.exe 1 2 3 4 5 Extras Options
@@ -77,7 +163,8 @@ echo 2) CurrentFirmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2
 echo 3) Region: "U","E","J","K"
 echo.       If your Wii was Region Changed but not originally Korean,
 echo        select the Region you are currently on
-echo 4) DesiredFirmware: "4.1", "4.2", "4.3"
+echo 4) DesiredFirmware (Optional): "4.1", "4.2", "4.3"
+echo    Note: If DesiredFirmware not specified ModMii use recommended Firmware
 echo.
 echo Extras:
 echo         "Red" Red Theme [cannot be used simultaneously with other themes]
@@ -115,14 +202,37 @@ echo               "Pri" Priiloader v0.7 and hacks_hash.ini
 echo.
 echo         "Guide" Generate Guide ONLY
 echo.
+echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
+echo               "SmashStack"  Smash Stack (U\E\J\K)
+echo               "IndianaPwns" IndianaPwns (U\E\J)
+echo               "Bathaxx"     Bathaxx (U\E\J)
+echo               "ROTJ"        Return of the Jodi (U\E\J)
+echo               "YuGiOwned"   Yu-Gi Owned (U\E\J)
+echo               "EriHakawai"  Eri Hakawai (U\E\J)
+echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
+echo               "AllExploits" All Disc Based Exploits
+echo         Notes:
+echo         Default for 4.3 Wii's is Letterbomb
+echo         Default for ^<2.2 Wii's is "AllExploits"
+echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
+echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe W 3.X U 4.1
 echo ModMii.exe W 4.2 U 4.2 Blue CH USB
 echo ModMii.exe W 4.1 J 4.1 Green USB NTFS Flow SDConfig
 echo ModMii.exe W 4.3 E 4.3 Shop Speak Min 236 REC Green
+echo ModMii.exe W o U AllExploits
 echo.
-support\sfk echo [Red]ModMii USB-Loader Set-up Express Mode Usage
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
+
+:cmdlineUSBhelp
+title ModMii USB-Loader Command Line Help
+
+support\sfk echo [Red]ModMii USB-Loader Set-up Express Mode Usage
+echo.
 echo ModMii.exe U Extras Options
 echo.
 echo Extras:
@@ -145,27 +255,54 @@ echo ModMii.exe U
 echo ModMii.exe U NTFS Flow
 echo ModMii.exe U FAT32-NTFS CFG-Flow SDConfig
 echo.
-support\sfk echo [Red]ModMii HackMii Solutions Express Mode Usage
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
+:cmdlineHMhelp
+title ModMii HackMii Solutions Command Line Help
+
+support\sfk echo [Red]ModMii HackMii Solutions Express Mode Usage
+echo.
 echo ModMii.exe HS Firmware Extras Options
 echo.
 echo ModMii.exe 1 2 Extras Options
 echo.
 echo 1) HackMii Solutions "HS"
-echo 2) Firmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5]
+echo 2) Firmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
 echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
+echo.
+echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
+echo               "SmashStack"  Smash Stack (U\E\J\K)
+echo               "IndianaPwns" IndianaPwns (U\E\J)
+echo               "Bathaxx"     Bathaxx (U\E\J)
+echo               "ROTJ"        Return of the Jodi (U\E\J)
+echo               "YuGiOwned"   Yu-Gi Owned (U\E\J)
+echo               "EriHakawai"  Eri Hakawai (U\E\J)
+echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
+echo               "AllExploits" All Disc Based Exploits
+echo         Notes:
+echo         Default for 4.3 Wii's is Letterbomb
+echo         Default for ^<2.2 Wii's is "AllExploits"
+echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
 echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe HS 4.3
 echo ModMii.exe HS 4.1
 echo ModMii.exe HS 3.X
+echo ModMii.exe HS o SmashStack
 echo.
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
+:cmdlineSYSCHECKhelp
+title ModMii sysCheck Updater Command Line Help
 
 support\sfk echo [Red]ModMii sysCheck Updater Express Mode Usage
-
+echo.
 echo ModMii.exe SU sysCheck.csv Extras Options
 echo.
 echo ModMii.exe 1 2 Extras Options
@@ -183,22 +320,38 @@ echo ModMii.exe SU sysCheck.csv
 echo ModMii.exe SU X:\New Folder\syscheck.csv
 echo ModMii.exe SU "XFlaks-sysCheck.csv" Pri Guide
 echo.
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
-
+:cmdlineSNEEKhelp
+title ModMii SNEEK Installation Command Line Help
 support\sfk echo [Red]ModMii SNEEK Installation Express Mode Usage
-
-echo ModMii.exe S SNEEK-TYPE Options
+echo.
+echo ModMii.exe S SNEEK-TYPE Extras Options
 echo.
 echo SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
 echo.
+echo Extras:
+echo         "Rev:#" Build a Specific Rev # of neek or neek2o
+echo.
+echo            Note: If a Rev # is not specified ModMii will build the
+echo                  rev currently Featured on the google-code page
+echo                  (or newest version saved locally if you are offline)
+echo.
 support\sfk echo [Blue]Example:
 echo ModMii.exe S UD
+echo ModMii.exe S SD Rev:64
 echo.
 echo Note: You can install S\UNEEK and simultaneously build an emulated
 echo       NAND using the Emulated NAND builder instructions below.
 echo.
-support\sfk echo [Red]ModMii Emulated NAND Builder Express Mode Usage
 
+
+:cmdlineEMUNANDhelp
+title ModMii Emulated NAND Builder Command Line Help
+support\sfk echo [Red]ModMii Emulated NAND Builder Express Mode Usage
+echo.
 echo ModMii.exe E SNEEK-TYPE Firmware Region Extras Options
 echo.
 echo ModMii.exe 1 2 3 4 Extras Options
@@ -209,6 +362,12 @@ echo 3) Firmware: "4.1", "4.2", "4.3"
 echo 4) Region: "U","E","J","K"
 echo.
 echo Extras:
+echo         "Rev:#" Build a Specific Rev # of neek or neek2o
+echo.
+echo            Note: If a Rev # is not specified ModMii will build the
+echo                  rev currently Featured on the google-code page
+echo                  (or newest version saved locally if you are offline)
+echo.
 echo         "Red" Red Theme [cannot be used simultaneously with other themes]
 echo         "Green" Green Theme [cannot be used simultaneously with other themes]
 echo         "Blue" Blue Theme [cannot be used simultaneously with other themes]
@@ -238,10 +397,17 @@ echo                   Note: do not forget the "?" which marks the end of the pa
 echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe E U 4.3 U
-echo ModMii.exe SE UD 4.2 U Orange PLC 249 NMM S2U Pri Joy CH
+echo ModMii.exe SE UD 4.2 U Orange PLC 249 NMM S2U Pri Joy CH Rev:64
 echo.
-support\sfk echo [Red]ModMii Download Queue Express Mode Usage
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
+:cmdlineDLQUEUEhelp
+title ModMii Download Queue Command Line Help
+
+support\sfk echo [Red]ModMii Download Queue Express Mode Usage
+echo.
 echo ModMii.exe L DownloadQueue Options
 echo.
 echo Note: Download Queue must exist and be saved in temp\DownloadQueues\
@@ -250,8 +416,15 @@ support\sfk echo [Blue]Examples:
 echo ModMii.exe L cIOSs
 echo ModMii.exe L My Fav Themes.bat
 echo.
-support\sfk echo [Red]Options
+echo Press Any Key to Close the Help Menu...
+pause>nul
+exit
 
+:cmdlineOPTIONShelp
+title ModMii Options Command Line Help
+
+support\sfk echo [Red]Options
+echo.
 echo Define ModMii's options using the following commands.
 echo.
 echo Note: If an option is not defined ModMii will use saved\default settings.
@@ -812,6 +985,7 @@ support\sfk filter temp\cmdinput.txt -rep _" Font:%removeme%"__ -write -yes>nul
 set /p cmdinput= <temp\cmdinput.txt
 
 if /i "%one%" EQU "W" goto:cmdlinewizard
+if /i "%one%" EQU "RC" goto:cmdlineRegionChange
 if /i "%one%" EQU "HS" goto:cmdlinehackmiisolutions
 if /i "%one%" EQU "S" goto:cmdlinesneekinstaller
 if /i "%one%" EQU "U" goto:cmdlineUSBLoaderSetup
@@ -843,7 +1017,12 @@ if "%region%"=="" (echo "%three%" is not a valid input, try again...) & (if exis
 if /i "%four%" EQU "4.3" set FIRM=%four%
 if /i "%four%" EQU "4.2" set FIRM=%four%
 if /i "%four%" EQU "4.1" set FIRM=%four%
-if "%firm%"=="" (echo "%four%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+if not "%firm%"=="" goto:nofirmdefaults
+set FIRM=4.1
+if /i "%FIRMSTART%" EQU "4.2" set FIRM=4.2
+if /i "%FIRMSTART%" EQU "4.3" set FIRM=4.3
+:nofirmdefaults
 
 
 ::----EXtras------
@@ -978,14 +1157,9 @@ IF ERRORLEVEL 1 (set PRIQ=N) else (set PRIQ=Y)
 :notminupdate
 
 
-::go to CMD LINE BOMB
-if /i "%firmstart%" NEQ "4.3" goto:skipbomb
-if /i "%HMInstaller%" EQU "N" goto:skipbomb
-set exploit=BOMB
-goto:cmdlineBOMB
-:skipbomb
+goto:cmdlineExploitCheck
 
-goto:go
+
 
 
 ::---------------------------------
@@ -998,15 +1172,57 @@ if /i "%two%" EQU "4.2" set FIRMSTART=%two%
 if /i "%two%" EQU "4.1" set FIRMSTART=%two%
 if /i "%two%" EQU "4.0" set FIRMSTART=%two%
 if /i "%two%" EQU "3.X" set FIRMSTART=%two%
+if /i "%two%" EQU "o" set FIRMSTART=%two%
 if "%firmstart%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 findStr /I " Guide" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
 if /i "%cmdguide%" EQU "G" set settings=G
-If /i "%FIRMSTART%" EQU "4.3" set exploit=BOMB
 
-if /i "%firmstart%" EQU "4.3" (goto:cmdlineBOMB) else (goto:go)
+::goto:cmdlineExploitCheck
 
+
+:cmdlineExploitCheck
+if /i "%FIRMSTART%" EQU "4.3" goto:cmdlineDiscExploits
+if /i "%FIRMSTART%" EQU "o" goto:cmdlineDiscExploits
+if /i "%VIRGIN%" EQU "Y" goto:cmdlineDiscExploits
+goto:nocmdlineDiscExploits
+
+:cmdlineDiscExploits
+if /i "%REGION%" EQU "K" goto:skipnonK
+findStr /I /C:" IndianaPwns" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=L
+
+findStr /I /C:" Bathaxx" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=LB
+
+findStr /I /C:" ROTJ" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=LS
+
+findStr /I /C:" YuGiOwned" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=Y
+
+:skipnonK
+
+
+findStr /I /C:" SmashStack" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=S
+
+if /i "%FIRMSTART%" NEQ "o" goto:notwi
+findStr /I /C:" Twilight" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=T
+:notwi
+
+findStr /I /C:" AllExploits" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 set EXPLOIT=?
+
+::apply default exploits
+if not "%EXPLOIT%"=="" goto:nocmdlineDiscExploits
+if /i "%firmstart%" EQU "4.3" (set EXPLOIT=BOMB) & (goto:cmdlineBOMB)
+if /i "%firmstart%" EQU "o" set EXPLOIT=?
+:nocmdlineDiscExploits
+
+goto:go
 
 :cmdlineBOMB
 
@@ -1047,8 +1263,50 @@ echo.
 goto:go
 
 
+::---------------------------------
+:cmdlineRegionChange
+set MENU1=%one%
+
+if /i "%two:~0,3%" EQU "4.3" set FIRM=%two:~0,3%
+if /i "%two:~0,3%" EQU "4.2" set FIRM=%two:~0,3%
+if /i "%two:~0,3%" EQU "4.1" set FIRM=%two:~0,3%
+
+if "%firm%"=="" (echo "%two:~0,3%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 
+if /i "%two:~3,1%" EQU "U" set REGION=%two:~3,1%
+if /i "%two:~3,1%" EQU "E" set REGION=%two:~3,1%
+if /i "%two:~3,1%" EQU "J" set REGION=%two:~3,1%
+if /i "%two:~3,1%" EQU "K" set REGION=%two:~3,1%
+
+if "%region%"=="" (echo "%two:~3,1%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+
+findStr /I " Guide" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
+if /i "%cmdguide%" EQU "G" set settings=G
+
+
+::----themes----
+findStr /I " Red" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=R)
+if /i "%ThemeSelection%" EQU "R" goto:donecmdthemes
+
+findStr /I " Green" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=G)
+if /i "%ThemeSelection%" EQU "G" goto:donecmdthemes
+
+findStr /I " Blue" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=BL)
+if /i "%ThemeSelection%" EQU "BL" goto:donecmdthemes
+
+findStr /I " Orange" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (set ThemeSelection=N) else (set ThemeSelection=O)
+if /i "%ThemeSelection%" EQU "O" goto:donecmdthemes
+:donecmdthemes
+
+
+goto:go
 
 
 
@@ -1147,12 +1405,28 @@ goto:go
 ::---------------------------------
 :cmdlineloadqueue
 
+set MENU1=L
 
-set MENU1=%one%
 
+if /i "%cmdlinemodeswitchoff%" NEQ "Y" goto:notdragged
+::dragged
+findStr /I /C:":endofqueue" "%cmdinput%" >nul
+IF ERRORLEVEL 1 (echo Not a valid ModMii Download Queue...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+support\sfk filter -spat temp\cmdinput.txt -rep _*\__ -write -yes>nul
+set /p two= <temp\cmdinput.txt
+
+if not exist "temp\DownloadQueues" mkdir "temp\DownloadQueues"
+copy /y "%cmdinput%" "temp\DownloadQueues\%two%">nul
+
+goto:skip
+
+:notdragged
 set two=%cmdinput:~2%
+:skip
 
 if "%two:~-4%" EQU ".bat" set two=%two:~0,-4%
+
 
 if exist "temp\DownloadQueues\%two%.bat" set DLQUEUE=%two%
 if "%DLQUEUE%"=="" (echo %two% does not exist, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
@@ -1173,6 +1447,34 @@ if /i "%two%" EQU "U" set SNEEKTYPE=%two%
 if /i "%two%" EQU "SD" set SNEEKTYPE=%two%
 if /i "%two%" EQU "UD" set SNEEKTYPE=%two%
 if "%SNEEKTYPE%"=="" (echo "%two%" is not a valid input, try again...) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+
+set neekrev=1
+
+::-----------Rev:#---------------
+findStr /I " Rev:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noRevcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+set neekrev=
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* Rev:"__ -rep _\x20*__ -write -yes>nul
+
+set /p CurrentRev= <temp\cmdinput2.txt
+
+
+if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+
+
+if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
+
+start /min /wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+if not exist "temp\%neekname%" mkdir "temp\%neekname%"
+move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
+
+:noRevcmd
 
 goto:go
 
@@ -1258,6 +1560,34 @@ if /i "%REGION%" EQU "J" set SNKSERIAL=LJM101175683
 if /i "%REGION%" EQU "K" set SNKSERIAL=LJM101175683
 
 :skipSNdefaults
+
+
+set neekrev=1
+
+::-----------Rev:#---------------
+findStr /I " Rev:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noRevcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+set neekrev=
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* Rev:"__ -rep _\x20*__ -write -yes>nul
+
+set /p CurrentRev= <temp\cmdinput2.txt
+
+
+if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+
+if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
+
+start /min /wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+
+if not exist "temp\%neekname%" mkdir "temp\%neekname%"
+move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
+
+:noRevcmd
+
 
 
 
@@ -1626,6 +1956,7 @@ if /i "%ModMiiverbose%" EQU "off" (set ModMiimin=/min ) else (set ModMiimin=)
 if /i "%cmdlinemode%" EQU "Y" goto:MENUafterbadvars
 
 SET VIRGIN=
+set REGIONCHANGE=
 SET FIRMSTART=
 set STUB=
 set PIC=
@@ -1824,6 +2155,7 @@ set TOS=
 set smash=
 set mmm=
 set wiimod=
+set ARC=
 set yawm=
 set neogamma=
 set cfg249=
@@ -2074,12 +2406,19 @@ if not exist temp mkdir temp
 :Clear simplelog
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
 
-::--------for cmdlineDLwizard----------
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:noextravars
 if /i "%one%" EQU "W" goto:DOWNLOAD
+if /i "%one%" EQU "RC" goto:DOWNLOAD
 if /i "%one%" EQU "SU" goto:sysCheckAnalyzer
 if /i "%one%" EQU "HS" goto:HACKMIISOLUTION
 if /i "%one%" EQU "L" goto:forcmdlineL
 if /i "%one%" EQU "U" goto:DLCOUNT
+if /i "%one%" EQU "EMUMOD" goto:doublecheckNANDPATH
+
+if /i "%MENU1%" EQU "FC" set DRIVE=%DRIVEtemp%
+if /i "%MENU1%" EQU "FC" goto:FileCleanup
+
 if /i "%one%" EQU "S" goto:extravars
 if /i "%one%" EQU "E" goto:extravars
 if /i "%one%" EQU "SE" goto:extravars
@@ -2115,8 +2454,8 @@ goto:NANDnamecmd
 :quickskip
 
 
-if /i "%one%" EQU "S" goto:SNEEKINSTALLER
-if /i "%one%" EQU "SE" goto:SNEEKINSTALLER
+if /i "%one%" EQU "S" goto:NEEKrevSelect
+if /i "%one%" EQU "SE" goto:NEEKrevSelect
 if /i "%one%" EQU "E" goto:SNKNANDBUILDER
 :noextravars
 ::---------------------------------------
@@ -2139,6 +2478,8 @@ echo           H = HackMii Solutions (Upside-Down HBC\No Vulnerable IOS Fix) + G
 echo.
 echo          SU = sysCheck Updater (update only your outdated softmods) + Guide
 echo.
+echo          RC = Region Change + Guide
+echo.
 echo           S = SNEEK Installation, Nand Builder, Game Bulk Extractor
 echo.
 echo.
@@ -2160,11 +2501,7 @@ echo.
 echo          FC = File Cleanup: Remove un-needed files after Modding
 echo.
 echo.
-echo           O = Options
-echo.
-echo          CR = Credits
-echo.
-echo           E = Exit
+echo           O = Options            CR = Credits            E = Exit
 echo.
 echo      *********MORE INFO*********
 support\sfk echo -spat \x20 \x20 [RED] V = Visit tinyurl.com/ModMiiNow to ask questions, provide feedback or vote
@@ -2182,6 +2519,7 @@ set /p MENU1=     Enter Selection Here:
 
 if /i "%MENU1%" EQU "W" goto:LoadWizardSettings
 if /i "%MENU1%" EQU "SU" goto:sysCheckName
+if /i "%MENU1%" EQU "RC" goto:RCPAGE1
 if /i "%MENU1%" EQU "U" goto:UPAGE1
 if /i "%MENU1%" EQU "S" goto:SNKPAGE1
 if /i "%MENU1%" EQU "1" goto:LIST
@@ -3617,6 +3955,10 @@ if /i "%USBCONFIG%" EQU "USB" (goto:DRIVEUCHANGE) else (goto:download)
 :skip
 
 
+if /i "%MENU1%" EQU "RC" (set BACKB4QUEUE=DRIVECHANGE) & (goto:download)
+
+
+
 if /i "%SNEEKTYPE%" EQU "U" set BACKB4DRIVEU=DRIVECHANGE
 if /i "%SNEEKTYPE%" EQU "UD" set BACKB4DRIVEU=DRIVECHANGE
 if /i "%SNEEKTYPE%" EQU "U" goto:DRIVEUCHANGE
@@ -3821,6 +4163,9 @@ goto:menu
 :FileCleanup
 cls
 
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemodeswitchoff%" EQU "Y" (set cmdlinemode=) & (set one=) & (set two=)
+
 set cleanitems=0
 if exist "%DRIVE%"\WAD SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\00000001 SET /a cleanitems=%cleanitems%+1
@@ -3831,6 +4176,7 @@ if exist "%DRIVE%"\private\wii\title\aktn SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\DOP-Mii SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MMM SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\WiiMod SET /a cleanitems=%cleanitems%+1
+if exist "%DRIVE%"\apps\ARCmod06_Offline SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MIOSPatcher SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\Priiloader SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\YAWMM SET /a cleanitems=%cleanitems%+1
@@ -4198,6 +4544,7 @@ if /i "%YUGIJ%" EQU "on" echo          * YU-GI-OWNED (JAP)
 if exist "%DRIVE%"\apps\DOP-Mii echo          * apps\DOP-Mii
 if exist "%DRIVE%"\apps\MMM echo          * apps\MMM
 if exist "%DRIVE%"\apps\WiiMOd echo          * apps\WiiMod
+if exist "%DRIVE%"\apps\ARCmod06_Offline echo          * apps\ARCmod06_Offline
 if exist "%DRIVE%"\apps\MIOSPatcher echo          * apps\MIOSPatcher
 if exist "%DRIVE%"\apps\Priiloader echo          * apps\Priiloader
 if exist "%DRIVE%"\apps\YAWMM echo          * apps\YAWMM
@@ -4270,6 +4617,7 @@ if exist "%DRIVE%"\private\wii\title\aktn rd /s /q "%DRIVE%"\private\wii\title\a
 if exist "%DRIVE%"\apps\DOP-Mii rd /s /q "%DRIVE%"\apps\DOP-Mii> nul
 if exist "%DRIVE%"\apps\MMM rd /s /q "%DRIVE%"\apps\MMM> nul
 if exist "%DRIVE%"\apps\WiiMod rd /s /q "%DRIVE%"\apps\WiiMod> nul
+if exist "%DRIVE%"\apps\ARCmod06_Offline rd /s /q "%DRIVE%"\apps\ARCmod06_Offline> nul
 if exist "%DRIVE%"\apps\MIOSPatcher rd /s /q "%DRIVE%"\apps\MIOSPatcher> nul
 if exist "%DRIVE%"\apps\Priiloader rd /s /q "%DRIVE%"\apps\Priiloader> nul
 if exist "%DRIVE%"\apps\YAWMM rd /s /q "%DRIVE%"\apps\YAWMM> nul
@@ -4314,11 +4662,87 @@ if /i "%YUGIU%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\ryoe> nul
 if /i "%YUGIE%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\ryop> nul
 if /i "%YUGIJ%" EQU "on" rd /s /q "%DRIVE%"\private\wii\title\ryoj> nul
 
+
 echo                                    FILES CLEANED
 echo.
 echo.
 @ping 127.0.0.1 -n 3 -w 1000> nul
 goto:MENU
+
+
+
+
+
+::...................................Wizard Page1 - Virgin?...............................
+:RCPAGE1
+set REGIONCHANGE=
+
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo         Are you sure you want to Region Change your Wii?
+echo.
+echo.
+echo         Important Notes:
+echo         ----------------
+echo.
+echo         * Region Changing is not necessary to play other region games.
+echo           For example, you can play Jap games on a softmodded US Wii without
+echo           region changing.
+echo.
+echo         * An alternative to region changing is to use SNEEK\UNEEK to emulate a
+echo           different region System Menu.
+echo.
+echo.
+echo         If you still want to region change your Wii, read the following
+echo         warnings before continuing:
+echo.
+echo.
+echo         Warnings:
+echo         ---------
+echo.
+echo         * If you use the Wii Shopping Channel, you must start the channel and
+echo           delete your account before starting this guide on your Wii.
+echo           If you don't the Wii Shop Channel will error.
+echo.
+echo         * Make sure your TV supports the display of the region you are changing to.
+echo           If your TV does not support PAL, don't region change to PAL.
+echo           The same applies to NTSC. If your TV does not support your selected
+echo           display, you won't be able to see the Wii screen anymore.
+echo.
+echo         * ModMii's region changing guide assumes your Wii is already softmodded
+echo           with the Homebrew Channel, IOS236 and Bootmii. If you are missing any
+echo           of those use the ModMii Wizard before continuing with this guide.
+echo.
+echo.
+echo.
+echo                Y = Yes
+echo                N = No
+echo.
+echo                B = Back
+echo                M = Main Menu
+echo.
+echo.
+echo.
+echo.
+set /p REGIONCHANGE=     Enter Selection Here: 
+
+
+if /i "%REGIONCHANGE%" EQU "B" goto:MENU
+if /i "%REGIONCHANGE%" EQU "M" goto:MENU
+if /i "%REGIONCHANGE%" EQU "N" goto:MENU
+
+if /i "%REGIONCHANGE%" EQU "Y" goto:WPAGE3
+
+
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:RCPAGE1
+
+
 
 
 ::--------------------Wizard Settings Detected----------------
@@ -4542,8 +4966,12 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
+
+if /i "%MENU1%" EQU "RC" (echo         What Region would you like to change to?) & (goto:skiptext)
 echo         What is your Region?
 echo.
+echo.
+echo         For an instructional video on checking your firmware enter "Help"
 echo.
 echo         Note: to check this, turn on your wii, click the Wii button in the
 echo               bottom left of the main system menu, click Wii Settings,
@@ -4551,6 +4979,8 @@ echo               then you should see the firmware in the top right of the scre
 echo               (ie. 4.2U, 4.1J, 3.2E, etc.)
 echo.
 echo         Note: If your Wii was Region Changed choose the region you are currently on
+:skiptext
+
 echo.
 echo.
 echo                U = USA
@@ -4568,18 +4998,40 @@ echo.
 
 set /p REGION=     Enter Selection Here: 
 
+
+if /i "%REGION%" EQU "M" goto:MENU
+
 if /i "%REGION%" EQU "u" set REGION=U
 if /i "%REGION%" EQU "e" set REGION=E
 if /i "%REGION%" EQU "j" set REGION=J
 if /i "%REGION%" EQU "k" set REGION=K
 
-if /i "%REGION%" EQU "M" goto:MENU
-if /i "%REGION%" EQU "B" goto:WPAGE2
+
+if /i "%MENU1%" NEQ "RC" goto:notRC
+if /i "%REGION%" EQU "U" goto:WPAGE4
+if /i "%REGION%" EQU "E" goto:WPAGE4
+if /i "%REGION%" EQU "K" goto:WPAGE4
+if /i "%REGION%" EQU "J" goto:WPAGE4
+if /i "%REGION%" EQU "B" goto:RCPAGE1
+goto:badkey
+:notRC
+
+
 if /i "%REGION%" EQU "U" goto:WPAGE3C
 if /i "%REGION%" EQU "E" goto:WPAGE3C
 if /i "%REGION%" EQU "K" goto:WPAGE3C
 if /i "%REGION%" EQU "J" goto:WPAGE3C
+if /i "%REGION%" EQU "B" goto:WPAGE2
 
+
+if /i "%REGION%" NEQ "Help" goto:nohelp
+cd /d SUPPORT
+start SMver.html
+cd /d %ModMiipath%
+goto:WPAGE3
+:nohelp
+
+:badkey
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:WPAGE3
@@ -4653,8 +5105,8 @@ echo.
 if /i "%FIRMSTART%" NEQ "o" goto:skipOmsg
 support\sfk echo -spat \x20 [Red] Important Notes:
 echo.
-echo    Alternatively, you can update your Wii to v3.0-4.2 using a DISC (ie. NSMBW)
-echo    then repeat the Download Wizard using your new Firmware in order to hack your
+echo    Alternatively, you can update your Wii to v3.0-4.3 then repeat the
+echo    Download Wizard using your new Firmware in order to hack your
 echo    Wii without requiring one of the above games
 echo.
 :skipOmsg
@@ -4744,30 +5196,39 @@ goto:WPAGE3D
 
 
 
-::...................................Wizard Page3C - Exploit...............................
+::...................................Wizard Page3D - Active IOSs...............................
 :WPAGE3D
 if /i "%MENU1%" EQU "H" goto:HACKMIISOLUTION
 SET UpdatesIOSQ=
 
+if /i "%ACTIVEIOS%" EQU "off" goto:WPAGE4
+if /i "%Virgin%" EQU "N" goto:forceQ
 if /i "%FIRMSTART%" LSS "4.3" goto:WPAGE4
 if /i "%FIRMSTART%" EQU "o" goto:WPAGE4
-if /i "%ACTIVEIOS%" EQU "off" goto:WPAGE4
+
 
 ::Only 4.3 Wii's without active IOS "ON" will make it this far
+:forceQ
 
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
 echo.
 echo.
-echo      Would you like to download active IOSs?
+
+if /i "%Virgin%" EQU "N" echo    Download active IOSs and some extra brick protection (patched System Menu IOSs)?
+if /i "%Virgin%" NEQ "N" echo      Would you like to download active IOSs?
+
 echo.
 echo.
 echo.
 echo      N = No
 echo.
-echo      You're on System Menu 4.3, so you likely already have the latest IOSs.
-echo      If your Wii has truly never been modified before, you can say No.
+if /i "%Virgin%" EQU "N" echo      If you previously used ModMii to fully softmod your Wii you should already
+if /i "%Virgin%" EQU "N" echo      have these installed.
+if /i "%FirmStart%" EQU "4.3" echo      You're on System Menu 4.3, so you likely already have the latest IOSs.
+if /i "%FirmStart%" EQU "4.3" echo      If your Wii has truly never been modified before, you can say No.
+
 echo.
 echo.
 echo      Y = Yes
@@ -4804,7 +5265,6 @@ if /i "%REGION%" EQU "K" goto:backtowpage3
 if /i "%UpdatesIOSQ%" EQU "B" goto:WPAGE3C
 
 :backtowpage3
-if /i "%REGION%" EQU "RC" goto:backtowpage3b
 if /i "%UpdatesIOSQ%" EQU "B" goto:WPAGE3
 
 
@@ -4833,22 +5293,15 @@ echo                                       by XFlak
 echo.
 echo.
 echo         Select the new firmware you would like to upgrade/downgrade to.
+
+if /i "%MENU1%" NEQ "RC" (echo.) & (echo.) & (echo.) & (echo         Note: if current firmware = new firmware, a system menu is not downloaded)
 echo.
 echo.
 echo.
-echo         Note: if current firmware = new firmware, a system menu is not downloaded
-echo.
-echo.
-echo.
-support\sfk echo -spat \x20 \x20 \x20 [Red] Warning:[def] installing firmware below 4.0 on boot2v4 wii's results in Brick.
-echo             But, Yet Another Wad Manager (YAWMM) or WiiMod or MMM will not permit
-echo             you to (un)install anything that will brick you.
-echo             You can manually check your boot2 version using WiiMod, MMM or Bootmii.
 echo.
 echo.
 echo.
 
-::if /i "%FIRMSTART%" NEQ "4.3" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] 4.3 = 4.3 [NOT RECOMMENDED]) else (echo                4.3 = 4.3)
 
 if /i "%FIRMSTART%" EQU "4.3" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green] 4.3 = 4.3 [RECOMMENDED]) else (echo                4.3 = 4.3)
 
@@ -4878,14 +5331,22 @@ set /p FIRM=     Enter Selection Here:
 
 if /i "%FIRM%" EQU "M" goto:MENU
 
+if /i "%MENU1%" NEQ "RC" goto:notRC
+if /i "%FIRM%" EQU "4.2" goto:WPAGE20
+if /i "%FIRM%" EQU "4.1" goto:WPAGE20
+if /i "%FIRM%" EQU "4.3" goto:WPAGE20
+if /i "%FIRM%" EQU "B" goto:WPAGE3
+:notRC
+
+
 if /i "%FIRM%" EQU "4.2" goto:WPAGE5
 if /i "%FIRM%" EQU "4.1" goto:WPAGE5
 if /i "%FIRM%" EQU "4.3" goto:WPAGE5
 
 if /i "%FIRM%" NEQ "B" goto:notback
+if /i "%VIRGIN%" EQU "N" goto:noexploits
 if /i "%FIRMSTART%" EQU "o" goto:wpage3c
 if /i "%FIRMSTART%" NEQ "4.3" goto:wpage3
-if /i "%VIRGIN%" EQU "N" goto:noexploits
 if /i "%ACTIVEIOS%" EQU "off" (goto:wpage3c) else (goto:WPAGE3D)
 :noexploits
 if /i "%ACTIVEIOS%" EQU "off" (goto:wpage3) else (goto:WPAGE3D)
@@ -5591,7 +6052,7 @@ echo.
 echo.
 
 if /i "%MENU1%" NEQ "S" goto:quickskip
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 :quickskip
@@ -5645,6 +6106,17 @@ goto:WPAGE20
 
 
 if /i "%ThemeSelection%" EQU "CE" goto:OptionCEwizard
+
+
+if /i "%MENU1%" NEQ "RC" goto:notRC
+set BACKB4DRIVE=WPAGE20
+if /i "%ThemeSelection%" EQU "R" goto:DriveChange
+if /i "%ThemeSelection%" EQU "G" goto:DriveChange
+if /i "%ThemeSelection%" EQU "BL" goto:DriveChange
+if /i "%ThemeSelection%" EQU "O" goto:DriveChange
+if /i "%ThemeSelection%" EQU "N" goto:DriveChange
+if /i "%ThemeSelection%" EQU "B" goto:WPAGE4
+:notRC
 
 if /i "%MENU1%" EQU "S" goto:forsneeknand
 if /i "%ThemeSelection%" EQU "R" goto:WPAGE21
@@ -6168,7 +6640,6 @@ echo.
 echo                5 = Emulated NAND Modifer
 echo                    * Edit your existing Emulated NAND
 echo.
-echo.
 echo   Requirements:
 echo.
 echo         * Your Wii must have BootMii installed in order to run SNEEK. If you
@@ -6206,9 +6677,9 @@ set /p SNEEKSELECT=     Enter Selection Here:
 
 if /i "%SNEEKSELECT%" EQU "B" goto:MENU
 if /i "%SNEEKSELECT%" EQU "M" goto:MENU
-if /i "%SNEEKSELECT%" EQU "1" goto:SNKPAGE2
+if /i "%SNEEKSELECT%" EQU "1" goto:NEEKrevSelect
 if /i "%SNEEKSELECT%" EQU "2" goto:SNKPAGE2
-if /i "%SNEEKSELECT%" EQU "3" goto:SNKPAGE2
+if /i "%SNEEKSELECT%" EQU "3" goto:NEEKrevSelect
 if /i "%SNEEKSELECT%" EQU "4" goto:SNKDISCEX
 if /i "%SNEEKSELECT%" EQU "5" goto:SNKNANDSELECTOR
 
@@ -6216,6 +6687,143 @@ echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:SNKPAGE1
 
+
+::...................................SNEEK Page - NEEK rev Selection...............................
+:NEEKrevSelect
+
+if exist temp\list.txt del temp\list.txt>nul
+
+
+if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+
+echo Checking which %neekname% versions are hosted online...
+
+
+::get all list
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/%googlecode%/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+
+if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
+copy /y "temp\list.txt" "temp\list2.txt">nul
+
+support\sfk filter -spat "temp\list.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+::get featured list
+support\sfk filter -spat "temp\list2.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
+
+support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+:nowifi
+
+::get local list
+
+if not exist "temp\%neekname%\*.zip" goto:nolocallist
+
+dir "temp\%neekname%\*.zip" /b /O:-N>>temp\list.txt
+support\sfk filter "temp\list.txt" -rep _"%neekname%-rev"__ -rep _".zip"__ -write -yes>nul
+support\sfk filter "temp\list.txt" -unique -write -yes>nul
+:nolocallist
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" EQU "Y" goto:getcurrentrev
+
+
+
+::------actual page start----------
+:NEEKrevSelect2
+
+::count # of folders in advance to set "mode"
+setlocal ENABLEDELAYEDEXPANSION
+SET neekTOTAL=0
+for /f "delims=" %%i in (temp\list.txt) do set /a neekTOTAL=!neekTOTAL!+1
+setlocal DISABLEDELAYEDEXPANSION
+
+if /i "%neekTOTAL%" EQU "0" (echo Unable to connect to the internet and no %neekname% versions saved locally) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (goto:SNKPAGE1)
+
+SET /a LINES=%neekTOTAL%+21
+if %LINES% LEQ 54 goto:noresize
+mode con cols=85 lines=%LINES%
+:noresize
+
+Set neekrev=
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo                 Select the version of %neekname% you would like to build:
+echo.
+echo.
+
+set RevCount=0
+
+::Loop through the the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\list.txt) do call :processNEEKlist %%A
+goto:quickskip
+:processNEEKlist
+set CurrentRev=%*
+set /a RevCount=%RevCount%+1
+
+
+findStr /I /C:"%CurrentRev%" "temp\list2.txt" >nul
+IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
+
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" echo       %RevCount% = %CurrentRev% (hosted on google code)%FeaturedTag%
+if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" echo       %RevCount% = %CurrentRev%%FeaturedTag%
+
+goto:EOF
+:quickskip
+
+echo.
+echo.
+echo                B = Back
+echo.
+echo                M = Main Menu
+echo.
+echo.
+set /p neekrev=     Enter Selection Here: 
+
+if /i "%neekrev%" EQU "M" (mode con cols=85 lines=54) & (goto:MENU)
+if /i "%neekrev%" EQU "B" (mode con cols=85 lines=54) & (goto:SNKPAGE1)
+
+if "%neekrev%"=="" goto:badkey
+if %neekrev% LSS 1 goto:badkey
+if /i %neekrev% GTR %RevCount% goto:badkey
+
+
+
+:getcurrentrev
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:cmdskip
+if "%neekrev%"=="" goto:quickskip
+:cmdskip
+
+::----get selected %currentrev%----
+set RevCount2=0
+::Loop through the the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\list.txt) do call :processlist2 %%A
+goto:quickskip
+:processlist2
+set CurrentRev=%*
+set /a RevCount2=%RevCount2%+1
+if /i "%RevCount2%" EQU "%neekrev%" goto:quickskip
+goto:EOF
+:quickskip
+
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" EQU "Y" goto:SNEEKINSTALLER
+
+
+mode con cols=85 lines=54
+
+goto:SNKPAGE2
+
+:badkey
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:NEEKrevSelect2
 
 
 ::...................................SNEEK Page2 - SNEEK TYPE...............................
@@ -6274,7 +6882,13 @@ echo.
 echo.
 set /p SNEEKTYPE=     Enter Selection Here: 
 
-if /i "%SNEEKTYPE%" EQU "B" goto:SNKPAGE1
+if /i "%SNEEKTYPE%" NEQ "B" goto:notback
+if /i "%SNEEKSELECT%" EQU "1" goto:NEEKrevSelect2
+if /i "%SNEEKSELECT%" EQU "3" goto:NEEKrevSelect2
+goto:SNKPAGE1
+:notback
+
+
 if /i "%SNEEKTYPE%" EQU "M" goto:MENU
 
 if /i "%SNEEKTYPE%" EQU "S" set BACKB4DRIVE=SNKPAGE2
@@ -6322,7 +6936,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         What Region would you like to make your emulated NAND?
@@ -6405,7 +7019,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         What Firmware Version would you like your SNEEK emulated NAND to be?
@@ -6465,7 +7079,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         Would you like a Post Loader Forwarder Channel on your emulated NAND?
@@ -6524,7 +7138,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         Would you like to install cIOS249 rev14 to your emulated NAND?
@@ -6580,7 +7194,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 
@@ -6665,7 +7279,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         Would you like Priiloader (and hacks) on your emulated NAND?
@@ -6731,7 +7345,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         Would you like a JoyFlow Forwarder Channel on your emulated NAND?
@@ -6805,7 +7419,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         Would you like to use Switch2Uneek?
@@ -6889,7 +7503,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                                  SNEEK NAND BUILDER
+if /i "%SNEEKSELECT%" EQU "5" (echo                                EMULATED NAND MODIFIER) else (echo                                 EMULATED NAND BUILDER)
 echo.
 echo.
 echo         What Serial Number Would you like to use to create setting.txt?
@@ -6988,31 +7602,36 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-if /i "%SNEEKSELECT%" EQU "5" echo         You are about to make the following changes to your Emulated NAND
+if /i "%SNEEKSELECT%" EQU "5" echo      You are about to make the following changes to your Emulated NAND
 
 if /i "%SNEEKSELECT%" NEQ "3" goto:notalsoinstalling
-if /i "%SNEEKTYPE%" EQU "SD" echo         You are about to install SNEEK+DI and build a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to install UNEEK+DI and build a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "S" echo         You are about to install SNEEK and build a %SNKVERSION%%REGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "U" echo         You are about to install UNEEK and build a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "SD" echo      You are about to install %neekname%: SNEEK+DI Rev%CurrentRev% and build a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "UD" echo      You are about to install UNEEK+DI Rev%CurrentRev% and build a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "S" echo      You are about to install SNEEK Rev%CurrentRev% and build a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "U" echo      You are about to install UNEEK Rev%CurrentRev% and build a %SNKVERSION%%REGION% Emulated Nand
 
 echo.
-if /i "%neek2o%" EQU "on" echo         neek2o Enabled (can be changed in options)
-if /i "%neek2o%" NEQ "on" echo         neek2o Disabled (can be changed in options)
+if /i "%neek2o%" EQU "on" echo      neek2o Enabled (can be changed in options)
+if /i "%neek2o%" NEQ "on" echo      neek2o Disabled (can be changed in options)
+if /i "%SSD%" EQU "on" echo      SNEEK and SNEEK+DI SD Access Enabled (can be changed in options)
+if /i "%SSD%" NEQ "on" echo      SNEEK and SNEEK+DI SD Access Disabled (can be changed in options)
 goto:skip
 
 :notalsoinstalling
 
-if /i "%SNEEKSELECT%" EQU "2" echo         You are about to build a %SNKVERSION%%REGION% Emulated Nand
+if /i "%SNEEKSELECT%" EQU "2" echo      You are about to build a %SNKVERSION%%REGION% Emulated Nand
 
 if /i "%SNEEKSELECT%" NEQ "1" goto:skip
-if /i "%SNEEKTYPE%" EQU "SD" echo         You are about to build SNEEK+DI
-if /i "%SNEEKTYPE%" EQU "UD" echo         You are about to build UNEEK+DI
-if /i "%SNEEKTYPE%" EQU "U" echo         You are about to build UNEEK
-if /i "%SNEEKTYPE%" EQU "S" echo         You are about to build SNEEK
+if /i "%SNEEKTYPE%" EQU "SD" echo      You are about to build SNEEK+DI Rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "UD" echo      You are about to build UNEEK+DI Rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "U" echo      You are about to build UNEEK Rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "S" echo      You are about to build SNEEK Rev%CurrentRev%
 echo.
-if /i "%neek2o%" EQU "on" echo         neek2o Enabled (can be changed in options)
-if /i "%neek2o%" NEQ "on" echo         neek2o Disabled (can be changed in options)
+if /i "%neek2o%" EQU "on" echo      neek2o Enabled (can be changed in options)
+if /i "%neek2o%" NEQ "on" echo      neek2o Disabled (can be changed in options)
+if /i "%SSD%" EQU "on" echo      SNEEK and SNEEK+DI SD Access Enabled (can be changed in options)
+if /i "%SSD%" NEQ "on" echo      SNEEK and SNEEK+DI SD Access Disabled (can be changed in options)
+
 echo.
 echo.
 echo.
@@ -7687,6 +8306,10 @@ if /i "%DRIVETEMP%" EQU "M" goto:MENU
 
 
 :doublecheckNANDPATH
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemodeswitchoff%" EQU "Y" (set cmdlinemode=) & (set one=) & (set two=)
+
 set fixslash=
 if /i "%DRIVETEMP:~-1%" EQU "\" set fixslash=yes
 if /i "%DRIVETEMP:~-1%" EQU "/" set fixslash=yes
@@ -8308,8 +8931,8 @@ start %ModMiimin%/wait support\wget -t 3 www.wiitdb.com/titles.txt
 if exist titles.txt move /y titles.txt Support\titles.txt>nul
 
 
-
 ::rename existing games to new standard
+if not exist "%DRIVEU%"\games goto:nextstep
 dir "%DRIVEU%"\games /A:D /b > GameTitleIDs.txt
 for /F "tokens=*" %%A in (GameTitleIDs.txt) do call :processdir %%A
 goto:nextstep
@@ -9241,9 +9864,9 @@ echo       %PL% PL = Postloader
 echo       %syscheck% SC = sysCheck
 echo      %sysCheckBeta% SCB = sysCheckBeta
 echo       %WiiMod% WM = WiiMod
+echo       %ARC% ARC = Any Region Changer (1.1b Mod06 Offline)
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] LEGEND:[def] \x22=\x22 Auto-Updating Downloads
-echo.
 echo.
 echo.
 set /p OLDLIST=     Enter Selection Here: 
@@ -9301,6 +9924,7 @@ if /i "%OLDLIST%" EQU "EH" goto:SwitchTOS
 if /i "%OLDLIST%" EQU "ss" goto:Switchsmash
 if /i "%OLDLIST%" EQU "mmm" goto:Switchmmm
 if /i "%OLDLIST%" EQU "WM" goto:SwitchWiiMOd
+if /i "%OLDLIST%" EQU "ARC" goto:SwitchARC
 if /i "%OLDLIST%" EQU "236" goto:SwitchIOS236Installer
 if /i "%OLDLIST%" EQU "SIP" goto:SwitchSIP
 if /i "%OLDLIST%" EQU "JF" goto:SwitchJOY
@@ -9419,6 +10043,10 @@ goto:OLDLIST
 
 :SwitchWiiMod
 if /i "%WiiMod%" EQU "*" (set WiiMod=) else (set WiiMod=*)
+goto:OLDLIST
+
+:SwitchARC
+if /i "%ARC%" EQU "*" (set ARC=) else (set ARC=*)
 goto:OLDLIST
 
 :SwitchIOS236Installer
@@ -9567,6 +10195,7 @@ if /i "%OLDLIST%" EQU "PC" goto:OLDLIST
 :WiiAppSelect
 set mmm=*
 set WiiMod=*
+set ARC=*
 set HM=*
 set dop=*
 set syscheck=*
@@ -14027,6 +14656,12 @@ if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 findStr /I /C:"Homebrew Channel 1.0.8 running on IOS58" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set HM=*) else (set HM=)
 
+::check for any version of IOS58
+if /i "%HM%" NEQ "*" goto:no58check
+findStr /I /C:"IOS58 " "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set IOS58=*) else (set IOS58=)
+:no58check
+
 findStr /I /C:"IOS202[60] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
 
@@ -14054,6 +14689,12 @@ if /i "%syscheckversion%" NEQ "2.0.1" goto:skipv2.0.1
 
 findStr /I /C:"runs on IOS58" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set HM=*) else (set HM=)
+
+::check for any version of IOS58
+if /i "%HM%" NEQ "*" goto:no58check
+findStr /I /C:"IOS58 " "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set IOS58=*) else (set IOS58=)
+:no58check
 
 findStr /I /C:"IOS202 (rev 65535): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
@@ -14666,9 +15307,42 @@ if /i "%SHOP%" EQU "Y" set SK=*
 
 
 :BUGGEDSMIOS
+if /i "%FIRM%" EQU "%Firmstart%" goto:miniskip
 if /i "%FIRM%" EQU "4.1" set IOS60P=*
 if /i "%FIRM%" EQU "4.2" set IOS70K=*
 if /i "%FIRM%" EQU "4.3" set IOS80K=*
+:miniskip
+
+if /i "%VIRGIN%" EQU "Y" goto:forceSMIOSs
+if /i "%ACTIVEIOS%" EQU "off" goto:skipBuggedSMIOS
+if /i "%UpdatesIOSQ%" EQU "N" goto:skipBuggedSMIOS
+:forceSMIOSs
+set IOS11P60=*
+set IOS20P60=*
+set IOS30P60=*
+set IOS40P60=*
+set IOS50P=*
+set IOS52P=*
+set IOS60P=*
+set IOS70K=*
+set IOS80K=*
+:skipBuggedSMIOS
+
+::for region changing guide
+if /i "%MENU1%" NEQ "RC" goto:notRC
+set mmm=*
+set ARC=*
+set pri=*
+set bootmiisd=*
+if /i "%REGION%" EQU "U" (set EULAU=*) & (set RSU=*)
+if /i "%REGION%" EQU "E" (set EULAE=*) & (set RSE=*)
+if /i "%REGION%" EQU "J" (set EULAJ=*) & (set RSJ=*)
+if /i "%REGION%" EQU "K" (set EULAK=*) & (set RSK=*)
+goto:DOWNLOADQUEUE
+:notRC
+
+
+
 
 :COMMONSETTINGS
 if /i "%SHOP%" EQU "Y" set IOS56=*
@@ -14679,6 +15353,7 @@ if /i "%UpdatesIOSQ%" EQU "N" goto:skipactiveios
 
 
 :ACTIVEIOS
+set mmm=*
 set M10=*
 set IOS9=*
 set IOS12=*
@@ -14714,16 +15389,8 @@ if /i "%MIIQ%" EQU "Y" set Mii=*
 
 
 
-set IOS11P60=*
-set IOS20P60=*
-set IOS30P60=*
-set IOS40P60=*
-set IOS50P=*
-set IOS52P=*
-set IOS60P=*
-set IOS70K=*
-set IOS80K=*
-if /i "%FWDOPTION%" EQU "on" set usbx=*
+
+if /i "%FWDOPTION%" EQU "on" (set usbx=*) & (set mmm=*)
 
 if /i "%USBGUIDE%" NEQ "Y" goto:NoUSBSETUP
 if /i "%LOADER%" EQU "CFG" set usbfolder=*
@@ -14790,13 +15457,19 @@ goto:DOWNLOADQUEUE
 
 :notvirgin
 
-set mmm=*
-
+::set mmm=*
+if /i "%PIC%" EQU "Y" set mmm=*
+if /i "%NET%" EQU "Y" set mmm=*
+if /i "%WEATHER%" EQU "Y" set mmm=*
+if /i "%NEWS%" EQU "Y" set mmm=*
+if /i "%SHOP%" EQU "Y" set mmm=*
+if /i "%SPEAK%" EQU "Y" set mmm=*
 
 if /i "%HMInstaller%" NEQ "Y" goto:noHMInstallerforNonVirgin
 set HM=*
 set bootmiisd=*
 set IOS58=*
+set mmm=*
 ::if /i "%FIRMSTART%" EQU "4.1" set BB1=*
 ::if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 ::if /i "%FIRMSTART%" EQU "3.x" set BB1=*
@@ -14823,6 +15496,7 @@ goto:skipextra2
 if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236Installer=*) & (set SIP=*) & (set IOS36=*)
 ::if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236=*) & (set mmm=*)
 
+if /i "%RECCIOS%" EQU "Y" set mmm=*
 if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS223[37-38]-v4=*
@@ -15055,10 +15729,10 @@ if /i "%EULAU%" EQU "*" (echo "EULA v3 (USA)">>temp\DLnames.txt) & (echo "EULAU"
 if /i "%EULAE%" EQU "*" (echo "EULA v3 (PAL)">>temp\DLnames.txt) & (echo "EULAE">>temp\DLgotos.txt)
 if /i "%EULAJ%" EQU "*" (echo "EULA v3 (JAP)">>temp\DLnames.txt) & (echo "EULAJ">>temp\DLgotos.txt)
 if /i "%EULAK%" EQU "*" (echo "EULA v3 (KOR)">>temp\DLnames.txt) & (echo "EULAK">>temp\DLgotos.txt)
-if /i "%RSU%" EQU "*" (echo "Region Select v3 (USA)">>temp\DLnames.txt) & (echo "RSU">>temp\DLgotos.txt)
-if /i "%RSE%" EQU "*" (echo "Region Select v3 (PAL)">>temp\DLnames.txt) & (echo "RSE">>temp\DLgotos.txt)
-if /i "%RSJ%" EQU "*" (echo "Region Select v3 (JAP)">>temp\DLnames.txt) & (echo "RSJ">>temp\DLgotos.txt)
-if /i "%RSK%" EQU "*" (echo "Region Select v3 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
+if /i "%RSU%" EQU "*" (echo "Region Select v2 (USA)">>temp\DLnames.txt) & (echo "RSU">>temp\DLgotos.txt)
+if /i "%RSE%" EQU "*" (echo "Region Select v2 (PAL)">>temp\DLnames.txt) & (echo "RSE">>temp\DLgotos.txt)
+if /i "%RSJ%" EQU "*" (echo "Region Select v2 (JAP)">>temp\DLnames.txt) & (echo "RSJ">>temp\DLgotos.txt)
+if /i "%RSK%" EQU "*" (echo "Region Select v2 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
 if /i "%BC%" EQU "*" (echo "BC">>temp\DLnames.txt) & (echo "BC">>temp\DLgotos.txt)
 if /i "%cBC%" EQU "*" (echo "NMM">>temp\DLnames.txt) & (echo "NMM">>temp\DLgotos.txt)
 if /i "%DML%" EQU "*" (echo "DML">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
@@ -15200,6 +15874,7 @@ if /i "%IOS80%" EQU "*" (echo "IOS80v6944">>temp\DLnames.txt) & (echo "IOS80">>t
 if /i "%IOS80P%" EQU "*" (echo "IOS80v16944(IOS80v6944[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS80P">>temp\DLgotos.txt)
 
 if /i "%mmm%" EQU "*" (echo "Multi-Mod Manager (MMM) v13.4">>temp\DLnames.txt) & (echo "mmm">>temp\DLgotos.txt)
+if /i "%ARC%" EQU "*" (echo "Any Region Changer (1.1b Mod06 Offline)">>temp\DLnames.txt) & (echo "ARC">>temp\DLgotos.txt)
 if /i "%WiiMod%" EQU "*" (echo "WiiMod">>temp\DLnames.txt) & (echo "WiiMod">>temp\DLgotos.txt)
 if /i "%yawm%" EQU "*" (echo "Yet Another Wad Manager Mod">>temp\DLnames.txt) & (echo "yawm">>temp\DLgotos.txt)
 if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\DLgotos.txt)
@@ -15478,6 +16153,8 @@ if /i "%cmdlinemode%" EQU "Y" goto:DLSettings
 
 if %LINES% LEQ 54 goto:noresize
 mode con cols=85 lines=%LINES%
+
+::Support\nircmd.exe win setsize title "ModMii" 50 50 720 700
 :noresize
 
 cls
@@ -15565,6 +16242,7 @@ if /i "%MENU1%" EQU "W" goto:WorUSB
 if /i "%MENU1%" EQU "U" goto:WorUSB
 if /i "%MENU1%" EQU "H" goto:WorUSB
 if /i "%MENU1%" EQU "SU" goto:WorUSB
+if /i "%MENU1%" EQU "RC" goto:WorUSB
 
 echo           Y = Yes, Begin Downloading
 
@@ -15577,6 +16255,8 @@ if /i "%MENU1%" EQU "H" echo           Y = Yes, Generate Guide and Begin Downloa
 if /i "%MENU1%" EQU "H" echo           G = Generate Guide Only
 if /i "%MENU1%" EQU "SU" echo           Y = Yes, Generate Guide and Begin Downloading
 if /i "%MENU1%" EQU "SU" echo           G = Generate Guide Only
+if /i "%MENU1%" EQU "RC" echo           Y = Yes, Generate Guide and Begin Downloading
+if /i "%MENU1%" EQU "RC" echo           G = Generate Guide Only
 
 :zerodownloads
 
@@ -15660,6 +16340,7 @@ if /i "%MENU1%" EQU "W" goto:generateguideonly
 if /i "%MENU1%" EQU "U" goto:generateguideonly
 if /i "%MENU1%" EQU "H" goto:generateguideonly
 if /i "%MENU1%" EQU "SU" goto:generateguideonly
+if /i "%MENU1%" EQU "RC" goto:generateguideonly
 goto:badkey
 
 :generateguideonly
@@ -15888,6 +16569,7 @@ if /i "%TOS%" EQU "*" echo SET TOS=%TOS%>> "temp\DownloadQueues\%DLQUEUENAME%.ba
 if /i "%smash%" EQU "*" echo SET smash=%smash%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%mmm%" EQU "*" echo SET mmm=%mmm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%WiiMod%" EQU "*" echo SET WiiMod=%WiiMod%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%ARC%" EQU "*" echo SET ARC=%ARC%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%yawm%" EQU "*" echo SET yawm=%yawm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%neogamma%" EQU "*" echo SET neogamma=%neogamma%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cfg249%" EQU "*" echo SET cfg249=%cfg249%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -16838,11 +17520,27 @@ echo.
 
 rename %basecios%\00000001.app 00000001-original.app
 
-cd temp
-TMCL.exe "%mym1%" -A "%ModMiipath%\%basecios%\00000001-original.app" -o temp.csm>nul
-TMCL.exe "%mym2%" -A temp.csm -o "%ModMiipath%\%basecios%\00000001.app">nul
-if exist temp.csm del temp.csm>nul
-cd..
+::Portable ModMii Installation fix
+if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" goto:skipPortableFix
+if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
+
+if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
+if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
+if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
+
+cd /d %homedrive%\ModMii
+:skipPortableFix
+
+
+cd /d temp
+::TMCL.exe "%mym1%" -A "%ModMiipath%\%basecios%\00000001-original.app" -o temp.csm>nul
+::TMCL.exe "%mym2%" -A temp.csm -o "%ModMiipath%\%basecios%\00000001.app">nul
+
+TMCL.exe "%ModMiiPath%\temp\%mym1%" -A "%ModMiipath%\%basecios%\00000001-original.app" -o "%ModMiiPath%\temp\temp.csm">nul
+TMCL.exe "%ModMiiPath%\temp\%mym2%" -A "%ModMiiPath%\temp\temp.csm" -o "%ModMiipath%\%basecios%\00000001.app">nul
+if exist "%ModMiiPath%\temp\temp.csm" del "%ModMiiPath%\temp\temp.csm">nul
+
+cd /d %ModMiipath%
 
 del %basecios%\00000001-original.app>nul
 
@@ -17715,13 +18413,31 @@ if /i "%category%" EQU "SMTHEME" goto:SMTHEME2
 echo.
 echo Building Theme (%wadname%.csm), please wait...
 echo.
-cd temp
-TMCL.exe "%mym1%" -A "%dlname%" -o temp.csm>nul
-TMCL.exe "%mym2%" -A temp.csm -o "%wadname%.csm">nul
-if exist temp.csm del temp.csm>nul
-cd..
+
+::Portable ModMii Installation fix
+if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" goto:skipPortableFix
+if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
+
+if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
+if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
+if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
+
+cd /d %homedrive%\ModMii
+:skipPortableFix
+
+cd /d temp
+
+::TMCL.exe "%mym1%" -A "%dlname%" -o temp.csm>nul
+::TMCL.exe "%mym2%" -A temp.csm -o "%wadname%.csm">nul
+
+TMCL.exe "%ModMiiPath%\temp\%mym1%" -A "%ModMiiPath%\temp\%dlname%" -o "%ModMiiPath%\temp\temp.csm">nul
+TMCL.exe "%ModMiiPath%\temp\%mym2%" -A "%ModMiiPath%\temp\temp.csm" -o "%ModMiiPath%\temp\%wadname%.csm">nul
+if exist "%ModMiiPath%\temp\temp.csm" del "%ModMiiPath%\temp\temp.csm">nul
+
+cd /d %ModMiipath%
 
 if exist "temp\%wadname%.csm" move /y "temp\%wadname%.csm" "%Drive%\ModThemes\%wadname%.csm">nul
+
 
 ::----check after downloading - if md5 check fails, delete and redownload----
 if exist "%Drive%"\ModThemes\%wadname%.csm goto:checkexisting
@@ -19296,7 +20012,7 @@ if /i "%code1%" EQU "SNEEKAPP" goto:DownloadApp2
 :DownloadURL2
 if not exist temp\%wadname% start %ModMiimin%/wait support\wget %code2%
 if exist %dlname% move /y %dlname% temp\%wadname% >nul
-support\7za e -aoa temp\%wadname% -o"%Drive%"/%path1% *.%version% -r
+support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% -r
 
 ::save identifier for bannerbombs
 if /i "%code2%" EQU "http://bannerbomb.qoid.us/aads/aad1f_v108.zip" echo Bannerbombv1 >"%Drive%\%path1%Bannerbombv1.txt"
@@ -20212,6 +20928,9 @@ goto:NEXT
 
 ::-----ROOT SAVE OPTION for IOSs (does not apply to wizard)-----
 if /i "%MENU1%" EQU "W" goto:miniskip
+if /i "%MENU1%" EQU "RC" goto:miniskip
+if /i "%MENU1%" EQU "SU" goto:miniskip
+if /i "%MENU1%" EQU "H" goto:miniskip
 if /i "%category%" EQU "ios" goto:noskip
 if /i "%category%" EQU "patchios" (goto:noskip) else (goto:miniskip)
 :noskip
@@ -20356,114 +21075,38 @@ rename "%DRIVE%"\bootmii bootmii_SDBooter%countbootmii% >nul
 
 
 
-::Don't delete anything from USB if making Sneek or Sneek+di
-if /i "%SNEEKTYPE%" EQU "SD" goto:skip
-if /i "%SNEEKTYPE%" EQU "S" goto:skip
+::delete sneek files from USB (interfere's with nswitch)
 if exist "%DRIVEU%"\SNEEK\kernel.bin del "%DRIVEU%"\SNEEK\kernel.bin>nul
 if exist "%DRIVEU%"\SNEEK\di.bin del "%DRIVEU%"\SNEEK\di.bin>nul
 if exist "%DRIVEU%"\SNEEK\font.bin del "%DRIVEU%"\SNEEK\font.bin>nul
-:skip
 
 
 
 
-::get sneekY rev number
-
-set sneekYrev=0
-set tempsneekYrev=none
-set usesneekYtemp=off
-
-start %ModMiimin%/wait support\wget http://code.google.com/p/sneeky-compiler/downloads/list
-if exist list move /y list sneekYrev.bat>nul
-
-if not exist sneekYrev.bat goto:skip
-
-support\sfk filter -quiet "sneekYrev.bat" -spat -rep _"*fsmodule-usb\x5fr"_"set sneekYrev="_ -write -yes
-support\sfk filter -quiet "sneekYrev.bat" -+"set sneekYrev" -write -yes
-support\sfk filter -quiet "sneekYrev.bat" -rep _" </a>*"__ -write -yes
-support\sfk filter "sneekYrev.bat" -unique -write -yes>nul
-call sneekYrev.bat
-del sneekYrev.bat>nul
-:skip
-
-if not exist temp\tempsneekYrev.bat goto:NoTempsneekYFiles
-call temp\tempsneekYrev.bat
-
-::if temp files are equal to the new ones, use temp files
-if /i "%TEMPsneekYREV%" EQU "%sneekYREV%" set usesneekYtemp=on
-
-::if no internet and temp files exist, use temp files
-if /i "%sneekYREV%" EQU "0" set usesneekYtemp=on
-if /i "%TEMPsneekYREV%" EQU "none" set usesneekYtemp=off
-if /i "%usesneekYtemp%" EQU "on" set sneekYREV=%TEMPsneekYREV%
-:NoTempsneekYFiles
-
-if /i "%sneekYREV%" NEQ "0" (echo set tempsneekYrev=%sneekYrev%>temp\tempsneekYrev.bat) & (support\sfk filter -quiet "temp\tempsneekYrev.bat" -rep _=*_"=%sneekYrev%"_ -write -yes)
-
-if not exist temp\tempsneekYrev.bat goto:sneekwarning
-
-if /i "%sneekYrev%" EQU "0" set sneekYrev=%tempsneekYrev%
 
 
-
-
-::get neek2o rev number
-
-if /i "%neek2o%" NEQ "on" goto:skipneek2oREV
-
-set neek2orev=0
-set tempneek2orev=none
-set useneek2otemp=off
-
-start %ModMiimin%/wait support\wget http://code.google.com/p/custom-di/downloads/list
-if exist list move /y list neek2orev.bat>nul
-
-if not exist neek2orev.bat goto:skip
-support\sfk filter -quiet "neek2orev.bat" -rep _"*module V"_"set neek2orev="_ -write -yes
-support\sfk filter -quiet "neek2orev.bat" -+"set neek2orev" -write -yes
-support\sfk filter -quiet "neek2orev.bat" -rep _" </a>*"__ -write -yes
-support\sfk filter "neek2orev.bat" -unique -write -yes>nul
-call neek2orev.bat
-del neek2orev.bat>nul
-:skip
-
-if not exist temp\tempneek2orev.bat goto:NoTempneek2oFiles
-call temp\tempneek2orev.bat
-
-::if temp files are equal to the new ones, use temp files
-if /i "%TEMPneek2oREV%" EQU "%neek2oREV%" set useneek2otemp=on
-
-::if no internet and temp files exist, use temp files
-if /i "%neek2oREV%" EQU "0" set useneek2otemp=on
-if /i "%TEMPneek2oREV%" EQU "none" set useneek2otemp=off
-if /i "%useneek2otemp%" EQU "on" set neek2oREV=%TEMPneek2oREV%
-:NoTempneek2oFiles
-
-if /i "%neek2oREV%" NEQ "0" (echo set tempneek2orev=%neek2orev% >temp\tempneek2orev.bat) & (support\sfk filter -quiet "temp\tempneek2orev.bat" -rep _=*_"=%neek2orev%"_ -write -yes)
-
-if not exist temp\tempneek2orev.bat goto:neek2owarning
-
-:skipneek2oREV
-
-
-if /i "%neek2o%" EQU "on" goto:neek2obuild 
-if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK rev%sneekYREV%
+if /i "%neek2o%" EQU "on" goto:neek2obuild
+if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK rev%CurrentRev%
 goto:skipneek2obuild
 :neek2obuild
 
 
-if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "SD" echo Building SNEEK+DI neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "UD" echo Building UNEEK+DI neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "U" echo Building UNEEK neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "S" echo Building SNEEK neek2o rev%CurrentRev%
 
 :skipneek2obuild
 echo.
 if /i "%neek2o%" EQU "on" echo neek2o Enabled (can be changed in options)
 if /i "%neek2o%" NEQ "on" echo neek2o Disabled (can be changed in options)
+echo.
+if /i "%SSD%" EQU "on" echo SNEEK and SNEEK+DI SD Access Enabled (can be changed in options)
+if /i "%SSD%" NEQ "on" echo SNEEK and SNEEK+DI SD Access Disabled (can be changed in options)
+
 
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
@@ -20472,37 +21115,53 @@ if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://fil
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
-echo.
-echo Downloading Official Sneek Installer
 
+
+
+if /i "%neek2o%" EQU "on" set NewInstallerRev=99999
+if /i "%neek2o%" NEQ "on" set NewInstallerRev=186
+
+if %CurrentRev% GEQ %NewInstallerRev% goto:newinstaller
+
+::old installer
 set wadname=SNEEKInstallerv0.6c-cred.rar
 set md5=bcdd0ddb85dc63c1ad7fad0007b6b606
+goto:skipnew
+
+:newinstaller
+set wadname=SNEEKInstallerv0.7a-cred.rar
+set md5=e1c094efd57d19e9a3726bcb8f543660
+:skipnew
 
 if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
-if not exist temp\SNEEKInstaller\SNEEKInstaller.exe goto:nocheck
+echo.
+echo Downloading Official Sneek Installer (%wadname:~14,5%)
+
+if not exist temp\%wadname:~0,-4%\SNEEKInstaller.exe goto:nocheck
 
 set md5check=
-support\sfk md5 -quiet -verify %md5% temp\SneekInstaller\SneekInstaller.exe
+support\sfk md5 -quiet -verify %md5% temp\%wadname:~0,-4%\SneekInstaller.exe
 
 if errorlevel 1 set md5check=fail
 if "%md5check%"=="" set md5check=pass
 if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 
 :nocheck
-if exist temp\SneekInstaller rd /s /q temp\SneekInstaller
-mkdir temp\SneekInstaller
+if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
+mkdir temp\%wadname:~0,-4%
 
 start %ModMiimin%/wait support\wget -t 3 http://sneek.googlecode.com/files/%wadname%
-if exist %wadname% temp\unrar.exe x -y %wadname% temp\SneekInstaller
+
+if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
+
 if exist %wadname% del %wadname%>nul
 
 :AlreadyinTemp
-if not exist temp\SNEEKInstaller\SNEEKInstaller.exe goto:sneekwarning
-
+if not exist temp\%wadname:~0,-4%\SNEEKInstaller.exe goto:sneekwarning
 
 ::create empty sneek installer config file
-type NUL > temp\sneekinstaller\sinst.ini
+type NUL > temp\%wadname:~0,-4%\sinst.ini
 echo.
 
 
@@ -20538,6 +21197,7 @@ move /Y 00000001.app temp\00000001_IOS60.app>nul
 copy /Y temp\00000001_IOS60.app temp\00000001.app>nul
 if not exist temp\00000001.app goto:sneekwarning
 echo.
+:skipDL01
 
 
 ::FONT.BIN
@@ -20557,7 +21217,7 @@ if not exist "%DRIVE%"\SNEEK mkdir "%DRIVE%"\SNEEK
 if exist temp\font%SNKFONT%.bin copy /Y temp\font%SNKFONT%.bin "%DRIVE%"\SNEEK\font.bin>nul
 if not exist "%DRIVE%"\SNEEK\font.bin goto:sneekwarning
 echo.
-goto:DLDIMODULE
+goto:GetNEEKfiles
 
 :save2DriveU
 if not exist "%DRIVEU%"\SNEEK mkdir "%DRIVEU%"\SNEEK
@@ -20566,174 +21226,27 @@ if not exist "%DRIVEU%"\SNEEK\font.bin goto:sneekwarning
 echo.
 
 
-:DLDIMODULE
-echo Downloading dimodule.elf
+:GetNEEKfiles
 
-if /i "%neek2o%" EQU "on" goto:neek2oDLDIMODULE
-
-if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
-
-if exist dimodule.elf move /Y dimodule.elf temp\sneeky-dimodule.elf>nul
-
-if not exist temp\sneeky-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/dimodule.elf
-
-if exist dimodule.elf move /Y dimodule.elf temp\sneeky-dimodule.elf>nul
-
-if not exist temp\sneeky-dimodule.elf (goto:sneekwarning) else (copy /y temp\sneeky-dimodule.elf temp\dimodule.elf>nul)
+echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
-goto:skipDL01
+if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
+
+start %ModMiimin%/wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
+
+if not exist "temp\%neekname%" mkdir "temp\%neekname%"
+move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
+
+:EXTRACT
+support\7za e -aoa "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" -o"temp" *.* -r>temp\7zalog.txt
+findStr /I /C:"Everything is Ok" "temp\7zalog.txt" >nul
+IF ERRORLEVEL 1 (Corrupted archive detected and deleted, please try again..) & (del temp\7zalog.txt>nul) & (del "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul) & (goto:sneekwarning)
+del temp\7zalog.txt>nul
 
 
-:neek2oDLDIMODULE
-if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
-
-if exist dimodule.elf move /Y dimodule.elf temp\neek2o-dimodule.elf>nul
-
-if not exist temp\neek2o-dimodule.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/dimodule.elf
-
-if exist dimodule.elf move /Y dimodule.elf temp\neek2o-dimodule.elf>nul
-
-if not exist temp\neek2o-dimodule.elf (goto:sneekwarning) else (copy /y temp\neek2o-dimodule.elf temp\dimodule.elf>nul)
-echo.
-
-:skipDL01
-
-
-
-if /i "%neek2o%" EQU "on" goto:neek2oMOREMODULES
-
-echo Downloading fsmodule-usb.elf
-if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
-
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\sneeky-fsmodule-usb.elf>nul
-
-if not exist temp\sneeky-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-usb.elf
-
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\sneeky-fsmodule-usb.elf>nul
-
-if not exist temp\sneeky-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\sneeky-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
-
-echo.
-
-
-
-echo Downloading fsmodule-sd.elf
-if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\sneeky-fsmodule-sd.elf>nul
-
-if not exist temp\sneeky-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\sneeky-fsmodule-sd.elf>nul
-
-if not exist temp\sneeky-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\sneeky-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
-echo.
-
-
-if /i "%SNEEKTYPE:~0,1%" EQU "U" goto:SSDoff
-if /i "%SSD%" EQU "on" goto:SSDon
-
-:SSDoff
-echo Downloading esmodule.elf
-if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\esmodule-sdoff.elf>nul
-if exist temp\esmodule-sdoff.elf copy /Y temp\esmodule-sdoff.elf temp\esmodule.elf>nul
-
-if not exist temp\esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\esmodule-sdoff.elf>nul
-if exist temp\esmodule-sdoff.elf (copy /Y temp\esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
-goto:skipSSDon
-
-:SSDon
-echo Downloading esmodule.elf (with SD Access On)
-if /i "%usesneekYtemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\esmodule-sdon.elf>nul
-if exist temp\esmodule-sdon.elf copy /Y temp\esmodule-sdon.elf temp\esmodule.elf>nul
-
-if not exist temp\esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://sneeky-compiler.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\esmodule-sdon.elf>nul
-if exist temp\esmodule-sdon.elf (copy /Y temp\esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
-:skipSSDon
-
-echo.
-
-goto:skipneek2oMOREMODULES
-
-
-
-
-:neek2oMOREMODULES
-
-
-echo Downloading fsmodule-usb.elf
-if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
-
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\neek2o-fsmodule-usb.elf>nul
-
-if not exist temp\neek2o-fsmodule-usb.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-usb.elf
-
-if exist fsmodule-usb.elf move /Y fsmodule-usb.elf temp\neek2o-fsmodule-usb.elf>nul
-
-if not exist temp\neek2o-fsmodule-usb.elf (goto:sneekwarning) else (copy /y temp\neek2o-fsmodule-usb.elf temp\fsmodule-usb.elf>nul)
-
-echo.
-
-
-
-echo Downloading fsmodule-sd.elf
-if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\neek2o-fsmodule-sd.elf>nul
-
-if not exist temp\neek2o-fsmodule-sd.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/fsmodule-sd.elf
-if exist fsmodule-sd.elf move /Y fsmodule-sd.elf temp\neek2o-fsmodule-sd.elf>nul
-
-if not exist temp\neek2o-fsmodule-sd.elf (goto:sneekwarning) else (copy /y temp\neek2o-fsmodule-sd.elf temp\fsmodule-sd.elf>nul)
-echo.
-
-
-
-if /i "%SNEEKTYPE:~0,1%" EQU "U" goto:SSDoff
-if /i "%SSD%" EQU "on" goto:SSDon
-
-:SSDoff
-echo Downloading esmodule.elf
-if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\neek2o-esmodule-sdoff.elf>nul
-if exist temp\neek2o-esmodule-sdoff.elf copy /Y temp\neek2o-esmodule-sdoff.elf temp\esmodule.elf>nul
-
-if not exist temp\neek2o-esmodule-sdoff.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule.elf
-if exist esmodule.elf move /Y esmodule.elf temp\neek2o-esmodule-sdoff.elf>nul
-if exist temp\neek2o-esmodule-sdoff.elf (copy /Y temp\neek2o-esmodule-sdoff.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
-goto:skipSSDon
-
-:SSDon
-echo Downloading esmodule.elf (with SD Access On)
-if /i "%useneek2otemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\neek2o-esmodule-sdon.elf>nul
-if exist temp\neek2o-esmodule-sdon.elf copy /Y temp\neek2o-esmodule-sdon.elf temp\esmodule.elf>nul
-
-if not exist temp\neek2o-esmodule-sdon.elf start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/esmodule-sdon.elf
-if exist esmodule-sdon.elf move /Y esmodule-sdon.elf temp\neek2o-esmodule-sdon.elf>nul
-if exist temp\neek2o-esmodule-sdon.elf (copy /Y temp\neek2o-esmodule-sdon.elf temp\esmodule.elf>nul) else (goto:sneekwarning)
-:skipSSDon
-
-echo.
-
-
-
-
-:skipneek2oMOREMODULES
-
-
-
-
-echo Downloading armboot.bin
-if /i "%usesneektemp%" EQU "off" start %ModMiimin%/wait support\wget -t 3 http://sneek.googlecode.com/files/armboot.bin
-if exist armboot.bin move /Y armboot.bin temp\armboot.bin>nul
-
-if not exist temp\armboot.bin start %ModMiimin%/wait support\wget -t 3 http://sneek.googlecode.com/files/armboot.bin
-if exist armboot.bin move /Y armboot.bin temp\armboot.bin>nul
-
-if not exist temp\armboot.bin goto:sneekwarning
-echo.
+::Sneek SD Card Access
+if /i "%SSD%" EQU "on" move /y "temp\esmodule-sdon.elf" "temp\esmodule.elf">nul
 
 
 echo Building...
@@ -20781,7 +21294,7 @@ echo ControlClick ("SNEEK Installer","SNEEK setup","install SNEEK")>>custom.au3
 
 
 
-cd temp\SneekInstaller
+cd temp\%wadname:~0,-4%
 start /I %ModMiimin%SneekInstaller.exe
 cd..
 cd..
@@ -20811,33 +21324,33 @@ if /i "%neek2o%" EQU "on" goto:neek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%sneekYREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 :skipsneekverbose
 goto:skipneek2orevinfo
 
@@ -20846,39 +21359,39 @@ goto:skipneek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 
 ::neek2o sd access temporarily always disabled
 goto:miniskip
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%neek2oREV% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
 :skipsneekverbose
 
 
@@ -21017,7 +21530,7 @@ support\sfk filter -quiet "support\ShowMiiWads.cfg" -rep _"'"_"""_ -write -yes
 cls
 
 if /i "%SNEEKSELECT%" NEQ "5" goto:tinyskip
-if /i "%emuwadcount%" EQU "0" goto:skipSMW
+if /i "%emuwadcount%" EQU "0" goto:skipSMWall
 :tinyskip
 
 echo Loading ShowMiiWads
@@ -21036,6 +21549,7 @@ if not exist ..\temp\WAD\*.wad goto:skipSMW
 SMW-Mod.exe
 :skipSMW
 cd..
+:skipSMWall
 
 ::---delete non-temp files---
 if exist temp\WAD\JoyFlowHNv11-HBJF.wad del temp\WAD\JoyFlowHNv11-HBJF.wad>nul
@@ -21310,6 +21824,8 @@ mode con cols=85 lines=%LINES%
 ::---------------CMD LINE MODE-------------
 if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
 if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+
+
 if /i "%problematicDLs%" EQU "0" exit
 support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
 move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log_Errors.txt">nul
@@ -21320,6 +21836,8 @@ exit
 :nocheck
 
 if /i "%cmdlinemode%" EQU "Y" exit
+
+
 
 set MENUREAL=
 
@@ -21332,34 +21850,34 @@ echo.
 if /i "%SNEEKSELECT%" NEQ "3" goto:skip
 if /i "%neek2o%" EQU "on" goto:neek2o3report
 
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK rev%sneekYREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 goto:skip
 
 :neek2o3report
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK neek2o rev%neek2oREV% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have%snksuccess% installed SNEEK+DI neek2o rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have%snksuccess% installed UNEEK+DI neek2o rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have%snksuccess% installed SNEEK neek2o rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have%snksuccess% installed UNEEK neek2o rev%CurrentRev% and built a %SNKVERSION%%REGION% Emulated Nand%snkfailure%
 :skip
 
 ::only install sneek
 if /i "%SNEEKSELECT%" NEQ "1" goto:skip
 if /i "%neek2o%" EQU "on" goto:neek2o1report
 
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK rev%sneekYREV%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK rev%sneekYREV%
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK rev%CurrentRev%
 goto:skip
 
 :neek2o1report
-if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK neek2o rev%neek2oREV%
-if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK neek2o rev%neek2oREV%
+if /i "%SNEEKTYPE%" EQU "SD" echo    You have successfully installed SNEEK+DI neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "UD" echo    You have successfully installed UNEEK+DI neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "U" echo    You have successfully installed UNEEK neek2o rev%CurrentRev%
+if /i "%SNEEKTYPE%" EQU "S" echo    You have successfully installed SNEEK neek2o rev%CurrentRev%
 
 :skip
 
@@ -21430,7 +21948,7 @@ echo          but it will be much quicker the second time around.
 echo.
 
 if /i "%SNKS2U%" EQU "Y" goto:quickskip
-echo        * Install the nSwitch channel using MMM then launch the channel
+echo        * Install the neek2o channel using MMM then launch the channel
 echo          in order to start NEEK. You can also use this channel to return
 echo          to your real NAND.
 echo.
@@ -21500,8 +22018,6 @@ if exist temp\DLgotos.txt del temp\DLgotos.txt>nul
 
 if /i "%MENU1%" EQU "S" goto:wad2nand
 if /i "%MENUREAL%" EQU "S" goto:finishsneekinstall3
-
-
 
 
 ::force non-donators to view credits (but not in cmd line mode)
@@ -21730,6 +22246,7 @@ if /i "%MENU1%" EQU "W" goto:guide
 if /i "%MENU1%" EQU "H" goto:guide
 if /i "%MENU1%" EQU "U" goto:guide
 if /i "%MENU1%" EQU "SU" goto:guide
+if /i "%MENU1%" EQU "RC" goto:guide
 :DLSETTINGS2
 cls
 if exist temp\ModMii_Log_SNK.bat goto:donotdeletelog
@@ -21847,7 +22364,7 @@ set category=ios
 goto:downloadstart
 
 :RSU
-set name=Region Select v3 (USA)
+set name=Region Select v2 (USA)
 set code1=00010008
 set code2=48414C45
 set version=2
@@ -21858,7 +22375,7 @@ set category=ios
 goto:downloadstart
 
 :RSE
-set name=Region Select v3 (PAL)
+set name=Region Select v2 (PAL)
 set code1=00010008
 set code2=48414C50
 set version=2
@@ -21869,7 +22386,7 @@ set category=ios
 goto:downloadstart
 
 :RSJ
-set name=Region Select v3 (JAP)
+set name=Region Select v2 (JAP)
 set code1=00010008
 set code2=48414C4A
 set version=2
@@ -21880,7 +22397,7 @@ set category=ios
 goto:downloadstart
 
 :RSK
-set name=Region Select v3 (KOR)
+set name=Region Select v2 (KOR)
 set code1=00010008
 set code2=48414C4B
 set version=2
@@ -23686,6 +24203,18 @@ if /i "%BB1%" EQU "*" (set path1=private2\wii\title\aktn\) else (set path1=priva
 set filename=content.bin
 goto:downloadstart
 
+:ARC
+set name=Any Region Changer (1.1b Mod06 Offline)
+set code1=URL
+set code2=http://filetrip.net/d26999-Any-Region-Changer-06.html
+set version=*
+set dlname=26999-ARCmod06_Offline.zip
+set wadname=ARCmod06_Offline.zip
+set md5=01889b98b95279258201387de1d0a8f7
+set path1=apps\ARCmod06_Offline\
+set filename=boot.dol
+goto:downloadstart
+
 
 :mmm
 set name=Multi-Mod Manager (MMM) v13.4
@@ -23919,7 +24448,6 @@ set filename=boot.dol
 set md5=52bf835b36893e669fb0aa41f22899b6
 set path1=apps\MyMenuifyMod\
 goto:downloadstart
-
 
 :bootmiisd
 set name=BootMii SD Files
@@ -26981,6 +27509,7 @@ set tabname=ModMii Wizard Guide
 if /i "%MENU1%" EQU "H" (set guidename=ModMii_HackMii_Solutions_Guide.html) & (set tabname=ModMii HackMii Solutions Guide)
 if /i "%MENU1%" EQU "U" (set guidename=ModMii_USBLoader_Setup_Guide.html) & (set tabname=ModMii USB-Loader Setup Guide)
 if /i "%MENU1%" EQU "SU" (set guidename=ModMii_sysCheck_Updater_Guide.html) & (set tabname=ModMii sysCheck Updater Guide)
+if /i "%MENU1%" EQU "RC" (set guidename=ModMii_Region_Change_Guide.html) & (set tabname=ModMii Region Change Guide)
 
 
 SET COUNT7=1
@@ -27011,11 +27540,23 @@ support\sfk echo -spat \x3c/style\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3c/head\x3e >>"%Drive%"\%guidename%
 support\sfk echo -spat \x3cbody style=\x22margin:5px 5px 5px 35px;\x22\x3e >>"%Drive%"\%guidename%
-support\sfk echo -spat Guide Generated on %DATE% - %TIME:~0,-6% \x3cbr\x3e\x3cbr\x3e >>"%Drive%"\%guidename%
+support\sfk echo -spat Guide Generated by ModMii v%currentversion% on %DATE% - %TIME:~0,-6% \x3cbr\x3e\x3cbr\x3e >>"%Drive%"\%guidename%
 
 
 
 copy /y "%Drive%"\%guidename%+Support\Guide\sprint-paramstart.001 "%Drive%"\%guidename%>nul
+
+
+if /i "%MENU1%" NEQ "RC" goto:notRC
+support\sfk echo -spat \x3cli\x3eDesired firmware is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "R" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Red Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "G" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Green Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "BL" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Blue Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ThemeSelection%" EQU "O" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Orange Theme\x3c/li\x3e>>"%Drive%"\%guidename%
+goto:skipusb
+:notRC
+
+
 
 if /i "%MENU1%" EQU "U" (set USBGUIDE=Y) & (goto:usbparam)
 
@@ -27115,6 +27656,9 @@ support\sfk echo -spat \x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 :Important notes title and bullet opening tag
 support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3e\x3ca name=\x22Notes\x22\x3eImportant Notes\x3c/a\x3e\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3cul\x3e>>"%Drive%"\%guidename%
 
+
+if /i "%MENU1%" EQU "RC" copy /y "%Drive%"\%guidename%+Support\Guide\RegionChangenotes.001 "%Drive%"\%guidename%>nul
+
 if /i "%MENU1%" NEQ "U" copy /y "%Drive%"\%guidename%+Support\Guide\softmodnotes.001 "%Drive%"\%guidename%>nul
 
 
@@ -27146,7 +27690,8 @@ if /i "%MENU1%" EQU "U" goto:USBGUIDESTEP1
 copy /y "%Drive%"\%guidename%+Support\Guide\softmodheader.001 "%Drive%"\%guidename%>nul
 
 
-
+if /i "%MENU1%" EQU "RC" copy /y "%Drive%"\%guidename%+Support\Guide\NANDBACKUP.001 "%Drive%"\%guidename%>nul
+if /i "%MENU1%" EQU "RC" goto:installwads
 
 
 ::-----------------------------------------virgin Korean non-4.3 Wiis-----------------------------------
@@ -27246,7 +27791,27 @@ if /i "%PRI%" NEQ "*" goto:reinstallHBC
 
 copy /y "%Drive%"\%guidename%+Support\Guide\Priiloader.001 "%Drive%"\%guidename%>nul
 
+if /i "%MENU1%" EQU "RC" goto:ARCGUIDE
+
 if /i "%installwads%" EQU "done" goto:reinstallHBC
+
+goto:installwads
+
+
+::----------------------ANY REGION CHANGER (ARC)-----------------------------
+:ARCGUIDE
+
+copy /y "%Drive%"\%guidename%+Support\Guide\ARC.001 "%Drive%"\%guidename%>nul
+
+if /i "%REGION%" EQU "U" echo change the region to USA.>>"%Drive%"\%guidename%
+if /i "%REGION%" EQU "E" echo change the region to Europe.>>"%Drive%"\%guidename%
+if /i "%REGION%" EQU "J" echo change the region to Jap.>>"%Drive%"\%guidename%
+if /i "%REGION%" EQU "K" echo change the region to Korean.>>"%Drive%"\%guidename%
+
+copy /y "%Drive%"\%guidename%+Support\Guide\ARC2.001 "%Drive%"\%guidename%>nul
+
+
+goto:noMyM
 
 
 ::----------------------Install Wads (MMM)-----------------------------
@@ -27268,17 +27833,15 @@ copy /y "%Drive%"\%guidename%+Support\Guide\WADheader.001 "%Drive%"\%guidename%>
 
 :wadlist
 
-if /i "%IOS11P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS11v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS20P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS20v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS30P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS30v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS40P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS40v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS50P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS50v14889(IOS50v4889[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS52P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS52v15661(IOS52v5661[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS60P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS60v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS70P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16687(IOS70v6687[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS70K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS80P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v6944[FS-ES-NP-VP]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS80K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v16174(IOS60v6174[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS11P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS11v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS20P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS20v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS30P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS30v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS40P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS40v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS50P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS50v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS52P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS52v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS60P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS70K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%IOS80K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 
@@ -27356,6 +27919,19 @@ if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS
 if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
+if /i "%EULAU%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%RSU%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[U]\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%EULAE%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%RSE%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[E]\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%EULAJ%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[J]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%RSJ%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[J]\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%EULAK%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%RSK%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[K]\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 
