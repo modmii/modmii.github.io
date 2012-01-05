@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.1.0
+set currentversion=5.1.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -7406,6 +7406,8 @@ goto:SNKPAGE4c
 :SNKPAGE4d
 
 set SNKS2U=
+
+if /i "%SNEEKSELECT%" EQU "5" (set SNKS2U=N) & (goto:SNKPAGE5)
 
 ::skip this page if neek2o is enabled
 if /i "%neek2o%" EQU "on" (set SNKS2U=N) & (goto:SNKPAGE5)
