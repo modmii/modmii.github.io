@@ -1,11 +1,10 @@
 ;Small autoit script by person66 to make ModMii.bat open with an icon
-If FileExists( @WorkingDir & "\Support\ModMii.lnk") Then FileDelete( @WorkingDir & "\Support\ModMii.lnk")
-;Get arguments
-$args = ""
-$i = 1
-while $i <= $CmdLine[0]
-    $args = $args & $CmdLine[$i] & " "
-    $i = $i + 1
-wend
-FileCreateShortcut( @WorkingDir & "\Support\ModMii.bat", @WorkingDir & "\Support\ModMii.lnk", @WorkingDir, $args, "", @WorkingDir & "\Support\icon.ico" )
-ShellExecute(@WorkingDir & "\Support\ModMii.lnk")
+IF FileExists(@WorkingDir & "\Support\ModMii.lnk") Then FileDelete(@WorkingDir & "\Support\ModMii.lnk")
+$ARGS = ""
+$I = 1
+While $I <= $CMDLINE[0]
+	$ARGS = $ARGS & $CMDLINE[$I] & " "
+	$I = $I + 1
+WEnd
+FileCreateShortcut(@ComSpec, @ScriptDir & "\Support\ModMii.lnk", @ScriptDir, '/c call "' & @ScriptDir & '\Support\ModMii.bat" ' & $ARGS, "", @ScriptDir & "\Support\icon.ico")
+ShellExecuteWait(@ScriptDir & "\Support\ModMii.lnk")

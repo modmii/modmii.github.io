@@ -18,6 +18,9 @@ echo Set cIOS249[53]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS249[55]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS249[57]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS249[58]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[60]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[70]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[80]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[37]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[38]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[53]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
@@ -25,6 +28,10 @@ echo Set cIOS250[55]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[56]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[57]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
 echo Set cIOS250[58]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[60]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[70]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[80]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+
 echo :endofqueue>>temp\DownloadQueues\d2xAll.bat
 
 support\sfk filter -spat temp\DownloadQueues\d2xAll.bat -rep _\x27_\x22_ -rep _\x3f_\x25_ -rep _"AdvNumber=0 "_"AdvNumber=0"_ -write -yes>nul
@@ -39,11 +46,14 @@ echo The 2nd time ModMii runs the cIOSs should be valid and not open a text wind
 echo.
 
 
-echo @echo off>d2xAll-Downloader.bat
-echo setlocal>>d2xAll-Downloader.bat
-echo call support\ModMii.bat L d2xALL>>d2xAll-Downloader.bat
+::echo @echo off>d2xAll-Downloader.bat
+::echo setlocal>>d2xAll-Downloader.bat
+::echo call support\ModMii.bat L d2xALL>>d2xAll-Downloader.bat
+::start /wait d2xAll-Downloader.bat
 
-start /wait d2xAll-Downloader.bat
+ModMii.exe L d2xALL
+
+
 
 ::del d2xAll-Downloader.bat>nul
 
@@ -78,6 +88,12 @@ if /i "%number%" EQU "11" set cios=cIOS249[57]
 if /i "%number%" EQU "12" set cios=cIOS250[57]
 if /i "%number%" EQU "13" set cios=cIOS249[58]
 if /i "%number%" EQU "14" set cios=cIOS250[58]
+if /i "%number%" EQU "15" set cios=cIOS249[60]
+if /i "%number%" EQU "16" set cios=cIOS250[60]
+if /i "%number%" EQU "17" set cios=cIOS249[70]
+if /i "%number%" EQU "18" set cios=cIOS250[70]
+if /i "%number%" EQU "19" set cios=cIOS249[80]
+if /i "%number%" EQU "20" set cios=cIOS250[80]
 
 copy /y d2xALL.md5 temp\d2xALL.txt>nul
 
@@ -94,7 +110,7 @@ support\sfk filter -spat Support\d2x-beta\d2x-beta.bat -rep _"%cios%-d2x-v\x22 s
 del "%DRIVE%\WAD\%cios%-d2x-v%d2x-beta-rev%.wad">nul
 
 
-if "%number%" NEQ "14" goto:top
+if "%number%" NEQ "20" goto:top
 
 echo.
 echo d2x-beta.bat Updated
@@ -127,10 +143,12 @@ echo If there are 0 errors this window will close
 echo.
 
 ::call support\ModMii.bat L d2xALL
-start /wait d2xAll-Downloader.bat
-del d2xAll-Downloader.bat>nul
+::start /wait d2xAll-Downloader.bat
+::del d2xAll-Downloader.bat>nul
 
-findStr /I /C:"14 file(s) downloaded succcessfully" temp\ModMii_CMD_LINE_Log.txt >nul
+ModMii.exe L d2xALL
+
+findStr /I /C:"20 file(s) downloaded succcessfully" temp\ModMii_CMD_LINE_Log.txt >nul
 IF not ERRORLEVEL 1 exit
 echo.
 echo d2x-beta.bat not updated successfully
