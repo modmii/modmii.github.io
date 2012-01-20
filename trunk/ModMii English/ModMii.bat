@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.2.0
+set currentversion=5.2.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -2140,7 +2140,7 @@ set AdvNumber=0
 if exist temp\DLnamesADV.txt del temp\DLnamesADV.txt>nul
 if exist temp\DLgotosADV.txt del temp\DLgotosADV.txt>nul
 
-if /i "%cmdlinemode%" NEQ "Y" set CurrentDMLRev=
+::if /i "%cmdlinemode%" NEQ "Y" set CurrentDMLRev=
 
 set EULAU=
 set EULAE=
@@ -2422,7 +2422,7 @@ set cIOS222[38]-v4=
 set cIOS223[37-38]-v4=
 set cBC=
 set DML=
-set CurrentDMLRev=
+::set CurrentDMLRev=
 set cIOS222[38]-v5=
 set cIOS223[37]-v5=
 set cIOS224[57]-v5=
