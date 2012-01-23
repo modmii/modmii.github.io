@@ -1,0 +1,10 @@
+Opcional: temas adicionales se puede encontrar aquí: <a href="http://wii.spiffy360.com/themes.php" target="_blank">http://wii.spiffy360.com/themes.php</a><br>
+<br>
+
+<b>Notas importantes sobre la configuración predeterminada:</b><br>
+Dos características potencialmente peligrosas han sido bloqueadas:<br>
+<ul>
+<li>La capacidad de eliminar / borrar juegos</li>
+<li>La capacidad de formatear un disco duro</li>
+</ul>
+Para desbloquear estas características, mientras que en el menú de configurable USB-Loader, mantenga "1" durante 5 segundos, a continuación, introduzca la contraseña para desbloquear estas características. La contraseña es "AAAA", puede cambiar la configuración de contraseña/mediante el uso de la configuración para Configurable USB Loader. Mantener "1" de nuevo durante 5 segundos para bloquear el USB-Loader de nuevo (o se bloqueará de nuevo automáticamente una vez que salga de la USB-Loader).<br>

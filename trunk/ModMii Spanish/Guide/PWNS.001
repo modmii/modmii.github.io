@@ -1,0 +1,12 @@
+<b>Indiana Pwns</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-GN4cdhxjsI?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/IndianaPwns.gif" border="0"/></a><br>
+Requisitos: Una copia de "LEGO Indiana Jones", una tarjeta SD estándar (no funcionará con una tarjeta SDHC), y un nunchuck.<br>
+<ol type="A"><li>Cargar el juego "LEGO Indiana Jones" al menos una vez (de lo contrario no será capaz de copiar el hack)</li>
+<li>Eliminar o mover \ su copia de seguridad personal LEGO Indiana Jones guardar el archivo antes de copiar los archivos a su tarjeta SD.</li>
+<li>Copie los archivos ModMii a la raíz de tu tarjeta SD (si no lo ha hecho) e insertarla en su Wii.</li>
+<li>Ir a Opciones de Wii - Gestión de Datos - Datos Guardados - Wii - Tarjetas SD luego copiar el "Pwns Indiana" salvo que corresponda a su región.</li>
+<li>Juega el juego Lego Indiana Jones. Cargar el nuevo archivo guardado.</li>
+<li>Usted estará en la sala principal, caminando hacia la cámara, introduzca la primera puerta a la derecha (izquierda de Indy) y entrar en el "patio".</li>
+<li>Camina hasta el final y entra en la "Sala de Arte", podrás ver un podio con dos personajes en él, hable con el de la izquierda.</li>
+<li>Golpear izquierda dos veces (desplazarse a través de sus artículos) para elegir la opción de cambiar (Silueta negra con una flecha blanca a otra silueta de color negro).</li>
+<li>Un golpe para poner en marcha el archivo boot.elf/dol guardado en la raíz de tu tarjeta SD.</li></ol>

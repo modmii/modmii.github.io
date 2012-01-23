@@ -1,0 +1,33 @@
+<!----------------------------Install IOS236 below--------------------------------->
+<font size="5"><li>Instalar un parche IOS236</li></font><br>
+<br>
+Iniciar el Homebrew Channel.<br>
+<br>
+<b>¡MUY IMPORTANTE!</b><br>
+En el canal Homebrew, si usted no tiene una conexión a Internet ya está instalada, verá un icono parpadeando en la esquina inferior derecha de la pantalla que indica su incapacidad para iniciar la red. Usted debe esperar que el icono deje de parpadear o dejarlo parpadear durante 30-60 segundos antes de proceder de otra manera estas aplicaciones pueden dar error poco después de ser lanzado. Si se produce este error inocuo, apage la Wii y repita este paso desde el principio. Para aumentar tus posibilidades de éxito, agregar una conexión a Internet en tu Wii a través del menú de Configuración de Wii oficial, pero asegúrese de decir "no" cuando se le pregunte de realizar una actualización.<br>
+<br>
+Sólo es necesario realizar uno de los siguientes métodos. <br>
+Una vez que se instala con éxito cualquiera de los métodos IOS236, puede pasar al siguiente paso.<br>
+<br>
+<ul>
+<li><b>Método A: Usar IOS236 installer</b></li><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/Asq6_bh7Yko?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/IOS236Installer.gif" border="0"/></a><br>
+Después de esperar 30 a 60 segundos para que el HBC tratar de iniciar la red, lanzando el "IOS236 Installer v5 MOD".<br>
+<b>Nota:</b> Esta aplicación debe ser lanzada con HBC v1.0.7 o superior para funcionar correctamente.<br>
+Debería decir "instalación IOS236 está completo!" y volver al canal Homebrew.<br>
+<br>
+Si se producen errores, siga intentandolo y debería funcionar finalmente.<br>
+Si sigues teniendo errores puede intentar usar en su lugar simple IOS Patcher.<br>
+<br>
+
+<li><b>Metodo B: Usar Simple IOS Patcher</b></li><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/fKJVmp4WeCA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/SimpleIOSPatcher.gif" border="0"/></a><br>
+Después de esperar 30 a 60 segundos para que el HBC trate de iniciar la red, lanzar "Simple IOS Patcher".<br>
+<b>Nota:</b> Esta aplicación debe ser lanzada con HBC v1.0.7 o superior para funcionar correctamente.<br>
+Seleccione la opción "IOS36" (ya seleccionado por defecto) y pulsar A, a continuación, seleccione "Install IOS to slot" y seleccione 236. Seleccione "Install patched IOS36", dejando a los 4 parches en "yes" y presiona A, a continuación, elija "Load IOS from SD card". Confirme su elección con el botón A y, cuando se le solicite, presione A para continuar la instalación. Cuando la instalación haya finalizado, pulse el botón B para salir del menú principal.<br>
+<br>
+Si se producen errores, siga intentandolo y debería funcionar finalmente.<br>
+Si sigues teniendo errores puede intentar usar IOS236 Installer en su lugar.
+</ul>
+<br>
+<!----------------------------Instalar IOS236 arriba--------------------------------->

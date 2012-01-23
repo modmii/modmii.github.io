@@ -1,0 +1,10 @@
+<b>Return of the Jodi</b></br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/RS5r77uwE20?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/ReturnOfTheJodi.gif" border="0"/></a><br>
+Requisitos: Una copia de "LEGO Star Wars", una tarjeta SD estándar (no funcionará con una tarjeta SDHC), y un nunchuck.<br>
+<ol type="A"><li>Cargar el juego LEGO Star Wars al menos una vez (de lo contrario no será capaz de copiar el hack).</li>
+<li>Eliminar o mover\su copia de seguridad personal "LEGO Star Wars" guardar el archivo antes de copiar los archivos a su tarjeta SD.</li>
+<li>Copie los archivos ModMii a la raíz de tu tarjeta SD (si no lo ha hecho) e insertarla en su Wii.</li>
+<li>Ir a Opciones de Wii - Gestión de Datos - Datos Guardados - Wii - Tarjetas SD luego copiar el "LEGO Star Wars", salvo que corresponda a su región.</li>
+<li>Inicie el LEGO Star Wars. Cargue la primera partida guardada (a la izquierda, en el 0,0 por ciento).</li>
+<li>Tan pronto como el nivel de carga, corre a la derecha y verás dos caracteres flotantes.</li>
+<li>Ir a la zona en frente de ellos y verás "Return of Jodi" que aparece en pantalla, pulse el botón "A" para lanzar el exploit.</li></ol>

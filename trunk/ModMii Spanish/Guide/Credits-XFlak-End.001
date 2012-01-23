@@ -1,0 +1,251 @@
+<!---------------------------------------Créditos, aplicaciones y fuentes están por debajo de---------------------------------------------->
+<font size="6"><li><a name="Credits">Créditos, Aplicaciones de apoyo, y fuentes</a></li></font><br>
+ModMii fue escrito enteramente por mí, XFlak, sin embargo, sin la ayuda de muchas otras personas con mucho talento ModMii no existiría <br>.
+Algunas personas han contribuido con el apoyo a los archivos o programas, otros han compartido sus conocimientos, algunos han aportado ideas y otros han dado su tiempo. <br>
+He intentado hacer el mayor esfuerzo para reconocer la contribución de todos a ModMii independientemente de que tan grande o pequeña que sea. Si me he olvidado de alguien, por favor notifiqueme y Yo los añadire los créditos lo más pronto posible. <br>
+A lo largo de los créditos se establecerán vínculos para hacer donaciones a algunos desarrolladores de otros muy dignos. Esto le permite enviar donaciones para apoyar al autor de sus herramientas favoritas. <br><br>
+
+<div style="margin: 5px 20px 20px;">
+<div class="smallfont" style="margin-bottom: 2px;"><input value="Click to show the Credits" style="margin: 0px; padding: 0px; width: 200px; font-size: 11px;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = 'Haga clic aquí para ocultar los créditos'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Haga clic para mostrar los créditos'; }" type="button">
+</div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;">
+<div style="display: none;">
+
+<ul><li><font size="4"><b>Equipo Twiizers</b></font><br>
+Gracias al Equipo Twiizers por crear el revolucionario HackMii installer. Sin su trabajo duro, la Wii no podría haber sido desbloqueada. Muchos miembros del equipo Twiizer pasó a formar parte del equipo Fail Overflow, un equipo que jugó un papel fundamental en el desbloqueo de la PS3 <br><br>.
+
+En especial, quiero agradecer a Bushing, quien dio su bendición ModMii para descargar y utilizar HackMii Installer.</li><br>
+
+<li><b><font size="4">Giantpune</font></b><br>
+Giantpune en una leyenda en la Scene de Wii y yo lo considero un buen amigo mío. El creó muchas proezas, incluido el exploit Stack para PAL y KOR para Wii (que sigué siendo el único método para reparar el brick 003 de la Wii), el Canal Forwarder dol, USB Loader GX, y muchos otros programas de pc para reparar o restaurar la Wii.<br><br>
+
+Ha contribuido con códigos para proyectos que yo ni siquiera conozco, por lo que es imposible para mí expresar realmente su impacto en la Scene. Incluso se tomó su tiempo para explicarme algunas cosas sobre ModMii cIOSs cuando aun era NUS al principio y todavía se conoce como Auto NUS Downloader.<br><br>
+
+Puede enviar sus donaciones a través de PayPal Giantpune: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=giantpune%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">giantpune@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">Crediar, Daco Taco y  Phpgeek</font></b><br>
+Esta gente, sobre todo, tuvo certeza en crear Priiloader. Esta fue otra herramienta revolucionaria sobre todo porque fue el primero en ofrecer algún nivel de protección a las nuevas Wii donde se puede instalar BootMii en boot2. Crediar desarrolló el preloader original, asi como S\UNEEK, NMM, DML, etc.<br><br>
+
+Puede enviar donaciones a Crediar a través de PayPal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=sven%2etathoff%40t%2donline%2ede&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">sven.tathoff@t-online.de<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+<br>
+
+
+Puede enviar donaciones a Daco Taco a través de PayPal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=daco_65%40hotmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">daco_65@hotmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+
+</li><br>
+
+<li><b><font size="4">Comex</font></b><br>
+Ademas de ser un miembro del equipo Twiizers y contribuir en HackMii Installer, Comex creó el exploit bannerbomb tan utilizado. este exploit permite a la Wii con firmwares 3,0-4,2 que se modifiquen con sólo una tarjeta SD en lugar de tener uno de los pocos juegos específicos de Wii.<br>
+<br>
+
+Usted puede enviar sus donaciones a Comex a través de PayPal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=comexk%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">comexk@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">Waninkoko</font></b><br>
+Waninkoko fue el primero en dar a conocer públicamente un cIOS y otras aplicaciones excelentes como WAD Manager, Save Game Manager, USB Loader, etc. También quiero darle las gracias por dar permiso a ModMii para recrear sus cIOSs en forma de WAD.<br><br>
+
+<li><b><font size="4">Hermes</font></b><br>
+Hermes es conocido por su cIOS 222/223/224 y por su usbloader "uloader". Durante mucho tiempo sus cIOSs fueron los únicos que trabajan con los juegos de tipo RockBand y siguen siendo muy utilizados todavía.</li><br>
+
+<li><b><font size="4">davebaol y XFlak</font></b><br>
+Estos desarrolladores trabajaron juntos para modificar el CIOS rev21 de Waninkoko y creó un nuevo "D2X" cIOS. Este cIOS es considerado el último CIOS porque corrige muchos errores y añade características que se creía que era imposible (es decir, Soporte para IOS Recarga de juegos). WiiPower también túvo una fuerte influencia de la incorporación de soporte para volver a recargar el IOS.</li><br>
+
+<li><b><font size="4">Rodries</font></b><br>
+Gracias a Rodries por la mejora a Hermes v5.1 cIOSs.</li><br>
+
+<li><b><font size="4">WiiGator</font></b><br>
+WiiGator creó el cMIOS y Lanzador de Gamecube de copia de seguridad. Fans de GameCube debemos un gran agradecimiento a WiiGator por su trabajo..</li><br>
+
+<li><b><font size="4">cwstjdenobs</font></b><br>
+cwstjdenobs es una de las pocas personas que he encontrado en scene de la Wii. Me gustaría invitarle a una cerveza. El fue siempre un gran apoyo para mi y me animó a hacer tantas preguntas como quisiera. El es probablemente más conocido por YAWMM (otro mod Wad Manager), que fue el primer Wad Manager para añadir la protección de brick limitando a los usuarios que hagan una tontería, errores como la desistalación de archivos críticos. El también hizo modificaciones específicamente para aplicaciones de ModMii. Por ejemplo, modificó WadMii por lo que no hay WADS con fecha y hora y también hizo un generador setting.txt para generar NAND para ModMii.</li><br>
+
+<li><b><font size="4">Leathl</font></b><br>
+Leathl es otro desarrollador impresionante que me apoyó antes de convertirme también conocido por la expansión en sus aplicaciones apoyando a ModMii. Leathl ha creado muchas aplicaciones para Wii como ShowMiiWads, CustomizeMii, libwiisharp, patchios, nusfilegrabber, etc. A pesar de su reciente inactividad, sus aplicaciones son todavía muy utilizadas en la actualidad... Esto demuestra que nunca un trabajo de calidad se hace viejo. También quiero dar las gracias a RetroHead por el Mod de ShowMiiWads que utiliza ModMii para construir NANDs emulandas sin la necesidad de intervenir el usuario. libwiisharp.dll se basa en wii.py, los desarrolladores de wii.py son Megazig, Omega, Xuzz, SquidMan, Matt_P y The Lemon Man. También gracias a Daeken por escribir Struct.py y Marcos por su código de LZ77.<br>
+<br>
+
+Puede enviar sus donaciones por PayPal Leathl: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=leathl%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">leathl@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+<li><b><font size="4">scooby74029</font></b><br>
+Más también es conocido por scooby74029 sneeky compilador, que es capaz de  crear varias versiones diferentes de S\UNEEK. ModMii siempre va a construir la última versión de S\UNEEK disponible en su código sneeky compilador en su página web de google. Esto significa que él tiene el control total sobre qué versión de S\UNEEK ModMii va a utilizar. Tambión creó las modificaciones de libwiisharp.dll de Leathl y patchios.exe sigue apoyando ModMii. Además, ha
+echo  modificado otras aplicaciones como JoyFlow, JoyLoader GX, CFG JoyLoader, etc. Además de todo eso, es una persona increíble por todo y estoy orgulloso de estar en su lista de amigos.</li><br>
+
+<li><b><font size="4">WiiPower</font></b><br>
+WiiPower creo Neogamma, sin duda alguna el programa de copias de seguridad en disco para la Wii. Tambien modifico cMIOS WiiGators y creo lo que hoy se considera el último cMIOS. Ademas ha contribuido en el código de muchos otros populares USB-Loaders y lo incorporo al soporte para la recarga IOS cIOSs D2X.</li><br>
+
+<li><b><font size="4">OverjoY y obcd</font></b><br>
+Demasiada alegría creó JoyFlow, una modificación de WiiFlow que se ejecuta en S\UNEEK A continuación, se asoció con obcd para realizar algunas cosas increíbles,como la creación de sus módulos de S\UNEEK, neek2o, que le permite cargar los juegos en formato WBFS y seleccionar entre varias NANDs emulada.</li><br>
+
+Enviar sus donaciones a través de PayPal OverjoY: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=overjoy%2epsm%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">overjoy.psm@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+<br>
+Enviar sus donaciones a través de PayPal obcd: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=cooltje%40telenet%2ebe&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">cooltje@telenet.be<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+<br>
+<li><b><font size="4">Arikado y el equipo Dop-Mii</font></b><br>
+Ellos crearon Dop-Mii, un montón de aplicaciones pedi prestado el código de Dop-Mii, así que incluso si núnca ha utilizado Dop-Mii pero utilizó MMM o WiiMod entonces ústed debemos un agradecimiento a estas personas.<br><br>
+
+Enviar sus donaciones a través de PayPal Arikado: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=r0szsoft%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">r0szsoft@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">WiiWu</font></b><br>
+Hizo Multi-Mod Manager (MMM), que tiene las funciones de diferentes programas Wii modifica todas las herramientas en la aplicación de un usuario fácil.<br><br>
+
+Enviar sus donaciones a través de PayPal WiiWi: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=wiiwu2%40yahoo%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">wiiwu2@yahoo.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">WB3000 y WiiNinja</font></b><br>
+Gracias a WB3000 por la creación de NUS Downloader y WiiNinja por hacer una cmd versión en línea de NUS Downloader. NUS Downloader es vital en ModMii apoyo de las aplicaciones.<br><br>
+
+Enviar donaciones a través de WB3000 bitcoin: 16cziXAdmLJwwSvgfKkfk6sSknvGqyf3VU</li><br>
+
+
+<li><b><font size="4">WiiCrazy</font></b><br>
+WiiCrazy es más conocido por "Creador de acceso directo de Wii" (antes conocido como "Crap"), Crazy Intro y Crazy Intro Video. También contribuyó con usb-loaders sin pasar por cierta seguridad específicas del juego. WiiCrazy es otro persona que siempre ha estado dispuesto a hacer todo lo posible por ayudarme, o cualquier otra persona para esa materia.</li><br>
+
+<li><b><font size="4">oggzee, usptactical, gannon y Dr.Clipper</font></b><br>
+Junto a la gente por encima de la composición del equipo Configurable USB Loader. Este usb-loader siempre ha sido el primero en añadir nuevas funciones y en mi opinión es el mejor usb-loader que hay.<br><br>
+
+Enviar sus donaciones a través de PayPal equipo CFG USB-Loader: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=donate%40wiitdb%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">donate@wiitdb.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">Wiimm</font></b><br>
+Gracias a Wiimm por la creación de herramientas Wiimms ISO, incluyendo wit.exe que ModMii utiliza para convertir los juegos de Wii para S/UNEEK formato, así como crear forwarder ISOs.</li><br>
+
+<li><b><font size="4">diddy81 y symular syn del Equipo Tematico Wii </font></b><br>
+El equipo temático Wii ha creado algunos de los mejores temas de Wii hechos nunca! Todos los temas que se disponga en ModMii fueron creados por ellos. Quiero agradecer a diddy81 en particular, por trabajar conmigo para asegurarse de que todos sus temas funcionen a la perfección en todas las regiones.</li><br>
+
+<li><b><font size="4">FIX94, Narolez y el equipo WiiXplorer </font></b><br>
+Gracias a todas estas personas por sus contribuciones en hacer las mejores SD\USB forwarder. Quiero agradecer a FIX94 en particular, que pasó mucho tiempo probando el trabajo de ModMii Forwarder... puede ser joven, pero es sabio para su edad, imagínate lo que sera capaz de hacer cuando sea mayor de edad para votar!<br><br>
+
+Enviar las donaciones equipo WiiXplorer a través de PayPal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=dimok%40gmx%2ede&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">dimok@gmx.de<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+<li><b><font size="4">jskyboo</font></b><br>
+Gracias a jskyboo por la creación de WiiMod. Su aplicación puede hacer un montón de cosas diferentes, y fue el primer WAD Manager de AHBPROT activado para poder incorporar de davebaol ahbprot corrección de errores.</li><br>
+
+
+<li><b><font size="4">Traductores de ModMii</font></b><br>
+Traducir ModMii es un enorme trabajo. Es muy difícil para obtener los carácteres especiales para mostrarse correctamente en una ventana de CMD, por no mencionar de mantener todo el formato correcto. Pero probablemente lo más difícil de traducir ModMii es mantener al día las actualizaciones. Si utiliza una versión traducida de ModMii, le animo a que lo traduzca gracias, ya que realmente es MUCHO trabajo para hacer.<br><br>
+
+Traducción a Frances: <b>mamule, xav91 y ketufe</b><br>
+Traducción a Holandes: <b>Hielkenator</b><br>
+Traducción a Italiano: <b>Wasabi, Step y Robilyn</b><br>
+Traduccion a Español: <b>ledebene y Burton</b></li><br>
+
+<li><b><font size="4">Fig2k4</font></b><br>
+Gracias Fig2k4 por WiiBackupManager. Fue un placer hacer pruebas beta para usted y compartir mis ideas con usted. Espero verlo por el foro otra vez y seguir trabajando en su programa increíble.<br><br>
+
+Enviar donaciones a través de PayPal Fig2k4: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=Fig2k4%40googlemail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">Fig2k4@googlemail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+
+<li><b><font size="4">WiiShizzza y pepxl</font></b><br>
+Gracias a WiiShizzza por la creación del nuevo icono ModMii y a pepxl por la creación del icono original ModMii. Quiero agradecer a todo el que creó un icono de ModMii y lo presentó en la competición nuevo icono de ModMii. <a href="http://gbatemp.net/topic/296772-new-modmii-iconlogo-candidates/" target="_blank">http://gbatemp.net/topic/296772-new-modmii-iconlogo-candidates/</a></li><br>
+
+<li><b><font size="4">Mis compañeros autores de guías</font></b><br>
+Gracias a tj_cool, xzxero, burritoboy9984, ChokeD y mauifrog por sus Guías impresionantes. En especial, quiero agradecer a tj_cool y xzxero por invitarme a que me uniera a "La tripulación" en la Guía de Softmod completa. Nunca olvidaré que grande me senti al ser relativamente nuevo en la Scene y que serán invitados a unirse a todos por igual.</li><br>
+
+<li><b><font size="4">JoostinOnline</font></b><br>
+Gracias por determinar la mejor configuración para todos los CIOs y sus ocurrencias. Nunca me cansaré de nuestros interminables conversaciones "debates".</li><br>
+
+<li><b><font size="4">DaMysteryMan</font></b><br>
+Gracias por ayudarme a entender la estructura de un cIOS, así puedo mejorar la recreación en forma WAD. Para aquellos de ustedes que no lo conocen, es DaMysteryMan más conocido por su aplicación siempre controversial - DarkCorp (antes cIOSCorp).</li><br>
+
+<li><b><font size="4">person66</font></b><br>
+Gracias por el intercambio de pedacitos de conocimiento de codificación por lotes conmigo. Es genial tener un codificador por lotes para un amigo, somos una raza en extinción, por lo que continuar al día el gran trabajo con el creador Forwarder Universal y todos los proyectos de unos y otros.</li><br>
+
+<li><b><font size="4">Gannon</font></b><br>
+Gracias a Gannon de bootopera, que fué capaz de crear el módulo URL loader base dol.</li><br>
+
+<li><b><font size="4">Violator</font></b><br>
+Él es mi hermano, mi primo, mi mejor hombre y la razón por la que he comprado o modificado una Wii. "XFlak" habría muerto no hace mucho tiempo si no fuera por él. Gracias Violator, por conseguir que me interesara en esta materia, y por toda la musica impresionante que he grabado en mis inicios <a href="http://tinyurl.com/crazyintro" target="_blank">Crazy Intro Videos</a></li><br>
+
+<li><b><font size="4">DeadlyFoez</font></b><br>
+DeadlyFoez es legendario por sus reparaciones y Wii tutorial de INFECTUS. Cualquiera que haya roto su Wii puede enviar un correo <a href="mailto:deadlyfoez@yahoo.com ">deadlyfoez@yahoo.com </a> to have it fixed.<br><br>
+
+DeadlyFoez desempeño un papel clave en la actualización de ModMii V5.0.0 no sólo ayudando a llegar a la idea de utilizar guías html, sino también creando la plantilla de guías personalizadas ModMii y grabar casi todos los videos y las imágenes que utilizan. Menos de 1,5 semanas desde nuestra primera conversación hemos sido capaces de colaborar y llevar la idea a la vida en tiempo de liberación para la Navidad. Trabajar con él en esto fue una experiencia realmente gratificante y divertida.<br><br>
+
+Qué puedo decir acerca de "DeadlyFoez" a nivel personal. El siempre está metiendome en problemas, pero su amistad vale la pena por cada fiasco! es irreal la forma en que se convirtió en uno de mis mejores amigos. Apenas va a demostrar nada todo el que lo conoce en línea está totalmente loco, en su caso ... un poco loco. Pero en serio, gracias a DeadlyFoez por estar siempre ahí para intercambiar ideas fuera de ModMii, para acoger las dos primeras reuniones del equipo de su mamá y por presentarme a su familia y amigos increibles. No hay nadie más Prefiero terminar friki y siempre tendré su espalda.</li><br>
+
+<li><b><font size="4">Todos mis probadores beta!</font></b><br>
+Es por ustedes que ModMii es estable como es. Teniendo en cuenta que ModMii se desarrolla por completo en el bloc de notas sin ningún tipo de depuración o herramientas de desarrollo, que es bastante notable que ModMii siempre ha estado libre de errores (aunque con algunas excepciones menores). Gracias por su interminable devoción de control de calidad!<br>
+
+Aquí hay una lista del actual grupo de pruebas beta de ModMii (en ningún orden particular): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog y FIX94.
+
+</li><br>
+
+<li><b><font size="4">Usted!</font></b><br>
+Sin ustedes, no habría razón para que existiese ModMii. Gracias por usar ModMii para todas sus necesidades modificando su Wii!</li></ul>
+<br>
+</div>
+</div>
+</div>
+
+
+<div style="margin: 5px 20px 20px;">
+<div class="smallfont" style="margin-bottom: 2px;"><input value="Supporting Apps and Sources" style="margin: 0px; padding: 0px; width: 200px; font-size: 11px;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = 'Supporting Apps and Sources'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = 'Aplicaciones de apoyo y fuentes'; }" type="button">
+</div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;">
+<div style="display: none;">
+El apoyo a los programas/archivos incluyen las aplicaciones ModMii:<br>
+<ul>
+<li>NusFileGrabber.exe (de Leathl, Mod por XFlak) - requiere libwiisharp.dll (<a href="http://code.google.com/p/libwiisharp/source/browse/#svn/branches/NusFileGrabber" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>patchIOS.exe (de Leathl, Mod por scooby74029) - requiere libwiisharp.dll (<a href="http://code.google.com/p/libwiisharp/source/browse/#svn/branches/patchIOS" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>WadMii.exe aka WadMiiIsh (by cwstjdenobs) - requiere libwiisharp.dll (<a href="http://www.mediafire.com/?bogjind5oe3" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>libWiiSharp.dll (de Leathl, Mod por scooby74029) (<a href="http://code.google.com/p/libwiisharp/source/browse/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>nusd.exe (de WiiNinja, original GUI code por WB3000) (<a href="http://gbatemp.net/index.php?showtopic=153341" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>wit.exe (por Wiimm) (<a href="http://wit.wiimm.de/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>ShowMiiWads_Sneek_Mod.exe (de Leathl, Mod por RetroHead) (fuente incluida en la Fuente de ModMii)</li>
+<li>settings.exe (by cwstjdenobs) (fuente incluida en la Fuente de ModMii)</li>
+<li>wget.exe (freeware) (<a href="http://ftp.gnu.org/gnu/wget/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>7za.exe (freeware) (<a href="http://sourceforge.net/projects/sevenzip/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li><strike>UnRAR.exe (freeware) (<a href="http://www.rarlab.com/rar_add.htm" target="_blank">ENLACE A LA FUENTE</a>)</strike> No están incorporadas en ModMii desde v4.7.0 </li>
+<li><strike>AutoIt3.exe (freeware) (<a href="http://www.autoitscript.com/site/autoit/" target="_blank">ENLACE A LA FUENTE</a>)</strike> No están incorporadas en ModMii desde v4.5.7</li>
+<li>nircmd.exe (freeware) (<a href="http://www.nirsoft.net/utils/nircmd.html" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>sfk.exe (freeware) (<a href="http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>fvc.exe (freeware) (<a href="http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>jptch.exe (freeware) (<a href="http://sourceforge.net/projects/jojodiff/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li><strike>hy.exe (freeware) (<a href="http://www.milletre.net/software/hypatia/index.htm" target="_blank">ENLACE A LA FUENTE</a>)</strike> No están incorporadas en ModMii desde v4.5.0</li>
+<li>Waninkoko's cIOS Modules (<a href="http://github.com/waninkoko" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>Hermes cIOS v4 Modules (<a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>Hermes cIOS v5 Modules (<a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>d2x cIOS Modules (<a href="http://gbatemp.net/t277659-ciosx-rev21d2x-v2-yet-another-hot-fix" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>ISO template (by spayrosam) (<a href="http://goo.gl/0L40U" target="_blank">ENLACE A LA FUENTE</a>)</li>
+<li>Ascii2All.bat (freeware) (<a href="http://www.batchlog.pytalhost.com/" target="_blank">ENLACE A LA FUENTE</a>)</li>
+</ul>
+<br>
+
+código fuente de ModMii disponible para su descarga <a href="http://code.google.com/p/nusad/people/list" target="_blank">AQUÍ</a>.<br>
+</div>
+</div>
+</div>
+
+Si usted desea contribuir con el proyecto, o tiene ideas, por favor envíeme un mensaje\correo electrónico y podemos discutir más sobre él en privado.<br>
+<br>
+<!---------------------------------------Créditos, aplicaciones y fuentes están por encima de---------------------------------------------->
+
+
+<!-------------------------------------XFlak el apoyo está por debajo de------------------------------------------->
+<font size="6"><li><a name="Support">Soporte XFlak</a></li></font><br>
+<img src="http://gbatemp.net/uploads/profile/photo-198223.gif" alt="XFlak" height="95" width="94" /><br>
+Si ModMii trabajó para usted, por favor, voten a favor el programa <a href="http://tinyurl.com/ModMiiNow" target="_blank">AQUÍ</a><br>
+Echa un vistazo a mi <a href="http://tinyurl.com/topchannels" target="_blank">Top Channels</a><br>
+Echa un vistazo a mi <a href="http://tinyurl.com/crazyintro" target="_blank">Crazy Intro Videos</a><br>
+Las donaciones pueden ser opcionales a través de PayPal a <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=xflak40%40hotmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">XFlak40@hotmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_LG.gif" border="0"></a><br>
+Si usted dona $ 1 o más a XFlak40@hotmail.com, como mi manera de decir gracias voy a responder a su correo electrónico con un Easter Egg funcional garantiza que sea útil cada vez que utilice ModMii.<br>
+ModMii le mandará vía email el Easter Egg, si lo prefiere donar a alguien más que aparece en los créditos sólo si se pide que envíe la confirmación de su donación a XFlak40@hotmail.com.<br>
+<!-------------------------------------XFlak el apoyo está por encima de------------------------------------------->
+
+
+</ol>          <!------------Esto termina la lista de capítulos en Roman Numberals, esto tiene que ser en todas las GUÍAS-------------->
+
+
+<!-------------------Finaliza el código HTML siguiente------------------------------>
+</body> 
+</html>
+<!-------------------Finaliza el código HTML anterior------------------------------>

@@ -1,0 +1,24 @@
+<!----------------------------Después de la sección continuar Modding----------------------------->
+<font size="6"><li><a name="Done">Después de modificar tu Wii</a></li></font><br>
+Cuando haya terminado de modificar su Wii, si lo desea, puede borrar todos los archivos innecesarios mediante el uso de ModMii en "limpieza de archivos".<br><br> 
+
+Si ha utilizado Bannerbomb y decide no utilizar la función de limpieza de de archivos, con el fin de evitar que su Wii congelación de cuando se accede al menú de la tarjeta SD, debe eliminar la carpeta "aktn" donde se guarda bannerbomb (SD:\private\wii\title\aktn), o cambiar el nombre de toda la carpeta "private".<br><br>
+
+En este momento está prácticamente hecho.<br>
+Ahora usted debe descargar las últimas aplicaciones homebrew y que fueron creados en su tarjeta SD (o disco duro USB  FAT32) para que puedan ponerse en marcha a través del HBC.<br>
+<br>
+Para la reproducción de las copias de seguridad de un disco duro USB, ejecutar la función de Configuración de USB-Loader desde el Menú Principal de ModMii.<br>
+<br>
+Para descargar aplicaciones, debe:<br>
+<ul><li>Echa un vistazo a las páginas de descargas por lotes de ModMii, ya que tiene muchas aplicaciones populares disponibles para su descarga
+.</li>
+<li>Descarga <a href="http://www.sites.google.com/site/completesg/how-to-use/hbb" target="_blank">Homebrew Browser</a> a través de ModMii para conseguir muchas aplicaciones populares, pero esto es sólo una solicitud en línea de Wii.</li>
+<li>Para los que no tienen internet en su Wii, echa un vistazo a esta lista de <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">aplicaciones Homebrew.</a></li></ul>
+Otro gran recurso es<a href="http://webrewwii.blogspot.com" target="_blank">webrewwii.blogspot.com</a><br><br>
+
+Después de conseguir todas las aplicaciones que desea, usted debe obtener un archivo boot.dol y posiblemente un icon.png y meta.xml.<br>
+Para HBC pueda leer su tarjeta SD / USB correctamente, la tarjeta debe estar estructurada SD:/apps/application name/boot.dol<br>
+Si usted tiene un *. dol no tiene nombre boot.dol, cambiar el nombre boot.dol, de lo contrario no será reconocido por el HBC.<br>
+(opcional: el icon.png y meta.xml debe guardarse en el mismo lugar que el boot.dol)<br>
+<br>
+<!----------------------------Después de Modding sección de arriba----------------------------->

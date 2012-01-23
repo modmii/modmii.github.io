@@ -1,0 +1,8 @@
+<!---------------------------CUALQUIER SECCIÓN CAMBIA REGIÓN POR DEBAJO------------------------------>
+<font size="5"><li>Utilizar cualquier cambiador de Región</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/gwJgWofoQeM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/ARC.gif" border="0"/></a><br>
+Lanzar "ARC 1.1b mod06 fuera de línea" a través del Canal Homebrew<br>
+Después de cargar la aplicación, seleccione IOS236 a continuación, pulse "A".<br>
+Después de leer la advertencia, pulse "1".<br><br>
+Usted verá este error en la parte superior de la pantalla: "ADVERTENCIA: AREA: NO COINCIDE SYSMENU!"<br>
+Ir hacia abajo para seleccionar "Región Menú de Sistema" y 

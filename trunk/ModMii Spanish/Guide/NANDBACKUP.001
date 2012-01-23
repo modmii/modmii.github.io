@@ -1,0 +1,11 @@
+<!------------------------------sección de copia de seguridad Nand a continuación-------------------------->
+<font size="5"><li>Hacer una copia de seguridad NAND</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/0u_Xgq-MfGw?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/NANDBackup.gif" border="0"/></a><br>
+Mientras que en el interior del Canal Homebrew, cargar BootMii pulsando en casa y hacer clic en Lanzar BootMii. <br>
+Pulse el botón de encendido de la consola Wii 3 veces para llegar a la última opción, a continuación, pulse el botón de reinicio (también se puede navegar con un controlador de Gamecube). <br>
+Presione RESET para elegir la primera opción y siga las instrucciones que aparecen en la pantalla para hacer la copia de seguridad NAND (Los bloques dañados no son un problema). <br>
+haz una Copia de seguridad de la carpeta BootMii, nand.bin y KEYS.BIN en otro lugar y borrar de la tarjeta SD (o cambiarle el nombre). Usted necesitará estos casos en situaciones de emergencia, así que no los pierda. <br>
+Volver a El Canal Homebrew. <br>
+<b> Nota: </b> si BootMii fue instalado como boot2, a continuación, se mostrará tan pronto como la Wii está encendida SIEMPRE Y CUANDO se encuentre la carpeta BootMii (mencionada anteriormente) en la raíz de la tarjeta SD.<br>
+<br>
+<!------------------------------Sección de copia de seguridad Nand arriba-------------------------->

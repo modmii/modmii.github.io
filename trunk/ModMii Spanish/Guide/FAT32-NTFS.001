@@ -1,0 +1,21 @@
+<!----------------------------------FAT32 + NTFS BELOW-------------------------------->
+<font size="5"><li>Particionar y formatear el disco duro externo como FAT32 + NTFS</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/ujM7c5MCVq4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/FAT32NTFS.gif" border="0"/></a><br>
+Si usted tiene algo guardado en el disco duro, usted debe volver ahora ya que todos los datos se perderán una vez que se complete este paso.<br>
+<br>
+Haga clic derecho en "Mi PC" y seleccionar "Administrar", una nueva ventana se abrirá, en la columna de la izquierda haga clic en Panel de discos "".<br>
+Haga clic con el disco que desea particionar (asegúrese de seleccionar la unidad de la derecha!), A continuación, seleccione "Eliminar volumen..."<br>
+<br>
+En el menú parte inferior de la ventana, busque el espacio no asignado, haga clic derecho y seleccionar "Nuevo volumen simple..."<br>
+Escriba el "tamaño de volumen" Que usted quiere que su partición FAT32 tenga, y haga clic en "Siguiente".<br>
+Elija una letra de unidad para esta partición, y haga clic en "Siguiente" (Tome nota de la letra de la unidad, ya que será necesario más adelante).<br>
+Usted probablemente no será capaz de cambiar el sistema de archivos a FAT32 (que sólo será una opción si el tamaño del volumen es menor de 32 GB).<br>
+Si no tiene la opción FAT32, seleccione "No formatear este volumen", y haga clic en "Siguiente" (no importa si el formato del volumen, ya que vamos a dar formato FAT32 después).<br>
+<br>
+En el menú de la parte inferior de la ventana, busque el espacio no asignado restante (para la partición NTFS), haz clic derecho y seleccionar "Nuevo volumen simple...."<br>
+Haga clic en "Siguiente" (para dar formato al espacio restantes en el disco).<br>
+Elija una letra de unidad para esta partición, y haga clic en "Siguiente".<br>
+Asegúrese de que el sistema de archivos está en NTFS nómbre el volumen de la partición/, si lo desea, puede desactivar la opción "Formato rápido", haga clic en "Siguiente" y luego haga clic en "Finalizar".<br>
+<br>
+Si se las arregló para dar formato a la primera partición como FAT32, puede saltarse el resto de este paso.<br>
+<br>

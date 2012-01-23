@@ -1,0 +1,5 @@
+<b>BannerBomb v1</b><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/j9cTbNrFcvA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/BannerbombV1.gif" border="0"/></a><br>
+Requisitos: una tarjeta SD o SDHC<br>
+Ejecutar bannerbomb v1, vaya a Configuración, Gestión de datos, canales, tarjeta SD y elegir sí a la carga boot.dol/elf.<br>
+<b>Nota:</b> Si esto no le funciona , visite<a href="http://bannerbomb.qoid.us/" target="_blank">http://bannerbomb.qoid.us/</a> para más variaciones de cualquiera de las versiones de bannerbomb.<br>

@@ -1,0 +1,19 @@
+<li><u>USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL</u></li>
+</ul>
+<br>
+El canal forwarder destaca, se carga el primer archivo que encuentre en la lista siguiente:<br>
+<ul style="list-style: none;">
+<li>SD+USB:\apps\usbloader\boot.dol</li>
+<li>SD+USB:\apps\usbloader\boot.elf</li>
+<li>SD+USB:\apps\usb-loader\boot.dol</li>
+<li>SD+USB:\apps\usb-loader\boot.elf</li>
+<li>SD+USB:\apps\usbloader_cfg\boot.dol</li>
+<li>SD+USB:\apps\usbloader_cfg\boot.elf</li>
+<li>SD+USB:\apps\WiiFlow\boot.dol</li>
+<li>SD+USB:\apps\WiiFlow\boot.elf</li>
+<li>SD+USB:\apps\usbloader_gx\boot.dol</li>
+<li>SD+USB:\apps\usbloader_gx\boot.elf</li>
+</ul>
+<br>
+<b>Nota:</b> IOS58 se requiere para el redireccionador para lanzar aplicaciones desde una tarjeta SD y discos duros con formato FAT32, NTFS, ext2, ext3 y ext4. También apoya los argumentos de meta.xml y es capaz de lanzar aplicaciones con acceso directo al hardware.<br>
+<!-------------------------Instalación de WADS sección anterior--------------------------->

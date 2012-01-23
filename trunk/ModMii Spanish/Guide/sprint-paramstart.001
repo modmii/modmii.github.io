@@ -1,0 +1,48 @@
+<!----------Custom Printing CSS and button below--------------->
+<style type="text/css" media="print">
+.printbutton {
+  visibility: hidden;
+  display: none;
+}
+@media print {
+  img {
+    display: none !important;
+  }
+
+  * {
+    background-image: none !important;
+  }
+}
+
+
+</style>
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='imprimir su guía personalizada'/>");
+</script>
+<!----------Custom Printing CSS and button above--------------->
+
+ 
+
+
+
+<!--------------Title, pic and scam warning below------------------>
+<center><font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
+<a href="http://tinyurl.com/ModMiiNow" target="_blank"><img src="http://img52.imageshack.us/img52/7416/modmiialt2.png" border="0"/></a></center>
+<center>Si usted pago por este programa o lo recibio como parte de un "paquete" usted a sido estafado.<br><br>
+
+<b>ESTE PAQUETE NO VIENE CON ABSOLUTAMENTE NINGUNA GARANTIA. SOLAMENTE USTED SERA RESPONSABLE DE CUALQUIER ERROR QUE ESTO PUEDA CAUSAR A SU CONSOLA WII DE NINTENDO!<br>
+USE ESTO BAJO SU PROPIA RESPONSABILIDAD!</b></center><br><br>
+<!--------------Title, pic and scam warning above------------------>
+
+
+<ol type="I">         <!------------This start the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+
+
+<!-------------------------Chosen options chapter below--------------------->
+<font size="6"><li>Opciones que ha elegido</li></font><br>
+Esta guía se ha generado utilizando los siguientes parámetros:<br>
+<ul>

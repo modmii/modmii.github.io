@@ -1,0 +1,18 @@
+<!--------------------------------------NTFS ABAJO------------------------------------>
+<font size="5"><li>Particionar y formatear el disco duro externo en NTFS</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-K-VBFhUlqc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Partition.gif" border="0"/></a><br>
+En primer lugar comprobar si el disco necesita ser formateado mediante la comprobación del formato actual\del sistema de archivos de la unidad. <br>
+Abra "Mi PC", haga clic en el disco duro externo que desee utilizar, a continuación, seleccione "propiedades". <br>
+Tome nota de la letra de la unidad del disco duro externo ya que esto será importante más adelante. <br>
+Si el "sistema de archivos" ya es NTFS, puede saltarse este paso <br>.
+<br>
+Si usted tiene algo guardado en el disco duro, usted debe volver ahora ya que todos los datos se perderán una vez que lo formato.<br>
+<br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/C5ieEHT4jtw?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/NTFS.gif" border="0"/></a><br>
+<br>
+Haga clic derecho en "Mi PC" y seleccionar "Administrar", una nueva ventana se abrirá, en "Administración de discos" a la izquierda haga clic en el panel. <br>
+Haga clic derecho en la unidad que desea formatear (asegúrese de seleccionar la unidad de la derecha!), A continuación, seleccione "Format ..."< br>
+Seleccione "NTFS", como el sistema de archivos para el uso y la entrada de un nombre para la unidad de disco duro/Volumen. <br>
+Si lo desea, pueden desactivar la opción "Formato rápido" y haga clic en "OK" y haga clic en "Aceptar" de nuevo.<br>
+<br>
+<!--------------------------------------NTFS ARRIBA------------------------------------>
