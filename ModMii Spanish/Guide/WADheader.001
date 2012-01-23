@@ -1,0 +1,20 @@
+<!-------------------------Installing WADs section below--------------------------->
+<font size="5"><li>Instalar WADs</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/_OUlkjGzqE4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/WADs.gif" border="0"/></a><br>
+Cargar Multi-Mod Manager (MMM) a través del Canal Homebrew.<br>
+Si IOS236 no está ya cargado, seleccione "Load another IOS", a continuación, seleccione IOS236<br>
+
+<b>Nota:</b> Si este paso falla con el error-ret 2011 o de otro tipo, puede ser necesario volver a intentar parchear IOS236. Si la Wii fue modificada anteriormente, puede intentar cargarla de cIOS250 (u otros como 202.222.223.224.236.249 IOS ", a continuación, seleccione IOS236)<br>
+<br>
+En el menú principal de Multi-Mod Manager, vaya hacia abajo para seleccionar "WAD Manager".<br>
+Instalar los WADs siguientes de la carpeta WAD (esta lista de WADs es exclusiva de la información que ha proporcionado ModMii).<br>
+Tenga cuidado de no instalar ningún WADS adicional que se han guardado previamente en esta carpeta (que puede ser seguro, pero no puedo decir con seguridad).<br>
+<br>
+Marque cada uno de los WADs siguientes para la instalación mediante la navegación a cada WAD y accionar"+"<br>
+Alternativamente, puede mantener "+" durante 2 segundos para seleccionar todos los WADs en la carpeta.<br>
+Una vez que haya marcado todos los WADs se enumeran a continuación, pulsa 'A' dos veces para su instalación.<br>
+<br>
+Si hay archivos no se instalará correctamente, permanecerá marcado para su instalación, así que vuelva a intentar la instalación de los archivos.<br>
+<br>
+<b>Su lista única de WADs para instalar son los siguientes:</b>
+<ul>

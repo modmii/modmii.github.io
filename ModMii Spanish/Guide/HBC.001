@@ -1,0 +1,8 @@
+<font size="5"><li>Instalar el Homebrew Channel (HBC) y Bootmii</li></font><br>
+<br>
+<b>Nota:</b> Si esta Wii se ha modificado previamente, y que tenga por HBC, BootMii como boot2, o un canal Forwarder instalado, puede usarlo en vez de un exploit.<br>
+<br>
+Si se utiliza BootMii como boot2 para instalar el HBC, a su vez en tu Wii con la tarjeta SD insertada y BootMii se carga. Vaya al menú SD y la carga bootmini.elf. Esto cargará Hackmii Installer lo que le permite volver a instalar el HBC.<br>
+<br>
+Si se utiliza un canal Forwarder, sólo tienes que guardar el boot.elf / dol desde la aplicación que desea cargar (es decir, SD: \ apps \ hackmii_installer \ boot.elf o SD: \ apps \ MMM \ boot.dol) a la ubicación utilizada por su <u> específico </u> Canal Forwarder (es decir, SD: \ apps \ usbloader \ boot.dol). A continuación, iniciar el canal y Hackmii Installer se carga lo que le permite volver a instalar el HBC. Atención, si el canal forwarder sólo carga dol y no es elf, boot.dol lanzar desde MMM, a continuación, utilizar el "Administrador de la aplicación" para cargar el Hackmii Installer.<br>
+<br>

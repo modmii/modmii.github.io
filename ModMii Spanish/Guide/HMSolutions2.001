@@ -1,0 +1,17 @@
+Después de instalar correctamente los WADs, utilice "B" para volver al menú principal de MMM y seleccione "App Manager" y luego presione A.<br>
+Elija HackMii_Installer utilizando "A"<br>
+Esto ejecuta el Hackmii installer (y en silencio/instala automáticamente BootMii como IOS).<br>
+<br>
+
+
+
+<font size="5"><li>Instalar el Homebrew Channel (HBC) y BootMii</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/HackMii.gif" border="0"/></a><br>
+Use Hackmii Installer para arreglar/volver a instalar el HBC. Si no lo ha hecho, también debe instalar BootMii como boot2 (si es posible).<br>
+<br>
+Una vez que haya vuelto a instalar con éxito el HBC, ya ha terminado con esta guía.<br>
+<br>
+Si ya salió de MMM, se puede cargar el HackMii_Installer desde el Homebrew Channel.<br>
+Si el HBC no puede cargar ninguna aplicación (sólo patallas negras), en lugar lanzar MMM utilizando el método descrito en el paso 1, a continuación, en el menú principal de MMM, seleccione "App Manager" y luego seleccionar el HackMii_Installer.<br>
+Se iniciará el installer HackMii, lo utilizan para volver a instalar el Canal Homebrew.<br>
+<br>

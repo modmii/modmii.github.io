@@ -1,0 +1,27 @@
+
+
+Esto abrirá Multi-Mod Manager.<br>
+<br>
+
+<font size="5"><li>Instalar IOS58 con Multi-Mod Manager (MMM)</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/e4yvKwZJk_k?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/IOS58MMM.gif" border="0"/></a><br>
+En el menú principal de Multi-Mod Manager, vaya hacia abajo para seleccionar "WAD Manager".<br>
+Ahora instale IOS58v6176.<br>
+Vaya hasta el WAD y presiona A dos veces para instalar los IOS de forma individual.<br>
+Tenga cuidado de no instalar ningún WADS adicional que se han guardado previamente en esta carpeta (que puede ser seguro, pero no puedo decirlo con seguridad).<br>
+Asegúrese de que el archivo se instala correctamente antes de continuar.<br><br>
+
+Después de instalar correctamente el WAD, utilice "B" para volver al menú principal de MMM y seleccione "App Manager" y luego presione A.<br>
+Elija HackMii_Installer utilizando"A"<br>
+Esto ejecuta el Hackmii installer (y en silencio/instala automáticamente BootMii como IOS).<br>
+<br>
+
+
+
+<font size="5"><li>Instalar elHomebrew Channel (HBC) y Bootmii</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/HackMii.gif" border="0"/></a><br>
+Usar el HackMii installer para instalar el Homebrew Channel (HBC) y BootMii como boot2 si es posible.<br>
+<br>
+
+
+<!-------------------PASOS COREANOS ÚNICAMENTE POR ENCIMA!!!!!!!!!!!!!!--------------------------->
