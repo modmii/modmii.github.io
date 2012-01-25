@@ -1,0 +1,3 @@
+<li>When using SNEEK+DI or UNEEK+DI, you can access the Game/DI Menu by pressing "1" on the WiiMote. To access other settings (including Region Options), you must press "+" from within the DI Menu.</li>
+
+<li>To add Games to the Game/DI Menu, you can use ModMii to extract Wii Games to your FAT32 USB External Hard Drive. neek2o is also able to load games from "USB:\WBFS" which means you can also use WiiBackupManager (available on ModMii's Download Page 2).</li>

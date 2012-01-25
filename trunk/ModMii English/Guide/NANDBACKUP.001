@@ -4,7 +4,7 @@
 While inside the Homebrew Channel, load BootMii by pressing home and clicking Launch Bootmii.<br>
 Press the power button on the Wii 3 times to get to the last option, then press the reset button (you can also navigate with a Gamecube controller).<br>
 Press reset to choose the first option, then follow the directions on the screen to make your NAND backup (bad blocks are no problem).<br>
-Backup the Bootmii folder, nan.bin, and keys.bin elsewhere and erase from the SD card (or rename it). You'll need these in case of emergencies, so don't lose them.<br>
+Backup the Bootmii folder, nand.bin, and keys.bin elsewhere and erase from the SD card (or rename it). You'll need these in case of emergencies, so don't lose them.<br>
 Go back to The Homebrew Channel.<br>
 <b>Note:</b> if Bootmii was installed as boot2, then it will show up as soon as the Wii is turned on AS LONG AS it finds the bootmii folder (mentioned above) on the root of the SD card.<br>
 <br>

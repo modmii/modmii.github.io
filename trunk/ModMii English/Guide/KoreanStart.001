@@ -6,7 +6,7 @@ This will launch Multi-Mod Manager.<br>
 <font size="5"><li>Install IOS58 using Multi-Mod Manager (MMM)</li></font><br>
 <A href="" onClick="popup = window.open('http://www.youtube.com/embed/e4yvKwZJk_k?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/IOS58MMM.gif" border="0"/></a><br>
 In Multi-Mod Manager's main menu, Go down to select "WAD Manager".<br>
-Now install IOS58v6176.<br>
+Now install IOS58-64-v6176.<br>
 Navigate to the WAD and hit A twice to install the IOS individually.<br>
 Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).<br>
 Make sure the file installs properly before continuing.<br><br>
