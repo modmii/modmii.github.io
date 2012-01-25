@@ -1,0 +1,24 @@
+
+This will launch Multi-Mod Manager.<br>
+<br>
+
+<!-------------------Install IOS53 Section Below--------------------------->
+
+<font size="5"><li>Install IOS53 then start Casper</li></font><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/RU2Z8GgrAEA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/Casper.gif" border="0"/></a><br>
+
+In Multi-Mod Manager's main menu, Go down to select "WAD Manager".<br>
+If you cannot load your SD card, select "Load another IOS", then try using IOS36 or another IOS until you detect your SD card.<br>
+
+Now install IOS53-64-v5663.<br>
+Navigate to the WAD and hit A twice to install the IOS individually.<br>
+Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).<br>
+Make sure the file installs properly before continuing.<br><br>
+
+After successfully installing the WAD, use "B" to go back to MMM's main menu and choose "App Manager" then press A.<br>
+Select Casper using "A"<br>
+<br>
+Note: After installing IOS53 on a Wii once, you can skip installing it the next time you follow this guide and just use MMM's "App Manager" to launch Casper. To have configure your SD Card to launch Casper immediately instead of first loading MMM, copy SD:\apps\Casper\boot.elf and paste it to SD:\boot.elf (overwriting the boot.elf for MMM).<br>
+
+<!-------------------Install IOS53 Section Above--------------------------->
+

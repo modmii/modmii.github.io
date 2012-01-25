@@ -60,6 +60,19 @@ Thanks to Rodries for improving upon Hermes v5.1 cIOSs.</li><br>
 <li><b><font size="4">WiiGator</font></b><br>
 WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans owe a big thank you to WiiGator for his work.</li><br>
 
+<li><b><font size="4">cwstjdenobs</font></b><br>
+cwstjdenobs is one of the few people I've encountered in the Wii scene that I would love to treat to a beer. He was always very supportive of me and encouraged me to ask him as many questions as I'd like. He is probably most well known for YAWMM (Yet Another Wad Manager Mod) which was the first Wad Manager to add brick protection by restricting users from making silly mistakes like uninstalling or stubbing a crucial file. He's also made and modified apps specifically for ModMii. For example, he modified WadMii so it doesn't timestamp WADs and he also made a setting.txt builder for ModMii's NAND builder.</li><br>
+
+<li><b><font size="4">Leathl</font></b><br>
+Leathl is another awesome developer who supported me before I became well known by expanding upon his apps to further support ModMii. Leathl has created many Wii apps including ShowMiiWads, CustomizeMii, libwiisharp, patchios, nusfilegrabber, etc. Despite his recent inactivity, his apps are still highly used today... just goes to show you that quality work never gets old. I also want to thank RetroHead for him Mod of ShowMiiWads which ModMii uses to build emulated nands without requiring any input from the user. libwiisharp.dll is based on wii.py, the wii.py devs are Megazig, Omega, Xuzz, SquidMan, Matt_P and The Lemon Man. Also thanks to Daeken for writing Struct.py and marcan for his LZ77 code.<br>
+<br>
+
+You can send Leathl donations via paypal: <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=leathl%40gmail%2ecom&lc=US&no_note=0&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_LG%2egif%3aNonHostedGuest" target="_blank">leathl@gmail.com<img src="https://www.paypalobjects.com/en_US/i/btn/btn_donate_SM.gif" border="0"></a><br>
+</li><br>
+
+<li><b><font size="4">scooby74029</font></b><br>
+scooby74029's most well known for sneeky compiler, which is able to build multiple different versions of s\uneek. ModMii will always construct the latest version of s\uneek available on his sneeky compiler google code webpage. This means he has total control over what version of s\uneek ModMii will construct. He also created modifications of Leathl's libwiisharp.dll and patchios.exe to further support ModMii. Additionally, he's modified other apps like JoyFlow, JoyLoader GX, JoyLoader CFG, etc. On top of all that, he's an all around awesome person and I'm proud to be on his friends list.</li><br>
+
 <li><b><font size="4">WiiPower</font></b><br>
 WiiPower created Neogamma, hands down the best backup disc loader for the Wii. He also modified WiiGators cMIOS and created what is today considered the ultimate cMIOS. Furthermore he's contributed code to many other popular usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs.</li><br>
 
@@ -162,7 +175,7 @@ What can I say about THE "DeadlyFoez" on a personal level. He's always getting m
 <li><b><font size="4">All My Beta Testers!</font></b><br>
 It's because of you guys that ModMii is as stable as it is. Considering that ModMii is developed entirely in notepad without any kind of debugger or developer tools; it's pretty remarkable that ModMii has always been bug-free (albeit with a couple minor exceptions). Thanks for your never-ending devotion to quality control!<br>
 
-Here's a list of ModMii's current beta testing group (in no particular order): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog and FIX94.
+Here's a list of ModMii's current beta testing group (in no particular order): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog, FIX94 and wolf.
 
 </li><br>
 

@@ -1,0 +1,7 @@
+<ul>
+<li>When loading an emulated NAND for the first time, it could take a long time to load the System Menu, but it will be much quicker the second time around.</li>
+
+<li>If you have problems loading your Emulated NAND, copy cert.sys from an original nand dump to your emulated nand's sys folder.</li>
+
+<li>ShowMiiWads can be used to decrypt your real Wii's BootMii NAND dump (nand.bin) to use as an emulated NAND, and it can add custom
+channels/WADs to an emulated NAND. ShowMiiWads is available on ModMii's Download Page 2.</li>
