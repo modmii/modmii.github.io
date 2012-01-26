@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.5.0
+set currentversion=5.5.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -7969,7 +7969,7 @@ echo You Have Entered an Incorrect Key
 goto:SNKPAGE4d
 
 
-::...................................SNEEK Page4 - SNEEK SERIAL...............................
+::...................................SNEEK Page5 - SNEEK SERIAL...............................
 :SNKPAGE5
 
 if /i "%SNEEKSELECT%" EQU "5" (set nandexist=no) & (goto:WPAGE20)
@@ -8046,7 +8046,7 @@ if /i "%SNKSERIAL%" EQU "M" goto:MENU
 
 if /i "%SNKSERIAL%" NEQ "B" goto:quickskip
 if /i "%SNEEKTYPE:~0,1%" EQU "S" goto:SNKPAGE4b
-if /i "%AbstinenceWiz%" EQU "Y" (goto:SNKPAGE4c) else (goto:SNKPAGE4d)
+if /i "%AbstinenceWiz%" EQU "Y" goto:SNKPAGE4c
 if /i "%neek2o%" EQU "ON" (goto:SNKPAGE4c) else (goto:SNKPAGE4d)
 :quickskip
 
@@ -10349,7 +10349,7 @@ echo      %usbfolder% CFG = CFG-Loader (Full v249)        %WiiMC% WMC = WiiMC 
 echo   %cfg249% CFG249 = CFG-Loader (Beta v249)        %fceugx% NES = FCEUGX (NES Emulator)
 echo   %cfg222% CFG222 = CFG-Loader (Beta v222)       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
 echo     %cfgr% CFGR = Configurator-CFG-Loader       %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo     %FLOW% FLOW = WiiFlow                        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
+echo     %FLOW% FLOW = WiiFlow                        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
 echo     %USBX% USBX = USB-Loader Fwdr Chnl           %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %HBB% HBB = Homebrew Browser
 echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %SGM% SGM = SaveGame Manager GX
@@ -16551,7 +16551,7 @@ if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader (Most recent Full 249
 if /i "%cfg249%" EQU "*" (echo "Configurable USB Loader (Most recent 249 version)">>temp\DLnames.txt) & (echo "cfg249">>temp\DLgotos.txt)
 if /i "%cfg222%" EQU "*" (echo "Configurable USB Loader (Most recent 222 version)">>temp\DLnames.txt) & (echo "cfg222">>temp\DLgotos.txt)
 if /i "%cfgr%" EQU "*" (echo "Configurator for Configurable USB Loader (Most recent version)">>temp\DLnames.txt) & (echo "cfgr">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most Recent Release)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
@@ -16964,7 +16964,7 @@ if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
 :NotAdv
 
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" goto:COPY
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:COPY)
 
 
 if /i "%MENU1%" EQU "W" goto:generateguideonly
@@ -16976,7 +16976,7 @@ goto:badkey
 
 :generateguideonly
 
-if /i "%SETTINGS%" EQU "G" goto:guide
+if /i "%SETTINGS%" EQU "G" (mode con cols=85 lines=54) & (goto:guide)
 
 
 :badkey
@@ -21731,11 +21731,12 @@ if /i "%ROOTSAVE%" EQU "ON" move /Y "%Drive%"\WAD\%movename% "%DRIVE%"\%movename
 
 
 ::-----------Exceptions for DL Wizard and syscheck updater----------
+if /i "%name%" NEQ "IOS36" goto:skipwizardexceptions
 if /i "%MENU1%" EQU "W" goto:exception
 if /i "%MENU1%" NEQ "SU" goto:skipwizardexceptions
 :exception
 if "%wadname:~-4%" NEQ ".wad" (set movename="%wadname%.wad") else (set movename="%wadname%")
-if /i "%name%" EQU "IOS36" move /Y "%Drive%"\WAD\%movename% "%DRIVE%"\%movename% >nul
+move /Y "%Drive%"\WAD\%movename% "%DRIVE%"\%movename% >nul
 :skipwizardexceptions
 ::----------------------------
 
@@ -25345,19 +25346,33 @@ set path1=usb-loader\
 goto:downloadstart
 
 
+
 :FLOW
-set name=WiiFlow (Most Recent Release)
-set category=GOOGLEUPDATE
+set name=WiiFlow r304-249
+set code1=URL
+set code2=http://wiiflow.googlecode.com/files/r304-249.zip
+set version=*
+set dlname=r304-249.zip
+set wadname=r304-249.zip
+set filename=boot.dol
+set md5=33cef493e5be4a22e7f0af0fed6f4683
 set path1=apps\WiiFlow\
-set updateurl="http://code.google.com/p/open-wiiflow-mod/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-set updatedlname="list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-set code1="http://open-wiiflow-mod.googlecode.com/files/Wiiflow_Mod_svn_r"
-set code2=.zip
-set iconurl=
-set metaurl=
-set wadname1=R
-set wadname2=.dol
 goto:downloadstart
+
+
+:::FLOW
+::set name=WiiFlow (Most Recent Release)
+::set category=GOOGLEUPDATE
+::set path1=apps\WiiFlow\
+::set updateurl="http://code.google.com/p/open-wiiflow-mod/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+::set updatedlname="list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+::set code1="http://open-wiiflow-mod.googlecode.com/files/Wiiflow_Mod_svn_r"
+::set code2=.zip
+::set iconurl=
+::set metaurl=
+::set wadname1=R
+::set wadname2=.dol
+::goto:downloadstart
 
 
 
