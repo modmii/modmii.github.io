@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.5.1
+set currentversion=5.5.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -15,17 +15,12 @@ chcp 437>nul
 ::chcp 850>nul
 ::chcp 1252>nul
 
-set UPDATENAME=NUSAutoUpdate
+set UPDATENAME=ModMii
+::set UPDATENAME=ModMii_IT_
+
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del updatetemp.bat>nul
 
-
-if "%ModMiiInstallerpath%"=="" goto:notfreshinstall
-if exist "%ModMiiInstallerpath%"\Updatetemp.bat attrib -h "%ModMiiInstallerpath%"\Updatetemp.bat
-if exist "%ModMiiInstallerpath%"\Updatetemp.bat del "%ModMiiInstallerpath%"\Updatetemp.bat>nul
-if exist "%ModMiiInstallerpath%"\%UPDATENAME%.bat attrib -h "%ModMiiInstallerpath%"\%UPDATENAME%.bat
-if exist "%ModMiiInstallerpath%"\%UPDATENAME%.bat del "%ModMiiInstallerpath%"\%UPDATENAME%.bat>nul
-:notfreshinstall
 
 ::-------------------CMD LINE SUPPORT----------------------
 
@@ -2154,9 +2149,6 @@ if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
 ::......................................................MAIN MENU..............................................
 
 :MENU
-
-if exist %UPDATENAME%.bat del %UPDATENAME%.bat>nul
-if exist %UPDATENAME%.txt del %UPDATENAME%.txt>nul
 
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
 if exist temp\DLgotos-copy.txt del temp\DLgotos-copy.txt>nul
@@ -4365,46 +4357,131 @@ echo                                 Checking for updates...
 echo.
 
 
-if exist list.bat del list.bat>nul
+if exist temp\list.txt del temp\list.txt>nul
 
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/nusad/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
-if exist list* (move /y list* list.bat>nul) else (goto:updatefail)
-support\sfk filter -quiet "list.bat" -+"%UPDATENAME%" -rep _".txt*"__ -rep _"*%UPDATENAME%-"_"set newversion="_ -rep _" </a>*"__ -write -yes
-support\sfk filter "list.bat" -unique -write -yes>nul
-call list.bat
-del list.bat>nul
+if exist list* (move /y list* temp\list.txt>nul) else (goto:updatefail)
 
-if %currentversion% GTR %newversion:~0,5% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
+support\sfk filter -quiet "temp\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
 
-::before %updatename% is called %newversion% can be more than 5 chars (ie. 4.6.0.1)
+
+if /i "%UPDATENAME%" NEQ "ModMii" support\sfk filter -quiet "temp\list.txt" ++"%UPDATENAME:~-3%" -write -yes
+
+if /i "%UPDATENAME%" EQU "ModMii" support\sfk filter -quiet "temp\list.txt" -!"_" -write -yes
+
+support\sfk filter -spat -quiet "temp\list.txt" -rep _*"\x5f"__ -write -yes
+
+set /p newversion= <temp\list.txt
+
+del temp\list.txt>nul
+
+
+if /i "%MENU1%" EQU "O" goto:skip
+
+if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
+
 if %currentversion% EQU %newversion% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
 
-::if %newversion% has exactly 5 chars (#.#.#), get changelog and update
-if "%newversion:~5%"=="" goto:getchangelog
+:skip
+if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
 
-::only make it this far if newversion is greater than current version (ie. not beta shit) and has >5 chars (ie. #.#.#.#). Now check if DL DB needs to be updated (ie. partial update)
-set NEWDBUPDATEVERSION=%newversion%
-set DBUPDATEVERSION=none
-if exist temp\DBUPDATE%newversion:~0,5%.bat call temp\DBUPDATE%newversion:~0,5%.bat
-if %NEWDBUPDATEVERSION% EQU %DBUPDATEVERSION% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
+if %currentversion% EQU %newversion% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
 
 
-:getchangelog
-start %ModMiimin%/wait support\wget http://nusad.googlecode.com/files/%UPDATENAME%-%newversion%.txt
-if not exist %UPDATENAME%-%newversion%.txt goto:updatefail
+::openchangelog
+start http://5dca4ce5.miniurls.co/
 
-ren %UPDATENAME%-%newversion%.txt %UPDATENAME%.bat
-call %UPDATENAME%.bat
+:updateconfirm
+set updatenow=
 
-set newversion=%newversion:~0,5%
-if %currentversion% GEQ %newversion% (goto:menu) else (exit)
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo.
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] An Update is available, would you like to update to v%newversion% now?
+echo.
+echo.
+echo.
+echo    It is recommended you read the changelog that just opened in your browser.
+echo.
+echo.
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green] Y = Yes - Perform Update Now! (RECOMMENDED)
+echo.
+echo                N = No, do not update
+echo.
+echo.
+echo.
+set /p updatenow=     Enter Selection Here: 
+
+if /i "%updatenow%" NEQ "N" goto:skip
+if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
+:skip
+
+if /i "%updatenow%" EQU "Y" goto:updatenow
+
+:badkey
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:updateconfirm
+
+
+:updatenow
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+echo                            Updating from v%currentversion% to v%newversion%
+echo.
+echo.
+echo                                     Please Wait...
+echo.
+
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
+
+if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+
+copy /y support\7za.exe support\7za2.exe>nul
+
+
+echo @echo off>Updatetemp.bat
+echo mode con cols=85 lines=54 >>Updatetemp.bat
+echo color 1f>>Updatetemp.bat
+echo echo                                        ModMii                                v%currentversion%>>Updatetemp.bat
+echo echo                                       by XFlak>>Updatetemp.bat
+echo echo.>>Updatetemp.bat
+echo echo.>>Updatetemp.bat
+echo echo                            Updating from v%currentversion% to v%newversion%>>Updatetemp.bat
+echo echo.>>Updatetemp.bat
+echo echo.>>Updatetemp.bat
+echo echo                                     Please Wait...>>Updatetemp.bat
+echo echo.>>Updatetemp.bat
+
+
+echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
+echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
+echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
+echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
+echo del support\7za2.exe^>nul>>Updatetemp.bat
+echo Start ModMii.exe>>Updatetemp.bat
+echo exit>>Updatetemp.bat
+start Updatetemp.bat
+exit
+
+
 
 :updatefail
 echo   Update check has failed, check your internet connection and firewall settings.
 @ping 127.0.0.1 -n 4 -w 1000> nul
 set currentversion=%currentversioncopy%
-goto:menu
+
+if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:menu)
 
 
 
