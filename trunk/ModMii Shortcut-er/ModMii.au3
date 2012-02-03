@@ -1,17 +1,20 @@
-;Small autoit script by person66 to make ModMii.bat open with an icon
+;Small AutoIt (3.3.8.0) script by person66 to make ModMii.bat open with an icon
 AutoItSetOption("TrayIconHide", 1)
-If FileExists(@WorkingDir & "\Support\ModMii.lnk") Then FileDelete(@WorkingDir & "\Support\ModMii.lnk")
-$ARGS = ""
-$I = 1
-While $I <= $CMDLINE[0]
-        $ARGS = $ARGS & $CMDLINE[$I] & " "
-        $I = $I + 1
-WEnd
-$HasArgs = "True"
-If $CMDLINE[0] = 0 Then $HasArgs = "False" 
-FileCreateShortcut(@ComSpec, @ScriptDir & "\Support\ModMii.lnk", @ScriptDir, '/c call "' & @ScriptDir & '\Support\ModMii.bat" ' & $ARGS, "", @ScriptDir & "\Support\icon.ico")
+dim $args, $HasArgs = "True"
+For $i = 1 To $CMDLINE[0]
+	$args = $args & $CMDLINE[$I] & " "
+Next
+If $CMDLINE[0] = 0 Then $HasArgs = "False"
 If $HasArgs = "True" Then
-ShellExecuteWait(@ScriptDir & "\Support\ModMii.lnk")
+	FileCreateShortcut(@ComSpec, @ScriptDir & "\Support\ModMii.lnk", @ScriptDir, '/c call "' & @ScriptDir & '\Support\ModMii.bat"', "", @ScriptDir & "\Support\icon.ico")
+	ShellExecuteWait(@ScriptDir & "\Support\ModMii.lnk", $args)
 Else
-ShellExecute(@ScriptDir & "\Support\ModMii.lnk")
+	if WinExists("[CLASS:WizAppWindow; TITLE:ModMii Skin]", "by XFlak") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii]", "") <> 0 then
+		$AlreadyOpen = MsgBox(52, "WARNING", "It appears as if you already have a ModMii Window open." & @CRLF & @CRLF & "Running more than one instance of ModMii at a time is not" & @CRLF & "reccommended and may get buggy." & @CRLF & @CRLF & "Are you sure you wish to continue?")
+		if $AlreadyOpen <> 6 then
+			exit
+		endif
+	endif
+	FileCreateShortcut(@ComSpec, @ScriptDir & "\Support\ModMii.lnk", @ScriptDir, '/c call "' & @ScriptDir & '\Support\ModMii.bat"', "", @ScriptDir & "\Support\icon.ico")
+	ShellExecute(@ScriptDir & "\Support\ModMii.lnk")
 EndIf

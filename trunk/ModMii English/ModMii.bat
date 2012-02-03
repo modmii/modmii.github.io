@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=5.5.2
+set currentversion=6.0.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -14,6 +14,8 @@ set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
 chcp 437>nul
 ::chcp 850>nul
 ::chcp 1252>nul
+
+if not exist temp mkdir temp
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
@@ -99,7 +101,7 @@ echo.
 echo  Functions:
 echo.
 echo        W          Wizard
-echo       AW          Abstinence Wizard
+echo        AW         Abstinence Wizard
 echo        U          USB-Loader Set-up
 echo        HS         HackMii Solutions
 echo        SU         sysCheck Updater
@@ -599,6 +601,16 @@ echo.
 echo Where;
 echo E = Enabled and D = Disabled
 echo.
+
+support\sfk echo [Cyan]Play Sound at Finish
+
+echo ModMii.exe [base command] SOUND:E
+echo ModMii.exe [base command] SOUND:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+
 support\sfk echo [Cyan]Include USB-Loader Forwarder Channel in ModMii Wizard Downloads
 
 echo ModMii.exe [base command] FWD:E
@@ -939,6 +951,28 @@ support\sfk filter temp\cmdinput.txt -rep _" IOS36:%removeme%"__ -write -yes>nul
 :noIOS36cmd
 
 
+
+::-----------SOUND: Option---------------
+findStr /I " SOUND:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noSOUNDcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* SOUND:"__ -rep _\x20*__ -write -yes>nul
+
+set /p AudioOptioncmd= <temp\cmdinput2.txt
+
+if /i "%AudioOptioncmd%" EQU "E" set AudioOption=ON
+if /i "%AudioOptioncmd%" EQU "D" set AudioOption=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set AudioOption=" -write -yes>nul
+echo Set AudioOption=%AudioOption%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" SOUND:%removeme%"__ -write -yes>nul
+:noSOUNDcmd
+
+
 ::-----------CMIOS: Option---------------
 findStr /I " CMIOS:" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (goto:noCMIOScmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
@@ -1099,6 +1133,20 @@ set /p SkinModecmd= <temp\cmdinput2.txt
 
 if /i "%SkinModecmd%" EQU "E" set SkinMode=Y
 if /i "%SkinModecmd%" EQU "D" set SkinMode=
+
+if /i "%SkinMode%" NEQ "Y" goto:noprogress
+
+set watitle=ModMii Skin
+set waico=support\icon.ico
+set wabat=%TEMP%\wabat.bat
+set wasig=ModMii v%currentversion% by XFlak
+set wabmp=support\bmp\CLASSIC.bmp
+set watext=~~~ModMii Classic Working...
+::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
+::support\nircmd.exe win hide ititle "ModMiiSkinCMD"
+start support\wizapp PB OPEN
+
+:noprogress
 
 ::remove hard option from cmdinput.txt
 set /p removeme= <temp\cmdinput2.txt
@@ -1764,6 +1812,9 @@ if exist "temp\DML\DMLr%CurrentDMLRev%.zip" goto:noDMLRevcmd
 
 ::set googlecode=dios-mios-lite-source-project
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" goto:noDMLRevcmd
+
 start /min /wait support\wget -t 3 "http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.zip"
 if not exist "DMLr%CurrentDMLRev%.zip" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/dios-mios-lite-source-project/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
@@ -1776,8 +1827,6 @@ move /y "DMLr%CurrentDMLRev%.zip" "temp\DML\DMLr%CurrentDMLRev%.zip">nul
 
 ::-----------Rev:#---------------
 set neekrev=1
-
-
 
 findStr /I " Rev:" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (goto:noRevcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
@@ -1793,6 +1842,9 @@ support\sfk -spat filter temp\cmdinput.txt -rep _" Rev:%removeme%"__ -write -yes
 
 if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
 if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" goto:noRevcmd
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
@@ -1887,9 +1939,10 @@ if /i "%SNEEKTYPE%" NEQ "SD" goto:skipDMLcmd
 findStr /I " DML" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set SNKcBC=N) else (set SNKcBC=DML)
 
+if /i "%SNKcBC%" NEQ "DML" set DMLRev=
+
 ::set default DML rev if not specified
 if /i "%DMLRev%" EQU "1" goto:CurrentDMLRevSelect
-
 :skipDMLcmd
 
 findStr /I " Pri" temp\cmdinput.txt >nul
@@ -1948,8 +2001,11 @@ color 1f
 ::SET PATHNAME=%0 //this returns the filename but also with absolute path
 
 
-if exist support\skipscam.txt goto:DefaultSettings
-if exist support\ipromisetodonate.txt goto:DefaultSettings
+if not exist support\skipscam.txt goto:nocheck
+findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
+IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
+if /i "%Trigger%" EQU "1" goto:DefaultSettings
+:nocheck
 
 set warning=
 echo                                        ModMii
@@ -1996,13 +2052,14 @@ if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 5 -w 1000> nul
 set /p warning=     Enter Selection Here: 
 
 
-if /i "%warning%" EQU "skipscam" echo Ea$ter Egg.>support\skipscam.txt
-if /i "%warning%" EQU "skipscam" attrib +r +h +s support\skipscam.txt
-if /i "%warning%" EQU "skipscam" goto:DefaultSettings
+if /i "%warning%" NEQ "skipscam" goto:miniskip
+if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
+echo "%USERPROFILE%">support\skipscam.txt
+attrib +r +h +s support\skipscam.txt
+set Trigger=1
+goto:DefaultSettings
+:miniskip
 
-if /i "%warning%" EQU "ipromisetodonate" echo Ea$ter Egg.>support\ipromisetodonate.txt
-if /i "%warning%" EQU "ipromisetodonate" attrib +r +h +s support\ipromisetodonate.txt
-if /i "%warning%" EQU "ipromisetodonate" goto:DefaultSettings
 
 
 if /i "%warning%" EQU "I Agree" goto:skip
@@ -2029,6 +2086,7 @@ IF "%effect%"=="" set effect=No-Spin
 IF "%PCSAVE%"=="" set PCSAVE=Auto
 IF "%OPTION1%"=="" set OPTION1=off
 IF "%OPTION36%"=="" set OPTION36=on
+IF "%AudioOption%"=="" set AudioOption=on
 IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%FWDOPTION%"=="" set FWDOPTION=on
 IF "%Drive%"=="" set Drive=COPY_TO_SD
@@ -2094,7 +2152,7 @@ start %ModMiimin%/wait support\wget -t 3 "http://download.microsoft.com/download
 
 ::start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait "http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe"
 
-if not exist temp mkdir temp
+
 if exist dotNetFx35setup.exe move /y dotNetFx35setup.exe temp\dotNetFx35setup.exe
 :semiskip
 
@@ -2149,6 +2207,7 @@ if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
 ::......................................................MAIN MENU..............................................
 
 :MENU
+
 
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
 if exist temp\DLgotos-copy.txt del temp\DLgotos-copy.txt>nul
@@ -2640,7 +2699,7 @@ SET COUNT7=1
 SET COUNT8=1
 SET CURRENTDL=0
 
-if not exist temp mkdir temp
+
 
 :Clear simplelog
 if exist temp\ModMii_Log.bat del temp\ModMii_Log.bat>nul
@@ -2685,11 +2744,13 @@ if /i "%SNKREGION%" EQU "U" set nandregion=us
 if /i "%SNKREGION%" EQU "E" set nandregion=eu
 if /i "%SNKREGION%" EQU "J" set nandregion=jp
 if /i "%SNKREGION%" EQU "K" set nandregion=kr
-if not exist "%nandpath%\nands\pl_%nandregion%" (set nandpath=%nandpath%\nands\pl_%nandregion%) & goto:quickskip
+if not exist "%nandpath%\nands\pl_%nandregion%" set nandpath=%nandpath%\nands\pl_%nandregion%
+if not exist "%nandpath%\nands\pl_%nandregion%" goto:quickskip
 
 :NANDnamecmd
 SET /a NANDcount=%NANDcount%+1
-if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" (set nandpath=%nandpath%\nands\pl_%nandregion%%NANDcount%) & goto:quickskip
+if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" set nandpath=%nandpath%\nands\pl_%nandregion%%NANDcount%
+if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" goto:quickskip
 goto:NANDnamecmd
 :quickskip
 
@@ -2735,8 +2796,8 @@ echo           4 = Download Page 4 (cIOSs and cMIOSs)
 echo.
 echo           A = Advanced Downloads and Forwarder DOL\ISO Builder
 echo.
-if exist temp\DownloadQueues\*.bat echo           L = Load Download Queue
-if exist temp\DownloadQueues\*.bat echo.
+echo           L = Load Download Queue
+echo.
 echo.
 echo           C = Build Config Files for BootMii, Wad Manager or Multi-Mod Manager
 echo.
@@ -2745,13 +2806,14 @@ echo.
 echo.
 echo           O = Options            CR = Credits            E = Exit
 echo.
-echo      *********MORE INFO*********
-support\sfk echo -spat \x20 \x20 [RED] WWW = Open tinyurl.com/ModMiiNow to ask questions, provide feedback or vote
+echo           M = ModMii Skin Mode: use your mouse instead of your keyboard!
 echo.
-echo      Use the ModMii Wizard to automatically set-up your SD card with all you need
-echo      to fully softmod your Wii and/or upgrade/downgrade your Wii and much more.
-echo      When using the ModMii Wizard, a custom guide is built based on your answers
-echo      to a few simple questions.
+echo      *********MORE INFO*********
+support\sfk echo -spat \x20 \x20 [RED] WWW = Open http://modmii.zzl.org to ask questions, provide feedback or vote
+echo.
+echo      Use the ModMii Wizard to set-up your SD card with all you need to softmod
+echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
+echo      a custom guide is built based on your answers to a few simple questions.
 echo.
 support\sfk echo -spat \x20 \x20 [RED] Donations are optional and can be made via paypal.com to XFlak40@hotmail.com
 echo      ***************************
@@ -2769,691 +2831,38 @@ if /i "%MENU1%" EQU "2" goto:OLDLIST
 if /i "%MENU1%" EQU "3" goto:LIST3
 if /i "%MENU1%" EQU "4" goto:LIST4
 if /i "%MENU1%" EQU "A" goto:ADVANCED
-if /i "%MENU1%" EQU "E" goto:exitnow
+if /i "%MENU1%" EQU "E" EXIT
 if /i "%MENU1%" EQU "O" goto:OPTIONS
 if /i "%MENU1%" EQU "H" goto:WPAGE2
 if /i "%MENU1%" EQU "FC" set BACKB4DRIVE=Menu
 if /i "%MENU1%" EQU "FC" goto:DRIVECHANGE
 if /i "%MENU1%" EQU "C" goto:CONFIGFILEMENU
 
-
+if /i "%MENU1%" EQU "M" (start ModMiiSKin.exe) & (exit)
 
 if /i "%MENU1%" EQU "AW" (set MENU1=S) & (set SNEEKSELECT=3) & (set AbstinenceWiz=Y) & (goto:WPAGE2)
 
 
-::if /i "%MENU1%" EQU "CR" goto:Credit1
 
-if /i "%MENU1%" NEQ "CR" goto:skipcred
-cd /d SUPPORT
-start Credits.html
-cd /d %ModMiipath%
-goto:MENU
-:skipcred
+if /i "%MENU1%" EQU "CR" (start http://modmii.zzl.org/credits.html) & (goto:MENU)
+
+if /i "%MENU1%" EQU "WWW" (start http://89d89449.miniurls.co) & (goto:MENU)
 
 
-if /i "%MENU1%" EQU "WWW" goto:openwebpage
-
-
-if not exist temp\DownloadQueues\*.bat goto:noload
+::if not exist temp\DownloadQueues\*.bat goto:noload
 if /i "%MENU1%" NEQ "L" goto:noload
-if exist temp\DLnameDV.txt del temp\DLnamesADV.txt>nul
+if exist temp\DLnamesADV.txt del temp\DLnamesADV.txt>nul
 if exist temp\DLgotosADV.txt del temp\DLgotosADV.txt>nul
 set BACKB4QUEUE=Menu
 goto:PICKDOWNLOADQUEUE
 :noload
 
-:EasterEggs
+
 if /i "%MENU1%" EQU "help" echo Google is your friend
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:MENU
-
-:openwebpage
-start www.tinyurl.com/ModMiiNow
-goto:MENU
-
-:exitnow
-EXIT
-
-::..................................................Credits.........................................................
-:Credit1
-cls
-::mode con cols=85 lines=65
-
-SET CREDIT1=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-if /i "%MENU1%" NEQ "CR" (support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow]Non-Donators must view the Credits before seeing their Download Log) & (echo.)
-echo                                        CREDITS
-echo                                      ===========
-echo.
-echo   ModMii was written entirely by me, XFlak; however, without the help of many
-echo   other very talented people ModMii would not exist.
-echo.
-echo.
-echo   Some people have contributed supporting files\programs, others have shared
-echo   their knowledge, some have provided ideas and others have given their time.
-echo.
-echo.
-echo   I have tried my best to recognize everyone's contribution to ModMii regardless
-echo   of how big or small it is. If I've forgotten someone, please notify me and
-echo   I'll add them to the credits as quickly as possible.
-echo.
-echo.
-echo   Throughout the Credits there will be links to make donations to some other very
-echo   worthy developers. This will allow you to send donations to support the author
-echo   of your favourite tools.
-echo.
-echo.
-
-support\sfk echo -spat \x20 [Green]ModMii Donations can be sent via paypal to: \x20 XFlak40@hotmail.com
-echo.
-::support\sfk echo -spat \x20 [Red]Anyone who donates $1 or more to ModMii will get a functional ModMii Easter Egg!
-
-
-support\sfk echo -spat \x20 [Red]If you donate $1 or more to XFlak40@hotmail.com, as my way of saying thanks I'll
-support\sfk echo -spat \x20 [Red]reply to you via email with a functional Easter Egg guaranteed to be helpful
-support\sfk echo -spat \x20 [Red]every time you use ModMii.
-echo.
-support\sfk echo -spat \x20 [Red]I will still email you ModMii's Easter Egg if you prefer to donate to someone else
-support\sfk echo -spat \x20 [Red]listed in the credits ONLY IF you ask THEM to send confirmation of your donation
-support\sfk echo -spat \x20 [Red]to XFlak40@hotmail.com.
-
-
-echo.
-support\sfk echo -spat \x20 [Green]$ = Open ModMii's donation webpage (paypal) and get your Easter Egg!
-echo.
-echo.
-echo.
-echo.
-echo.
-echo.
-echo.
-echo.
-echo.
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT1=     Press the "Enter" Key to continue: 
-
-
-::add ^ before problematic chars like & and %
-if /i "%CREDIT1%" EQU "$" start https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick^&hosted_button_id=DDHSQJPHDDXVW
-if /i "%CREDIT1%" EQU "$" goto:Credit1
-
-if /i "%MENU1%" NEQ "CR" goto:credit2
-if /i "%CREDIT1%" EQU "B" goto:menu
-if /i "%CREDIT1%" EQU "M" goto:menu
-
-::------------
-:Credit2
-cls
-
-SET CREDIT2=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]Team Twiizers
-echo   =============
-echo   Thanks to Team Twiizers for creating the revolutionary HackMii Installer.
-echo   Without their hard work, the Wii might never have been unlocked.
-echo   Many Team Twiizer Members went on to join Team Fail Overflow;
-echo   a team that played a vital role in unlocking the PS3.
-echo.
-echo   I especially want to thank Bushing, who gave ModMii his blessing to
-echo   download and use the HackMii Installer.
-echo.
-support\sfk echo -spat \x20 [Red]Giantpune
-echo   =========
-echo   Giantpune is a legend in the Wii Scene and I consider him to be a good friend
-echo   of mine. He created many exploits, including the Smash Stack exploit for PAL
-echo   and KOR Wii's (which is still the only method to fix 003 bricked Wii's),
-echo   the Channel Forwarder dol, USB Loader GX, and many other computer programs
-echo   to repair or virginize Wii's.
-echo.
-echo   He's contributed code to more projects than I even know about, so its
-echo   impossible for me to truly convey his impact on the scene. He even took
-echo   the time to explain a few things to me about cIOSs when ModMii was
-echo   in its early stages and still known as NUS Auto Downloader.
-echo.
-support\sfk echo -spat \x20 [Green]You can send Giantpune donations via paypal: giantpune@gmail.com
-echo.
-support\sfk echo -spat \x20 [Red]Crediar, Daco Taco and Phpgeek
-echo   ==============================
-echo   The above people all had a hand in creating Priiloader. This was another
-echo   revolutionary tool mainly because it was the first to offer some level
-echo   of protection to newer Wii's that were unable to install BootMii at boot2.
-echo   Crediar developed the original preloader as well as s\uneek, NMM, DML, etc.
-echo.
-support\sfk echo -spat \x20 [Green]You can send Crediar donations via paypal: sven.tathoff@t-online.de
-support\sfk echo -spat \x20 [Green]You can send Daco Taco donations via paypal: daco_65@hotmail.com
-echo.
-support\sfk echo -spat \x20 [Red]Comex
-echo   =====
-echo   In addition to being a member of Team Twiizers and contributing to the HackMii
-echo   Installer, Comex created the heavily utilized bannerbomb exploit. This exploit
-echo   is what allows Wii's on firmwares 3.0-4.2 to be softmodded with only an SD Card
-echo   instead of needing one of a few specific Wii Games (like the 4.3 System Menu).
-echo.
-support\sfk echo -spat \x20 [Green]You can send Comex donations via paypal: comexk@gmail.com
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT2=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT2%" EQU "B" goto:credit1
-if /i "%MENU1%" NEQ "CR" goto:credit3
-if /i "%CREDIT2%" EQU "M" goto:menu
-
-::------------
-:Credit3
-cls
-
-SET CREDIT3=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]Waninkoko
-echo   =========
-echo   Waninkoko was the first to publicly release a cIOS and other excellent apps
-echo   like WAD manager, Save Game Manager, USB loader, etc. I also want to thank
-echo   him for giving ModMii permission to recreate his cIOSs in WAD form.
-echo.
-support\sfk echo -spat \x20 [Red]Hermes
-echo   ======
-echo   Hermes is well known for his cIOS 222/223/224 and for his usbloader "uloader".
-echo   For a time his cIOSs were the only ones to work with RockBand type games
-echo   and they are still highly utlized today.
-echo.
-support\sfk echo -spat \x20 [Red]davebaol and XFlak
-echo   ==================
-echo   These developers worked together to modify Waninkoko's rev21 cIOS and created
-echo   a new "d2x" cIOS. This cIOS is currently considered the ultimate cIOS because
-echo   it corrected many bugs and added features that were previously thought to be
-echo   impossible (ie. Support for IOS Reloading Games). WiiPower was also heavily
-echo   influential in achieving IOS Reload Support.
-echo.
-support\sfk echo -spat \x20 [Red]WiiGator
-echo   ========
-echo   WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans
-echo   owe a big thank you to WiiGator for his work.
-echo.
-
-support\sfk echo -spat \x20 [Red]DeadlyFoez
-echo   ==========
-echo   DeadlyFoez is legendary for his Wii Repairs and infectus tutorial.
-echo   Anyone who's broken their Wii can email deadlyfoez@yahoo.com to have it fixed.
-echo.
-echo   DeadlyFoez played a key role in the ModMii v5.0.0 update not only by helping come
-echo   up with the idea for using html guides but also creating the template for ModMii's
-echo   custom guides and recording almost all of the videos and images they use. Within
-echo   1.5 weeks since our initial conversation we were able to collaborate and bring the
-echo   idea to life in time to release it for Christmas. Working with him on this was a
-echo   truly rewarding and fun experience.
-echo.
-echo   What can I say about THE "DeadlyFoez" on a personal level. He's always
-echo   getting me into trouble but his friendship is worth every fiasco! It's
-echo   unreal how he became one of my best friends. Just goes to show you not
-echo   everyone you meet online is totally crazy; in his case... just a little crazy.
-echo   But seriously, thanks to DeadlyFoez for always being there for me to bounce
-echo   ModMii ideas off of, for hosting the first two Team Your Mom meetings and
-echo   for introducing me to his awesome family and friends. There's no one else
-echo   I'd rather geek out with and I'll always have your back.
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT3=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT3%" EQU "B" goto:credit2
-if /i "%MENU1%" NEQ "CR" goto:credit4
-if /i "%CREDIT3%" EQU "M" goto:menu
-
-
-
-::------------
-:Credit4
-cls
-
-SET CREDIT4=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]cwstjdenobs
-echo   ===========
-echo   cwstjdenobs is one of the few people I've encountered in the Wii scene that
-echo   I would love to treat to a beer. He was always very supportive of me and
-echo   encouraged me to ask him as many questions as I'd like. He is probably most
-echo   well known for YAWMM (Yet Another Wad Manager Mod) which was the first Wad
-echo   Manager to add brick protection by restricting users from making silly
-echo   mistakes like uninstalling or stubbing a crucial file. He's also made and
-echo   modified apps specifically for ModMii. For example, he modified WadMii so it
-echo   doesn't timestamp WADs and he also made a setting.txt builder for ModMii's
-echo   NAND builder.
-echo.
-support\sfk echo -spat \x20 [Red]Leathl
-echo   ======
-echo   Leathl is another awesome developer who supported me before I became well
-echo   known by expanding upon his apps to further support ModMii. Leathl has created
-echo   many Wii apps including ShowMiiWads, CustomizeMii, libwiisharp, patchios,
-echo   nusfilegrabber, etc. Despite his recent inactivity, his apps are still highly
-echo   used today... just goes to show you that quality work never gets old.
-echo   I also want to thank RetroHead for him Mod of ShowMiiWads which ModMii uses
-echo   to build emulated nands without requiring any input from the user.
-echo   libwiisharp.dll is based on wii.py, the wii.py devs are Megazig, Omega,
-echo   Xuzz, SquidMan, Matt_P and The Lemon Man. Also thanks to Daeken for writing
-echo   Struct.py and marcan for his LZ77 code.
-echo.
-support\sfk echo -spat \x20 [Green]You can send Leathl donations via paypal: leathl@gmail.com
-echo.
-support\sfk echo -spat \x20 [Red]scooby74029
-echo   ===========
-echo   scooby74029's most well known for sneeky compiler, which is able to 
-echo   build multiple different versions of s\uneek. ModMii will always construct
-echo   the latest version of s\uneek available on his sneeky compiler google code
-echo   webpage. This means he has total control over what version of s\uneek ModMii
-echo   will construct. He also created modifications of Leathl's libwiisharp.dll
-echo   and patchios.exe to further support ModMii. Additionally, he's modified
-echo   other apps like JoyFlow, JoyLoader GX, JoyLoader CFG, etc. On top of all that,
-echo   he's an all around awesome person and I'm proud to be on his friends list.
-echo.
-support\sfk echo -spat \x20 [Green]You can send scooby74029 donations via paypal: scooby74029@yahoo.com
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT4=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT4%" EQU "B" goto:credit3
-if /i "%MENU1%" NEQ "CR" goto:credit5
-if /i "%CREDIT4%" EQU "M" goto:menu
-
-
-
-::------------
-:Credit5
-cls
-
-SET CREDIT5=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]OverjoY and obcd
-echo   ================
-echo   OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek.
-echo   He then teamed up with obcd to accomplish some seriously amazing things,
-echo   like building their mod of s\uneek, neek2o, that allows it to load games
-echo   in wbfs format and select from multiple emulated NANDs.
-echo.
-support\sfk echo -spat \x20 [Red]Arikado and the Dop-Mii Team
-echo   ============================
-echo   They created Dop-Mii; a lot of apps borrow code from Dop-Mii, so even if you
-echo   have never used Dop-Mii but used MMM or WiiMod then you owe a thank you
-echo   to these people.
-echo.
-support\sfk echo -spat \x20 [Green]You can send Arikado donations via paypal: r0szsoft@gmail.com
-echo.
-
-support\sfk echo -spat \x20 [Red]WiiWu
-echo   =====
-echo   He made Multi-Mod Manager (MMM) which has the functions of many different
-echo   Wii modding tools all in one user friendly app.
-echo.
-support\sfk echo -spat \x20 [Green]You can send WiiWi donations via paypal: wiiwu2@yahoo.com
-
-echo.
-support\sfk echo -spat \x20 [Red]WB3000 and WiiNinja
-echo   ===================
-echo   Thanks to WB3000 for creating NUS Downloader and to WiiNinja for making a
-echo   cmd line version of NUS Downloader. NUS Downloader is one of ModMii's vital
-echo   supporting apps.
-echo.
-support\sfk echo -spat \x20 [Green]You can send WB3000 donations via bitcoin: 16cziXAdmLJwwSvgfKkfk6sSknvGqyf3VU
-
-echo.
-support\sfk echo -spat \x20 [Red]WiiCrazy
-echo   ========
-echo   WiiCrazy is most famous for "Wii Game Shortcut Creator" (formerly known as
-echo   "Crap"), Crazy Intro and Crazy Intro Video. He also contributed to
-echo   usb-loaders by bypassing some game specific security. WiiCrazy is another
-echo   person who's always been willing to do everything in his power to help me,
-echo   or anyone else for that matter.
-echo.
-support\sfk echo -spat \x20 [Red]oggzee, usptactical, gannon and Dr.Clipper
-echo   ==========================================
-echo   Together the above people compose the Configurable USB Loader Team.
-echo   This usb-loader has always been the first to add new features and
-echo   in my opinion it's the best usb-loader out there.
-echo.
-support\sfk echo -spat \x20 [Green]You can send The CFG USB Loader team donations via paypal: donate@wiitdb.com
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT5=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT5%" EQU "B" goto:credit4
-if /i "%MENU1%" NEQ "CR" goto:credit6
-if /i "%CREDIT5%" EQU "M" goto:menu
-
-
-::------------
-:Credit6
-cls
-
-SET CREDIT6=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]Wiimm
-echo   =====
-echo   Thanks to Wiimm for creating Wiimms ISO Tools, including wit.exe which
-echo   ModMii uses to convert Wii Games to s/uneek format as well as build
-echo   forwarder ISOs.
-echo.
-support\sfk echo -spat \x20 [Red]jskyboo
-echo   =======
-echo   Thanks to jskyboo for creating WiiMod. His app can do a lot of different
-echo   things, and it was the first ahbprot enabled WAD Manager to incorporate
-echo   davebaol's ahbprot bugfix.
-echo.
-support\sfk echo -spat \x20 [Red]diddy81 and symular syn of the Wii Theme Team
-echo   =============================================
-echo   The Wii Theme Team has created some of the best Wii Themes ever made!
-echo   All of the alternative themes available in ModMii were created by them.
-echo   I want to thank diddy81 in particular for working with me to ensure that
-echo   all his themes worked perfectly for all regions.
-echo.
-support\sfk echo -spat \x20 [Red]FIX94, Narolez and the WiiXplorer Team
-echo   ======================================
-echo   Thanks to all these people for their contributions in making the best
-echo   SD\USB forwarder. I want to thank FIX94 in particular who spent a lot
-echo   of time testing ModMii's Forwarder Builder... he might be young,
-echo   but he is wise beyond his years; just imagine what he'll be capable of
-echo   when he's old enought to vote!
-echo.
-support\sfk echo -spat \x20 [Green]You can send The WiiXplorer team donations via paypal: dimok@gmx.de
-echo.
-support\sfk echo -spat \x20 [Red]ModMii's Translators
-echo   ====================
-echo   Tranlating ModMii is an enormous amount of work. It's very challenging
-echo   to get special characters to display correctly in a cmd window, not to
-echo   mention keeping everything formatted properly. But probably the most
-echo   difficult part of translating ModMii is keeping up with the updates.
-echo   If you use a translated version of ModMii, I encourage you to thank
-echo   your translator because it truly is a LOT of work to do.
-echo.
-echo   French Translators: mamule, xav91 and ketufe
-echo   Dutch Translator: Hielkenator
-echo   Italian Translators: Wasabi, Step and Robylin
-echo   Spanish Translators: ledebene and Burton
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT6=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT6%" EQU "B" goto:credit5
-if /i "%MENU1%" NEQ "CR" goto:credit7
-if /i "%CREDIT6%" EQU "M" goto:menu
-
-::------------
-:Credit7
-cls
-
-SET CREDIT7=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]Fig2k4
-echo   ======
-echo   Thanks Fig2k4 for WiiBackupManager. It was a pleasure beta testing it for you
-echo   and sharing my ideas with you. I hope to you around the forums again and that
-echo   you continue working on your amazing program.
-echo.
-support\sfk echo -spat \x20 [Green]You can send Fig2k4 donations via paypal: Fig2k4@googlemail.com
-echo.
-support\sfk echo -spat \x20 [Red]WiiShizzza and pepxl
-echo   ====================
-echo   Thanks to WiiShizzza for creating ModMii's new icon and to pepxl for
-echo   creating ModMii's original icon. I want to thank everyone who created
-echo   a ModMii icon and submitted it into ModMii's new icon competition.
-echo   Type "icon" to open your browser to the icon submissions webpage and
-echo   see over 30 creative icons that people made.
-echo.
-support\sfk echo -spat \x20 [Red]My Fellow Guide Writers
-echo   =======================
-echo   Thanks to tj_cool, xzxero, burritoboy9984, ChokeD and mauifrog for their
-echo   awesome Guides. I especially want to thank tj_cool and xzxero for inviting
-echo   me to join "The Crew" at the Complete Softmod Guide. I'll never forget how
-echo   great it felt to be relatively new to the scene and to be invited to join
-echo   you all as equals.
-echo.
-support\sfk echo -spat \x20 [Red]JoostinOnline
-echo   =============
-echo   Thanks for determining the best cIOS configuration and for all his jokes;
-echo   I'll never get tired of our endless patriotic "debates".
-echo.
-support\sfk echo -spat \x20 [Red]DaMysteryMan
-echo   ============
-echo   Thanks for helping me understand the structure of a cIOS so I could better
-echo   recreate it in WAD form. For those of you who don't know him, DaMysteryMan is
-echo   most well known for his ever controversial app - DarkCorp (formerly cIOSCorp).
-echo.
-support\sfk echo -spat \x20 [Red]person66
-echo   ========
-echo   Thanks for trading little bits of batch coding knowledge with me. It's great
-echo   having a fellow batch coder for a friend; we are a dying breed, so keep up
-echo   the great work with Universal Forwarder Creator and all your other projects.
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT7=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT7%" EQU "icon" start http://gbatemp.net/index.php?showtopic=296772
-if /i "%CREDIT7%" EQU "icon" goto:Credit1
-
-if /i "%CREDIT7%" EQU "B" goto:credit6
-if /i "%MENU1%" NEQ "CR" goto:credit8
-if /i "%CREDIT7%" EQU "M" goto:menu
-
-::------------
-:Credit8
-cls
-
-SET CREDIT8=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-support\sfk echo -spat \x20 [Red]Gannon
-echo   ======
-echo   Thanks to Gannon for bootopera, which I was able to mod to create the URL
-echo   loader base dol.
-echo.
-support\sfk echo -spat \x20 [Red]Violator
-echo   ========
-echo   He's my bro, my cuz, my best man and the reason I ever bought or modded a Wii.
-echo   "XFlak" would have died many years ago if not for him. Thanks Violator, for
-echo   getting me interested in this stuff, and for all the awesome music you
-echo   recorded for my Top Wii Channels!
-echo.
-support\sfk echo -spat \x20 [Red]WiiPower
-echo   ========
-echo   WiiPower created Neogamma, hands down the best backup disc loader for the Wii.
-echo   He also modified WiiGators cMIOS and created what is today considered the
-echo   ultimate cMIOS. Furthermore he's contributed code to many other popular
-echo   usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs.
-echo.
-support\sfk echo -spat \x20 [Red]Rodries
-echo   =======
-echo   Thanks to Rodries for improving upon Hermes v5.1 cIOSs.
-echo.
-support\sfk echo -spat \x20 [Red]All My Beta Testers!
-echo   ====================
-echo   It's because of you guys that ModMii is as stable as it is. Considering that 
-echo   ModMii is developed entirely in notepad without any kind of debugger or
-echo   developer tools; it's pretty remarkable that ModMii has always been bug-free
-echo   (albeit with a couple minor exceptions). Thanks for your never-ending
-echo   devotion to quality control!
-echo.
-echo   Here's a list of ModMii's current beta testing group (in no particular order):
-echo   scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08,
-echo   geovalley, undeadsquirrel, mauifrog, FIX94 and wolf.
-echo.
-support\sfk echo -spat \x20 [Red]You!
-echo   ====
-echo   Without you, there would be no reason for ModMii to exist.
-echo   Thanks for using ModMii for all your Wii softmodding needs!
-echo.
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-set /p CREDIT8=     Press the "Enter" Key to continue: 
-
-if /i "%CREDIT8%" EQU "B" goto:credit7
-if /i "%MENU1%" NEQ "CR" goto:credit9
-if /i "%CREDIT8%" EQU "M" goto:menu
-
-
-
-
-::------------
-:Credit9
-cls
-
-SET CREDIT9=
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo                                        CREDITS
-echo                                      ===========
-echo.
-echo                                     SUPPORTING APPS
-echo                                   -------------------
-echo.
-echo           Below is a list of all the supporting apps bundled with ModMii.
-echo           Enter an app's number to open your browser to its webpage.
-echo.
-echo.
-echo.
-echo      1 = Ascii2All.bat (freeware)
-echo      2 = 7za.exe (freeware)
-echo      3 = d2x cIOS Modules (davebaol, xabby666, XFlak)
-echo      4 = fvc.exe (freeware)
-echo      5 = Hermes cIOS v4 mload Module
-echo      6 = Hermes cIOS v5 mload Module
-echo      7 = Hermes\Rodries cIOS v5.1R mload Module
-echo      8 = Hexalter.exe (by kuwanger)
-echo      9 = ISO template (by spayrosam)
-echo     10 = jptch.exe (freeware)
-echo     11 = libWiiSharp.dll (by Leathl, Mod by scooby74029)
-echo     12 = nircmd.exe (freeware)
-echo     13 = nusd.exe (by WiiNinja, original GUI code by WB3000)
-echo     14 = NusFileGrabber.exe (by Leathl, Mod by XFlak)
-echo     15 = patchIOS.exe (by Leathl, Mod by scooby74029)
-echo     16 = sfk.exe (freeware)
-echo     17 = ShowMiiWads_Sneek_Mod.exe (by Leathl, Mod by RetroHead)
-echo     18 = settings.exe (by cwstjdenobs)
-echo     19 = WadMii.exe (by cwstjdenobs)
-echo     20 = Waninkoko's cIOS Modules
-echo     21 = wget.exe (freeware)
-echo     22 = wit.exe (by Wiimm)
-echo     23 = writecbd.exe (by scooby74029)
-echo.
-echo    All = Bundle of ModMii's Supporting App Sources
-echo.
-echo.
-
-if /i "%MENU1%" NEQ "CR" (echo Wait a few seconds to proceed...) & (@ping 127.0.0.1 -n 5 -w 1000> nul)
-::set /p CREDIT9=     Press the "Enter" Key to Return to the Main Menu: 
-
-if /i "%MENU1%" NEQ "CR" (set /p CREDIT9=     Press the "Enter" Key to View Your Download Log: ) else (set /p CREDIT9=     Press the "Enter" Key to Return to the Main Menu: )
-
-if /i "%CREDIT9%" EQU "B" goto:credit8
-::if /i "%CREDIT9%" EQU "M" goto:menu
-
-
-if /i "%CREDIT9%" EQU "1" start www.batchlog.pytalhost.com
-if /i "%CREDIT9%" EQU "1" goto:Credit9
-
-if /i "%CREDIT9%" EQU "2" start http://sourceforge.net/projects/sevenzip
-if /i "%CREDIT9%" EQU "2" goto:Credit9
-
-if /i "%CREDIT9%" EQU "3" start http://gbatemp.net/t277659-ciosx-rev21d2x-v2-yet-another-hot-fix
-if /i "%CREDIT9%" EQU "3" goto:Credit9
-
-if /i "%CREDIT9%" EQU "4" start http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830
-if /i "%CREDIT9%" EQU "4" goto:Credit9
-
-if /i "%CREDIT9%" EQU "5" start http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar
-if /i "%CREDIT9%" EQU "5" goto:Credit9
-
-if /i "%CREDIT9%" EQU "6" start http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar
-if /i "%CREDIT9%" EQU "6" goto:Credit9
-
-if /i "%CREDIT9%" EQU "7" start http://gbatemp.net/t298741-hermes-cios-installer-v5-1-mod-by-rodries
-if /i "%CREDIT9%" EQU "7" goto:Credit9
-
-if /i "%CREDIT9%" EQU "8" start http://goo.gl/XTT2Y
-if /i "%CREDIT9%" EQU "8" goto:Credit9
-
-if /i "%CREDIT9%" EQU "9" start http://goo.gl/0L40U
-if /i "%CREDIT9%" EQU "9" goto:Credit9
-
-if /i "%CREDIT9%" EQU "10" start http://sourceforge.net/projects/jojodiff
-if /i "%CREDIT9%" EQU "10" goto:Credit9
-if /i "%CREDIT9%" EQU "11" start http://code.google.com/p/libwiisharp/source/browse
-if /i "%CREDIT9%" EQU "11" goto:Credit9
-if /i "%CREDIT9%" EQU "12" start http://www.nirsoft.net/utils/nircmd.html
-if /i "%CREDIT9%" EQU "12" goto:Credit9
-if /i "%CREDIT9%" EQU "13" start http://gbatemp.net/index.php?showtopic=153341
-if /i "%CREDIT9%" EQU "13" goto:Credit9
-if /i "%CREDIT9%" EQU "14" start http://code.google.com/p/libwiisharp/source/browse/#svn/branches/NusFileGrabber
-if /i "%CREDIT9%" EQU "14" goto:Credit9
-if /i "%CREDIT9%" EQU "15" start http://code.google.com/p/libwiisharp/source/browse/#svn/branches/patchIOS
-if /i "%CREDIT9%" EQU "15" goto:Credit9
-if /i "%CREDIT9%" EQU "16" start http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife
-if /i "%CREDIT9%" EQU "16" goto:Credit9
-if /i "%CREDIT9%" EQU "17" (echo Source included with ModMii's Supporting App Sources "All"...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:Credit9)
-if /i "%CREDIT9%" EQU "18" (echo Source included with ModMii's Supporting App Sources "All"...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:Credit9)
-if /i "%CREDIT9%" EQU "19" start http://www.mediafire.com/?bogjind5oe3
-if /i "%CREDIT9%" EQU "19" goto:Credit9
-if /i "%CREDIT9%" EQU "20" start http://github.com/waninkoko
-if /i "%CREDIT9%" EQU "20" goto:Credit9
-if /i "%CREDIT9%" EQU "21" start http://ftp.gnu.org/gnu/wget/
-if /i "%CREDIT9%" EQU "21" goto:Credit9
-if /i "%CREDIT9%" EQU "22" start http://wit.wiimm.de
-if /i "%CREDIT9%" EQU "22" goto:Credit9
-
-if /i "%CREDIT9%" EQU "23" (echo Source included with ModMii's Supporting App Sources "All"...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:Credit9)
-
-if /i "%CREDIT9%" EQU "All" start http://code.google.com/p/modmii/downloads/list?can=2^&q=rar^&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount
-if /i "%CREDIT9%" EQU "All" goto:Credit9
-
-
-if /i "%MENU1%" EQU "CR" goto:menu
-if /i "%MENUREAL%" EQU "S" goto:finishsneekinstall3
-if /i "%MENU1%" EQU "S" goto:finishsneekinstall3
-goto:Finish2
 
 
 
@@ -3534,6 +2943,10 @@ if /i "%FWDOPTION%" EQU "OFF" echo         FWD = Install USB-Loader Forwarder in
 if /i "%FWDOPTION%" EQU "ON" echo         FWD = Install USB-Loader Forwarder in ModMii Wizard Guides (Enabled)
 echo.
 
+if /i "%AudioOption%" EQU "OFF" echo          SO = Play sound at at Finish (Disabled)
+if /i "%AudioOption%" EQU "ON" echo          SO = Play sound at at Finish (Enabled)
+echo.
+
 if /i "%ModMiiverbose%" EQU "off" echo           V = Verbose Output maximized when using wget or Sneek Installer (Disabled)
 if /i "%ModMiiverbose%" EQU "on" echo           V = Verbose Output maximized when using wget or Sneek Installer (Enabled)
 echo.
@@ -3568,7 +2981,7 @@ if exist Custom.md5 echo          C3 = Delete Custom.md5
 echo.
 if /i "%AUTOUPDATE%" EQU "OFF" echo           A = Auto-Update ModMii at program start (Disabled)
 if /i "%AUTOUPDATE%" EQU "ON" echo           A = Auto-Update ModMii at program start (Enabled)
-echo.
+::echo.
 echo           N = Check for New versions of ModMii right now
 echo.
 echo       S = Save Settings       R = Restore Default Settings       M = Main Menu
@@ -3584,6 +2997,7 @@ if /i "%OPTIONS%" EQU "1" goto:Option1
 if /i "%OPTIONS%" EQU "N" goto:UpdateModMii
 if /i "%OPTIONS%" EQU "A" goto:AutoUpdate
 if /i "%OPTIONS%" EQU "36" goto:Option36
+if /i "%OPTIONS%" EQU "36" goto:AudioOption
 if /i "%OPTIONS%" EQU "CM" goto:CMIOSOPTION
 if /i "%OPTIONS%" EQU "FWD" goto:FWDOPTION
 if /i "%OPTIONS%" EQU "sv" goto:OptionSneekverbose
@@ -3654,6 +3068,7 @@ set effect=No-Spin
 set PCSAVE=Auto
 set OPTION1=off
 set OPTION36=on
+set AudioOption=on
 set CMIOSOPTION=off
 set FWDOPTION=on
 set Drive=COPY_TO_SD
@@ -3708,6 +3123,7 @@ echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
 echo Set Option1=%Option1%>> Support\settings.bat
 echo Set OPTION36=%OPTION36%>> Support\settings.bat
+echo Set AudioOption=%AudioOption%>> Support\settings.bat
 echo Set CMIOSOPTION=%CMIOSOPTION%>> Support\settings.bat
 echo Set FWDOPTION=%FWDOPTION%>> Support\settings.bat
 echo Set Drive=%DRIVE%>> Support\settings.bat
@@ -3788,6 +3204,12 @@ goto:OPTIONS
 :OPTION36off
 Set OPTION36=OFF
 goto:OPTIONS
+
+
+:AudioOption
+if /i "%AudioOption%" EQU "ON" (set AudioOption=OFF) else (set AudioOption=ON)
+goto:options
+
 
 :CMIOSOPTION
 if /i "%CMIOSOPTION%" EQU "ON" goto:CMIOSOPTIONoff
@@ -4154,11 +3576,11 @@ echo.
 set /p Drivetemp=     Enter Selection Here: 
 
 ::remove quotes from variable (if applicable)
-echo "set DRIVETEMP=%DRIVETEMP%">temp.txt
-support\sfk filter -quiet temp.txt -rep _""""__>temp.bat
-call temp.bat
-del temp.bat>nul
-del temp.txt>nul
+echo "set DRIVETEMP=%DRIVETEMP%">temp\temp.txt
+support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+call temp\temp.bat
+del temp\temp.bat>nul
+del temp\temp.txt>nul
 
 
 
@@ -4277,11 +3699,11 @@ set /p DriveUtemp=     Enter Selection Here:
 
 
 ::remove quotes from variable (if applicable)
-echo "set DRIVEUTEMP=%DRIVEUTEMP%">temp.txt
-support\sfk filter -quiet temp.txt -rep _""""__>temp.bat
-call temp.bat
-del temp.bat>nul
-del temp.txt>nul
+echo "set DRIVEUTEMP=%DRIVEUTEMP%">temp\temp.txt
+support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+call temp\temp.bat
+del temp\temp.bat>nul
+del temp\temp.txt>nul
 
 
 if /i "%DRIVEUTEMP%" EQU "M" goto:MENU
@@ -4390,7 +3812,8 @@ if %currentversion% EQU %newversion% (echo                              This ver
 
 
 ::openchangelog
-start http://5dca4ce5.miniurls.co/
+if /i "%Trigger%" EQU "1" (start http://modmii.zzl.org/changelog.html) else (start http://5dca4ce5.miniurls.co/)
+
 
 :updateconfirm
 set updatenow=
@@ -4482,7 +3905,6 @@ echo   Update check has failed, check your internet connection and firewall sett
 set currentversion=%currentversioncopy%
 
 if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:menu)
-
 
 
 
@@ -7072,6 +6494,9 @@ if exist temp\list2.txt del temp\list2.txt>nul
 if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
 if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" goto:quickskip2
+
 echo Checking which %neekname% versions are hosted online...
 
 
@@ -7180,25 +6605,24 @@ if %neekrev% LSS 1 goto:badkey
 if /i %neekrev% GTR %RevCount% goto:badkey
 
 
-
 :getcurrentrev
 
 ::---------------CMD LINE MODE-------------
 if /i "%cmdlinemode%" NEQ "Y" goto:cmdskip
-if "%neekrev%"=="" goto:quickskip
+if "%neekrev%"=="" goto:quickskip2
 :cmdskip
 
 ::----get selected %currentrev%----
 set RevCount2=0
 ::Loop through the the following once for EACH line in *.txt
 for /F "tokens=*" %%A in (temp\list.txt) do call :processlist2 %%A
-goto:quickskip
+goto:quickskip2
 :processlist2
 set CurrentRev=%*
 set /a RevCount2=%RevCount2%+1
-if /i "%RevCount2%" EQU "%neekrev%" goto:quickskip
+if /i "%RevCount2%" EQU "%neekrev%" goto:quickskip2
 goto:EOF
-:quickskip
+:quickskip2
 
 
 ::---------------CMD LINE MODE-------------
@@ -8193,9 +7617,9 @@ if /i "%SNEEKSELECT%" EQU "5" echo      You are about to make the following chan
 
 if /i "%SNEEKSELECT%" NEQ "3" goto:notalsoinstalling
 if /i "%SNEEKTYPE%" EQU "SD" echo      You are about to install %neekname%: SNEEK+DI Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "UD" echo      You are about to install UNEEK+DI Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "S" echo      You are about to install SNEEK Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
-if /i "%SNEEKTYPE%" EQU "U" echo      You are about to install UNEEK Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "UD" echo      You are about to install %neekname%: UNEEK+DI Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "S" echo      You are about to install %neekname%: SNEEK Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
+if /i "%SNEEKTYPE%" EQU "U" echo      You are about to install %neekname%: UNEEK Rev%CurrentRev% and build a %SNKVERSION%%SNKREGION% Emulated Nand
 
 echo.
 if /i "%neek2o%" EQU "on" echo      neek2o Enabled (can be changed in options)
@@ -8364,10 +7788,10 @@ if /i "%SNKNANDCONFIRM%" EQU "M" goto:MENU
 
 if /i "%AbstinenceWiz%" NEQ "Y" goto:NotAbstinenceWiz
 if /i "%SNKNANDCONFIRM%" EQU "G" (set secondrun=) & (set SETTINGS=G) & (goto:Download)
-if /i "%SNKNANDCONFIRM%" EQU "Y" (set secondrun=) & (set SETTINGS=) & (goto:Download)
+if /i "%SNKNANDCONFIRM%" EQU "Y" (set secondrun=) & (set SETTINGS=) & (goto:creditcheck)
 :NotAbstinenceWiz
 
-if /i "%SNEEKSELECT%" EQU "1" goto:skip
+if /i "%SNEEKSELECT%" EQU "1" goto:skip5
 if /i "%SNKNANDCONFIRM%" EQU "A" goto:addwadfolder
 if /i "%SNKNANDCONFIRM%" EQU "R" (set addwadfolder=) & (goto:SNKNANDCONFIRM)
 
@@ -8375,16 +7799,76 @@ if /i "%SNEEKSELECT%" NEQ "5" goto:skip5
 if /i "%emuitems%" EQU "0" goto:badkey
 :skip5
 
-if /i "%SNEEKSELECT%" EQU "3" goto:skip
-if /i "%SNKNANDCONFIRM%" EQU "Y" goto:SNKNANDBUILDER
-:skip
-if /i "%SNKNANDCONFIRM%" EQU "Y" goto:SNEEKINSTALLER
+if /i "%SNKNANDCONFIRM%" EQU "Y" goto:creditcheck
 
 
 :badkey
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:SNKNANDCONFIRM
+
+
+
+
+:creditcheck
+::force non-donators to view credits (but not in cmd line mode)
+if /i "%Trigger%" EQU "1" goto:skipcreditcheck
+if /i "%cmdlinemode%" EQU "Y" goto:skipcreditcheck
+
+start http://99acb462.miniurls.co
+
+cls
+
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow]Non-Donators must view the Credits for 60 seconds before downloading
+echo.
+echo.
+echo  If you donate $1 or more to XFlak40@hotmail.com, as my way of saying thanks I'll
+echo  reply to you via email with a functional Easter Egg guaranteed to be helpful
+echo  every time you use ModMii.
+echo.
+echo  I will still email you ModMii's Easter Egg if you prefer to donate to someone else
+echo  listed in the credits ONLY IF you ask THEM to send confirmation of your donation
+echo  to XFlak40@hotmail.com.
+echo.
+echo.
+support\sfk echo -spat \x20 [Green]ModMii Donations can be sent via paypal to: \x20 XFlak40@hotmail.com
+echo.
+echo.
+
+echo 60 seconds remaining...
+support\nircmd.exe wait 10000
+
+echo.
+echo 50 seconds remaining...
+support\nircmd.exe wait 10000
+
+echo.
+echo 40 seconds remaining...
+support\nircmd.exe wait 10000
+
+echo.
+echo 30 seconds remaining...
+support\nircmd.exe wait 10000
+
+echo.
+echo 20 seconds remaining...
+support\nircmd.exe wait 10000
+
+echo.
+echo 10 seconds remaining...
+support\nircmd.exe wait 10000
+:skipcreditcheck
+
+
+if /i "%AbstinenceWiz%" EQU "Y" goto:Download
+if /i "%SNEEKSELECT%" EQU "1" goto:SNEEKINSTALLER
+if /i "%SNEEKSELECT%" EQU "3" goto:SNEEKINSTALLER
+if /i "%SNEEKSELECT%" EQU "2" goto:SNKNANDBUILDER
+goto:DLSETTINGS
 
 
 ::-----------------------------------Add WAD Folder to Install to emunand----------------------------------
@@ -8958,7 +8442,7 @@ if exist "%DRIVETEMP%\title\00000001\00000002\content\1%SMAPP:~1%.app" (set PRII
 ::check for current nswitch channel
 set nSwitchFOUND=NO
 set nswitchmd5=9f5ee8d0ea57c144c07d685ef0dee4da
-if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 if not exist "%DRIVETEMP%\title\00010001\4e4b324f\content\00000001.app" goto:nonswitchcheck
 support\sfk md5 -quiet -verify %nswitchmd5% "%DRIVETEMP%\title\00010001\4e4b324f\content\00000001.app"
 if not errorlevel 1 set nSwitchFOUND=YES
@@ -8972,7 +8456,7 @@ set BCtype=
 set BCmd5=eb1b69f3d747145651aa834078c2aacd
 set DMLmd5=88720d0de8c7db7bf00f5053b76ae66b
 set NMMmd5=8663c24ab33540af6a818920a3a47c4a
-if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
 if not exist "%DRIVETEMP%\title\00000001\00000100\content\00000008.app" (set BCtype=None) & (goto:noBCcheck)
 
@@ -10426,7 +9910,7 @@ echo      %usbfolder% CFG = CFG-Loader (Full v249)        %WiiMC% WMC = WiiMC 
 echo   %cfg249% CFG249 = CFG-Loader (Beta v249)        %fceugx% NES = FCEUGX (NES Emulator)
 echo   %cfg222% CFG222 = CFG-Loader (Beta v222)       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
 echo     %cfgr% CFGR = Configurator-CFG-Loader       %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo     %FLOW% FLOW = WiiFlow                        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
+echo     %FLOW% FLOW = WiiFlow                       %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
 echo     %USBX% USBX = USB-Loader Fwdr Chnl           %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %HBB% HBB = Homebrew Browser
 echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %SGM% SGM = SaveGame Manager GX
@@ -15148,7 +14632,8 @@ echo      Enter the path\name of your sysCheck.csv log that you want to analyze.
 echo.
 echo.
 echo      You can do this by dragging and dropping the file onto this window
-echo      then hitting Enter.
+echo      then hitting Enter. Or you can just drag and drop it onto ModMii.exe
+echo      or a shortcut to ModMii.
 echo.
 echo.
 echo.
@@ -16235,7 +15720,7 @@ SET DLQUEUEtotal=0
 for /f "delims=" %%i in (temp\list.txt) do set /a DLQUEUEtotal=!DLQUEUEtotal!+1
 setlocal DISABLEDELAYEDEXPANSION
 
-SET /a LINES=%DLQUEUEtotal%+27
+SET /a LINES=%DLQUEUEtotal%+29
 if %LINES% LEQ 54 goto:noresize
 mode con cols=85 lines=%LINES%
 :noresize
@@ -16252,7 +15737,31 @@ echo.
 echo.
 
 
-if /i "%DLQUEUEtotal%" EQU "0" (echo                 No Download Queues were found, returning to Main Menu...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:MENU)
+if /i "%DLQUEUEtotal%" NEQ "0" goto:notzero
+
+echo                               No Download Queues Found
+echo.
+echo          Before you can load a queue you have to save one using ModMii
+echo          Or if loading a queue a friend has shared with you, just drag
+echo          and drop it onto ModMii.exe or a shortcut to ModMii.
+echo.
+echo.
+echo          Note: Download Queues are saved to "temp\DownloadQueues"
+echo                and can be shared amongst different ModMii users.
+echo.
+echo                You can drag and drop a download queue onto ModMii.exe
+echo                to load it and save a copy to "temp\DownloadQueues"
+echo                for future use. To delete a queue from the above list
+echo                just delete the appropriate file from "temp\DownloadQueues"
+echo.
+echo.
+echo Press any key to return to the Main Menu.
+echo.
+pause>nul
+goto:MENU
+
+:notzero
+
 echo.
 
 set DLQUEUEnum=0
@@ -16271,7 +15780,10 @@ echo.
 echo.
 echo          Note: Download Queues are saved to "temp\DownloadQueues"
 echo                and can be shared amongst different ModMii users.
-echo                If you want to delete a queue from the above list
+echo.
+echo                You can drag and drop a download queue onto ModMii.exe
+echo                to load it and save a copy to "temp\DownloadQueues"
+echo                for future use. To delete a queue from the above list
 echo                just delete the appropriate file from "temp\DownloadQueues"
 echo.
 echo.
@@ -16305,6 +15817,12 @@ goto:EOF
 
 :quickskip
 del temp\list.txt>nul
+
+
+findStr /I /C:":endofqueue" "temp\DownloadQueues\%CurrentQueue%" >nul
+IF ERRORLEVEL 1 (echo Not a valid download queue...) & (goto:badkey)
+
+
 mode con cols=85 lines=54
 :forcmdlineL
 call "temp\DownloadQueues\%CurrentQueue%"
@@ -16628,7 +16146,7 @@ if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader (Most recent Full 249
 if /i "%cfg249%" EQU "*" (echo "Configurable USB Loader (Most recent 249 version)">>temp\DLnames.txt) & (echo "cfg249">>temp\DLgotos.txt)
 if /i "%cfg222%" EQU "*" (echo "Configurable USB Loader (Most recent 222 version)">>temp\DLnames.txt) & (echo "cfg222">>temp\DLgotos.txt)
 if /i "%cfgr%" EQU "*" (echo "Configurator for Configurable USB Loader (Most recent version)">>temp\DLnames.txt) & (echo "cfgr">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
@@ -16997,7 +16515,7 @@ if /i "%MENU1%" NEQ "L" goto:notbatch
 if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" goto:LIST
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :notbatch
 
 
@@ -17005,7 +16523,7 @@ if /i "%MENU1%" NEQ "1" goto:notbatch
 if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" goto:%BACKB4QUEUE%
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :notbatch
 
 if /i "%MENU1%" NEQ "2" goto:notoldbatch
@@ -17013,7 +16531,7 @@ if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" set lines=54
 if /i "%SETTINGS%" EQU "A" goto:%BACKB4QUEUE%
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :notoldbatch
 
 if /i "%MENU1%" NEQ "3" goto:NotBatchApp
@@ -17021,7 +16539,7 @@ if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" set lines=54
 if /i "%SETTINGS%" EQU "A" goto:%BACKB4QUEUE%
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :NotBatchApp
 
 if /i "%MENU1%" NEQ "4" goto:NotLIST4
@@ -17029,7 +16547,7 @@ if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" set lines=54
 if /i "%SETTINGS%" EQU "A" goto:%BACKB4QUEUE%
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :NotLIST4
 
 if /i "%MENU1%" NEQ "A" goto:NotAdv
@@ -17037,7 +16555,7 @@ if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "A" set lines=54
 if /i "%SETTINGS%" EQU "A" goto:%BACKB4QUEUE%
 if /i "%DLTOTAL%" EQU "0" goto:badkey
-if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:DLSETTINGS)
+if /i "%SETTINGS%" EQU "Y" (mode con cols=85 lines=54) & (goto:creditcheck)
 :NotAdv
 
 if /i "%DLTOTAL%" EQU "0" goto:badkey
@@ -17596,9 +17114,9 @@ if /i "%FINISH%" EQU "S+" goto:FINISH
 
 ::...................................Copy (rename %Drive%\wad if applicable)...............................
 :COPY
-if not exist "%Drive%"\WAD goto:DLSettings
-if /i "%USBCONFIG%" EQU "USB" goto:DLSettings
-::if /i "%DRIVE%" NEQ "COPY_TO_SD" goto:DLSettings
+if not exist "%Drive%"\WAD goto:creditcheck
+if /i "%USBCONFIG%" EQU "USB" goto:creditcheck
+::if /i "%DRIVE%" NEQ "COPY_TO_SD" goto:creditcheck
 
 Set COPY=
 
@@ -17620,7 +17138,7 @@ echo           E = Exit
 echo.
 set /p COPY=     Enter Selection Here: 
 
-if /i "%COPY%" EQU "M" goto:DLSettings
+if /i "%COPY%" EQU "M" goto:creditcheck
 if /i "%COPY%" EQU "E" EXIT
 if /i "%COPY%" EQU "C" goto:MENU
 
@@ -17631,13 +17149,14 @@ if /i "%COPY%" NEQ "R" goto:COPY
 :COPY2
 SET /a COUNT=%COUNT%+1
 if exist "%Drive%"\WAD%COUNT% goto:COPY2
-move "%Drive%"\WAD "%Drive%"\WAD%COUNT%>nul
-::rename "%Drive%"\WAD WAD%COUNT%
+::move "%Drive%"\WAD "%Drive%"\WAD%COUNT%>nul
+rename "%Drive%"\WAD WAD%COUNT%
+
 if /i "%LIST%" EQU "R" goto:LIST
 if /i "%OLDLIST%" EQU "R" goto:OLDLIST
 if /i "%list3%" EQU "R" goto:LIST3
 if /i "%list4%" EQU "R" goto:LIST4
-goto:DLSETTINGS
+goto:creditcheck
 
 
 ::.................................................ACTUAL DOWNLOAD CODE...........................................................................
@@ -17651,7 +17170,7 @@ set attempt=1
 
 ::DBUPDATE.bat check (added in v4.5.0)
 ::instead of putting out ModMii updates for minor things, the update check can be used to create\download a DBUPDATE.bat file to modify variables like "wadname", "md5", etc.
-if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
 
 
@@ -17682,7 +17201,8 @@ echo.
 
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" NEQ "Y" goto:notskin
-if "%percent%"=="" set percent=0
+if /i "%CURRENTDL%" EQU "1" set percent=0
+::if "%percent%"=="" set percent=0
 set percentlast=%percent%
 set /a percent=%CURRENTDL%00/%DLTOTAL%
 if %percent% LSS %percentlast% set percent=%percentlast%
@@ -19148,7 +18668,7 @@ echo.
 
 set ThemeMiiZip=thememii_cmd_3.5NetFramework.zip
 set md5TMCL=641eadbcbb9970f066d7852286f03133
-if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
 
 ::----if exist and fails md5 check, delete and redownload----
@@ -19877,11 +19397,14 @@ echo This app already exists...
 
 ::get current version if app already exists, skip if its the most recent version
 support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
-if /i "%path1%" NEQ "apps\postloader\" support\sfk filter -quiet temp\currentcode.txt -!"app version" -write -yes
-support\sfk filter -quiet temp\currentcode.txt -+"version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -write -yes
+
+support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
+
+support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -write -yes
+
 set /p currentcode= <temp\currentcode.txt
 del /f /q temp\currentcode.txt
+
 
 echo.
 echo Current version is %currentcode%
@@ -19891,6 +19414,8 @@ echo.
 
 :doesntexist
 start %ModMiimin%/wait support\wget %updateurl%
+
+
 
 if not exist %updatedlname% goto:missing
 move /y %updatedlname% code.bat>nul
@@ -19908,16 +19433,15 @@ goto:skippostloaderfilter
 
 
 :WiiFlowfilter
-support\sfk filter -spat -quiet code.bat -+"feature" -!"deprec" -rep _"*open-wiiflow-mod.googlecode.com/files/Wiiflow\x5fMod\x5fsvn\x5fr"_"set newcode="_ -rep _".zip*"__ -write -yes
-support\sfk filter -spat -quiet code.bat -ls+"set newcode" -rep _*\x3d__ -write -yes
-support\sfk filter -quiet code.bat -unique -write -yes
+support\sfk filter -quiet code.bat ++"zip" -rep _.zip*__ -write -yes
+support\sfk filter -spat -quiet code.bat -rep _*r__ -write -yes
 set /p newcode= <code.bat
 del /f /q code.bat
 goto:skippostloaderfilter
 
 
 :postloaderfilter
-support\sfk filter -quiet code.bat -+"feature" -!"deprec" -rep _"*postloader.googlecode.com/files/postloader."_"set newcode="_ -rep _".zip*"__ -write -yes
+support\sfk filter -quiet code.bat -+"feature" -!"deprec" -!"dol" -rep _"*postloader.googlecode.com/files/postloader."_"set newcode="_ -rep _".zip*"__ -write -yes
 support\sfk filter -spat -quiet code.bat -ls+"set newcode" -rep _*\x3d__ -write -yes
 support\sfk filter -quiet code.bat -unique -write -yes
 set /p newcode= <code.bat
@@ -19956,9 +19480,9 @@ if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
 
 
 if /i "%path1%" NEQ "apps\WiiFLow\" goto:miniskip
-if not exist "Wiiflow_Mod_svn_r%newcode%%code2%" goto:miniskip
-support\7za X -aoa "Wiiflow_Mod_svn_r%newcode%%code2%" -o"%Drive%" -r
-del "Wiiflow_Mod_svn_r%newcode%%code2%">nul
+if not exist "Wiiflow_svn_r%newcode%%code2%" goto:miniskip
+support\7za X -aoa "Wiiflow_svn_r%newcode%%code2%" -o"%Drive%" -r
+del "Wiiflow_svn_r%newcode%%code2%">nul
 goto:skip
 :miniskip
 
@@ -20029,9 +19553,11 @@ goto:DOWNLOADSTART2
 :checkexisting
 ::get current version from meta.xml
 support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
-if /i "%path1%" NEQ "apps\postloader\" support\sfk filter -quiet temp\currentcode.txt -!"app version" -write -yes
-support\sfk filter -quiet temp\currentcode.txt -+"version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -write -yes
+
+support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
+
+support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -write -yes
+
 set /p currentcode= <temp\currentcode.txt
 del /f /q temp\currentcode.txt
 
@@ -22002,7 +21528,7 @@ set wadname=SNEEKInstallerv0.7a-cred.rar
 set md5=e1c094efd57d19e9a3726bcb8f543660
 :skipnew
 
-if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
+::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
 echo.
 echo Downloading Official Sneek Installer (%wadname:~14,5%)
@@ -22034,13 +21560,23 @@ type NUL > temp\%wadname:~0,-4%\sinst.ini
 echo.
 
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 15
+
+
+
 echo Downloading Autoit
 if exist temp\autoit3.exe goto:AlreadyinTemp
 if not exist autoit-v3-sfx.exe start %ModMiimin%/wait support\wget -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-sfx.exe
 if exist autoit-v3-sfx.exe support\7za e -aoa autoit-v3-sfx.exe -otemp autoit3.exe -r
 if exist autoit-v3-sfx.exe del autoit-v3-sfx.exe>nul
+if not exist temp\autoit3.exe goto:sneekwarning
 :AlreadyinTemp
 echo.
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 30
+
 
 echo Downloading 0000000e.app from IOS80
 if exist temp\0000000e_IOS80.app goto:AlreadyinTemp
@@ -22052,6 +21588,12 @@ move /Y 0000000e.app temp\0000000e_IOS80.app>nul
 copy /Y temp\0000000e_IOS80.app temp\0000000e.app>nul
 if not exist temp\0000000e.app goto:sneekwarning
 echo.
+
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 45
+
 
 if /i "%SNEEKTYPE%" EQU "SD" goto:DL01
 if /i "%SNEEKTYPE%" EQU "UD" goto:DL01
@@ -22067,6 +21609,11 @@ copy /Y temp\00000001_IOS60.app temp\00000001.app>nul
 if not exist temp\00000001.app goto:sneekwarning
 echo.
 :skipDL01
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 60
+
 
 
 ::FONT.BIN
@@ -22113,6 +21660,8 @@ findStr /I /C:"Everything is Ok" "temp\7zalog.txt" >nul
 IF ERRORLEVEL 1 (Corrupted archive detected and deleted, please try again..) & (del temp\7zalog.txt>nul) & (del "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul) & (goto:sneekwarning)
 del temp\7zalog.txt>nul
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 75
 
 ::Sneek SD Card Access
 if /i "%SSD%" EQU "on" move /y "temp\esmodule-sdon.elf" "temp\esmodule.elf">nul
@@ -22176,6 +21725,11 @@ del run.bat>nul
 
 taskkill /im SneekInstaller.exe /f >nul
 del custom.au3>nul
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 100
+
 
 
 if /i "%AbstinenceWiz%" EQU "Y" move /y "%DRIVE%\bootmii\armboot.bin" "%DRIVE%\bootmii_ios.bin">nul
@@ -22284,20 +21838,29 @@ goto:finishsneekinstall3
 
 ::---------------CMD LINE MODE-------------
 if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+
+echo Some files required for %neekname% installation >temp\ModMii_CMD_LINE_NEEK_Errors.txt
+echo are missing. Aborting %neekname% installation, >>temp\ModMii_CMD_LINE_NEEK_Errors.txt
+echo check your internet connection then try again. >>temp\ModMii_CMD_LINE_NEEK_Errors.txt
+
+if /i "%SKINmode%" NEQ "Y" start notepad "temp\ModMii_CMD_LINE_NEEK_Errors.txt"
+
+if /i "%SNEEKSELECT%" EQU "3" goto:SNKNANDBUILDER
+
 if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
-echo WARNING: Some files Required for the SNEEK install are missing. >temp\ModMii_CMD_LINE_Log_Errors.txt
-echo Aborting SNEEK Installation, check your internet connection >>temp\ModMii_CMD_LINE_Log_Errors.txt
-echo Then repeat the SNEEK Installation to try again. >>temp\ModMii_CMD_LINE_Log_Errors.txt
-start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
 exit
 :notcmdfinish
 
 echo.
-support\sfk echo -spat \x20 [Yellow] WARNING: Some files Required for the SNEEK install are missing.
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Aborting SNEEK Installation, check your internet connection
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Then repeat the SNEEK Installation to try again.
+support\sfk echo -spat \x20 [Yellow] WARNING: Some files Required for the %neekname% install are missing.
+support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Aborting %neekname% Installation, check your internet connection
+support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow] Then repeat the Installation to try again.
 echo.
 
+if /i "%SKINmode%" EQU "Y" goto:noaudio
+if /i "%AudioOption%" NEQ "on" goto:noaudio
+start support\nircmd.exe mediaplay 3000 "support\FAIL.mp3"
+:noaudio
 
 echo Press any key to return to the Main Menu.
 pause>nul
@@ -22408,6 +21971,14 @@ if /i "%SNEEKSELECT%" NEQ "5" goto:tinyskip
 if /i "%emuwadcount%" EQU "0" goto:skipSMWall
 :tinyskip
 
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 10
+
+
+
+
 echo Loading ShowMiiWads
 echo.
 echo installing wads from: temp\WAD\
@@ -22425,6 +21996,11 @@ SMW-Mod.exe
 :skipSMW
 cd..
 :skipSMWall
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 50
+
 
 ::---delete non-temp files---
 if exist temp\WAD\JoyFlowHNv11c-HBJF.wad del temp\WAD\JoyFlowHNv11c-HBJF.wad>nul
@@ -22483,6 +22059,11 @@ if exist "%nandpath%"\title\00000001\00000002\data\setting.txt (echo setting.txt
 
 :skip
 
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 60
+
+
 if "%ThemeSelection%"=="" goto:quickskip2
 if /i "%ThemeSelection%" EQU "N" goto:quickskip
 if /i "%ThemeSelection%" EQU "D" goto:quickskip
@@ -22532,6 +22113,10 @@ if not exist "%DRIVEU%\wbfs" mkdir "%DRIVEU%\wbfs" >nul
 :notDI
 
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 70
+
+
 if /i "%SNEEKSELECT%" EQU "5" goto:skip
 ::---------building cdf.vff----------
 echo.
@@ -22542,6 +22127,10 @@ cd..
 if exist support\cdb.vff move /y support\cdb.vff "%nandpath%"\title\00000001\00000002\data\cdb.vff>nul
 
 :skip
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 80
 
 
 if /i "%PRIIFOUND%" EQU "Yes" goto:skipSNKpri
@@ -22636,9 +22225,11 @@ if exist temp\JoyFlow(emulators)-v11.dol del temp\JoyFlow(emulators)-v11.dol>nul
 copy /y temp\ModMii_Log.bat temp\ModMii_Log_SNK.bat>nul
 
 
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 100
 
 ::small pause
-@ping 127.0.0.1 -n 2 -w 1000> nul
+::@ping 127.0.0.1 -n 2 -w 1000> nul
 
 goto:finishsneekinstall
 
@@ -22708,24 +22299,20 @@ SET /a LINES=%problematicDLs%+56
 if %LINES% LEQ 54 set lines=54
 mode con cols=85 lines=%LINES%
 
-
-::---------------CMD LINE MODE-------------
-if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
-if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
-
-
-if /i "%problematicDLs%" EQU "0" exit
-support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
-move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log_Errors.txt">nul
-start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
-exit
-:notcmdfinish
+if /i "%SKINmode%" EQU "Y" goto:noaudio
+if /i "%AudioOption%" NEQ "on" goto:noaudio
+if /i "%problematicDLs%" EQU "0" (start support\nircmd.exe mediaplay 3000 "support\Success.mp3") else (start support\nircmd.exe mediaplay 3000 "support\Fail.mp3")
+:noaudio
 
 :nocheck
 
-if /i "%cmdlinemode%" EQU "Y" exit
+if /i "%SKINmode%" EQU "Y" goto:noaudio
+if /i "%SNEEKSELECT%" NEQ "1" goto:noaudio
+if /i "%AudioOption%" NEQ "on" goto:noaudio
+start support\nircmd.exe mediaplay 3000 "support\Success.mp3"
+:noaudio
 
-
+if /i "%cmdlinemode%" EQU "Y" goto:problemlog
 
 set MENUREAL=
 
@@ -22781,22 +22368,24 @@ if /i "%SNEEKTYPE%" EQU "S" echo    Successfully installed SNEEK neek2o rev%Curr
 
 ::only build nand
 if /i "%SNEEKSELECT%" NEQ "2" goto:skip
-if /i "%SNEEKTYPE%" EQU "SD" echo    %snksuccess% built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "UD" echo    %snksuccess% built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "U" echo    %snksuccess% built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
-if /i "%SNEEKTYPE%" EQU "S" echo    %snksuccess% built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "SD" echo    %snksuccess% Built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "UD" echo    %snksuccess% Built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "U" echo    %snksuccess% Built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
+if /i "%SNEEKTYPE%" EQU "S" echo    %snksuccess% Built a %SNKVERSION%%SNKREGION% Emulated Nand%snkfailure%
 :skip
 
 
 if /i "%SNEEKSELECT%" EQU "5" echo    Emulated Nand has been modified %snkfailure%
 
 
+:problemlog
 ::list problematic Download
 if /i "%SNEEKSELECT%" EQU "1" goto:noproblems
 if /i "%problematicDLs%" EQU "0" goto:noproblems
-echo.
-echo The following file(s) failed to download properly:
-call temp\ModMii_Log.bat
+
+if /i "%cmdlinemode%" NEQ "Y" echo.
+if /i "%cmdlinemode%" NEQ "Y" echo The following file(s) failed to download properly:
+if /i "%cmdlinemode%" NEQ "Y" call temp\ModMii_Log.bat
 
 support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _[Red]__ -rep _"support\sfk echo "__ -rep _"echo "__ >temp\ModMii_Log_temp.txt
 
@@ -22808,6 +22397,20 @@ if exist "temp\nandinfo.txt" del "temp\nandinfo.txt">nul
 copy "%nandpath%\nandinfo.txt"+"temp\ModMii_Log_temp.txt" "temp\nandinfo.txt">nul
 move /y "temp\nandinfo.txt" "%nandpath%\nandinfo.txt">nul
 :noproblems
+
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+
+
+if /i "%problematicDLs%" EQU "0" exit
+support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
+move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log_Errors.txt">nul
+if /i "%SKINmode%" NEQ "Y" start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
+exit
+:notcmdfinish
+
 
 echo.
 if /i "%SNEEKSELECT%" NEQ "2" goto:skip
@@ -22917,13 +22520,12 @@ goto:MENU
 if exist temp\DLnames.txt del temp\DLnames.txt>nul
 if exist temp\DLgotos.txt del temp\DLgotos.txt>nul
 
+set played=
+
 if /i "%MENU1%" EQU "S" goto:wad2nand
 
-::force non-donators to view credits (but not in cmd line mode)
-if exist support\skipscam.txt goto:finish2
-if exist support\ipromisetodonate.txt goto:finish2
-if /i "%cmdlinemode%" EQU "Y" goto:FINISH2
-goto:credit1
+
+
 :FINISH2
 
 if /i "%MENUREAL%" EQU "S" goto:finishsneekinstall3
@@ -22971,6 +22573,14 @@ if /i "%ActualDriveU%" EQU "%ActualDrive%" goto:skip
 set DrivesNeedingFreeSpace=%DrivesNeedingFreeSpace% and %ActualDriveU%
 :skip
 
+if /i "%DB%" EQU "C" goto:noaudio
+if /i "%SKINmode%" EQU "Y" goto:noaudio
+if /i "%AudioOption%" NEQ "on" goto:noaudio
+if /i "%played%" EQU "yes" goto:noaudio
+if /i "%problematicDLs%" EQU "0" (start support\nircmd.exe mediaplay 3000 "support\Success.mp3") else (start support\nircmd.exe mediaplay 3000 "support\Fail.mp3")
+set played=yes
+:noaudio
+
 
 ::---------------CMD LINE MODE-------------
 if /i "%cmdlinemode%" NEQ "Y" goto:notcmdfinish
@@ -23012,6 +22622,8 @@ if exist temp\ModMii_Log.bat (call temp\ModMii_Log.bat)
 if /i "%DB%" EQU "C" goto:skipcopytoSDmsg
 
 echo.
+
+
 if /i "%problematicDLs%" EQU "0" (support\sfk echo -spat \x20 \x20[Green]* %DLTOTAL% file\x28s\x29 downloaded succcessfully) & (goto:noproblems)
 
 :problems
@@ -23092,39 +22704,39 @@ if /i "%FINISH%" NEQ "CC" goto:miniskip
 if not exist CUSTOM_COPY_TO_SD goto:miniskip
 if not exist "%DRIVE%" mkdir "%DRIVE%" >nul
 xcopy /y /e "CUSTOM_COPY_TO_SD" "%DRIVE%"
-goto:FINISH
+goto:FINISH2
 :miniskip
 
 if /i "%FINISH%" NEQ "CCU" goto:miniskip
 if not exist CUSTOM_COPY_TO_USB goto:miniskip
 if not exist "%DRIVEU%" mkdir "%DRIVEU%" >nul
 xcopy /y /e "CUSTOM_COPY_TO_USB" "%DRIVEU%"
-goto:FINISH
+goto:FINISH2
 :miniskip
 
 
 if /i "%FINISH%" EQU "M" goto:MENU
-if /i "%FINISH%" EQU "E" goto:exitnow
+if /i "%FINISH%" EQU "E" EXIT
 
 if not exist "%DRIVE%" goto:drivedoesnotexist2
 if /i "%FINISH%" EQU "O" explorer "%DRIVE%"
-if /i "%FINISH%" EQU "O" goto:Finish
+if /i "%FINISH%" EQU "O" goto:Finish2
 :drivedoesnotexist2
 
 if /i "%DB%" NEQ "C" goto:nolog
 if not exist "custom.md5" goto:nolog
 if /i "%FINISH%" EQU "L" start notepad "custom.md5"
-if /i "%FINISH%" EQU "L" goto:Finish
+if /i "%FINISH%" EQU "L" goto:Finish2
 :nolog
 
 if not exist Custom.md5 goto:skip
 if /i "%FINISH%" EQU "C" SET DB=C
-if /i "%FINISH%" EQU "C" goto:Finish
+if /i "%FINISH%" EQU "C" goto:Finish2
 :skip
 
 if not exist temp\ModMii_Log.bat goto:skip
 if /i "%FINISH%" EQU "N" SET DB=N
-if /i "%FINISH%" EQU "N" goto:FINISH
+if /i "%FINISH%" EQU "N" goto:FINISH2
 :skip
 
 if /i "%DLTOTAL%" EQU "0" goto:dltotaliszero2
@@ -25423,33 +25035,19 @@ set path1=usb-loader\
 goto:downloadstart
 
 
-
 :FLOW
-set name=WiiFlow r304-249
-set code1=URL
-set code2=http://wiiflow.googlecode.com/files/r304-249.zip
-set version=*
-set dlname=r304-249.zip
-set wadname=r304-249.zip
-set filename=boot.dol
-set md5=33cef493e5be4a22e7f0af0fed6f4683
+set name=WiiFlow (Most Recent Release)
+set category=GOOGLEUPDATE
 set path1=apps\WiiFlow\
+set updateurl="http://tiny.cc/WiiflowModMii"
+set updatedlname="index.html"
+set code1="http://dl.dropbox.com/u/25620767/WiiflowModMii/Wiiflow_svn_r"
+set code2=.zip
+set iconurl=
+set metaurl=
+set wadname1=R
+set wadname2=.dol
 goto:downloadstart
-
-
-:::FLOW
-::set name=WiiFlow (Most Recent Release)
-::set category=GOOGLEUPDATE
-::set path1=apps\WiiFlow\
-::set updateurl="http://code.google.com/p/open-wiiflow-mod/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-::set updatedlname="list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-::set code1="http://open-wiiflow-mod.googlecode.com/files/Wiiflow_Mod_svn_r"
-::set code2=.zip
-::set iconurl=
-::set metaurl=
-::set wadname1=R
-::set wadname2=.dol
-::goto:downloadstart
 
 
 
@@ -25560,7 +25158,7 @@ set version=*
 set dlname="plforwarder.wad"
 set wadname=plforwarder.wad
 set filename=plforwarder.wad
-set md5=1ab9b719a05ba9ff3b7274ae1fb87cf7
+set md5=136163e2bcae838b0f7b20fec154f000
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -28574,6 +28172,12 @@ SET COUNT7=1
 cls
 if /i "%SETTINGS%" EQU "G" echo Generating Guide, please wait.
 if /i "%SETTINGS%" NEQ "G" echo Generating Guide, please wait, your downloads will begin shortly.
+
+
+::---------------SKIN MODE-------------
+if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 50
+
+
 
 if not exist "%DRIVE%" mkdir "%DRIVE%" >nul
 if not exist "%Drive%"\%guidename% goto:norename

@@ -1,103 +1,65 @@
 @echo off
 
-title=ModMii Installer
-mode con cols=85 lines=25
-color 1f
+::title=ModMii Installer
+title ModMiiInstallerCMD
+
+::make cmd window transparent and hidden
+nircmd.exe win trans ititle "ModMiiInstallerCMD" 0
+nircmd.exe win hide ititle "ModMiiInstallerCMD"
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
-set AUTOUPDATE=off
 set ModMiiInstallerpath=%cd%
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
-set InstallerVersion=3.0
+set InstallerVersion=6.0
 
 chcp 437>nul
 
 set ModMiimin=/min 
 
-
 ::get desktop location (%DESKTOPDIR%) using findDesktop.vbs
-call getdesktop.bat
+::call getdesktop.bat
 
 
 :updaterpage
+set watitle=ModMii Installer
+set wainput=
+set waico=icon.ico
+set wabat=%TEMP%\wabat.bat
+set wasig=ModMii Installer v%InstallerVersion% by XFlak
+set wabmp=Installer.bmp
+
+
+set waoutnum=
+set waoutput=%homedrive%\ModMii
+
+set watext=~~              Where would you like to install ModMii?
+
+::set wainput=%homedrive%\ModMii;%DESKTOPDIR%\ModMii
+
 set proceed=
-cls
-echo                                   ModMii Installer                              v%InstallerVersion%
-echo                                       by XFlak
-echo.
-echo.
-echo                       Where would you like to install ModMii?
-echo.
-echo.
-echo    L = Local Installation
-echo        * Installed to %homedrive%\ModMii
-echo.
-echo.
-echo    D = Desktop Installation
-echo        * Installed to %DESKTOPDIR%\ModMii
-echo.
-echo.
-echo    C = Custom Portable Installation
-echo        * Installed to user-defined location
-echo.
-echo.
-echo                            E = Exit without installing
-echo.
-echo.
-set /p proceed=     Enter Selection Here: 
 
-if /i "%proceed%" EQU "E" exit
-if /i "%proceed%" EQU "C" goto:updaterpage2
+::start /w wizapp NOBACK CB
 
-if /i "%proceed%" EQU "L" set InstallPath=%homedrive%\ModMii
-if /i "%proceed%" EQU "L" goto:updaterpage3
-
-if /i "%proceed%" EQU "D" set InstallPath=%DESKTOPDIR%\ModMii
-if /i "%proceed%" EQU "D" goto:updaterpage3
-
-echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:updaterpage
+start /w wizapp NOBACK FB DIR
 
 
+if errorlevel 2 EXIT
+::if errorlevel 1 goto:SaveSettings
 
-:updaterpage2
-set InstallPathTemp=
-cls
-echo                                   ModMii Installer                              v%InstallerVersion%
-echo                                       by XFlak
-echo.
-echo.
-echo               Enter the drive letter (or path) for ModMii Installation:
-echo.
-echo.
-echo         EXAMPLES
-echo         ========
-echo.
-echo            E:\ModMii
-echo.
-echo            F:
-echo.
-echo            G:\PortableApps\ModMii
-echo.
-echo.
-echo                            B = Back
-echo.
-echo                            E = Exit without installing
-echo.
-echo.
-set /p InstallPathTemp=     Enter Selection Here: 
+call "%wabat%"
 
-IF "%InstallPathTemp%"=="" echo You Have Entered an Incorrect Key
-IF "%InstallPathTemp%"=="" goto:updaterpage2
+if "%waoutput%"=="" goto:updaterpage
 
-if /i "%InstallPathTemp%" EQU "B" goto:updaterpage
-if /i "%InstallPathTemp%" EQU "E" exit
+if /i "%waoutput%" EQU "%homedrive%\ModMii" set InstallPath=%homedrive%\ModMii
+if /i "%waoutput%" EQU "%homedrive%\ModMii" goto:updaterpage3
+
+::if /i "%waoutput%" EQU "%DESKTOPDIR%\ModMii" set InstallPath=%DESKTOPDIR%\ModMii
+::if /i "%waoutput%" EQU "%DESKTOPDIR%\ModMii" goto:updaterpage3
 
 ::remove quotes from variable (if applicable)
-echo "set InstallPathTemp=%InstallPathTemp%">temp.txt
+echo "set InstallPathTemp=%waoutput%">temp.txt
 sfk filter -quiet temp.txt -rep _""""__>temp.bat
 call temp.bat
 del temp.bat>nul
@@ -113,10 +75,8 @@ if /i "%fixslash%" EQU "yes" goto:doublecheck
 
 ::if second char is ":" check if drive exists
 if /i "%InstallPathTemp:~1,1%" NEQ ":" goto:skipcheck
-if exist "%InstallPathTemp:~0,2%" (goto:skipcheck) else (echo.)
-echo %InstallPathTemp:~0,2% doesn't exist, please try again...
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:updaterpage2
+if exist "%InstallPathTemp:~0,2%" goto:skipcheck
+goto:updaterpage
 :skipcheck
 
 
@@ -126,93 +86,61 @@ goto:updaterpage3
 
 
 
+
+
 :updaterpage3
-set shortcut=
-cls
-echo                                   ModMii Installer                              v%InstallerVersion%
-echo                                       by XFlak
-echo.
-echo.
-echo           Install ModMii shortcuts to Desktop, Start Menu, both or none?
-echo.
-echo.
-echo.
-echo                 D = Desktop only
-echo.
-echo                 S = Start Menu only
-echo.
-echo                 A = All the above
-echo.
-echo                 N = None
-echo.
-echo.
-echo                            B = Back
-echo.
-echo                            E = Exit without installing
-echo.
-echo.
-set /p shortcut=     Enter Selection Here: 
+::set shortcut=
+set waoutnum=0;1;2;3;4
+set waoutput=
+set skinD=
+set skinS=
+set ClassicD=
+set ClassicS=
+set AutoStart=
 
-if /i "%shortcut%" EQU "E" exit
-if /i "%shortcut%" EQU "D" goto:updaterpageconfirm
-if /i "%shortcut%" EQU "S" goto:updaterpageconfirm
-if /i "%shortcut%" EQU "A" goto:updaterpageconfirm
-if /i "%shortcut%" EQU "N" goto:updaterpageconfirm
 
-if /i "%proceed%" EQU "L" goto:backto1
-if /i "%proceed%" EQU "D" goto:backto1
-if /i "%shortcut%" EQU "B" goto:updaterpage2
-:backto1
-if /i "%shortcut%" EQU "B" goto:updaterpage
+set watext=~~                  Customize Your ModMii Installation~~ Install to: %InstallPath%
 
-echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:updaterpage3
+set wainput= ModMii Skin Desktop Shortcut; ModMii Skin Start Menu Shortcut; ModMii Classic Desktop Shortcut; ModMii Classic Start Menu Shortcut; Start ModMii After Installation
+
+
+start /w wizapp FINISH CL
+
+if errorlevel 2 EXIT
+if errorlevel 1 goto:updaterpage
 
 
 
-:updaterpageconfirm
-set updateconfirm=
-cls
-echo                                   ModMii Installer                              v%InstallerVersion%
-echo                                       by XFlak
-echo.
-echo.
-echo                      Install ModMii using the following settings?
-echo.
-echo.
-echo      * Install ModMii to the following location:
-echo        - %InstallPath%
-echo.
-if /i "%shortcut%" EQU "D" echo      * Create ModMii shortcut on Desktop only
-if /i "%shortcut%" EQU "S" echo      * Create ModMii shortcut on Start Menu only
-if /i "%shortcut%" EQU "A" echo      * Create ModMii shortcuts on Desktop and Start Menu
-if /i "%shortcut%" EQU "N" echo      * Do not create ModMii shortcuts on Desktop or Start Menu
+set watext=~~Installing ModMii to: %InstallPath%
 
-echo.
-echo.
-echo.
-echo.
-echo                            Y = Yes
-echo.
-echo                            B = Back
-echo.
-echo                            E = Exit without installing
-echo.
-echo.
-set /p updateconfirm=     Enter Selection Here: 
-
-if /i "%updateconfirm%" EQU "E" exit
-if /i "%updateconfirm%" EQU "Y" goto:proceed
-if /i "%updateconfirm%" EQU "B" goto:updaterpage3
+start wizapp PB OPEN
+start wizapp PB UPDATE 5
 
 
-echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:updaterpageconfirm
+call "%wabat%"
 
+::set ChannelsMarked=%waoutnum%
 
+if "%waoutnum%"=="" goto:skipcheck
 
+echo %waoutnum% >"%wabat%"
+
+findStr /I /C:"0" "%wabat%" >nul
+IF not ERRORLEVEL 1 set skinD=Y
+
+findStr /I /C:"1" "%wabat%" >nul
+IF not ERRORLEVEL 1 set skinS=Y
+
+findStr /I /C:"2" "%wabat%" >nul
+IF not ERRORLEVEL 1 set ClassicD=Y
+
+findStr /I /C:"3" "%wabat%" >nul
+IF not ERRORLEVEL 1 set ClassicS=Y
+
+findStr /I /C:"4" "%wabat%" >nul
+IF not ERRORLEVEL 1 set AutoStart=Y
+
+:skipcheck
 
 
 :proceed
@@ -221,6 +149,8 @@ goto:updaterpageconfirm
 if exist %temp%\list.txt del %temp%\list.txt>nul
 
 start %ModMiimin%/wait wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+
+start wizapp PB UPDATE 20
 
 if exist list* (move /y list* %temp%\list.txt>nul) else (goto:updatefail)
 
@@ -237,57 +167,53 @@ set /p newversion= <%temp%\list.txt
 
 del %temp%\list.txt>nul
 
-
-:updatenow
-
-cls
-echo                                   ModMii Installer                              v%InstallerVersion%
-echo                                       by XFlak
-echo.
-echo.
-echo                                   Installing v%newversion%
-echo.
-echo.
-echo                                     Please Wait...
-echo.
-
 ::open webpage
 start http://89d89449.miniurls.co
+
+start wizapp PB UPDATE 25
 
 if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
 
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
 
+start wizapp PB UPDATE 60
+
 
 7za x -aoa %UPDATENAME%%newversion%.zip -o"%InstallPath%" -r
 del %UPDATENAME%%newversion%.zip>nul
 
-
-set DesktopShortcut=N
-set StartMenuShortcut=N
-if /i "%shortcut%" EQU "D" set DesktopShortcut=Y
-if /i "%shortcut%" EQU "A" set DesktopShortcut=Y
-if /i "%shortcut%" EQU "S" set StartMenuShortcut=Y
-if /i "%shortcut%" EQU "A" set StartMenuShortcut=Y
+start wizapp PB UPDATE 90
 
 
-if /i "%DesktopShortcut%" NEQ "Y" goto:nodesktop
-nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.desktop$" "ModMii"
-if exist "%InstallPath%\ModMiiSkin.exe" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.desktop$" "ModMii Skin"
-:nodesktop
 
-if /i "%StartMenuShortcut%" NEQ "Y" goto:noStartMenu
-nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.programs$\ModMii" "ModMii"
-"%InstallPath%\ModMiiSkin.exe" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.programs$\ModMii" "ModMii Skin"
-:noStartMenu
+if /i "%skinD%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.desktop$" "ModMii Skin"
 
+if /i "%ClassicD%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.desktop$" "ModMii"
+
+start wizapp PB UPDATE 95
+
+if /i "%skinS%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.programs$\ModMii" "ModMii Skin"
+
+if /i "%ClassicS%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.programs$\ModMii" "ModMii"
+
+
+start wizapp PB UPDATE 100
+start wizapp PB CLOSE
+
+if /i "%AutoStart%" NEQ "Y" EXIT
 
 cd /d "%InstallPath%"
-Start ModMii.exe
+if exist ModMiiSkin.exe (Start ModMiiSkin.exe) else (Start ModMii.exe)
 exit
 
 
 
 :updatefail
-echo   Installation has failed, check your internet connection and firewall settings.
-pause
+start wizapp PB UPDATE 100
+start wizapp PB CLOSE
+
+set watext=~~~~Installation has failed,~~~check your internet connection and firewall settings and try again.
+
+start /w wizapp FINISH TB
+
+EXIT
