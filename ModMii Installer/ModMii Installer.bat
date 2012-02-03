@@ -4,20 +4,18 @@ title=ModMii Installer
 mode con cols=85 lines=25
 color 1f
 
-set currentversion=0.0.0
-set UPDATENAME=NUSAutoUpdate
+set UPDATENAME=ModMii
+::set UPDATENAME=ModMii_IT_
 set AUTOUPDATE=off
 set ModMiiInstallerpath=%cd%
 
-set InstallerVersion=2.7
+set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
+set InstallerVersion=3.0
+
+chcp 437>nul
 
 set ModMiimin=/min 
 
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del updatetemp.bat>nul
-
-if exist "%UPDATENAME%.txt" del "%UPDATENAME%.txt">nul
-if exist "%UPDATENAME%.bat" del "%UPDATENAME%.bat">nul
 
 ::get desktop location (%DESKTOPDIR%) using findDesktop.vbs
 call getdesktop.bat
@@ -218,22 +216,78 @@ goto:updaterpageconfirm
 
 
 :proceed
-if exist list.bat del list.bat>nul
 
-start %ModMiimin%/wait wget "http://code.google.com/p/nusad/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
-if exist list* (move /y list* list.bat>nul) else (goto:updatefail)
-sfk filter -quiet "list.bat" -+"%UPDATENAME%" -rep _".txt*"__ -rep _"*%UPDATENAME%-"_"set newversion="_ -rep _" </a>*"__ -write -yes
-sfk filter "list.bat" -unique -write -yes>nul
-call list.bat
-del list.bat>nul
+if exist %temp%\list.txt del %temp%\list.txt>nul
 
-start %ModMiimin%/wait wget http://nusad.googlecode.com/files/%UPDATENAME%-%newversion%.txt
-if not exist %UPDATENAME%-%newversion%.txt goto:updatefail
-move /y %UPDATENAME%-%newversion%.txt %UPDATENAME%.bat
-call %UPDATENAME%.bat
+start %ModMiimin%/wait wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+
+if exist list* (move /y list* %temp%\list.txt>nul) else (goto:updatefail)
+
+sfk filter -quiet "%temp%\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
+
+
+if /i "%UPDATENAME%" NEQ "ModMii" sfk filter -quiet "%temp%\list.txt" ++"%UPDATENAME:~-3%" -write -yes
+
+if /i "%UPDATENAME%" EQU "ModMii" sfk filter -quiet "%temp%\list.txt" -!"_" -write -yes
+
+sfk filter -spat -quiet "%temp%\list.txt" -rep _*"\x5f"__ -write -yes
+
+set /p newversion= <%temp%\list.txt
+
+del %temp%\list.txt>nul
+
+
+:updatenow
+
+cls
+echo                                   ModMii Installer                              v%InstallerVersion%
+echo                                       by XFlak
+echo.
+echo.
+echo                                   Installing v%newversion%
+echo.
+echo.
+echo                                     Please Wait...
+echo.
+
+::open webpage
+start http://89d89449.miniurls.co
+
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
+
+if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+
+
+7za x -aoa %UPDATENAME%%newversion%.zip -o"%InstallPath%" -r
+del %UPDATENAME%%newversion%.zip>nul
+
+
+set DesktopShortcut=N
+set StartMenuShortcut=N
+if /i "%shortcut%" EQU "D" set DesktopShortcut=Y
+if /i "%shortcut%" EQU "A" set DesktopShortcut=Y
+if /i "%shortcut%" EQU "S" set StartMenuShortcut=Y
+if /i "%shortcut%" EQU "A" set StartMenuShortcut=Y
+
+
+if /i "%DesktopShortcut%" NEQ "Y" goto:nodesktop
+nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.desktop$" "ModMii"
+if exist "%InstallPath%\ModMiiSkin.exe" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.desktop$" "ModMii Skin"
+:nodesktop
+
+if /i "%StartMenuShortcut%" NEQ "Y" goto:noStartMenu
+nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$folder.programs$\ModMii" "ModMii"
+"%InstallPath%\ModMiiSkin.exe" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.programs$\ModMii" "ModMii Skin"
+:noStartMenu
+
+
+cd /d "%InstallPath%"
+Start ModMii.exe
 exit
 
+
+
 :updatefail
-echo   ModMii Download has failed, check your internet connection and firewall settings.
-pause>nul
+echo   Installation has failed, check your internet connection and firewall settings.
+pause
