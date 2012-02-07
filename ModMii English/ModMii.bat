@@ -1139,6 +1139,7 @@ if /i "%SkinMode%" NEQ "Y" goto:noprogress
 
 set watitle=ModMii Skin
 set waico=support\icon.ico
+set temp=temp
 set wabat=%TEMP%\wabat.bat
 set wasig=ModMii v%currentversion% by XFlak
 set wabmp=support\bmp\CLASSIC.bmp
