@@ -1,15 +1,16 @@
 @echo off
 setlocal
 :top
-set currentversion=6.0.0
+set currentversion=6.0.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
 
 if not exist support cd..
 set cygwin=nodosfilewarning
-set ModMiipath=%cd%
-set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
+set ModMiiDrive=%cd:~0,2%
+
+set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp
 
 chcp 437>nul
 ::chcp 850>nul
@@ -1398,9 +1399,9 @@ goto:go
 
 ::start http://please.hackmii.com
 
-cd /d SUPPORT
-start LetterBombFrames.html
-cd /d %ModMiipath%
+
+start /D SUPPORT LetterBombFrames.html
+
 
 cls
 echo                                        ModMii                                v%currentversion%
@@ -2121,13 +2122,13 @@ IF "%TurboGraFX-CDcheat%"=="" set TurboGraFX-CDcheat=ON
 
 
 ::check if drive folder exists--if second char is ":" check if drive exists
-if /i "%DRIVE%" EQU "%MODMIIPATH%\COPY_TO_SD" set DRIVE=COPY_TO_SD
+if /i "%DRIVE%" EQU "%cd%\COPY_TO_SD" set DRIVE=COPY_TO_SD
 if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVE:~0,2%" (goto:skipcheck) else (set DRIVE=COPY_TO_SD)
 :skipcheck
 
 ::check if DRIVEU folder exists--if second char is ":" check if DRIVEU exists
-if /i "%DRIVEU%" EQU "%MODMIIPATH%\COPY_TO_USB" set DRIVEU=COPY_TO_USB
+if /i "%DRIVEU%" EQU "%cd%\COPY_TO_USB" set DRIVEU=COPY_TO_USB
 if /i "%DRIVEU:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVEU:~0,2%" (goto:skipcheck) else (set DRIVEU=COPY_TO_USB)
 :skipcheck
@@ -4678,9 +4679,7 @@ set /p FIRMSTART=     Enter Selection Here:
 if /i "%FIRMSTART%" EQU "M" goto:MENU
 
 if /i "%FIRMSTART%" NEQ "Help" goto:nohelp
-cd /d SUPPORT
-start SMver.html
-cd /d %ModMiipath%
+start /D SUPPORT SMver.html
 goto:WPAGE2
 :nohelp
 
@@ -4788,9 +4787,7 @@ if /i "%REGION%" EQU "B" goto:WPAGE2
 
 
 if /i "%REGION%" NEQ "Help" goto:nohelp
-cd /d SUPPORT
-start SMver.html
-cd /d %ModMiipath%
+start /D SUPPORT SMver.html
 goto:WPAGE3
 :nohelp
 
@@ -4920,9 +4917,8 @@ goto:WPAGE3C
 :bombinfo
 ::start http://please.hackmii.com
 
-cd /d SUPPORT
-start LetterBombFrames.html
-cd /d %ModMiipath%
+start /D SUPPORT LetterBombFrames.html
+
 
 cls
 echo                                        ModMii                                v%currentversion%
@@ -5609,9 +5605,7 @@ if /i "%HMInstaller%" EQU "B" goto:WPAGE13
 
 
 if /i "%HMInstaller%" NEQ "Help" goto:nohelp
-cd /d SUPPORT
-start HBCIOS.html
-cd /d %ModMiipath%
+start /D SUPPORT HBCIOS.html
 goto:WPAGE13B
 :nohelp
 
@@ -5868,9 +5862,7 @@ if /i "%ThemeSelection%" EQU "M" goto:MENU
 
 
 if /i "%ThemeSelection%" NEQ "WWW" goto:novid
-cd /d SUPPORT
-start WiiThemes.html
-cd /d %ModMiipath%
+start /D SUPPORT WiiThemes.html
 goto:WPAGE20
 :novid
 
@@ -7868,6 +7860,7 @@ if /i "%AbstinenceWiz%" EQU "Y" goto:Download
 if /i "%SNEEKSELECT%" EQU "1" goto:SNEEKINSTALLER
 if /i "%SNEEKSELECT%" EQU "3" goto:SNEEKINSTALLER
 if /i "%SNEEKSELECT%" EQU "2" goto:SNKNANDBUILDER
+if /i "%SNEEKSELECT%" EQU "5" goto:SNKNANDBUILDER
 goto:DLSETTINGS
 
 
@@ -8697,6 +8690,8 @@ call temp.bat
 del temp.bat>nul
 del temp.txt>nul
 
+
+
 if /i "%DRIVETEMP%" EQU "B" goto:SNKPAGE1
 if /i "%DRIVETEMP%" EQU "M" goto:MENU
 
@@ -9042,9 +9037,8 @@ del temp.bat>nul
 Support\wit x --neek --recurse "%ISOFOLDER%" --DEST "%DRIVEUfix%/games/%%I" --progress
 
 ::an empty cygdrive folder may be created previous directory, so delete it!
-::cd ..
 if exist cygdrive rd /s /q cygdrive
-::cd /d %ModMiipath%
+
 
 
 ::delete diconfig.bin if found (needs to be reconstructed on next boot to see new games)
@@ -9129,10 +9123,7 @@ echo if exist Gamelist-sorted.txt del Gamelist-sorted.txtredirectnul>>"%DriveU%"
 support\sfk filter "%DriveU%"\Game-List-Updater[ModMii].bat -spat -rep _@@_%%_ -rep _"redirect"_">"_ -write -yes>nul
 support\sfk filter -quiet support\titles.txt -spat -rep _,_;_ -rep _"  "_" "_ >%DriveU%\titles.txt
 
-
-cd /d "%DriveU%\"
-call "Game-List-Updater[ModMii].bat"
-cd /d %ModMiipath%
+start /wait /D "%DriveU%" Game-List-Updater[ModMii].bat
 
 
 echo.
@@ -9958,11 +9949,7 @@ if /i "%OLDLIST%" EQU "DR" goto:DRIVECHANGE
 if /i "%OLDLIST%" EQU "C" goto:CLEAR
 
 
-if /i "%OLDLIST%" NEQ "BOMB" goto:notbomb
-cd /d SUPPORT
-start LetterBombFrames.html
-cd /d %ModMiipath%
-:notbomb
+if /i "%OLDLIST%" EQU "BOMB" start /D SUPPORT LetterBombFrames.html
 
 
 if /i "%OLDLIST%" EQU "A" goto:SelectAllOLD
@@ -10500,9 +10487,7 @@ IF "%LIST3%"=="" goto:LIST4
 ::common
 
 if /i "%LIST3%" NEQ "WWW" goto:novid
-cd /d SUPPORT
-start WiiThemes.html
-cd /d %ModMiipath%
+start /D SUPPORT WiiThemes.html
 goto:LIST3
 :novid
 
@@ -16123,7 +16108,7 @@ if /i "%MyM%" EQU "*" (echo "MyMenuifyMod">>temp\DLnames.txt) & (echo "Mym">>tem
 
 if /i "%PCSAVE%" EQU "Local" goto:local
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" goto:local
+if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:local
 :skip
 if /i "%f32%" EQU "*" (echo "FAT32 GUI Formatter">>temp\DLnames.txt) & (echo "F32">>temp\DLgotos.txt)
 if /i "%CM%" EQU "*" (echo "Customize Mii">>temp\DLnames.txt) & (echo "CM">>temp\DLgotos.txt)
@@ -17825,29 +17810,30 @@ echo.
 
 rename %basecios%\00000001.app 00000001-original.app
 
+
 ::Portable ModMii Installation fix
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" goto:skipPortableFix
+
+if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:skipPortableFix
 if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
 
 if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
 if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
 if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
 
-cd /d %homedrive%\ModMii
+move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
+
 :skipPortableFix
 
 
 cd /d temp
-::TMCL.exe "%mym1%" -A "%ModMiipath%\%basecios%\00000001-original.app" -o temp.csm>nul
-::TMCL.exe "%mym2%" -A temp.csm -o "%ModMiipath%\%basecios%\00000001.app">nul
+TMCL.exe "%mym1%" -A "..\%basecios%\00000001-original.app" -o "temp.csm">nul
+TMCL.exe "%mym2%" -A "temp.csm" -o "..\%basecios%\00000001.app">nul
+cd /d ..
 
-TMCL.exe "%ModMiiPath%\temp\%mym1%" -A "%ModMiipath%\%basecios%\00000001-original.app" -o "%ModMiiPath%\temp\temp.csm">nul
-TMCL.exe "%ModMiiPath%\temp\%mym2%" -A "%ModMiiPath%\temp\temp.csm" -o "%ModMiipath%\%basecios%\00000001.app">nul
-if exist "%ModMiiPath%\temp\temp.csm" del "%ModMiiPath%\temp\temp.csm">nul
-
-cd /d %ModMiipath%
-
+if exist "temp\temp.csm" del "temp\temp.csm">nul
 del %basecios%\00000001-original.app>nul
+
+if exist "temp\TMCL.bak" move /y "temp\TMCL.bak" "temp\TMCL.exe">nul
 
 goto:repackwad
 :skip
@@ -18763,27 +18749,30 @@ echo.
 echo Building Theme (%wadname%.csm), please wait...
 echo.
 
+
 ::Portable ModMii Installation fix
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" goto:skipPortableFix
+
+if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:skipPortableFix
 if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
 
 if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
 if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
 if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
 
-cd /d %homedrive%\ModMii
+move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
+
 :skipPortableFix
 
+
 cd /d temp
+TMCL.exe "%mym1%" -A "%dlname%" -o "temp.csm">nul
+TMCL.exe "%mym2%" -A "temp.csm" -o "%wadname%.csm">nul
+cd /d ..
 
-::TMCL.exe "%mym1%" -A "%dlname%" -o temp.csm>nul
-::TMCL.exe "%mym2%" -A temp.csm -o "%wadname%.csm">nul
+if exist "temp\temp.csm" del "temp\temp.csm">nul
+::del %basecios%\00000001-original.app>nul
 
-TMCL.exe "%ModMiiPath%\temp\%mym1%" -A "%ModMiiPath%\temp\%dlname%" -o "%ModMiiPath%\temp\temp.csm">nul
-TMCL.exe "%ModMiiPath%\temp\%mym2%" -A "%ModMiiPath%\temp\temp.csm" -o "%ModMiiPath%\temp\%wadname%.csm">nul
-if exist "%ModMiiPath%\temp\temp.csm" del "%ModMiiPath%\temp\temp.csm">nul
-
-cd /d %ModMiipath%
+if exist "temp\TMCL.bak" move /y "temp\TMCL.bak" "temp\TMCL.exe">nul
 
 if exist "temp\%wadname%.csm" move /y "temp\%wadname%.csm" "%Drive%\ModThemes\%wadname%.csm">nul
 
@@ -20459,7 +20448,6 @@ goto:NEXT
 
 :fullextract
 
-set LocalAbsolute=
 set DRIVErestore=%Drive%
 
 if /i "%wadname%" EQU "WiiBackupManager.zip" goto:doit
@@ -20469,12 +20457,10 @@ if /i "%filename%" EQU "CustomizeMii.exe" goto:doit
 if /i "%filename%" EQU "WiiGSC.exe" goto:doit
 goto:skip
 :doit
-if /i "%PCSAVE%" EQU "Local" set DRIVE=%ModMiiPath%\Program Files
-if /i "%PCSAVE%" EQU "Local" set LocalAbsolute=%DRIVE%\
+if /i "%PCSAVE%" EQU "Local" set DRIVE=Program Files
 
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" set DRIVE=%ModMiiPath%\Program Files
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" set LocalAbsolute=%DRIVE%\
+if /i "%Homedrive%" EQU "%ModMiiDrive%" set DRIVE=Program Files
 :skip
 if not exist "%Drive%" mkdir "%Drive%"
 
@@ -20617,11 +20603,11 @@ support\7za x -aoa temp\%wadname% -o"%Drive%\WiiBackupManager" -r
 ::rename "%Drive%"\%dlname:~6,-4% WiiBackupManager
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
+if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
 if exist "%homedrive%\Program Files (x86)" (set OSbit=64) else (set OSbit=32)
-support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.desktop$" "WiiBackupManager"
-support\nircmd.exe shortcut "%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.programs$\WiiBackupManager" "WiiBackupManager"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.desktop$" "WiiBackupManager"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.programs$\WiiBackupManager" "WiiBackupManager"
 :skip
 goto:skipnormalextraction
 :notWBM
@@ -20633,10 +20619,10 @@ if /i "%Drive%" NEQ "temp" copy /y temp\%wadname% "%Drive%\%path1%FAT32_GUI_Form
 
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
+if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%Drive%\%path1%FAT32_GUI_Formatter.exe" "~$folder.desktop$" "FAT32 GUI Formatter"
-support\nircmd.exe shortcut "%Drive%\%path1%FAT32_GUI_Formatter.exe" "~$folder.programs$\FAT32 GUI Formatter" "FAT32 GUI Formatter"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\%path1%FAT32_GUI_Formatter.exe" "~$folder.desktop$" "FAT32 GUI Formatter"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\%path1%FAT32_GUI_Formatter.exe" "~$folder.programs$\FAT32 GUI Formatter" "FAT32 GUI Formatter"
 :skip
 goto:skipnormalextraction
 :notF32
@@ -20667,10 +20653,10 @@ copy /y support\common-key.bin "%Drive%\ShowMiiWads\common-key.bin">nul
 
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
+if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.desktop$" "ShowMiiWads"
-support\nircmd.exe shortcut "%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.programs$\ShowMiiWads" "ShowMiiWads"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.desktop$" "ShowMiiWads"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.programs$\ShowMiiWads" "ShowMiiWads"
 :skip
 goto:skipnormalextraction
 :notSMW
@@ -20688,10 +20674,10 @@ if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 temp\unrar.exe x -y "temp\%wadname%" "%Drive%\CustomizeMii"
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
+if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.desktop$" "CustomizeMii"
-support\nircmd.exe shortcut "%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.programs$\CustomizeMii" "CustomizeMii"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.desktop$" "CustomizeMii"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.programs$\CustomizeMii" "CustomizeMii"
 :skip
 goto:skipnormalextraction
 :notCM
@@ -20702,12 +20688,12 @@ if not exist "%DRIVE%"\WiiGSC mkdir "%DRIVE%"\WiiGSC
 support\7za x -aoa temp\%wadname% -o"%Drive%\WiiGSC" -r
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiipath:~0,2%" (goto:createshortcuts) else (goto:skip)
+if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.desktop$" "WiiGSC"
-support\nircmd.exe shortcut "%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.programs$\Wiidewii" "WiiGSC"
-support\nircmd.exe shortcut "%DRIVE%\WiiGSC\CrazyInstaller.exe" "~$folder.programs$\Wiidewii" "CrazyInstaller"
-support\nircmd.exe shortcut "%DRIVE%\WiiGSC\KeyStego.exe" "~$folder.programs$\Wiidewii" "KeyStego"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.desktop$" "WiiGSC"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.programs$\Wiidewii" "WiiGSC"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\CrazyInstaller.exe" "~$folder.programs$\Wiidewii" "CrazyInstaller"
+support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\KeyStego.exe" "~$folder.programs$\Wiidewii" "KeyStego"
 
 :skip
 goto:skipnormalextraction
@@ -21686,22 +21672,21 @@ if /i "%sneekverbose%" EQU "on" echo ControlClick ("SNEEK Installer","SNEEK setu
 
 ::ControlSetText vs ControlSend
 
-echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:2]","%ModMiipath%\temp")>>custom.au3
-echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:3]","%ModMiipath%\temp")>>custom.au3
+echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:2]","%cd%\temp")>>custom.au3
+echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:3]","%cd%\temp")>>custom.au3
 
-set DRIVEabsolute=%ModMiipath%\%DRIVE%
-if /i "%DRIVE:~1,1%" EQU ":" set DRIVEabsolute=%DRIVE%
+if /i "%DRIVE:~1,1%" EQU ":" echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVE%")>>custom.au3
 
-echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsolute%")>>custom.au3
+if /i "%DRIVE:~1,1%" NEQ ":" echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%cd%\%DRIVE%")>>custom.au3
 
 ::how to only change field if empty
 ::echo $a = ControlGetText ("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]")>>custom.au3
-::echo if $a = "" Then ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsolute%")>>custom.au3
+::echo if $a = "" Then ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVE%")>>custom.au3
 
 if /i "%SNEEKTYPE%" EQU "S" goto:skip
 if /i "%SNEEKTYPE%" EQU "SD" goto:skip
 
-set DRIVEUabsolute=%ModMiipath%\%DRIVEU%
+set DRIVEUabsolute=%cd%\%DRIVEU%
 if /i "%DRIVEU:~1,1%" EQU ":" set DRIVEUabsolute=%DRIVEU%
 
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:4]","%DRIVEUabsolute%")>>custom.au3
@@ -21722,7 +21707,6 @@ call run.bat
 del run.bat>nul
 
 @ping 127.0.0.1 -n 3 -w 1000> nul
-
 taskkill /im SneekInstaller.exe /f >nul
 del custom.au3>nul
 
@@ -22561,14 +22545,14 @@ setlocal DISABLEDELAYEDEXPANSION
 
 ::check ACTUAL drive letter
 ::SD
-if /i "%DRIVE:~1,1%" NEQ ":" (set ActualDrive=%ModMiipath:~0,2%) else (set ActualDrive=%DRIVE:~0,2%)
-if /i "%ActualDrive%" EQU "%ModMiipath:~0,2%" (set DrivesNeedingFreeSpace=%ActualDrive%) else (set DrivesNeedingFreeSpace=%ActualDrive% and %ModMiipath:~0,2%)
+if /i "%DRIVE:~1,1%" NEQ ":" (set ActualDrive=%cd:~0,2%) else (set ActualDrive=%DRIVE:~0,2%)
+if /i "%ActualDrive%" EQU "%cd:~0,2%" (set DrivesNeedingFreeSpace=%ActualDrive%) else (set DrivesNeedingFreeSpace=%ActualDrive% and %cd:~0,2%)
 
 
 ::USB
 if /i "%USBCONFIG%" NEQ "USB" goto:skip
-if /i "%DRIVEU:~1,1%" NEQ ":" (set ActualDriveU=%ModMiipath:~0,2%) else (set ActualDriveU=%DRIVEU:~0,2%)
-if /i "%ActualDriveU%" EQU "%ModMiipath:~0,2%" goto:skip
+if /i "%DRIVEU:~1,1%" NEQ ":" (set ActualDriveU=%cd:~0,2%) else (set ActualDriveU=%DRIVEU:~0,2%)
+if /i "%ActualDriveU%" EQU "%cd:~0,2%" goto:skip
 if /i "%ActualDriveU%" EQU "%ActualDrive%" goto:skip
 set DrivesNeedingFreeSpace=%DrivesNeedingFreeSpace% and %ActualDriveU%
 :skip
@@ -28797,9 +28781,9 @@ copy /y "%Drive%"\%guidename%+Support\Guide\Credits-XFlak-End.001 "%Drive%"\%gui
 ::guide finish, remove carriage returns and open
 support\sfk filter "%Drive%"\%guidename% -lsrep _.__ -rep _"printbutton {"_".printbutton {"_ -write -yes>nul
 
-cd /d "%Drive%"
-start %guidename%
-cd /d %ModMiipath%
+
+
+start /D "%Drive%" %guidename%
 
 
 ::---------------CMD LINE MODE-------------
@@ -28856,7 +28840,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\FAT32-NTFS.001 "%Drive%"\%guidename%
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" NEQ "%ModMiipath:~0,2%" goto:portableF32
+if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableF32
 :skip
 
 echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%Drive%"\%guidename%
@@ -28882,7 +28866,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\FAT32.001 "%Drive%"\%guidename%>nul
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" NEQ "%ModMiipath:~0,2%" goto:portableF32
+if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableF32
 :skip
 
 echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%Drive%"\%guidename%
@@ -28923,7 +28907,7 @@ support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eManage Wii backups u
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableWBM
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" NEQ "%ModMiipath:~0,2%" goto:portableWBM
+if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableWBM
 :skip
 
 support\sfk echo -spat Launch WiiBackupManager from shortcuts on your Start Menu or Desktop\x3cbr\x3e>>"%Drive%"\%guidename%
