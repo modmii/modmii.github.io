@@ -9,10 +9,9 @@ nircmd.exe win hide ititle "ModMiiInstallerCMD"
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
-set ModMiiInstallerpath=%cd%
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
-set InstallerVersion=6.0
+set InstallerVersion=6.1
 
 chcp 437>nul
 
@@ -26,7 +25,8 @@ set ModMiimin=/min
 set watitle=ModMii Installer
 set wainput=
 set waico=icon.ico
-set wabat=%TEMP%\wabat.bat
+set temp=
+set wabat=wabat.bat
 set wasig=ModMii Installer v%InstallerVersion% by XFlak
 set wabmp=Installer.bmp
 
@@ -49,6 +49,7 @@ if errorlevel 2 EXIT
 ::if errorlevel 1 goto:SaveSettings
 
 call "%wabat%"
+del "%wabat%">nul
 
 if "%waoutput%"=="" goto:updaterpage
 
@@ -142,30 +143,32 @@ IF not ERRORLEVEL 1 set AutoStart=Y
 
 :skipcheck
 
+del "%wabat%">nul
+
 
 :proceed
 
 
-if exist %temp%\list.txt del %temp%\list.txt>nul
+if exist list.txt del list.txt>nul
 
 start %ModMiimin%/wait wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
 start wizapp PB UPDATE 20
 
-if exist list* (move /y list* %temp%\list.txt>nul) else (goto:updatefail)
+if exist list* (move /y list* list.txt>nul) else (goto:updatefail)
 
-sfk filter -quiet "%temp%\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
+sfk filter -quiet "list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
 
 
-if /i "%UPDATENAME%" NEQ "ModMii" sfk filter -quiet "%temp%\list.txt" ++"%UPDATENAME:~-3%" -write -yes
+if /i "%UPDATENAME%" NEQ "ModMii" sfk filter -quiet "list.txt" ++"%UPDATENAME:~-3%" -write -yes
 
-if /i "%UPDATENAME%" EQU "ModMii" sfk filter -quiet "%temp%\list.txt" -!"_" -write -yes
+if /i "%UPDATENAME%" EQU "ModMii" sfk filter -quiet "list.txt" -!"_" -write -yes
 
-sfk filter -spat -quiet "%temp%\list.txt" -rep _*"\x5f"__ -write -yes
+sfk filter -spat -quiet "list.txt" -rep _*"\x5f"__ -write -yes
 
-set /p newversion= <%temp%\list.txt
+set /p newversion= <list.txt
 
-del %temp%\list.txt>nul
+del list.txt>nul
 
 ::open webpage
 start http://89d89449.miniurls.co

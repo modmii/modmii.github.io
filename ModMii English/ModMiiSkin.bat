@@ -2,7 +2,6 @@
 setlocal
 
 if not exist support cd..
-set ModMiipath=%cd%
 
 title ModMiiSkinCMD
 
@@ -19,7 +18,7 @@ if not "%cmdinput%"=="" start ModMii.exe %cmdinput%
 if not "%cmdinput%"=="" Exit
 ::----------------------------------------------------------
 
-set currentversion=6.0.0
+set currentversion=6.0.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -54,8 +53,8 @@ IF "%OPTION36%"=="" set OPTION36=on
 IF "%AudioOption%"=="" set AudioOption=on
 IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%FWDOPTION%"=="" set FWDOPTION=on
-IF "%Drive%"=="" set Drive=%MODMIIPATH%\COPY_TO_SD
-IF "%DriveU%"=="" set DriveU=%MODMIIPATH%\COPY_TO_USB
+IF "%Drive%"=="" set Drive=%cd%\COPY_TO_SD
+IF "%DriveU%"=="" set DriveU=%cd%\COPY_TO_USB
 
 IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
 IF "%AUTOUPDATE%"=="" set AUTOUPDATE=on
@@ -87,19 +86,19 @@ IF "%TurboGraFX-CDcheat%"=="" set TurboGraFX-CDcheat=ON
 
 
 ::check if drive folder exists--if second char is ":" check if drive exists
-if /i "%DRIVE:~1,1%" NEQ ":" set DRIVE=%MODMIIPATH%\%DRIVE%
-if /i "%DRIVE%" EQU "COPY_TO_SD" set DRIVE=%MODMIIPATH%\COPY_TO_SD
+if /i "%DRIVE:~1,1%" NEQ ":" set DRIVE=%cd%\%DRIVE%
+if /i "%DRIVE%" EQU "COPY_TO_SD" set DRIVE=%cd%\COPY_TO_SD
 if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVE:~0,2%" goto:skipcheck
-set DRIVE=%MODMIIPATH%\COPY_TO_SD
+set DRIVE=%cd%\COPY_TO_SD
 :skipcheck
 
 
 ::check if DRIVEU folder exists--if second char is ":" check if DRIVEU exists
-if /i "%DRIVEU:~1,1%" NEQ ":" set DRIVEU=%MODMIIPATH%\%DRIVEU%
+if /i "%DRIVEU:~1,1%" NEQ ":" set DRIVEU=%cd%\%DRIVEU%
 if /i "%DRIVEU:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVEU:~0,2%" goto:skipcheck
-set DRIVEU=%MODMIIPATH%\COPY_TO_USB
+set DRIVEU=%cd%\COPY_TO_USB
 :skipcheck
 
 
@@ -111,6 +110,7 @@ if /i "%ModMiiverbose%" EQU "off" (set ModMiimin=/min ) else (set ModMiimin=)
 
 set watitle=ModMii Skin
 set waico=support\icon.ico
+set temp=temp
 set wabat=%TEMP%\wabat.bat
 set wasig=ModMii v%currentversion% by XFlak
 
@@ -136,7 +136,7 @@ if /i "%Trigger%" EQU "1" goto:skip
 set wabmp=support\bmp\ModMiiSplash.bmp
 
 support\wizapp SPLASH OPEN
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" support\nircmd.exe wait 8000
+if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" support\nircmd.exe wait 6000
 support\nircmd.exe wait 2000
 support\wizapp SPLASH CLOSE
 :nosplash
@@ -331,7 +331,7 @@ set DLQUEUE=
 set waoutnum=
 ::set waoutput=
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
-set waoutput=%ModMiiPath%\temp\DownloadQueues\YourQueueHere.bat
+set waoutput=%cd%\temp\DownloadQueues\YourQueueHere.bat
 
 set watext=Select the ModMii Download Queue you want to download.~~Note, when you click Finish ModMii will begin downloading immediately. To view the contents of your queue before downloading it use ModMii Classic to load it.~~To create custom Download Queues use ModMii Classic.
 
@@ -420,8 +420,8 @@ set OPTION36=on
 set AudioOption=on
 set CMIOSOPTION=off
 set FWDOPTION=on
-set Drive=%MODMIIPATH%\COPY_TO_SD
-set DriveU=%MODMIIPATH%\COPY_TO_USB
+set Drive=%cd%\COPY_TO_SD
+set DriveU=%cd%\COPY_TO_USB
 set ACTIVEIOS=on
 set AUTOUPDATE=on
 Set ModMiiverbose=off
@@ -790,9 +790,7 @@ if /i "%waoutnum%" EQU "5" (set FIRMSTART=O) & (goto:WPAGE3)
 if /i "%waoutnum%" EQU "6" set FIRMSTART=HELP
 
 if /i "%FIRMSTART%" NEQ "Help" goto:nohelp
-cd /d SUPPORT
-start SMver.html
-cd /d %ModMiipath%
+start /D SUPPORT SMver.html
 goto:WPAGE2
 :nohelp
 
@@ -865,9 +863,7 @@ if /i "%REGION%" EQU "K" goto:WPAGE3C
 if /i "%REGION%" EQU "J" goto:WPAGE3C
 
 if /i "%REGION%" NEQ "Help" goto:nohelp
-cd /d SUPPORT
-start SMver.html
-cd /d %ModMiipath%
+start /D SUPPORT SMver.html
 goto:WPAGE3
 :nohelp
 
@@ -991,9 +987,8 @@ goto:WPAGE4
 ::------------------letterbomb info----------------
 :bombinfo
 
-cd /d SUPPORT
-start LetterBombFrames.html
-cd /d %ModMiipath%
+
+start /D SUPPORT LetterBombFrames.html
 
 
 set watext=~ModMii should have just opened your browser to http://please.hackmii.com~~An instructional video on properly downloading Letterbomb can be found in the panel next to the webpage.~~On this webpage, enter your System Menu region and MAC address. To find your Wii's MAC address, turn on your Wii, click the Wii button in the bottom left of the main system menu, then click Wii Settings, then Internet, then Console Information.~~Uncheck "Bundle the HackMii Installer for Me", fill in the captcha and cut either wire. It will download a small ZIP file, open this file, and you will see a private folder, copy and paste it into the root of the SD card.~~ModMii will generate a guide for your assuming you've done this correctly.~~Click "Next" when you're ready to continue...
@@ -1306,9 +1301,7 @@ if /i "%waoutnum%" EQU "6" set ThemeSelection=N
 if "%ThemeSelection%"=="" goto:WPAGE20
 
 if /i "%ThemeSelection%" NEQ "WWW" goto:novid
-cd /d SUPPORT
-start WiiThemes.html
-cd /d %ModMiipath%
+start /D SUPPORT WiiThemes.html
 goto:WPAGE20
 :novid
 
