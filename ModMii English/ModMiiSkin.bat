@@ -18,7 +18,7 @@ if not "%cmdinput%"=="" start ModMii.exe %cmdinput%
 if not "%cmdinput%"=="" Exit
 ::----------------------------------------------------------
 
-set currentversion=6.0.1
+set currentversion=6.0.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
