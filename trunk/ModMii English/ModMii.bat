@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=6.0.1
+set currentversion=6.0.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -23,6 +23,12 @@ set UPDATENAME=ModMii
 
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del updatetemp.bat>nul
+
+
+if not exist support\skipscam.txt goto:nocheck
+findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
+IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
+:nocheck
 
 
 ::-------------------CMD LINE SUPPORT----------------------
@@ -2003,11 +2009,8 @@ color 1f
 ::SET PATHNAME=%0 //this returns the filename but also with absolute path
 
 
-if not exist support\skipscam.txt goto:nocheck
-findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
 if /i "%Trigger%" EQU "1" goto:DefaultSettings
-:nocheck
+
 
 set warning=
 echo                                        ModMii
@@ -2423,7 +2426,6 @@ set JOY=
 set dop=
 set casper=
 set syscheck=
-set sysCheckBeta=
 set locked=
 set AccioHacks=
 set MyM=
@@ -9932,12 +9934,12 @@ echo      %HAX% HAX = Priiloader Hacks                %TOS% EH = Eri HaKawai (US
 echo      %PLC% PLC = Post Loader Channel            BOMB = Letterbomb (4.3 USA\EUR\JAP\KOR)
 echo       %PL% PL = Postloader
 echo       %syscheck% SC = sysCheck
-echo      %sysCheckBeta% SCB = sysCheckBeta
 echo       %WiiMod% WM = WiiMod
 echo      %ARC% ARC = Any Region Changer (1.1b Mod06 Offline)
 echo       %casper% CA = Casper
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] LEGEND:[def] \x22=\x22 Auto-Updating Downloads
+echo.
 echo.
 set /p OLDLIST=     Enter Selection Here: 
 
@@ -9977,7 +9979,6 @@ if /i "%OLDLIST%" EQU "HM" goto:SwitchHM
 if /i "%OLDLIST%" EQU "LA" goto:Switchlocked
 if /i "%OLDLIST%" EQU "dop" goto:Switchdop
 if /i "%OLDLIST%" EQU "SC" goto:Switchsyscheck
-if /i "%OLDLIST%" EQU "SCB" goto:SwitchsysCheckBeta
 if /i "%OLDLIST%" EQU "HBB" goto:SwitchHBB
 if /i "%OLDLIST%" EQU "W64" goto:SwitchWII64
 if /i "%OLDLIST%" EQU "CA" goto:SwitchCasper
@@ -10082,10 +10083,6 @@ goto:OLDLIST
 
 :Switchsyscheck
 if /i "%syscheck%" EQU "*" (set syscheck=) else (set syscheck=*)
-goto:OLDLIST
-
-:SwitchsysCheckBeta
-if /i "%sysCheckBeta%" EQU "*" (set sysCheckBeta=) else (set sysCheckBeta=*)
 goto:OLDLIST
 
 :Switchlocked
@@ -10270,7 +10267,6 @@ set ARC=*
 set HM=*
 set dop=*
 set syscheck=*
-set sysCheckBeta=*
 set yawm=*
 set Pri=*
 set HAX=*
@@ -14706,14 +14702,15 @@ if /i "%REGION%" EQU "K" set SM4.1K=*
 
 
 ::check if priiloader is installed
-set pri=
+set pri=*
 if /i "%firmwarechange%" EQU "yes" (set pri=*) & (goto:skipprianalysis)
 if /i "%syscheckversion%" EQU "2.0.1" goto:skipprianalysis
-::note: Priiloader is spelled wrong in syscheck logs
+::note: Priiloader is spelled wrong in SOME syscheck logs
 findStr /I /C:"Priilaoder installed" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set pri=*) else (set pri=)
+IF not ERRORLEVEL 1 set pri=
+findStr /I /C:"Priiloader installed" "%sysCheckName%" >nul
+IF not ERRORLEVEL 1 set pri=
 :skipprianalysis
-
 
 if /i "%syscheckversion%" NEQ "2.0.1" goto:nopriconfirmation
 if /i "%pri%" EQU "*" goto:nopriconfirmation
@@ -14798,8 +14795,11 @@ IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
 findStr /I /C:"IOS222[38] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS222[38]-v4=*) else (set cIOS222[38]-v4=)
 
+set cIOS223[37-38]-v4=*
 findStr /I /C:"IOS223[75] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS223[37-38]-v4=*) else (set cIOS223[37-38]-v4=)
+IF not ERRORLEVEL 1 set cIOS223[37-38]-v4=
+findStr /I /C:"IOS223[38+37] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
+IF not ERRORLEVEL 1 set cIOS223[37-38]-v4=
 
 findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
@@ -14810,7 +14810,7 @@ IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v7-final=*) else (set cIOS249[56]-d2x-v7-fi
 findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v7-final=*) else (set cIOS250[57]-d2x-v7-final=)
 
-if /i "%syscheckversion%" NEQ "2.0.1" goto:skipv2.0.1
+goto:skipv2.0.1
 
 
 
@@ -16087,7 +16087,6 @@ if /i "%yawm%" EQU "*" (echo "Yet Another Wad Manager Mod">>temp\DLnames.txt) & 
 if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\DLgotos.txt)
 
 if /i "%syscheck%" EQU "*" (echo "sysCheck">>temp\DLnames.txt) & (echo "sysCheck">>temp\DLgotos.txt)
-if /i "%sysCheckBeta%" EQU "*" (echo "sysCheckBeta">>temp\DLnames.txt) & (echo "sysCheckBeta">>temp\DLgotos.txt)
 if /i "%Casper%" EQU "*" (echo "Casper">>temp\DLnames.txt) & (echo "Casper">>temp\DLgotos.txt)
 if /i "%HM%" EQU "*" (echo "HackMii Installer">>temp\DLnames.txt) & (echo "HackmiiInstaller">>temp\DLgotos.txt)
 if /i "%bootmiisd%" EQU "*" (echo "BootMii SD Files">>temp\DLnames.txt) & (echo "bootmiisd">>temp\DLgotos.txt)
@@ -16764,7 +16763,6 @@ if /i "%IOS236Installer%" EQU "*" echo SET IOS236Installer=%IOS236Installer%>> "
 if /i "%SIP%" EQU "*" echo SET SIP=%SIP%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%dop%" EQU "*" echo SET dop=%dop%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%syscheck%" EQU "*" echo SET syscheck=%syscheck%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%sysCheckBeta%" EQU "*" echo SET sysCheckBeta=%sysCheckBeta%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%AccioHacks%" EQU "*" echo SET AccioHacks=%AccioHacks%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%MyM%" EQU "*" echo SET MyM=%MyM%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%locked%" EQU "*" echo SET locked=%locked%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -20539,8 +20537,6 @@ if /i "%name%" EQU "Neogamma Backup Disc Loader" (support\7za X -aoa temp\%wadna
 
 if /i "%path1%" EQU "apps\SIP\" (support\7za X -aoa temp\%wadname% -o"%Drive%" apps -r) & (goto:skipnormalextraction)
 
-if /i "%path1%" EQU "apps\sysCheckBeta\" (support\7za X -aoa temp\%wadname% -o"%Drive%" apps -r) & (support\7za X -aoa temp\%wadname% -o"%Drive%" config -r) & (goto:skipnormalextraction)
-
 
 if /i "%name%" NEQ "Joy Flow Forwarder Channel\dol" goto:skipjoyflow
 ::if /i "%MENU1%" EQU "S" support\7za e -aoa temp\%dlname% -o"%Drive%"/ *.wad *.dol -r
@@ -21727,7 +21723,7 @@ if exist "%DRIVE%\bootmiiuneek" rd /s /q "%DRIVE%\bootmiiuneek"
 rename "%DRIVE%\bootmii" "bootmiiuneek"
 :noswitch2uneek
 
-if /i "%neek2o%" EQU "off" goto:norename
+::if /i "%neek2o%" EQU "off" goto:norename
 if exist "%DRIVE%\bootmiineek" rd /s /q "%DRIVE%\bootmiineek"
 rename "%DRIVE%\bootmii" "bootmiineek"
 :norename
@@ -23104,9 +23100,9 @@ goto:downloadstart
 set name=System Menu 4.3U with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.3U_v513_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=c6406642c6b85a8c5816a7425f72655f
-if /i "%effect%" EQU "Spin" set md5=bbbbb4f455cc42fa07dca861735075f2
-if /i "%effect%" EQU "Fast-Spin" set md5=8c863a1f5302133287e5b4edcc4d09f3
+if /i "%effect%" EQU "No-Spin" set md5=948c6bf88b44a3982465efe51c6a41b2
+if /i "%effect%" EQU "Spin" set md5=186fb42766546bd0db960627cefa40ca
+if /i "%effect%" EQU "Fast-Spin" set md5=3fbe41cbb391e4241dbbceb3484e96f1
 set md5alt=%md5%
 set basewad=SystemMenu_4.3U_v513
 set basecios=%basewad%
@@ -23114,8 +23110,8 @@ set md5base=4f5c63e3fd1bf732067fa4c439c68a97
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 set version=513
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23125,9 +23121,9 @@ goto:downloadstart
 set name=System Menu 4.2U with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.2U_v481_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=f56cf66506359210dc4fd5a00386ed08
-if /i "%effect%" EQU "Spin" set md5=7405bafb837d7056a2c0041489cd25a9
-if /i "%effect%" EQU "Fast-Spin" set md5=2aa1b0ecd1259fef62a1f23f779a6267
+if /i "%effect%" EQU "No-Spin" set md5=24947a4407e53902c0c2e21b7b8d3381
+if /i "%effect%" EQU "Spin" set md5=a5b511818dd25aa89bee06db2e88bca7
+if /i "%effect%" EQU "Fast-Spin" set md5=b60f281761041dee2ac5a7017ac3f176
 set md5alt=%md5%
 set basewad=SystemMenu_4.2U_v481
 set basecios=%basewad%
@@ -23135,8 +23131,8 @@ set md5base=4ac52b981845473bd3655e4836d7442b
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 set version=481
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23146,9 +23142,9 @@ goto:downloadstart
 set name=System Menu 4.1U with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.1U_v449_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=8bf20afa9f046fd3e2c780572e483dac
-if /i "%effect%" EQU "Spin" set md5=65d5d01b5fbf168043cb9e5ee916cff5
-if /i "%effect%" EQU "Fast-Spin" set md5=48be3c92654d36c60de1e363b3425a70
+if /i "%effect%" EQU "No-Spin" set md5=9f21f5745ff5ae0ba2e48facf194624b
+if /i "%effect%" EQU "Spin" set md5=8f48949c75fafb1eabd479347de77101
+if /i "%effect%" EQU "Fast-Spin" set md5=9cccec585a9b251ac747dec8bbe60eea
 set md5alt=%md5%
 set basewad=SystemMenu_4.1U_v449
 set basecios=%basewad%
@@ -23156,8 +23152,8 @@ set md5base=38a95a9acd257265294be41b796f6239
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 set version=449
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23167,9 +23163,9 @@ goto:downloadstart
 set name=System Menu 4.3E with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.3E_v514_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=be8fa11a36927b0d55870ae760f4dc7f
-if /i "%effect%" EQU "Spin" set md5=f1ad4b9576cd9d1ec0ab8a1a81d6cd85
-if /i "%effect%" EQU "Fast-Spin" set md5=a7fcb932e22f747be7292d51872f2aba
+if /i "%effect%" EQU "No-Spin" set md5=65e6a6ca89618c285b0229529649ccf4
+if /i "%effect%" EQU "Spin" set md5=da47de9056100ea9c61b112a63df6ffa
+if /i "%effect%" EQU "Fast-Spin" set md5=5006a5c030fff7bf998a38a23017149f
 set md5alt=%md5%
 set basewad=SystemMenu_4.3E_v514
 set basecios=%basewad%
@@ -23177,8 +23173,8 @@ set md5base=2ec2e6fbdfc52fe5174749e7032f1bad
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 set version=514
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23188,9 +23184,9 @@ goto:downloadstart
 set name=System Menu 4.2E with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.2E_v482_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=0b0fe6cd87ffb67bcd6c52570f451c16
-if /i "%effect%" EQU "Spin" set md5=0e8637cebc0565d52dee6c6283ae3881
-if /i "%effect%" EQU "Fast-Spin" set md5=6122f703ad2acd5f4d1a576b467d142d
+if /i "%effect%" EQU "No-Spin" set md5=467c51cd0c2eb30682ba8f696e8d0fcc
+if /i "%effect%" EQU "Spin" set md5=9025889c4478a8fb8a3f6c4fbb1903a5
+if /i "%effect%" EQU "Fast-Spin" set md5=dee18f0bdd63f259860e5bf2a57f6e32
 set md5alt=%md5%
 set basewad=SystemMenu_4.2E_v482
 set basecios=%basewad%
@@ -23198,8 +23194,8 @@ set md5base=7d77be8b6df5ac893d24652db33d02cd
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 set version=482
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23209,9 +23205,9 @@ goto:downloadstart
 set name=System Menu 4.1E with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.1E_v450_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=1960a9081b138cbb4b44ab391d1beb2d
-if /i "%effect%" EQU "Spin" set md5=db4dc5ba1885049e6dd9754fb94e6e86
-if /i "%effect%" EQU "Fast-Spin" set md5=551f79a731c9c40ab50e8429579a56e7
+if /i "%effect%" EQU "No-Spin" set md5=e8d7b4818311d2c8f76d13770b9c7c09
+if /i "%effect%" EQU "Spin" set md5=cf35e863536098419eee8e860fc27e42
+if /i "%effect%" EQU "Fast-Spin" set md5=fc730f01cc8622842687bdd41b265794
 set md5alt=%md5%
 set basewad=SystemMenu_4.1E_v450
 set basecios=%basewad%
@@ -23219,8 +23215,8 @@ set md5base=688cc78b8eab4e30da04f01a81a3739f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 set version=450
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23230,9 +23226,9 @@ goto:downloadstart
 set name=System Menu 4.3J with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.3J_v512_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=f1973ad6e4581e2242fa85432a9eeee3
-if /i "%effect%" EQU "Spin" set md5=2cf98a18aff926ba348935b42ac585a1
-if /i "%effect%" EQU "Fast-Spin" set md5=03565e5a1555cfa33b12a7617a67fe06
+if /i "%effect%" EQU "No-Spin" set md5=41ee875e0bd8985f8d3c845c3be19fc5
+if /i "%effect%" EQU "Spin" set md5=e678615ed5627ee0f1f623cf315b2ea3
+if /i "%effect%" EQU "Fast-Spin" set md5=39c0979b2d70d379d172a07484b74a12
 set md5alt=%md5%
 set basewad=SystemMenu_4.3J_v512
 set basecios=%basewad%
@@ -23240,8 +23236,8 @@ set md5base=df67ed4bd8f8f117741fef7952ee5c17
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 set version=512
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23251,9 +23247,9 @@ goto:downloadstart
 set name=System Menu 4.2J with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.2J_v480_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=6ad6db286d54ee25ff13f1a3e42c3f03
-if /i "%effect%" EQU "Spin" set md5=479b26c4d095471fa4e5c519bee98477
-if /i "%effect%" EQU "Fast-Spin" set md5=557d93df7bd65e66137ea10c93970847
+if /i "%effect%" EQU "No-Spin" set md5=dcca20b12149f8adedabe6f7a27993dd
+if /i "%effect%" EQU "Spin" set md5=9ba3ff06951b08eadd738e200c946a12
+if /i "%effect%" EQU "Fast-Spin" set md5=7cccf0921592d3a905b8f98be371a528
 set md5alt=%md5%
 set basewad=SystemMenu_4.2J_v480
 set basecios=%basewad%
@@ -23261,8 +23257,8 @@ set md5base=0413a9aed208b193fea85db908bbdabf
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 set version=480
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23272,9 +23268,9 @@ goto:downloadstart
 set name=System Menu 4.1J with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.1J_v448_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=75d1262328629d2a4f26e40ce7bdf6ca
-if /i "%effect%" EQU "Spin" set md5=150edb73e4717634e57380046e615e58
-if /i "%effect%" EQU "Fast-Spin" set md5=4b548b305118493dcd030f15f86b615e
+if /i "%effect%" EQU "No-Spin" set md5=134b31aa8aea0e9a740084ee5c3f2004
+if /i "%effect%" EQU "Spin" set md5=aa2a0473ecfff7946ac5218e22ed4609
+if /i "%effect%" EQU "Fast-Spin" set md5=9897510d88c3626151181510fed01cfb
 set md5alt=%md5%
 set basewad=SystemMenu_4.1J_v448
 set basecios=%basewad%
@@ -23282,8 +23278,8 @@ set md5base=6edb4b3f7ca26c643c6bc662d159ec2e
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 set version=448
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23294,9 +23290,9 @@ goto:downloadstart
 set name=System Menu 4.3K with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.3K_v518_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=48eb64aad35de4cae0e4edf6312792ea
-if /i "%effect%" EQU "Spin" set md5=47fd24e225cee6a8982d07338924b270
-if /i "%effect%" EQU "Fast-Spin" set md5=ae7603e5fdf2bbed28fdcd7e43a1411b
+if /i "%effect%" EQU "No-Spin" set md5=56c992a32248438d0096362285c27a79
+if /i "%effect%" EQU "Spin" set md5=9b7875eac578c09c12c4f34cd7e28fc6
+if /i "%effect%" EQU "Fast-Spin" set md5=fd0ab2155825e6716813d278e51bd093
 set md5alt=%md5%
 set basewad=SystemMenu_4.3K_v518
 set basecios=%basewad%
@@ -23304,8 +23300,8 @@ set md5base=6ed8f9e75b0a54eacfbacce57c20136d
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 set version=518
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23315,9 +23311,9 @@ goto:downloadstart
 set name=System Menu 4.2K with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.2K_v486_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=cc4b9713c11dd903b6d4fa6a4a51a2af
-if /i "%effect%" EQU "Spin" set md5=4aac3fe0de6298f422cabac0411ded8f
-if /i "%effect%" EQU "Fast-Spin" set md5=599ce764bbb19b53eba76f2e3ca166bf
+if /i "%effect%" EQU "No-Spin" set md5=4d222b2db1cc936b6067268210d64f3a
+if /i "%effect%" EQU "Spin" set md5=5eefeacc33cfab5e465c5555d5c5291f
+if /i "%effect%" EQU "Fast-Spin" set md5=1dabf7b6d79cd02df131b87378f97332
 set md5alt=%md5%
 set basewad=SystemMenu_4.2K_v486
 set basecios=%basewad%
@@ -23325,8 +23321,8 @@ set md5base=40c0bf90ea07b02d610edae1d7aea39f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 set version=486
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23336,9 +23332,9 @@ goto:downloadstart
 set name=System Menu 4.1K with Dark Wii Red Theme - %effect%
 set wadname=SystemMenu_4.1K_v454_DarkWiiRed_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=4cc1b28dc74ab3b126ebfeea6a9aac72
-if /i "%effect%" EQU "Spin" set md5=8e4dcbf428fea759dd0fd965e6a55f9b
-if /i "%effect%" EQU "Fast-Spin" set md5=525d8a50c59070b2df005a47d515b140
+if /i "%effect%" EQU "No-Spin" set md5=0e6caeaf42482f921d75657a086594a9
+if /i "%effect%" EQU "Spin" set md5=acf1fda221555b399087a223bf7076d0
+if /i "%effect%" EQU "Fast-Spin" set md5=d5ed6ce37250bcf2f06a56356b08e410
 set md5alt=%md5%
 set basewad=SystemMenu_4.1K_v454
 set basecios=%basewad%
@@ -23346,8 +23342,8 @@ set md5base=c0e5d5c4914e76e7df7495ccf28ef869
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 set version=454
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23357,9 +23353,9 @@ goto:downloadstart
 set name=System Menu 4.3U with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.3U_v513_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=c38b75d7d73a95e6704ba18d4f6bd62c
-if /i "%effect%" EQU "Spin" set md5=89d66ae6c2b25a4705e166126901cf7a
-if /i "%effect%" EQU "Fast-Spin" set md5=8dfa61932c170f29bc2b5d1600b7c0fe
+if /i "%effect%" EQU "No-Spin" set md5=6df85caaff6698aa05a3b3706b8cd2ce
+if /i "%effect%" EQU "Spin" set md5=008c57387d95851408bf50c1d98fa9a6
+if /i "%effect%" EQU "Fast-Spin" set md5=35343c2abdd52655c59fa9576a6de6dc
 set md5alt=%md5%
 set basewad=SystemMenu_4.3U_v513
 set basecios=%basewad%
@@ -23367,8 +23363,8 @@ set md5base=4f5c63e3fd1bf732067fa4c439c68a97
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 set version=513
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23378,9 +23374,9 @@ goto:downloadstart
 set name=System Menu 4.2U with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.2U_v481_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=afa602db4b007d14d62ba1c7f8cc0a37
-if /i "%effect%" EQU "Spin" set md5=29a0401891a4d4e6702aa186857e4cdc
-if /i "%effect%" EQU "Fast-Spin" set md5=f363a26c4efa46d8e37a4e8fc95a4c6b
+if /i "%effect%" EQU "No-Spin" set md5=c22b700e3ae95d0e168e0eb79ab6631b
+if /i "%effect%" EQU "Spin" set md5=4273134c4f12d58bd06e32fdc14b00f4
+if /i "%effect%" EQU "Fast-Spin" set md5=6ce407213cb4e4739ef5fe3ab1d21cf1
 set md5alt=%md5%
 set basewad=SystemMenu_4.2U_v481
 set basecios=%basewad%
@@ -23388,8 +23384,8 @@ set md5base=4ac52b981845473bd3655e4836d7442b
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 set version=481
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23399,9 +23395,9 @@ goto:downloadstart
 set name=System Menu 4.1U with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.1U_v449_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=ae8ddcd3fe74c5f549b5ce7cfeccf873
-if /i "%effect%" EQU "Spin" set md5=5d9d571f856b1dc07f6d46e806e511bd
-if /i "%effect%" EQU "Fast-Spin" set md5=4e8f9db355a1f20a074c57b392b3b702
+if /i "%effect%" EQU "No-Spin" set md5=01a1759216f9849b3abde6242fcc4b5a
+if /i "%effect%" EQU "Spin" set md5=5daa457e3a1cedff13e306429739695c
+if /i "%effect%" EQU "Fast-Spin" set md5=68aee48bb14791b85b4fde71866e6eed
 set md5alt=%md5%
 set basewad=SystemMenu_4.1U_v449
 set basecios=%basewad%
@@ -23409,8 +23405,8 @@ set md5base=38a95a9acd257265294be41b796f6239
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 set version=449
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23420,9 +23416,9 @@ goto:downloadstart
 set name=System Menu 4.3E with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.3E_v514_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=8fd78250da5a89c0471434497608e6c9
-if /i "%effect%" EQU "Spin" set md5=1856308855d0f6ad271903435210da09
-if /i "%effect%" EQU "Fast-Spin" set md5=24a128718e95f90894a4a1d6aee794bd
+if /i "%effect%" EQU "No-Spin" set md5=5e39cb21fba828a8190e785b95c8206f
+if /i "%effect%" EQU "Spin" set md5=545a7745ef945474dd0de9206c304cac
+if /i "%effect%" EQU "Fast-Spin" set md5=79d6151e19f07772986e0909b3fd6275
 set md5alt=%md5%
 set basewad=SystemMenu_4.3E_v514
 set basecios=%basewad%
@@ -23430,8 +23426,8 @@ set md5base=2ec2e6fbdfc52fe5174749e7032f1bad
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 set version=514
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23441,9 +23437,9 @@ goto:downloadstart
 set name=System Menu 4.2E with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.2E_v482_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=887e2bbf5797f9167fd2d2670864bfc0
-if /i "%effect%" EQU "Spin" set md5=3422f271af44ec2369c2a9356cd16a6c
-if /i "%effect%" EQU "Fast-Spin" set md5=d1cf93f577775b2de6bf11e8831cedf7
+if /i "%effect%" EQU "No-Spin" set md5=251d260ea8d2c7162e84a3574a6ec4bc
+if /i "%effect%" EQU "Spin" set md5=9f90d04ad17d19006209515c76c6c756
+if /i "%effect%" EQU "Fast-Spin" set md5=d98f173e8cdd68d8fd67ed8d9a7b14b1
 set md5alt=%md5%
 set basewad=SystemMenu_4.2E_v482
 set basecios=%basewad%
@@ -23451,8 +23447,8 @@ set md5base=7d77be8b6df5ac893d24652db33d02cd
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 set version=482
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23462,9 +23458,9 @@ goto:downloadstart
 set name=System Menu 4.1E with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.1E_v450_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=b961e623dcf37a31bcbec4c7bff5d17c
-if /i "%effect%" EQU "Spin" set md5=a53cab247691eeb7dda21213e09c3d5c
-if /i "%effect%" EQU "Fast-Spin" set md5=3327d3d023e95c262de149512f708378
+if /i "%effect%" EQU "No-Spin" set md5=17071d6c0beb781d17f4ac39beaf06c5
+if /i "%effect%" EQU "Spin" set md5=9cd3cb5665646e8444ef9c86f30ac2cc
+if /i "%effect%" EQU "Fast-Spin" set md5=97fb3461f3ad86f333809af043ad0b69
 set md5alt=%md5%
 set basewad=SystemMenu_4.1E_v450
 set basecios=%basewad%
@@ -23472,8 +23468,8 @@ set md5base=688cc78b8eab4e30da04f01a81a3739f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 set version=450
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23483,9 +23479,9 @@ goto:downloadstart
 set name=System Menu 4.3J with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.3J_v512_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=e1bf79828225319a85c3540cde80ae95
-if /i "%effect%" EQU "Spin" set md5=1cba0f8e4b4514acc9e1eac05edbb406
-if /i "%effect%" EQU "Fast-Spin" set md5=d7e5d27bfb723c300ddb2468c91ab9ba
+if /i "%effect%" EQU "No-Spin" set md5=e2330536840a6f12e5143d23e11fbb02
+if /i "%effect%" EQU "Spin" set md5=3f3b0447237dcdf383986af595fa53b7
+if /i "%effect%" EQU "Fast-Spin" set md5=17a00cb794c88c68080c21d0014b1918
 set md5alt=%md5%
 set basewad=SystemMenu_4.3J_v512
 set basecios=%basewad%
@@ -23493,8 +23489,8 @@ set md5base=df67ed4bd8f8f117741fef7952ee5c17
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 set version=512
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23504,9 +23500,9 @@ goto:downloadstart
 set name=System Menu 4.2J with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.2J_v480_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=f9c35f9146e785a106666c9b11fdd2b8
-if /i "%effect%" EQU "Spin" set md5=7f6f88deec86e9309d9e76b507b0044c
-if /i "%effect%" EQU "Fast-Spin" set md5=fee2c0f6efcea922216e42e5d7721591
+if /i "%effect%" EQU "No-Spin" set md5=cd6ef6a86b4f4e5264542fc2d85186d9
+if /i "%effect%" EQU "Spin" set md5=7082a58421e10a024e6a0883da7fc7dc
+if /i "%effect%" EQU "Fast-Spin" set md5=0676c2f6d11c946ca6f26faa8075da29
 set md5alt=%md5%
 set basewad=SystemMenu_4.2J_v480
 set basecios=%basewad%
@@ -23514,8 +23510,8 @@ set md5base=0413a9aed208b193fea85db908bbdabf
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 set version=480
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23525,9 +23521,9 @@ goto:downloadstart
 set name=System Menu 4.1J with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.1J_v448_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=6471709f115212164e44d6772f9cd279
-if /i "%effect%" EQU "Spin" set md5=bd5bd5876e32614b420f98446dcd6050
-if /i "%effect%" EQU "Fast-Spin" set md5=b61bdfdeb3c35ed984fc89a17fc3dfdb
+if /i "%effect%" EQU "No-Spin" set md5=a64c214e26bfcae7e728d4509fa47274
+if /i "%effect%" EQU "Spin" set md5=9893de0f682e7ab911cd18c63071cf0c
+if /i "%effect%" EQU "Fast-Spin" set md5=9203880501ca5243f771e22a07b9e3ec
 set md5alt=%md5%
 set basewad=SystemMenu_4.1J_v448
 set basecios=%basewad%
@@ -23535,8 +23531,8 @@ set md5base=6edb4b3f7ca26c643c6bc662d159ec2e
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 set version=448
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23547,9 +23543,9 @@ goto:downloadstart
 set name=System Menu 4.3K with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.3K_v518_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=cbcef4b708184948e4c46314feb5608f
-if /i "%effect%" EQU "Spin" set md5=d3cb71941cbd0b0721244824782a7096
-if /i "%effect%" EQU "Fast-Spin" set md5=d749556228b3b17f61351e4661e13e80
+if /i "%effect%" EQU "No-Spin" set md5=84547c57cbd0f361fbf7d73290b5134e
+if /i "%effect%" EQU "Spin" set md5=dde1e404f6f34bdca0a4312f3fc017d2
+if /i "%effect%" EQU "Fast-Spin" set md5=7cc3e0f666fb8a91c22f5384a412ddd0
 set md5alt=%md5%
 set basewad=SystemMenu_4.3K_v518
 set basecios=%basewad%
@@ -23557,8 +23553,8 @@ set md5base=6ed8f9e75b0a54eacfbacce57c20136d
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 set version=518
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23568,9 +23564,9 @@ goto:downloadstart
 set name=System Menu 4.2K with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.2K_v486_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=d5c698001cfb26d196f3aa8d913dcb70
-if /i "%effect%" EQU "Spin" set md5=eebe040987688b7bca894d50d22076d4
-if /i "%effect%" EQU "Fast-Spin" set md5=4c6966f8794dab11d720ff80ccb25e64
+if /i "%effect%" EQU "No-Spin" set md5=6fc912f8830c6948f8a17155ad298dcb
+if /i "%effect%" EQU "Spin" set md5=3ba0c3912a25028e300eba53e47c42ec
+if /i "%effect%" EQU "Fast-Spin" set md5=d64b6dc99f69d70638099fb00a252c9b
 set md5alt=%md5%
 set basewad=SystemMenu_4.2K_v486
 set basecios=%basewad%
@@ -23578,8 +23574,8 @@ set md5base=40c0bf90ea07b02d610edae1d7aea39f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 set version=486
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -23589,9 +23585,9 @@ goto:downloadstart
 set name=System Menu 4.1K with Dark Wii Green Theme - %effect%
 set wadname=SystemMenu_4.1K_v454_DarkWiiGreen_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=855555379983f64d5e97b3c8bf48e90b
-if /i "%effect%" EQU "Spin" set md5=0b9121d362b1776ccbff65307005fbf3
-if /i "%effect%" EQU "Fast-Spin" set md5=22d5524ff2856a42bfa30563d641b3ae
+if /i "%effect%" EQU "No-Spin" set md5=6b9f5710b1cc8de8e02359364265f1ff
+if /i "%effect%" EQU "Spin" set md5=fe6bf7532ca2844d2541bfdf1f8a5236
+if /i "%effect%" EQU "Fast-Spin" set md5=59c84a8627ff691dcaae53a6fbab0884
 set md5alt=%md5%
 set basewad=SystemMenu_4.1K_v454
 set basecios=%basewad%
@@ -23599,8 +23595,8 @@ set md5base=c0e5d5c4914e76e7df7495ccf28ef869
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 set version=454
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -24774,28 +24770,17 @@ set path1=apps\IOS236-v5-Mod\
 goto:downloadstart
 
 :sysCheck
-set name=sysCheck v2.0.1
+set name=sysCheck v2.1.0.b17
 set code1=URL
-set code2=http://filetrip.net/f/12865-sysCheck2.0.1.zip
+set code2=http://syscheck.googlecode.com/files/syscheckb17.zip
 set version=*
-set dlname=12865-sysCheck2.0.1.zip
-set wadname=sysCheck2.0.1.zip
+set dlname=syscheckb17.zip
+set wadname=syscheckb17.zip
 set filename=boot.dol
-set md5=3da9e9cff893357ca924649b766d6f34
+set md5=13a4a8bcc88ca09c9fc1c3c9a063a03f
 set path1=apps\sysCheck\
 goto:downloadstart
 
-:sysCheckBeta
-set name=sysCheck v2.1.0.b13
-set code1=URL
-set code2=http://syscheck.googlecode.com/files/syscheckb13.zip
-set version=*
-set dlname=syscheckb13.zip
-set wadname=syscheckb13.zip
-set filename=boot.dol
-set md5=e2ec7fed32f18ed3ce9db8286cff38be
-set path1=apps\sysCheckBeta\
-goto:downloadstart
 
 :SIP
 set category=fullextract
@@ -26774,11 +26759,11 @@ goto:downloadstart
 :DarkWii_Red_4.1U
 set name=DarkWii Red Theme (4.1U) - %effect%
 set wadname=DarkWii_Red_%effect%_4.1U
-if /i "%effect%" EQU "No-Spin" set md5=6ca906e74de1193f68b2d72728260823
-if /i "%effect%" EQU "Spin" set md5=82d40f02f358857f65eba0afc6c2eef0
-if /i "%effect%" EQU "Fast-Spin" set md5=2e71a697597af10aec162ca90f510d89
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+if /i "%effect%" EQU "No-Spin" set md5=0f430839aefc568fa3484adc4268ad00
+if /i "%effect%" EQU "Spin" set md5=cd4a8eeba57ab571b73aa5fcef832ce0
+if /i "%effect%" EQU "Fast-Spin" set md5=e21155ec254b79e475e92bfb243957ee
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 ::000000**.app
 set version=7b
 set md5base=6b939de8222800733f4c44ae4eadb325
@@ -26788,11 +26773,11 @@ goto:downloadstart
 :DarkWii_Red_4.2U
 set name=DarkWii Red Theme (4.2U) - %effect%
 set wadname=DarkWii_Red_%effect%_4.2U
-if /i "%effect%" EQU "No-Spin" set md5=611c287885444c6de163d42775a8ae20
-if /i "%effect%" EQU "Spin" set md5=32dc95b83f1f848b49341c7f8ae58a9b
-if /i "%effect%" EQU "Fast-Spin" set md5=017150040ff1e03dfc9f21705fd9fae7
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+if /i "%effect%" EQU "No-Spin" set md5=80e497625ac665ae6c7da2b10aca02dc
+if /i "%effect%" EQU "Spin" set md5=7b6cd24a2b514438c786fdd7d973cd2c
+if /i "%effect%" EQU "Fast-Spin" set md5=f90e496179292c3ee0e6e873c237b5b2
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 ::000000**.app
 set version=87
 set md5base=7079948c6aed8aae6009e4fdf27c7171
@@ -26802,11 +26787,11 @@ goto:downloadstart
 :DarkWii_Red_4.3U
 set name=DarkWii Red Theme (4.3U) - %effect%
 set wadname=DarkWii_Red_%effect%_4.3U
-if /i "%effect%" EQU "No-Spin" set md5=d933cea8cb9e5972957cdc09aa42d0f3
-if /i "%effect%" EQU "Spin" set md5=1abcc6ca6d8c7059f2fce961a267572e
-if /i "%effect%" EQU "Fast-Spin" set md5=76d1dfc30350e92fd1de88c4836d022e
-set mym1=DarkWii_Red_NTSC_4-x_with_wii_theme_team_edits.mym
-set md5mym1=6e58d6a38a2ea3b7e3c38879320a97a8
+if /i "%effect%" EQU "No-Spin" set md5=af96662f2e9c1d1dd5a4202287baa7b7
+if /i "%effect%" EQU "Spin" set md5=b2a4eada0b3a9294d3e16606315e90a2
+if /i "%effect%" EQU "Fast-Spin" set md5=8ec0145f5eb2d6c4a7454302ca8d303f
+set mym1=DarkWii_Red_No-Spin_4.XU_V2.mym
+set md5mym1=d25623ec4c687bb528fad499f385983f
 ::000000**.app
 set version=97
 set md5base=f388c9b11543ac2fe0912ab96064ee37
@@ -26816,11 +26801,11 @@ goto:downloadstart
 :DarkWii_Red_4.1E
 set name=DarkWii Red Theme (4.1E) - %effect%
 set wadname=DarkWii_Red_%effect%_4.1E
-if /i "%effect%" EQU "No-Spin" set md5=d86114ae32128e0cea7d15c1db23d834
-if /i "%effect%" EQU "Spin" set md5=741673b5c5203f97120a7497062de684
-if /i "%effect%" EQU "Fast-Spin" set md5=4bbdf31b36100b56c5eafdff2b80047b
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+if /i "%effect%" EQU "No-Spin" set md5=5d2808f2ada0febd5cb25e6b27ee73ec
+if /i "%effect%" EQU "Spin" set md5=23a867a7bb009150306e65a727f60397
+if /i "%effect%" EQU "Fast-Spin" set md5=5fead311c48b57434c23c97448472ace
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 ::000000**.app
 set version=7e
 set md5base=574a3a144971ea0ec61bf8cef8d7ff80
@@ -26830,11 +26815,11 @@ goto:downloadstart
 :DarkWii_Red_4.2E
 set name=DarkWii Red Theme (4.2E) - %effect%
 set wadname=DarkWii_Red_%effect%_4.2E
-if /i "%effect%" EQU "No-Spin" set md5=4b0876a5080f92b2d8195abd63f73e6c
-if /i "%effect%" EQU "Spin" set md5=4b167e3e66d90fbe774f793deeacd1a2
-if /i "%effect%" EQU "Fast-Spin" set md5=720bd79de493dd208e24a9e1c0fd7223
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+if /i "%effect%" EQU "No-Spin" set md5=98ce754a9892ecdb0a49684051eaef79
+if /i "%effect%" EQU "Spin" set md5=b652028a6570f45690d8685efa15c6d1
+if /i "%effect%" EQU "Fast-Spin" set md5=85b71837f9ae655ebbb8e052cfd327b8
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 ::000000**.app
 set version=8a
 set md5base=7e7994f78941afb51e9a20085deac305
@@ -26844,11 +26829,11 @@ goto:downloadstart
 :DarkWii_Red_4.3E
 set name=DarkWii Red Theme (4.3E) - %effect%
 set wadname=DarkWii_Red_%effect%_4.3E
-if /i "%effect%" EQU "No-Spin" set md5=2a5b9861ffd8e49888a6f37c10a70c7b
-if /i "%effect%" EQU "Spin" set md5=761ad0896ac98f1b243f21f563537399
-if /i "%effect%" EQU "Fast-Spin" set md5=db8d035f01ce99bef0c843963fa7d4a0
-set mym1=DarkWii_Red_PAL_4-x_with_wii_theme_team_edits.mym
-set md5mym1=43ee96a6c37e341d76fd8dfbb7c729ff
+if /i "%effect%" EQU "No-Spin" set md5=b856d3a18101d3bf1d0032c981f434ea
+if /i "%effect%" EQU "Spin" set md5=10c3660efe3b1d46a5371ea5e55f8eb5
+if /i "%effect%" EQU "Fast-Spin" set md5=7e4ed76b41a6ded82f791f379e3ef464
+set mym1=DarkWii_Red_No-Spin_4.XE_V2.mym
+set md5mym1=543130dbc6ece1d4a666586ed084d714
 ::000000**.app
 set version=9a
 set md5base=41310f79497c56850c37676074ee1237
@@ -26858,11 +26843,11 @@ goto:downloadstart
 :DarkWii_Red_4.1J
 set name=DarkWii Red Theme (4.1J) - %effect%
 set wadname=DarkWii_Red_%effect%_4.1J
-if /i "%effect%" EQU "No-Spin" set md5=c6eb9dfd8a0279be749a3423ba73cc34
-if /i "%effect%" EQU "Spin" set md5=8cf389fb675e0367acff73b83043ccd4
-if /i "%effect%" EQU "Fast-Spin" set md5=20c1a69911ea3026ec7c45c34b1e2a3e
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+if /i "%effect%" EQU "No-Spin" set md5=f0dc187f779cd37c82de98825b0f92d3
+if /i "%effect%" EQU "Spin" set md5=a0c767deb4eaaca1e30c792f36aa9ecf
+if /i "%effect%" EQU "Fast-Spin" set md5=983f9b51fff92b6d87ad1c7c67274d7e
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 ::000000**.app
 set version=78
 set md5base=f2eadf12d18e793373060222b870057d
@@ -26872,11 +26857,11 @@ goto:downloadstart
 :DarkWii_Red_4.2J
 set name=DarkWii Red Theme (4.2J) - %effect%
 set wadname=DarkWii_Red_%effect%_4.2J
-if /i "%effect%" EQU "No-Spin" set md5=f3dc6d6e1f436a6bb844dddbccc1f713
-if /i "%effect%" EQU "Spin" set md5=a60a39a3927883058847484dc23cad76
-if /i "%effect%" EQU "Fast-Spin" set md5=7b904662ace820e58be8d3d48dea676e
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+if /i "%effect%" EQU "No-Spin" set md5=d6c1d942b2529ea4d202ae29c42b5f89
+if /i "%effect%" EQU "Spin" set md5=671caf4a1902c4aa206f844a3a48bc8a
+if /i "%effect%" EQU "Fast-Spin" set md5=5abef476307f95e7568b6fcf1347685c
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 ::000000**.app
 set version=84
 set md5base=b08998e582c48afba3a14f6d9e1e9373
@@ -26886,11 +26871,11 @@ goto:downloadstart
 :DarkWii_Red_4.3J
 set name=DarkWii Red Theme (4.3J) - %effect%
 set wadname=DarkWii_Red_%effect%_4.3J
-if /i "%effect%" EQU "No-Spin" set md5=3a223b0a67c406e5f73e361b106977fe
-if /i "%effect%" EQU "Spin" set md5=a897a1bee590a898277d1680c570a77f
-if /i "%effect%" EQU "Fast-Spin" set md5=0bd45acdc69beef14209d3a9b7cb5b80
-set mym1=DarkWii Red jap 4-x edit 3.mym
-set md5mym1=393c2fae4861f089ee3ed799e9b8d60e
+if /i "%effect%" EQU "No-Spin" set md5=31908e602aca4792246672c47c365d05
+if /i "%effect%" EQU "Spin" set md5=213c0c6af94b03b151c5fd36241b8d3f
+if /i "%effect%" EQU "Fast-Spin" set md5=f111a56156a84f0d89e44dfcc66cbccc
+set mym1=DarkWii_Red_No-Spin_4.XJ_V2.mym
+set md5mym1=ff34815d750afa045381a922366e85e2
 ::000000**.app
 set version=94
 set md5base=5b3ee6942a3cda716badbce3665076fc
@@ -26900,11 +26885,11 @@ goto:downloadstart
 :DarkWii_Red_4.1K
 set name=DarkWii Red Theme (4.1K) - %effect%
 set wadname=DarkWii_Red_%effect%_4.1K
-if /i "%effect%" EQU "No-Spin" set md5=cad7007eb9c263c75249e4399a61d6e0
-if /i "%effect%" EQU "Spin" set md5=1190c95de65850d9c8a7ff9bbbc67f8d
-if /i "%effect%" EQU "Fast-Spin" set md5=5fcc5678018739f45be4d9f4e2ae639a
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+if /i "%effect%" EQU "No-Spin" set md5=0d02e9b608250100f57adf961b289b8f
+if /i "%effect%" EQU "Spin" set md5=5c33518011fceaab7711b033cd801a71
+if /i "%effect%" EQU "Fast-Spin" set md5=1d132063312b9f1df8d9a04683025859
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 ::000000**.app
 set version=81
 set md5base=7eedbf1a146b29b63edbb55e04f81f98
@@ -26914,11 +26899,11 @@ goto:downloadstart
 :DarkWii_Red_4.2K
 set name=DarkWii Red Theme (4.2K) - %effect%
 set wadname=DarkWii_Red_%effect%_4.2K
-if /i "%effect%" EQU "No-Spin" set md5=0fa6db76463cce7f1c9a07a5b50dad94
-if /i "%effect%" EQU "Spin" set md5=cb3398120c987be5e9765b508f95d78b
-if /i "%effect%" EQU "Fast-Spin" set md5=da3b9a630900f0d2f9e2e5df47c7494c
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+if /i "%effect%" EQU "No-Spin" set md5=3f7f7b0f6724bc14dc64d545b7fcea35
+if /i "%effect%" EQU "Spin" set md5=13742e852400523120dba4868d244db5
+if /i "%effect%" EQU "Fast-Spin" set md5=f24fdcb08b4ffd683da07279fd298a59
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 ::000000**.app
 set version=8d
 set md5base=9d72a1966370e44cb4c456c17a077bec
@@ -26928,11 +26913,11 @@ goto:downloadstart
 :DarkWii_Red_4.3K
 set name=DarkWii Red Theme (4.3K) - %effect%
 set wadname=DarkWii_Red_%effect%_4.3K
-if /i "%effect%" EQU "No-Spin" set md5=d47d6eaf291b3a635e9327ebec0c6b44
-if /i "%effect%" EQU "Spin" set md5=d61e2ee9d2fad0495b47573572b21d9a
-if /i "%effect%" EQU "Fast-Spin" set md5=8fa44fd6cb7395fcd8057b5a8f48b584
-set mym1=DarkWiiRedKor-Final.mym
-set md5mym1=9d6ec39a5528693c049907dcf71252b7
+if /i "%effect%" EQU "No-Spin" set md5=d58a46aea5f54b046e6cc852d24824ff
+if /i "%effect%" EQU "Spin" set md5=32436f754ba6ae46c683c282d68d0a42
+if /i "%effect%" EQU "Fast-Spin" set md5=a8f0d889830318d5dc16c0502a5b27da
+set mym1=DarkWii_Red_No-Spin_4.XK_V2.mym
+set md5mym1=39621a542fb6870286c0fb672084ab05
 ::000000**.app
 set version=9d
 set md5base=e6f2b0d4d5e0c095895f186009bf9516
@@ -26942,11 +26927,11 @@ goto:downloadstart
 :DarkWii_Green_4.1U
 set name=DarkWii Green Theme (4.1U) - %effect%
 set wadname=DarkWii_Green_%effect%_4.1U
-if /i "%effect%" EQU "No-Spin" set md5=226942baf867be4408f157a6e568cd89
-if /i "%effect%" EQU "Spin" set md5=a5d0787e574b743a83628bd19f21c2ef
-if /i "%effect%" EQU "Fast-Spin" set md5=e1dcaa66bab5d546b5ffcabdcd67bb70
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+if /i "%effect%" EQU "No-Spin" set md5=9c8a1da95cc54f6bfd1faf5ae1d4e021
+if /i "%effect%" EQU "Spin" set md5=d126560bd9d4612e8525df976ad49b45
+if /i "%effect%" EQU "Fast-Spin" set md5=e1f41c450b4af317552f9748b2ab3d6f
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 ::000000**.app
 set version=7b
 set md5base=6b939de8222800733f4c44ae4eadb325
@@ -26956,11 +26941,11 @@ goto:downloadstart
 :DarkWii_Green_4.2U
 set name=DarkWii Green Theme (4.2U) - %effect%
 set wadname=DarkWii_Green_%effect%_4.2U
-if /i "%effect%" EQU "No-Spin" set md5=7e228beb400cb1d13ed9fd2da237a04f
-if /i "%effect%" EQU "Spin" set md5=5f1cd28e1c84b58f0a90efb8b976fdae
-if /i "%effect%" EQU "Fast-Spin" set md5=269a4edf824d68590593108cdd255a1f
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+if /i "%effect%" EQU "No-Spin" set md5=a21a373931c1a75d371d9d4a1f138e43
+if /i "%effect%" EQU "Spin" set md5=ba45a375eabd287f6359ddaedf607b3e
+if /i "%effect%" EQU "Fast-Spin" set md5=8d02351f224798f3f2128554aa06a656
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 ::000000**.app
 set version=87
 set md5base=7079948c6aed8aae6009e4fdf27c7171
@@ -26970,11 +26955,11 @@ goto:downloadstart
 :DarkWii_Green_4.3U
 set name=DarkWii Green Theme (4.3U) - %effect%
 set wadname=DarkWii_Green_%effect%_4.3U
-if /i "%effect%" EQU "No-Spin" set md5=ebe331e05bc8e0eec6b0ab33b2afb462
-if /i "%effect%" EQU "Spin" set md5=8229a49a890cdf70f2ea5e8f030997ca
-if /i "%effect%" EQU "Fast-Spin" set md5=74fe884437ed8d21ca2b6081cbba86de
-set mym1=DarkWiigreenntsc-final.mym
-set md5mym1=7700bebff958e0ed005f4a8b308d6b4c
+if /i "%effect%" EQU "No-Spin" set md5=a95a92666e108784e0bff6440457e31a
+if /i "%effect%" EQU "Spin" set md5=c0918ae513c261dda53604b1b771b32b
+if /i "%effect%" EQU "Fast-Spin" set md5=f5801cd8e94531a5541c78820c9e805d
+set mym1=DarkWii_Green_No-Spin_4.XU_V2.mym
+set md5mym1=69cbc2704736d99c2011d023794b0ac0
 ::000000**.app
 set version=97
 set md5base=f388c9b11543ac2fe0912ab96064ee37
@@ -26984,11 +26969,11 @@ goto:downloadstart
 :DarkWii_Green_4.1E
 set name=DarkWii Green Theme (4.1E) - %effect%
 set wadname=DarkWii_Green_%effect%_4.1E
-if /i "%effect%" EQU "No-Spin" set md5=757e20d3a789ae6161b0665837035f89
-if /i "%effect%" EQU "Spin" set md5=e71c20893391bfc8c9ae09a12232f7d7
-if /i "%effect%" EQU "Fast-Spin" set md5=f568550b9f8cc96f583d2b7570d1f1cf
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+if /i "%effect%" EQU "No-Spin" set md5=55978344479c3abf6c9648e92c58209c
+if /i "%effect%" EQU "Spin" set md5=7593de2d43e4b774747e0139e6be2cc1
+if /i "%effect%" EQU "Fast-Spin" set md5=dcffb6be25e2b0fa75e6cfb04070cf7a
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 ::000000**.app
 set version=7e
 set md5base=574a3a144971ea0ec61bf8cef8d7ff80
@@ -26998,11 +26983,11 @@ goto:downloadstart
 :DarkWii_Green_4.2E
 set name=DarkWii Green Theme (4.2E) - %effect%
 set wadname=DarkWii_Green_%effect%_4.2E
-if /i "%effect%" EQU "No-Spin" set md5=a35358952559ef1b2bd0a7388ba79c26
-if /i "%effect%" EQU "Spin" set md5=d0e0545bd9ba761a2c8fe07f339da5c5
-if /i "%effect%" EQU "Fast-Spin" set md5=5b2e32e044b1cb65a6d819721255785d
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+if /i "%effect%" EQU "No-Spin" set md5=bb2a3f079ca17b19a5953aff98e8ba9d
+if /i "%effect%" EQU "Spin" set md5=fc5145a1a019b53373a551db4975716b
+if /i "%effect%" EQU "Fast-Spin" set md5=3ea3db1216e391acb3f697b2d60e9205
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 ::000000**.app
 set version=8a
 set md5base=7e7994f78941afb51e9a20085deac305
@@ -27012,11 +26997,11 @@ goto:downloadstart
 :DarkWii_Green_4.3E
 set name=DarkWii Green Theme (4.3E) - %effect%
 set wadname=DarkWii_Green_%effect%_4.3E
-if /i "%effect%" EQU "No-Spin" set md5=43b0017ec17eb9048474ccda814f46d2
-if /i "%effect%" EQU "Spin" set md5=4bb7321ac82c66445b18b5d6d4a22b7c
-if /i "%effect%" EQU "Fast-Spin" set md5=b39429af75a096025f783a7958a34b31
-set mym1=DarkWiigreenpal-final.mym
-set md5mym1=ebc41b9910c910a5c7054108c304dcb9
+if /i "%effect%" EQU "No-Spin" set md5=4cc51aec0f96c28cfe512027b9e555aa
+if /i "%effect%" EQU "Spin" set md5=6fb674c723178f7ea498bf074f9f0608
+if /i "%effect%" EQU "Fast-Spin" set md5=8a60eff1a5fa8317d488b18f804a225a
+set mym1=DarkWii_Green_No-Spin_4.XE_V2.mym
+set md5mym1=34c991872b67273307c7bc7aa522b09d
 ::000000**.app
 set version=9a
 set md5base=41310f79497c56850c37676074ee1237
@@ -27026,11 +27011,11 @@ goto:downloadstart
 :DarkWii_Green_4.1J
 set name=DarkWii Green Theme (4.1J) - %effect%
 set wadname=DarkWii_Green_%effect%_4.1J
-if /i "%effect%" EQU "No-Spin" set md5=f732de09407f68112a2d2ab5ba1a4ff7
-if /i "%effect%" EQU "Spin" set md5=c455874014f58a3af90a3bc428e1cd4e
-if /i "%effect%" EQU "Fast-Spin" set md5=ad7500f84aa512824713e7b5c96824b3
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+if /i "%effect%" EQU "No-Spin" set md5=123b0aaa666130870ea1429a41fe6c3b
+if /i "%effect%" EQU "Spin" set md5=79777d404510de7daaa644d52098b9aa
+if /i "%effect%" EQU "Fast-Spin" set md5=3f8ece6fc24c4a7282420dd577b1e33b
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 ::000000**.app
 set version=78
 set md5base=f2eadf12d18e793373060222b870057d
@@ -27040,11 +27025,11 @@ goto:downloadstart
 :DarkWii_Green_4.2J
 set name=DarkWii Green Theme (4.2J) - %effect%
 set wadname=DarkWii_Green_%effect%_4.2J
-if /i "%effect%" EQU "No-Spin" set md5=03bac7103c8152eeaf65f348a2e575f9
-if /i "%effect%" EQU "Spin" set md5=a0fff9dea4fd6a3797d97ca71288d613
-if /i "%effect%" EQU "Fast-Spin" set md5=dfa5cac7c13c5189d8a6f7644563b648
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+if /i "%effect%" EQU "No-Spin" set md5=94a5574332ffb10202cc4a96bce2929f
+if /i "%effect%" EQU "Spin" set md5=e281370faf9f4df752c2434939578821
+if /i "%effect%" EQU "Fast-Spin" set md5=efedef0be7dd31e9ad04929b2b7cc2dd
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 ::000000**.app
 set version=84
 set md5base=b08998e582c48afba3a14f6d9e1e9373
@@ -27054,11 +27039,11 @@ goto:downloadstart
 :DarkWii_Green_4.3J
 set name=DarkWii Green Theme (4.3J) - %effect%
 set wadname=DarkWii_Green_%effect%_4.3J
-if /i "%effect%" EQU "No-Spin" set md5=7871bcd74f6cd59b5ca1b6fad02a4512
-if /i "%effect%" EQU "Spin" set md5=247a01996c086bbbd45b3be6a14e0f3a
-if /i "%effect%" EQU "Fast-Spin" set md5=198803a788e30cf70863854e8f04a437
-set mym1=DarkWiigreenjap-final.mym
-set md5mym1=c0ca64e1f0502c138113b681df7ef961
+if /i "%effect%" EQU "No-Spin" set md5=e455ffe8dc5f014424fd409bf22482fc
+if /i "%effect%" EQU "Spin" set md5=a347897ea4e6382adcf4e4d50d21f7bf
+if /i "%effect%" EQU "Fast-Spin" set md5=438e431f41b447a04467657670741300
+set mym1=DarkWii_Green_No-Spin_4.XJ_V2.mym
+set md5mym1=61a8d22e0211a3c5d09cb4cf61594f7b
 ::000000**.app
 set version=94
 set md5base=5b3ee6942a3cda716badbce3665076fc
@@ -27068,11 +27053,11 @@ goto:downloadstart
 :DarkWii_Green_4.1K
 set name=DarkWii Green Theme (4.1K) - %effect%
 set wadname=DarkWii_Green_%effect%_4.1K
-if /i "%effect%" EQU "No-Spin" set md5=d57e3b3ff380bafad74269f3ea4df23c
-if /i "%effect%" EQU "Spin" set md5=77b71748073c6b8b520cc88245a4de52
-if /i "%effect%" EQU "Fast-Spin" set md5=0b892d4b1e86c3fe49fb0564828736ef
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+if /i "%effect%" EQU "No-Spin" set md5=72ea69f2c27fd0f794ac4293e8218261
+if /i "%effect%" EQU "Spin" set md5=3a8aff97f364512d212873f21859df65
+if /i "%effect%" EQU "Fast-Spin" set md5=7d8f8fc8e82326a177caacfef8ef42b5
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 ::000000**.app
 set version=81
 set md5base=7eedbf1a146b29b63edbb55e04f81f98
@@ -27082,11 +27067,11 @@ goto:downloadstart
 :DarkWii_Green_4.2K
 set name=DarkWii Green Theme (4.2K) - %effect%
 set wadname=DarkWii_Green_%effect%_4.2K
-if /i "%effect%" EQU "No-Spin" set md5=3c22bd52f4c47f5bd96c503e0d7d7c04
-if /i "%effect%" EQU "Spin" set md5=caa369169cacc941c8b60eb3731deae7
-if /i "%effect%" EQU "Fast-Spin" set md5=8f88c76c09ef8d7c4a7642cb53e9620f
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+if /i "%effect%" EQU "No-Spin" set md5=1da76c9d9bdb4e38040c9005e9e6625d
+if /i "%effect%" EQU "Spin" set md5=62615599504b3766fb48ca9a3d4bd98d
+if /i "%effect%" EQU "Fast-Spin" set md5=4c00d803ecc007a35bc80f82bd279285
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 ::000000**.app
 set version=8d
 set md5base=9d72a1966370e44cb4c456c17a077bec
@@ -27096,11 +27081,11 @@ goto:downloadstart
 :DarkWii_Green_4.3K
 set name=DarkWii Green Theme (4.3K) - %effect%
 set wadname=DarkWii_Green_%effect%_4.3K
-if /i "%effect%" EQU "No-Spin" set md5=0e1dede7efd6028a3fe89009a69e69bd
-if /i "%effect%" EQU "Spin" set md5=d5aa5cbbd1cfd9a9cb9300e383763cc4
-if /i "%effect%" EQU "Fast-Spin" set md5=79a4a0f74108a46b44abf8435beace33
-set mym1=DarkWii_Green_4.xK.mym
-set md5mym1=21b0e77dfc49b0b657b81ff1f075216d
+if /i "%effect%" EQU "No-Spin" set md5=456e48400c03669afbb8b01037414476
+if /i "%effect%" EQU "Spin" set md5=79332285facf4d15be00a29208cc5360
+if /i "%effect%" EQU "Fast-Spin" set md5=28f8fe2472eba0c5e01964d395a7ac08
+set mym1=DarkWii_Green_No-Spin_4.XK_V2.mym
+set md5mym1=46e8ff2f49142ea3b6877a4a636de941
 ::000000**.app
 set version=9d
 set md5base=e6f2b0d4d5e0c095895f186009bf9516
@@ -27112,11 +27097,11 @@ goto:downloadstart
 :DarkWii_Blue_4.1U
 set name=DarkWii Blue Theme (4.1U) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.1U
-if /i "%effect%" EQU "No-Spin" set md5=8d9ae1593265d67421838b51fb65cbc8
-if /i "%effect%" EQU "Spin" set md5=89ca33042566624b5b53498224b4dd4c
-if /i "%effect%" EQU "Fast-Spin" set md5=4d6778ee13de0eb80445128a902d5b51
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+if /i "%effect%" EQU "No-Spin" set md5=210c117c8f83703fd285908766de0174
+if /i "%effect%" EQU "Spin" set md5=d2033d8225dcc871fc425e83963ffaf6
+if /i "%effect%" EQU "Fast-Spin" set md5=9369c387c51a82d6394072b86100239c
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 ::000000**.app
 set version=7b
 set md5base=6b939de8222800733f4c44ae4eadb325
@@ -27126,11 +27111,11 @@ goto:downloadstart
 :DarkWii_Blue_4.2U
 set name=DarkWii Blue Theme (4.2U) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.2U
-if /i "%effect%" EQU "No-Spin" set md5=c66b1b53bdf4b88d0837327578605c50
-if /i "%effect%" EQU "Spin" set md5=3e4b40968cf2c6048713cf0d3f4a4584
-if /i "%effect%" EQU "Fast-Spin" set md5=2b8c228fe1b3e5ef8e0c8a97c56efb8b
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+if /i "%effect%" EQU "No-Spin" set md5=bad63e617f576483858a8180c109f4a7
+if /i "%effect%" EQU "Spin" set md5=870e9c1b262c147f2f21b404840e6c20
+if /i "%effect%" EQU "Fast-Spin" set md5=8322da4895c6a4e0eeeebd96f3b0ebdb
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 ::000000**.app
 set version=87
 set md5base=7079948c6aed8aae6009e4fdf27c7171
@@ -27140,11 +27125,11 @@ goto:downloadstart
 :DarkWii_Blue_4.3U
 set name=DarkWii Blue Theme (4.3U) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.3U
-if /i "%effect%" EQU "No-Spin" set md5=0bdbc6629650b12c6dcd301aea226325
-if /i "%effect%" EQU "Spin" set md5=7ae92e8f9c2b3961de82b8b52b2ab783
-if /i "%effect%" EQU "Fast-Spin" set md5=17110b082cf3a10abd74e3492b022593
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+if /i "%effect%" EQU "No-Spin" set md5=a138e0e5c3c8dc2126ee0944c009e6e7
+if /i "%effect%" EQU "Spin" set md5=dac3b3da8049c40e32789a9e343cbbca
+if /i "%effect%" EQU "Fast-Spin" set md5=900440dc47ce8124bf4450c1a7bf3b87
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 ::000000**.app
 set version=97
 set md5base=f388c9b11543ac2fe0912ab96064ee37
@@ -27154,11 +27139,11 @@ goto:downloadstart
 :DarkWii_Blue_4.1E
 set name=DarkWii Blue Theme (4.1E) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.1E
-if /i "%effect%" EQU "No-Spin" set md5=e4aaac309567bc296e1f367cd6f3e094
-if /i "%effect%" EQU "Spin" set md5=274ca415d6768f1652481e052f6d82b3
-if /i "%effect%" EQU "Fast-Spin" set md5=3e8e4336ead843c9196739e2d77b309e
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+if /i "%effect%" EQU "No-Spin" set md5=d37933cef8d38042b75a194ec4fe8c86
+if /i "%effect%" EQU "Spin" set md5=a5d7ba4af7ab5a890a8eb290dee55e08
+if /i "%effect%" EQU "Fast-Spin" set md5=067ac1f3442479b4a482cf326220a997
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 ::000000**.app
 set version=7e
 set md5base=574a3a144971ea0ec61bf8cef8d7ff80
@@ -27168,11 +27153,11 @@ goto:downloadstart
 :DarkWii_Blue_4.2E
 set name=DarkWii Blue Theme (4.2E) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.2E
-if /i "%effect%" EQU "No-Spin" set md5=5ae85dd6fb4fe49b9b688a9b5531461c
-if /i "%effect%" EQU "Spin" set md5=2c4ce91117fa0d568e7c663cf86a50ae
-if /i "%effect%" EQU "Fast-Spin" set md5=baee7cefd598bb9c9432686febb40c86
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+if /i "%effect%" EQU "No-Spin" set md5=7e2711437a4845f54da8155f6927943e
+if /i "%effect%" EQU "Spin" set md5=3e224810851860a98fc29fb52e818182
+if /i "%effect%" EQU "Fast-Spin" set md5=d44a1d716e1970ea2855536b09430a41
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 ::000000**.app
 set version=8a
 set md5base=7e7994f78941afb51e9a20085deac305
@@ -27182,11 +27167,11 @@ goto:downloadstart
 :DarkWii_Blue_4.3E
 set name=DarkWii Blue Theme (4.3E) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.3E
-if /i "%effect%" EQU "No-Spin" set md5=6550e677324ec4e0e28d76ce10d292f8
-if /i "%effect%" EQU "Spin" set md5=7dceafcfaf51e3b69faf39bdc9b374ac
-if /i "%effect%" EQU "Fast-Spin" set md5=d6caa2c1a5036323ceaa9534d4e133d0
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+if /i "%effect%" EQU "No-Spin" set md5=16d6022b7ed02be1ece7532e0e194e61
+if /i "%effect%" EQU "Spin" set md5=0359e736f2ec0bf0a66172bf4ef1bb96
+if /i "%effect%" EQU "Fast-Spin" set md5=5610abac827b30dc6243ae5e05b4101c
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 ::000000**.app
 set version=9a
 set md5base=41310f79497c56850c37676074ee1237
@@ -27196,11 +27181,11 @@ goto:downloadstart
 :DarkWii_Blue_4.1J
 set name=DarkWii Blue Theme (4.1J) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.1J
-if /i "%effect%" EQU "No-Spin" set md5=ad5d712ac759c3141ca46934427a9593
-if /i "%effect%" EQU "Spin" set md5=2c0353c361d72310df4416720474414b
-if /i "%effect%" EQU "Fast-Spin" set md5=5eb34e20d4f8dc90eb02f22cce4a39ee
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+if /i "%effect%" EQU "No-Spin" set md5=14f74e0341bbf4a533dd569a0f25ebd5
+if /i "%effect%" EQU "Spin" set md5=234a4677c0f0cb6e76dfb30cdcf9d8da
+if /i "%effect%" EQU "Fast-Spin" set md5=d1372f1b5fd39436f9d58c0c4c6e701e
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 ::000000**.app
 set version=78
 set md5base=f2eadf12d18e793373060222b870057d
@@ -27210,11 +27195,11 @@ goto:downloadstart
 :DarkWii_Blue_4.2J
 set name=DarkWii Blue Theme (4.2J) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.2J
-if /i "%effect%" EQU "No-Spin" set md5=525e4927ae88068d4e745f8f25fbea70
-if /i "%effect%" EQU "Spin" set md5=d4bdef268af742ad99c4d36e85ed6053
-if /i "%effect%" EQU "Fast-Spin" set md5=7f37ccea1f35326f1fc428fe55e0a7c6
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+if /i "%effect%" EQU "No-Spin" set md5=4fbcc2b31d147eaaa1745cb97b3ef5ee
+if /i "%effect%" EQU "Spin" set md5=d8052800ce506c2024af6633c243b4c6
+if /i "%effect%" EQU "Fast-Spin" set md5=a31f665db7d033ce7baadded8b32bec2
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 ::000000**.app
 set version=84
 set md5base=b08998e582c48afba3a14f6d9e1e9373
@@ -27224,11 +27209,11 @@ goto:downloadstart
 :DarkWii_Blue_4.3J
 set name=DarkWii Blue Theme (4.3J) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.3J
-if /i "%effect%" EQU "No-Spin" set md5=974b227b47bd942e82c365d2b9740990
-if /i "%effect%" EQU "Spin" set md5=0991a3bcf8912e2d04344e0f3089c2a2
-if /i "%effect%" EQU "Fast-Spin" set md5=7f0997acc99bef8cfdc0ed6fb66a42bd
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+if /i "%effect%" EQU "No-Spin" set md5=4ce11520cb808ec371009c4f3510d9c2
+if /i "%effect%" EQU "Spin" set md5=12012bd6991ddc47296944fb3aa5adef
+if /i "%effect%" EQU "Fast-Spin" set md5=e415a0992b424d61681df7d6de34046e
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 ::000000**.app
 set version=94
 set md5base=5b3ee6942a3cda716badbce3665076fc
@@ -27238,11 +27223,11 @@ goto:downloadstart
 :DarkWii_Blue_4.1K
 set name=DarkWii Blue Theme (4.1K) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.1K
-if /i "%effect%" EQU "No-Spin" set md5=76773680b0d89ab22e3b728f8d34db69
-if /i "%effect%" EQU "Spin" set md5=115e7d4a930daa2ecae3c1f2667b2b89
-if /i "%effect%" EQU "Fast-Spin" set md5=5e3b5a7560b36b523eb5c9e11969597c
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+if /i "%effect%" EQU "No-Spin" set md5=0be900532ba6a4c6325d461ec0baf840
+if /i "%effect%" EQU "Spin" set md5=de5b614d6396cdc757de30d7c557c40d
+if /i "%effect%" EQU "Fast-Spin" set md5=52d1e1c1e4be4d889c7e319f4cea1d64
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 ::000000**.app
 set version=81
 set md5base=7eedbf1a146b29b63edbb55e04f81f98
@@ -27252,11 +27237,11 @@ goto:downloadstart
 :DarkWii_Blue_4.2K
 set name=DarkWii Blue Theme (4.2K) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.2K
-if /i "%effect%" EQU "No-Spin" set md5=5b92074b98d1e232a9b2476d96b1beac
-if /i "%effect%" EQU "Spin" set md5=f26dbe88249600aea58a6495c3966720
-if /i "%effect%" EQU "Fast-Spin" set md5=35b3d62410951de36c7a78f8eceea959
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+if /i "%effect%" EQU "No-Spin" set md5=a0e63ca6ca5b434da47df55eb034990d
+if /i "%effect%" EQU "Spin" set md5=5876807beca95ea0aa81d36e0a0d6fb8
+if /i "%effect%" EQU "Fast-Spin" set md5=7ed2fcfa8c3d00eb9367a0c2a09b3a5f
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 ::000000**.app
 set version=8d
 set md5base=9d72a1966370e44cb4c456c17a077bec
@@ -27266,11 +27251,11 @@ goto:downloadstart
 :DarkWii_Blue_4.3K
 set name=DarkWii Blue Theme (4.3K) - %effect%
 set wadname=DarkWii_Blue_%effect%_4.3K
-if /i "%effect%" EQU "No-Spin" set md5=9cf6fb0938c15986b45119c4f76918f3
-if /i "%effect%" EQU "Spin" set md5=ab26528c080022550c38ba4b3457b998
-if /i "%effect%" EQU "Fast-Spin" set md5=ece83111f518d4715ac74cb0ad398bb3
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+if /i "%effect%" EQU "No-Spin" set md5=9deb7dba3aea0c7e735ffbe06e8b7cb1
+if /i "%effect%" EQU "Spin" set md5=5470b57328fdead6fd18a1e880b1ed6f
+if /i "%effect%" EQU "Fast-Spin" set md5=68c16e3df7aeb131b6ee20c5cf89db84
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 ::000000**.app
 set version=9d
 set md5base=e6f2b0d4d5e0c095895f186009bf9516
@@ -27285,9 +27270,9 @@ goto:downloadstart
 set name=System Menu 4.3U with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.3U_v513_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=208184944e9e40e26cccb56ba9ded95e
-if /i "%effect%" EQU "Spin" set md5=e04ae9125535b4b642f98f0d8984c986
-if /i "%effect%" EQU "Fast-Spin" set md5=de8353a1f452e3847098e53e2c13f648
+if /i "%effect%" EQU "No-Spin" set md5=b1ab3742967ac562d3e16213365acff0
+if /i "%effect%" EQU "Spin" set md5=cc280370723d7a0cf0f13167653dd943
+if /i "%effect%" EQU "Fast-Spin" set md5=ea2513e5cbcdd1b6f21c2054813fcca1
 set md5alt=%md5%
 set basewad=SystemMenu_4.3U_v513
 set basecios=%basewad%
@@ -27295,8 +27280,8 @@ set md5base=4f5c63e3fd1bf732067fa4c439c68a97
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 set version=513
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27306,9 +27291,9 @@ goto:downloadstart
 set name=System Menu 4.2U with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.2U_v481_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=f220ad7d69e2f103b600decf6d343869
-if /i "%effect%" EQU "Spin" set md5=97cf290e432f0fdc3d710c4172325506
-if /i "%effect%" EQU "Fast-Spin" set md5=296c8af69a17d07dc90d34561031eeec
+if /i "%effect%" EQU "No-Spin" set md5=75bad5b1d03a6342bdad4c98199574cb
+if /i "%effect%" EQU "Spin" set md5=c7297adee75b725590b110c5bbd70e4a
+if /i "%effect%" EQU "Fast-Spin" set md5=ee834dd946089fdc54e7d1aa462b6803
 set md5alt=%md5%
 set basewad=SystemMenu_4.2U_v481
 set basecios=%basewad%
@@ -27316,8 +27301,8 @@ set md5base=4ac52b981845473bd3655e4836d7442b
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 set version=481
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27327,9 +27312,9 @@ goto:downloadstart
 set name=System Menu 4.1U with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.1U_v449_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=b7cdcb9ec926c1a6132c15993dcd5a5f
-if /i "%effect%" EQU "Spin" set md5=41fd9a4e0d0ceb62de652d67facc2a40
-if /i "%effect%" EQU "Fast-Spin" set md5=9f91138310f0c81b23ef20df60e7fd91
+if /i "%effect%" EQU "No-Spin" set md5=5232566b8671b2f1042605fd7a6601b1
+if /i "%effect%" EQU "Spin" set md5=953bf5e808428ddbe9f1b5bd40520c2a
+if /i "%effect%" EQU "Fast-Spin" set md5=f9244e74e238bd4a229858c3812d2ce5
 set md5alt=%md5%
 set basewad=SystemMenu_4.1U_v449
 set basecios=%basewad%
@@ -27337,8 +27322,8 @@ set md5base=38a95a9acd257265294be41b796f6239
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_us.mym
-set md5mym1=17501139b17f405f301bb3faaeca264d
+set mym1=DarkWii_Blue_No-Spin_4.XU_V2.mym
+set md5mym1=3c40c39f4de5a9a60ca02b5a2b997378
 set version=449
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27348,9 +27333,9 @@ goto:downloadstart
 set name=System Menu 4.3E with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.3E_v514_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=0bd134b4c35655034a93991e7f90208a
-if /i "%effect%" EQU "Spin" set md5=2bc34415a42b884a1050e19139110b24
-if /i "%effect%" EQU "Fast-Spin" set md5=f4f70e0fdc5928f72054d3e4f318a079
+if /i "%effect%" EQU "No-Spin" set md5=46c3a6cde1b78402169c4a81af8a4d66
+if /i "%effect%" EQU "Spin" set md5=8d9a36a01ac98ceec8e11768371fc186
+if /i "%effect%" EQU "Fast-Spin" set md5=85a881e197aba4476d3c5dd03e705b9d
 set md5alt=%md5%
 set basewad=SystemMenu_4.3E_v514
 set basecios=%basewad%
@@ -27358,8 +27343,8 @@ set md5base=2ec2e6fbdfc52fe5174749e7032f1bad
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 set version=514
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27369,9 +27354,9 @@ goto:downloadstart
 set name=System Menu 4.2E with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.2E_v482_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=632442234b60e056c39b47cbeb8c6c85
-if /i "%effect%" EQU "Spin" set md5=2ac0effb30023c7e70f633c8208ad96e
-if /i "%effect%" EQU "Fast-Spin" set md5=722111b63a47301a36b2b8022bac8118
+if /i "%effect%" EQU "No-Spin" set md5=2484f10fee5c9aeebbf2edccb7c368e4
+if /i "%effect%" EQU "Spin" set md5=ece08aabb3465d8fb783ed4a2b53093a
+if /i "%effect%" EQU "Fast-Spin" set md5=87ccfd648c3c1ffe351f7b67745d2892
 set md5alt=%md5%
 set basewad=SystemMenu_4.2E_v482
 set basecios=%basewad%
@@ -27379,8 +27364,8 @@ set md5base=7d77be8b6df5ac893d24652db33d02cd
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 set version=482
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27390,9 +27375,9 @@ goto:downloadstart
 set name=System Menu 4.1E with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.1E_v450_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=107db0a83d8a99f35274332c3b6ed47f
-if /i "%effect%" EQU "Spin" set md5=d1001f7ee413b26693bbbc94574c8542
-if /i "%effect%" EQU "Fast-Spin" set md5=dbcf12cfdb9530b994124bc6a1afb8c9
+if /i "%effect%" EQU "No-Spin" set md5=bb2cc00ef2240f9ee30f96923c8ec10f
+if /i "%effect%" EQU "Spin" set md5=0de7cce13ddc60b12ea03fc4ebb443c2
+if /i "%effect%" EQU "Fast-Spin" set md5=54e597368370778548d09ee2b557ae81
 set md5alt=%md5%
 set basewad=SystemMenu_4.1E_v450
 set basecios=%basewad%
@@ -27400,8 +27385,8 @@ set md5base=688cc78b8eab4e30da04f01a81a3739f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_pal.mym
-set md5mym1=1f41360061e112a987a458609fe72b8c
+set mym1=DarkWii_Blue_No-Spin_4.XE_V2.mym
+set md5mym1=26f80d142dec2451e65f8ef03d108413
 set version=450
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27411,9 +27396,9 @@ goto:downloadstart
 set name=System Menu 4.3J with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.3J_v512_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=969c66b82728206e0a98b6ff41055675
-if /i "%effect%" EQU "Spin" set md5=e42de3836be79fd17c4f5d87a4ccae35
-if /i "%effect%" EQU "Fast-Spin" set md5=8bc40428d6a4b913269ca1c60992a601
+if /i "%effect%" EQU "No-Spin" set md5=a02af61f9181ddd846af137c721b2166
+if /i "%effect%" EQU "Spin" set md5=45e9bdb66c284220084f63d41bd26bf7
+if /i "%effect%" EQU "Fast-Spin" set md5=b9862f07bc406f347134b3a363e8414f
 set md5alt=%md5%
 set basewad=SystemMenu_4.3J_v512
 set basecios=%basewad%
@@ -27421,8 +27406,8 @@ set md5base=df67ed4bd8f8f117741fef7952ee5c17
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 set version=512
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27432,9 +27417,9 @@ goto:downloadstart
 set name=System Menu 4.2J with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.2J_v480_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=be9adeb9cbf7b78c58ff5d2f81647be4
-if /i "%effect%" EQU "Spin" set md5=d6192542ae5bf177a76eb8304b056366
-if /i "%effect%" EQU "Fast-Spin" set md5=c0d59b77ea9e4df90ce3e4711263a8a7
+if /i "%effect%" EQU "No-Spin" set md5=c0115123bc94fdbb3b66a87a266346c3
+if /i "%effect%" EQU "Spin" set md5=8c1fdc5b1428869879f5f2a8ca5424e6
+if /i "%effect%" EQU "Fast-Spin" set md5=0f71bd8583d6fc89773f484a33515a35
 set md5alt=%md5%
 set basewad=SystemMenu_4.2J_v480
 set basecios=%basewad%
@@ -27442,8 +27427,8 @@ set md5base=0413a9aed208b193fea85db908bbdabf
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 set version=480
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27453,9 +27438,9 @@ goto:downloadstart
 set name=System Menu 4.1J with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.1J_v448_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=93ed492b93c10aea51bb70c74cc7dd0f
-if /i "%effect%" EQU "Spin" set md5=a44e1e4c6b25f37bd4fdd369b6e0492a
-if /i "%effect%" EQU "Fast-Spin" set md5=295633593c94a5412ea112ea56c8b9d3
+if /i "%effect%" EQU "No-Spin" set md5=25b0e426fd959272d7af3fc49473b05b
+if /i "%effect%" EQU "Spin" set md5=e8ebc2998717a4dd0842c1c87db6dac3
+if /i "%effect%" EQU "Fast-Spin" set md5=4764cbc97b0bd0e685b6505c325dc1ce
 set md5alt=%md5%
 set basewad=SystemMenu_4.1J_v448
 set basecios=%basewad%
@@ -27463,8 +27448,8 @@ set md5base=6edb4b3f7ca26c643c6bc662d159ec2e
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_jap.mym
-set md5mym1=c2d2091d4bedb051c57741b67e4c31a1
+set mym1=DarkWii_Blue_No-Spin_4.XJ_V2.mym
+set md5mym1=eecc84e34a5a1462b382f44df6d8d802
 set version=448
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27475,9 +27460,9 @@ goto:downloadstart
 set name=System Menu 4.3K with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.3K_v518_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=4d303c06467f7b1aad840e7940258659
-if /i "%effect%" EQU "Spin" set md5=4ca5ff28d317316e5ded3df505d70551
-if /i "%effect%" EQU "Fast-Spin" set md5=8c417199a0ecb19098cced4ee2644a7c
+if /i "%effect%" EQU "No-Spin" set md5=fe6e416cad7c48b9a22956ce3e9e68c8
+if /i "%effect%" EQU "Spin" set md5=2b9de6c1ee1ef36f3ac841ae186cb936
+if /i "%effect%" EQU "Fast-Spin" set md5=12307e017adb1a1d3e38c13c760fe357
 set md5alt=%md5%
 set basewad=SystemMenu_4.3K_v518
 set basecios=%basewad%
@@ -27485,8 +27470,8 @@ set md5base=6ed8f9e75b0a54eacfbacce57c20136d
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 set version=518
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27496,9 +27481,9 @@ goto:downloadstart
 set name=System Menu 4.2K with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.2K_v486_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=ab776460950c7cf69e1a6feea5f3ca91
-if /i "%effect%" EQU "Spin" set md5=fe522d8e7d86c4de5dc74e510889058e
-if /i "%effect%" EQU "Fast-Spin" set md5=50cdc5a0b4ed6709301a16daea943406
+if /i "%effect%" EQU "No-Spin" set md5=bf894e921f6927728fd63b61abada9b6
+if /i "%effect%" EQU "Spin" set md5=f61f7b2e362bf6a07c79fc1afd2117ff
+if /i "%effect%" EQU "Fast-Spin" set md5=0790c9de652c768d0c67637fff8aa650
 set md5alt=%md5%
 set basewad=SystemMenu_4.2K_v486
 set basecios=%basewad%
@@ -27506,8 +27491,8 @@ set md5base=40c0bf90ea07b02d610edae1d7aea39f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 set version=486
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27517,9 +27502,9 @@ goto:downloadstart
 set name=System Menu 4.1K with Dark Wii Blue Theme - %effect%
 set wadname=SystemMenu_4.1K_v454_DarkWiiBlue_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=ce8c62e364755262ea039db0956cfde1
-if /i "%effect%" EQU "Spin" set md5=061d7bac145dcc619bff22e028790319
-if /i "%effect%" EQU "Fast-Spin" set md5=c2573966295ea908d779806ee36f74ce
+if /i "%effect%" EQU "No-Spin" set md5=b23d86122bd94cef68e9fcbfccc8a151
+if /i "%effect%" EQU "Spin" set md5=ecd3c7e946bb9ed9760e4b3a5dda39c4
+if /i "%effect%" EQU "Fast-Spin" set md5=96cc0e7164ae52397716b2d7f756b605
 set md5alt=%md5%
 set basewad=SystemMenu_4.1K_v454
 set basecios=%basewad%
@@ -27527,8 +27512,8 @@ set md5base=c0e5d5c4914e76e7df7495ccf28ef869
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_blue_kor.mym
-set md5mym1=9ae1d9f706c1d5da0e99f84f5b19b9fd
+set mym1=DarkWii_Blue_No-Spin_4.XK_V2.mym
+set md5mym1=7b227edb0c3bfe21a299c86404d47410
 set version=454
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27541,11 +27526,11 @@ goto:downloadstart
 :darkwii_orange_4.1U
 set name=DarkWii Orange Theme (4.1U) - %effect%
 set wadname=darkwii_orange_%effect%_4.1U
-if /i "%effect%" EQU "No-Spin" set md5=182f9ab83657ef9686748c9ee7a9d1a5
-if /i "%effect%" EQU "Spin" set md5=c3b081369bf61806ca92eaf415d413f4
-if /i "%effect%" EQU "Fast-Spin" set md5=8a2a79eebea6de941ed70897b605ea89
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+if /i "%effect%" EQU "No-Spin" set md5=0ccdaf1cea50aa0f50bf350482dd9eec
+if /i "%effect%" EQU "Spin" set md5=cdf65564258d355bfbb07be2b29aaa74
+if /i "%effect%" EQU "Fast-Spin" set md5=9db7762c83a8e3f9f9ce71d016a7d805
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 ::000000**.app
 set version=7b
 set md5base=6b939de8222800733f4c44ae4eadb325
@@ -27555,11 +27540,11 @@ goto:downloadstart
 :darkwii_orange_4.2U
 set name=DarkWii Orange Theme (4.2U) - %effect%
 set wadname=darkwii_orange_%effect%_4.2U
-if /i "%effect%" EQU "No-Spin" set md5=b2d56a6caeddf9649b1b8b4f891824de
-if /i "%effect%" EQU "Spin" set md5=335acf5e2b24993f5cc6b9cf010d0178
-if /i "%effect%" EQU "Fast-Spin" set md5=c91baaab09749ad6e3134423d31caae2
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+if /i "%effect%" EQU "No-Spin" set md5=bf5f35013e78ecef5388587beaf702e1
+if /i "%effect%" EQU "Spin" set md5=2aac16a0b3d58357a284f9eea57bc390
+if /i "%effect%" EQU "Fast-Spin" set md5=fa69addfad761b26bb95a722fcff78da
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 ::000000**.app
 set version=87
 set md5base=7079948c6aed8aae6009e4fdf27c7171
@@ -27569,11 +27554,11 @@ goto:downloadstart
 :darkwii_orange_4.3U
 set name=DarkWii Orange Theme (4.3U) - %effect%
 set wadname=darkwii_orange_%effect%_4.3U
-if /i "%effect%" EQU "No-Spin" set md5=8b7d60fcb44d56ca04e7ffa2c2afc16b
-if /i "%effect%" EQU "Spin" set md5=29ab50721b49366451f445db1f9b190c
-if /i "%effect%" EQU "Fast-Spin" set md5=83038f2915f6d4c52e53ec478876eb53
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+if /i "%effect%" EQU "No-Spin" set md5=eb4aebbf5f1bebaf7eead2a8688bbfff
+if /i "%effect%" EQU "Spin" set md5=69f6ffe5b45f78eafc796467f9fb4fc0
+if /i "%effect%" EQU "Fast-Spin" set md5=4f65367ef07a98e646f704d3884ac60a
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 ::000000**.app
 set version=97
 set md5base=f388c9b11543ac2fe0912ab96064ee37
@@ -27583,11 +27568,11 @@ goto:downloadstart
 :darkwii_orange_4.1E
 set name=DarkWii Orange Theme (4.1E) - %effect%
 set wadname=darkwii_orange_%effect%_4.1E
-if /i "%effect%" EQU "No-Spin" set md5=d5623a36f737c8aa257e2fa69a23ebcc
-if /i "%effect%" EQU "Spin" set md5=2fac1a3b125aa087c478c1dc8ac00e24
-if /i "%effect%" EQU "Fast-Spin" set md5=ac305f7c034a09f6cdc41769aeb7dc06
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+if /i "%effect%" EQU "No-Spin" set md5=e0d27a68ad4f4f50c55cd0a1c0c6a9c1
+if /i "%effect%" EQU "Spin" set md5=b9518220d2fa78cf341463fb45038570
+if /i "%effect%" EQU "Fast-Spin" set md5=af7b016edb12b5a3d14fd10cc1cf38b1
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 ::000000**.app
 set version=7e
 set md5base=574a3a144971ea0ec61bf8cef8d7ff80
@@ -27597,11 +27582,11 @@ goto:downloadstart
 :darkwii_orange_4.2E
 set name=DarkWii Orange Theme (4.2E) - %effect%
 set wadname=darkwii_orange_%effect%_4.2E
-if /i "%effect%" EQU "No-Spin" set md5=368490ba87d60b1de5131d23fe4d5a2a
-if /i "%effect%" EQU "Spin" set md5=1a7c4598b8e11519ec29606fba889ef4
-if /i "%effect%" EQU "Fast-Spin" set md5=e079ad7aaafacaad1dd9fc40bd85e521
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+if /i "%effect%" EQU "No-Spin" set md5=1b49d810a964d44dacb447561879ab46
+if /i "%effect%" EQU "Spin" set md5=58f18efcb6c02f520ee1d080790e9483
+if /i "%effect%" EQU "Fast-Spin" set md5=6a105c6474a1515550cdc9070a0f5d82
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 ::000000**.app
 set version=8a
 set md5base=7e7994f78941afb51e9a20085deac305
@@ -27611,11 +27596,11 @@ goto:downloadstart
 :darkwii_orange_4.3E
 set name=DarkWii Orange Theme (4.3E) - %effect%
 set wadname=darkwii_orange_%effect%_4.3E
-if /i "%effect%" EQU "No-Spin" set md5=1ddfe43b14f051238498569bf22ae5e5
-if /i "%effect%" EQU "Spin" set md5=f328c8a0d5f063958e6aa59dd0d00cc8
-if /i "%effect%" EQU "Fast-Spin" set md5=a5646376ace20d785991be06ff98f68c
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+if /i "%effect%" EQU "No-Spin" set md5=80ec7694bbcfa772726e9f512d13f96a
+if /i "%effect%" EQU "Spin" set md5=91fc4750a43727324752d9718ed65af4
+if /i "%effect%" EQU "Fast-Spin" set md5=968052e16890a982c66a697c4d8d249d
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 ::000000**.app
 set version=9a
 set md5base=41310f79497c56850c37676074ee1237
@@ -27625,11 +27610,11 @@ goto:downloadstart
 :darkwii_orange_4.1J
 set name=DarkWii Orange Theme (4.1J) - %effect%
 set wadname=darkwii_orange_%effect%_4.1J
-if /i "%effect%" EQU "No-Spin" set md5=b7d9374de99a544bedf432bc80fefcde
-if /i "%effect%" EQU "Spin" set md5=46674210e56fe6dd3445b0c39f8a4713
-if /i "%effect%" EQU "Fast-Spin" set md5=48992863043ff22c3a5673eb9e895832
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+if /i "%effect%" EQU "No-Spin" set md5=f554f938b98177becece7cf9ea2925d9
+if /i "%effect%" EQU "Spin" set md5=a28e22d5379707cf39fee87314513412
+if /i "%effect%" EQU "Fast-Spin" set md5=feab5a1079db0468c3e41f2d5fe255ef
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 ::000000**.app
 set version=78
 set md5base=f2eadf12d18e793373060222b870057d
@@ -27639,11 +27624,11 @@ goto:downloadstart
 :darkwii_orange_4.2J
 set name=DarkWii Orange Theme (4.2J) - %effect%
 set wadname=darkwii_orange_%effect%_4.2J
-if /i "%effect%" EQU "No-Spin" set md5=b82f57f2ea4f6be39818b90dd444d6ff
-if /i "%effect%" EQU "Spin" set md5=a3d9a36be73d59b60719c5e1c9aded80
-if /i "%effect%" EQU "Fast-Spin" set md5=47a1e88fdfc13186d084fb748ccf6e87
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+if /i "%effect%" EQU "No-Spin" set md5=e41e21139739257247b500002096e4dc
+if /i "%effect%" EQU "Spin" set md5=340e8d94859f04993b4d5786c796c3fc
+if /i "%effect%" EQU "Fast-Spin" set md5=f38fb11459a59960dd088c12dd02e9c0
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 ::000000**.app
 set version=84
 set md5base=b08998e582c48afba3a14f6d9e1e9373
@@ -27653,11 +27638,11 @@ goto:downloadstart
 :darkwii_orange_4.3J
 set name=DarkWii Orange Theme (4.3J) - %effect%
 set wadname=darkwii_orange_%effect%_4.3J
-if /i "%effect%" EQU "No-Spin" set md5=8f7128135c4692e4bb76b6d7ea92f242
-if /i "%effect%" EQU "Spin" set md5=40b07305665167b3cbed44bb980b6b99
-if /i "%effect%" EQU "Fast-Spin" set md5=a3cd673b496c9381444b5c8ad35ff633
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+if /i "%effect%" EQU "No-Spin" set md5=a4ffb1fc1e8bf3cd2108348aa202eb90
+if /i "%effect%" EQU "Spin" set md5=cb71cac76a92e5a542a0ab8273309c6c
+if /i "%effect%" EQU "Fast-Spin" set md5=f2b31263d0a1f2d0eba344c2a2046ef6
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 ::000000**.app
 set version=94
 set md5base=5b3ee6942a3cda716badbce3665076fc
@@ -27667,11 +27652,11 @@ goto:downloadstart
 :darkwii_orange_4.1K
 set name=DarkWii Orange Theme (4.1K) - %effect%
 set wadname=darkwii_orange_%effect%_4.1K
-if /i "%effect%" EQU "No-Spin" set md5=391b4441ffa2d268b2a07d2a7828d50d
-if /i "%effect%" EQU "Spin" set md5=eddeb1d07c5276ee8080441a2c3bb0dc
-if /i "%effect%" EQU "Fast-Spin" set md5=6232bcce9908e52b029035aae7eeaa77
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+if /i "%effect%" EQU "No-Spin" set md5=5ec4c0718a75d8b760d4b38e490347e7
+if /i "%effect%" EQU "Spin" set md5=ad2aa0af3cc5233ddbce4ef38b99661d
+if /i "%effect%" EQU "Fast-Spin" set md5=c9943588c34d376f471bb91db863a12d
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 ::000000**.app
 set version=81
 set md5base=7eedbf1a146b29b63edbb55e04f81f98
@@ -27681,11 +27666,11 @@ goto:downloadstart
 :darkwii_orange_4.2K
 set name=DarkWii Orange Theme (4.2K) - %effect%
 set wadname=darkwii_orange_%effect%_4.2K
-if /i "%effect%" EQU "No-Spin" set md5=f02a1fec1e4dead15ecfe16772db84c3
-if /i "%effect%" EQU "Spin" set md5=ccd7234c7531a90184363e67ed20d64c
-if /i "%effect%" EQU "Fast-Spin" set md5=fed85eba8bd1f389f326ff71ac93a97f
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+if /i "%effect%" EQU "No-Spin" set md5=d21f55b19395f7ca56a274f3e0ccbf6c
+if /i "%effect%" EQU "Spin" set md5=a4572ffb93bf32b9dd79564db121a915
+if /i "%effect%" EQU "Fast-Spin" set md5=cba612660b83e29c09686d4be556ba61
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 ::000000**.app
 set version=8d
 set md5base=9d72a1966370e44cb4c456c17a077bec
@@ -27695,11 +27680,11 @@ goto:downloadstart
 :darkwii_orange_4.3K
 set name=DarkWii Orange Theme (4.3K) - %effect%
 set wadname=darkwii_orange_%effect%_4.3K
-if /i "%effect%" EQU "No-Spin" set md5=e6c000cc6aa319179a3ed98d6960504c
-if /i "%effect%" EQU "Spin" set md5=bea48b7f5f452f73abd2485adbaf72c6
-if /i "%effect%" EQU "Fast-Spin" set md5=17db3ac98b7832bb1a473cd335a2cbcd
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+if /i "%effect%" EQU "No-Spin" set md5=181ffe119c5404ce68c7716aa7e93d0f
+if /i "%effect%" EQU "Spin" set md5=a41efea463543819fb10d4c1b4d825f4
+if /i "%effect%" EQU "Fast-Spin" set md5=3543782dc2b194b0562e60b68ad4724e
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 ::000000**.app
 set version=9d
 set md5base=e6f2b0d4d5e0c095895f186009bf9516
@@ -27714,9 +27699,9 @@ goto:downloadstart
 set name=System Menu 4.3U with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.3U_v513_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=1616d0c37fc1e30480bf22f49578c49d
-if /i "%effect%" EQU "Spin" set md5=6ce113c1160465ceb91ac9242139398b
-if /i "%effect%" EQU "Fast-Spin" set md5=af561c3c644bb4e49b39cd721e57097a
+if /i "%effect%" EQU "No-Spin" set md5=1e025945ec12543a05b678369a0b68b2
+if /i "%effect%" EQU "Spin" set md5=da9a9dcd047ec704284127b92d9182de
+if /i "%effect%" EQU "Fast-Spin" set md5=a059a7b9e7b38e485ef469e4dbc82a07
 set md5alt=%md5%
 set basewad=SystemMenu_4.3U_v513
 set basecios=%basewad%
@@ -27724,8 +27709,8 @@ set md5base=4f5c63e3fd1bf732067fa4c439c68a97
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 set version=513
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27735,9 +27720,9 @@ goto:downloadstart
 set name=System Menu 4.2U with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.2U_v481_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=30b6a14897a13dd29c9c1b88c108d99c
-if /i "%effect%" EQU "Spin" set md5=d85e810a99a5328da77ce4330e071add
-if /i "%effect%" EQU "Fast-Spin" set md5=3bf4858719cf59cc31e43b4baef51246
+if /i "%effect%" EQU "No-Spin" set md5=66f7e09104cad40de6620d5c73340a85
+if /i "%effect%" EQU "Spin" set md5=f421cfc58bbbdd009f46e01f84138e8b
+if /i "%effect%" EQU "Fast-Spin" set md5=efca46eedb3faa281f76641ba4ae1fc1
 set md5alt=%md5%
 set basewad=SystemMenu_4.2U_v481
 set basecios=%basewad%
@@ -27745,8 +27730,8 @@ set md5base=4ac52b981845473bd3655e4836d7442b
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 set version=481
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27756,9 +27741,9 @@ goto:downloadstart
 set name=System Menu 4.1U with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.1U_v449_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=24cfd3ee342b602bb08deef5aef28b61
-if /i "%effect%" EQU "Spin" set md5=21949b4326683f7c78688d518f849773
-if /i "%effect%" EQU "Fast-Spin" set md5=a7ca64d53b383d2f21b379f232a3beee
+if /i "%effect%" EQU "No-Spin" set md5=0c8899c5e465c0c43462381193e2e6fb
+if /i "%effect%" EQU "Spin" set md5=1054ec9a86daa21ae33e7120ae5c220a
+if /i "%effect%" EQU "Fast-Spin" set md5=931c1287d54d0a939f8952636a9ab2fe
 set md5alt=%md5%
 set basewad=SystemMenu_4.1U_v449
 set basecios=%basewad%
@@ -27766,8 +27751,8 @@ set md5base=38a95a9acd257265294be41b796f6239
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_us.mym
-set md5mym1=b7ced216faff9ddf08f0562a015db184
+set mym1=DarkWii_Orange_No-Spin_4.XU_V2.mym
+set md5mym1=6628cd89af0f5f1ba33c7f20c2efede3
 set version=449
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27777,9 +27762,9 @@ goto:downloadstart
 set name=System Menu 4.3E with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.3E_v514_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=63753eccf145e973e674528305051912
-if /i "%effect%" EQU "Spin" set md5=e71fc8e9fd5ea6fcf854d22b880300a6
-if /i "%effect%" EQU "Fast-Spin" set md5=f5dbb9ba092d7f82dabe594e29086fb5
+if /i "%effect%" EQU "No-Spin" set md5=e6dc92bb61f56b5e029c05d8c2249e45
+if /i "%effect%" EQU "Spin" set md5=cce715e212729b0e078c74cd14268d71
+if /i "%effect%" EQU "Fast-Spin" set md5=ecba9c4e0e3b3df726b6198bce593e04
 set md5alt=%md5%
 set basewad=SystemMenu_4.3E_v514
 set basecios=%basewad%
@@ -27787,8 +27772,8 @@ set md5base=2ec2e6fbdfc52fe5174749e7032f1bad
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 set version=514
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27798,9 +27783,9 @@ goto:downloadstart
 set name=System Menu 4.2E with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.2E_v482_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=deaa283ad0527411c85e1c4a1c7ddae7
-if /i "%effect%" EQU "Spin" set md5=be416cca488f3f32a9c3e3f53c4ceae8
-if /i "%effect%" EQU "Fast-Spin" set md5=eef38132575712ee082132e44dc399c6
+if /i "%effect%" EQU "No-Spin" set md5=e5236e781556c6e47cb2dfb4b2f2cc2e
+if /i "%effect%" EQU "Spin" set md5=f231210dc59398a356c5798979d7b8f5
+if /i "%effect%" EQU "Fast-Spin" set md5=4414dba63f5f92b8500f224523d25683
 set md5alt=%md5%
 set basewad=SystemMenu_4.2E_v482
 set basecios=%basewad%
@@ -27808,8 +27793,8 @@ set md5base=7d77be8b6df5ac893d24652db33d02cd
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 set version=482
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27819,9 +27804,9 @@ goto:downloadstart
 set name=System Menu 4.1E with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.1E_v450_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=e5491da4798ae3a1a331466d76dca65a
-if /i "%effect%" EQU "Spin" set md5=edd758b702271b70f800779cd1166e77
-if /i "%effect%" EQU "Fast-Spin" set md5=0ac3b1d195d3584ab00102700738725d
+if /i "%effect%" EQU "No-Spin" set md5=976e3e99cdd810fa9686b5b26bf5795b
+if /i "%effect%" EQU "Spin" set md5=ee941d140b8f9c6c0709fb4b90dab34a
+if /i "%effect%" EQU "Fast-Spin" set md5=2c0cfaaa0cd584aa32e83c555c2a6817
 set md5alt=%md5%
 set basewad=SystemMenu_4.1E_v450
 set basecios=%basewad%
@@ -27829,8 +27814,8 @@ set md5base=688cc78b8eab4e30da04f01a81a3739f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_pal.mym
-set md5mym1=7a12ec9293ed353879b14d089fdc4f94
+set mym1=DarkWii_Orange_No-Spin_4.XE_V2.mym
+set md5mym1=25862c24642701a0fd2548d1e7565d5d
 set version=450
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27840,9 +27825,9 @@ goto:downloadstart
 set name=System Menu 4.3J with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.3J_v512_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=a512d89c9f6e0197188e1316263b0aa1
-if /i "%effect%" EQU "Spin" set md5=a88214e21b5189726457a7bb41a338c9
-if /i "%effect%" EQU "Fast-Spin" set md5=834447e2507cba7cc072538f5074f8cc
+if /i "%effect%" EQU "No-Spin" set md5=b957c8f4fc538ec52e1c855498e29190
+if /i "%effect%" EQU "Spin" set md5=031ba3a181bc94a68ef8c540195ab938
+if /i "%effect%" EQU "Fast-Spin" set md5=f11b2092a4d9c8efb97e1fa62da5a7c6
 set md5alt=%md5%
 set basewad=SystemMenu_4.3J_v512
 set basecios=%basewad%
@@ -27850,8 +27835,8 @@ set md5base=df67ed4bd8f8f117741fef7952ee5c17
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 set version=512
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27861,9 +27846,9 @@ goto:downloadstart
 set name=System Menu 4.2J with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.2J_v480_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=f78688d354de4d6e6c972efca57df520
-if /i "%effect%" EQU "Spin" set md5=1a376fcf5ba77616ec660b6d9f01225a
-if /i "%effect%" EQU "Fast-Spin" set md5=5aec6c34f60f1f68daeb8f569e44a269
+if /i "%effect%" EQU "No-Spin" set md5=8b019e7d8ec6881781e315e19ac2176b
+if /i "%effect%" EQU "Spin" set md5=f826ca52fc95ba45bad17b283b72fb35
+if /i "%effect%" EQU "Fast-Spin" set md5=323a4724fb11a7d901096a7a2c04dda2
 set md5alt=%md5%
 set basewad=SystemMenu_4.2J_v480
 set basecios=%basewad%
@@ -27871,8 +27856,8 @@ set md5base=0413a9aed208b193fea85db908bbdabf
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 set version=480
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27882,9 +27867,9 @@ goto:downloadstart
 set name=System Menu 4.1J with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.1J_v448_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=016b3ec82d42c33daae211b4838a19e9
-if /i "%effect%" EQU "Spin" set md5=32797c1bd305036fa54682330b0d66c1
-if /i "%effect%" EQU "Fast-Spin" set md5=d3c1ccebf3a92ebf9c8f6b2f586102ae
+if /i "%effect%" EQU "No-Spin" set md5=cfc98bb537216dc10a4bcf935db0bdb4
+if /i "%effect%" EQU "Spin" set md5=352416715b440f9db63232c2d5ff06c6
+if /i "%effect%" EQU "Fast-Spin" set md5=9e5f348d8b544230af2b6702ae82b6f7
 set md5alt=%md5%
 set basewad=SystemMenu_4.1J_v448
 set basecios=%basewad%
@@ -27892,8 +27877,8 @@ set md5base=6edb4b3f7ca26c643c6bc662d159ec2e
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_jap.mym
-set md5mym1=3819f4455aeb151cf3d695be2eb39f8d
+set mym1=DarkWii_Orange_No-Spin_4.XJ_V2.mym
+set md5mym1=03fa4094deb93a2a4c1de56053cb8534
 set version=448
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27904,9 +27889,9 @@ goto:downloadstart
 set name=System Menu 4.3K with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.3K_v518_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=2573ecc18d5379f3ba14153e3752c682
-if /i "%effect%" EQU "Spin" set md5=cc8b303c3bfc8ea58ab40382976c375d
-if /i "%effect%" EQU "Fast-Spin" set md5=e5ad14286b652c3899b611bf9995e5aa
+if /i "%effect%" EQU "No-Spin" set md5=15166e367f7cb0243e3b6d4f3b11de4a
+if /i "%effect%" EQU "Spin" set md5=8daf45b6adba015c05c3ed0d86eda5b9
+if /i "%effect%" EQU "Fast-Spin" set md5=97e2c5e1d3c1093cdcde515b090035c7
 set md5alt=%md5%
 set basewad=SystemMenu_4.3K_v518
 set basecios=%basewad%
@@ -27914,8 +27899,8 @@ set md5base=6ed8f9e75b0a54eacfbacce57c20136d
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 set version=518
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27925,9 +27910,9 @@ goto:downloadstart
 set name=System Menu 4.2K with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.2K_v486_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=87b78be742ddc981ff1cd3b02222a6f6
-if /i "%effect%" EQU "Spin" set md5=1420e3978c64b2f1ba086138e5451dff
-if /i "%effect%" EQU "Fast-Spin" set md5=0a0272f19ceac321b207de57dcdc12b7
+if /i "%effect%" EQU "No-Spin" set md5=576b9a4ad91cddf1e9370d63bb5d2308
+if /i "%effect%" EQU "Spin" set md5=77e3529122009251c94a6c6655dd6578
+if /i "%effect%" EQU "Fast-Spin" set md5=15716f40f99a496cae423a7af9149a88
 set md5alt=%md5%
 set basewad=SystemMenu_4.2K_v486
 set basecios=%basewad%
@@ -27935,8 +27920,8 @@ set md5base=40c0bf90ea07b02d610edae1d7aea39f
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 set version=486
 set lastbasemodule=00000001
 set category=SMTHEME
@@ -27946,9 +27931,9 @@ goto:downloadstart
 set name=System Menu 4.1K with Dark Wii Orange Theme - %effect%
 set wadname=SystemMenu_4.1K_v454_DarkWiiOrange_%effect%
 set ciosslot=unchanged
-if /i "%effect%" EQU "No-Spin" set md5=bff33e9b51e024e9adcc272bc9e461a3
-if /i "%effect%" EQU "Spin" set md5=b87e84bbb0a822ae1c75421b0338d62b
-if /i "%effect%" EQU "Fast-Spin" set md5=e58c092cfa074648e6a9c0397b03f10a
+if /i "%effect%" EQU "No-Spin" set md5=3913e2e1098279b1c303ad73511d399c
+if /i "%effect%" EQU "Spin" set md5=20a5443b9f008336e555386817aa3e81
+if /i "%effect%" EQU "Fast-Spin" set md5=ad3169d590ff5b908b32140193ea4ea1
 set md5alt=%md5%
 set basewad=SystemMenu_4.1K_v454
 set basecios=%basewad%
@@ -27956,8 +27941,8 @@ set md5base=c0e5d5c4914e76e7df7495ccf28ef869
 set md5basealt=%md5base%
 set code1=00000001
 set code2=00000002
-set mym1=darkwii_orange_kor.mym
-set md5mym1=6ed046f6a4e0463bf09efcef464082d6
+set mym1=DarkWii_Orange_No-Spin_4.XK_V2.mym
+set md5mym1=6b9755f746e15d8409de0420850548ac
 set version=454
 set lastbasemodule=00000001
 set category=SMTHEME
