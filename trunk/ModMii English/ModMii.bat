@@ -1,7 +1,7 @@
 @echo off
 setlocal
 :top
-set currentversion=6.0.2
+set currentversion=6.0.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 if exist Support\settings.bat call Support\settings.bat
@@ -557,14 +557,6 @@ echo Where;
 echo E = Enabled and D = Disabled
 echo.
 
-support\sfk echo [Cyan]DML Debug Mode
-echo ModMii.exe [base command] DMLDebug:D
-echo ModMii.exe [base command] DMLDebug:E
-echo.
-echo Where;
-echo E = Enabled and D = Disabled
-echo.
-
 support\sfk echo [Cyan]Channel Effect
 echo ModMii.exe [base command] CE:NS
 echo ModMii.exe [base command] CE:S
@@ -848,27 +840,6 @@ set /p removeme= <temp\cmdinput2.txt
 support\sfk filter temp\cmdinput.txt -rep _" RS:%removeme%"__ -write -yes>nul
 :noRScmd
 
-
-
-::-----------DMLDebug: Option---------------
-findStr /I " DMLDebug:" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (goto:noDMLDebugcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
-
-support\sfk filter -spat temp\cmdinput2.txt -rep _"* DMLDebug:"__ -rep _\x20*__ -write -yes>nul
-
-set /p DMLDebugcmd= <temp\cmdinput2.txt
-
-if /i "%DMLDebugcmd%" EQU "E" set DMLDebug=debug
-if /i "%DMLDebugcmd%" EQU "D" set DMLDebug=
-
-::overwrite option in settings.bat
-support\sfk filter Support\settings.bat -!"Set DMLDebug=" -write -yes>nul
-echo Set DMLDebug=%DMLDebug%>>Support\settings.bat
-
-::remove hard option from cmdinput.txt
-set /p removeme= <temp\cmdinput2.txt
-support\sfk filter temp\cmdinput.txt -rep _" DMLDebug:%removeme%"__ -write -yes>nul
-:noDMLDebugcmd
 
 
 ::-----------CE: Option---------------
@@ -1812,22 +1783,25 @@ support\sfk filter -spat temp\cmdinput2.txt -rep _"* DMLRev:"__ -rep _\x20*__ -w
 
 set /p CurrentDMLRev= <temp\cmdinput2.txt
 
-::remove hard option from cmdinput.txt
+::remove hard option from cmdinput.txt (first compensate for underscores)
+support\sfk -spat filter temp\cmdinput2.txt -rep _\x5f_\x5cx5f_ -write -yes>nul
+
 set /p removeme= <temp\cmdinput2.txt
 support\sfk -spat filter temp\cmdinput.txt -rep _" DMLRev:%removeme%"__ -write -yes>nul
 
-if exist "temp\DML\DMLr%CurrentDMLRev%.zip" goto:noDMLRevcmd
+
+if exist "temp\DML\DMLr%CurrentDMLRev%.elf" goto:noDMLRevcmd
 
 ::set googlecode=dios-mios-lite-source-project
 
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" goto:noDMLRevcmd
 
-start /min /wait support\wget -t 3 "http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.zip"
-if not exist "DMLr%CurrentDMLRev%.zip" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/dios-mios-lite-source-project/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+start /min /wait support\wget -t 3 "http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.elf"
+if not exist "DMLr%CurrentDMLRev%.elf" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/dios-mios-lite-source-project/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\DML" mkdir "temp\DML"
-move /y "DMLr%CurrentDMLRev%.zip" "temp\DML\DMLr%CurrentDMLRev%.zip">nul
+move /y "DMLr%CurrentDMLRev%.elf" "temp\DML\DMLr%CurrentDMLRev%.elf">nul
 
 
 :noDMLRevcmd
@@ -2086,7 +2060,6 @@ if exist Support\settings.bat call Support\settings.bat
 
 ::-----default settings (default applies even if a single variable is missing from settings.bat)------
 IF "%ROOTSAVE%"=="" set ROOTSAVE=off
-IF "%DMLDebug%"=="" set DMLDebug=
 IF "%effect%"=="" set effect=No-Spin
 IF "%PCSAVE%"=="" set PCSAVE=Auto
 IF "%OPTION1%"=="" set OPTION1=off
@@ -2969,10 +2942,6 @@ if /i "%sneekverbose%" EQU "off" echo          SV = SNEEK Verbose Output (Disabl
 if /i "%sneekverbose%" EQU "on" echo          SV = SNEEK Verbose Output (Enabled)
 echo.
 
-if /i "%DMLDebug%" EQU "debug" echo         DML = DML Debug Mode (Enabled)
-if /i "%DMLDebug%" NEQ "debug" echo         DML = DML Debug Mode (Disabled)
-echo.
-
 if /i "%SNKFONT%" EQU "W" echo           F = Font.bin Colour for SNEEK+DI/UNEEK+DI (WHITE)
 if /i "%SNKFONT%" EQU "B" echo           F = Font.bin Colour for SNEEK+DI/UNEEK+DI (BLACK)
 echo.
@@ -2994,14 +2963,13 @@ set /p OPTIONS=     Enter Selection Here:
 
 
 if /i "%OPTIONS%" EQU "RS" goto:ROOTSAVE
-if /i "%OPTIONS%" EQU "DML" goto:DMLdebug
 if /i "%OPTIONS%" EQU "PC" goto:PCSAVE
 if /i "%OPTIONS%" EQU "1" goto:Option1
 ::if /i "%OPTIONS%" EQU "CE" goto:OptionCE
 if /i "%OPTIONS%" EQU "N" goto:UpdateModMii
 if /i "%OPTIONS%" EQU "A" goto:AutoUpdate
 if /i "%OPTIONS%" EQU "36" goto:Option36
-if /i "%OPTIONS%" EQU "36" goto:AudioOption
+if /i "%OPTIONS%" EQU "SO" goto:AudioOption
 if /i "%OPTIONS%" EQU "CM" goto:CMIOSOPTION
 if /i "%OPTIONS%" EQU "FWD" goto:FWDOPTION
 if /i "%OPTIONS%" EQU "sv" goto:OptionSneekverbose
@@ -3067,7 +3035,6 @@ goto:OPTIONS
 
 :RestoreSettings
 set ROOTSAVE=off
-set DMLDebug=
 set effect=No-Spin
 set PCSAVE=Auto
 set OPTION1=off
@@ -3122,7 +3089,6 @@ echo.
 echo ::ModMii Settings > Support\settings.bat
 echo ::ModMiiv%currentversion%>> Support\settings.bat
 echo Set ROOTSAVE=%ROOTSAVE%>> Support\settings.bat
-echo Set DMLDebug=%DMLDebug%>> Support\settings.bat
 echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
 echo Set Option1=%Option1%>> Support\settings.bat
@@ -3180,9 +3146,6 @@ Set ROOTSAVE=OFF
 goto:OPTIONS
 
 
-:DMLdebug
-if /i "%DMLdebug%" EQU "debug" (set DMLdebug=) else (set DMLdebug=debug)
-goto:options
 
 :PCSAVE
 if /i "%PCSAVE%" EQU "Auto" (set PCSAVE=Portable) & (goto:options)
@@ -6649,26 +6612,29 @@ echo Checking which DML versions are hosted online...
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list"
 
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" -!DMLr9.zip -!DMLr11.zip -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf" -!zip -!DMLST.elf -rep _*"/"__ -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf', 'Featured" -rep _*"/"__ -write -yes>nul
 
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.elf -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 :nowifi
 
 ::get local list
 
-if not exist "temp\DML\*.zip" goto:nolocallist
+if not exist "temp\DML\*.elf" goto:nolocallist
 
-dir "temp\DML\*.zip" /b /O:-N>>temp\list.txt
-support\sfk filter "temp\list.txt" -rep _"DMLr"__ -rep _".zip"__ -write -yes>nul
+dir "temp\DML\*.elf" /b /O:-N>>temp\list.txt
+
+support\sfk filter "temp\list.txt" -ls!"DML.elf" -ls!"DMLdebug.elf" -ls!"._DML.elf" -rep _"DMLr"__ -rep _".elf"__ -write -yes>nul
 support\sfk filter "temp\list.txt" -unique -write -yes>nul
 :nolocallist
 
@@ -6705,8 +6671,7 @@ echo.
 echo          * DML r12+ requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 echo.
 
-if /i "%DMLDebug%" EQU "debug" echo       D = Toggle DML Debug Mode (Current Setting: Enabled)
-if /i "%DMLDebug%" NEQ "debug" echo       D = Toggle DML Debug Mode (Current Setting: Disabled)
+
 echo.
 echo          * DML Debug Mode saves logs to the SD Card.
 echo          * USB Gecko debug can only be enabled by compiling the source manually.
@@ -6725,8 +6690,8 @@ findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
 IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\DML\DMLr%CurrentDMLRev%.zip" echo       %RevCount% = DMLr%CurrentDMLRev% (hosted on google code)%FeaturedTag%
-if exist "temp\DML\DMLr%CurrentDMLRev%.zip" echo       %RevCount% = DMLr%CurrentDMLRev%%FeaturedTag%
+if not exist "temp\DML\DMLr%CurrentDMLRev%.elf" echo       %RevCount% = DMLr%CurrentDMLRev% (hosted on google code)%FeaturedTag%
+if exist "temp\DML\DMLr%CurrentDMLRev%.elf" echo       %RevCount% = DMLr%CurrentDMLRev%%FeaturedTag%
 
 goto:EOF
 :quickskip
@@ -6740,14 +6705,6 @@ echo.
 echo.
 set /p DMLrev=     Enter Selection Here: 
 
-
-if /i "%DMLrev%" NEQ "D" goto:notoggle
-if /i "%DMLdebug%" EQU "debug" (set DMLdebug=) else (set DMLdebug=debug)
-::overwrite option in settings.bat
-support\sfk filter Support\settings.bat -!"Set DMLdebug=" -write -yes>nul
-echo Set DMLDebug=%DMLDebug%>> Support\settings.bat
-goto:CurrentDMLRevSelect2
-:notoggle
 
 
 if /i "%DMLrev%" EQU "M" (mode con cols=85 lines=54) & (goto:MENU)
@@ -11314,7 +11271,7 @@ echo            %cIOS249[57]-v19% 2491957 = cIOS249[57]-v19         %cIOS224[57]
 echo            %cIOS250[57]-v19% 2501957 = cIOS250[57]-v19
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] (cM)IOSs
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v20) cIOSs [def] \x20 \x20 %DML%\x20DML = DML %CurrentDMLRev%%DMLdebug%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v20) cIOSs [def] \x20 \x20 %DML%\x20DML = DML %CurrentDMLRev%
 
 
 echo            %cIOS249[38]-v20% 2492038 = cIOS249[38]-v20    %RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2% 10 = WiiGator+WiiPower cMIOS-v65535(v10)
@@ -15942,7 +15899,7 @@ if /i "%RSJ%" EQU "*" (echo "Region Select v2 (JAP)">>temp\DLnames.txt) & (echo 
 if /i "%RSK%" EQU "*" (echo "Region Select v2 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
 if /i "%BC%" EQU "*" (echo "BC">>temp\DLnames.txt) & (echo "BC">>temp\DLgotos.txt)
 if /i "%cBC%" EQU "*" (echo "NMM">>temp\DLnames.txt) & (echo "NMM">>temp\DLgotos.txt)
-if /i "%DML%" EQU "*" (echo "DML-r%CurrentDMLRev% %DMLdebug%">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
+if /i "%DML%" EQU "*" (echo "DML-r%CurrentDMLRev% ">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
 if /i "%SM3.2U%" EQU "*" (echo "System Menu 3.2U">>temp\DLnames.txt) & (echo "SM3.2U">>temp\DLgotos.txt)
 if /i "%SM4.1U%" EQU "*" (echo "System Menu 4.1U">>temp\DLnames.txt) & (echo "SM4.1U">>temp\DLgotos.txt)
 if /i "%SM4.2U%" EQU "*" (echo "System Menu 4.2U">>temp\DLnames.txt) & (echo "SM4.2U">>temp\DLgotos.txt)
@@ -17563,29 +17520,44 @@ support\wadmii -in temp\%basewad%.wad -out %basecios%
 
 if /i "%wadname:~0,3%" NEQ "DML" goto:SkipDML-stuff
 
-::download DML+installer if missing
+
+::download DML currentrev if missing
 
 echo.
 echo Downloading %dlname%
-
-if exist "temp\DML\%dlname%" goto:EXTRACT
-
-if not exist "%dlname%" start %ModMiimin%/wait support\wget -t 3 "%URL%"
 echo.
 
-if not exist "%dlname%" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
+if exist "temp\DML\%dlname%" goto:getfixelf
 
+if not exist "%dlname%" start %ModMiimin%/wait support\wget -t 3 "%URL%"
+
+
+if not exist "%dlname%" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
 if not exist "temp\DML" mkdir "temp\DML"
 move /y "%dlname%" "temp\DML\%dlname%">nul
 
 
-:EXTRACT
+:getfixelf
 
-support\7za e -aoa "temp\DML\%dlname%" -o"temp\DML" *.* -r>temp\7zalog.txt
-findStr /I /C:"Everything is Ok" "temp\7zalog.txt" >nul
-IF ERRORLEVEL 1 (Corrupted archive detected and deleted...) & (del temp\7zalog.txt>nul) & (del "temp\DML\%dlname%">nul) & (goto:NEXT)
-del temp\7zalog.txt>nul
+echo.
+echo Downloading FixELF
+echo.
+
+if exist "temp\DML\FixELF.exe" goto:gotfixelf
+
+if not exist "DMLr43.zip" start %ModMiimin%/wait support\wget -t 3 "http://dl.dropbox.com/u/25620767/DML/DMLr43.zip"
+
+if not exist "DMLr43.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
+
+support\7za e -aoa "DMLr43.zip" -o"temp\DML" *.* -r>nul
+
+if not exist "temp\DML\FixELF.exe" (Corrupted archive detected and deleted...) & (del "temp\DML\DMLr43.zip">nul) & (goto:NEXT)
+
+del DMLr43.zip>nul
+
+:gotfixelf
+
 
 move /y "%basecios%\00000001.app" "temp\DML\MIOS.app">nul
 
@@ -17598,7 +17570,7 @@ if exist 00000001.app del 00000001.app>nul
 echo.
 echo Running Crediar's FixELF to patch MIOS.app
 echo.
-FixELF MIOS.app DML%DMLdebug%.elf 00000001.app>nul
+FixELF MIOS.app "DMLr%CurrentDMLRev%.elf" 00000001.app>nul
 cd..
 cd..
 
@@ -17825,8 +17797,8 @@ move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
 
 
 cd /d temp
-TMCL.exe "%mym1%" -A "..\%basecios%\00000001-original.app" -o "temp.csm">nul
-TMCL.exe "%mym2%" -A "temp.csm" -o "..\%basecios%\00000001.app">nul
+TMCL.exe "%mym1%" "..\%basecios%\00000001-original.app" "temp.csm">nul
+TMCL.exe "%mym2%" "temp.csm" "..\%basecios%\00000001.app">nul
 cd /d ..
 
 if exist "temp\temp.csm" del "temp\temp.csm">nul
@@ -18651,8 +18623,8 @@ echo.
 echo Downloading ThemeMii Cmd Line
 echo.
 
-set ThemeMiiZip=thememii_cmd_3.5NetFramework.zip
-set md5TMCL=641eadbcbb9970f066d7852286f03133
+set ThemeMiiZip=thememii_cmd.v1.1_3.5NetFramework.zip
+set md5TMCL=25b32f4e282e4c0bef2b21ca86a8df9a
 ::if exist "temp\DBUPDATE%currentversion%.bat" call "temp\DBUPDATE%currentversion%.bat"
 
 
@@ -18764,8 +18736,8 @@ move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
 
 
 cd /d temp
-TMCL.exe "%mym1%" -A "%dlname%" -o "temp.csm">nul
-TMCL.exe "%mym2%" -A "temp.csm" -o "%wadname%.csm">nul
+TMCL.exe "%mym1%" "%dlname%" "temp.csm">nul
+TMCL.exe "%mym2%" "temp.csm" "%wadname%.csm">nul
 cd /d ..
 
 if exist "temp\temp.csm" del "temp\temp.csm">nul
@@ -22194,7 +22166,7 @@ if /i "%SNKcBC%" EQU "NMM" echo NMM (No More Memory-Cards) Installed >>"%nandpat
 :noNMM
 
 if /i "%BCtype%" EQU "DML" goto:noDML
-if /i "%SNKcBC%" EQU "DML" echo DML-r%CurrentDMLRev%%DMLdebug%.WAD Constructed (install to real NAND) >>"%nandpath%\nandinfo.txt"
+if /i "%SNKcBC%" EQU "DML" echo DML-r%CurrentDMLRev%.WAD Constructed (install to real NAND) >>"%nandpath%\nandinfo.txt"
 :noDML
 
 
@@ -22426,7 +22398,7 @@ echo          but it will be much quicker the second time around.
 echo.
 
 if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
-echo        * Install the DML-r%CurrentDMLRev%%DMLdebug%.WAD using MMM to your
+echo        * Install the DML-r%CurrentDMLRev%.WAD using MMM to your
 echo          REAL NAND in order for your Emulated NAND to use DML. DML currently
 echo          requires SNEEK+DI r157 or higher and neek2o has yet to support DML.
 echo.
@@ -25448,8 +25420,8 @@ goto:downloadstart
 
 
 :DML
-set name=DML-r%CurrentDMLRev%%DMLdebug%
-set wadname=DML-r%CurrentDMLRev%%DMLdebug%
+set name=DML-r%CurrentDMLRev%
+set wadname=DML-r%CurrentDMLRev%
 set ciosslot=unchanged
 set ciosversion=
 ::set md5=aaaaa5a3f60d762cf5c3f64f57ba82c9
@@ -25460,14 +25432,14 @@ set md5basealt=%md5baseb%
 set code1=00000001
 set code2=00000101
 set version=10
-set basecios=DML-r%CurrentDMLRev%%DMLdebug%
+set basecios=DML-r%CurrentDMLRev%
 set diffpath=%basecios%
 set code2new=00000100
 set lastbasemodule=
 set cIOSFamilyName=
 set cIOSversionNum=
-set URL=http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.zip
-set dlname=DMLr%CurrentDMLRev%.zip
+set URL=http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.elf
+set dlname=DMLr%CurrentDMLRev%.elf
 goto:downloadstart
 
 
