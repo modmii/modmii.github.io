@@ -18,7 +18,7 @@ if not "%cmdinput%"=="" start ModMii.exe %cmdinput%
 if not "%cmdinput%"=="" Exit
 ::----------------------------------------------------------
 
-set currentversion=6.0.2
+set currentversion=6.0.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -43,7 +43,6 @@ if exist Support\settings.bat call Support\settings.bat
 
 ::-----default settings (default applies even if a single variable is missing from settings.bat)------
 IF "%ROOTSAVE%"=="" set ROOTSAVE=off
-IF "%DMLDebug%"=="" set DMLDebug=
 IF "%GUIDEOnly%"=="" set GUIDEOnly=off
 
 IF "%effect%"=="" set effect=No-Spin
@@ -412,7 +411,6 @@ goto:OPTIONS
 ::--------------------Restore Default Settings---------------------
 :RestoreSettings
 set ROOTSAVE=off
-set DMLDebug=
 set effect=No-Spin
 set PCSAVE=Auto
 set OPTION1=off
@@ -461,7 +459,6 @@ goto:OPTIONS
 echo ::ModMii Settings > Support\settings.bat
 echo ::ModMiiv%currentversion%>> Support\settings.bat
 echo Set ROOTSAVE=%ROOTSAVE%>> Support\settings.bat
-echo Set DMLDebug=%DMLDebug%>> Support\settings.bat
 echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
 echo Set Option1=%Option1%>> Support\settings.bat
@@ -651,7 +648,7 @@ set waoutput=
 
 set watext=~~~~                             SNEEK Options
 
-set wainput= Build ^&neek2o instead of the original NEEK; ^&SD card access enabled for SNEEK\SNEEK+DI; SNEEK ^&Verbose Output; ^&DML Debug Mode; ^&White Font.bin for S\UNEEK+DI (instead of Black)
+set wainput= Build ^&neek2o instead of the original NEEK; ^&SD card access enabled for SNEEK\SNEEK+DI; SNEEK ^&Verbose Output; ^&White Font.bin for S\UNEEK+DI (instead of Black)
 
 
 ::check correct boxes
@@ -659,7 +656,6 @@ set waoutput=
 if /i "%neek2o%" EQU "on" set waoutput=%waoutput%; Build #neek2o instead of the original NEEK
 if /i "%SSD%" EQU "on" set waoutput=%waoutput%; #SD card access enabled for SNEEK\SNEEK+DI
 if /i "%sneekverbose%" EQU "on" set waoutput=%waoutput%; SNEEK #Verbose Output
-if /i "%DMLDebug%" EQU "debug" set waoutput=%waoutput%; #DML Debug Mode
 if /i "%SNKFONT%" EQU "W" set waoutput=%waoutput%; #White Font.bin for S\UNEEK+DI (instead of Black)
 
 echo set waoutput=%waoutput%>temp\temp.bat
@@ -691,9 +687,6 @@ findStr /I /C:"2" "%wabat%" >nul
 IF not ERRORLEVEL 1 (set sneekverbose=on) else (set sneekverbose=off)
 
 findStr /I /C:"3" "%wabat%" >nul
-IF not ERRORLEVEL 1 (set DMLDebug=debug) else (set DMLDebug=)
-
-findStr /I /C:"4" "%wabat%" >nul
 IF not ERRORLEVEL 1 (set SNKFONT=W) else (set SNKFONT=B)
 
 
@@ -1774,7 +1767,7 @@ if /i "%SNKCIOS%" EQU "Y" set wainput=%wainput%~* Install cIOS249 rev14
 
 if /i "%SNKcBC%" EQU "NMM" set wainput=%wainput%~* Install NMM (No More Memory-Cards)
 
-if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML-r%CurrentDMLRev%%DMLdebug% to Real NAND
+if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML-r%CurrentDMLRev% to Real NAND
 
 if /i "%SNKPRI%" EQU "Y" set wainput=%wainput%~* Install Priiloader
 
@@ -2233,7 +2226,7 @@ start support\wizapp PB OPEN
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list"
 
 start support\wizapp PB UPDATE 20
 
@@ -2241,14 +2234,15 @@ start support\wizapp PB UPDATE 20
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" -!DMLr9.zip -!DMLr11.zip -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf" -!zip -!DMLST.elf -rep _*"/"__ -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 40
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf', 'Featured" -rep _*"/"__ -write -yes>nul
 
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.elf -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 60
 
@@ -2256,10 +2250,11 @@ start support\wizapp PB UPDATE 60
 
 ::get local list
 
-if not exist "temp\DML\*.zip" goto:nolocallist
+if not exist "temp\DML\*.elf" goto:nolocallist
 
-dir "temp\DML\*.zip" /b /O:-N>>temp\list.txt
-support\sfk filter "temp\list.txt" -rep _"DMLr"__ -rep _".zip"__ -write -yes>nul
+dir "temp\DML\*.elf" /b /O:-N>>temp\list.txt
+
+support\sfk filter "temp\list.txt" -ls!"DML.elf" -ls!"DMLdebug.elf" -ls!"._DML.elf" -rep _"DMLr"__ -rep _".elf"__ -write -yes>nul
 support\sfk filter "temp\list.txt" -unique -write -yes>nul
 
 start support\wizapp PB UPDATE 80
@@ -2287,9 +2282,6 @@ if /i "%DMLTOTAL%" NEQ "0" goto:DMLrevsfound
 
 set watext=~~~~Unable to connect to the internet and no DML versions saved locally
 
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
-
 start /w support\wizapp TB
 
 set DML=
@@ -2309,9 +2301,6 @@ set wainput=
 Set watext=~~       Select the version of DML you would like to build:~~DML r12+ requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 
 
-if /i "%DMLDebug%" EQU "debug" set wainput=Disable DML Debug Mode (Currenly Enabled);;
-if /i "%DMLDebug%" NEQ "debug" set wainput=Enable DML Debug Mode (Currenly Disabled);;
-
 ::Loop through the the following once for EACH line in *.txt
 for /F "tokens=*" %%A in (temp\list.txt) do call :processDMLlist %%A
 goto:quickskip
@@ -2323,8 +2312,8 @@ findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
 IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\DML\DMLr%CurrentDMLRev%.zip" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
-if exist "temp\DML\DMLr%CurrentDMLRev%.zip" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
+if not exist "temp\DML\DMLr%CurrentDMLRev%.elf" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
+if exist "temp\DML\DMLr%CurrentDMLRev%.elf" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
 
 goto:EOF
 :quickskip
@@ -2332,8 +2321,6 @@ goto:EOF
 ::remove last ; to delete empty selection
 set wainput=%wainput:~0,-1%
 
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 start /w support\wizapp LB SINGLE
 
 
@@ -2350,17 +2337,6 @@ support\sfk filter "%wabat%" -rep _" (hosted on google code)"__ -rep _" - Featur
 call "%wabat%"
 
 if "%waoutput%"=="" goto:DMLrevsfound
-
-if /i "%waoutput:~0,22%" EQU "Disable DML Debug Mode" goto:toggle
-if /i "%waoutput:~0,21%" EQU "Enable DML Debug Mode" goto:toggle
-goto:notoggle
-:toggle
-if /i "%DMLdebug%" EQU "debug" (set DMLdebug=) else (set DMLdebug=debug)
-::overwrite option in settings.bat
-support\sfk filter Support\settings.bat -!"Set DMLdebug=" -write -yes>nul
-echo Set DMLDebug=%DMLDebug%>> Support\settings.bat
-goto:DMLrevsfound
-:notoggle
 
 set CurrentDMLRev=%waoutput%
 
