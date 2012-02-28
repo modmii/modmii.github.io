@@ -6,9 +6,19 @@
  Script Function:
 	Move the ModMii skin window.
 
- Script Version: 1.4
+ Script Version: 1.6
 
 #ce ----------------------------------------------------------------------------
+
+#AutoIt3Wrapper_Autoit3Dir="C:\Program Files (x86)\AutoIt3"
+#AutoIt3Wrapper_Icon="C:\ModMii\Support\icon.ico"
+#AutoIt3Wrapper_OutFile=ModMiiSkin.exe
+#AutoIt3Wrapper_Res_Field=ProductName|ModMii Skin Launcher
+#AutoIt3Wrapper_Res_Fileversion= 1.0.0.0
+#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
+#AutoIt3Wrapper_Res_Description=ModMii Skin Launcher
+#AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak, Launcher by person66
+#AutoIt3Wrapper_UseX64=N
 
 #include <Process.au3>
 
@@ -25,14 +35,13 @@ if $HasArgs = "True" then
 For $i = 1 To $CMDLINE[0]
 	$args = $args & $CMDLINE[$I] & " "
 Next
-FileCreateShortcut(@ComSpec, @ScriptDir & "\Support\ModMii.lnk", @ScriptDir, '/c call "' & @ScriptDir & '\Support\ModMii.bat"', "", @ScriptDir & "\Support\icon.ico")
-ShellExecuteWait(@ScriptDir & "\Support\ModMii.lnk", $args)
+ShellExecuteWait(@ScriptDir & "\ModMii.exe", $args)
 exit
 endif
 
 ;Check if other ModMii windows are open
 if WinExists("[CLASS:WizAppWindow; TITLE:ModMii Skin]", "by XFlak") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii]", "") <> 0 then
-	$AlreadyOpen = MsgBox(52, "WARNING", "It appears as if you already have a ModMii Window open." & @CRLF & @CRLF & "Running more than one instance of ModMii at a time is not" & @CRLF & "reccommended and may get buggy." & @CRLF & @CRLF & "Are you sure you wish to continue?")
+	$AlreadyOpen = MsgBox(52, "WARNING", "It appears as if you already have a ModMii Window open." & @CRLF & @CRLF & "Running more than one instance of ModMii at a time is not" & @CRLF & "recommended and may get buggy." & @CRLF & @CRLF & "Are you sure you wish to continue?")
 	if $AlreadyOpen <> 6 then
 		exit
 	endif
@@ -50,7 +59,7 @@ if $AlreadyOpen = 0 then
 EndIf
 
 ;Main part
-ShellExecute(@ComSpec, '/c call "' & @ScriptDir & '\Support\ModMiiSkin.bat"')
+ShellExecute(@ComSpec, '/c call "' & @ScriptDir & '\Support\ModMiiSkin.bat"', "", "", @SW_HIDE)
 
 $run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
 if $run = 0 then 

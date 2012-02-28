@@ -1,7 +1,12 @@
 @echo off
 setlocal
 
+chdir /d "%~dp0"
 if not exist support cd..
+
+::PUSHD "%cd%"
+::::PUSHD "%~dp0"
+::POPD
 
 title ModMiiSkinCMD
 
@@ -12,13 +17,21 @@ support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 ::-------------------CMD LINE SUPPORT----------------------
 ::pass all arguments to modmii classic
 
+set one=%~1
+if "%one%"=="" (goto:notcmd)
+
 set cmdinput=%*
-::if not "%cmdinput%"=="" ModMii.exe %cmdinput%
-if not "%cmdinput%"=="" start ModMii.exe %cmdinput%
-if not "%cmdinput%"=="" Exit
+set cmdinput=%cmdinput:"=%
+
+::ModMii.exe %cmdinput%
+start ModMii.exe %cmdinput%
+Exit
+
+:notcmd
+
 ::----------------------------------------------------------
 
-set currentversion=6.0.3
+set currentversion=6.0.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -33,6 +46,26 @@ if not exist temp mkdir temp
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
+
+
+
+
+::------Check for old Windows Versions-------
+::ver | findstr /i "5\.0\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=2000
+
+::ver | findstr /i "5\.1\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=XP
+
+::ver | findstr /i "5\.2\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=2003
+
+::::ver | findstr /i "6\.0\." > nul
+::::IF %ERRORLEVEL% EQU 0 set OSYS=VISTA
+
+::::ver | findstr /i "6\.1\." > nul
+::::IF %ERRORLEVEL% EQU 0 set OSYS=SEVEN
+
 
 
 
@@ -52,9 +85,8 @@ IF "%OPTION36%"=="" set OPTION36=on
 IF "%AudioOption%"=="" set AudioOption=on
 IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%FWDOPTION%"=="" set FWDOPTION=on
-IF "%Drive%"=="" set Drive=%cd%\COPY_TO_SD
-IF "%DriveU%"=="" set DriveU=%cd%\COPY_TO_USB
-
+IF "%Drive%"=="" set Drive=COPY_TO_SD
+IF "%DriveU%"=="" set DriveU=COPY_TO_USB
 IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
 IF "%AUTOUPDATE%"=="" set AUTOUPDATE=on
 IF "%ModMiiverbose%"=="" set ModMiiverbose=off
@@ -85,20 +117,31 @@ IF "%TurboGraFX-CDcheat%"=="" set TurboGraFX-CDcheat=ON
 
 
 ::check if drive folder exists--if second char is ":" check if drive exists
-if /i "%DRIVE:~1,1%" NEQ ":" set DRIVE=%cd%\%DRIVE%
-if /i "%DRIVE%" EQU "COPY_TO_SD" set DRIVE=%cd%\COPY_TO_SD
-if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
-if exist "%DRIVE:~0,2%" goto:skipcheck
-set DRIVE=%cd%\COPY_TO_SD
-:skipcheck
+if /i "%DRIVE%" NEQ "COPY_TO_SD" goto:skip
+set DRIVE="%cd%\COPY_TO_SD"
+set DRIVE=%DRIVE:&=^&%
+set DRIVE=%DRIVE:~1,-1%
+:skip
+
+if /i "%DRIVE:~1,1%" EQU ":" goto:skip
+set DRIVE="%cd%\%DRIVE%"
+set DRIVE=%DRIVE:&=^&%
+set DRIVE=%DRIVE:~1,-1%
+:skip
 
 
 ::check if DRIVEU folder exists--if second char is ":" check if DRIVEU exists
-if /i "%DRIVEU:~1,1%" NEQ ":" set DRIVEU=%cd%\%DRIVEU%
-if /i "%DRIVEU:~1,1%" NEQ ":" goto:skipcheck
-if exist "%DRIVEU:~0,2%" goto:skipcheck
-set DRIVEU=%cd%\COPY_TO_USB
-:skipcheck
+if /i "%DRIVEU%" NEQ "COPY_TO_USB" goto:skip
+set DRIVEU="%cd%\COPY_TO_USB"
+set DRIVEU=%DRIVEU:&=^&%
+set DRIVEU=%DRIVEU:~1,-1%
+:skip
+
+if /i "%DRIVEU:~1,1%" EQU ":" goto:skip
+set DRIVEU="%cd%\%DRIVEU%"
+set DRIVEU=%DRIVEU:&=^&%
+set DRIVEU=%DRIVEU:~1,-1%
+:skip
 
 
 if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -330,7 +373,7 @@ set DLQUEUE=
 set waoutnum=
 ::set waoutput=
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
-set waoutput=%cd%\temp\DownloadQueues\YourQueueHere.bat
+set waoutput=%cd:&=^&%\temp\DownloadQueues\YourQueueHere.bat
 
 set watext=Select the ModMii Download Queue you want to download.~~Note, when you click Finish ModMii will begin downloading immediately. To view the contents of your queue before downloading it use ModMii Classic to load it.~~To create custom Download Queues use ModMii Classic.
 
@@ -348,24 +391,24 @@ call "%wabat%"
 
 
 
-set DLQUEUE=%waoutput%
+set DLQUEUE=%waoutput:&=^&%
 
 if not exist "%DLQUEUE%" goto:PICKDOWNLOADQUEUE
 
 findStr /I /C:":endofqueue" "%DLQUEUE%" >nul
 IF ERRORLEVEL 1 goto:PICKDOWNLOADQUEUE
 
-copy /y %DLQUEUE% temp\DownloadQueues >nul
+copy /y "%DLQUEUE%" temp\DownloadQueues >nul
 
 ::get file name without path or extension
-echo %DLQUEUE% >temp\temp.txt
+echo %DLQUEUE:&=^&% >temp\temp.txt
 support\sfk filter -quiet temp\temp.txt -rep _*\__ -rep _.bat*__ -write -yes
 set /p DLQUEUE= <temp\temp.txt
 
 
-if not exist "%DRIVE%" mkdir "%DRIVE%"
+if not exist "%DRIVE:&=^&%" mkdir "%DRIVE:&=^&%"
 
-set classicCMD=L %DLQUEUE%
+set classicCMD=L %DLQUEUE:&=^&%
 
 goto:StartModMiiClassic
 
@@ -418,8 +461,15 @@ set OPTION36=on
 set AudioOption=on
 set CMIOSOPTION=off
 set FWDOPTION=on
-set Drive=%cd%\COPY_TO_SD
-set DriveU=%cd%\COPY_TO_USB
+
+set DRIVE="%cd%\COPY_TO_SD"
+set DRIVE=%DRIVE:&=^&%
+set DRIVE=%DRIVE:~1,-1%
+
+set DRIVEU="%cd%\COPY_TO_USB"
+set DRIVEU=%DRIVEU:&=^&%
+set DRIVEU=%DRIVEU:~1,-1%
+
 set ACTIVEIOS=on
 set AUTOUPDATE=on
 Set ModMiiverbose=off
@@ -466,8 +516,12 @@ echo Set OPTION36=%OPTION36%>> Support\settings.bat
 echo Set AudioOption=%AudioOption%>> Support\settings.bat
 echo Set CMIOSOPTION=%CMIOSOPTION%>> Support\settings.bat
 echo Set FWDOPTION=%FWDOPTION%>> Support\settings.bat
-echo Set Drive=%DRIVE%>> Support\settings.bat
-echo Set DriveU=%DRIVEU%>> Support\settings.bat
+
+
+echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
+echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
+support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
+
 echo Set overwritecodes=%overwritecodes%>> Support\settings.bat
 echo Set cheatregion=%cheatregion%>> Support\settings.bat
 echo Set cheatlocation=%cheatlocation%>> Support\settings.bat
@@ -1360,9 +1414,9 @@ if "%USBGUIDE%"=="" goto:WPAGE21
 
 ::...................................SD Card Location...............................
 :DriveChange
-set drivetemp=%DRIVE%
+set drivetemp=%DRIVE:&=^&%
 set waoutnum=
-set waoutput=%DRIVE%
+set waoutput=%DRIVE:&=^&%
 
 set wabmplast=%wabmp%
 set wabmp=support\bmp\SDCARD.bmp
@@ -1373,8 +1427,6 @@ set wabmp=support\bmp\SDCARD.bmp
 
 set watext=~~~Select where to save files for your SD Card
 
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 
 start /w support\wizapp FB DIR
 
@@ -1387,40 +1439,37 @@ goto:%BACKB4DRIVE%
 
 call "%wabat%"
 
-set DRIVETEMP=%waoutput%
+set DRIVETEMP=%waoutput:&=^&%
+
+
 
 ::remove quotes from variable (if applicable)
 echo "set DRIVETEMP=%DRIVETEMP%">temp\temp.txt
 support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+
+support\sfk filter -spat -quiet temp\temp.bat -rep _\x26_\x5e\x26_ -write -yes
+
 call temp\temp.bat
 del temp\temp.bat>nul
 del temp\temp.txt>nul
 
 
-:doublecheck
-set fixslash=
-if /i "%DRIVETEMP:~-1%" EQU "\" set fixslash=yes
-if /i "%DRIVETEMP:~-1%" EQU "/" set fixslash=yes
-if /i "%fixslash%" EQU "yes" set DRIVETEMP=%DRIVETEMP:~0,-1%
-if /i "%fixslash%" EQU "yes" goto:doublecheck
-
-
 ::if second char is ":" check if drive exists
+
 if /i "%DRIVETEMP:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVETEMP:~0,2%" (goto:skipcheck) else (echo.)
 goto:DRIVECHANGE
 :skipcheck
 
 
-set DRIVE=%DRIVETEMP%
-set REALDRIVE=%DRIVE%
+set DRIVE=%DRIVETEMP:&=^&%
+set REALDRIVE=%DRIVE:&=^&%
 
 
 ::autosave drive setting to settings.bat
 support\sfk filter Support\settings.bat -!"Set Drive=" -write -yes>nul
-echo Set Drive=%DRIVE%>>Support\settings.bat
-
-
+echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
+support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
 ::goto:
 
 set wabmp=%wabmplast%
@@ -1458,15 +1507,15 @@ if /i "%SNEEKSELECT%" EQU "1" (set backB4wpageLast=DRIVECHANGE) & (goto:WPAGELAS
 
 ::...................................USB Hard Drive Location...............................
 :DriveUChange
-set driveUtemp=%DRIVEU%
+set driveUtemp=%DRIVEU:&=^&%
 set waoutnum=
-set waoutput=%DRIVEU%
+set waoutput=%DRIVEU:&=^&%
 
 set wabmplast=%wabmp%
 set wabmp=support\bmp\USBDIR.bmp
 
 ::makedrive if not exist
-::if not exist "%DRIVEU%" mkdir "%DRIVEU%"
+::if not exist "%DRIVE:&=^&%" mkdir "%DRIVE:&=^&%"
 
 set watext=~~~Select where to save files for your USB Hard Drive
 
@@ -1484,41 +1533,33 @@ goto:%BACKB4DRIVEU%
 
 call "%wabat%"
 
-set DRIVEUTEMP=%waoutput%
+set DRIVEUTEMP=%waoutput:&=^&%
+
 
 
 ::remove quotes from variable (if applicable)
 echo "set DRIVEUTEMP=%DRIVEUTEMP%">temp\temp.txt
 support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
+support\sfk filter -spat -quiet temp\temp.bat -rep _\x26_\x5e\x26_ -write -yes
 call temp\temp.bat
 del temp\temp.bat>nul
 del temp\temp.txt>nul
 
 
-:doublecheckU
-set fixslash=
-if /i "%DRIVEUTEMP:~-1%" EQU "\" set fixslash=yes
-if /i "%DRIVEUTEMP:~-1%" EQU "/" set fixslash=yes
-if /i "%fixslash%" EQU "yes" set DRIVEUTEMP=%DRIVEUTEMP:~0,-1%
-if /i "%fixslash%" EQU "yes" goto:doublecheckU
-
-
-
 ::if second char is ":" check if drive exists
 if /i "%DRIVEUTEMP:~1,1%" NEQ ":" goto:skipcheck
-if exist "%DRIVEUTEMP:~0,2%" (goto:skipcheck) else (echo.)
-echo %DRIVEUTEMP:~0,2% doesn't exist, please try again...
-@ping 127.0.0.1 -n 2 -w 1000> nul
+if exist "%DRIVEUTEMP:~0,2%" goto:skipcheck
 goto:DRIVEUCHANGE
 :skipcheck
 
 
-set DRIVEU=%DRIVEUTEMP%
+set DRIVEU=%DRIVEUTEMP:&=^&%
 
 
 ::autosave drive setting to settings.bat
 support\sfk filter Support\settings.bat -!"Set DriveU=" -write -yes>nul
-echo Set DriveU=%DRIVEU%>>Support\settings.bat
+echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
+support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
 
 
 ::goto:
@@ -1689,28 +1730,28 @@ set watext=Confirm your settings are correct then click "Finish"
 
 
 if /i "%MENU1%" NEQ "W" goto:notwizard
-if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive%
-if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %Drive%~and to: %DriveU%
+if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %Drive:&=^&%~and to: %DriveU:&=^&%
 :notwizard
 
 if /i "%MENU1%" NEQ "U" goto:notusb
-if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %DriveU%
-if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive%
+if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %DriveU:&=^&%
+if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive:&=^&%
 :notusb
 
 
 if /i "%MENU1%" NEQ "S" goto:notS
 if /i "%SNEEKSELECT%" NEQ "2" goto:not2
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive%
-if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %DriveU%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %DriveU:&=^&%
 goto:notS
 :not2
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive%
-if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %Drive%~and to: %DriveU%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %Drive:&=^&%~and to: %DriveU:&=^&%
 :notS
 
-if /i "%MENU1%" EQU "H" set watext=%watext%~~Save files to: %Drive%
-if /i "%MENU1%" EQU "RC" set watext=%watext%~~Save files to: %Drive%
+if /i "%MENU1%" EQU "H" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%MENU1%" EQU "RC" set watext=%watext%~~Save files to: %Drive:&=^&%
 
 
 if /i "%MENU1%" EQU "H" set wainput=%wainput%                       HackMii Solutions Guide~
@@ -2433,8 +2474,8 @@ goto:SNKPAGE2
 ::...................................SNEEK Page3 - SNEEK REGION...............................
 :SNKPAGE3
 
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
-if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU:&=^&%
 
 set DITYPE=off
 if /i "%SNEEKTYPE%" EQU "UD" set DITYPE=on
@@ -2704,8 +2745,8 @@ goto:SNKPAGE5
 set waoutnum=
 set waoutput=
 
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
-if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU:&=^&%
 
 if /i "%neek2o%" EQU "ON" goto:DOIT
 if /i "%SNKS2U%" EQU "N" goto:quickskip
@@ -2715,13 +2756,13 @@ if /i "%SNKREGION%" EQU "U" set nandregion=us
 if /i "%SNKREGION%" EQU "E" set nandregion=eu
 if /i "%SNKREGION%" EQU "J" set nandregion=jp
 if /i "%SNKREGION%" EQU "K" set nandregion=kr
-if not exist "%nandpath%\nands\pl_%nandregion%" set nandpath=%nandpath%\nands\pl_%nandregion%
-if not exist "%nandpath%\nands\pl_%nandregion%" goto:quickskip
+if not exist "%nandpath:&=^&%\nands\pl_%nandregion%" set nandpath=%nandpath:&=^&%\nands\pl_%nandregion%
+if not exist "%nandpath:&=^&%\nands\pl_%nandregion%" goto:quickskip
 
 :NANDname
 SET /a NANDcount=%NANDcount%+1
-if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" set nandpath=%nandpath%\nands\pl_%nandregion%%NANDcount%
-if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" goto:quickskip
+if not exist "%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%" set nandpath=%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%
+if not exist "%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%" goto:quickskip
 goto:NANDname
 :quickskip
 
@@ -3092,10 +3133,17 @@ start support\wizapp PB CLOSE
 
 
 
-ModMii.exe %classicCMD% Skin:E
+::if "%OSYS%"=="" (goto:skipforcewait)
+::echo @echo off>temp\temp.bat
+::echo setlocal>>temp\temp.bat
+::echo call support\ModMii.bat %classicCMD% Skin:E>>temp\temp.bat
+::start /wait temp\temp.bat
+::start support\wizapp PB CLOSE
+::goto:FINISH
+:::skipforcewait
 
+ModMii.exe %classicCMD:&=^&% Skin:E
 start support\wizapp PB CLOSE
-
 goto:FINISH
 
 

@@ -1,12 +1,22 @@
 @echo off
 setlocal
 :top
-set currentversion=6.0.3
+
+chdir /d "%~dp0"
+if not exist support cd..
+
+::PUSHD "%cd%"
+::::PUSHD "%~dp0"
+::POPD
+
+set currentversion=6.0.4
 set currentversioncopy=%currentversion%
 set agreedversion=
+
+::remove setting path's with an & symbol and force default
+if exist Support\settings.bat support\sfk filter -spat Support\settings.bat -!"\x26" -write -yes>nul
 if exist Support\settings.bat call Support\settings.bat
 
-if not exist support cd..
 set cygwin=nodosfilewarning
 set ModMiiDrive=%cd:~0,2%
 
@@ -38,23 +48,26 @@ IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
 ::"ModMii" a b c d e f g h i
 ::equals
 ::"ModMii" %1 %2 %3 %4 %5 %6 %7 %8 %9
-set one=%1
-set two=%2
-set three=%3
-set four=%4
-set five=%5
-set six=%6
-set seven=%7
-set eight=%8
-set nine=%9
+set one=%~1
+set two=%~2
+set three=%~3
+set four=%~4
+set five=%~5
+set six=%~6
+set seven=%~7
+set eight=%~8
+set nine=%~9
 set cmdinput=%*
 
+
+
 if "%one%"=="" (goto:notcmd)
+
+set cmdinput=%cmdinput:"=%
 
 set cmdlinemode=Y
 
 if /i "%two%" EQU "Help" goto:specificCMDhelp
-
 if /i "%one%" EQU "O" goto:cmdlineOPTIONShelp
 if /i "%one%" EQU "W" goto:hardcodedoptions
 if /i "%one%" EQU "HS" goto:hardcodedoptions
@@ -1125,6 +1138,28 @@ set watext=~~~ModMii Classic Working...
 ::support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 start support\wizapp PB OPEN
 
+
+
+
+::------Check for old Windows Versions-------
+::ver | findstr /i "5\.0\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=2000
+
+::ver | findstr /i "5\.1\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=XP
+
+::ver | findstr /i "5\.2\." > nul
+::IF %ERRORLEVEL% EQU 0 set OSYS=2003
+
+::::ver | findstr /i "6\.0\." > nul
+::::IF %ERRORLEVEL% EQU 0 set OSYS=VISTA
+
+::::ver | findstr /i "6\.1\." > nul
+::::IF %ERRORLEVEL% EQU 0 set OSYS=SEVEN
+
+::if not "%OSYS%"=="" title ModMii
+
+
 :noprogress
 
 ::remove hard option from cmdinput.txt
@@ -1134,6 +1169,7 @@ support\sfk filter temp\cmdinput.txt -rep _" Skin:%removeme%"__ -write -yes>nul
 
 
 :hardcodedoptionsfinish
+
 
 ::remove hard options from %cmdinput% to avoid conflict
 set /p cmdinput= <temp\cmdinput.txt
@@ -5854,7 +5890,7 @@ if /i "%ThemeSelection%" EQU "O" goto:WPAGE21
 if /i "%ThemeSelection%" EQU "N" goto:WPAGE21
 
 :forsneeknand
-if /i "%SNEEKSELECT%" EQU "5" goto:quickskip
+::if /i "%SNEEKSELECT%" EQU "5" goto:quickskip
 if /i "%MENU1%" NEQ "S" goto:quickskip
 if /i "%ThemeSelection%" EQU "B" goto:SNKPAGE5
 :quickskip
@@ -7425,7 +7461,11 @@ goto:SNKPAGE4d
 ::...................................SNEEK Page5 - SNEEK SERIAL...............................
 :SNKPAGE5
 
-if /i "%SNEEKSELECT%" EQU "5" (set nandexist=no) & (goto:WPAGE20)
+if /i "%SNEEKSELECT%" NEQ "5" goto:nocheck
+set SNKSERIAL=
+if "%SMAPP%"=="" (goto:WPAGE20) else (goto:nonandcheck)
+:nocheck
+
 
 if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE%
 if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU%
@@ -7452,6 +7492,9 @@ if exist "%nandpath%"\ticket set nandexist=yes
 if exist "%nandpath%"\sys set nandexist=yes
 if exist "%nandpath%"\shared1 set nandexist=yes
 
+:nonandcheck
+if /i "%SNEEKSELECT%" EQU "5" set settingtxtExist=yes
+
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -7464,7 +7507,7 @@ echo         What Serial Number Would you like to use to create setting.txt?
 echo.
 echo.
 if /i "%settingtxtExist%" EQU "yes" support\sfk echo -spat \x20 [Red] setting.txt already exists in:
-if /i "%settingtxtExist%" EQU "yes" echo                                  %nandpath%
+if /i "%settingtxtExist%" EQU "yes" echo    %nandpath%
 if /i "%settingtxtExist%" EQU "yes" support\sfk echo -spat \x20 [Red] Leave the selection blank to keep using this setting.txt
 echo.
 echo.
@@ -7481,7 +7524,7 @@ echo.
 echo.
 echo         Note: If you want your emulated NAND to have internet access
 echo               you should use the serial for your Wii
-echo               (or the setting.txt from your NAND Dump)
+echo               (or use the setting.txt from your NAND Dump)
 echo.
 echo.
 echo.
@@ -7498,6 +7541,7 @@ set /p SNKSERIAL=     Enter Selection Here:
 if /i "%SNKSERIAL%" EQU "M" goto:MENU
 
 if /i "%SNKSERIAL%" NEQ "B" goto:quickskip
+if /i "%SNEEKSELECT%" EQU "5" goto:SNKPAGE4c
 if /i "%SNEEKTYPE:~0,1%" EQU "S" goto:SNKPAGE4b
 if /i "%AbstinenceWiz%" EQU "Y" goto:SNKPAGE4c
 if /i "%neek2o%" EQU "ON" (goto:SNKPAGE4c) else (goto:SNKPAGE4d)
@@ -7512,9 +7556,9 @@ IF "%SNKSERIAL%"=="" set SNKSERIAL=9999999999999
 goto:skip
 
 :settingsexist
+
 IF "%SNKSERIAL%"=="" set SNKSERIAL=current
 if /i "%SNKSERIAL%" EQU "current" goto:WPAGE20
-
 :skip
 
 ::limit user input to X# of digits
@@ -7619,7 +7663,10 @@ IF "%addwadfolder%"=="" (set emuitems=0) else (set emuitems=1)
 set emuwadcount=%emuitems%
 
 
-if /i "%SNEEKSELECT%" EQU "5" goto:skipthis
+
+
+::if /i "%SNEEKSELECT%" NEQ "5" goto:skipthis
+if /i "%SNKSERIAL%" NEQ "current" SET /a emuitems=%emuitems%+1
 if /i "%SNKSERIAL%" NEQ "current" (echo           * setting.txt will be created using this serial number: %SNKSERIAL%) else (echo           * Existing setting.txt will be kept)
 echo.
 :skipthis
@@ -8386,6 +8433,11 @@ if /i "%SMAPP%" EQU "00000079" (set SNKREGION=J) & (set SNKVERSION=4.1)
 if /i "%SMAPP%" EQU "0000009e" (set SNKREGION=K) & (set SNKVERSION=4.3)
 if /i "%SMAPP%" EQU "0000008e" (set SNKREGION=K) & (set SNKVERSION=4.2)
 if /i "%SMAPP%" EQU "00000082" (set SNKREGION=K) & (set SNKVERSION=4.1)
+
+if /i "%SNKREGION%" EQU "U" set defaultserial=LU521175683
+if /i "%SNKREGION%" EQU "E" set defaultserial=LEH133789940
+if /i "%SNKREGION%" EQU "J" set defaultserial=LJM101175683
+if /i "%SNKREGION%" EQU "K" set defaultserial=LJM101175683
 :miniskip
 
 ::check for priiloader
@@ -14737,7 +14789,7 @@ del temp\cIOSsubversion.bat>nul
 ::check for recommended cIOSs and HBC
 if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 
-findStr /I /C:"Homebrew Channel 1.0.8 running on IOS58" "%sysCheckName%" >nul
+findStr /I /C:"Homebrew Channel 1.1.0 running on IOS58" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set HM=*) else (set HM=)
 
 ::check for any version of IOS58
@@ -17546,15 +17598,15 @@ echo.
 
 if exist "temp\DML\FixELF.exe" goto:gotfixelf
 
-if not exist "DMLr43.zip" start %ModMiimin%/wait support\wget -t 3 "http://dl.dropbox.com/u/25620767/DML/DMLr43.zip"
+if not exist "FixELF.zip" start %ModMiimin%/wait support\wget -t 3 "http://tiny.cc/FixELF"
 
-if not exist "DMLr43.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
+if not exist "FixELF.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
-support\7za e -aoa "DMLr43.zip" -o"temp\DML" *.* -r>nul
+support\7za e -aoa "FixELF.zip" -o"temp\DML" *.* -r>nul
 
-if not exist "temp\DML\FixELF.exe" (Corrupted archive detected and deleted...) & (del "temp\DML\DMLr43.zip">nul) & (goto:NEXT)
+if not exist "temp\DML\FixELF.exe" (Corrupted archive detected and deleted...) & (del "temp\DML\FixELF.zip">nul) & (goto:NEXT)
 
-del DMLr43.zip>nul
+del FixELF.zip>nul
 
 :gotfixelf
 
@@ -21965,9 +22017,9 @@ if exist temp\WAD\cBC-NMMv0.2a.wad del temp\WAD\cBC-NMMv0.2a.wad>nul
 if exist temp\WAD\*.wad move temp\WAD\*.wad temp\>nul
 
 ::restore setting.txt if applicable
+if /i "%SNEEKSELECT%" EQU "5" goto:skipSMW
 if not exist "%nandpath%\title\00000001\00000002\data" mkdir "%nandpath%\title\00000001\00000002\data"
 if /i "%SNKSERIAL%" EQU "current" move /y "%nandpath%"\setting.txt "%nandpath%"\title\00000001\00000002\data\setting.txt>nul
-
 :skipSMW
 
 if exist support\ShowMiiWads.cfg del support\ShowMiiWads.cfg>nul
@@ -21991,10 +22043,13 @@ echo ============================================== >>"%nandpath%\nandinfo.txt"
 :nomoddednand
 
 
-if /i "%SNEEKSELECT%" EQU "5" goto:skip
+::if /i "%SNEEKSELECT%" EQU "5" goto:skip
 
 ::Build setting.txt
 if /i "%SNKSERIAL%" EQU "current" goto:skip
+
+echo.
+echo Building setting.txt using serial number: %SNKSERIAL%
 
 support\settings %SNKSERIAL% >nul
 
@@ -22110,7 +22165,7 @@ if /i "%SNKJOY%" NEQ "Y" goto:skipSNKpri
 echo Adding JoyFlow forwarder dol to Priiloader's installed file.
 echo.
 
-if exist temp\JoyFlow(emulators)-v11.dol move /y temp\JoyFlow(emulators)-v11.dol "%nandpath%"\title\00000001\00000002\data\main.bin>nul
+if exist temp\JoyFlow(emulators)-v11c.dol move /y temp\JoyFlow(emulators)-v11c.dol "%nandpath%"\title\00000001\00000002\data\main.bin>nul
 
 :skipSNKpri
 
@@ -22173,7 +22228,7 @@ if /i "%SNKcBC%" EQU "DML" echo DML-r%CurrentDMLRev%.WAD Constructed (install to
 IF not "%addwadfolder%"=="" echo Custom Folder of WADs Installed: %addwadfolder% >>"%nandpath%\nandinfo.txt"
 
 
-if exist temp\JoyFlow(emulators)-v11.dol del temp\JoyFlow(emulators)-v11.dol>nul
+if exist temp\JoyFlow(emulators)-v11c.dol del temp\JoyFlow(emulators)-v11c.dol>nul
 
 copy /y temp\ModMii_Log.bat temp\ModMii_Log_SNK.bat>nul
 
@@ -22215,6 +22270,7 @@ if /i "%SNKcBC%" EQU "DML" (set DML=*) & (set mmm=*)
 
 if /i "%SNKJOY%" EQU "Y" set JOY=*
 if /i "%SNKPLC%" EQU "Y" set PL=*
+
 
 if /i "%AbstinenceWiz%" EQU "Y" (set nSwitch=) & (set mmm=) & (goto:Download)
 
@@ -22340,7 +22396,7 @@ if /i "%cmdlinemode%" NEQ "Y" echo.
 if /i "%cmdlinemode%" NEQ "Y" echo The following file(s) failed to download properly:
 if /i "%cmdlinemode%" NEQ "Y" call temp\ModMii_Log.bat
 
-support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _[Red]__ -rep _"support\sfk echo "__ -rep _"echo "__ >temp\ModMii_Log_temp.txt
+support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _[Red]__ -rep _[def]__ -rep _"support\sfk echo "__ -rep _"echo "__ >temp\ModMii_Log_temp.txt
 
 echo ------ >>"%nandpath%\nandinfo.txt"
 echo Errors >>"%nandpath%\nandinfo.txt"
@@ -24723,10 +24779,10 @@ set code1=URL
 set code2="http://bootmii.org/download/"
 set version=elf
 ::set dlname=
-set wadname=hackmii_installer_v0.8.zip
-set filename=boot.dol
+set wadname=hackmii_installer_v1.0.zip
+set filename=boot.elf
 set path1=
-set md5=8dcada755a608c70ed171ced7f9ef2f3
+set md5=cfc05090ac7eac2c6711c196151c7919
 goto:downloadstart
 
 :IOS236Installer
