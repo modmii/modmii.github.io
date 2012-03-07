@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.0.4
+set currentversion=6.0.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2656,26 +2656,26 @@ set cIOS249[57]-v21=
 set cIOS250[57]-v21=
 set cIOS249[58]-v21=
 set cIOS250[58]-v21=
-set cIOS249[37]-d2x-v7-final=
-set cIOS249[38]-d2x-v7-final=
-set cIOS249[53]-d2x-v7-final=
-set cIOS249[55]-d2x-v7-final=
-set cIOS249[56]-d2x-v7-final=
-set cIOS249[57]-d2x-v7-final=
-set cIOS249[58]-d2x-v7-final=
-set cIOS249[60]-d2x-v7-final=
-set cIOS249[70]-d2x-v7-final=
-set cIOS249[80]-d2x-v7-final=
-set cIOS250[37]-d2x-v7-final=
-set cIOS250[38]-d2x-v7-final=
-set cIOS250[53]-d2x-v7-final=
-set cIOS250[55]-d2x-v7-final=
-set cIOS250[56]-d2x-v7-final=
-set cIOS250[57]-d2x-v7-final=
-set cIOS250[58]-d2x-v7-final=
-set cIOS250[60]-d2x-v7-final=
-set cIOS250[70]-d2x-v7-final=
-set cIOS250[80]-d2x-v7-final=
+set cIOS249[37]-d2x-v8-final=
+set cIOS249[38]-d2x-v8-final=
+set cIOS249[53]-d2x-v8-final=
+set cIOS249[55]-d2x-v8-final=
+set cIOS249[56]-d2x-v8-final=
+set cIOS249[57]-d2x-v8-final=
+set cIOS249[58]-d2x-v8-final=
+set cIOS249[60]-d2x-v8-final=
+set cIOS249[70]-d2x-v8-final=
+set cIOS249[80]-d2x-v8-final=
+set cIOS250[37]-d2x-v8-final=
+set cIOS250[38]-d2x-v8-final=
+set cIOS250[53]-d2x-v8-final=
+set cIOS250[55]-d2x-v8-final=
+set cIOS250[56]-d2x-v8-final=
+set cIOS250[57]-d2x-v8-final=
+set cIOS250[58]-d2x-v8-final=
+set cIOS250[60]-d2x-v8-final=
+set cIOS250[70]-d2x-v8-final=
+set cIOS250[80]-d2x-v8-final=
 
 if /i "%secondrun%" NEQ "Y" goto:miniskip
 if /i "%cleardownloadsettings%" NEQ "yes" goto:miniskip
@@ -5621,7 +5621,7 @@ goto:WPAGE13B
 :WPAGE14
 set RECCIOS=
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 cls
@@ -11332,35 +11332,35 @@ echo            %cIOS249[56]-v20% 2492056 = cIOS249[56]-v20     %RVL-cmios-v4_Wa
 echo            %cIOS250[56]-v20% 2502056 = cIOS250[56]-v20
 
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20%cIOS249[57]-v20%\x202492057 = cIOS249[57]-v20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](d2x) cIOSs
 
-echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v7-final% 249d2x37 = cIOS249[37]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[37]-d2x-v7-final% 250d2x37 = cIOS250[37]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v8-final% 249d2x37 = cIOS249[37]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[37]-d2x-v8-final% 250d2x37 = cIOS250[37]-d2x-v%d2x-beta-rev%
 
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v7-final%\x20249d2x38 = cIOS249[38]-d2x-v%d2x-beta-rev%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v8-final%\x20249d2x38 = cIOS249[38]-d2x-v%d2x-beta-rev%
 
-echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v7-final% 250d2x38 = cIOS250[38]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v7-final% 249d2x53 = cIOS249[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v7-final% 250d2x53 = cIOS250[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v7-final% 249d2x55 = cIOS249[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v7-final% 250d2x55 = cIOS250[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v7-final% 249d2x56 = cIOS249[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v7-final% 250d2x56 = cIOS250[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v7-final% 249d2x57 = cIOS249[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v7-final% 250d2x57 = cIOS250[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v7-final% 249d2x58 = cIOS249[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v7-final% 250d2x58 = cIOS250[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v7-final% 249d2x60 = cIOS249[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v7-final% 250d2x60 = cIOS250[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v7-final% 249d2x70 = cIOS249[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[70]-d2x-v7-final% 250d2x70 = cIOS250[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS249[80]-d2x-v7-final% 249d2x80 = cIOS249[80]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[80]-d2x-v7-final% 250d2x80 = cIOS250[80]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v8-final% 250d2x38 = cIOS250[38]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v8-final% 249d2x53 = cIOS249[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v8-final% 250d2x53 = cIOS250[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v8-final% 249d2x55 = cIOS249[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v8-final% 250d2x55 = cIOS250[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v8-final% 249d2x56 = cIOS249[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v8-final% 250d2x56 = cIOS250[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v8-final% 249d2x57 = cIOS249[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v8-final% 250d2x57 = cIOS250[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v8-final% 249d2x58 = cIOS249[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v8-final% 250d2x58 = cIOS250[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v8-final% 249d2x60 = cIOS249[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v8-final% 250d2x60 = cIOS250[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v8-final% 249d2x70 = cIOS249[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[70]-d2x-v8-final% 250d2x70 = cIOS250[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS249[80]-d2x-v8-final% 249d2x80 = cIOS249[80]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[80]-d2x-v8-final% 250d2x80 = cIOS250[80]-d2x-v%d2x-beta-rev%
 echo                                                BETA = d2x beta settings
 
 ::echo.
@@ -11453,26 +11453,26 @@ if /i "%LIST4%" EQU "2492157" goto:SwitchcIOS249[57]-v21
 if /i "%LIST4%" EQU "2502157" goto:SwitchcIOS250[57]-v21
 if /i "%LIST4%" EQU "2492158" goto:SwitchcIOS249[58]-v21
 if /i "%LIST4%" EQU "2502158" goto:SwitchcIOS250[58]-v21
-if /i "%LIST4%" EQU "249d2x37" goto:SwitchcIOS249[37]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x38" goto:SwitchcIOS249[38]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x53" goto:SwitchcIOS249[53]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x55" goto:SwitchcIOS249[55]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x56" goto:SwitchcIOS249[56]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x57" goto:SwitchcIOS249[57]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x58" goto:SwitchcIOS249[58]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x60" goto:SwitchcIOS249[60]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x70" goto:SwitchcIOS249[70]-d2x-v7-final
-if /i "%LIST4%" EQU "249d2x80" goto:SwitchcIOS249[80]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x37" goto:SwitchcIOS250[37]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x38" goto:SwitchcIOS250[38]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x53" goto:SwitchcIOS250[53]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x55" goto:SwitchcIOS250[55]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x56" goto:SwitchcIOS250[56]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x57" goto:SwitchcIOS250[57]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x58" goto:SwitchcIOS250[58]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x60" goto:SwitchcIOS250[60]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x70" goto:SwitchcIOS250[70]-d2x-v7-final
-if /i "%LIST4%" EQU "250d2x80" goto:SwitchcIOS250[80]-d2x-v7-final
+if /i "%LIST4%" EQU "249d2x37" goto:SwitchcIOS249[37]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x38" goto:SwitchcIOS249[38]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x53" goto:SwitchcIOS249[53]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x55" goto:SwitchcIOS249[55]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x56" goto:SwitchcIOS249[56]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x57" goto:SwitchcIOS249[57]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x58" goto:SwitchcIOS249[58]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x60" goto:SwitchcIOS249[60]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x70" goto:SwitchcIOS249[70]-d2x-v8-final
+if /i "%LIST4%" EQU "249d2x80" goto:SwitchcIOS249[80]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x37" goto:SwitchcIOS250[37]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x38" goto:SwitchcIOS250[38]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x53" goto:SwitchcIOS250[53]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x55" goto:SwitchcIOS250[55]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x56" goto:SwitchcIOS250[56]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x57" goto:SwitchcIOS250[57]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x58" goto:SwitchcIOS250[58]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x60" goto:SwitchcIOS250[60]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x70" goto:SwitchcIOS250[70]-d2x-v8-final
+if /i "%LIST4%" EQU "250d2x80" goto:SwitchcIOS250[80]-d2x-v8-final
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:LIST4
@@ -11657,86 +11657,86 @@ goto:LIST4
 if /i "%cIOS250[58]-v21%" EQU "*" (set cIOS250[58]-v21=) else (set cIOS250[58]-v21=*)
 goto:LIST4
 
-:SwitchcIOS249[53]-d2x-v7-final
-if /i "%cIOS249[53]-d2x-v7-final%" EQU "*" (set cIOS249[53]-d2x-v7-final=) else (set cIOS249[53]-d2x-v7-final=*)
+:SwitchcIOS249[53]-d2x-v8-final
+if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" (set cIOS249[53]-d2x-v8-final=) else (set cIOS249[53]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS249[55]-d2x-v7-final
-if /i "%cIOS249[55]-d2x-v7-final%" EQU "*" (set cIOS249[55]-d2x-v7-final=) else (set cIOS249[55]-d2x-v7-final=*)
+:SwitchcIOS249[55]-d2x-v8-final
+if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" (set cIOS249[55]-d2x-v8-final=) else (set cIOS249[55]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS249[56]-d2x-v7-final
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" (set cIOS249[56]-d2x-v7-final=) else (set cIOS249[56]-d2x-v7-final=*)
+:SwitchcIOS249[56]-d2x-v8-final
+if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (set cIOS249[56]-d2x-v8-final=) else (set cIOS249[56]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS249[57]-d2x-v7-final
-if /i "%cIOS249[57]-d2x-v7-final%" EQU "*" (set cIOS249[57]-d2x-v7-final=) else (set cIOS249[57]-d2x-v7-final=*)
+:SwitchcIOS249[57]-d2x-v8-final
+if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (set cIOS249[57]-d2x-v8-final=) else (set cIOS249[57]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS249[58]-d2x-v7-final
-if /i "%cIOS249[58]-d2x-v7-final%" EQU "*" (set cIOS249[58]-d2x-v7-final=) else (set cIOS249[58]-d2x-v7-final=*)
-goto:LIST4
-
-
-:SwitchcIOS249[60]-d2x-v7-final
-if /i "%cIOS249[60]-d2x-v7-final%" EQU "*" (set cIOS249[60]-d2x-v7-final=) else (set cIOS249[60]-d2x-v7-final=*)
-goto:LIST4
-
-:SwitchcIOS249[70]-d2x-v7-final
-if /i "%cIOS249[70]-d2x-v7-final%" EQU "*" (set cIOS249[70]-d2x-v7-final=) else (set cIOS249[70]-d2x-v7-final=*)
-goto:LIST4
-
-:SwitchcIOS249[80]-d2x-v7-final
-if /i "%cIOS249[80]-d2x-v7-final%" EQU "*" (set cIOS249[80]-d2x-v7-final=) else (set cIOS249[80]-d2x-v7-final=*)
+:SwitchcIOS249[58]-d2x-v8-final
+if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" (set cIOS249[58]-d2x-v8-final=) else (set cIOS249[58]-d2x-v8-final=*)
 goto:LIST4
 
 
-:SwitchcIOS249[37]-d2x-v7-final
-if /i "%cIOS249[37]-d2x-v7-final%" EQU "*" (set cIOS249[37]-d2x-v7-final=) else (set cIOS249[37]-d2x-v7-final=*)
+:SwitchcIOS249[60]-d2x-v8-final
+if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" (set cIOS249[60]-d2x-v8-final=) else (set cIOS249[60]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS249[38]-d2x-v7-final
-if /i "%cIOS249[38]-d2x-v7-final%" EQU "*" (set cIOS249[38]-d2x-v7-final=) else (set cIOS249[38]-d2x-v7-final=*)
+:SwitchcIOS249[70]-d2x-v8-final
+if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" (set cIOS249[70]-d2x-v8-final=) else (set cIOS249[70]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[53]-d2x-v7-final
-if /i "%cIOS250[53]-d2x-v7-final%" EQU "*" (set cIOS250[53]-d2x-v7-final=) else (set cIOS250[53]-d2x-v7-final=*)
+:SwitchcIOS249[80]-d2x-v8-final
+if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" (set cIOS249[80]-d2x-v8-final=) else (set cIOS249[80]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[55]-d2x-v7-final
-if /i "%cIOS250[55]-d2x-v7-final%" EQU "*" (set cIOS250[55]-d2x-v7-final=) else (set cIOS250[55]-d2x-v7-final=*)
+
+:SwitchcIOS249[37]-d2x-v8-final
+if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" (set cIOS249[37]-d2x-v8-final=) else (set cIOS249[37]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[56]-d2x-v7-final
-if /i "%cIOS250[56]-d2x-v7-final%" EQU "*" (set cIOS250[56]-d2x-v7-final=) else (set cIOS250[56]-d2x-v7-final=*)
+:SwitchcIOS249[38]-d2x-v8-final
+if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" (set cIOS249[38]-d2x-v8-final=) else (set cIOS249[38]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[57]-d2x-v7-final
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" (set cIOS250[57]-d2x-v7-final=) else (set cIOS250[57]-d2x-v7-final=*)
+:SwitchcIOS250[53]-d2x-v8-final
+if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" (set cIOS250[53]-d2x-v8-final=) else (set cIOS250[53]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[37]-d2x-v7-final
-if /i "%cIOS250[37]-d2x-v7-final%" EQU "*" (set cIOS250[37]-d2x-v7-final=) else (set cIOS250[37]-d2x-v7-final=*)
+:SwitchcIOS250[55]-d2x-v8-final
+if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" (set cIOS250[55]-d2x-v8-final=) else (set cIOS250[55]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[38]-d2x-v7-final
-if /i "%cIOS250[38]-d2x-v7-final%" EQU "*" (set cIOS250[38]-d2x-v7-final=) else (set cIOS250[38]-d2x-v7-final=*)
+:SwitchcIOS250[56]-d2x-v8-final
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (set cIOS250[56]-d2x-v8-final=) else (set cIOS250[56]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[58]-d2x-v7-final
-if /i "%cIOS250[58]-d2x-v7-final%" EQU "*" (set cIOS250[58]-d2x-v7-final=) else (set cIOS250[58]-d2x-v7-final=*)
+:SwitchcIOS250[57]-d2x-v8-final
+if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (set cIOS250[57]-d2x-v8-final=) else (set cIOS250[57]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[60]-d2x-v7-final
-if /i "%cIOS250[60]-d2x-v7-final%" EQU "*" (set cIOS250[60]-d2x-v7-final=) else (set cIOS250[60]-d2x-v7-final=*)
+:SwitchcIOS250[37]-d2x-v8-final
+if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" (set cIOS250[37]-d2x-v8-final=) else (set cIOS250[37]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[70]-d2x-v7-final
-if /i "%cIOS250[70]-d2x-v7-final%" EQU "*" (set cIOS250[70]-d2x-v7-final=) else (set cIOS250[70]-d2x-v7-final=*)
+:SwitchcIOS250[38]-d2x-v8-final
+if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" (set cIOS250[38]-d2x-v8-final=) else (set cIOS250[38]-d2x-v8-final=*)
 goto:LIST4
 
-:SwitchcIOS250[80]-d2x-v7-final
-if /i "%cIOS250[80]-d2x-v7-final%" EQU "*" (set cIOS250[80]-d2x-v7-final=) else (set cIOS250[80]-d2x-v7-final=*)
+:SwitchcIOS250[58]-d2x-v8-final
+if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" (set cIOS250[58]-d2x-v8-final=) else (set cIOS250[58]-d2x-v8-final=*)
+goto:LIST4
+
+:SwitchcIOS250[60]-d2x-v8-final
+if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" (set cIOS250[60]-d2x-v8-final=) else (set cIOS250[60]-d2x-v8-final=*)
+goto:LIST4
+
+:SwitchcIOS250[70]-d2x-v8-final
+if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" (set cIOS250[70]-d2x-v8-final=) else (set cIOS250[70]-d2x-v8-final=*)
+goto:LIST4
+
+:SwitchcIOS250[80]-d2x-v8-final
+if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" (set cIOS250[80]-d2x-v8-final=) else (set cIOS250[80]-d2x-v8-final=*)
 goto:LIST4
 
 :SELECTALLLIST4
@@ -11747,8 +11747,8 @@ set cIOS202[60]-v5.1R=*
 set cIOS222[38]-v4=*
 set cIOS223[37-38]-v4=*
 set cIOS224[57]-v5.1R=*
-set cIOS249[56]-d2x-v7-final=*
-set cIOS250[57]-d2x-v7-final=*
+set cIOS249[56]-d2x-v8-final=*
+set cIOS250[57]-d2x-v8-final=*
 set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 if /i "%LIST4%" EQU "REC" goto:LIST4
 
@@ -11817,26 +11817,26 @@ set cIOS250[58]-v21=*
 if /i "%LIST4%" EQU "v21" goto:LIST4
 
 :d2xcIOSs
-set cIOS249[37]-d2x-v7-final=*
-set cIOS249[38]-d2x-v7-final=*
-set cIOS249[53]-d2x-v7-final=*
-set cIOS249[55]-d2x-v7-final=*
-set cIOS249[56]-d2x-v7-final=*
-set cIOS249[57]-d2x-v7-final=*
-set cIOS249[58]-d2x-v7-final=*
-set cIOS249[60]-d2x-v7-final=*
-set cIOS249[70]-d2x-v7-final=*
-set cIOS249[80]-d2x-v7-final=*
-set cIOS250[37]-d2x-v7-final=*
-set cIOS250[38]-d2x-v7-final=*
-set cIOS250[53]-d2x-v7-final=*
-set cIOS250[55]-d2x-v7-final=*
-set cIOS250[56]-d2x-v7-final=*
-set cIOS250[57]-d2x-v7-final=*
-set cIOS250[58]-d2x-v7-final=*
-set cIOS250[60]-d2x-v7-final=*
-set cIOS250[70]-d2x-v7-final=*
-set cIOS250[80]-d2x-v7-final=*
+set cIOS249[37]-d2x-v8-final=*
+set cIOS249[38]-d2x-v8-final=*
+set cIOS249[53]-d2x-v8-final=*
+set cIOS249[55]-d2x-v8-final=*
+set cIOS249[56]-d2x-v8-final=*
+set cIOS249[57]-d2x-v8-final=*
+set cIOS249[58]-d2x-v8-final=*
+set cIOS249[60]-d2x-v8-final=*
+set cIOS249[70]-d2x-v8-final=*
+set cIOS249[80]-d2x-v8-final=*
+set cIOS250[37]-d2x-v8-final=*
+set cIOS250[38]-d2x-v8-final=*
+set cIOS250[53]-d2x-v8-final=*
+set cIOS250[55]-d2x-v8-final=*
+set cIOS250[56]-d2x-v8-final=*
+set cIOS250[57]-d2x-v8-final=*
+set cIOS250[58]-d2x-v8-final=*
+set cIOS250[60]-d2x-v8-final=*
+set cIOS250[70]-d2x-v8-final=*
+set cIOS250[80]-d2x-v8-final=*
 if /i "%LIST4%" EQU "d2x" goto:LIST4
 
 :cMIOSs
@@ -11928,7 +11928,7 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] I
 echo.
 
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 
@@ -12063,16 +12063,16 @@ if /i "%ADVLIST%" EQU "2492153" goto:cIOS249[53]-v21
 if /i "%ADVLIST%" EQU "2492155" goto:cIOS249[55]-v21
 if /i "%ADVLIST%" EQU "2492157" goto:cIOS249[57]-v21
 if /i "%ADVLIST%" EQU "2492158" goto:cIOS249[58]-v21
-if /i "%ADVLIST%" EQU "249d2x37" goto:cIOS249[37]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x38" goto:cIOS249[38]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x53" goto:cIOS249[53]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x55" goto:cIOS249[55]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x56" goto:cIOS249[56]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x57" goto:cIOS249[57]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x58" goto:cIOS249[58]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x60" goto:cIOS249[60]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x70" goto:cIOS249[70]-d2x-v7-final
-if /i "%ADVLIST%" EQU "249d2x80" goto:cIOS249[80]-d2x-v7-final
+if /i "%ADVLIST%" EQU "249d2x37" goto:cIOS249[37]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x38" goto:cIOS249[38]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x53" goto:cIOS249[53]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x55" goto:cIOS249[55]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x56" goto:cIOS249[56]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x57" goto:cIOS249[57]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x58" goto:cIOS249[58]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x60" goto:cIOS249[60]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x70" goto:cIOS249[70]-d2x-v8-final
+if /i "%ADVLIST%" EQU "249d2x80" goto:cIOS249[80]-d2x-v8-final
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -12272,7 +12272,7 @@ set oldfullname=%name%
 
 set advDLCheck0=%advDLCheck%
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 set advDLCheck=%advDLCheck:~0,17%%d2x-beta-rev%
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
@@ -14757,8 +14757,8 @@ goto:Prisyscheck
 
 
 
-set d2x-beta-rev=7-final
-set ciosversion=21007
+set d2x-beta-rev=8-final
+set ciosversion=21008
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
@@ -14789,8 +14789,12 @@ del temp\cIOSsubversion.bat>nul
 ::check for recommended cIOSs and HBC
 if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 
+set HM=*
 findStr /I /C:"Homebrew Channel 1.1.0 running on IOS58" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set HM=*) else (set HM=)
+IF not ERRORLEVEL 1 set HM=
+
+findStr /I /C:"Homebrew Channel 1.0.0 running on IOS58" "%sysCheckName%" >nul
+IF not ERRORLEVEL 1 set HM=
 
 ::check for any version of IOS58
 if /i "%HM%" NEQ "*" goto:no58check
@@ -14814,10 +14818,10 @@ findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
 findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v7-final=*) else (set cIOS249[56]-d2x-v7-final=)
+IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v8-final=*) else (set cIOS249[56]-d2x-v8-final=)
 
 findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v7-final=*) else (set cIOS250[57]-d2x-v7-final=)
+IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v8-final=*) else (set cIOS250[57]-d2x-v8-final=)
 
 goto:skipv2.0.1
 
@@ -14848,10 +14852,10 @@ findStr /I /C:"IOS224 (rev 65535): Trucha Bug, NAND Access, USB 2.0" "%sysCheckN
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
 findStr /I /C:"IOS249 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v7-final=*) else (set cIOS249[56]-d2x-v7-final=)
+IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v8-final=*) else (set cIOS249[56]-d2x-v8-final=)
 
 findStr /I /C:"IOS250 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v7-final=*) else (set cIOS250[57]-d2x-v7-final=)
+IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v8-final=*) else (set cIOS250[57]-d2x-v8-final=)
 
 :skipv2.0.1
 
@@ -15016,8 +15020,8 @@ if /i "%cIOS202[60]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS222[38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS223[37-38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS224[57]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
+if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
+if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%IOS9%" EQU "*" set mmm=*
 if /i "%IOS12%" EQU "*" set mmm=*
 if /i "%IOS13%" EQU "*" set mmm=*
@@ -15622,8 +15626,8 @@ set cIOS202[60]-v5.1R=*
 set cIOS222[38]-v4=*
 set cIOS223[37-38]-v4=*
 set cIOS224[57]-v5.1R=*
-set cIOS249[56]-d2x-v7-final=*
-set cIOS250[57]-d2x-v7-final=*
+set cIOS249[56]-d2x-v8-final=*
+set cIOS250[57]-d2x-v8-final=*
 
 
 
@@ -15684,8 +15688,8 @@ if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS223[37-38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS224[57]-v5.1R=*
-if /i "%RECCIOS%" EQU "Y" set cIOS249[56]-d2x-v7-final=*
-if /i "%RECCIOS%" EQU "Y" set cIOS250[57]-d2x-v7-final=*
+if /i "%RECCIOS%" EQU "Y" set cIOS249[56]-d2x-v8-final=*
+if /i "%RECCIOS%" EQU "Y" set cIOS250[57]-d2x-v8-final=*
 
 if /i "%CMIOSOPTION%" EQU "off" goto:quickskip
 if /i "%RECCIOS%" EQU "Y" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
@@ -15840,7 +15844,7 @@ set settings=
 if /i "%cmdguide%" EQU "G" set settings=G
 
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 ::--------------
@@ -15878,7 +15882,7 @@ set oldfullname=%name%
 
 set advDLCheck0=%advDLCheck%
 
-set d2x-beta-rev=7-final
+set d2x-beta-rev=8-final
 set advDLCheck=%advDLCheck:~0,17%%d2x-beta-rev%
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
@@ -16241,26 +16245,26 @@ if /i "%A9d%" EQU "*" (echo "0000009d.app from System Menu 4.3K (for MyMenuify)"
 
 if /i "%IOS236%" EQU "*" (echo "IOS236v65535(IOS36v3351[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS236">>temp\DLgotos.txt)
 
-if /i "%cIOS249[37]-d2x-v7-final%" EQU "*" (echo "cIOS249[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[37]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[38]-d2x-v7-final%" EQU "*" (echo "cIOS249[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[38]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[53]-d2x-v7-final%" EQU "*" (echo "cIOS249[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[53]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[55]-d2x-v7-final%" EQU "*" (echo "cIOS249[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[55]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" (echo "cIOS249[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[56]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[57]-d2x-v7-final%" EQU "*" (echo "cIOS249[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[57]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[58]-d2x-v7-final%" EQU "*" (echo "cIOS249[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[58]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[60]-d2x-v7-final%" EQU "*" (echo "cIOS249[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[60]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[70]-d2x-v7-final%" EQU "*" (echo "cIOS249[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[70]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS249[80]-d2x-v7-final%" EQU "*" (echo "cIOS249[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[80]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[37]-d2x-v7-final%" EQU "*" (echo "cIOS250[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[37]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[38]-d2x-v7-final%" EQU "*" (echo "cIOS250[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[38]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[53]-d2x-v7-final%" EQU "*" (echo "cIOS250[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[53]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[55]-d2x-v7-final%" EQU "*" (echo "cIOS250[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[55]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[56]-d2x-v7-final%" EQU "*" (echo "cIOS250[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[56]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" (echo "cIOS250[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[57]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[58]-d2x-v7-final%" EQU "*" (echo "cIOS250[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[58]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[60]-d2x-v7-final%" EQU "*" (echo "cIOS250[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[60]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[70]-d2x-v7-final%" EQU "*" (echo "cIOS250[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[70]-d2x-v7-final">>temp\DLgotos.txt)
-if /i "%cIOS250[80]-d2x-v7-final%" EQU "*" (echo "cIOS250[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[80]-d2x-v7-final">>temp\DLgotos.txt)
+if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" (echo "cIOS249[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[37]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" (echo "cIOS249[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[38]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" (echo "cIOS249[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[53]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" (echo "cIOS249[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[55]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (echo "cIOS249[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[56]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (echo "cIOS249[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[57]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" (echo "cIOS249[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[58]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" (echo "cIOS249[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[60]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" (echo "cIOS249[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[70]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" (echo "cIOS249[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[80]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" (echo "cIOS250[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[37]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" (echo "cIOS250[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[38]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" (echo "cIOS250[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[53]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" (echo "cIOS250[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[55]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (echo "cIOS250[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[56]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (echo "cIOS250[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[57]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" (echo "cIOS250[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[58]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" (echo "cIOS250[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[60]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" (echo "cIOS250[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[70]-d2x-v8-final">>temp\DLgotos.txt)
+if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" (echo "cIOS250[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[80]-d2x-v8-final">>temp\DLgotos.txt)
 
 if /i "%cIOS222[38]-v4%" EQU "*" (echo "cIOS222[38]-v4">>temp\DLnames.txt) & (echo "cIOS222[38]-v4">>temp\DLgotos.txt)
 if /i "%cIOS223[37-38]-v4%" EQU "*" (echo "cIOS223[37-38]-v4">>temp\DLnames.txt) & (echo "cIOS223[37-38]-v4">>temp\DLgotos.txt)
@@ -16946,26 +16950,26 @@ if /i "%cIOS249[57]-v21%" EQU "*" echo SET cIOS249[57]-v21=%cIOS249[57]-v21%>> "
 if /i "%cIOS250[57]-v21%" EQU "*" echo SET cIOS250[57]-v21=%cIOS250[57]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cIOS249[58]-v21%" EQU "*" echo SET cIOS249[58]-v21=%cIOS249[58]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cIOS250[58]-v21%" EQU "*" echo SET cIOS250[58]-v21=%cIOS250[58]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[37]-d2x-v7-final%" EQU "*" echo SET cIOS249[37]-d2x-v7-final=%cIOS249[37]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[38]-d2x-v7-final%" EQU "*" echo SET cIOS249[38]-d2x-v7-final=%cIOS249[38]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" echo SET cIOS249[56]-d2x-v7-final=%cIOS249[56]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[53]-d2x-v7-final%" EQU "*" echo SET cIOS249[53]-d2x-v7-final=%cIOS249[53]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[55]-d2x-v7-final%" EQU "*" echo SET cIOS249[55]-d2x-v7-final=%cIOS249[55]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[57]-d2x-v7-final%" EQU "*" echo SET cIOS249[57]-d2x-v7-final=%cIOS249[57]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[58]-d2x-v7-final%" EQU "*" echo SET cIOS249[58]-d2x-v7-final=%cIOS249[58]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[60]-d2x-v7-final%" EQU "*" echo SET cIOS249[60]-d2x-v7-final=%cIOS249[60]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[70]-d2x-v7-final%" EQU "*" echo SET cIOS249[70]-d2x-v7-final=%cIOS249[70]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[80]-d2x-v7-final%" EQU "*" echo SET cIOS249[80]-d2x-v7-final=%cIOS249[80]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[37]-d2x-v7-final%" EQU "*" echo SET cIOS250[37]-d2x-v7-final=%cIOS250[37]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[38]-d2x-v7-final%" EQU "*" echo SET cIOS250[38]-d2x-v7-final=%cIOS250[38]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[53]-d2x-v7-final%" EQU "*" echo SET cIOS250[53]-d2x-v7-final=%cIOS250[53]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[55]-d2x-v7-final%" EQU "*" echo SET cIOS250[55]-d2x-v7-final=%cIOS250[55]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[56]-d2x-v7-final%" EQU "*" echo SET cIOS250[56]-d2x-v7-final=%cIOS250[56]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" echo SET cIOS250[57]-d2x-v7-final=%cIOS250[57]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[58]-d2x-v7-final%" EQU "*" echo SET cIOS250[58]-d2x-v7-final=%cIOS250[58]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[60]-d2x-v7-final%" EQU "*" echo SET cIOS250[60]-d2x-v7-final=%cIOS250[60]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[70]-d2x-v7-final%" EQU "*" echo SET cIOS250[70]-d2x-v7-final=%cIOS250[70]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[80]-d2x-v7-final%" EQU "*" echo SET cIOS250[80]-d2x-v7-final=%cIOS250[80]-d2x-v7-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" echo SET cIOS249[37]-d2x-v8-final=%cIOS249[37]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" echo SET cIOS249[38]-d2x-v8-final=%cIOS249[38]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" echo SET cIOS249[56]-d2x-v8-final=%cIOS249[56]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" echo SET cIOS249[53]-d2x-v8-final=%cIOS249[53]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" echo SET cIOS249[55]-d2x-v8-final=%cIOS249[55]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" echo SET cIOS249[57]-d2x-v8-final=%cIOS249[57]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" echo SET cIOS249[58]-d2x-v8-final=%cIOS249[58]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" echo SET cIOS249[60]-d2x-v8-final=%cIOS249[60]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" echo SET cIOS249[70]-d2x-v8-final=%cIOS249[70]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" echo SET cIOS249[80]-d2x-v8-final=%cIOS249[80]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" echo SET cIOS250[37]-d2x-v8-final=%cIOS250[37]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" echo SET cIOS250[38]-d2x-v8-final=%cIOS250[38]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" echo SET cIOS250[53]-d2x-v8-final=%cIOS250[53]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" echo SET cIOS250[55]-d2x-v8-final=%cIOS250[55]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" echo SET cIOS250[56]-d2x-v8-final=%cIOS250[56]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" echo SET cIOS250[57]-d2x-v8-final=%cIOS250[57]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" echo SET cIOS250[58]-d2x-v8-final=%cIOS250[58]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" echo SET cIOS250[60]-d2x-v8-final=%cIOS250[60]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" echo SET cIOS250[70]-d2x-v8-final=%cIOS250[70]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" echo SET cIOS250[80]-d2x-v8-final=%cIOS250[80]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" echo SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cmios-v4_WiiGator_GCBL_v0.2%" EQU "*" echo SET RVL-cmios-v4_WiiGator_GCBL_v0.2=%RVL-cmios-v4_WiiGator_GCBL_v0.2%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cmios-v4_Waninkoko_rev5%" EQU "*" echo SET RVL-cmios-v4_Waninkoko_rev5=%RVL-cmios-v4_Waninkoko_rev5%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -26324,12 +26328,12 @@ goto:downloadstart
 
 ::d2x cIOSs
 
-:cIOS249[37]-d2x-v7-final
-set name=cIOS249[37]-d2x-v7-final
-set wadname=cIOS249[37]-d2x-v7-final
+:cIOS249[37]-d2x-v8-final
+set name=cIOS249[37]-d2x-v8-final
+set wadname=cIOS249[37]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=b0a4f22cb94c782ee0bcc57ba85169c5
+set ciosversion=21008
+set md5=26b2ab4b94378b92ee2a4802f80db5d0
 set md5alt=%md5%
 set basewad=IOS37-64-v5662
 set md5base=bdeb8d02ba1f3de7b430fbe12560a3eb
@@ -26337,19 +26341,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000025
 set version=5662
-set basecios=cIOS249[37]-d2x-v7-final
+set basecios=cIOS249[37]-d2x-v8-final
 set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[37]-d2x-v7-final
-set name=cIOS250[37]-d2x-v7-final
-set wadname=cIOS250[37]-d2x-v7-final
+:cIOS250[37]-d2x-v8-final
+set name=cIOS250[37]-d2x-v8-final
+set wadname=cIOS250[37]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=9fc6c027f8d9e7ed46ac37e62ada8846
+set ciosversion=21008
+set md5=ae84bfa60623907bb8e427b2152bf644
 set md5alt=%md5%
 set basewad=IOS37-64-v5662
 set md5base=bdeb8d02ba1f3de7b430fbe12560a3eb
@@ -26357,19 +26361,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000025
 set version=5662
-set basecios=cIOS249[37]-d2x-v7-final
+set basecios=cIOS249[37]-d2x-v8-final
 set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS249[38]-d2x-v7-final
-set name=cIOS249[38]-d2x-v7-final
-set wadname=cIOS249[38]-d2x-v7-final
+:cIOS249[38]-d2x-v8-final
+set name=cIOS249[38]-d2x-v8-final
+set wadname=cIOS249[38]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=9caeafc3b0d157cfcd7e42f2069abcb7
+set ciosversion=21008
+set md5=3f6fb796a0f7353b2abdec94d54c848f
 set md5alt=%md5%
 set basewad=IOS38-64-v4123
 set md5base=fb3db1afa0685a5778cd83b148f74723
@@ -26377,19 +26381,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000026
 set version=4123
-set basecios=cIOS249[38]-d2x-v7-final
+set basecios=cIOS249[38]-d2x-v8-final
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[38]-d2x-v7-final
-set name=cIOS250[38]-d2x-v7-final
-set wadname=cIOS250[38]-d2x-v7-final
+:cIOS250[38]-d2x-v8-final
+set name=cIOS250[38]-d2x-v8-final
+set wadname=cIOS250[38]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=80d3b1aed13f8f7addc9fb3aface9dfe
+set ciosversion=21008
+set md5=828434bf32e8955604fd97f279679ea4
 set md5alt=%md5%
 set basewad=IOS38-64-v4123
 set md5base=fb3db1afa0685a5778cd83b148f74723
@@ -26397,7 +26401,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000026
 set version=4123
-set basecios=cIOS249[38]-d2x-v7-final
+set basecios=cIOS249[38]-d2x-v8-final
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26405,12 +26409,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[53]-d2x-v7-final
-set name=cIOS249[53]-d2x-v7-final
-set wadname=cIOS249[53]-d2x-v7-final
+:cIOS249[53]-d2x-v8-final
+set name=cIOS249[53]-d2x-v8-final
+set wadname=cIOS249[53]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=369160fcee28a40cef1511b0817ce81d
+set ciosversion=21008
+set md5=45cacba5c6ec4354fdfc1897e181d0a9
 set md5alt=%md5%
 set basewad=IOS53-64-v5662
 set md5base=ce7a5174a863488655f9c97b59e1b380
@@ -26418,19 +26422,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000035
 set version=5662
-set basecios=cIOS249[53]-d2x-v7-final
+set basecios=cIOS249[53]-d2x-v8-final
 set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[53]-d2x-v7-final
-set name=cIOS250[53]-d2x-v7-final
-set wadname=cIOS250[53]-d2x-v7-final
+:cIOS250[53]-d2x-v8-final
+set name=cIOS250[53]-d2x-v8-final
+set wadname=cIOS250[53]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=3461aaaefea9a93c0cf16787828dde01
+set ciosversion=21008
+set md5=82bae3f38f80fb75283ea8b3f9f0dcf3
 set md5alt=%md5%
 set basewad=IOS53-64-v5662
 set md5base=ce7a5174a863488655f9c97b59e1b380
@@ -26438,7 +26442,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000035
 set version=5662
-set basecios=cIOS249[53]-d2x-v7-final
+set basecios=cIOS249[53]-d2x-v8-final
 set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26446,12 +26450,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[55]-d2x-v7-final
-set name=cIOS249[55]-d2x-v7-final
-set wadname=cIOS249[55]-d2x-v7-final
+:cIOS249[55]-d2x-v8-final
+set name=cIOS249[55]-d2x-v8-final
+set wadname=cIOS249[55]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=f4eeeb5c64fa598a63363db8fdc5dbe7
+set ciosversion=21008
+set md5=6b89794840db07268969e42eadff65d3
 set md5alt=%md5%
 set basewad=IOS55-64-v5662
 set md5base=cf19171ee90455917e5da3ca56c52612
@@ -26459,19 +26463,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000037
 set version=5662
-set basecios=cIOS249[55]-d2x-v7-final
+set basecios=cIOS249[55]-d2x-v8-final
 set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[55]-d2x-v7-final
-set name=cIOS250[55]-d2x-v7-final
-set wadname=cIOS250[55]-d2x-v7-final
+:cIOS250[55]-d2x-v8-final
+set name=cIOS250[55]-d2x-v8-final
+set wadname=cIOS250[55]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=3976a3a457f5095cd055a99ab5a6684d
+set ciosversion=21008
+set md5=d8e2af0dc66b304e4a91ef02931681c1
 set md5alt=%md5%
 set basewad=IOS55-64-v5662
 set md5base=cf19171ee90455917e5da3ca56c52612
@@ -26479,7 +26483,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000037
 set version=5662
-set basecios=cIOS249[55]-d2x-v7-final
+set basecios=cIOS249[55]-d2x-v8-final
 set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26487,12 +26491,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[56]-d2x-v7-final
-set name=cIOS249[56]-d2x-v7-final
-set wadname=cIOS249[56]-d2x-v7-final
+:cIOS249[56]-d2x-v8-final
+set name=cIOS249[56]-d2x-v8-final
+set wadname=cIOS249[56]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=8c22bc33af8c7cefd513e7136d79148f
+set ciosversion=21008
+set md5=15b4f42b7c174bc59dde005d6308174b
 set md5alt=%md5%
 set basewad=IOS56-64-v5661
 set md5base=726d464aa08fee191e76119ab0e0dc00
@@ -26500,19 +26504,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000038
 set version=5661
-set basecios=cIOS249[56]-d2x-v7-final
+set basecios=cIOS249[56]-d2x-v8-final
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[56]-d2x-v7-final
-set name=cIOS250[56]-d2x-v7-final
-set wadname=cIOS250[56]-d2x-v7-final
+:cIOS250[56]-d2x-v8-final
+set name=cIOS250[56]-d2x-v8-final
+set wadname=cIOS250[56]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=c670c3288a3240d76bd2de3bddb57bc0
+set ciosversion=21008
+set md5=7768708751021d1726c0776b805e3a6f
 set md5alt=%md5%
 set basewad=IOS56-64-v5661
 set md5base=726d464aa08fee191e76119ab0e0dc00
@@ -26520,19 +26524,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000038
 set version=5661
-set basecios=cIOS249[56]-d2x-v7-final
+set basecios=cIOS249[56]-d2x-v8-final
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS249[57]-d2x-v7-final
-set name=cIOS249[57]-d2x-v7-final
-set wadname=cIOS249[57]-d2x-v7-final
+:cIOS249[57]-d2x-v8-final
+set name=cIOS249[57]-d2x-v8-final
+set wadname=cIOS249[57]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=53075c217dd9cc6d4a3ab10b7745cf76
+set ciosversion=21008
+set md5=7acd515c425b45172f909c2c8d95ff40
 set md5alt=%md5%
 set basewad=IOS57-64-v5918
 set md5base=85e8101949d48a646448bde93640cdef
@@ -26540,19 +26544,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000039
 set version=5918
-set basecios=cIOS249[57]-d2x-v7-final
+set basecios=cIOS249[57]-d2x-v8-final
 set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[57]-d2x-v7-final
-set name=cIOS250[57]-d2x-v7-final
-set wadname=cIOS250[57]-d2x-v7-final
+:cIOS250[57]-d2x-v8-final
+set name=cIOS250[57]-d2x-v8-final
+set wadname=cIOS250[57]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=0eaa45eb9b2f3379e39a9bae106e73c0
+set ciosversion=21008
+set md5=7f3d117827fcd955f5675d895ae2a962
 set md5alt=%md5%
 set basewad=IOS57-64-v5918
 set md5base=85e8101949d48a646448bde93640cdef
@@ -26560,7 +26564,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000039
 set version=5918
-set basecios=cIOS249[57]-d2x-v7-final
+set basecios=cIOS249[57]-d2x-v8-final
 set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
@@ -26568,12 +26572,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[58]-d2x-v7-final
-set name=cIOS249[58]-d2x-v7-final
-set wadname=cIOS249[58]-d2x-v7-final
+:cIOS249[58]-d2x-v8-final
+set name=cIOS249[58]-d2x-v8-final
+set wadname=cIOS249[58]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=9dacbe4e7756f297b80f368394335729
+set ciosversion=21008
+set md5=ff2a70cb57f8e87298748b78fb28a11c
 set md5alt=%md5%
 set basewad=IOS58-64-v6175
 set md5base=791907a4993bf018cb52bf8f963cff92
@@ -26581,19 +26585,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003a
 set version=6175
-set basecios=cIOS249[58]-d2x-v7-final
+set basecios=cIOS249[58]-d2x-v8-final
 set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[58]-d2x-v7-final
-set name=cIOS250[58]-d2x-v7-final
-set wadname=cIOS250[58]-d2x-v7-final
+:cIOS250[58]-d2x-v8-final
+set name=cIOS250[58]-d2x-v8-final
+set wadname=cIOS250[58]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=d80c531e1f6537d9ad4381a87a94e3d4
+set ciosversion=21008
+set md5=6388a7fb31a40c13ac8e4eff5b1e25a5
 set md5alt=%md5%
 set basewad=IOS58-64-v6175
 set md5base=791907a4993bf018cb52bf8f963cff92
@@ -26601,7 +26605,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003a
 set version=6175
-set basecios=cIOS249[58]-d2x-v7-final
+set basecios=cIOS249[58]-d2x-v8-final
 set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
@@ -26609,12 +26613,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[60]-d2x-v7-final
-set name=cIOS249[60]-d2x-v7-final
-set wadname=cIOS249[60]-d2x-v7-final
+:cIOS249[60]-d2x-v8-final
+set name=cIOS249[60]-d2x-v8-final
+set wadname=cIOS249[60]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=c47aa1cd35df7a24f0fd7b17b5150856
+set ciosversion=21008
+set md5=5b6e7d60e43de908286255c8562c8705
 set md5alt=%md5%
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
@@ -26622,19 +26626,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003c
 set version=6174
-set basecios=cIOS249[60]-d2x-v7-final
+set basecios=cIOS249[60]-d2x-v8-final
 set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[60]-d2x-v7-final
-set name=cIOS250[60]-d2x-v7-final
-set wadname=cIOS250[60]-d2x-v7-final
+:cIOS250[60]-d2x-v8-final
+set name=cIOS250[60]-d2x-v8-final
+set wadname=cIOS250[60]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=643d56ea56bca10c0fc6eaba726569fc
+set ciosversion=21008
+set md5=54cdceddde554a2a8ca4147cda903cdf
 set md5alt=%md5%
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
@@ -26642,7 +26646,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003c
 set version=6174
-set basecios=cIOS249[60]-d2x-v7-final
+set basecios=cIOS249[60]-d2x-v8-final
 set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26650,12 +26654,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
 
-:cIOS249[70]-d2x-v7-final
-set name=cIOS249[70]-d2x-v7-final
-set wadname=cIOS249[70]-d2x-v7-final
+:cIOS249[70]-d2x-v8-final
+set name=cIOS249[70]-d2x-v8-final
+set wadname=cIOS249[70]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=3fedb909f8a17b37d56ce2d72dea4566
+set ciosversion=21008
+set md5=3feb0755ca2ddb4b13e68eaadf990959
 set md5alt=%md5%
 set basewad=IOS70-64-v6687
 set md5base=c38ff50344c00e17b7fe58c05d35a91c
@@ -26663,19 +26667,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000046
 set version=6687
-set basecios=cIOS249[70]-d2x-v7-final
+set basecios=cIOS249[70]-d2x-v8-final
 set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[70]-d2x-v7-final
-set name=cIOS250[70]-d2x-v7-final
-set wadname=cIOS250[70]-d2x-v7-final
+:cIOS250[70]-d2x-v8-final
+set name=cIOS250[70]-d2x-v8-final
+set wadname=cIOS250[70]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=32f269ccd8a04db4ebd110619a1f9a7e
+set ciosversion=21008
+set md5=f51402e9d65c522bcb248d16dbc5c1ed
 set md5alt=%md5%
 set basewad=IOS70-64-v6687
 set md5base=c38ff50344c00e17b7fe58c05d35a91c
@@ -26683,19 +26687,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000046
 set version=6687
-set basecios=cIOS249[70]-d2x-v7-final
+set basecios=cIOS249[70]-d2x-v8-final
 set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS249[80]-d2x-v7-final
-set name=cIOS249[80]-d2x-v7-final
-set wadname=cIOS249[80]-d2x-v7-final
+:cIOS249[80]-d2x-v8-final
+set name=cIOS249[80]-d2x-v8-final
+set wadname=cIOS249[80]-d2x-v8-final
 set ciosslot=249
-set ciosversion=21007
-set md5=2a6dfa39973f5c6b088395a2bf230bd4
+set ciosversion=21008
+set md5=04d83f1ae06e6f078a1ad62c8980ae14
 set md5alt=%md5%
 set basewad=IOS80-64-v6943
 set md5base=b6741d50aef2fde557d4e16901cf6346
@@ -26703,19 +26707,19 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000050
 set version=6943
-set basecios=cIOS249[80]-d2x-v7-final
+set basecios=cIOS249[80]-d2x-v8-final
 set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 goto:downloadstart
 
-:cIOS250[80]-d2x-v7-final
-set name=cIOS250[80]-d2x-v7-final
-set wadname=cIOS250[80]-d2x-v7-final
+:cIOS250[80]-d2x-v8-final
+set name=cIOS250[80]-d2x-v8-final
+set wadname=cIOS250[80]-d2x-v8-final
 set ciosslot=250
-set ciosversion=21007
-set md5=2d0b2ad30c5cbced878822063dd277ea
+set ciosversion=21008
+set md5=84fbd1f37ea17585e41cd3d1fcf4fee2
 set md5alt=%md5%
 set basewad=IOS80-64-v6943
 set md5base=b6741d50aef2fde557d4e16901cf6346
@@ -26723,7 +26727,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000050
 set version=6943
-set basecios=cIOS249[80]-d2x-v7-final
+set basecios=cIOS249[80]-d2x-v8-final
 set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -28645,8 +28649,8 @@ if /i "%cIOS202[60]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS202[60]
 if /i "%cIOS222[38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS222[38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%cIOS223[37-38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS223[37-38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%cIOS224[57]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS224[57]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS249[56]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS250[57]-d2x-v7-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%
 
