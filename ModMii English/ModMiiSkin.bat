@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.0.4
+set currentversion=6.0.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -48,6 +48,8 @@ set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
 
 
+if exist Updatetemp.bat attrib -h Updatetemp.bat
+if exist Updatetemp.bat del updatetemp.bat>nul
 
 
 ::------Check for old Windows Versions-------
@@ -521,6 +523,12 @@ echo Set FWDOPTION=%FWDOPTION%>> Support\settings.bat
 echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
 echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
 support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
+
+support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
+
+support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
+
+
 
 echo Set overwritecodes=%overwritecodes%>> Support\settings.bat
 echo Set cheatregion=%cheatregion%>> Support\settings.bat
@@ -1285,7 +1293,7 @@ IF not ERRORLEVEL 1 (set UpdatesIOSQ=Y) else (set UpdatesIOSQ=N)
 if /i "%THEMEQ%" EQU "Y" goto:WPAGE20
 if /i "%USBGUIDE%" EQU "Y" goto:UPAGE1
 
-et BACKB4DRIVE=WPAGE13
+set BACKB4DRIVE=WPAGE13
 goto:DRIVECHANGE
 
 
@@ -1470,6 +1478,7 @@ set REALDRIVE=%DRIVE:&=^&%
 support\sfk filter Support\settings.bat -!"Set Drive=" -write -yes>nul
 echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
 support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
+support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
 ::goto:
 
 set wabmp=%wabmplast%
@@ -1560,7 +1569,7 @@ set DRIVEU=%DRIVEUTEMP:&=^&%
 support\sfk filter Support\settings.bat -!"Set DriveU=" -write -yes>nul
 echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
 support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
-
+support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
 
 ::goto:
 
@@ -1675,6 +1684,8 @@ set watext=~Updating from v%currentversion% to v%newversion%~~Please Wait...
 start support\wizapp PB OPEN
 start support\wizapp PB UPDATE 20
 
+::Kill ModMiiSkin.exe process so it can be updated
+taskkill /im ModMiiSkin.exe /f >nul
 
 if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
 

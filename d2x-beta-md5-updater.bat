@@ -11,26 +11,26 @@ echo set AdvNumber=0 >temp\DownloadQueues\d2xAll.bat
 echo if /i '?GetAdvNumberOnly?' EQU 'Y' goto:endofqueue>>temp\DownloadQueues\d2xAll.bat
 echo Set ROOTSAVE=off>>temp\DownloadQueues\d2xAll.bat
 echo Set Option1=off>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[37]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[38]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[56]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[53]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[55]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[57]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[58]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[60]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[70]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS249[80]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[37]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[38]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[53]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[55]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[56]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[57]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[58]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[60]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[70]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
-echo Set cIOS250[80]-d2x-v7-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[37]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[38]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[56]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[53]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[55]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[57]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[58]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[60]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[70]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS249[80]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[37]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[38]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[53]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[55]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[56]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[57]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[58]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[60]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[70]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
+echo Set cIOS250[80]-d2x-v8-final=*>>temp\DownloadQueues\d2xAll.bat
 
 echo :endofqueue>>temp\DownloadQueues\d2xAll.bat
 

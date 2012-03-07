@@ -6,7 +6,7 @@
  Script Function:
 	Move the ModMii skin window.
 
- Script Version: 1.6
+ Script Version: 1.7
 
 #ce ----------------------------------------------------------------------------
 
@@ -67,19 +67,20 @@ if $run = 0 then
 endif
 
 While 1
-	While 1
-		if WinExists($run) <> 1 then
-			exitloop
-		else
-			$WinPos = WinGetPos($run)
-			if $WinPos <> 0 then
-				$WinPosBak = $WinPos
-			else
-				$WinPos = $WinPosBak
-				exitloop
-			endif
-		endif
-	WEnd
+        While 1
+                if WinExists($run) <> 1 then
+                        exitloop
+                else
+                        $WinPos = WinGetPos($run)
+                        if $WinPos <> 0 then
+                                $WinPosBak = $WinPos
+                        else
+                                $WinPos = $WinPosBak
+                                exitloop
+                        endif
+                endif
+                sleep(10)
+        WEnd
 	$run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
 	if $run = 0 then 
 		exit
