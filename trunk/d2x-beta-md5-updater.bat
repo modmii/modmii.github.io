@@ -5,6 +5,42 @@ if not exist support cd..
 
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
 
+
+::build dummy files to speed up build
+
+call Support\d2x-beta\d2x-beta.bat
+
+::remove setting path's with an & symbol and force default
+if exist Support\settings.bat support\sfk filter -spat Support\settings.bat -!"\x26" -write -yes>nul
+if exist Support\settings.bat call Support\settings.bat
+if "%Drive%"=="" set Drive=COPY_TO_SD
+
+if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
+
+echo dummy>"%DRIVE%\WAD\cIOS249[37]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[37]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[38]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[38]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[53]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[53]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[55]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[55]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[56]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[56]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[57]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[57]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[58]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[58]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[60]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[60]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[70]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[70]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS249[80]-d2x-v%d2x-beta-rev%.wad"
+echo dummy>"%DRIVE%\WAD\cIOS250[80]-d2x-v%d2x-beta-rev%.wad"
+
+
+
+
 ::build d2xAll queue
 
 echo set AdvNumber=0 >temp\DownloadQueues\d2xAll.bat
