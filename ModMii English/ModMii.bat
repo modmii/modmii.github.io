@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.0.5
+set currentversion=6.0.6
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -182,12 +182,12 @@ echo.
 echo ModMii.exe 1 2 3 4 5 Extras Options
 echo.
 echo 1) Wizard "W"
-echo 2) CurrentFirmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
+echo 2) CurrentSystemMenu: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
 echo 3) Region: "U","E","J","K"
 echo.       If your Wii was Region Changed but not originally Korean,
 echo        select the Region you are currently on
-echo 4) DesiredFirmware (Optional): "4.1", "4.2", "4.3"
-echo    Note: If DesiredFirmware not specified ModMii use recommended Firmware
+echo 4) DesiredSystemMenu (Optional): "4.1", "4.2", "4.3"
+echo    Note: If DesiredSystemMenu not specified ModMii use recommended SystemMenu
 echo.
 echo Extras:
 echo         "Red" Red Theme [cannot be used simultaneously with other themes]
@@ -256,14 +256,14 @@ title ModMii Abstinence Wizard Command Line Help
 
 support\sfk echo [Red]ModMii Abstinence Wizard Express Mode Usage
 echo.
-echo ModMii.exe AW Firmware SNEEK-TYPE SNKFirmware SNKRegion Extras Options
+echo ModMii.exe AW SystemMenu SNEEK-TYPE SNKSystemMenu SNKRegion Extras Options
 echo.
 echo ModMii.exe 1 2 3 4 5 Extras Options
 echo.
 echo 1) Abstinence Wizard "AW"
-echo 2) Firmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
+echo 2) SystemMenu: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
 echo 3) SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
-echo 4) SNKFirmware: "4.1", "4.2", "4.3"
+echo 4) SNKSystemMenu: "4.1", "4.2", "4.3"
 echo 5) SNKRegion: "U","E","J","K"
 echo.
 echo Extras:
@@ -359,12 +359,12 @@ title ModMii HackMii Solutions Command Line Help
 
 support\sfk echo [Red]ModMii HackMii Solutions Express Mode Usage
 echo.
-echo ModMii.exe HS Firmware Extras Options
+echo ModMii.exe HS SystemMenu Extras Options
 echo.
 echo ModMii.exe 1 2 Extras Options
 echo.
 echo 1) HackMii Solutions "HS"
-echo 2) Firmware: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
+echo 2) SystemMenu: "4.3","4.2","4.1","4.0","3.X" [3.0-3.5], "O" [other ^<2.2]
 echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
@@ -447,13 +447,13 @@ echo.
 title ModMii Emulated NAND Builder Command Line Help
 support\sfk echo [Red]ModMii Emulated NAND Builder Express Mode Usage
 echo.
-echo ModMii.exe E SNEEK-TYPE Firmware Region Extras Options
+echo ModMii.exe E SNEEK-TYPE SystemMenu Region Extras Options
 echo.
 echo ModMii.exe 1 2 3 4 Extras Options
 echo.
 echo 1) Emulated NAND Builder "E" [or "SE" to install S\UNEEK AND build a NAND]
 echo 2) SNEEK-TYPE: "S" SNEEK, "U" UNEEK, "SD" SNEEK+DI, "UD" UNEEK+DI
-echo 3) Firmware: "4.1", "4.2", "4.3"
+echo 3) SystemMenu: "4.1", "4.2", "4.3"
 echo 4) Region: "U","E","J","K"
 echo.
 echo Extras:
@@ -4616,7 +4616,7 @@ echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:WPAGE1
 
-::...................................Wizard Page2 - Current Firmware...............................
+::...................................Wizard Page2 - Current SystemMenu...............................
 :WPAGE2
 set FIRMSTART=
 
@@ -4649,7 +4649,7 @@ echo     For an instructional video on checking your System Menu Version enter "
 echo.
 echo         Note: to check this, turn on your wii, click the Wii button in the
 echo               bottom left of the main system menu, click Wii Settings,
-echo               then you should see the firmware in the top right of the screen
+echo               then you should see the System Menu in the top right of the screen
 echo               (ie. 4.2U, 4.1J, 3.2E, etc.)
 echo.
 echo.
@@ -4735,11 +4735,11 @@ if /i "%MENU1%" EQU "RC" (echo         What Region would you like to change to?)
 echo         What is your Region?
 echo.
 echo.
-echo         For an instructional video on checking your firmware enter "Help"
+echo         For an instructional video on checking your System Menu enter "Help"
 echo.
 echo         Note: to check this, turn on your wii, click the Wii button in the
 echo               bottom left of the main system menu, click Wii Settings,
-echo               then you should see the firmware in the top right of the screen
+echo               then you should see the System Menu in the top right of the screen
 echo               (ie. 4.2U, 4.1J, 3.2E, etc.)
 echo.
 echo         Note: If your Wii was Region Changed choose the region you are currently on
@@ -4868,7 +4868,7 @@ if /i "%FIRMSTART%" NEQ "o" goto:skipOmsg
 support\sfk echo -spat \x20 [Red] Important Notes:
 echo.
 echo    Alternatively, you can update your Wii to v3.0-4.3 then repeat the
-echo    Wizard using your new Firmware in order to hack your
+echo    Wizard using your new System Menu in order to hack your
 echo    Wii without requiring one of the above games
 echo.
 :skipOmsg
@@ -5045,7 +5045,7 @@ goto:WPAGE3D
 
 
 
-::...................................Wizard Page4 - New Firmware...............................
+::...................................Wizard Page4 - New System Menu...............................
 :WPAGE4
 if /i "%MENU1%" EQU "H" goto:HACKMIISOLUTION
 set FIRM=
@@ -5054,9 +5054,9 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo         Select the new firmware you would like to upgrade/downgrade to.
+echo         Select the new System Menu you would like to upgrade/downgrade to.
 
-if /i "%MENU1%" NEQ "RC" (echo.) & (echo.) & (echo.) & (echo         Note: if current firmware = new firmware, a system menu is not downloaded)
+if /i "%MENU1%" NEQ "RC" (echo.) & (echo.) & (echo.) & (echo   Note: if current system menu = new system menu, a system menu is not downloaded)
 echo.
 echo.
 echo.
@@ -6000,10 +6000,10 @@ echo.
 echo.
 echo.
 if /i "%VIRGIN%" EQU "Y" echo           * Install and\or update all recommended softmods
-if /i "%FIRMSTART%" NEQ "o" echo           * Current firmware is %FIRMSTART%%REGION%
-if /i "%FIRMSTART%" EQU "o" echo           * Current firmware is less than 2.2%REGION%
+if /i "%FIRMSTART%" NEQ "o" echo           * Current System Menu is %FIRMSTART%%REGION%
+if /i "%FIRMSTART%" EQU "o" echo           * Current System Menu is less than 2.2%REGION%
 
-echo           * Desired firmware is %FIRM%%REGION%
+echo           * Desired System Menu is %FIRM%%REGION%
 
 echo.
 if /i "%PIC%" EQU "Y" echo           * Install the Photo Channel
@@ -14679,7 +14679,7 @@ support\sfk filter -quiet temp\syscheck.txt -ls+"sysCheck" -rep _"sysCheck v"__ 
 set /p syscheckversion= <temp\syscheck.txt
 del temp\syscheck.txt>nul
 
-::get firmware info (ie. "System Menu 4.3E")
+::get System Menu info (ie. "System Menu 4.3E")
 copy /y "%sysCheckName%" temp\syscheck.txt>nul
 support\sfk filter -quiet temp\syscheck.txt -ls+"System Menu " -rep _"*System Menu "__ -rep _" *"__ -rep _",*"__ -write -yes
 set /p firmstart= <temp\syscheck.txt
@@ -15853,6 +15853,14 @@ if /i "%MENU1%" NEQ "L" goto:DLCOUNT
 if not exist temp\DLnamesADV.txt goto:DLCOUNT
 findStr "d2x" temp\DLnamesADV.txt >nul
 IF ERRORLEVEL 1 goto:DLCOUNT
+
+
+::split out default d2x cIOSs and force "8-final" (ie. set d2x-beta-rev=8-final)
+support\sfk filter -spat "temp\DownloadQueues\%CurrentQueue%" -ls+"SET cIOS" -le+"\x3d\x2a">temp\temp.bat
+support\sfk filter -spat temp\temp.bat ++"-d2x-v" -rep _"-d2x-"*_"-d2x-v8-final\x3d\x2a"_ -write -yes>nul
+call temp\temp.bat
+
+
 
 FINDSTR /N . temp\DLnamesADV.txt>temp\DLnamesADVcheck.txt
 support\sfk filter -quiet temp\DLnamesADVcheck.txt -+d2x -rep _cIOS*[_cIOS249[_ -rep _"Advanced Download: "__ -write -yes
@@ -17879,6 +17887,11 @@ echo.
 if /i "%code2%" NEQ "%code2new%" ren %basecios%\%code1%%code2%.cert %code1%%code2new%.cert
 if /i "%code2%" NEQ "%code2new%" ren %basecios%\%code1%%code2%.footer %code1%%code2new%.footer
 
+
+::skip for d2x cIOSs
+if /i "%basecios:~12,3%" EQU "d2x" goto:NotRenamedOriginal
+
+
 if exist support\Diffs\%diffpath%\%diffpath%_00.diff ren %basecios%\00000000.app 00000000-original.app
 if exist support\Diffs\%diffpath%\%diffpath%_01.diff ren %basecios%\00000001.app 00000001-original.app
 if exist support\Diffs\%diffpath%\%diffpath%_02.diff ren %basecios%\00000002.app 00000002-original.app
@@ -17899,7 +17912,9 @@ ren %basecios%\%code1%%code2new%.tmd %code1%%code2new%-original.tmd
 
 
 
+
 ::-------------diff patch files----------------
+
 if exist support\Diffs\%diffpath%\%diffpath%_00.diff support\jptch  %basecios%\00000000-original.app support\Diffs\%diffpath%\%diffpath%_00.diff %basecios%\00000000.app
 if exist support\Diffs\%diffpath%\%diffpath%_01.diff support\jptch  %basecios%\00000001-original.app support\Diffs\%diffpath%\%diffpath%_01.diff %basecios%\00000001.app
 if exist support\Diffs\%diffpath%\%diffpath%_02.diff support\jptch  %basecios%\00000002-original.app support\Diffs\%diffpath%\%diffpath%_02.diff %basecios%\00000002.app
@@ -17947,7 +17962,10 @@ if exist %basecios%\%code1%%code2%.tik del %basecios%\%code1%%code2%.tik>nul
 if exist %basecios%\%code1%%code2%.tmd del %basecios%\%code1%%code2%.tmd>nul
 
 
-::Korean Key Patch
+::---------------Korean Key Patch---------------
+
+::skip korean key patch and copying of custom modules for d2x cIOSs (will be done later)
+if /i "%basecios:~12,3%" EQU "d2x" goto:signcios
 
 if /i "%basewad:~3,2%" EQU "38" goto:nokorpatch
 if /i "%basecios%" EQU "cIOS223[37-38]-v4" goto:nokorpatch
@@ -18147,82 +18165,13 @@ if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FFSP.app %basec
 
 
 
-::249 d2x base 37/38/56/60/70/80
-if /i "%basecios:~0,17%" EQU "cIOS249[37]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[38]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[53]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[55]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[56]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[60]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[70]-d2x-v" goto:yes
-if /i "%basecios:~0,17%" EQU "cIOS249[80]-d2x-v" goto:yes
-goto:skip
-:yes
-if exist support\d2x-beta\mload.app (copy support\d2x-beta\mload.app %basecios%\0000000f.app) else (copy Support\d2xModules\mload.app %basecios%\0000000f.app)
 
-if exist support\d2x-beta\FAT.app (copy support\d2x-beta\FAT.app %basecios%\00000010.app) else (copy support\d2xmodules\FAT.app %basecios%\00000010.app)
-
-if exist support\d2x-beta\SDHC.app (copy support\d2x-beta\SDHC.app %basecios%\00000011.app) else (copy Support\d2xModules\SDHC.app %basecios%\00000011.app)
-
-if exist support\d2x-beta\EHCI.app (copy support\d2x-beta\EHCI.app %basecios%\00000012.app) else (copy Support\d2xmodules\EHCI.app %basecios%\00000012.app)
-
-if exist support\d2x-beta\DIPP.app (copy support\d2x-beta\DIPP.app %basecios%\00000013.app) else (copy Support\d2xmodules\DIPP.app %basecios%\00000013.app)
-
-if exist support\d2x-beta\ES.app (copy support\d2x-beta\ES.app %basecios%\00000014.app) else (copy support\d2xmodules\ES.app %basecios%\00000014.app)
-
-if exist support\d2x-beta\FFSP.app (copy support\d2x-beta\FFSP.app %basecios%\00000015.app) else (copy Support\d2xmodules\FFSP.app %basecios%\00000015.app)
-:skip
-
-
-
-
-
-::249 d2x base 57
-if /i "%basecios:~0,17%" EQU "cIOS249[57]-d2x-v" goto:yes
-goto:skip
-:yes
-
-if exist support\d2x-beta\mload.app (copy support\d2x-beta\mload.app %basecios%\00000013.app) else (copy Support\d2xModules\mload.app %basecios%\00000013.app)
-
-if exist support\d2x-beta\FAT.app (copy support\d2x-beta\FAT.app %basecios%\00000014.app) else (copy support\d2xmodules\FAT.app %basecios%\00000014.app)
-
-if exist support\d2x-beta\SDHC.app (copy support\d2x-beta\SDHC.app %basecios%\00000015.app) else (copy Support\d2xModules\SDHC.app %basecios%\00000015.app)
-
-if exist support\d2x-beta\EHCI.app (copy support\d2x-beta\EHCI.app %basecios%\00000016.app) else (copy Support\d2xmodules\EHCI.app %basecios%\00000016.app)
-
-if exist support\d2x-beta\DIPP.app (copy support\d2x-beta\DIPP.app %basecios%\00000017.app) else (copy Support\d2xmodules\DIPP.app %basecios%\00000017.app)
-
-if exist support\d2x-beta\ES.app (copy support\d2x-beta\ES.app %basecios%\00000018.app) else (copy support\d2xmodules\ES.app %basecios%\00000018.app)
-
-if exist support\d2x-beta\FFSP.app (copy support\d2x-beta\FFSP.app %basecios%\00000019.app) else (copy Support\d2xmodules\FFSP.app %basecios%\00000019.app)
-:skip
-
-
-
-::249 d2x base 58
-if /i "%basecios:~0,17%" EQU "cIOS249[58]-d2x-v" goto:yes
-goto:skip
-:yes
-
-if exist support\d2x-beta\mload.app (copy support\d2x-beta\mload.app %basecios%\00000013.app) else (copy Support\d2xModules\mload.app %basecios%\00000013.app)
-
-if exist support\d2x-beta\FAT.app (copy support\d2x-beta\FAT.app %basecios%\00000014.app) else (copy support\d2xmodules\FAT.app %basecios%\00000014.app)
-
-if exist support\d2x-beta\SDHC.app (copy support\d2x-beta\SDHC.app %basecios%\00000015.app) else (copy Support\d2xModules\SDHC.app %basecios%\00000015.app)
-
-if exist support\d2x-beta\USBS.app (copy support\d2x-beta\USBS.app %basecios%\00000016.app) else (copy Support\d2xModules\USBS.app %basecios%\00000016.app)
-
-if exist support\d2x-beta\DIPP.app (copy support\d2x-beta\DIPP.app %basecios%\00000017.app) else (copy Support\d2xmodules\DIPP.app %basecios%\00000017.app)
-
-if exist support\d2x-beta\ES.app (copy support\d2x-beta\ES.app %basecios%\00000018.app) else (copy support\d2xmodules\ES.app %basecios%\00000018.app)
-
-if exist support\d2x-beta\FFSP.app (copy support\d2x-beta\FFSP.app %basecios%\00000019.app) else (copy Support\d2xmodules\FFSP.app %basecios%\00000019.app)
-:skip
 
 
 
 
 ::------sign cIOS with details---------
+:signcios
 set d2xNumber=
 set d2xhexNumber=
 set baseNumber=
@@ -18235,7 +18184,7 @@ if /i "%code2%" EQU "00000101" goto:repackwad
 
 echo.
 echo Signing 00000000.app with cIOS details
-
+echo.
 
 ::----convert some values from dec to hex----
 
@@ -18326,27 +18275,204 @@ support\hexalter.exe "%basecios%\00000000.app" 0x20=%cIOSsubversionhex%
 
 
 
-::---------IRQ4 patch for d2x cIOSs w/ rev's 21007 or higher (not applicable to base 58 cIOSs)--------
+::---------patches for d2x cIOSs via ciosmaps.xml (including IRQ4 patch if applicable)--------
 if /i "%basecios:~12,3%" NEQ "d2x" goto:repackwad
-if /i "%basewad:~3,2%" EQU "58" goto:repackwad
 
-if /i "%ciosversion%" GEQ "21007" (set IRQ4patch=ON) else (set IRQ4patch=OFF)
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-if /i "%IRQ4patch%" NEQ "ON" goto:repackwad
+echo.
+echo Patching some IOS modules
+echo.
+
+if exist Support\d2x-beta\ciosmaps.xml (copy /y Support\d2x-beta\ciosmaps.xml temp\ciosmaps.xml>nul) else (copy /y Support\d2xModules\ciosmaps.xml temp\ciosmaps.xml>nul)
+
+::get base IOS section
+support\sfk -spat filter temp\ciosmaps.xml -inc "base ios\x3d\x22%basewad:~3,2%" to "\x2fbase" -nocheck -write -yes>nul
+
+::rename comments and redirects
+support\sfk -spat filter temp\ciosmaps.xml -rep _"\x3c\x21\x2d\x2d"_commentstart_ -rep _"\x2d\x2d\x3e"_commentend_ -write -yes>nul
+support\sfk -spat filter temp\ciosmaps.xml -rep _"\x3c"__ -rep _"\x2f\x3e"_LineEnd_ -rep _"\x3e"_LineEnd_ -write -yes>nul
+
+
+::remove quotes, equal signs, and trailing spaces\slashes
+support\sfk -spat filter temp\ciosmaps.xml -rep _"\x3d"__ -rep _"\x22"__ -write -yes>nul
+support\sfk -spat filter temp\ciosmaps.xml -lerep _"\x2f"__ -lerep _"\x20"__ -write -yes>nul
+
+
+::remove blank lines
+support\sfk filter temp\ciosmaps.xml -no-empty-lines -no-blank-lines -write -yes>nul
+
+::force remove IRQ4 patch for d2x v8 base 58 (harmless but included by davebaol by accident)
+if /i "%basewad:~3,2%" NEQ "58" goto:no58fix
+if /i "%ciosversion%" NEQ "21008" goto:no58fix
+support\sfk -spat filter temp\ciosmaps.xml -!"patch offset0x28530 size4 originalbytes0xFF,0xFF,0x5D,0x52 newbytes0xFF,0xFF,0x5D,0x5C" -write -yes>nul
+:no58fix
+
+
+::get contentscount\basemodules\modulescount --> basemodules=lastbasemodules+1 (includes 00000000.app)
+
+set /p topline= <temp\ciosmaps.xml
+
+::-------disable getting info for now, not needed-------
+goto:DisableGettingcIOSINFO
+
+echo %topline%>temp\temp.txt
+support\sfk filter temp\temp.txt -rep _*contentscount__ -rep _" "*__ -write -yes>nul
+set /p contentscount= <temp\temp.txt
+
+support\sfk dec %lastbasemodule%>temp\temp.txt
+set /p basemodules= <temp\temp.txt
+set /a basemodules=%basemodules%+1
+
+
+set /a modulescount=%contentscount%-%basemodules%
+
+::echo %contentscount%
+::echo %basemodules%
+::echo %modulescount%
+
+:DisableGettingcIOSINFO
+::--------------------------------------------------------
+
+
+::remove topline
+support\sfk filter temp\ciosmaps.xml -!"%topline%" -write -yes>nul
+
+::remove 00000000.app patches (done later)
+support\sfk -spat filter temp\ciosmaps.xml -cut "*" to "\x2fcontent" -nocheck -write -yes>nul
+
+::remove /content and /base
+support\sfk -spat filter temp\ciosmaps.xml -!"\x2fcontent" -!"\x2fbase" -write -yes>nul
+
+::split to temp\ciosmodules.xml
+support\sfk filter temp\ciosmaps.xml ++"module" -!"commentstart" -!"commentend" -!"\x2fbase">temp\ciosmodules.xml
+support\sfk filter temp\ciosmaps.xml -!"module" -!"\x2fbase" -write -yes>nul
+
+
+set contentid=0
+set xmlcomment=
+set newbytes=
+set newbytestemp=
+set getnewbytes=
+
+::-----------------------:process ciosmaps.xml: loop though xml---------------------------
+::Loop through the the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\ciosmaps.xml) do call :processciosmaps %%A
+goto:quickskip
+:processciosmaps
+
+::set xmlLine=%*
+
+echo %*>temp\temp.txt
+
+findStr /I /C:"commentend" "temp\temp.txt" >nul
+if not ERRORLEVEL 1 (set xmlcomment=) & (goto:EOF)
+
+if /i "%xmlcomment%" EQU "on" goto:EOF
+
+findStr /I /C:"commentstart" "temp\temp.txt" >nul
+if not ERRORLEVEL 1 (set xmlcomment=on) & (goto:EOF)
+
+
+findStr /I /C:"content id" "temp\temp.txt" >nul
+if not ERRORLEVEL 1 (set /a contentid=%contentid%+1) & (goto:EOF)
+
+
+
+::----patching...----
+
+::get current contendid
+support\sfk hex %contentid% -digits=8 >temp\hex.txt
+set /p contentidhex= <temp\hex.txt
+set contentidhex=%contentidhex:~0,-1%
+
+::get patchoffset
+findStr /I /C:"patch offset" "temp\temp.txt" >nul
+if ERRORLEVEL 1 goto:skip
+support\sfk -spat filter temp\temp.txt -rep _*"patch offset"__ -rep _" "*__ -rep _"LineEnd"*__ -write -yes>nul
+set /p patchoffset= <temp\temp.txt
+:skip
+
+
+
+::get newbytes
+echo %*>temp\temp.txt
+
+findStr /I /C:"newbytes" "temp\temp.txt" >nul
+if not ERRORLEVEL 1 set getnewbytes=on
+if /i "%getnewbytes%" NEQ "on" goto:skip
+
+::filter for newbytes
+support\sfk -spat filter temp\temp.txt -rep _*"newbytes"__ -rep _\x20\x20__ -lsrep _\x20__ -rep _"LineEnd"*__ -rep _" "*__ -write -yes>nul
+
+set newbytestemp=
+set /p newbytestemp= <temp\temp.txt
+set newbytes=%newbytes%%newbytestemp%
+if "%newbytes%"=="" goto:EOF
+if /i "%newbytes:~0,2%" NEQ "0x" (set newbytes=) & (goto:EOF)
+:skip
+
+
+::check LineEnd
+echo %*>temp\temp.txt
+
+findStr /I /C:"LineEnd" "temp\temp.txt" >nul
+if ERRORLEVEL 1 goto:EOF
+
+if "%newbytes%"=="" goto:EOF
+if "%patchoffset%"=="" goto:EOF
+
+::::verbose
+::echo support\hexalter.exe %basecios%\%contentidhex%.app %patchoffset%=%newbytes%
+
+support\hexalter.exe %basecios%\%contentidhex%.app %patchoffset%=%newbytes%
+
+set patchoffset=
+set newbytes=
+set newbytestemp=
+set getnewbytes=
+
+goto:EOF
+:quickskip
+
 
 
 echo.
-echo Patching %lastbasemodule%.app with IRQ4 patch
+echo Copying over Custom Modules
 echo.
-if /i "%basewad:~3,2%" EQU "37" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x26E40=0xFF,0xFF,0x5B,0x78
-if /i "%basewad:~3,2%" EQU "38" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x2668C=0xFF,0xFF,0x5A,0xFC
-if /i "%basewad:~3,2%" EQU "53" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x26E40=0xFF,0xFF,0x5B,0x78
-if /i "%basewad:~3,2%" EQU "55" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x26E40=0xFF,0xFF,0x5B,0x78
-if /i "%basewad:~3,2%" EQU "56" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28530=0xFF,0xFF,0x5D,0x5C
-if /i "%basewad:~3,2%" EQU "57" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28530=0xFF,0xFF,0x5D,0x5C
-if /i "%basewad:~3,2%" EQU "60" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x2774C=0xFF,0xFF,0x5D,0x50
-if /i "%basewad:~3,2%" EQU "70" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28414=0xFF,0xFF,0x5D,0x50
-if /i "%basewad:~3,2%" EQU "80" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28530=0xFF,0xFF,0x5D,0x5C
+
+
+::Loop through the the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\ciosmodules.xml) do call :processciosmodules %%A
+goto:quickskip
+:processciosmodules
+
+set /a contentid=%contentid%+1
+support\sfk hex %contentid% -digits=8 >temp\hex.txt
+set /p contentidhex= <temp\hex.txt
+set contentidhex=%contentidhex:~0,-1%
+
+::set xmlLine=%*
+
+echo %*>temp\temp.txt
+
+::get module
+support\sfk -spat filter temp\temp.txt -rep _*" module"__ -rep _" "*__ -write -yes>nul
+set /p module= <temp\temp.txt
+
+if exist support\d2x-beta\%module%.app (copy support\d2x-beta\%module%.app %basecios%\%contentidhex%.app) else (copy Support\d2xModules\%module%.app %basecios%\%contentidhex%.app)
+
+
+goto:EOF
+:quickskip
+
+
+
+::support\sfk hex %dec% -digits=8 >hex.txt
+::support\hexalter.exe %basecios%\%lastbasemodule%.app 0x26E40=0xFF,0xFF,0x5B,0x78
+
+
+
+
+
 echo.
 
 ::---------pack files into cIOS wad---------
@@ -26346,6 +26472,7 @@ set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[37]-d2x-v8-final
@@ -26366,6 +26493,7 @@ set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS249[38]-d2x-v8-final
@@ -26386,6 +26514,7 @@ set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[38]-d2x-v8-final
@@ -26406,6 +26535,7 @@ set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26427,6 +26557,7 @@ set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[53]-d2x-v8-final
@@ -26447,6 +26578,7 @@ set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26468,6 +26600,7 @@ set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[55]-d2x-v8-final
@@ -26488,6 +26621,7 @@ set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26509,6 +26643,7 @@ set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[56]-d2x-v8-final
@@ -26529,6 +26664,7 @@ set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS249[57]-d2x-v8-final
@@ -26549,6 +26685,7 @@ set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[57]-d2x-v8-final
@@ -26569,6 +26706,7 @@ set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26590,6 +26728,7 @@ set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[58]-d2x-v8-final
@@ -26610,6 +26749,7 @@ set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26631,6 +26771,7 @@ set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[60]-d2x-v8-final
@@ -26651,6 +26792,7 @@ set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
@@ -26672,6 +26814,7 @@ set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[70]-d2x-v8-final
@@ -26692,6 +26835,7 @@ set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS249[80]-d2x-v8-final
@@ -26712,6 +26856,7 @@ set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 :cIOS250[80]-d2x-v8-final
@@ -26732,6 +26877,7 @@ set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 ::------------------CMIOSs--------------------
@@ -28212,7 +28358,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\sprint-paramstart.001 "%Drive%"\%gui
 
 
 if /i "%MENU1%" NEQ "RC" goto:notRC
-support\sfk echo -spat \x3cli\x3eDesired firmware is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eDesired System Menu is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%ThemeSelection%" EQU "R" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Red Theme\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%ThemeSelection%" EQU "G" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Green Theme\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%ThemeSelection%" EQU "BL" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Blue Theme\x3c/li\x3e>>"%Drive%"\%guidename%
@@ -28223,8 +28369,8 @@ goto:skipusb
 
 ::------Abstinence parameters---------------
 if /i "%AbstinenceWiz%" NEQ "Y" goto:notAbstinenceWiz
-if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is less than 2.2%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent System Menu is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FIRMSTART%" EQU "o" support\sfk echo -spat \x3cli\x3eCurrent System Menu is less than 2.2%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cli\x3eBuild %SNKVERSION%%SNKREGION% Emulated NAND\x3c/li\x3e>>"%Drive%"\%guidename%
 
@@ -28283,8 +28429,8 @@ if /i "%VIRGIN%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall and\or update 
 
 
 if /i "%MENU1%" EQU "SU" goto:miniskip
-if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%FIRMSTART%" EQU "o" support\sfk echo -spat \x3cli\x3eCurrent firmware is less than 2.2%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent System Menu is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%FIRMSTART%" EQU "o" support\sfk echo -spat \x3cli\x3eCurrent System Menu is less than 2.2%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 if /i "%MENU1%" EQU "H" goto:skipusb
@@ -28292,7 +28438,7 @@ if /i "%MENU1%" EQU "H" goto:skipusb
 
 
 
-support\sfk echo -spat \x3cli\x3eDesired firmware is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cli\x3eDesired System Menu is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 
 
