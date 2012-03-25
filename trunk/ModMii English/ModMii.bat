@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.0.6
+set currentversion=6.0.7
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -211,8 +211,8 @@ echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
-echo              "FLOW" Use WiiFlow
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo              "FLOW" Use WiiFlow-Mod
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow-Mod
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -338,8 +338,8 @@ echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
-echo              "FLOW" Use WiiFlow
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo              "FLOW" Use WiiFlow-Mod
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow-Mod
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -6051,8 +6051,8 @@ echo           * External Hard Drive already Formatted as %FORMATNAME%
 :skip2
 
 if /i "%LOADER%" EQU "CFG" echo           * Download Configurable USB-Loader
-if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow
-if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader and WiiFlow
+if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow-Mod
+if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader and WiiFlow-Mod
 if /i "%USBCONFIG%" EQU "USB" echo           * USB-Loader Settings and config files saved to USB Hard Drive
 if /i "%USBCONFIG%" NEQ "USB" echo           * USB-Loader Settings and config files saved to SD Card
 
@@ -6285,7 +6285,7 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 [Green] 1 = Configurable USB-Loader (RECOMMENDED)
 echo.
 echo.
-echo        2 = WiiFlow
+echo        2 = WiiFlow-Mod
 echo.
 echo.
 echo        3 = Both
@@ -9913,7 +9913,7 @@ echo      %usbfolder% CFG = CFG-Loader (Full v249)        %WiiMC% WMC = WiiMC 
 echo   %cfg249% CFG249 = CFG-Loader (Beta v249)        %fceugx% NES = FCEUGX (NES Emulator)
 echo   %cfg222% CFG222 = CFG-Loader (Beta v222)       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
 echo     %cfgr% CFGR = Configurator-CFG-Loader       %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo     %FLOW% FLOW = WiiFlow                       %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
+echo     %FLOW% FLOW = WiiFlow-Mod                   %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
 echo     %USBX% USBX = USB-Loader Fwdr Chnl           %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %HBB% HBB = Homebrew Browser
 echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %SGM% SGM = SaveGame Manager GX
@@ -11338,30 +11338,30 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20%cIOS249[57]-v20%\x202492057 = cIOS249[57]-v20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](d2x) cIOSs
 
-echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v8-final% 249d2x37 = cIOS249[37]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[37]-d2x-v8-final% 250d2x37 = cIOS250[37]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v8-final% 24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[37]-d2x-v8-final% 25037 = cIOS250[37]-d2x-v%d2x-beta-rev%
 
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v8-final%\x20249d2x38 = cIOS249[38]-d2x-v%d2x-beta-rev%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v8-final%\x2024938 = cIOS249[38]-d2x-v%d2x-beta-rev%
 
-echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v8-final% 250d2x38 = cIOS250[38]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v8-final% 249d2x53 = cIOS249[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v8-final% 250d2x53 = cIOS250[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v8-final% 249d2x55 = cIOS249[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v8-final% 250d2x55 = cIOS250[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v8-final% 249d2x56 = cIOS249[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v8-final% 250d2x56 = cIOS250[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v8-final% 249d2x57 = cIOS249[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v8-final% 250d2x57 = cIOS250[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v8-final% 249d2x58 = cIOS249[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v8-final% 250d2x58 = cIOS250[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v8-final% 249d2x60 = cIOS249[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v8-final% 250d2x60 = cIOS250[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v8-final% 249d2x70 = cIOS249[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[70]-d2x-v8-final% 250d2x70 = cIOS250[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS249[80]-d2x-v8-final% 249d2x80 = cIOS249[80]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[80]-d2x-v8-final% 250d2x80 = cIOS250[80]-d2x-v%d2x-beta-rev%
-echo                                                BETA = d2x beta settings
+echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v8-final% 25038 = cIOS250[38]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v8-final% 24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v8-final% 25053 = cIOS250[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v8-final% 24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v8-final% 25055 = cIOS250[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v8-final% 24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v8-final% 25056 = cIOS250[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v8-final% 24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v8-final% 25057 = cIOS250[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v8-final% 24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v8-final% 25058 = cIOS250[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v8-final% 24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v8-final% 25060 = cIOS250[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v8-final% 24970 = cIOS249[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[70]-d2x-v8-final% 25070 = cIOS250[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS249[80]-d2x-v8-final% 24980 = cIOS249[80]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[80]-d2x-v8-final% 25080 = cIOS250[80]-d2x-v%d2x-beta-rev%
+echo                                             BETA = d2x beta settings
 
 ::echo.
 
@@ -11453,26 +11453,26 @@ if /i "%LIST4%" EQU "2492157" goto:SwitchcIOS249[57]-v21
 if /i "%LIST4%" EQU "2502157" goto:SwitchcIOS250[57]-v21
 if /i "%LIST4%" EQU "2492158" goto:SwitchcIOS249[58]-v21
 if /i "%LIST4%" EQU "2502158" goto:SwitchcIOS250[58]-v21
-if /i "%LIST4%" EQU "249d2x37" goto:SwitchcIOS249[37]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x38" goto:SwitchcIOS249[38]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x53" goto:SwitchcIOS249[53]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x55" goto:SwitchcIOS249[55]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x56" goto:SwitchcIOS249[56]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x57" goto:SwitchcIOS249[57]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x58" goto:SwitchcIOS249[58]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x60" goto:SwitchcIOS249[60]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x70" goto:SwitchcIOS249[70]-d2x-v8-final
-if /i "%LIST4%" EQU "249d2x80" goto:SwitchcIOS249[80]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x37" goto:SwitchcIOS250[37]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x38" goto:SwitchcIOS250[38]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x53" goto:SwitchcIOS250[53]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x55" goto:SwitchcIOS250[55]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x56" goto:SwitchcIOS250[56]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x57" goto:SwitchcIOS250[57]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x58" goto:SwitchcIOS250[58]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x60" goto:SwitchcIOS250[60]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x70" goto:SwitchcIOS250[70]-d2x-v8-final
-if /i "%LIST4%" EQU "250d2x80" goto:SwitchcIOS250[80]-d2x-v8-final
+if /i "%LIST4%" EQU "24937" goto:SwitchcIOS249[37]-d2x-v8-final
+if /i "%LIST4%" EQU "24938" goto:SwitchcIOS249[38]-d2x-v8-final
+if /i "%LIST4%" EQU "24953" goto:SwitchcIOS249[53]-d2x-v8-final
+if /i "%LIST4%" EQU "24955" goto:SwitchcIOS249[55]-d2x-v8-final
+if /i "%LIST4%" EQU "24956" goto:SwitchcIOS249[56]-d2x-v8-final
+if /i "%LIST4%" EQU "24957" goto:SwitchcIOS249[57]-d2x-v8-final
+if /i "%LIST4%" EQU "24958" goto:SwitchcIOS249[58]-d2x-v8-final
+if /i "%LIST4%" EQU "24960" goto:SwitchcIOS249[60]-d2x-v8-final
+if /i "%LIST4%" EQU "24970" goto:SwitchcIOS249[70]-d2x-v8-final
+if /i "%LIST4%" EQU "24980" goto:SwitchcIOS249[80]-d2x-v8-final
+if /i "%LIST4%" EQU "25037" goto:SwitchcIOS250[37]-d2x-v8-final
+if /i "%LIST4%" EQU "25038" goto:SwitchcIOS250[38]-d2x-v8-final
+if /i "%LIST4%" EQU "25053" goto:SwitchcIOS250[53]-d2x-v8-final
+if /i "%LIST4%" EQU "25055" goto:SwitchcIOS250[55]-d2x-v8-final
+if /i "%LIST4%" EQU "25056" goto:SwitchcIOS250[56]-d2x-v8-final
+if /i "%LIST4%" EQU "25057" goto:SwitchcIOS250[57]-d2x-v8-final
+if /i "%LIST4%" EQU "25058" goto:SwitchcIOS250[58]-d2x-v8-final
+if /i "%LIST4%" EQU "25060" goto:SwitchcIOS250[60]-d2x-v8-final
+if /i "%LIST4%" EQU "25070" goto:SwitchcIOS250[70]-d2x-v8-final
+if /i "%LIST4%" EQU "25080" goto:SwitchcIOS250[80]-d2x-v8-final
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:LIST4
@@ -11957,16 +11957,16 @@ echo                46 = IOS46v3607        2492155 = cIOS249[55]-v21
 echo                48 = IOS48v4124        2492156 = cIOS249[56]-v21
 echo                53 = IOS53v5663        2492157 = cIOS249[57]-v21
 echo                55 = IOS55v5663        2492158 = cIOS249[58]-v21
-echo                56 = IOS56v5662       249d2x37 = cIOS249[37]-d2x-v%d2x-beta-rev%
-echo                57 = IOS57v5919       249d2x38 = cIOS249[38]-d2x-v%d2x-beta-rev%
-echo                58 = IOS58v6176       249d2x53 = cIOS249[53]-d2x-v%d2x-beta-rev%
-echo                60 = IOS60v6174       249d2x55 = cIOS249[55]-d2x-v%d2x-beta-rev%
-echo                61 = IOS61v5662       249d2x56 = cIOS249[56]-d2x-v%d2x-beta-rev%
-echo                70 = IOS70v6687       249d2x57 = cIOS249[57]-d2x-v%d2x-beta-rev%
-echo                80 = IOS80v6944       249d2x58 = cIOS249[58]-d2x-v%d2x-beta-rev%
-echo                                      249d2x60 = cIOS249[60]-d2x-v%d2x-beta-rev%
-echo                                      249d2x70 = cIOS249[70]-d2x-v%d2x-beta-rev%
-echo                                      249d2x80 = cIOS249[80]-d2x-v%d2x-beta-rev%
+echo                56 = IOS56v5662          24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
+echo                57 = IOS57v5919          24938 = cIOS249[38]-d2x-v%d2x-beta-rev%
+echo                58 = IOS58v6176          24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
+echo                60 = IOS60v6174          24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
+echo                61 = IOS61v5662          24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
+echo                70 = IOS70v6687          24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
+echo                80 = IOS80v6944          24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
+echo                                         24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
+echo                                         24970 = cIOS249[70]-d2x-v%d2x-beta-rev%
+echo                                         24980 = cIOS249[80]-d2x-v%d2x-beta-rev%
 echo.
 echo                                          BETA = d2x beta settings
 echo.
@@ -12063,16 +12063,16 @@ if /i "%ADVLIST%" EQU "2492153" goto:cIOS249[53]-v21
 if /i "%ADVLIST%" EQU "2492155" goto:cIOS249[55]-v21
 if /i "%ADVLIST%" EQU "2492157" goto:cIOS249[57]-v21
 if /i "%ADVLIST%" EQU "2492158" goto:cIOS249[58]-v21
-if /i "%ADVLIST%" EQU "249d2x37" goto:cIOS249[37]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x38" goto:cIOS249[38]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x53" goto:cIOS249[53]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x55" goto:cIOS249[55]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x56" goto:cIOS249[56]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x57" goto:cIOS249[57]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x58" goto:cIOS249[58]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x60" goto:cIOS249[60]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x70" goto:cIOS249[70]-d2x-v8-final
-if /i "%ADVLIST%" EQU "249d2x80" goto:cIOS249[80]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24937" goto:cIOS249[37]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24938" goto:cIOS249[38]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24953" goto:cIOS249[53]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24955" goto:cIOS249[55]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24956" goto:cIOS249[56]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24957" goto:cIOS249[57]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24958" goto:cIOS249[58]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24960" goto:cIOS249[60]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24970" goto:cIOS249[70]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24980" goto:cIOS249[80]-d2x-v8-final
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -12598,6 +12598,11 @@ if /i "%ADVSLOT%" EQU "B" goto:ADVANCED
 set SLOTCODE= -slot %ADVSLOT%
 set SLOTNAME=-slot%ADVSLOT%
 
+
+if /i "%ADVTYPE%" NEQ "CIOS" goto:notcIOS
+if /i "%ADVSLOT%" EQU "N" (set ADVSLOT=%wadname:~4,3%) & (goto:ADVPAGE4)
+:notcIOS
+
 if /i "%ADVSLOT%" EQU "N" goto:ADVPAGE4
 
 ::limit user input to X# of digits
@@ -12661,16 +12666,16 @@ if /i "%ADVLIST%" EQU "2492155" set versionreal=21
 if /i "%ADVLIST%" EQU "2492156" set versionreal=21
 if /i "%ADVLIST%" EQU "2492157" set versionreal=21
 if /i "%ADVLIST%" EQU "2492158" set versionreal=21
-if /i "%ADVLIST%" EQU "249d2x37" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x38" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x53" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x55" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x56" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x57" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x58" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x60" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x70" set versionreal=%ciosversion%
-if /i "%ADVLIST%" EQU "249d2x80" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24937" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24938" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24953" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24955" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24956" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24957" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24958" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24960" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24970" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "24980" set versionreal=%ciosversion%
 
 if /i "%ADVTYPE%" NEQ "CIOS" goto:miniskip
 if /i "%ADVSLOT%" EQU "N" goto:miniskip
@@ -12791,12 +12796,12 @@ echo.
 
 
 if /i "%ADVTYPE%" NEQ "CIOS" goto:miniskip
-if /i "%ADVSLOT%" EQU "N" goto:miniskip
+if /i "%ADVSLOT%" EQU "%wadname:~4,3%" goto:miniskip
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 cIOS[Red]%ADVSLOT%[def]%wadname:~7%[Red]%patchname%%slotname%%versionname%
 goto:yeschanges
 :miniskip
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 %wadnameless%[Red]%patchname%%slotname%%versionname%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 %wadnameless%[Red]%patchname%%slotname%%versionname%
 goto:yeschanges
 
 :nochanges
@@ -16152,7 +16157,7 @@ if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader (Most recent Full 249
 if /i "%cfg249%" EQU "*" (echo "Configurable USB Loader (Most recent 249 version)">>temp\DLnames.txt) & (echo "cfg249">>temp\DLgotos.txt)
 if /i "%cfg222%" EQU "*" (echo "Configurable USB Loader (Most recent 222 version)">>temp\DLnames.txt) & (echo "cfg222">>temp\DLgotos.txt)
 if /i "%cfgr%" EQU "*" (echo "Configurator for Configurable USB Loader (Most recent version)">>temp\DLnames.txt) & (echo "cfgr">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow-Mod (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
@@ -16515,7 +16520,7 @@ if /i "%SETTINGS%" EQU "B" mode con cols=85 lines=54
 if /i "%SETTINGS%" EQU "B" goto:%BACKB4QUEUE%
 if /i "%SETTINGS%" EQU "M" goto:MENU
 
-if /i "%SETTINGS%" EQU "S" goto:SaveDownloadQueue
+if /i "%SETTINGS%" EQU "S" (set beforesave=DOWNLOADQUEUE) & (goto:SaveDownloadQueue)
 
 if /i "%MENU1%" NEQ "L" goto:notbatch
 if /i "%SETTINGS%" EQU "A" mode con cols=85 lines=54
@@ -16615,7 +16620,7 @@ set /p DLQUEUENAME=     Enter Selection Here:
 if "%DLQUEUENAME%"=="" goto:badkey
 
 if /i "%DLQUEUENAME%" EQU "M" goto:MENU
-if /i "%DLQUEUENAME%" EQU "B" goto::FINISH
+if /i "%DLQUEUENAME%" EQU "B" goto:%beforesave%
 
 echo "set DLQUEUENAME=%DLQUEUENAME%">temp\temp.bat
 
@@ -17889,8 +17894,17 @@ if /i "%code2%" NEQ "%code2new%" ren %basecios%\%code1%%code2%.footer %code1%%co
 
 
 ::skip for d2x cIOSs
-if /i "%basecios:~12,3%" EQU "d2x" goto:NotRenamedOriginal
+set usetmdedit=
+if /i "%basecios:~12,3%" NEQ "d2x" goto:notd2x
 
+if %ciosversion% GEQ 21009 set usetmdedit=Y
+if /i "%d2x-beta-rev%" EQU "9-beta(r47)" set usetmdedit=
+::::force on (testing only)
+::set usetmdedit=Y
+::::force off (testing only)
+::set usetmdedit=
+if /i "%usetmdedit%" EQU "Y" (goto:NotRenamedOriginal2) else (goto:NotRenamedOriginal)
+:notd2x
 
 if exist support\Diffs\%diffpath%\%diffpath%_00.diff ren %basecios%\00000000.app 00000000-original.app
 if exist support\Diffs\%diffpath%\%diffpath%_01.diff ren %basecios%\00000001.app 00000001-original.app
@@ -17936,6 +17950,8 @@ if exist support\Diffs\%diffpath%\%diffpath%_tmd.diff support\jptch  %basecios%\
 
 ::use different tik diff files depending on what base wad downloaded
 
+:NotRenamedOriginal2
+
 if not exist "support\Diffs\%diffpath%\%diffpath%_tik.diff" goto:notik
 if /i "%md5basecheck%" EQU "pass" support\jptch  %basecios%\%code1%%code2%.tik support\Diffs\%diffpath%\%diffpath%_tik.diff %basecios%\%code1%%code2new%.tik
 :notik
@@ -17959,7 +17975,9 @@ if /i "%code2%" EQU "00000101" goto:repackwad
 if /i "%category%" EQU "patchios" goto:repackwad
 
 if exist %basecios%\%code1%%code2%.tik del %basecios%\%code1%%code2%.tik>nul
-if exist %basecios%\%code1%%code2%.tmd del %basecios%\%code1%%code2%.tmd>nul
+
+::don't delete base tmd if usetmdedit=Y
+if /i "%usetmdedit%" NEQ "Y" if exist %basecios%\%code1%%code2%.tmd del %basecios%\%code1%%code2%.tmd>nul
 
 
 ::---------------Korean Key Patch---------------
@@ -18464,19 +18482,29 @@ if exist support\d2x-beta\%module%.app (copy support\d2x-beta\%module%.app %base
 goto:EOF
 :quickskip
 
-
-
-::support\sfk hex %dec% -digits=8 >hex.txt
-::support\hexalter.exe %basecios%\%lastbasemodule%.app 0x26E40=0xFF,0xFF,0x5B,0x78
-
-
-
-
-
 echo.
+
+
+::use tmdedit.exe to patch tmd
+if /i "%usetmdedit%" NEQ "Y" goto:repackwad
+
+if exist Support\d2x-beta\ciosmaps.xml (set xml=Support\d2x-beta\ciosmaps.xml) else (set xml=Support\d2xModules\ciosmaps.xml)
+
+
+support\TMDedit.exe -b "%basecios%\%code1%%code2new%.tmd" -xml %xml% -group d2x-v%d2x-beta-rev% %ciosversion% -base %basewad:~3,2% %version% -folder "%basecios%" -basefile %basecios%\%code1%%code2%.tmd -outIOS 249
+
+
+del %basecios%\%code1%%code2%.tmd>nul
+
+
+
+
+
 
 ::---------pack files into cIOS wad---------
 :repackwad
+
+
 
 echo.
 echo Repacking Wad
@@ -20719,7 +20747,7 @@ if /i "%name%" NEQ "Casper" goto:skipcasper
 if not exist "%Drive%\apps\Casper" mkdir "%Drive%\apps\Casper"
 support\7za e -aoa "temp\%wadname%" -otemp *.* -r
 support\7za e -aoa "temp\%wadname:~0,-3%" -o"%Drive%\apps\Casper" *.* -r
-move /y "%Drive%\apps\Casper\casper_0.2.elf" "%Drive%\apps\Casper\boot.elf">nul
+move /y "%Drive%\apps\Casper\casper_0.3.elf" "%Drive%\apps\Casper\boot.elf">nul
 copy /y "%Drive%\apps\Casper\boot.elf" "%Drive%\boot.elf">nul
 
 ::abstinence wizard only - boot exploit-mmm instead of casper
@@ -21731,6 +21759,8 @@ echo.
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 45
 
+::only old installer uses 0x1.app for neek+di
+if /i "%wadname%" NEQ "SNEEKInstallerv0.6c-cred.rar" goto:skipDL01
 
 if /i "%SNEEKTYPE%" EQU "SD" goto:DL01
 if /i "%SNEEKTYPE%" EQU "UD" goto:DL01
@@ -22884,7 +22914,7 @@ if /i "%DLTOTAL%" EQU "0" goto:dltotaliszero2
 if /i "%FINISH%" EQU "R" copy /y "temp\DLgotos-copy.txt" "temp\DLgotos.txt">nul
 if /i "%FINISH%" EQU "R" mode con cols=85 lines=54
 if /i "%FINISH%" EQU "R" goto:DLSettings2
-if /i "%FINISH%" EQU "S" goto:SaveDownloadQueue
+if /i "%FINISH%" EQU "S" (set beforesave=FINISH) & (goto:SaveDownloadQueue)
 :dltotaliszero2
 
 
@@ -25164,7 +25194,7 @@ goto:downloadstart
 
 
 :FLOW
-set name=WiiFlow (Most Recent Release)
+set name=WiiFlow-Mod (Most Recent Release)
 set category=GOOGLEUPDATE
 set path1=apps\WiiFlow\
 set updateurl="http://tiny.cc/WiiflowModMii"
@@ -25472,12 +25502,12 @@ goto:downloadstart
 set name=Casper
 set category=fullextract
 set code1=URL
-set code2="http://giantpune.zzl.org/download.php?get=casper_0.2.elf.tar.gz"
+set code2="http://giantpune.zzl.org/download.php?get=casper_0.3.elf.tar.gz"
 set version=*
-set dlname="download.php@get=casper_0.2.elf.tar.gz"
-set wadname=casper_0.2.elf.tar.gz
+set dlname="download.php@get=casper_0.3.elf.tar.gz"
+set wadname=casper_0.3.elf.tar.gz
 set filename=boot.elf
-set md5=35f29e5bde632dc8d2d1f2d07440c4d4
+set md5=3e9d8254c3b197dca97d5ceb8bb5b7db
 set path1=apps\Casper\
 goto:downloadstart
 
@@ -28507,8 +28537,8 @@ support\sfk echo -spat \x3cli\x3eExternal Hard Drive already Formatted as %FORMA
 :skip2
 
 if /i "%LOADER%" EQU "CFG" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow-Mod\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow-Mod\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to USB Hard Drive\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to SD Card\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipusb
@@ -29088,7 +29118,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\WBM.001 "%Drive%"\%guidename%>nul
 
 if /i "%USBFOLDER%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch Configurable USB-Loader, and hit the plus sign \x22\x2b\x22. \x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow, go to page 2 of WiiFlow's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow-Mod, go to page 2 of WiiFlow-Mod's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
 

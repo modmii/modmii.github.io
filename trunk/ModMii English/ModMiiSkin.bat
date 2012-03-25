@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.0.6
+set currentversion=6.0.7
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1920,8 +1920,8 @@ set wainput=%wainput%~* External Hard Drive already Formatted as %FORMATNAME%
 :skip2
 
 if /i "%LOADER%" EQU "CFG" set wainput=%wainput%~* Download Configurable USB-Loader
-if /i "%LOADER%" EQU "FLOW" set wainput=%wainput%~* Download WiiFlow
-if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download Configurable USB-Loader and WiiFlow
+if /i "%LOADER%" EQU "FLOW" set wainput=%wainput%~* Download WiiFlow-Mod
+if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download Configurable USB-Loader and WiiFlow-Mod
 if /i "%USBCONFIG%" EQU "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to USB
 if /i "%USBCONFIG%" NEQ "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to SD Card
 
@@ -2005,7 +2005,7 @@ if not "%LOADERMarked%"=="" (set waoutnum=%LOADERMarked%) else (set waoutnum=0)
 
 set watext=~~~~           What USB-Loader would you like to use?
 
-set wainput= ^&Configurable USB-Loader (Recommended); ^&WiiFlow; ^&Both Configurable USB-Loader and WiiFlow
+set wainput= ^&Configurable USB-Loader (Recommended); ^&WiiFlow-Mod; ^&Both Configurable USB-Loader and WiiFlow-Mod
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
