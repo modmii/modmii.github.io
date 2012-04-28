@@ -230,13 +230,13 @@ if exist temp\modmii.txt del temp\modmii.txt>nul
 
 ::download exe and zip
 
-if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://modmii.zzl.org/files/activator.bak"
-if exist activator.bak move /y activator.bak temp\activator.exe>nul
+if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/activator.exe"
+if exist activator.exe move /y activator.exe temp\activator.exe>nul
 
 if exist temp\keys.txt del temp\keys.txt>nul
 if exist temp\keys.zip del temp\keys.zip>nul
 
-start /min /wait support\wget -t 3 http://modmii.zzl.org/files/keys.zip
+start /min /wait support\wget -t 3 http://dl.dropbox.com/u/74562700/keys.zip
 if exist keys.zip move /y keys.zip temp\keys.zip>nul
 
 if not exist temp\keys.zip goto:skip
