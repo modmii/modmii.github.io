@@ -2134,7 +2134,7 @@ echo modmii>temp\modmii.txt
 ::download exe and zip
 
 if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/activator.exe"
-if exist activator.exe move /y activator.bak temp\activator.exe>nul
+if exist activator.exe move /y activator.exe temp\activator.exe>nul
 
 if exist temp\keys.txt del temp\keys.txt>nul
 if exist temp\keys.zip del temp\keys.zip>nul
