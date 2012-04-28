@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.0.7
+set currentversion=6.1.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -167,10 +167,12 @@ set wabmp=support\bmp\default.bmp
 
 if not exist support\skipscam.txt goto:nocheck
 findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
+IF not ERRORLEVEL 1 set Trigger=
 if /i "%Trigger%" EQU "1" goto:skip
 :nocheck
 
+
+if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 ::Splash Screen for Scam Warning
 ::if /i "%AGREEDVERSION%" EQU "%CURRENTVERSION%" goto:nosplash
@@ -205,11 +207,47 @@ if /i "%waoutput%" EQU "I Agree" goto:skip
 
 
 if /i "%waoutput%" NEQ "skipscam" goto:miniskip
-if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
-echo "%USERPROFILE%">support\skipscam.txt
-attrib +r +h +s support\skipscam.txt
-set Trigger=1
-goto:skip
+
+
+
+
+
+set waoutput=
+
+set watext=Enter the paypal email address you used to send your ModMii donation.~~Note: it pay take up to a few hours after donating before your email address can be validated.~~Also note that an internet connection is required to validate your email address.
+
+start /w support\wizapp NOBACK EB
+
+if errorlevel 2 Exit
+
+call "%wabat%"
+
+echo %waoutput%>temp\key.txt
+
+::echo modmii>temp\modmii.txt
+if exist temp\modmii.txt del temp\modmii.txt>nul
+
+
+::download exe and zip
+
+if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://modmii.zzl.org/files/activator.bak"
+if exist activator.bak move /y activator.bak temp\activator.exe>nul
+
+if exist temp\keys.txt del temp\keys.txt>nul
+if exist temp\keys.zip del temp\keys.zip>nul
+
+start /min /wait support\wget -t 3 http://modmii.zzl.org/files/keys.zip
+if exist keys.zip move /y keys.zip temp\keys.zip>nul
+
+if not exist temp\keys.zip goto:skip
+if not exist temp\activator.exe goto:skip
+
+cd temp
+start activator.exe
+
+exit
+
+
 :miniskip
 
 
@@ -337,6 +375,7 @@ set USBCONFIGMarked=
 set SNEEKSELECTMarked=
 set SNEEKTYPEMarked=
 set SNKcBCMarked=
+set macaddress=
 
 
 set watext=~~                           Choose an activity:~~Most ModMii activities build a custom guide for you based on your answers to a few simple questions.
@@ -950,7 +989,7 @@ if not "%EXPLOITMarked%"=="" set waoutnum=%EXPLOITMarked%
 set exploitselection=yes
 
 
-if /i "%FIRMSTART%" EQU "4.3" set watext=~~Select the exploit you would like to use to mod your Wii.~~~Note: LetterBomb is the only discless exploit for 4.3 Wii's.
+if /i "%FIRMSTART%" EQU "4.3" set watext=~~Select the exploit you would like to use to mod your Wii.~~~Note: Wilbrand is the only discless exploit for 4.3 Wii's.
 if /i "%FIRMSTART%" EQU "o" set watext=~~Select the game you would like to use to mod your Wii.~~~Note: You can mod your Wii without one of the following games if you update to System Menu 3.0 or higher.
 
 
@@ -962,8 +1001,8 @@ if /i "%REGION%" NEQ "K" set wainput= ^&Twilight Princess: The Legend of Zelda; 
 goto:skip4.3
 
 :list4.3
-if /i "%REGION%" EQU "K" set wainput= ^&LetterBomb (Discless); ^&Super Smash Brothers Brawl
-if /i "%REGION%" NEQ "K" set wainput= ^&LetterBomb (Discless); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Disc Based Exploits (not LetterBomb)
+if /i "%REGION%" EQU "K" set wainput= ^&Wilbrand (Discless); ^&Super Smash Brothers Brawl
+if /i "%REGION%" NEQ "K" set wainput= ^&Wilbrand (Discless); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Disc Based Exploits (not Wilbrand)
 :skip4.3
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -1006,15 +1045,15 @@ goto:gotexploit
 
 :list4.3
 if /i "%REGION%" NEQ "K" goto:KOR4.3
-::set wainput= ^&LetterBomb (Discless); ^&Super Smash Brothers Brawl
-if /i "%waoutnum%" EQU "0" set EXPLOIT=BOMB
+::set wainput= ^&Wilbrand (Discless); ^&Super Smash Brothers Brawl
+if /i "%waoutnum%" EQU "0" set EXPLOIT=W
 if /i "%waoutnum%" EQU "1" set EXPLOIT=S
 goto:gotexploit
 
 
 :KOR4.3
-::set wainput= ^&LetterBomb (Discless); ^&Super Smash Brothers Brawl; ^&LEGO Indiana Jones; ^&LEGO Batman; ^&LEGO Star Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Disc Based Exploits (not LetterBomb)
-if /i "%waoutnum%" EQU "0" set EXPLOIT=BOMB
+::set wainput= ^&Wilbrand (Discless); ^&Super Smash Brothers Brawl; ^&LEGO Indiana Jones; ^&LEGO Batman; ^&LEGO Star Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Disc Based Exploits (not Wilbrand)
+if /i "%waoutnum%" EQU "0" set EXPLOIT=W
 if /i "%waoutnum%" EQU "1" set EXPLOIT=S
 if /i "%waoutnum%" EQU "2" set EXPLOIT=L
 if /i "%waoutnum%" EQU "3" set EXPLOIT=LB
@@ -1029,7 +1068,7 @@ goto:gotexploit
 
 
 
-if /i "%EXPLOIT%" EQU "BOMB" (set beforebomb=WPAGE3C) & (goto:bombinfo)
+if /i "%EXPLOIT%" EQU "W" (set beforemacaddy=WPAGE3C) & (goto:macaddress)
 
 if /i "%MENU1%" EQU "H" (set BACKB4DRIVE=WPAGE3C) & (goto:DRIVECHANGE)
 
@@ -1039,25 +1078,96 @@ goto:WPAGE4
 
 
 
-::------------------letterbomb info----------------
-:bombinfo
+::----------------------------------------MAC ADDRESS---------------------------------
+:macaddress
 
+set waoutnum=
+set waoutput=
 
-start /D SUPPORT LetterBombFrames.html
+if not "%macaddress%"=="" set waoutput=%macaddress%
 
+set watext=                     Enter your Wii's MAC address~~Examples:    AABBCCDDEEFF     ,   AA BB CC DD EE FF~                  AA:BB:CC:DD:EE:FF  ,   11-22-33-44-55-66~To find your MAC address, click the Wii button in the bottom left of the main system menu, then click Wii Settings, then Internet, then Console Information. Or enter "Help" for an instructional video.
 
-set watext=~ModMii should have just opened your browser to http://please.hackmii.com~~An instructional video on properly downloading Letterbomb can be found in the panel next to the webpage.~~On this webpage, enter your System Menu region and MAC address. To find your Wii's MAC address, turn on your Wii, click the Wii button in the bottom left of the main system menu, then click Wii Settings, then Internet, then Console Information.~~Uncheck "Bundle the HackMii Installer for Me", fill in the captcha and cut either wire. It will download a small ZIP file, open this file, and you will see a private folder, copy and paste it into the root of the SD card.~~ModMii will generate a guide for your assuming you've done this correctly.~~Click "Next" when you're ready to continue...
-
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
-
-start /w support\wizapp TB
+start /w support\wizapp EB
 
 
 if errorlevel 2 goto:MENU
-if errorlevel 1 goto:%beforebomb%
+if errorlevel 1 goto:%beforemacaddy%
 
-if /i "%MENU1%" EQU "H" (set BACKB4DRIVE=bombinfo) & (goto:DRIVECHANGE)
+call "%wabat%"
+
+
+if "%waoutput%"=="" goto:macaddress
+
+
+if /i "%waoutput%" NEQ "Help" goto:nohelp
+start /D SUPPORT MAC.html
+goto:macaddress
+:nohelp
+
+echo %waoutput% >temp\temp.txt
+
+support\sfk filter "temp\temp.txt" -rep _" "__ -rep _"-"__ -rep _":"__ -write -yes>nul
+
+set /p waoutput= <temp\temp.txt
+
+::confirm 12 digits
+if "%waoutput:~11%"=="" goto:macaddress
+if not "%waoutput:~12%"=="" goto:macaddress
+
+
+::confirm MAC addy is hex chars
+
+echo.
+echo Validating MAC address...
+echo.
+
+set digit=0
+
+:confirmMACaddy
+
+set /a digit=%digit%+1
+set testme=
+if /i "%digit%" EQU "1" set testme=%waoutput:~0,1%
+if /i "%digit%" EQU "2" set testme=%waoutput:~1,1%
+if /i "%digit%" EQU "3" set testme=%waoutput:~2,1%
+if /i "%digit%" EQU "4" set testme=%waoutput:~3,1%
+if /i "%digit%" EQU "5" set testme=%waoutput:~4,1%
+if /i "%digit%" EQU "6" set testme=%waoutput:~5,1%
+if /i "%digit%" EQU "7" set testme=%waoutput:~6,1%
+if /i "%digit%" EQU "8" set testme=%waoutput:~7,1%
+if /i "%digit%" EQU "9" set testme=%waoutput:~8,1%
+if /i "%digit%" EQU "10" set testme=%waoutput:~9,1%
+if /i "%digit%" EQU "11" set testme=%waoutput:~10,1%
+if /i "%digit%" EQU "12" set testme=%waoutput:~11,1%
+
+if "%testme%"=="" goto:quickskip
+
+if /i "%testme%" EQU "0" goto:confirmMACaddy
+if /i "%testme%" EQU "1" goto:confirmMACaddy
+if /i "%testme%" EQU "2" goto:confirmMACaddy
+if /i "%testme%" EQU "3" goto:confirmMACaddy
+if /i "%testme%" EQU "4" goto:confirmMACaddy
+if /i "%testme%" EQU "5" goto:confirmMACaddy
+if /i "%testme%" EQU "6" goto:confirmMACaddy
+if /i "%testme%" EQU "7" goto:confirmMACaddy
+if /i "%testme%" EQU "8" goto:confirmMACaddy
+if /i "%testme%" EQU "9" goto:confirmMACaddy
+if /i "%testme%" EQU "a" goto:confirmMACaddy
+if /i "%testme%" EQU "b" goto:confirmMACaddy
+if /i "%testme%" EQU "c" goto:confirmMACaddy
+if /i "%testme%" EQU "d" goto:confirmMACaddy
+if /i "%testme%" EQU "e" goto:confirmMACaddy
+if /i "%testme%" EQU "f" goto:confirmMACaddy
+
+goto:macaddress
+:quickskip
+
+set macaddress=%waoutput%
+::echo %macaddress%
+
+
+if /i "%MENU1%" EQU "H" (set BACKB4DRIVE=macaddress) & (goto:DRIVECHANGE)
 
 if /i "%AbstinenceWiz%" EQU "Y" goto:NEEKrevSelect
 
@@ -1787,6 +1897,9 @@ if /i "%GUIDEONLY%" EQU "on" set wainput=%wainput%~* Generate Guide Only Option 
 :guideNOTavailable
 
 
+if /i "%EXPLOIT%" EQU "W" set wainput=%wainput%~* MAC Address: %macaddress%
+
+
 if /i "%MENU1%" NEQ "S" goto:notS
 if /i "%AbstinenceWiz%" NEQ "Y" goto:notabstinence
 if /i "%FIRMSTART%" NEQ "o" set wainput=%wainput%~* Current System Menu is %FIRMSTART%%REGION%~
@@ -1920,8 +2033,8 @@ set wainput=%wainput%~* External Hard Drive already Formatted as %FORMATNAME%
 :skip2
 
 if /i "%LOADER%" EQU "CFG" set wainput=%wainput%~* Download Configurable USB-Loader
-if /i "%LOADER%" EQU "FLOW" set wainput=%wainput%~* Download WiiFlow-Mod
-if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download Configurable USB-Loader and WiiFlow-Mod
+if /i "%LOADER%" EQU "FLOW" set wainput=%wainput%~* Download WiiFlow
+if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download Configurable USB-Loader and WiiFlow
 if /i "%USBCONFIG%" EQU "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to USB
 if /i "%USBCONFIG%" NEQ "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to SD Card
 
@@ -2005,7 +2118,7 @@ if not "%LOADERMarked%"=="" (set waoutnum=%LOADERMarked%) else (set waoutnum=0)
 
 set watext=~~~~           What USB-Loader would you like to use?
 
-set wainput= ^&Configurable USB-Loader (Recommended); ^&WiiFlow-Mod; ^&Both Configurable USB-Loader and WiiFlow-Mod
+set wainput= ^&Configurable USB-Loader (Recommended); ^&WiiFlow; ^&Both Configurable USB-Loader and WiiFlow
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -2915,7 +3028,7 @@ if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
 if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
 if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
 if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-::if /i "%EXPLOIT%" EQU "BOMB" set classicCMD=%classicCMD%
+if /i "%EXPLOIT%" EQU "W" set classicCMD=%classicCMD% MAC:%macaddress%
 :skipexploitcheck
 
 
@@ -2987,7 +3100,7 @@ if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
 if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
 if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
 if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-::if /i "%EXPLOIT%" EQU "BOMB" set classicCMD=%classicCMD%
+if /i "%EXPLOIT%" EQU "W" set classicCMD=%classicCMD% MAC:%macaddress%
 :skipexploitcheck
 
 if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
@@ -3026,7 +3139,7 @@ if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
 if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
 if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
 if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-::if /i "%EXPLOIT%" EQU "BOMB" set classicCMD=%classicCMD%
+if /i "%EXPLOIT%" EQU "W" set classicCMD=%classicCMD% MAC:%macaddress%
 :skipexploitcheck
 
 if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide

@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.0.7
+set currentversion=6.1.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -37,7 +37,7 @@ if exist Updatetemp.bat del updatetemp.bat>nul
 
 if not exist support\skipscam.txt goto:nocheck
 findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF ERRORLEVEL 1 (set Trigger=) else (set Trigger=1)
+IF not ERRORLEVEL 1 set Trigger=
 :nocheck
 
 
@@ -211,8 +211,8 @@ echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
-echo              "FLOW" Use WiiFlow-Mod
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow-Mod
+echo              "FLOW" Use WiiFlow
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -225,6 +225,8 @@ echo               "Pri" Priiloader v0.7 and hacks_hash.ini
 echo.
 echo         "Guide" Generate Guide ONLY
 echo.
+echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
 echo               "IndianaPwns" IndianaPwns (U\E\J)
@@ -235,7 +237,7 @@ echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
 echo               "AllExploits" All Disc Based Exploits
 echo         Notes:
-echo         Default for 4.3 Wii's is Letterbomb
+echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
 echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
 echo.
@@ -269,6 +271,8 @@ echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
 echo.
+echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
 echo               "IndianaPwns" IndianaPwns (U\E\J)
@@ -279,7 +283,7 @@ echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
 echo               "AllExploits" All Disc Based Exploits
 echo         Notes:
-echo         Default for 4.3 Wii's is Letterbomb
+echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
 echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
 echo.
@@ -338,8 +342,8 @@ echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
-echo              "FLOW" Use WiiFlow-Mod
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow-Mod
+echo              "FLOW" Use WiiFlow
+echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -369,6 +373,8 @@ echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
 echo.
+echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
 echo               "IndianaPwns" IndianaPwns (U\E\J)
@@ -379,7 +385,7 @@ echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
 echo               "AllExploits" All Disc Based Exploits
 echo         Notes:
-echo         Default for 4.3 Wii's is Letterbomb
+echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
 echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
 echo.
@@ -1373,9 +1379,81 @@ if /i "%cmdguide%" EQU "G" set settings=G
 
 
 :cmdlineExploitCheck
-if /i "%FIRMSTART%" EQU "4.3" goto:cmdlineDiscExploits
+if /i "%FIRMSTART%" EQU "4.3" goto:cmdline4.3Exploits
 if /i "%FIRMSTART%" EQU "o" goto:cmdlineDiscExploits
 goto:nocmdlineDiscExploits
+
+
+::-----------MAC:*---------------
+:cmdline4.3Exploits
+findStr /I " MAC:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:noMACcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+set EXPLOIT=W
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* MAC:"__ -rep _\x20*__ -rep _"-"__ -rep _":"__ -write -yes>nul
+
+set /p macaddress= <temp\cmdinput2.txt
+
+::confirm 12 digits
+if "%macaddress:~11%"=="" goto:badkey
+if not "%macaddress:~12%"=="" goto:badkey
+
+::confirm MAC addy is hex chars
+
+set digit=0
+
+:confirmMACaddycmd
+
+set /a digit=%digit%+1
+set testme=
+if /i "%digit%" EQU "1" set testme=%macaddress:~0,1%
+if /i "%digit%" EQU "2" set testme=%macaddress:~1,1%
+if /i "%digit%" EQU "3" set testme=%macaddress:~2,1%
+if /i "%digit%" EQU "4" set testme=%macaddress:~3,1%
+if /i "%digit%" EQU "5" set testme=%macaddress:~4,1%
+if /i "%digit%" EQU "6" set testme=%macaddress:~5,1%
+if /i "%digit%" EQU "7" set testme=%macaddress:~6,1%
+if /i "%digit%" EQU "8" set testme=%macaddress:~7,1%
+if /i "%digit%" EQU "9" set testme=%macaddress:~8,1%
+if /i "%digit%" EQU "10" set testme=%macaddress:~9,1%
+if /i "%digit%" EQU "11" set testme=%macaddress:~10,1%
+if /i "%digit%" EQU "12" set testme=%macaddress:~11,1%
+
+if "%testme%"=="" goto:quickskip
+
+if /i "%testme%" EQU "0" goto:confirmMACaddycmd
+if /i "%testme%" EQU "1" goto:confirmMACaddycmd
+if /i "%testme%" EQU "2" goto:confirmMACaddycmd
+if /i "%testme%" EQU "3" goto:confirmMACaddycmd
+if /i "%testme%" EQU "4" goto:confirmMACaddycmd
+if /i "%testme%" EQU "5" goto:confirmMACaddycmd
+if /i "%testme%" EQU "6" goto:confirmMACaddycmd
+if /i "%testme%" EQU "7" goto:confirmMACaddycmd
+if /i "%testme%" EQU "8" goto:confirmMACaddycmd
+if /i "%testme%" EQU "9" goto:confirmMACaddycmd
+if /i "%testme%" EQU "a" goto:confirmMACaddycmd
+if /i "%testme%" EQU "b" goto:confirmMACaddycmd
+if /i "%testme%" EQU "c" goto:confirmMACaddycmd
+if /i "%testme%" EQU "d" goto:confirmMACaddycmd
+if /i "%testme%" EQU "e" goto:confirmMACaddycmd
+if /i "%testme%" EQU "f" goto:confirmMACaddycmd
+
+goto:badkey
+:quickskip
+
+::pass
+goto:noMACcmd
+
+:badkey
+echo "%macaddress%" is not a valid MAC Address, try again...
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+@ping 127.0.0.1 -n 5 -w 1000> nul
+exit
+:noMACcmd
+
+
+
 
 :cmdlineDiscExploits
 findStr /I /C:" IndianaPwns" temp\cmdinput.txt >nul
@@ -1403,49 +1481,13 @@ IF not ERRORLEVEL 1 set EXPLOIT=?
 
 ::apply default exploits
 if not "%EXPLOIT%"=="" goto:nocmdlineDiscExploits
-if /i "%firmstart%" EQU "4.3" (set EXPLOIT=BOMB) & (goto:cmdlineBOMB)
+if /i "%firmstart%" EQU "4.3" set EXPLOIT=?
 if /i "%firmstart%" EQU "o" set EXPLOIT=?
 :nocmdlineDiscExploits
 
 goto:go
 
-:cmdlineBOMB
 
-::start http://please.hackmii.com
-
-
-start /D SUPPORT LetterBombFrames.html
-
-
-cls
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo.
-echo    ModMii should have just opened your browser to http://please.hackmii.com
-echo.
-echo    An instructional video on properly downloading Letterbomb can be found
-echo    in the panel next to the webpage.
-echo.
-echo.
-echo    On this webpage, enter your System Menu region and MAC address
-echo.
-echo         Note: to find your Wii's MAC address, turn on your Wii, click the
-echo               Wii button in the bottom left of the main system menu,
-echo               then click Wii Settings, then Internet, then Console Information.
-echo.
-echo    Uncheck Bundle the HackMii Installer for Me, fill in the captcha and cut
-echo    either wire. It will download a small ZIP file, open this file, and you
-echo    will see a private folder, copy and paste it into the root of the sd card.
-echo.
-echo    ModMii will generate a guide for your assuming you've done this correctly.
-echo.
-echo.
-echo    Waiting a few seconds...
-echo.
-@ping 127.0.0.1 -n 5 -w 1000> nul
-
-goto:go
 
 
 ::---------------------------------
@@ -2021,6 +2063,7 @@ color 1f
 
 if /i "%Trigger%" EQU "1" goto:DefaultSettings
 
+if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 set warning=
 echo                                        ModMii
@@ -2068,10 +2111,51 @@ set /p warning=     Enter Selection Here:
 
 
 if /i "%warning%" NEQ "skipscam" goto:miniskip
-if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
-echo "%USERPROFILE%">support\skipscam.txt
-attrib +r +h +s support\skipscam.txt
-set Trigger=1
+
+
+
+set warning=
+echo.
+echo.
+echo Enter the paypal email address you used to send your ModMii donation.
+echo.
+echo Note: it pay take up to a few hours after donating before your email
+echo       address can be validated.
+echo.
+set /p warning=     Enter Selection Here: 
+
+
+echo %warning%>temp\key.txt
+
+echo modmii>temp\modmii.txt
+::if exist temp\modmii.txt del temp\modmii.txt>nul
+
+
+::download exe and zip
+
+if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/activator.exe"
+if exist activator.exe move /y activator.bak temp\activator.exe>nul
+
+if exist temp\keys.txt del temp\keys.txt>nul
+if exist temp\keys.zip del temp\keys.zip>nul
+
+start /min /wait support\wget -t 3 http://dl.dropbox.com/u/74562700/keys.zip
+if exist keys.zip move /y keys.zip temp\keys.zip>nul
+
+if not exist temp\keys.zip goto:nowifi
+if not exist temp\activator.exe goto:nowifi
+
+cd temp
+start activator.exe
+
+exit
+
+
+:nowifi
+echo.
+echo An internet connection is required to validate your email address,
+echo please try again later.
+@ping 127.0.0.1 -n 2 -w 1000> nul
 goto:DefaultSettings
 :miniskip
 
@@ -2434,6 +2518,7 @@ set SIP=
 set JOY=
 set dop=
 set casper=
+set Wilbrand=
 set syscheck=
 set locked=
 set AccioHacks=
@@ -4780,6 +4865,21 @@ if /i "%REGION%" EQU "B" goto:RCPAGE1
 goto:badkey
 :notRC
 
+::download page redirect for Wilbrand
+if /i "%MENU1%" EQU "1" goto:Wilbrand
+if /i "%MENU1%" EQU "2" goto:Wilbrand
+if /i "%MENU1%" EQU "3" goto:Wilbrand
+if /i "%MENU1%" EQU "4" goto:Wilbrand
+if /i "%MENU1%" EQU "A" goto:Wilbrand
+goto:notWilbrand
+:Wilbrand
+if /i "%REGION%" EQU "B" goto:macaddress
+if /i "%REGION%" EQU "U" goto:OLDLIST
+if /i "%REGION%" EQU "E" goto:OLDLIST
+if /i "%REGION%" EQU "K" goto:OLDLIST
+if /i "%REGION%" EQU "J" goto:OLDLIST
+:notWilbrand
+
 
 if /i "%REGION%" EQU "U" goto:WPAGE3C
 if /i "%REGION%" EQU "E" goto:WPAGE3C
@@ -4833,13 +4933,7 @@ echo      Select the Exploit you would like to use on your Wii.
 echo.
 echo.
 if /i "%FIRMSTART%" EQU "o" goto:skipbomb
-echo      ATTENTION: LetterBomb is the only discless exploit for 4.3 Wii's but
-echo                 ModMii cannot prepare it for you yet. If you would like to use
-echo                 this exploit with a little bit of ModMii's help, type "BOMB"
-echo.
-echo.
-echo.
-echo             BOMB = LetterBomb
+echo                W = Wilbrand (discless exploit)
 echo.
 echo.
 echo      The following 4.3 exploits require you own one of the following games:
@@ -4907,7 +5001,7 @@ if /i "%EXPLOIT%" EQU "?" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "S" goto:WPAGE3D
 
 if /i "%FIRMSTART%" EQU "o" goto:notbomb
-if /i "%EXPLOIT%" EQU "BOMB" goto:bombinfo
+if /i "%EXPLOIT%" EQU "W" goto:macaddress
 :notbomb
 
 echo You Have Entered an Incorrect Key
@@ -4916,10 +5010,13 @@ goto:WPAGE3C
 
 
 
-:bombinfo
-::start http://please.hackmii.com
 
-start /D SUPPORT LetterBombFrames.html
+::----------------------------------------MAC ADDRESS---------------------------------
+:macaddress
+::start http://please.hackmii.com
+::start /D SUPPORT LetterBombFrames.html
+
+set macaddress=
 
 
 cls
@@ -4927,30 +5024,131 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo    ModMii should have just opened your browser to http://please.hackmii.com
-echo.
-echo    An instructional video on properly downloading Letterbomb can be found
-echo    in the panel next to the webpage.
+echo    Enter your Wii's MAC address (required for Wilbrand exploit)
 echo.
 echo.
-echo    On this webpage, enter your System Menu region and MAC address
+echo.
+echo    Examples:
+echo             AABBCCDDEEFF
+echo             AA BB CC DD EE FF
+echo             AA:BB:CC:DD:EE:FF
+echo             11-22-33-44-55-66
+echo.
+echo.
 echo.
 echo         Note: to find your Wii's MAC address, turn on your Wii, click the
 echo               Wii button in the bottom left of the main system menu,
 echo               then click Wii Settings, then Internet, then Console Information.
 echo.
-echo    Uncheck Bundle the HackMii Installer for Me, fill in the captcha and cut
-echo    either wire. It will download a small ZIP file, open this file, and you
-echo    will see a private folder, copy and paste it into the root of the sd card.
-echo.
-echo    ModMii will generate a guide for your assuming you've done this correctly.
 echo.
 echo.
-echo    Press any key when you're ready to continue...
+echo     For an instructional video on checking your Wii's MAC address enter "Help"
 echo.
-pause>nul
+echo.
+echo.
+echo.
+echo                B = Back
+echo                M = Main Menu
+echo.
+echo.
+echo.
+echo.
+
+set /p macaddress=     Enter Selection Here: 
+
+if /i "%macaddress%" EQU "M" goto:MENU
+
+if /i "%macaddress%" NEQ "B" goto:notback
+set Wilbrand=
+if /i "%MENU1%" EQU "1" goto:OLDLIST
+if /i "%MENU1%" EQU "2" goto:OLDLIST
+if /i "%MENU1%" EQU "3" goto:OLDLIST
+if /i "%MENU1%" EQU "4" goto:OLDLIST
+if /i "%MENU1%" EQU "A" goto:OLDLIST
+goto:WPAGE3C
+:notback
+
+if /i "%macaddress%" NEQ "Help" goto:nohelp
+start /D SUPPORT MAC.html
+goto:macaddress
+:nohelp
+
+echo %macaddress% >temp\temp.txt
+
+support\sfk filter "temp\temp.txt" -rep _" "__ -rep _"-"__ -rep _":"__ -write -yes>nul
+
+set /p macaddress= <temp\temp.txt
+
+::confirm 12 digits
+if "%macaddress:~11%"=="" goto:badkey
+if not "%macaddress:~12%"=="" goto:badkey
+
+
+::confirm MAC addy is hex chars
+
+echo.
+echo Validating MAC address...
+echo.
+
+set digit=0
+
+:confirmMACaddy
+
+set /a digit=%digit%+1
+set testme=
+if /i "%digit%" EQU "1" set testme=%macaddress:~0,1%
+if /i "%digit%" EQU "2" set testme=%macaddress:~1,1%
+if /i "%digit%" EQU "3" set testme=%macaddress:~2,1%
+if /i "%digit%" EQU "4" set testme=%macaddress:~3,1%
+if /i "%digit%" EQU "5" set testme=%macaddress:~4,1%
+if /i "%digit%" EQU "6" set testme=%macaddress:~5,1%
+if /i "%digit%" EQU "7" set testme=%macaddress:~6,1%
+if /i "%digit%" EQU "8" set testme=%macaddress:~7,1%
+if /i "%digit%" EQU "9" set testme=%macaddress:~8,1%
+if /i "%digit%" EQU "10" set testme=%macaddress:~9,1%
+if /i "%digit%" EQU "11" set testme=%macaddress:~10,1%
+if /i "%digit%" EQU "12" set testme=%macaddress:~11,1%
+
+if "%testme%"=="" goto:quickskip
+
+if /i "%testme%" EQU "0" goto:confirmMACaddy
+if /i "%testme%" EQU "1" goto:confirmMACaddy
+if /i "%testme%" EQU "2" goto:confirmMACaddy
+if /i "%testme%" EQU "3" goto:confirmMACaddy
+if /i "%testme%" EQU "4" goto:confirmMACaddy
+if /i "%testme%" EQU "5" goto:confirmMACaddy
+if /i "%testme%" EQU "6" goto:confirmMACaddy
+if /i "%testme%" EQU "7" goto:confirmMACaddy
+if /i "%testme%" EQU "8" goto:confirmMACaddy
+if /i "%testme%" EQU "9" goto:confirmMACaddy
+if /i "%testme%" EQU "a" goto:confirmMACaddy
+if /i "%testme%" EQU "b" goto:confirmMACaddy
+if /i "%testme%" EQU "c" goto:confirmMACaddy
+if /i "%testme%" EQU "d" goto:confirmMACaddy
+if /i "%testme%" EQU "e" goto:confirmMACaddy
+if /i "%testme%" EQU "f" goto:confirmMACaddy
+
+goto:badkey
+:quickskip
+
+
+::echo %macaddress%
+
+if /i "%MENU1%" EQU "1" goto:WPAGE3
+if /i "%MENU1%" EQU "2" goto:WPAGE3
+if /i "%MENU1%" EQU "3" goto:WPAGE3
+if /i "%MENU1%" EQU "4" goto:WPAGE3
+if /i "%MENU1%" EQU "A" goto:WPAGE3
 
 goto:WPAGE3D
+
+
+:badkey
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:macaddress
+
+
 
 
 
@@ -5022,13 +5220,17 @@ if /i "%UpdatesIOSQ%" EQU "N" goto:WPAGE4
 
 
 if /i "%VIRGIN%" EQU "N" goto:backtowpage3
-if /i "%REGION%" EQU "K" goto:backtowpage3
+::if /i "%REGION%" EQU "K" goto:backtowpage3
+if /i "%exploit%" NEQ "W" goto:backtowpage3c
 
-if /i "%UpdatesIOSQ%" EQU "B" goto:WPAGE3C
+
+if /i "%UpdatesIOSQ%" EQU "B" goto:macaddress
 
 :backtowpage3
 if /i "%UpdatesIOSQ%" EQU "B" goto:WPAGE3
 
+:backtowpage3c
+if /i "%UpdatesIOSQ%" EQU "B" goto:WPAGE3c
 
 
 echo You Have Entered an Incorrect Key
@@ -6005,6 +6207,8 @@ if /i "%FIRMSTART%" EQU "o" echo           * Current System Menu is less than 2.
 
 echo           * Desired System Menu is %FIRM%%REGION%
 
+if /i "%Exploit%" EQU "W" (echo.) & (echo           * MAC Address: %macaddress%)
+
 echo.
 if /i "%PIC%" EQU "Y" echo           * Install the Photo Channel
 if /i "%NET%" EQU "Y" echo           * Install the Internet Channel
@@ -6051,8 +6255,8 @@ echo           * External Hard Drive already Formatted as %FORMATNAME%
 :skip2
 
 if /i "%LOADER%" EQU "CFG" echo           * Download Configurable USB-Loader
-if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow-Mod
-if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader and WiiFlow-Mod
+if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow
+if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader and WiiFlow
 if /i "%USBCONFIG%" EQU "USB" echo           * USB-Loader Settings and config files saved to USB Hard Drive
 if /i "%USBCONFIG%" NEQ "USB" echo           * USB-Loader Settings and config files saved to SD Card
 
@@ -6285,7 +6489,7 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 [Green] 1 = Configurable USB-Loader (RECOMMENDED)
 echo.
 echo.
-echo        2 = WiiFlow-Mod
+echo        2 = WiiFlow
 echo.
 echo.
 echo        3 = Both
@@ -9913,7 +10117,7 @@ echo      %usbfolder% CFG = CFG-Loader (Full v249)        %WiiMC% WMC = WiiMC 
 echo   %cfg249% CFG249 = CFG-Loader (Beta v249)        %fceugx% NES = FCEUGX (NES Emulator)
 echo   %cfg222% CFG222 = CFG-Loader (Beta v222)       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
 echo     %cfgr% CFGR = Configurator-CFG-Loader       %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo     %FLOW% FLOW = WiiFlow-Mod                   %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
+echo     %FLOW% FLOW = WiiFlow                       %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
 echo     %USBX% USBX = USB-Loader Fwdr Chnl           %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %HBB% HBB = Homebrew Browser
 echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %SGM% SGM = SaveGame Manager GX
@@ -9940,8 +10144,11 @@ echo      %IOS236Installer% 236 = IOS236 Installer                %Bathaxx% BH =
 echo      %SIP% SIP = Simple IOS Patcher              %ROTJ% RJ = Return of the Jodi (USA\EUR\JAP)
 echo      %Pri% Pri = Priiloader v0.7 (236 Mod)      %Twi% Twi = Twilight Hack (USA\EUR\JAP)
 echo      %HAX% HAX = Priiloader Hacks                %TOS% EH = Eri HaKawai (USA\EUR\JAP)
-echo      %PLC% PLC = Post Loader Channel            BOMB = Letterbomb (4.3 USA\EUR\JAP\KOR)
-echo       %PL% PL = Postloader
+echo      %PLC% PLC = Post Loader Channel             %Wilbrand% WB = Wilbrand (4.3 USA\EUR\JAP\KOR)
+
+if /i "%Wilbrand%" EQU "*" echo       %PL% PL = Postloader                            MAC:%macaddress%  Region:%REGION%
+if /i "%Wilbrand%" NEQ "*" echo       %PL% PL = Postloader
+
 echo       %syscheck% SC = sysCheck
 echo       %WiiMod% WM = WiiMod
 echo      %ARC% ARC = Any Region Changer (1.1b Mod06 Offline)
@@ -9961,7 +10168,7 @@ if /i "%OLDLIST%" EQU "DR" goto:DRIVECHANGE
 if /i "%OLDLIST%" EQU "C" goto:CLEAR
 
 
-if /i "%OLDLIST%" EQU "BOMB" start /D SUPPORT LetterBombFrames.html
+
 
 
 if /i "%OLDLIST%" EQU "A" goto:SelectAllOLD
@@ -9991,6 +10198,7 @@ if /i "%OLDLIST%" EQU "SC" goto:Switchsyscheck
 if /i "%OLDLIST%" EQU "HBB" goto:SwitchHBB
 if /i "%OLDLIST%" EQU "W64" goto:SwitchWII64
 if /i "%OLDLIST%" EQU "CA" goto:SwitchCasper
+if /i "%OLDLIST%" EQU "WB" goto:SwitchWilbrand
 if /i "%OLDLIST%" EQU "WSX" goto:SwitchWIISX
 if /i "%OLDLIST%" EQU "pwns" goto:Switchpwns
 if /i "%OLDLIST%" EQU "Twi" goto:SwitchTwi
@@ -10108,6 +10316,11 @@ goto:OLDLIST
 
 :SwitchCasper
 if /i "%Casper%" EQU "*" (set Casper=) else (set Casper=*)
+goto:OLDLIST
+
+:SwitchWilbrand
+if /i "%Wilbrand%" EQU "*" (set Wilbrand=) else (set Wilbrand=*)
+if /i "%Wilbrand%" EQU "*" goto:macaddress
 goto:OLDLIST
 
 :SwitchWIISX
@@ -10315,6 +10528,7 @@ set ROTJ=*
 set TOS=*
 set smash=*
 set pwns=*
+if /i "%Wilbrand%" NEQ "*" (set Wilbrand=*) & (goto:macaddress)
 if /i "%OLDLIST%" EQU "E" goto:OLDLIST
 
 goto:OLDLIST
@@ -11843,13 +12057,8 @@ if /i "%LIST4%" EQU "d2x" goto:LIST4
 set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 set RVL-cmios-v4_WiiGator_GCBL_v0.2=*
 set RVL-cmios-v4_Waninkoko_rev5=*
-set DML=*
-set B4DMLRevSelect=list4
-set AfterDMLRevSelect=list4
-goto:CurrentDMLRevSelect
+if /i "%DML%" NEQ "*" (set DML=*) & (set B4DMLRevSelect=list4) & (set AfterDMLRevSelect=list4) & (goto:CurrentDMLRevSelect)
 if /i "%LIST4%" EQU "cM" goto:LIST4
-
-
 
 goto:LIST4
 
@@ -12635,10 +12844,6 @@ set VERSIONNAME=
 set VERSIONCODE=
 
 
-if /i "%ADVSLOT%" EQU "N" set SLOTCODE=
-if /i "%ADVSLOT%" EQU "N" set SLOTNAME=
-
-
 
 set versionreal=%version%
 if /i "%ADVLIST%" EQU "2224" set versionreal=4
@@ -12678,7 +12883,9 @@ if /i "%ADVLIST%" EQU "24970" set versionreal=%ciosversion%
 if /i "%ADVLIST%" EQU "24980" set versionreal=%ciosversion%
 
 if /i "%ADVTYPE%" NEQ "CIOS" goto:miniskip
-if /i "%ADVSLOT%" EQU "N" goto:miniskip
+if /i "%ADVSLOT%" EQU "%wadname:~4,3%" set SLOTCODE=
+if /i "%ADVSLOT%" EQU "%wadname:~4,3%" set SLOTNAME=
+::if /i "%ADVSLOT%" EQU "N" goto:miniskip
 set wadnameless=cIOS%ADVSLOT%%wadname:~7%
 set slotname=
 :miniskip
@@ -13247,7 +13454,7 @@ echo.
 echo.
 echo.
 echo.
-echo                1 = SD\USB Forwarder (v11c)
+echo                1 = SD\USB Forwarder (v12)
 echo.
 echo                2 = URL Forwarder (Requires Internet Channel)
 echo.
@@ -15100,6 +15307,7 @@ if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
 
+if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
@@ -15146,6 +15354,7 @@ if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.2" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
+if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "T" set Twi=*
@@ -15605,6 +15814,7 @@ if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.2" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
+if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "T" set Twi=*
@@ -16114,6 +16324,8 @@ if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\
 
 if /i "%syscheck%" EQU "*" (echo "sysCheck">>temp\DLnames.txt) & (echo "sysCheck">>temp\DLgotos.txt)
 if /i "%Casper%" EQU "*" (echo "Casper">>temp\DLnames.txt) & (echo "Casper">>temp\DLgotos.txt)
+if /i "%Wilbrand%" EQU "*" (echo "Wilbrand - 4.3%REGION% - MAC:%macaddress%">>temp\DLnames.txt) & (echo "Wilbrand">>temp\DLgotos.txt)
+
 if /i "%HM%" EQU "*" (echo "HackMii Installer">>temp\DLnames.txt) & (echo "HackmiiInstaller">>temp\DLgotos.txt)
 if /i "%bootmiisd%" EQU "*" (echo "BootMii SD Files">>temp\DLnames.txt) & (echo "bootmiisd">>temp\DLgotos.txt)
 if /i "%BB1%" EQU "*" (echo "Bannerbomb v1">>temp\DLnames.txt) & (echo "BannerBomb1">>temp\DLgotos.txt)
@@ -16157,7 +16369,7 @@ if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader (Most recent Full 249
 if /i "%cfg249%" EQU "*" (echo "Configurable USB Loader (Most recent 249 version)">>temp\DLnames.txt) & (echo "cfg249">>temp\DLgotos.txt)
 if /i "%cfg222%" EQU "*" (echo "Configurable USB Loader (Most recent 222 version)">>temp\DLnames.txt) & (echo "cfg222">>temp\DLgotos.txt)
 if /i "%cfgr%" EQU "*" (echo "Configurator for Configurable USB Loader (Most recent version)">>temp\DLnames.txt) & (echo "cfgr">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow-Mod (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
@@ -16795,6 +17007,11 @@ if /i "%locked%" EQU "*" echo SET locked=%locked%>> "temp\DownloadQueues\%DLQUEU
 if /i "%HBB%" EQU "*" echo SET HBB=%HBB%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%WII64%" EQU "*" echo SET WII64=%WII64%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%Casper%" EQU "*" echo SET Casper=%Casper%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+
+if /i "%Wilbrand%" EQU "*" echo SET Wilbrand=%Wilbrand%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%Wilbrand%" EQU "*" echo SET REGION=%REGION%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%Wilbrand%" EQU "*" echo SET macaddress=%macaddress% >> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+
 if /i "%WIISX%" EQU "*" echo SET WIISX=%WIISX%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%bootmiisd%" EQU "*" echo SET bootmiisd=%bootmiisd%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%pwns%" EQU "*" echo SET pwns=%pwns%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -17040,7 +17257,7 @@ if /i "%darkwii_orange_4.2K%" EQU "*" echo SET darkwii_orange_4.2K=%darkwii_oran
 if /i "%darkwii_orange_4.1K%" EQU "*" echo SET darkwii_orange_4.1K=%darkwii_orange_4.1K%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
 support\sfk filter "temp\DownloadQueues\%DLQUEUENAME%.bat" -unique -write -yes>nul
-
+support\sfk filter "temp\DownloadQueues\%DLQUEUENAME%.bat" -lerep _" "__ -write -yes>nul
 
 if not exist temp\DLGotosADV.txt goto:quickskip
 ::Loop through the the following once for EACH line in *.txt
@@ -20731,7 +20948,7 @@ if /i "%name%" NEQ "switch2uneek" goto:skipS2U
 if /i "%MENU1%" EQU "S" support\7za e -aoa temp\%wadname% -o"%Drive%/WAD"/ %filename% -r
 if /i "%MENU1%" EQU "S" goto:skipnormalextraction
 ::for when MENU1 not equal to "S"
-support\7za x -aoa temp\%dlname% -o"%Drive%" -r -x!switch2uneek(emulators)-4EMUNand-v11c-S2RL.wad
+support\7za x -aoa temp\%dlname% -o"%Drive%" -r -x!switch2uneek(emulators)-4EMUNand-v12-S2RL.wad
 
 if not exist "%DRIVEU%" mkdir "%DRIVEU%"
 if not exist "%DRIVEU%"\nandpath.txt echo NOFILE>"%DRIVEU%"\nandpath.txt
@@ -20758,6 +20975,76 @@ if exist "%Drive%"\apps\MMM\MMMv13.4boot.elf copy /Y "%Drive%"\apps\MMM\MMMv13.4
 goto:skipnormalextraction
 :skipcasper
 
+
+if /i "%name%" NEQ "Wilbrand" goto:skipWilbrand
+
+
+echo Wilbrand by giantpune
+echo.
+echo MAC:%macaddress%
+echo 4.3%REGION%
+echo.
+
+::get yesterday's date
+
+Set Day=
+Set Month=
+Set Num=
+Set Year=
+
+@For /F "tokens=1,2,3,4 delims=/ " %%A in ('DATE /t') do @( 
+set Day=%%A
+set Month=%%B
+set Num=%%C
+set Year=%%D
+)
+
+if not "%Year%"=="" goto:nofix
+set Year=%Num%
+set Num=%Month%
+::set Month=%Day%
+:nofix
+
+if /i "%day%" NEQ "01" (set /a day=%day%-1) & (goto:yesterday)
+
+::jan to dec
+if /i "%month%" EQU "01" (set /a year=%year%-1) & (set day=31) & (set month=12) & (goto:yesterday)
+
+set /a month=%month%-1
+
+if "%month:~1%"=="" set month=0%month%
+
+if /i "%month%" EQU "01" set day=31
+if /i "%month%" EQU "02" set day=28
+if /i "%month%" EQU "03" set day=31
+if /i "%month%" EQU "04" set day=30
+if /i "%month%" EQU "05" set day=31
+if /i "%month%" EQU "06" set day=30
+if /i "%month%" EQU "07" set day=31
+if /i "%month%" EQU "08" set day=31
+if /i "%month%" EQU "09" set day=30
+if /i "%month%" EQU "10" set day=31
+if /i "%month%" EQU "11" set day=30
+::if /i "%month%" EQU "12" set day=31
+
+:yesterday
+
+::echo yesterday
+::echo mm/dd/yyyy
+::echo %Month%/%day%/%year%
+
+
+
+temp\wilbrand.exe %macaddress% %Month%/%day%/%year% 4.3%REGION% "%Drive%">temp\temp.txt
+
+
+
+findStr /I /C:"Wrote to:" "temp\temp.txt" >nul
+IF not ERRORLEVEL 1 (echo "echo %name% - 4.3%REGION% - MAC:%macaddress%: Valid">>temp\ModMii_Log.bat) & (echo.) & (support\sfk echo [Green]Download Successful) & (echo.) & (goto:NEXT)
+
+goto:skipnormalextraction
+
+:skipWilbrand
 
 
 if /i "%name%" NEQ "nSwitch" goto:skipnSwitch
@@ -21185,7 +21472,7 @@ goto:next
 
 if not exist "%Drive%\DOLS" mkdir "%Drive%\DOLS"
 
-if /i "%FORWARDERTYPE:~0,1%" EQU "1" copy /y support\DOLS\SDUSBFORWARDER_v11c.dol "%Drive%\DOLS\%wadname%.dol">nul
+if /i "%FORWARDERTYPE:~0,1%" EQU "1" copy /y support\DOLS\SDUSBFORWARDER_v12.dol "%Drive%\DOLS\%wadname%.dol">nul
 if /i "%FORWARDERTYPE:~0,1%" EQU "2" copy /y support\DOLS\INTERNETFORWARDER.dol "%Drive%\DOLS\%wadname%.dol">nul
 if /i "%FORWARDERTYPE:~0,1%" EQU "3" copy /y support\DOLS\CHANNELFORWARDER.dol "%Drive%\DOLS\%wadname%.dol">nul
 
@@ -21201,7 +21488,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-1%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68276=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77426=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-1
 
@@ -21215,7 +21502,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-2%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x6837d=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x7752d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-2
 
@@ -21229,7 +21516,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-3%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68481=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77631=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-3
 
@@ -21243,7 +21530,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-4%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68585=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77735=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-4
 
@@ -21257,7 +21544,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-5%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68689=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77839=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-5
 
@@ -21271,7 +21558,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-6%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x6878d=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x7793d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-6
 
@@ -21285,7 +21572,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-7%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68891=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77a41=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-7
 
@@ -21299,7 +21586,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-8%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68995=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77b45=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-8
 
@@ -21313,7 +21600,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-9%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68a99=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77c49=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-9
 
@@ -21327,7 +21614,7 @@ set /p hex= <temphex.txt
 del /f /q temphex.txt
 set hex=0x%hex:~0,-4%
 echo Patching %wadname%.dol with %path-10%
-support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x68b9d=0x25,0x73,0x3a,0x2f,%hex%
+support\hexalter.exe "%Drive%\DOLS\%wadname%.dol" 0x77d4d=0x25,0x73,0x3a,0x2f,%hex%
 echo.
 :nopath-10
 
@@ -21558,8 +21845,8 @@ echo.
 cd support
 if /i "%DRIVE:~1,1%" EQU ":" (set DRIVEadj=%DRIVE%) else (set DRIVEadj=..\%DRIVE%)
 
-
 patchios "%DRIVEadj%"\WAD\%wadnameless%%patchname%%slotname%%versionname%.wad%PATCHCODE%%slotcode%%versioncode%
+
 
 cd..
 echo.
@@ -22168,8 +22455,8 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 50
 
 
 ::---delete non-temp files---
-if exist temp\WAD\JoyFlowHNv11c-HBJF.wad del temp\WAD\JoyFlowHNv11c-HBJF.wad>nul
-if exist temp\WAD\switch2uneek(emulators)-4EMUNand-v11c-S2RL.wad del temp\WAD\switch2uneek(emulators)-4EMUNand-v11c-S2RL.wad>nul
+if exist temp\WAD\JoyFlowHNv12-HBJF.wad del temp\WAD\JoyFlowHNv12-HBJF.wad>nul
+if exist temp\WAD\switch2uneek(emulators)-4EMUNand-v12-S2RL.wad del temp\WAD\switch2uneek(emulators)-4EMUNand-v12-S2RL.wad>nul
 if exist temp\WAD\cIOS249-v14.wad del temp\WAD\cIOS249-v14.wad>nul
 if exist temp\WAD\cBC-NMMv0.2a.wad del temp\WAD\cBC-NMMv0.2a.wad>nul
 ::if exist temp\WAD\cBC-DML.wad del temp\WAD\cBC-DML.wad>nul
@@ -22325,7 +22612,7 @@ if /i "%SNKJOY%" NEQ "Y" goto:skipSNKpri
 echo Adding JoyFlow forwarder dol to Priiloader's installed file.
 echo.
 
-if exist temp\JoyFlow(emulators)-v11c.dol move /y temp\JoyFlow(emulators)-v11c.dol "%nandpath%"\title\00000001\00000002\data\main.bin>nul
+if exist temp\JoyFlow(emulators)-v12.dol move /y temp\JoyFlow(emulators)-v12.dol "%nandpath%"\title\00000001\00000002\data\main.bin>nul
 
 :skipSNKpri
 
@@ -22388,7 +22675,7 @@ if /i "%SNKcBC%" EQU "DML" echo DML-r%CurrentDMLRev%.WAD Constructed (install to
 IF not "%addwadfolder%"=="" echo Custom Folder of WADs Installed: %addwadfolder% >>"%nandpath%\nandinfo.txt"
 
 
-if exist temp\JoyFlow(emulators)-v11c.dol del temp\JoyFlow(emulators)-v11c.dol>nul
+if exist temp\JoyFlow(emulators)-v12.dol del temp\JoyFlow(emulators)-v12.dol>nul
 
 copy /y temp\ModMii_Log.bat temp\ModMii_Log_SNK.bat>nul
 
@@ -24958,14 +25245,14 @@ set path1=apps\IOS236-v5-Mod\
 goto:downloadstart
 
 :sysCheck
-set name=sysCheck v2.1.0.b17
+set name=sysCheck v2.1.0.b18
 set code1=URL
-set code2=http://syscheck.googlecode.com/files/syscheckb17.zip
+set code2=http://syscheck.googlecode.com/files/syscheckb18.zip
 set version=*
-set dlname=syscheckb17.zip
-set wadname=syscheckb17.zip
+set dlname=syscheckb18.zip
+set wadname=syscheckb18.zip
 set filename=boot.dol
-set md5=13a4a8bcc88ca09c9fc1c3c9a063a03f
+set md5=e395a33e1432b83e3e658f7d01aa2728
 set path1=apps\sysCheck\
 goto:downloadstart
 
@@ -25194,7 +25481,7 @@ goto:downloadstart
 
 
 :FLOW
-set name=WiiFlow-Mod (Most Recent Release)
+set name=WiiFlow (Most Recent Release)
 set category=GOOGLEUPDATE
 set path1=apps\WiiFlow\
 set updateurl="http://tiny.cc/WiiflowModMii"
@@ -25230,14 +25517,14 @@ goto:downloadstart
 
 
 :USBX
-set name=USB-Loader Forwarder Channel v11c
+set name=USB-Loader Forwarder Channel v12
 set code1=ZIP
-set code2="http://nusad.googlecode.com/files/USBLoader(s)-ahbprot58-SD-USB-v11c-IDCL.zip"
+set code2="http://nusad.googlecode.com/files/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
 set version=*
-set dlname=USBLoader(s)-ahbprot58-SD-USB-v11c-IDCL.zip
-set wadname=USBLoader(s)-ahbprot58-SD-USB-v11c-IDCL.zip
-set filename=USBLoader(s)-ahbprot58-SD-USB-v11c-IDCL.wad
-set md5=737be30b1720e5709d489fecfaf68f74
+set dlname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
+set wadname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
+set filename=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.wad
+set md5=19edb88943527102dd5844e8c2b78b25
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -25247,12 +25534,12 @@ goto:downloadstart
 :JOYF
 set name=Joy Flow Forwarder Channel\dol
 set code1=ZIP
-set code2="http://nusad.googlecode.com/files/JoyFlow_Forwarder_wad_dol_v3.zip"
+set code2="http://nusad.googlecode.com/files/JoyFlow_Forwarder_wad_dol_v12.zip"
 set version=*
-set dlname=JoyFlow_Forwarder_wad_dol_v3.zip
-set wadname=JoyFlow_Forwarder_wad_dol_v3.zip
-set filename=JoyFlowHNv11c-HBJF.wad
-set md5=7d50e387c2ada64a33cee21b06917cb7
+set dlname=JoyFlow_Forwarder_wad_dol_v12.zip
+set wadname=JoyFlow_Forwarder_wad_dol_v12.zip
+set filename=JoyFlowHNv12-HBJF.wad
+set md5=0c94a030f4f19315aaa26b14d2900dbe
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -25275,19 +25562,19 @@ goto:downloadstart
 :S2U
 set name=Switch2Uneek
 set code1=ZIP
-set code2="http://nusad.googlecode.com/files/switch2uneek_ModMiiBundle_v3.zip"
+set code2="http://nusad.googlecode.com/files/switch2uneek_ModMiiBundle_v12.zip"
 set version=*
-set dlname=switch2uneek_ModMiiBundle_v3.zip
-set wadname=switch2uneek_ModMiiBundle_v3.zip
-set filename=switch2uneek(emulators)-4RealNand-v11c-S2UK.wad
-set md5=70dab04c3c04807e820888fd2721fbf6
+set dlname=switch2uneek_ModMiiBundle_v12.zip
+set wadname=switch2uneek_ModMiiBundle_v12.zip
+set filename=switch2uneek(emulators)-4RealNand-v12-S2UK.wad
+set md5=0639ea7dd95c5f2f4266a60bef66bf99
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
 ::below is for building emu nand
 if /i "%MENU1%" NEQ "S" goto:downloadstart
-set filename=switch2uneek(emulators)-4EMUNand-v11c-S2RL.wad
-set md5=e8c0ebda3fed406f7868d526821d4889
+set filename=switch2uneek(emulators)-4EMUNand-v12-S2RL.wad
+set md5=b0ea307ccddcc9542ec1e8b14c2d4e10
 set md5alt=%md5%
 ::set path1=\
 goto:downloadstart
@@ -25509,6 +25796,20 @@ set wadname=casper_0.3.elf.tar.gz
 set filename=boot.elf
 set md5=3e9d8254c3b197dca97d5ceb8bb5b7db
 set path1=apps\Casper\
+goto:downloadstart
+
+
+:Wilbrand
+set name=Wilbrand
+set category=fullextract
+set code1=URL
+set code2="http://dl.dropbox.com/u/74562700/Wilbrand.exe"
+set version=*
+set dlname="Wilbrand.exe"
+set wadname=Wilbrand.exe
+set filename=Wilbrand.exe
+set md5=0c747be356a44ad80b050ad3d18d18ab
+set path1=
 goto:downloadstart
 
 
@@ -28312,17 +28613,17 @@ if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/di
 
 
 
-::BOMB
-If /i "%Exploit%" NEQ "BOMB" goto:noBOMB
-if /i "%EXPLOIT%" NEQ "?" goto:afterBOMBspoiler
-set spoilername=Letterbomb Exploit Instructions
-set spoilerback=afterBOMBspoiler
+::Wilbrand
+if /i "%Exploit%" NEQ "W" goto:noWilbrand
+if /i "%EXPLOIT%" NEQ "?" goto:afterWilbrandspoiler
+set spoilername=Wilbrand Exploit Instructions
+set spoilerback=afterWilbrandspoiler
 goto:spoileropeningtag
-:afterBOMBspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\letterbomb.001 "%Drive%"\%guidename%>nul
+:afterWilbrandspoiler
+copy /y "%Drive%"\%guidename%+Support\Guide\Wilbrand.001 "%Drive%"\%guidename%>nul
 ::spoilerclosingtag
 if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noBOMB
+:noWilbrand
 
 
 
@@ -28537,8 +28838,8 @@ support\sfk echo -spat \x3cli\x3eExternal Hard Drive already Formatted as %FORMA
 :skip2
 
 if /i "%LOADER%" EQU "CFG" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow-Mod\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow-Mod\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to USB Hard Drive\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to SD Card\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipusb
@@ -28728,7 +29029,8 @@ goto:noMyM
 
 :installwads
 
-if /i "%MMM%" NEQ "*" goto:SKIP
+if /i "%MMM%" NEQ "*" goto:SKIPWAD
+
 
 ::---------CREATE MMMCONFIG To Autoload 236--------
 set patchIOSnum=236
@@ -28910,6 +29212,7 @@ support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
 set installwads=done
 if /i "%FIRM%" NEQ "%FIRMSTART%" goto:PRIIGUIDE
 
+:SKIPWAD
 
 ::------------------------reinstall HBC / Fix Upsidedown homebrew channel----------------------------
 :reinstallHBC
@@ -29118,7 +29421,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\WBM.001 "%Drive%"\%guidename%>nul
 
 if /i "%USBFOLDER%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch Configurable USB-Loader, and hit the plus sign \x22\x2b\x22. \x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow-Mod, go to page 2 of WiiFlow-Mod's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow, go to page 2 of WiiFlow's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
 
