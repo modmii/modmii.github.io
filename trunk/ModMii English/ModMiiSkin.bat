@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.0
+set currentversion=6.1.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -214,7 +214,7 @@ if /i "%waoutput%" NEQ "skipscam" goto:miniskip
 
 set waoutput=
 
-set watext=Enter the paypal email address you used to send your ModMii donation.~~Note: it pay take up to a few hours after donating before your email address can be validated.~~Also note that an internet connection is required to validate your email address.
+set watext=Enter the paypal email address you used to send your ModMii donation.~~Note: it may take up to a few hours after donating before your email address can be validated.~~Also note that an internet connection is required to validate your email address.
 
 start /w support\wizapp NOBACK EB
 

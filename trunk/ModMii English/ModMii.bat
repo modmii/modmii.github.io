@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.1.0
+set currentversion=6.1.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2119,7 +2119,7 @@ echo.
 echo.
 echo Enter the paypal email address you used to send your ModMii donation.
 echo.
-echo Note: it pay take up to a few hours after donating before your email
+echo Note: it may take up to a few hours after donating before your email
 echo       address can be validated.
 echo.
 set /p warning=     Enter Selection Here: 
@@ -20987,23 +20987,16 @@ echo.
 
 ::get yesterday's date
 
-Set Day=
-Set Month=
-Set Num=
-Set Year=
+set CurDate=
 
-@For /F "tokens=1,2,3,4 delims=/ " %%A in ('DATE /t') do @( 
-set Day=%%A
-set Month=%%B
-set Num=%%C
-set Year=%%D
-)
+if exist date.vbs del /f /q date.vbs
+>date.vbs echo wscript.echo Right(String(2,"0") ^& Month(date), 2) ^& "/" ^& Right(String(2,"0") ^& Day(date), 2) ^& "/" ^& Year(date)
+for /f "tokens=*" %%a in ('cscript//nologo date.vbs') do set CurDate=%%a
+if exist date.vbs del /f /q date.vbs
 
-if not "%Year%"=="" goto:nofix
-set Year=%Num%
-set Num=%Month%
-::set Month=%Day%
-:nofix
+Set Day=%CurDate:~3,2%
+Set Month=%CurDate:~0,2%
+Set Year=%CurDate:~-4%
 
 if /i "%day%" NEQ "01" (set /a day=%day%-1) & (goto:yesterday)
 
@@ -21033,10 +21026,9 @@ if /i "%month%" EQU "11" set day=30
 ::echo mm/dd/yyyy
 ::echo %Month%/%day%/%year%
 
-
+if exist temp\temp.txt del temp\temp.txt>nul
 
 temp\wilbrand.exe %macaddress% %Month%/%day%/%year% 4.3%REGION% "%Drive%">temp\temp.txt
-
 
 
 findStr /I /C:"Wrote to:" "temp\temp.txt" >nul
