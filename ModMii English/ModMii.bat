@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.1.1
+set currentversion=6.1.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -37,7 +37,7 @@ if exist Updatetemp.bat del updatetemp.bat>nul
 
 if not exist support\skipscam.txt goto:nocheck
 findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF not ERRORLEVEL 1 set Trigger=
+IF not ERRORLEVEL 1 set Trigger=1
 :nocheck
 
 
@@ -2063,7 +2063,6 @@ color 1f
 
 if /i "%Trigger%" EQU "1" goto:DefaultSettings
 
-if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 set warning=
 echo                                        ModMii
@@ -2113,49 +2112,11 @@ set /p warning=     Enter Selection Here:
 if /i "%warning%" NEQ "skipscam" goto:miniskip
 
 
-
-set warning=
-echo.
-echo.
-echo Enter the paypal email address you used to send your ModMii donation.
-echo.
-echo Note: it may take up to a few hours after donating before your email
-echo       address can be validated.
-echo.
-set /p warning=     Enter Selection Here: 
-
-
-echo %warning%>temp\key.txt
-
-echo modmii>temp\modmii.txt
-::if exist temp\modmii.txt del temp\modmii.txt>nul
-
-
-::download exe and zip
-
-if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/activator.exe"
-if exist activator.exe move /y activator.exe temp\activator.exe>nul
-
-if exist temp\keys.txt del temp\keys.txt>nul
-if exist temp\keys.zip del temp\keys.zip>nul
-
-start /min /wait support\wget -t 3 http://dl.dropbox.com/u/74562700/keys.zip
-if exist keys.zip move /y keys.zip temp\keys.zip>nul
-
-if not exist temp\keys.zip goto:nowifi
-if not exist temp\activator.exe goto:nowifi
-
-cd temp
-start activator.exe
-
-exit
-
-
-:nowifi
-echo.
-echo An internet connection is required to validate your email address,
-echo please try again later.
-@ping 127.0.0.1 -n 2 -w 1000> nul
+if /i "%warning%" NEQ "skipscam" goto:miniskip
+if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
+echo "%USERPROFILE%">support\skipscam.txt
+attrib +r +h +s support\skipscam.txt
+set Trigger=1
 goto:DefaultSettings
 :miniskip
 
