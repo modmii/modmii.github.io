@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.1
+set currentversion=6.1.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -167,12 +167,10 @@ set wabmp=support\bmp\default.bmp
 
 if not exist support\skipscam.txt goto:nocheck
 findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF not ERRORLEVEL 1 set Trigger=
+IF not ERRORLEVEL 1 set Trigger=1
 if /i "%Trigger%" EQU "1" goto:skip
 :nocheck
 
-
-if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 ::Splash Screen for Scam Warning
 ::if /i "%AGREEDVERSION%" EQU "%CURRENTVERSION%" goto:nosplash
@@ -207,47 +205,11 @@ if /i "%waoutput%" EQU "I Agree" goto:skip
 
 
 if /i "%waoutput%" NEQ "skipscam" goto:miniskip
-
-
-
-
-
-set waoutput=
-
-set watext=Enter the paypal email address you used to send your ModMii donation.~~Note: it may take up to a few hours after donating before your email address can be validated.~~Also note that an internet connection is required to validate your email address.
-
-start /w support\wizapp NOBACK EB
-
-if errorlevel 2 Exit
-
-call "%wabat%"
-
-echo %waoutput%>temp\key.txt
-
-::echo modmii>temp\modmii.txt
-if exist temp\modmii.txt del temp\modmii.txt>nul
-
-
-::download exe and zip
-
-if not exist temp\activator.exe start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/activator.exe"
-if exist activator.exe move /y activator.exe temp\activator.exe>nul
-
-if exist temp\keys.txt del temp\keys.txt>nul
-if exist temp\keys.zip del temp\keys.zip>nul
-
-start /min /wait support\wget -t 3 http://dl.dropbox.com/u/74562700/keys.zip
-if exist keys.zip move /y keys.zip temp\keys.zip>nul
-
-if not exist temp\keys.zip goto:skip
-if not exist temp\activator.exe goto:skip
-
-cd temp
-start activator.exe
-
-exit
-
-
+if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
+echo "%USERPROFILE%">support\skipscam.txt
+attrib +r +h +s support\skipscam.txt
+set Trigger=1
+goto:skip
 :miniskip
 
 
