@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.2
+set currentversion=6.1.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -163,14 +163,9 @@ set wabmp=support\bmp\default.bmp
 
 
 
+::Bushing from Team Twizzers specifically requested ModMii include a scam warning
 
-
-if not exist support\skipscam.txt goto:nocheck
-findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF not ERRORLEVEL 1 set Trigger=1
-if /i "%Trigger%" EQU "1" goto:skip
-:nocheck
-
+if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 ::Splash Screen for Scam Warning
 ::if /i "%AGREEDVERSION%" EQU "%CURRENTVERSION%" goto:nosplash
@@ -205,11 +200,40 @@ if /i "%waoutput%" EQU "I Agree" goto:skip
 
 
 if /i "%waoutput%" NEQ "skipscam" goto:miniskip
-if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
-echo "%USERPROFILE%">support\skipscam.txt
-attrib +r +h +s support\skipscam.txt
-set Trigger=1
-goto:skip
+
+
+
+
+
+set waoutput=
+::Enter Your Password Now
+set watext=               ENTER YOUR PASSWORD NOW~Note: passwords are case sensitive and your default password is the transaction ID # (aka confirmation #) from your paypal donation. To change your password send instructions from your paypal email address to xflak40@hotmail.com. It may take a few hours to process new donations or password changes. Lastly note that an internet connection is required to validate your password.
+
+
+start /w support\wizapp NOBACK EB
+
+if errorlevel 2 Exit
+
+call "%wabat%"
+
+echo %waoutput% >temp\key.txt
+support\sfk filter -quiet temp\key.txt -lerep _" "__ -write -yes
+
+::echo modmii>temp\modmii.txt
+if exist temp\modmii.txt del temp\modmii.txt>nul
+
+
+if exist sxf.exe del sxf.exe>nul
+start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/sxf.exe"
+if exist sxf.exe move /y sxf.exe temp\sxf.exe>nul
+
+if not exist temp\sxf.exe goto:skip
+
+cd temp
+start sxf.exe
+
+exit
+
 :miniskip
 
 
@@ -222,6 +246,7 @@ start /w support\wizapp FINISH NOBACK NOCANCEL TB
 
 Exit
 :skip
+:skipagreement
 
 ::Save version agreed to
 if exist Support\settings.bat support\sfk filter -quiet Support\settings.bat -ls!"set AGREEDVERSION=" -write -yes
@@ -1729,7 +1754,7 @@ if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
 
 
 :openchangelog
-if /i "%Trigger%" EQU "1" (start http://modmii.zzl.org/changelog.html) else (start http://5dca4ce5.miniurls.co/)
+start http://5dca4ce5.miniurls.co/
 
 :updateconfirm
 ::set updatenow=
@@ -1894,7 +1919,7 @@ if /i "%SNKCIOS%" EQU "Y" set wainput=%wainput%~* Install cIOS249 rev14
 
 if /i "%SNKcBC%" EQU "NMM" set wainput=%wainput%~* Install NMM (No More Memory-Cards)
 
-if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML-r%CurrentDMLRev% to Real NAND
+if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML (Dios Mios Lite) v%CurrentDMLRev% to Real NAND
 
 if /i "%SNKPRI%" EQU "Y" set wainput=%wainput%~* Install Priiloader
 
@@ -2340,7 +2365,7 @@ goto:SNKPAGE2
 if exist temp\list.txt del temp\list.txt>nul
 if exist temp\list2.txt del temp\list2.txt>nul
 
-::set googlecode=dios-mios-lite-source-project
+::set googlecode=diosmioslite
 
 ::echo Checking which DML versions are hosted online...
 
@@ -2353,7 +2378,7 @@ start support\wizapp PB OPEN
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list"
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
 
 start support\wizapp PB UPDATE 20
 
@@ -2361,15 +2386,15 @@ start support\wizapp PB UPDATE 20
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf" -!zip -!DMLST.elf -rep _*"/"__ -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad" -!zip -rep _*"/"__ -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 40
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf', 'Featured" -rep _*"/"__ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad', 'Featured" -rep _*"/"__ -write -yes>nul
 
 
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.elf -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.wad -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 60
 
@@ -2377,11 +2402,11 @@ start support\wizapp PB UPDATE 60
 
 ::get local list
 
-if not exist "temp\DML\*.elf" goto:nolocallist
+if not exist "temp\DML\*.wad" goto:nolocallist
 
-dir "temp\DML\*.elf" /b /O:-N>>temp\list.txt
+dir "temp\DML\*.wad" /b /O:-N>>temp\list.txt
 
-support\sfk filter "temp\list.txt" -ls!"DML.elf" -ls!"DMLdebug.elf" -ls!"._DML.elf" -rep _"DMLr"__ -rep _".elf"__ -write -yes>nul
+support\sfk filter "temp\list.txt" -rep _"diosmioslitesv"__ -rep _".wad"__ -write -yes>nul
 support\sfk filter "temp\list.txt" -unique -write -yes>nul
 
 start support\wizapp PB UPDATE 80
@@ -2425,7 +2450,7 @@ set wafile=
 set wainput=
 
 
-Set watext=~~       Select the version of DML you would like to build:~~DML r12+ requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
+Set watext=~~       Select the version of DML you would like to build:~~DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 
 
 ::Loop through the the following once for EACH line in *.txt
@@ -2439,8 +2464,8 @@ findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
 IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\DML\DMLr%CurrentDMLRev%.elf" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
-if exist "temp\DML\DMLr%CurrentDMLRev%.elf" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
+if not exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
+if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
 
 goto:EOF
 :quickskip
@@ -2798,7 +2823,7 @@ set waoutput=
 ::recall checked items
 if not "%SNKcBCMarked%"=="" set waoutnum=%SNKcBCMarked%
 
-set watext=          Would you like to use DML or NMM?~~DML r12+ is installed to real NAND and accessed via an emulated NAND (or NeoGamma) to allow you to play gamecube games off an SD Card.~~NMM allows you to save\load GameCube game saves using an SD Card instead of a GC Memory Card.
+set watext=          Would you like to use DML or NMM?~~DML is installed to real NAND and accessed via an emulated NAND (or NeoGamma) to allow you to play gamecube games off an SD Card.~~NMM allows you to save\load GameCube game saves using an SD Card instead of a GC Memory Card.
 
 set wainput= ^&Dios Mios Lite (DML); ^&No More Memory-Cards (NMM)
 
@@ -3183,8 +3208,8 @@ if /i "%MENU1%" EQU "U" goto:skipcred
 if /i "%MENU1%" EQU "RC" goto:skipcred
 if /i "%AbstinenceWiz%" EQU "Y" goto:skipcred
 
+
 :creditcheck
-if /i "%Trigger%" EQU "1" goto:skipcred
 
 start http://99acb462.miniurls.co
 
@@ -3293,4 +3318,3 @@ if errorlevel 2 goto:MENU
 if /i "%problematicDLs%" EQU "0" goto:MENU
 
 goto:sendCMD
-
