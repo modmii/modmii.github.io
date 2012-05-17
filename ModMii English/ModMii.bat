@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.1.2
+set currentversion=6.1.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -33,12 +33,6 @@ set UPDATENAME=ModMii
 
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del updatetemp.bat>nul
-
-
-if not exist support\skipscam.txt goto:nocheck
-findStr /I /C:"%USERPROFILE%" "support\skipscam.txt" >nul
-IF not ERRORLEVEL 1 set Trigger=1
-:nocheck
 
 
 ::-------------------CMD LINE SUPPORT----------------------
@@ -1405,6 +1399,8 @@ set digit=0
 
 :confirmMACaddycmd
 
+if /i "%SkinMode%" EQU "Y" goto:quickskip
+
 set /a digit=%digit%+1
 set testme=
 if /i "%digit%" EQU "1" set testme=%macaddress:~0,1%
@@ -1868,19 +1864,18 @@ set /p removeme= <temp\cmdinput2.txt
 support\sfk -spat filter temp\cmdinput.txt -rep _" DMLRev:%removeme%"__ -write -yes>nul
 
 
-if exist "temp\DML\DMLr%CurrentDMLRev%.elf" goto:noDMLRevcmd
+if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" goto:noDMLRevcmd
 
-::set googlecode=dios-mios-lite-source-project
+::set googlecode=diosmioslite
 
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" goto:noDMLRevcmd
 
-start /min /wait support\wget -t 3 "http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.elf"
-if not exist "DMLr%CurrentDMLRev%.elf" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/dios-mios-lite-source-project/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+start /min /wait support\wget -t 3 "http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
+if not exist "diosmioslitesv%CurrentDMLRev%.wad" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/diosmioslite/downloads/list?can=1) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\DML" mkdir "temp\DML"
-move /y "DMLr%CurrentDMLRev%.elf" "temp\DML\DMLr%CurrentDMLRev%.elf">nul
-
+move /y "diosmioslitesv%CurrentDMLRev%.wad" "temp\DML\diosmioslitesv%CurrentDMLRev%.wad">nul
 
 :noDMLRevcmd
 
@@ -2061,8 +2056,9 @@ color 1f
 ::SET PATHNAME=%0 //this returns the filename but also with absolute path
 
 
-if /i "%Trigger%" EQU "1" goto:DefaultSettings
+::Bushing from Team Twizzers specifically requested ModMii include a scam warning
 
+if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
 
 set warning=
 echo                                        ModMii
@@ -2112,11 +2108,48 @@ set /p warning=     Enter Selection Here:
 if /i "%warning%" NEQ "skipscam" goto:miniskip
 
 
-if /i "%warning%" NEQ "skipscam" goto:miniskip
-if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
-echo "%USERPROFILE%">support\skipscam.txt
-attrib +r +h +s support\skipscam.txt
-set Trigger=1
+
+set warning=
+echo.
+echo.
+echo Enter Your Password Now
+echo.
+echo.
+echo Note: passwords are case sensitive and your default password is the
+echo       transaction ID number (aka confirmation number) from your paypal donation.
+echo       If you wish to change your password send instructions using the same
+echo       email address you used to send your donation to xflak40@hotmail.com
+echo.
+echo       Also note that it may take a few hours to process new donations or
+echo       password change requests.
+echo.
+echo.
+echo.
+set /p warning=     Enter Your Password Here: 
+
+
+echo %warning% >temp\key.txt
+support\sfk filter -quiet temp\key.txt -lerep _" "__ -write -yes
+
+echo modmii>temp\modmii.txt
+::if exist temp\modmii.txt del temp\modmii.txt>nul
+
+if exist sxf.exe del sxf.exe>nul
+start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/sxf.exe"
+if exist sxf.exe move /y sxf.exe temp\sxf.exe>nul
+
+if not exist temp\sxf.exe goto:nowifi
+
+cd temp
+start sxf.exe
+exit
+
+
+:nowifi
+echo.
+echo An internet connection is required to validate your password,
+echo please try again later.
+@ping 127.0.0.1 -n 2 -w 1000> nul
 goto:DefaultSettings
 :miniskip
 
@@ -3861,7 +3894,7 @@ if %currentversion% EQU %newversion% (echo                              This ver
 
 
 ::openchangelog
-if /i "%Trigger%" EQU "1" (start http://modmii.zzl.org/changelog.html) else (start http://5dca4ce5.miniurls.co/)
+start http://5dca4ce5.miniurls.co/
 
 
 :updateconfirm
@@ -6807,35 +6840,36 @@ goto:NEEKrevSelect2
 if exist temp\list.txt del temp\list.txt>nul
 if exist temp\list2.txt del temp\list2.txt>nul
 
-::set googlecode=dios-mios-lite-source-project
+::set googlecode=diosmioslite
 
 echo Checking which DML versions are hosted online...
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/dios-mios-lite-source-project/downloads/list"
+start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
 
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf" -!zip -!DMLST.elf -rep _*"/"__ -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+support\sfk filter -spat "temp\list.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad" -!zip -rep _*"/"__ -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"dios-mios-lite-source-project.googlecode.com/files/" ++"DMLr" ++".elf', 'Featured" -rep _*"/"__ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad', 'Featured" -rep _*"/"__ -write -yes>nul
 
 
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.elf -rep _".elf*"__ -rep _"*files/"__ -rep _DMLr__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.wad -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 :nowifi
 
 ::get local list
 
-if not exist "temp\DML\*.elf" goto:nolocallist
+if not exist "temp\DML\*.wad" goto:nolocallist
 
-dir "temp\DML\*.elf" /b /O:-N>>temp\list.txt
+dir "temp\DML\*.wad" /b /O:-N>>temp\list.txt
 
-support\sfk filter "temp\list.txt" -ls!"DML.elf" -ls!"DMLdebug.elf" -ls!"._DML.elf" -rep _"DMLr"__ -rep _".elf"__ -write -yes>nul
+support\sfk filter "temp\list.txt" -rep _"diosmioslitesv"__ -rep _".wad"__ -write -yes>nul
 support\sfk filter "temp\list.txt" -unique -write -yes>nul
 :nolocallist
 
@@ -6869,12 +6903,10 @@ echo.
 echo                 Select the version of DML you would like to build:
 echo.
 echo.
-echo          * DML r12+ requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
+echo          * DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 echo.
-
-
 echo.
-echo          * DML Debug Mode saves logs to the SD Card.
+::echo          * DML Debug Mode saves logs to the SD Card.
 echo          * USB Gecko debug can only be enabled by compiling the source manually.
 echo.
 set RevCount=0
@@ -6891,8 +6923,8 @@ findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
 IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\DML\DMLr%CurrentDMLRev%.elf" echo       %RevCount% = DMLr%CurrentDMLRev% (hosted on google code)%FeaturedTag%
-if exist "temp\DML\DMLr%CurrentDMLRev%.elf" echo       %RevCount% = DMLr%CurrentDMLRev%%FeaturedTag%
+if not exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" echo       %RevCount% = diosmioslitesv%CurrentDMLRev% (hosted on google code)%FeaturedTag%
+if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" echo       %RevCount% = diosmioslitesv%CurrentDMLRev%%FeaturedTag%
 
 goto:EOF
 :quickskip
@@ -7339,14 +7371,14 @@ echo.
 echo.
 
 if /i "%SNEEKTYPE%" EQU "SD" echo.
-if /i "%SNEEKTYPE%" EQU "SD" echo         DML r12+ is installed to real NAND and accessed via an emulated NAND.
+if /i "%SNEEKTYPE%" EQU "SD" echo         DML is installed to real NAND and accessed via an emulated NAND.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
 if /i "%SNEEKTYPE%" EQU "SD" echo         DML (Dios Mios Lite) is a tool which allows you to run Gamecube games
 if /i "%SNEEKTYPE%" EQU "SD" echo         from an SD Card. Compatability is not 100% and it only works with
 if /i "%SNEEKTYPE%" EQU "SD" echo         SNEEK+DI (for now). For best results your SD card should be formatted
 if /i "%SNEEKTYPE%" EQU "SD" echo         using 64KB sector sizes when running DML.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
-if /i "%SNEEKTYPE%" EQU "SD" echo         DML r12+ requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
+if /i "%SNEEKTYPE%" EQU "SD" echo         DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 if /i "%SNEEKTYPE%" EQU "SD" echo.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
 if /i "%SNEEKTYPE%" EQU "SD" echo.
@@ -7867,7 +7899,7 @@ if /i "%SNKcBC%" EQU "NMM" echo.
 if /i "%BCtype%" EQU "DML" goto:noDML
 if /i "%SNKcBC%" EQU "DML" SET /a emuitems=%emuitems%+1
 ::if /i "%SNKcBC%" EQU "DML" (SET /a emuitems=%emuitems%+1) & (SET /a emuwadcount=%emuwadcount%+1)
-if /i "%SNKcBC%" EQU "DML" echo           * Install DML (Dios Mios Lite) to Real NAND
+if /i "%SNKcBC%" EQU "DML" echo           * Install DML (Dios Mios Lite) v%CurrentDMLRev% to Real NAND
 if /i "%SNKcBC%" EQU "DML" echo.
 :noDML
 
@@ -7975,8 +8007,7 @@ goto:SNKNANDCONFIRM
 
 
 :creditcheck
-::force non-donators to view credits (but not in cmd line mode)
-if /i "%Trigger%" EQU "1" goto:skipcreditcheck
+::force non-donators to view credits-but not in cmd line mode
 if /i "%cmdlinemode%" EQU "Y" goto:skipcreditcheck
 
 start http://99acb462.miniurls.co
@@ -8731,8 +8762,7 @@ echo.
 echo.
 echo.
 echo.
-echo          Note: * Theme and Priiloader modifiers are disabled
-echo                  for Emulated NANDs 4.0 or less
+echo          Note: Theme modifiers are disabled for Emulated NANDs 4.0 or less
 echo.
 echo.
 echo.
@@ -16139,7 +16169,7 @@ if /i "%RSJ%" EQU "*" (echo "Region Select v2 (JAP)">>temp\DLnames.txt) & (echo 
 if /i "%RSK%" EQU "*" (echo "Region Select v2 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
 if /i "%BC%" EQU "*" (echo "BC">>temp\DLnames.txt) & (echo "BC">>temp\DLgotos.txt)
 if /i "%cBC%" EQU "*" (echo "NMM">>temp\DLnames.txt) & (echo "NMM">>temp\DLgotos.txt)
-if /i "%DML%" EQU "*" (echo "DML-r%CurrentDMLRev% ">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
+if /i "%DML%" EQU "*" (echo "DML %CurrentDMLRev% ">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
 if /i "%SM3.2U%" EQU "*" (echo "System Menu 3.2U">>temp\DLnames.txt) & (echo "SM3.2U">>temp\DLgotos.txt)
 if /i "%SM4.1U%" EQU "*" (echo "System Menu 4.1U">>temp\DLnames.txt) & (echo "SM4.1U">>temp\DLgotos.txt)
 if /i "%SM4.2U%" EQU "*" (echo "System Menu 4.2U">>temp\DLnames.txt) & (echo "SM4.2U">>temp\DLgotos.txt)
@@ -20630,7 +20660,7 @@ if /i "%cheatlocation%" EQU "B" copy /y "txt.php@txt=%titleid%" "%drive%\txtcode
 if /i "%cheatlocation%" EQU "B" move /y "txt.php@txt=%titleid%" "%drive%\codes\%consolecode%\%letter1%\%titleid%.txt">nul
 
 ::for some reason VC downloads fail, and they leave index.html as a trace instead
-::if exist index.html del index.html>nul
+if exist index.html del index.html>nul
 
 goto:processcode
 
@@ -20647,6 +20677,7 @@ If exist "%DRIVE%"\txtcodes\*.txt echo "echo Cheat Codes: Found">>temp\ModMii_Lo
 If not exist "%DRIVE%"\txtcodes\*.txt echo "support\sfk echo Cheat Codes: [Red]Missing">>temp\ModMii_Log.bat
 :skip
 
+if /i "%cheatlocation%" EQU "B" goto:skip
 if /i "%cheatlocation%" EQU "T" goto:skip
 If exist "%DRIVE%"\codes echo "echo Cheat Codes: Found">>temp\ModMii_Log.bat
 If not exist "%DRIVE%"\codes echo "support\sfk echo Cheat Codes: [Red]Missing">>temp\ModMii_Log.bat
@@ -20822,6 +20853,12 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" set DRIVE=Program Files
 :skip
 if not exist "%Drive%" mkdir "%Drive%"
+
+
+::no md5 check for dml
+if /i "%name:~0,4%" NEQ "dios" goto:notdios
+if exist "temp\DML\%wadname%" (goto:FullExtractZipAlreadyExists) else (goto:nocheckexisting)
+:notdios
 
 
 ::----if exist and fails md5 check, delete and redownload----
@@ -21011,6 +21048,16 @@ if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
 copy /y "temp\%wadname%" "%Drive%\WAD\%wadname%" >nul
 goto:skipnormalextraction
 :skipPLC
+
+
+if /i "%name:~0,4%" NEQ "dios" goto:skipdios
+if not exist "temp\DML" mkdir "temp\DML"
+if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
+if exist "temp\%wadname%" move /y "temp\%wadname%" "temp\DML\%wadname%" >nul
+copy /y "temp\DML\%wadname%" "%Drive%\WAD\%wadname%" >nul
+goto:simpleDMLcheck
+:skipdios
+
 
 
 if /i "%wadname%" NEQ "WiiBackupManager.zip" goto:notWBM
@@ -22621,7 +22668,7 @@ if /i "%SNKcBC%" EQU "NMM" echo NMM (No More Memory-Cards) Installed >>"%nandpat
 :noNMM
 
 if /i "%BCtype%" EQU "DML" goto:noDML
-if /i "%SNKcBC%" EQU "DML" echo DML-r%CurrentDMLRev%.WAD Constructed (install to real NAND) >>"%nandpath%\nandinfo.txt"
+if /i "%SNKcBC%" EQU "DML" echo diosmioslitesv%CurrentDMLRev%.WAD Downloaded (install to real NAND) >>"%nandpath%\nandinfo.txt"
 :noDML
 
 
@@ -22854,7 +22901,7 @@ echo          but it will be much quicker the second time around.
 echo.
 
 if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
-echo        * Install the DML-r%CurrentDMLRev%.WAD using MMM to your
+echo        * Install the diosmioslitesv%CurrentDMLRev%.WAD using MMM to your
 echo          REAL NAND in order for your Emulated NAND to use DML. DML currently
 echo          requires SNEEK+DI r157 or higher and neek2o has yet to support DML.
 echo.
@@ -25888,28 +25935,18 @@ set dlname=NMMv0.2a-cred.rar
 goto:downloadstart
 
 
-
 :DML
-set name=DML-r%CurrentDMLRev%
-set wadname=DML-r%CurrentDMLRev%
-set ciosslot=unchanged
-set ciosversion=
-::set md5=aaaaa5a3f60d762cf5c3f64f57ba82c9
+set name=diosmioslitesv%CurrentDMLRev%
+set code1=ZIP
+set code2="http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
+set version=*
+set dlname="diosmioslitesv%CurrentDMLRev%.wad"
+set wadname=diosmioslitesv%CurrentDMLRev%.wad
+set filename=diosmioslitesv%CurrentDMLRev%.wad
+::set md5=136163e2bcae838b0f7b20fec154f000
 ::set md5alt=%md5%
-set basewad=RVL-mios-v10
-set md5base=851c27dae82bc1c758be07fa964d17cb
-set md5basealt=%md5baseb%
-set code1=00000001
-set code2=00000101
-set version=10
-set basecios=DML-r%CurrentDMLRev%
-set diffpath=%basecios%
-set code2new=00000100
-set lastbasemodule=
-set cIOSFamilyName=
-set cIOSversionNum=
-set URL=http://dios-mios-lite-source-project.googlecode.com/files/DMLr%CurrentDMLRev%.elf
-set dlname=DMLr%CurrentDMLRev%.elf
+set category=fullextract
+set path1=WAD\
 goto:downloadstart
 
 
