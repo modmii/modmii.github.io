@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.3
+set currentversion=6.1.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -207,7 +207,9 @@ if /i "%waoutput%" NEQ "skipscam" goto:miniskip
 
 set waoutput=
 ::Enter Your Password Now
-set watext=               ENTER YOUR PASSWORD NOW~Note: passwords are case sensitive and your default password is the transaction ID # (aka confirmation #) from your paypal donation. To change your password send instructions from your paypal email address to xflak40@hotmail.com. It may take a few hours to process new donations or password changes. Lastly note that an internet connection is required to validate your password.
+set watext=               ENTER YOUR PASSWORD NOW~Note: To set-up or change your password send instructions using the same email address you used to send your donation to xflak40@hotmail.com~Passwords should be at least 8 characters long and use a combination of letters and numbers. It may take a few hours to process new passwords. Lastly note that an internet connection is required to validate your password.
+
+
 
 
 start /w support\wizapp NOBACK EB
