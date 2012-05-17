@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.1.3
+set currentversion=6.1.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2115,13 +2115,12 @@ echo.
 echo Enter Your Password Now
 echo.
 echo.
-echo Note: passwords are case sensitive and your default password is the
-echo       transaction ID number (aka confirmation number) from your paypal donation.
-echo       If you wish to change your password send instructions using the same
+echo Note: To set-up or change your password send instructions using the same
 echo       email address you used to send your donation to xflak40@hotmail.com
+echo       Passwords should be at least 8 characters long and use a combination
+echo       of letters and numbers.
 echo.
-echo       Also note that it may take a few hours to process new donations or
-echo       password change requests.
+echo       Also note that it may take a few hours to process new passwords.
 echo.
 echo.
 echo.
