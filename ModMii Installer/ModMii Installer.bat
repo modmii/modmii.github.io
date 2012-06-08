@@ -11,7 +11,7 @@ set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
-set InstallerVersion=6.1
+set InstallerVersion=6.2
 
 chcp 437>nul
 
@@ -170,8 +170,6 @@ set /p newversion= <list.txt
 
 del list.txt>nul
 
-::open webpage
-start http://89d89449.miniurls.co
 
 start wizapp PB UPDATE 25
 
