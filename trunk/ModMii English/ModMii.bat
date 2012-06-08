@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.1.4
+set currentversion=6.1.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2116,7 +2116,7 @@ echo Enter Your Password Now
 echo.
 echo.
 echo Note: To set-up or change your password send instructions using the same
-echo       email address you used to send your donation to xflak40@hotmail.com
+echo       email address you used to send your donation to xflak40@gmail.com
 echo       Passwords should be at least 8 characters long and use a combination
 echo       of letters and numbers.
 echo.
@@ -2906,7 +2906,6 @@ echo      Use the ModMii Wizard to set-up your SD card with all you need to soft
 echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
 echo      a custom guide is built based on your answers to a few simple questions.
 echo.
-support\sfk echo -spat \x20 \x20 [RED] Donations are optional and can be made via paypal.com to XFlak40@hotmail.com
 echo      ***************************
 echo.
 set /p MENU1=     Enter Selection Here: 
@@ -3893,7 +3892,7 @@ if %currentversion% EQU %newversion% (echo                              This ver
 
 
 ::openchangelog
-start http://5dca4ce5.miniurls.co/
+start http://modmii.zzl.org/changelog.html
 
 
 :updateconfirm
@@ -8006,58 +8005,7 @@ goto:SNKNANDCONFIRM
 
 
 :creditcheck
-::force non-donators to view credits-but not in cmd line mode
-if /i "%cmdlinemode%" EQU "Y" goto:skipcreditcheck
-
-start http://99acb462.miniurls.co
-
-cls
-
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 [Yellow]Non-Donators must view the Credits for 60 seconds before downloading
-echo.
-echo.
-echo  If you donate $1 or more to XFlak40@hotmail.com, as my way of saying thanks I'll
-echo  reply to you via email with a functional Easter Egg guaranteed to be helpful
-echo  every time you use ModMii.
-echo.
-echo  I will still email you ModMii's Easter Egg if you prefer to donate to someone else
-echo  listed in the credits ONLY IF you ask THEM to send confirmation of your donation
-echo  to XFlak40@hotmail.com.
-echo.
-echo.
-support\sfk echo -spat \x20 [Green]ModMii Donations can be sent via paypal to: \x20 XFlak40@hotmail.com
-echo.
-echo.
-
-echo 60 seconds remaining...
-support\nircmd.exe wait 10000
-
-echo.
-echo 50 seconds remaining...
-support\nircmd.exe wait 10000
-
-echo.
-echo 40 seconds remaining...
-support\nircmd.exe wait 10000
-
-echo.
-echo 30 seconds remaining...
-support\nircmd.exe wait 10000
-
-echo.
-echo 20 seconds remaining...
-support\nircmd.exe wait 10000
-
-echo.
-echo 10 seconds remaining...
-support\nircmd.exe wait 10000
-:skipcreditcheck
-
-
+::credit check removed, enjoy!
 if /i "%AbstinenceWiz%" EQU "Y" goto:Download
 if /i "%SNEEKSELECT%" EQU "1" goto:SNEEKINSTALLER
 if /i "%SNEEKSELECT%" EQU "3" goto:SNEEKINSTALLER
@@ -18063,9 +18011,9 @@ rename %basecios%\00000001.app 00000001-original.app
 if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:skipPortableFix
 if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
 
-if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
-if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
-if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
+copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
+copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
+copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
 
 move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
 
@@ -19143,9 +19091,9 @@ echo.
 if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:skipPortableFix
 if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
 
-if not exist "%homedrive%\ModMii\temp\TMCL.exe" copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
-if not exist "%homedrive%\ModMii\temp\ASH.exe" copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
-if not exist "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll" copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
+copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
+copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
+copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
 
 move /y "temp\TMCL.exe" "temp\TMCL.bak">nul
 
@@ -22299,6 +22247,7 @@ if /i "%SKINmode%" NEQ "Y" start notepad "temp\ModMii_CMD_LINE_NEEK_Errors.txt"
 if /i "%SNEEKSELECT%" EQU "3" goto:SNKNANDBUILDER
 
 if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+if /i "%SKINmode%" EQU "Y" start support\wizapp PB CLOSE
 exit
 :notcmdfinish
 
@@ -22863,6 +22812,7 @@ if /i "%problematicDLs%" EQU "0" exit
 support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
 move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log_Errors.txt">nul
 if /i "%SKINmode%" NEQ "Y" start notepad "temp\ModMii_CMD_LINE_Log_Errors.txt"
+if /i "%SKINmode%" EQU "Y" start support\wizapp PB CLOSE
 exit
 :notcmdfinish
 
@@ -23048,7 +22998,8 @@ echo * %problematicDLs% of %DLTOTAL% file(s) are Invalid, Missing or were Not Up
 
 support\sfk filter -quiet "temp\ModMii_Log.bat" -rep _"support\sfk echo "__ -rep _"echo "__ -rep _"[Red]"__ -write -yes
 move /y "temp\ModMii_Log.bat" "temp\ModMii_CMD_LINE_Log.txt">nul
-if /i "%SKINmode%" EQU "Y" exit
+
+if /i "%SKINmode%" EQU "Y" (start support\wizapp PB CLOSE) & (exit)
 if /i "%problematicDLs%" NEQ "0" start notepad "temp\ModMii_CMD_LINE_Log.txt"
 exit
 :notcmdfinish

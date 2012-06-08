@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.4
+set currentversion=6.1.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -207,7 +207,7 @@ if /i "%waoutput%" NEQ "skipscam" goto:miniskip
 
 set waoutput=
 ::Enter Your Password Now
-set watext=               ENTER YOUR PASSWORD NOW~Note: To set-up or change your password send instructions using the same email address you used to send your donation to xflak40@hotmail.com~Passwords should be at least 8 characters long and use a combination of letters and numbers. It may take a few hours to process new passwords. Lastly note that an internet connection is required to validate your password.
+set watext=               ENTER YOUR PASSWORD NOW~Note: To set-up or change your password send instructions using the same email address you used to send your donation to xflak40@gmail.com~Passwords should be at least 8 characters long and use a combination of letters and numbers. It may take a few hours to process new passwords. Lastly note that an internet connection is required to validate your password.
 
 
 
@@ -1756,7 +1756,7 @@ if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
 
 
 :openchangelog
-start http://5dca4ce5.miniurls.co/
+start http://modmii.zzl.org/changelog.html
 
 :updateconfirm
 ::set updatenow=
@@ -3199,51 +3199,6 @@ if exist temp\ModMii_Log_temp.txt del temp\ModMii_Log_temp.txt>nul
 if exist temp\ModMii_CMD_LINE_Log.txt del temp\ModMii_CMD_LINE_Log.txt>nul
 if exist temp\ModMii_CMD_LINE_Log_Errors.txt del temp\ModMii_CMD_LINE_Log_Errors.txt>nul
 if exist temp\ModMii_CMD_LINE_NEEK_Errors.txt del temp\ModMii_CMD_LINE_NEEK_Errors.txt>nul
-
-
-::credits for some
-
-if /i "%GUIDEONLY%" NEQ "on" goto:creditcheck
-if /i "%MENU1%" EQU "W" goto:skipcred
-if /i "%MENU1%" EQU "H" goto:skipcred
-if /i "%MENU1%" EQU "U" goto:skipcred
-if /i "%MENU1%" EQU "RC" goto:skipcred
-if /i "%AbstinenceWiz%" EQU "Y" goto:skipcred
-
-
-:creditcheck
-
-start http://99acb462.miniurls.co
-
-set watext=~~~Non-Donators must view the Credits before downloading~~Waiting 60 seconds...
-
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
-start support\wizapp PB OPEN
-
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 10
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 20
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 30
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 40
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 50
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 60
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 70
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 80
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 90
-support\nircmd.exe wait 6000
-start support\wizapp PB UPDATE 100
-start support\wizapp PB CLOSE
-:skipcred
-
 
 
 ::if "%OSYS%"=="" (goto:skipforcewait)
