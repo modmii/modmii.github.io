@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.1.5
+set currentversion=6.2.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1921,11 +1921,11 @@ if /i "%SNKCIOS%" EQU "Y" set wainput=%wainput%~* Install cIOS249 rev14
 
 if /i "%SNKcBC%" EQU "NMM" set wainput=%wainput%~* Install NMM (No More Memory-Cards)
 
-if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML (Dios Mios Lite) v%CurrentDMLRev% to Real NAND
+if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML %CurrentDMLRev% to Real NAND
 
 if /i "%SNKPRI%" EQU "Y" set wainput=%wainput%~* Install Priiloader
 
-if /i "%SNKJOY%" EQU "Y" set wainput=%wainput%~* Install JoyFlow
+if /i "%SNKFLOW%" EQU "Y" set wainput=%wainput%~* Install WiiFlow
 
 IF not "%addwadfolder%"=="" set wainput=%wainput%~* Install wads from custom folder:~  %addwadfolder%
 
@@ -2376,29 +2376,29 @@ set watext=~~~~     Checking which DML versions are hosted online...
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
-start support\wizapp PB OPEN
+::start support\wizapp PB OPEN
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
+::start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
 
-start support\wizapp PB UPDATE 20
+::start support\wizapp PB UPDATE 20
 
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
-copy /y "temp\list.txt" "temp\list2.txt">nul
+::if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
+::copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad" -!zip -rep _*"/"__ -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+::support\sfk filter -spat "temp\list.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad" -!zip -rep _*"/"__ -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
-start support\wizapp PB UPDATE 40
+::start support\wizapp PB UPDATE 40
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad', 'Featured" -rep _*"/"__ -write -yes>nul
+::support\sfk filter -spat "temp\list2.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad', 'Featured" -rep _*"/"__ -write -yes>nul
 
 
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.wad -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+::support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.wad -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
-start support\wizapp PB UPDATE 60
+::start support\wizapp PB UPDATE 60
 
 :nowifi
 
@@ -2408,10 +2408,11 @@ if not exist "temp\DML\*.wad" goto:nolocallist
 
 dir "temp\DML\*.wad" /b /O:-N>>temp\list.txt
 
-support\sfk filter "temp\list.txt" -rep _"diosmioslitesv"__ -rep _".wad"__ -write -yes>nul
+::support\sfk filter "temp\list.txt" -rep _"diosmioslitesv"__ -rep _".wad"__ -write -yes>nul
+support\sfk filter "temp\list.txt" -rep _".wad"__ -write -yes>nul
 support\sfk filter "temp\list.txt" -unique -write -yes>nul
 
-start support\wizapp PB UPDATE 80
+::start support\wizapp PB UPDATE 80
 
 :nolocallist
 
@@ -2419,7 +2420,7 @@ start support\wizapp PB UPDATE 80
 ::------actual page start----------
 :CurrentDMLRevSelect2
 
-start support\wizapp PB UPDATE 100
+::start support\wizapp PB UPDATE 100
 
 ::count # of folders in advance to set "mode"
 setlocal ENABLEDELAYEDEXPANSION
@@ -2434,7 +2435,9 @@ start support\wizapp PB CLOSE
 ::Error if no revs found
 if /i "%DMLTOTAL%" NEQ "0" goto:DMLrevsfound
 
-set watext=~~~~Unable to connect to the internet and no DML versions saved locally
+if not exist temp\DML mkdir temp\DML
+
+set watext=~~~No DML (or Dios Mios) versions saved locally~~To add versions to the below list, download them from here:~~http://code.google.com/p/diosmios/wiki/Downloads~~~Then save them to ModMii's "temp\DML" folder
 
 start /w support\wizapp TB
 
@@ -2452,8 +2455,9 @@ set wafile=
 set wainput=
 
 
-Set watext=~~       Select the version of DML you would like to build:~~DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
+Set watext=Select the version of DML (or Dios Mios) to install:~~To add versions to the list, download them from here:~http://code.google.com/p/diosmios/wiki/Downloads~Then save them to ModMii's "temp\DML" folder~~DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
 
+if not exist temp\list.txt goto:quickskip
 
 ::Loop through the the following once for EACH line in *.txt
 for /F "tokens=*" %%A in (temp\list.txt) do call :processDMLlist %%A
@@ -2461,13 +2465,14 @@ goto:quickskip
 :processDMLlist
 set CurrentDMLRev=%*
 
-if not exist temp\list2.txt goto:nofeaturedcheck
-findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
-IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
+::if not exist temp\list2.txt goto:nofeaturedcheck
+::findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
+::IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
-if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
+::if not exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
+::if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
+set wainput=%wainput%%CurrentDMLRev%;
 
 goto:EOF
 :quickskip
@@ -2485,8 +2490,11 @@ set CurrentDMLRev=
 goto:SNKPAGE4a3
 :notback
 
+
+
 ::remove featured\hosted tags before retrieving selection
-support\sfk filter "%wabat%" -rep _" (hosted on google code)"__ -rep _" - Featured"__ -write -yes>nul
+::disabled
+::support\sfk filter "%wabat%" -rep _" (hosted on google code)"__ -rep _" - Featured"__ -write -yes>nul
 
 call "%wabat%"
 
@@ -2678,7 +2686,7 @@ set SNKPLC=
 set SNKCIOS=
 set SNKPRI=
 set SNKcBC=
-set SNKJOY=
+set SNKFLOW=
 ::set addwadfolder=
 
 set waoutnum=
@@ -2703,8 +2711,8 @@ if /i "%SNEEKTYPE%" NEQ "SD" set wainput=%wainput%; No ?More Memory-Cards (NMM)
 
 
 
-if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:notUneek
-set wainput=%wainput%; ?JoyFlow (USB-Loader)
+::if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:notUneek
+set wainput=%wainput%; ?WiiFlow (USB-Loader)
 if /i "%AbstinenceWiz%" EQU "Y" goto:notUneek
 if /i "%neek2o%" EQU "off" set wainput=%wainput%; ?Switch2Uneek (launch different NANDs)
 :notUneek
@@ -2749,8 +2757,8 @@ IF not ERRORLEVEL 1 set THEMEQ=Y
 findStr /I /C:"No ^&More Memory-Cards (NMM)" "%wabat%" >nul
 IF not ERRORLEVEL 1 set SNKcBC=NMM
 
-findStr /I /C:"^&JoyFlow" "%wabat%" >nul
-IF not ERRORLEVEL 1 set SNKJOY=Y
+findStr /I /C:"^&WiiFlow" "%wabat%" >nul
+IF not ERRORLEVEL 1 set SNKFLOW=Y
 
 findStr /I /C:"Switch2Uneek" "%wabat%" >nul
 IF not ERRORLEVEL 1 set SNKS2U=Y
@@ -3160,7 +3168,7 @@ if not "%addwadfolder%"=="" set classicCMD=%classicCMD% WADdir:%addwadfolder%?
 if /i "%SNKPLC%" EQU "Y" set classicCMD=%classicCMD% PLC
 if /i "%SNKCIOS%" EQU "Y" set classicCMD=%classicCMD% 249
 if /i "%SNKPRI%" EQU "Y" set classicCMD=%classicCMD% Pri
-if /i "%SNKJOY%" EQU "Y" set classicCMD=%classicCMD% Joy
+if /i "%SNKFLOW%" EQU "Y" set classicCMD=%classicCMD% FLOW
 if /i "%SNKcBC%" EQU "NMM" set classicCMD=%classicCMD% NMM
 if /i "%SNKcBC%" EQU "DML" set classicCMD=%classicCMD% DML DMLRev:%CurrentDMLRev%
 
