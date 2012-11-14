@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.0
+set currentversion=6.2.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -19777,7 +19777,7 @@ goto:skippostloaderfilter
 
 
 :WiiFlowfilter
-support\sfk filter -quiet code.bat ++"zip" -rep _.zip*__ -write -yes
+support\sfk filter -quiet code.bat ++"zip" ++"WiiFlow" -!cert -rep _.zip*__ -write -yes
 support\sfk filter -spat -quiet code.bat -rep _*v__ -write -yes
 set /p newcode= <code.bat
 del /f /q code.bat
