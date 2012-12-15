@@ -14952,10 +14952,7 @@ del temp\cIOSsubversion.bat>nul
 if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 
 set HM=*
-findStr /I /C:"Homebrew Channel 1.1.0 running on IOS58" "%sysCheckName%" >nul
-IF not ERRORLEVEL 1 set HM=
-
-findStr /I /C:"Homebrew Channel 1.0.0 running on IOS58" "%sysCheckName%" >nul
+findStr /I /C:"Homebrew Channel 1.1.2 running on IOS58" "%sysCheckName%" >nul
 IF not ERRORLEVEL 1 set HM=
 
 ::check for any version of IOS58
