@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.1
+set currentversion=6.2.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -21359,7 +21359,8 @@ goto:alreadyhavehackmii
 
 
 
-if not exist temp\%wadname% start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --reject "*.html" --reject "%2A" %code2%*
+if not exist temp\%wadname% start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%*
+
 if not exist temp\%wadname% move /y get.*.* temp\%wadname%>nul
 if not exist "%Drive%"\apps\HackMii_Installer mkdir "%Drive%"\apps\HackMii_Installer
 support\7za e -aoa temp\%wadname% -o"%Drive%"\apps\HackMii_Installer *.%version% *.txt -r
@@ -25221,10 +25222,10 @@ set code1=URL
 set code2="http://bootmii.org/download/"
 set version=elf
 ::set dlname=
-set wadname=hackmii_installer_v1.0.zip
+set wadname=hackmii_installer_v1.2.zip
 set filename=boot.elf
 set path1=
-set md5=cfc05090ac7eac2c6711c196151c7919
+set md5=729eebb48f6b562b94a47a3eb0543bf4
 goto:downloadstart
 
 :IOS236Installer
@@ -25809,14 +25810,14 @@ goto:downloadstart
 
 
 :Priiloader
-set name=Priiloader v0.7 (236 Mod)
+set name=Priiloader v0.7 (236 LULZ Mod)
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/Priiloader-v0.7-236-WiimotePlus-Support.zip"
+set code2="http://dl.dropbox.com/u/74562700/ModMii/priiloader_MOD_IOS236_r142_LULZ.zip"
 set version=*
-set dlname=Priiloader-v0.7-236-WiimotePlus-Support.zip
-set wadname=Priiloader-v0.7-236-WiimotePlus-Support.zip
+set dlname=priiloader_MOD_IOS236_r142_LULZ.zip
+set wadname=priiloader_MOD_IOS236_r142_LULZ.zip
 set filename=boot.dol
-set md5=e85ba388be525f55193ca3a693ccc344
+set md5=f3904649eb2677ffd50d8a55971826d9
 set path1=apps\Priiloader\
 goto:downloadstart
 
