@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.2
+set currentversion=6.2.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -12250,11 +12250,11 @@ start %ModMiimin%/wait support\wget -N "http://code.google.com/p/d2x-cios/downlo
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"d2x-cios.googlecode.com/files/" ++".zip" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"d2x-cios.googlecode.com/files/" ++".zip" -!"vwii" -!"uwii" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 
 ::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"d2x-cios.googlecode.com/files/" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
+support\sfk filter -spat "temp\list2.txt" ++"d2x-cios.googlecode.com/files/" ++".zip', 'Featured'" -!"vwii" -!"uwii" -rep _*"/"__ -write -yes>nul
 support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 :nowifi
