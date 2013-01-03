@@ -1,24 +1,30 @@
+#Region ;**** Directives created by AutoIt3Wrapper_GUI ****
+#AutoIt3Wrapper_icon=D:\ModMii\Support\icon.ico
+#AutoIt3Wrapper_outfile=ModMiiSkin.exe
+#AutoIt3Wrapper_UseX64=N
+#AutoIt3Wrapper_Res_Description=ModMii Skin Launcher
+#AutoIt3Wrapper_Res_Fileversion=1.0.0.0
+#AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak, Launcher by person66
+#AutoIt3Wrapper_Res_Field=ProductName|ModMii Skin Launcher
+#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
+#EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #cs ----------------------------------------------------------------------------
 
- AutoIt Version: 3.3.8.0
+ AutoIt Version: 3.3.8.1
  Author:         person66
 
  Script Function:
 	Move the ModMii skin window.
 
- Script Version: 1.7
+ Script Version: 1.8
 
 #ce ----------------------------------------------------------------------------
 
+;REMEMBER TO COMPILE WITH AUTOIT3WRAPPER.EXE
+;(http://www.autoitscript.com/autoit3/scite/download/AutoIt3Wrapper.exe)
+;AND CHANGE THE LINES BELOW TO MEET YOUR NEEDS
+
 #AutoIt3Wrapper_Autoit3Dir="C:\Program Files (x86)\AutoIt3"
-#AutoIt3Wrapper_Icon="C:\ModMii\Support\icon.ico"
-#AutoIt3Wrapper_OutFile=ModMiiSkin.exe
-#AutoIt3Wrapper_Res_Field=ProductName|ModMii Skin Launcher
-#AutoIt3Wrapper_Res_Fileversion= 1.0.0.0
-#AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
-#AutoIt3Wrapper_Res_Description=ModMii Skin Launcher
-#AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak, Launcher by person66
-#AutoIt3Wrapper_UseX64=N
 
 #include <Process.au3>
 
@@ -32,11 +38,11 @@ $WaitTime = 10 ;Time to wait for next ModMii window (in seconds)
 ;Check for args, and run ModMii Classic if there are
 if $CMDLINE[0] = 0 then $HasArgs = "False"
 if $HasArgs = "True" then
-For $i = 1 To $CMDLINE[0]
-	$args = $args & $CMDLINE[$I] & " "
-Next
-ShellExecuteWait(@ScriptDir & "\ModMii.exe", $args)
-exit
+	for $i = 1 To $CMDLINE[0]
+		$args = $args & $CMDLINE[$I] & " "
+	next
+	ShellExecuteWait(@ScriptDir & "\ModMii.exe", $args)
+	exit
 endif
 
 ;Check if other ModMii windows are open
@@ -51,12 +57,12 @@ endif
 if $AlreadyOpen = 0 then
 	$ProcessName = _ProcessGetName(@AutoItPID)
 	$ProcessList = ProcessList($ProcessName)
-	For $i = 1 To $ProcessList[0][0]
+	for $i = 1 To $ProcessList[0][0]
 		if $ProcessList[$i][1] <> @AutoItPID then
 			ProcessClose($ProcessList[$i][1])
 		endif
-	Next
-EndIf
+	next
+endif
 
 ;Main part
 ShellExecute(@ComSpec, '/c call "' & @ScriptDir & '\Support\ModMiiSkin.bat"', "", "", @SW_HIDE)
@@ -64,23 +70,25 @@ ShellExecute(@ComSpec, '/c call "' & @ScriptDir & '\Support\ModMiiSkin.bat"', ""
 $run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
 if $run = 0 then 
 	exit
+else
+	$WinPos = WinGetPos($run)
 endif
 
-While 1
-        While 1
-                if WinExists($run) <> 1 then
-                        exitloop
-                else
-                        $WinPos = WinGetPos($run)
-                        if $WinPos <> 0 then
-                                $WinPosBak = $WinPos
-                        else
-                                $WinPos = $WinPosBak
-                                exitloop
-                        endif
-                endif
-                sleep(10)
-        WEnd
+while 1
+	while 1
+		if WinExists($run) <> 1 then
+			exitloop
+		else
+			$WinPos = WinGetPos($run)
+			if $WinPos <> 0 then
+				$WinPosBak = $WinPos
+			else
+				$WinPos = $WinPosBak
+				exitloop
+			endif
+		endif
+		sleep(10)
+	wend
 	$run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
 	if $run = 0 then 
 		exit
@@ -88,4 +96,4 @@ While 1
 		WinMove($run, "", $WinPos[0], $WinPos[1])
 		WinActivate($run)
 	endif
-WEnd
+wend

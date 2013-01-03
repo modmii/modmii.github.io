@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.3
+set currentversion=6.2.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -19775,7 +19775,7 @@ goto:skippostloaderfilter
 
 :WiiFlowfilter
 support\sfk filter -quiet code.bat ++"zip" ++"WiiFlow" -!cert -rep _.zip*__ -write -yes
-support\sfk filter -spat -quiet code.bat -rep _*v__ -write -yes
+support\sfk filter -spat -quiet code.bat ++"WiiFlow\x2520v" -rep _*v__ -write -yes
 set /p newcode= <code.bat
 del /f /q code.bat
 goto:skippostloaderfilter
@@ -25238,14 +25238,14 @@ set path1=apps\IOS236-v5-Mod\
 goto:downloadstart
 
 :sysCheck
-set name=sysCheck v2.1.0.b18
+set name=sysCheck v2.1.0.b19
 set code1=URL
-set code2=http://syscheck.googlecode.com/files/syscheckb18.zip
+set code2=http://syscheck.googlecode.com/files/syscheckb19.zip
 set version=*
-set dlname=syscheckb18.zip
-set wadname=syscheckb18.zip
+set dlname=syscheckb19.zip
+set wadname=syscheckb19.zip
 set filename=boot.dol
-set md5=e395a33e1432b83e3e658f7d01aa2728
+set md5=3b53fe8fa9e036b0885a5d1aec153d1a
 set path1=apps\sysCheck\
 goto:downloadstart
 
