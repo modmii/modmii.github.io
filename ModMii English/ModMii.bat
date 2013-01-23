@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.4
+set currentversion=6.2.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -3865,7 +3865,7 @@ if exist temp\list.txt del temp\list.txt>nul
 
 start %ModMiimin%/wait support\wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:updatefail)
+if exist "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" (move /y "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" temp\list.txt>nul) else (goto:updatefail)
 
 support\sfk filter -quiet "temp\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
 
@@ -8413,10 +8413,11 @@ if /i "%SHOP%" EQU "Y" set IOS56=*
 
 if /i "%SNEEKSELECT%" EQU "5" (set SM4.3U=) & (set SM4.2U=) & (set SM4.1U=) & (set SM4.3E=) & (set SM4.2E=) & (set SM4.1E=) & (set SM4.3J=) & (set SM4.2J=) & (set SM4.1J=) & (set SM4.3K=) & (set SM4.2K=) & (set SM4.1K=)
 
-if /i "%SNKcBC%" EQU "NMM" set cBC=*
-::if /i "%SNKcBC%" EQU "DML" set DML=*
-if /i "%SNKcBC%" EQU "DML" set BC=*
-if /i "%SNKcBC%" EQU "N" set BC=*
+set BC=*
+::if /i "%SNKcBC%" EQU "NMM" set cBC=*
+::::if /i "%SNKcBC%" EQU "DML" set DML=*
+::if /i "%SNKcBC%" EQU "DML" set BC=*
+::if /i "%SNKcBC%" EQU "N" set BC=*
 
 if /i "%SNEEKSELECT%" NEQ "5" goto:skipdeselect
 if /i "%BCtype%" EQU "BC" set BC=
@@ -22697,8 +22698,7 @@ if /i "%SNKcBC%" EQU "DML" (set DML=*) & (set mmm=*)
 if /i "%SNKFLOW%" EQU "Y" set FLOW=*
 if /i "%SNKPLC%" EQU "Y" set PL=*
 
-
-if /i "%AbstinenceWiz%" EQU "Y" (set nSwitch=) & (set mmm=) & (goto:Download)
+if /i "%AbstinenceWiz%" EQU "Y" (set nSwitch=) & (set mmm=)
 
 :tinyskip
 
@@ -25567,7 +25567,7 @@ set version=*
 set dlname="neek2o NK2O_1 .wad"
 set wadname=neek2o_NK2O_1.wad
 set filename=neek2o_NK2O_1.wad
-set md5=bdca7faf1910fe332e6c464e899bbe1c
+set md5=2b68b689d182a6151fb9d9154430889f
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\

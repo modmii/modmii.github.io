@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.2.4
+set currentversion=6.2.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1707,7 +1707,7 @@ if exist temp\list.txt del temp\list.txt>nul
 
 start %ModMiimin%/wait support\wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:updatefail)
+if exist "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" (move /y "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" temp\list.txt>nul) else (goto:updatefail)
 
 start support\wizapp PB UPDATE 70
 
