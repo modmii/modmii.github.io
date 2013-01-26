@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.5
+set currentversion=6.2.6
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -15301,6 +15301,9 @@ if /i "%AbstinenceWiz%" NEQ "Y" goto:NotAbstinenceLogic
 
 set casper=*
 
+if /i "%SNKFLOW%" EQU "Y" set FLOW=*
+if /i "%SNKPLC%" EQU "Y" set PL=*
+
 if /i "%FIRMSTART%" EQU "4.1" set BB1=*
 if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.2" set BB1=*
@@ -22698,7 +22701,7 @@ if /i "%SNKcBC%" EQU "DML" (set DML=*) & (set mmm=*)
 if /i "%SNKFLOW%" EQU "Y" set FLOW=*
 if /i "%SNKPLC%" EQU "Y" set PL=*
 
-if /i "%AbstinenceWiz%" EQU "Y" (set nSwitch=) & (set mmm=)
+if /i "%AbstinenceWiz%" EQU "Y" (set nSwitch=) & (set mmm=) & (goto:Download)
 
 :tinyskip
 
