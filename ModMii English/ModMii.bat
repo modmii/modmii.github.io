@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.6
+set currentversion=6.2.7
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1326,8 +1326,6 @@ IF ERRORLEVEL 1 (set USBCONFIG=USB) else (set USBCONFIG=SD)
 :noUSBcmd
 
 
-
-
 findStr /I " Min" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (goto:notminupdate) else (set VIRGIN=N)
 
@@ -2388,7 +2386,9 @@ set patchIOSnum=36 or 236
 ::--followup--
 IF "%Drive%"=="" set Drive=COPY_TO_SD
 IF "%DriveU%"=="" set DriveU=COPY_TO_USB
-set USBCONFIG=
+
+if /i "%cmdlinemode%" NEQ "Y" set USBCONFIG=
+::set USBCONFIG=
 
 
 ::if second char is ":" check if drive exists
@@ -17359,6 +17359,7 @@ set attempt=1
 
 :DOWNLOADSTART2
 
+
 ::change drive to usb if applicable
 set DRIVE=%REALDRIVE%
 if /i "%USBCONFIG%" NEQ "USB" goto:skipchange
@@ -17366,6 +17367,7 @@ if /i "%USBCONFIG%" NEQ "USB" goto:skipchange
 if /i "%WADNAME%" EQU "WiiBackupManager.zip" set DRIVE=%DRIVEU%
 if /i "%WADNAME%" EQU "Configurable USB-Loader (Most recent Full 249 version)" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\WiiFlow\" set DRIVE=%DRIVEU%
+
 :skipchange
 
 if /i "%MENU1%" EQU "S" set DRIVE=temp
@@ -19741,9 +19743,7 @@ echo This app already exists...
 ::get current version if app already exists, skip if its the most recent version
 support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
 
-if /i "%path1%" NEQ "apps\WiiFLow\" support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-
-if /i "%path1%" EQU "apps\WiiFLow\" support\sfk filter -quiet temp\currentcode.txt -+"app version" -rep _"*version="__ -write -yes
+support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
 
 support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -rep _\x22__ -write -yes
 
@@ -19900,9 +19900,7 @@ goto:DOWNLOADSTART2
 ::get current version from meta.xml
 support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
 
-if /i "%path1%" NEQ "apps\WiiFLow\" support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-
-if /i "%path1%" EQU "apps\WiiFLow\" support\sfk filter -quiet temp\currentcode.txt -+"app version" -rep _"*version="__ -write -yes
+support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
 
 support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -rep _\x22__ -write -yes
 
