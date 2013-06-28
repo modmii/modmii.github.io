@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.2.6
+set currentversion=6.2.7
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -3217,6 +3217,7 @@ if exist temp\ModMii_CMD_LINE_NEEK_Errors.txt del temp\ModMii_CMD_LINE_NEEK_Erro
 ::start support\wizapp PB CLOSE
 ::goto:FINISH
 :::skipforcewait
+
 
 ModMii.exe %classicCMD:&=^&% Skin:E
 start support\wizapp PB CLOSE
