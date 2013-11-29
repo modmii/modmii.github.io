@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.2.7
+set currentversion=6.3.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1746,7 +1746,7 @@ if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+start /min /wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -1874,7 +1874,7 @@ goto:noDMLRevcmd
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" goto:noDMLRevcmd
 
-start /min /wait support\wget -t 3 "http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
+start /min /wait support\wget --no-check-certificate -t 3 "http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
 if not exist "diosmioslitesv%CurrentDMLRev%.wad" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/diosmioslite/downloads/list?can=1) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\DML" mkdir "temp\DML"
@@ -1906,7 +1906,7 @@ if /i "%SkinMode%" EQU "Y" goto:noRevcmd
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+start /min /wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -2059,8 +2059,6 @@ color 1f
 
 ::Bushing from Team Twizzers specifically requested ModMii include a scam warning
 
-if exist support\skipscam.txt set AGREEDVERSION=%CURRENTVERSION%
-
 set warning=
 echo                                        ModMii
 echo                                       by XFlak
@@ -2070,13 +2068,11 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] THIS SOFTWARE IS NOT FOR SALE.
 echo.
 
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 3 -w 1000> nul
-
 echo          IF YOU PAID FOR THIS SOFTWARE OR RECEIVED IT AS PART OF A "BUNDLE"
 echo       YOU HAVE BEEN SCAMMED AND YOU SHOULD DEMAND YOUR MONEY BACK IMMEDIATELY
 echo.
 echo.
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 5 -w 1000> nul
+
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] USE THIS AT YOUR OWN RISK!
 echo.
 echo       THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.
@@ -2085,13 +2081,13 @@ echo                             TO YOUR NINTENDO WII CONSOLE!
 echo.
 
 echo.
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 7 -w 1000> nul
+
 echo.
 echo                 Please type the word "I" followed by the word "Agree"
 echo                        with a space between those two words and
 echo                             then press "Enter" to continue.
 echo.
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 7 -w 1000> nul
+
 echo                          If you can't follow those instructions,
 echo                        then you have no business modding anything.
 echo.
@@ -2101,59 +2097,8 @@ echo.
 echo.
 echo.
 echo.
-if /i "%AGREEDVERSION%" NEQ "%CURRENTVERSION%" @ping 127.0.0.1 -n 5 -w 1000> nul
 
 set /p warning=     Enter Selection Here: 
-
-
-if /i "%warning%" NEQ "skipscam" goto:miniskip
-
-
-
-set warning=
-echo.
-echo.
-echo Enter Your Password Now
-echo.
-echo.
-echo Note: To set-up or change your password send instructions using the same
-echo       email address you used to send your donation to xflak40@gmail.com
-echo       Passwords should be at least 8 characters long and use a combination
-echo       of letters and numbers.
-echo.
-echo       Also note that it may take a few hours to process new passwords.
-echo.
-echo.
-echo.
-set /p warning=     Enter Your Password Here: 
-
-
-echo %warning% >temp\key.txt
-support\sfk filter -quiet temp\key.txt -lerep _" "__ -write -yes
-
-echo modmii>temp\modmii.txt
-::if exist temp\modmii.txt del temp\modmii.txt>nul
-
-if exist sxf.exe del sxf.exe>nul
-start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/sxf.exe"
-if exist sxf.exe move /y sxf.exe temp\sxf.exe>nul
-
-if not exist temp\sxf.exe goto:nowifi
-
-cd temp
-start sxf.exe
-exit
-
-
-:nowifi
-echo.
-echo An internet connection is required to validate your password,
-echo please try again later.
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:DefaultSettings
-:miniskip
-
-
 
 if /i "%warning%" EQU "I Agree" goto:skip
 echo.
@@ -2240,9 +2185,9 @@ if exist "temp\dotNetFx35setup.exe" goto:semiskip
 echo Downloading .NET Framework 3.5 Installer
 echo.
 
-start %ModMiimin%/wait support\wget -t 3 "http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe"
 
-::start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait "http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe"
+::start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait "http://download.microsoft.com/download/7/0/3/703455ee-a747-4cc8-bd3e-98a615c3aedb/dotNetFx35setup.exe"
 
 
 if exist dotNetFx35setup.exe move /y dotNetFx35setup.exe temp\dotNetFx35setup.exe
@@ -3863,7 +3808,7 @@ echo.
 
 if exist temp\list.txt del temp\list.txt>nul
 
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
 
 if exist "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" (move /y "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" temp\list.txt>nul) else (goto:updatefail)
 
@@ -3948,7 +3893,7 @@ echo.
 echo                                     Please Wait...
 echo.
 
-if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
 
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
 
@@ -6693,7 +6638,7 @@ echo Checking which %neekname% versions are hosted online...
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/%googlecode%/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/%googlecode%/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
 
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
@@ -6846,7 +6791,7 @@ if exist temp\list2.txt del temp\list2.txt>nul
 
 
 ::get all list
-::start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
+::start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
 
 ::if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
@@ -8924,7 +8869,7 @@ if %MegaBytesRequired% GEQ 1000 (set units=GB) else (set units=MB)
 
 ::echo Downloading hy.exe
 if exist temp\hy.exe goto:AlreadyinTemp
-if not exist hypatia.zip start %ModMiimin%/wait support\wget -t 3 http://www.milletre.net/software/hypatia/hypatia.zip
+if not exist hypatia.zip start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://www.milletre.net/software/hypatia/hypatia.zip
 if exist hypatia.zip support\7za e -aoa hypatia.zip -otemp hy.exe -r
 if exist hypatia.zip del hypatia.zip>nul
 :AlreadyinTemp
@@ -9170,7 +9115,7 @@ echo.
 echo.
 
 ::if exist Support\titles.txt move /y Support\titles.txt Support\titles_old.txt >nul
-start %ModMiimin%/wait support\wget -t 3 www.wiitdb.com/titles.txt
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 www.wiitdb.com/titles.txt
 if exist titles.txt move /y titles.txt Support\titles.txt>nul
 
 
@@ -12246,7 +12191,7 @@ if exist temp\list.txt del temp\list.txt>nul
 echo Checking for new d2x beta's hosted online...
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/d2x-cios/downloads/list?can=2&q=&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/d2x-cios/downloads/list?can=2&q=&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
 
 if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
 copy /y "temp\list.txt" "temp\list2.txt">nul
@@ -12375,7 +12320,7 @@ if exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" goto:nodownload
 
 
 if not exist "support\More-cIOSs\%CurrentcIOS%" mkdir "support\More-cIOSs\%CurrentcIOS%"
-start %ModMiimin%/wait support\wget -t 3 "http://d2x-cios.googlecode.com/files/%CurrentcIOS%.zip"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://d2x-cios.googlecode.com/files/%CurrentcIOS%.zip"
 if not exist "%CurrentcIOS%.zip" goto:badkey
 support\7za e -aoa "%CurrentcIOS%.zip" -o"support\More-cIOSs\%CurrentcIOS%" *.* -r
 del "%CurrentcIOS%.zip">nul
@@ -17773,7 +17718,7 @@ echo.
 
 if exist "temp\DML\%dlname%" goto:getfixelf
 
-if not exist "%dlname%" start %ModMiimin%/wait support\wget -t 3 "%URL%"
+if not exist "%dlname%" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "%URL%"
 
 
 if not exist "%dlname%" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
@@ -17790,7 +17735,7 @@ echo.
 
 if exist "temp\DML\FixELF.exe" goto:gotfixelf
 
-if not exist "FixELF.zip" start %ModMiimin%/wait support\wget -t 3 "http://tiny.cc/FixELF"
+if not exist "FixELF.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://tiny.cc/FixELF"
 
 if not exist "FixELF.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
@@ -17966,13 +17911,13 @@ if exist "temp\%dlname:~0,-4%\FixElf\FixELF.exe" goto:gotit
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
 echo.
 echo Downloading %dlname%
-if not exist "%dlname%" start %ModMiimin%/wait support\wget -t 3 "%URL%"
+if not exist "%dlname%" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "%URL%"
 echo.
 
 if not exist "%dlname%" (rd /s /q %basewadb%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
@@ -18921,7 +18866,7 @@ echo.
 goto:download_mym2
 :nocheckexisting
 
-start %ModMiimin%/wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/ModMii/%mym0%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/%mym0%"
 if exist "%mym0%" move /Y "%mym0%" temp>nul
 
 
@@ -19038,7 +18983,7 @@ goto:build_csm
 :nocheckexisting
 
 
-start %ModMiimin%/wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/ModMii/%ThemeMiiZip%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/%ThemeMiiZip%"
 
 if exist %ThemeMiiZip% support\7za e -aoa %ThemeMiiZip% -otemp *.* -r
 if exist %ThemeMiiZip% del %ThemeMiiZip%>nul
@@ -19216,7 +19161,7 @@ echo.
 :doesntexist
 
 ::Download updates.txt
-start %ModMiimin%/wait support\wget http://cfg-loader.googlecode.com/svn/trunk/updates.txt
+start %ModMiimin%/wait support\wget --no-check-certificate http://cfg-loader.googlecode.com/svn/trunk/updates.txt
 
 if not exist updates.txt goto:missing
 
@@ -19286,7 +19231,7 @@ Echo.
 Echo Downloading most recent version: %cfgrelease%
 
 :update
-start %ModMiimin%/wait support\wget %cfgurl%
+start %ModMiimin%/wait support\wget --no-check-certificate %cfgurl%
 if not exist "%Drive%"\apps\USBLoader_cfg mkdir "%Drive%"\apps\USBLoader_cfg
 move /Y *.dol "%Drive%"\apps\USBLoader_cfg\boot.dol> nul
 
@@ -19295,7 +19240,7 @@ move /Y *.dol "%Drive%"\apps\USBLoader_cfg\boot.dol> nul
 if exist "%Drive%"\apps\USBLoader_cfg\icon.png goto:meta
 
 if exist temp\cfgicon.png goto:skip
-start %ModMiimin%/wait support\wget http://code.google.com/p/cfg-loader/logo?cct=1263052802
+start %ModMiimin%/wait support\wget --no-check-certificate http://code.google.com/p/cfg-loader/logo?cct=1263052802
 move /Y "logo@cct=1263052802" temp\cfgicon.png>nul
 
 :skip
@@ -19305,7 +19250,7 @@ copy /Y temp\cfgicon.png "%Drive%"\apps\USBLoader_cfg\icon.png>nul
 
 :meta
 if exist temp\cfgtemplate_meta.xml goto:skip
-start %ModMiimin%/wait support\wget "http://dl.dropbox.com/u/74562700/ModMii/meta.xml"
+start %ModMiimin%/wait support\wget --no-check-certificate "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/meta.xml"
 move /Y meta.xml temp\cfgtemplate_meta.xml>nul
 :skip
 
@@ -19380,7 +19325,7 @@ echo.
 echo Downloading most recent Full/Official Configurable USB-Loader: Version %cfgfullrelease%
 if exist "%Drive%\usb-loader" Echo.
 if exist "%Drive%\usb-loader" Echo Note: Existing USB-Loader Folder will be renamed
-start %ModMiimin%/wait support\wget http://cfg-loader.googlecode.com/files/Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip
+start %ModMiimin%/wait support\wget --no-check-certificate http://cfg-loader.googlecode.com/files/Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip
 
 ::rename exsiting usb-loader folder if applicable
 :renameusbloader
@@ -19522,7 +19467,7 @@ goto:next
 :CFGRDOWNLOADER
 
 ::Download updates.txt
-start %ModMiimin%/wait support\wget "http://gwht.wdfiles.com/local--files/configurable-options/updates.txt"
+start %ModMiimin%/wait support\wget --no-check-certificate "http://gwht.wdfiles.com/local--files/configurable-options/updates.txt"
 if not exist updates.txt goto:missing
 
 
@@ -19566,7 +19511,7 @@ if %cfgrreleaseOLD% GEQ %cfgrrelease% goto:noupdate
 
 Echo.
 Echo Downloading most recent version: %cfgrrelease%
-start %ModMiimin%/wait support\wget %cfgrurl%
+start %ModMiimin%/wait support\wget --no-check-certificate %cfgrurl%
 if not exist "%Drive%"\USB-Loader mkdir "%Drive%"\USB-Loader
 
 ::Move most recent usb-loader folder to root of drive
@@ -19632,7 +19577,7 @@ echo Checking for updates...
 echo.
 
 :doesntexist
-start %ModMiimin%/wait support\wget "%updateurl%"
+start %ModMiimin%/wait support\wget --no-check-certificate "%updateurl%"
 
 if not exist update.xml goto:missing
 
@@ -19663,7 +19608,7 @@ Echo.
 Echo Downloading most recent version: %newcode%
 :update
 echo.
-start %ModMiimin%/wait support\wget "%code1%%newcode%%code2%"
+start %ModMiimin%/wait support\wget --no-check-certificate "%code1%%newcode%%code2%"
 if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
 
 
@@ -19758,22 +19703,31 @@ echo Checking for updates...
 echo.
 
 :doesntexist
-start %ModMiimin%/wait support\wget %updateurl%
-
-
+start %ModMiimin%/wait support\wget --no-check-certificate %updateurl%
 
 if not exist %updatedlname% goto:missing
 move /y %updatedlname% code.bat>nul
 
 if /i "%path1%" EQU "apps\postloader\" goto:postloaderfilter
 if /i "%path1%" EQU "apps\WiiFlow\" goto:WiiFlowfilter
+if /i "%name%" EQU "WiiXplorer (Most Recent Release)" goto:WiiXplorerfilter
 
 support\sfk filter -quiet code.bat -+"feature" -!"deprec" -rep _".dol&amp;*"__ -write -yes
 support\sfk filter -quiet code.bat -rep _%code2%*__ -rep _"*files/R"_"set newcode="_ -write -yes
 support\sfk filter -quiet code.bat -ls+"set newcode" -write -yes
 support\sfk filter -quiet code.bat -unique -write -yes
+
 call code.bat
 del code.bat>nul
+goto:skippostloaderfilter
+
+
+:WiiXplorerfilter
+support\sfk filter -quiet code.bat -rep _%code2%*__ -rep _"*files/R"_"set newcode="_ -write -yes
+support\sfk filter -quiet code.bat -ls+"set newcode" -rep _"set newcode="__ -write -yes
+support\sfk filter -quiet code.bat -unique -write -yes
+set /p newcode= <code.bat
+del /f /q code.bat
 goto:skippostloaderfilter
 
 
@@ -19820,7 +19774,7 @@ Echo Downloading most recent version: %newcodeNoZeros%
 echo.
 
 
-start %ModMiimin%/wait support\wget "%code1%%newcode%%code2%"
+start %ModMiimin%/wait support\wget --no-check-certificate "%code1%%newcode%%code2%"
 
 if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
 
@@ -19852,12 +19806,12 @@ move /y %wadname% "%DRIVE%\%path1%\boot.dol">nul
 
 
 ::geticon if doesn't exist
-if not exist "%DRIVE%\%path1%\icon.png" start %ModMiimin%/wait support\wget %iconurl%
+if not exist "%DRIVE%\%path1%\icon.png" start %ModMiimin%/wait support\wget --no-check-certificate %iconurl%
 if exist "icon.png" move /Y "icon.png" "%DRIVE%\%path1%\icon.png">nul
 if exist "logo*" move /Y "logo*" "%DRIVE%\%path1%\icon.png">nul
 
 ::meta
-start %ModMiimin%/wait support\wget %metaurl%
+start %ModMiimin%/wait support\wget --no-check-certificate %metaurl%
 if not exist meta.xml goto:skip
 move /Y meta.xml "%DRIVE%\%path1%\meta.xml">nul
 
@@ -20006,105 +19960,105 @@ if /i "%cheatregion%" NEQ "all" goto:skipall
 ::-------Wii Games--------
 set nextcheatlist=allwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=*&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :allwiiwarecheats
 set nextcheatlist=allvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=*&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :allVCcheats
 set nextcheatlist=allwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :allwiichannelcheats
 set nextcheatlist=allGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :allGCcheats
 set nextcheatlist=allNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=*&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :allNEScheats
 set nextcheatlist=allSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=*&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :allSNEScheats
 set nextcheatlist=allN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=*&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :allN64cheats
 set nextcheatlist=allSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=*&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :allSMScheats
 set nextcheatlist=allGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :allGenesischeats
 set nextcheatlist=allNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=*&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :allNEOcheats
 set nextcheatlist=allCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=*&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :allCOMcheats
 set nextcheatlist=allMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=*&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :allMSXcheats
 set nextcheatlist=allT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=*&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :allT16cheats
 set nextcheatlist=allTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=*&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :allTCDcheats
 set nextcheatlist=skipall
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=*&l=all"
 goto:cheatrepeat
 
 :skipall
@@ -20117,105 +20071,105 @@ if /i "%cheatregion%" NEQ "USA" goto:skipUSA
 ::-------Wii Games--------
 set nextcheatlist=USAwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=E&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :USAwiiwarecheats
 set nextcheatlist=USAvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=E&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :USAVCcheats
 set nextcheatlist=USAwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :USAwiichannelcheats
 set nextcheatlist=USAGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :USAGCcheats
 set nextcheatlist=USANEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=E&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :USANEScheats
 set nextcheatlist=USASNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=E&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :USASNEScheats
 set nextcheatlist=USAN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=E&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :USAN64cheats
 set nextcheatlist=USASMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=E&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :USASMScheats
 set nextcheatlist=USAGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :USAGenesischeats
 set nextcheatlist=USANEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=E&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :USANEOcheats
 set nextcheatlist=USACOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=E&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :USACOMcheats
 set nextcheatlist=USAMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=E&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :USAMSXcheats
 set nextcheatlist=USAT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=E&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :USAT16cheats
 set nextcheatlist=USATCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=E&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :USATCDcheats
 set nextcheatlist=skipUSA
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=E&l=all"
 goto:cheatrepeat
 
 :skipUSA
@@ -20230,105 +20184,105 @@ if /i "%cheatregion%" NEQ "PAL" goto:skipPAL
 ::-------Wii Games--------
 set nextcheatlist=PALwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=P&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :PALwiiwarecheats
 set nextcheatlist=PALvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=P&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :PALVCcheats
 set nextcheatlist=PALwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :PALwiichannelcheats
 set nextcheatlist=PALGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :PALGCcheats
 set nextcheatlist=PALNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=P&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :PALNEScheats
 set nextcheatlist=PALSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=P&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :PALSNEScheats
 set nextcheatlist=PALN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=P&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :PALN64cheats
 set nextcheatlist=PALSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=P&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :PALSMScheats
 set nextcheatlist=PALGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :PALGenesischeats
 set nextcheatlist=PALNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=P&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :PALNEOcheats
 set nextcheatlist=PALCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=P&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :PALCOMcheats
 set nextcheatlist=PALMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=P&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :PALMSXcheats
 set nextcheatlist=PALT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=P&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :PALT16cheats
 set nextcheatlist=PALTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=P&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :PALTCDcheats
 set nextcheatlist=skipPAL
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=P&l=all"
 goto:cheatrepeat
 
 :skipPAL
@@ -20343,105 +20297,105 @@ if /i "%cheatregion%" NEQ "JAP" goto:skipJAP
 ::-------Wii Games--------
 set nextcheatlist=JAPwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=J&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :JAPwiiwarecheats
 set nextcheatlist=JAPvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=J&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :JAPVCcheats
 set nextcheatlist=JAPwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :JAPwiichannelcheats
 set nextcheatlist=JAPGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :JAPGCcheats
 set nextcheatlist=JAPNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=J&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :JAPNEScheats
 set nextcheatlist=JAPSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=J&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :JAPSNEScheats
 set nextcheatlist=JAPN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=J&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :JAPN64cheats
 set nextcheatlist=JAPSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=J&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :JAPSMScheats
 set nextcheatlist=JAPGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :JAPGenesischeats
 set nextcheatlist=JAPNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=J&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :JAPNEOcheats
 set nextcheatlist=JAPCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=J&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :JAPCOMcheats
 set nextcheatlist=JAPMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=J&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :JAPMSXcheats
 set nextcheatlist=JAPT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=J&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :JAPT16cheats
 set nextcheatlist=JAPTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=J&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :JAPTCDcheats
 set nextcheatlist=skipJAP
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=J&l=all"
 goto:cheatrepeat
 
 :skipJAP
@@ -20619,7 +20573,7 @@ if exist "%drive%\codes\%consolecode%\%letter1%\%titleid%.txt" echo Overwriting 
 :skip
 
 :downloadcheat
-start %ModMiimin%/wait support\wget "http://www.geckocodes.org/txt.php?txt=%titleid%"
+start %ModMiimin%/wait support\wget --no-check-certificate "http://www.geckocodes.org/txt.php?txt=%titleid%"
 
 if /i "%cheatlocation%" EQU "T" move /y "txt.php@txt=%titleid%" "%drive%\txtcodes\%titleid%.txt">nul
 if /i "%cheatlocation%" EQU "C" move /y "txt.php@txt=%titleid%" "%drive%\codes\%consolecode%\%letter1%\%titleid%.txt">nul
@@ -20731,7 +20685,7 @@ if /i "%code1%" EQU "SNEEKAPP" goto:DownloadApp2
 
 
 :DownloadURL2
-if not exist temp\%wadname% start %ModMiimin%/wait support\wget %code2%
+if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate %code2%
 if exist %dlname% move /y %dlname% temp\%wadname% >nul
 support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% -r
 
@@ -20861,7 +20815,7 @@ goto:NEXT
 :fullextract2
 
 if exist "temp\%wadname%" goto:FullExtractZipAlreadyExists
-if not exist temp\%dlname% start %ModMiimin%/wait support\wget %code2%
+if not exist temp\%dlname% start %ModMiimin%/wait support\wget --no-check-certificate %code2%
 if exist %dlname% move /y %dlname% "temp\%wadname%">nul
 
 :FullExtractZipAlreadyExists
@@ -20873,7 +20827,7 @@ if /i "%path1%" NEQ "apps\MyMenuifyMod\" goto:notmym
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -21069,7 +21023,7 @@ if not exist "%DRIVE%"\ShowMiiWads mkdir "%DRIVE%"\ShowMiiWads
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -21102,7 +21056,7 @@ if not exist "%DRIVE%"\CustomizeMii mkdir "%DRIVE%"\CustomizeMii
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 temp\unrar.exe x -y "temp\%wadname%" "%Drive%\CustomizeMii"
@@ -21326,7 +21280,7 @@ goto:NEXT
 
 
 
-::---------------HackMii Installer support\wget Download CODE-----------------------
+::---------------HackMii Installer support\wget --no-check-certificate Download CODE-----------------------
 :wget
 ::----if exist and fails md5 check, delete and redownload----
 if not exist "%Drive%"\apps\HackMii_Installer\boot.elf goto:nocheckexisting
@@ -21358,7 +21312,7 @@ goto:alreadyhavehackmii
 
 
 
-if not exist temp\%wadname% start %ModMiimin%/wait support\wget -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%*
+if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%*
 
 if not exist temp\%wadname% move /y get.*.* temp\%wadname%>nul
 if not exist "%Drive%"\apps\HackMii_Installer mkdir "%Drive%"\apps\HackMii_Installer
@@ -21927,7 +21881,7 @@ if /i "%SSD%" NEQ "on" echo SNEEK and SNEEK+DI SD Access Disabled (can be change
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -21967,7 +21921,7 @@ if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
 mkdir temp\%wadname:~0,-4%
 
-start %ModMiimin%/wait support\wget -t 3 http://sneek.googlecode.com/files/%wadname%
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sneek.googlecode.com/files/%wadname%
 
 if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
 
@@ -21988,7 +21942,7 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 15
 
 echo Downloading Autoit
 if exist temp\autoit3.exe goto:AlreadyinTemp
-if not exist autoit-v3-sfx.exe start %ModMiimin%/wait support\wget -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-sfx.exe
+if not exist autoit-v3-sfx.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-sfx.exe
 if exist autoit-v3-sfx.exe support\7za e -aoa autoit-v3-sfx.exe -otemp autoit3.exe -r
 if exist autoit-v3-sfx.exe del autoit-v3-sfx.exe>nul
 if not exist temp\autoit3.exe goto:sneekwarning
@@ -22043,10 +21997,10 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 60
 if /i "%SNKFONT%" EQU "B" echo Downloading Black font.bin (this can be changed to White in Options)
 if /i "%SNKFONT%" EQU "W" echo Downloading White font.bin (this can be changed to Black in Options)
 
-if /i "%SNKFONT%" EQU "B" set fonturl=http://dl.dropbox.com/u/74562700/ModMii/fontb.bin
-if /i "%SNKFONT%" EQU "W" set fonturl=http://dl.dropbox.com/u/74562700/ModMii/fontw.bin
+if /i "%SNKFONT%" EQU "B" set fonturl=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/fontb.bin
+if /i "%SNKFONT%" EQU "W" set fonturl=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/fontw.bin
 
-if not exist temp\font%SNKFONT%.bin start %ModMiimin%/wait support\wget -t 3 %fonturl%
+if not exist temp\font%SNKFONT%.bin start %ModMiimin%/wait support\wget --no-check-certificate -t 3 %fonturl%
 
 if exist font%SNKFONT%.bin move /Y font%SNKFONT%.bin temp\font%SNKFONT%.bin>nul
 :skip
@@ -22071,7 +22025,7 @@ echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
 
-start %ModMiimin%/wait support\wget -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -22574,7 +22528,7 @@ if /i "%SNKPRI%" NEQ "Y" goto:skipSNKpri
 echo.
 echo Downloading Priiloader v0.7 (mod for neek2o)
 echo.
-if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget -t 3 http://custom-di.googlecode.com/files/priiloader.app
+if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://custom-di.googlecode.com/files/priiloader.app
 if exist priiloader.app move /Y priiloader.app temp\Priiloader-v0.7neek.app>nul
 
 
@@ -25191,7 +25145,7 @@ goto:downloadstart
 :mmm
 set name=Multi-Mod Manager (MMM) v13.4
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/Multi-Mod-Manager_v13.4.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/Multi-Mod-Manager_v13.4.zip"
 set version=*
 set dlname="Multi-Mod-Manager_v13.4.zip"
 set wadname=Multi-Mod-Manager_v13.4.zip
@@ -25203,7 +25157,7 @@ goto:downloadstart
 :WiiMod
 set name=WiiMod
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/wiimod_v3_2.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/wiimod_v3_2.zip"
 set version=*
 set dlname="wiimod_v3_2.zip"
 set wadname=wiimod_v3_2.zip
@@ -25229,7 +25183,7 @@ goto:downloadstart
 :IOS236Installer
 set name=IOS236 Installer v5 Mod
 set code1=URL
-set code2=http://dl.dropbox.com/u/74562700/ModMii/ios236_v5_mod.zip
+set code2=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/ios236_v5_mod.zip
 set version=*
 set dlname=ios236_v5_mod.zip
 set wadname=ios236_v5_mod.zip
@@ -25321,7 +25275,7 @@ goto:downloadstart
 set category=fullextract
 set name=Eri HaKawai (USA, PAL and JAP)
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/EriHaKawai-USA+PAL+JAP.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/EriHaKawai-USA+PAL+JAP.zip"
 set version=*
 set dlname="EriHaKawai-USA+PAL+JAP.zip"
 set wadname=EriHaKawai-USA+PAL+JAP.zip
@@ -25334,7 +25288,7 @@ goto:downloadstart
 set category=fullextract
 set name=YU-GI-OWNED (USA, PAL and JAP)
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/yu-gi-vah-ALL.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/yu-gi-vah-ALL.zip"
 set version=*
 set dlname="yu-gi-vah-ALL.zip"
 set wadname=yu-gi-vah-ALL.zip
@@ -25349,7 +25303,7 @@ goto:downloadstart
 set name=Smash Stack (USA, PAL, JAP and KOR)
 set category=fullextract
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/Smashstack_AllRegions.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/Smashstack_AllRegions.zip"
 set version=*
 set dlname="Smashstack_AllRegions.zip"
 set wadname=Smashstack_AllRegions.zip
@@ -25375,7 +25329,7 @@ goto:downloadstart
 set name=Locked Apps Folder for HBC (PASS=UDLRAB)
 set category=fullextract
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/LockedApps-Categorii.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/LockedApps-Categorii.zip"
 set version=*
 set dlname=LockedApps-Categorii.zip
 set wadname=LockedApps-Categorii.zip
@@ -25512,7 +25466,7 @@ goto:downloadstart
 :USBX
 set name=USB-Loader Forwarder Channel v12
 set code1=ZIP
-set code2="http://dl.dropbox.com/u/74562700/ModMii/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
 set version=*
 set dlname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
 set wadname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
@@ -25527,7 +25481,7 @@ goto:downloadstart
 :FLOWF
 set name=WiiFlow Forwarder Channel\dol
 set code1=ZIP
-set code2="http://dl.dropbox.com/u/74562700/ModMii/WiiFlow_Forwarder_wad_dol_v14b.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/WiiFlow_Forwarder_wad_dol_v14b.zip"
 set version=*
 set dlname=WiiFlow_Forwarder_wad_dol_v14b.zip
 set wadname=WiiFlow_Forwarder_wad_dol_v14b.zip
@@ -25542,7 +25496,7 @@ goto:downloadstart
 :S2U
 set name=Switch2Uneek
 set code1=ZIP
-set code2="http://dl.dropbox.com/u/74562700/ModMii/switch2uneek_ModMiiBundle_v12.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/switch2uneek_ModMiiBundle_v12.zip"
 set version=*
 set dlname=switch2uneek_ModMiiBundle_v12.zip
 set wadname=switch2uneek_ModMiiBundle_v12.zip
@@ -25634,7 +25588,7 @@ goto:downloadstart
 set name=Wii Game Shortcut Creator
 set category=fullextract
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/WiiGSC-Unpacked-1.06b.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/WiiGSC-Unpacked-1.06b.zip"
 set version=*
 set dlname=WiiGSC-Unpacked-1.06b.zip
 set wadname=WiiGSC-Unpacked-1.06b.zip
@@ -25726,8 +25680,8 @@ goto:downloadstart
 set name=WiiXplorer (Most Recent Release)
 set category=GOOGLEUPDATE
 set path1=apps\WiiExplorer\
-set updateurl="http://code.google.com/p/wiixplorer/downloads/list?can=3&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
-set updatedlname="list@can=3&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
+set updateurl="https://code.google.com/p/wiixplorer/downloads/list?can=1&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
+set updatedlname="list?can=1&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
 set code1="http://wiixplorer.googlecode.com/files/R"
 set code2=.dol
 set iconurl="http://wiixplorer.googlecode.com/svn/trunk/HBC/icon.png"
@@ -25783,7 +25737,7 @@ goto:downloadstart
 set name=Wilbrand
 set category=fullextract
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/Wilbrand.exe"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/Wilbrand.exe"
 set version=*
 set dlname="Wilbrand.exe"
 set wadname=Wilbrand.exe
@@ -25810,7 +25764,7 @@ goto:downloadstart
 :Priiloader
 set name=Priiloader v0.7 (236 LULZ Mod)
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/priiloader_MOD_IOS236_r142_LULZ.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/priiloader_MOD_IOS236_r142_LULZ.zip"
 set version=*
 set dlname=priiloader_MOD_IOS236_r142_LULZ.zip
 set wadname=priiloader_MOD_IOS236_r142_LULZ.zip
@@ -25823,7 +25777,7 @@ goto:downloadstart
 :PriiHacks
 set name=Priiloader Hacks
 set code1=URL
-set code2="http://dl.dropbox.com/u/74562700/ModMii/PriiloaderHacks_2.zip"
+set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/PriiloaderHacks_2.zip"
 set version=*
 set dlname="PriiloaderHacks_2.zip"
 set wadname=PriiloaderHacks_2.zip
@@ -28643,7 +28597,7 @@ move /y "%Drive%"\%guidename% "%DRIVE%"\%guidename:~0,-5%%COUNT6%.html >nul
 support\sfk echo -spat \x3chtml\x3e >"%Drive%"\%guidename%
 support\sfk echo -spat \x3chead\x3e >>"%Drive%"\%guidename%
 support\sfk echo -spat \x3ctitle\x3e%tabname%\x3c/title\x3e >>"%Drive%"\%guidename%
-support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22http://dl.dropbox.com/u/74562700/ModMii/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cstyle type=\x22text/css\x22\x3e>>"%Drive%"\%guidename%
 support\sfk echo -spat body { font-family: Calibri, Arial, Helvetica, \x22Century Gothic\x22, sans-serif; }>>"%Drive%"\%guidename%
@@ -28880,6 +28834,13 @@ If /i "%MENU1%" NEQ "H" goto:nothackmiisolutions
 
 copy /y "%Drive%"\%guidename%+Support\Guide\HMSolutions.001 "%Drive%"\%guidename%>nul
 
+::---------CREATE MMMCONFIG To Autoload 36--------
+set patchIOSnum=36
+if /i "%SETTINGS%" EQU "G" goto:skipmmmfly
+if /i "%SETTINGSHM%" EQU "G" goto:skipmmmfly
+echo ;MMMCONFIG (By ModMii)> "%Drive%"\mmmconfig.txt
+echo AutoLoadIOS=%patchIOSnum%>> "%Drive%"\mmmconfig.txt
+:skipmmmfly
 
 set afterexploit=continueHMsolutions
 goto:exploits
