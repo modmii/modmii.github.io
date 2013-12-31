@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.0
+set currentversion=6.3.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2238,6 +2238,11 @@ if not exist support\sfk.exe (echo One or more of ModMii's supporting files are 
 if not exist support\nusd.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 
 
+::Special update
+::if /i "%AGREEDVERSION%" GEQ "6.3.2" goto:nospecialupdate
+:::nospecialupdate
+
+
 if /i "%cmdlinemode%" EQU "Y" goto:noupdateincmdlinemode
 if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
 :noupdateincmdlinemode
@@ -3806,20 +3811,13 @@ echo                                 Checking for updates...
 echo.
 
 
-if exist temp\list.txt del temp\list.txt>nul
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMiiSkin.bat"
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+if exist "ModMiiSkin.bat" (move /y "ModMiiSkin.bat" temp\ModMiiSkin.bat>nul) else (goto:updatefail)
 
-if exist "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" (move /y "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" temp\list.txt>nul) else (goto:updatefail)
+copy /y "temp\ModMiiSkin.bat" temp\list.txt>nul
 
-support\sfk filter -quiet "temp\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
-
-
-if /i "%UPDATENAME%" NEQ "ModMii" support\sfk filter -quiet "temp\list.txt" ++"%UPDATENAME:~-3%" -write -yes
-
-if /i "%UPDATENAME%" EQU "ModMii" support\sfk filter -quiet "temp\list.txt" -!"_" -write -yes
-
-support\sfk filter -spat -quiet "temp\list.txt" -rep _*"\x5f"__ -write -yes
+support\sfk filter -quiet "temp\list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 
 set /p newversion= <temp\list.txt
 
@@ -3868,6 +3866,7 @@ echo.
 echo.
 set /p updatenow=     Enter Selection Here: 
 
+
 if /i "%updatenow%" NEQ "N" goto:skip
 if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
 :skip
@@ -3893,12 +3892,10 @@ echo.
 echo                                     Please Wait...
 echo.
 
-if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
 
-if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMii.bat"
 
-copy /y support\7za.exe support\7za2.exe>nul
-
+if exist "ModMii.bat" (move /y "ModMii.bat" temp\ModMii.bat>nul) else (goto:updatefail)
 
 echo @echo off>Updatetemp.bat
 echo mode con cols=85 lines=54 >>Updatetemp.bat
@@ -3916,14 +3913,16 @@ echo echo.>>Updatetemp.bat
 
 echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
 echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
-echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
-echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
-echo del support\7za2.exe^>nul>>Updatetemp.bat
+
+echo move /y "temp\ModMii.bat" "Support\ModMii.bat"^>nul>>Updatetemp.bat
+echo move /y "temp\ModMiiSkin.bat" "Support\ModMiiSkin.bat"^>nul>>Updatetemp.bat
+
 echo Start ModMii.exe>>Updatetemp.bat
 echo exit>>Updatetemp.bat
+
+
 start Updatetemp.bat
 exit
-
 
 
 :updatefail
@@ -21942,9 +21941,9 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 15
 
 echo Downloading Autoit
 if exist temp\autoit3.exe goto:AlreadyinTemp
-if not exist autoit-v3-sfx.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3-sfx.exe
-if exist autoit-v3-sfx.exe support\7za e -aoa autoit-v3-sfx.exe -otemp autoit3.exe -r
-if exist autoit-v3-sfx.exe del autoit-v3-sfx.exe>nul
+if not exist autoit-v3.zip start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3.zip
+if exist autoit-v3.zip support\7za e -aoa autoit-v3.zip -otemp autoit3.exe -r
+if exist autoit-v3.zip del autoit-v3.zip>nul
 if not exist temp\autoit3.exe goto:sneekwarning
 :AlreadyinTemp
 echo.
@@ -25553,7 +25552,7 @@ set version=*
 set dlname=guiformat.exe
 set wadname=FAT32_GUI_Formatter.exe
 set filename=FAT32_GUI_Formatter.exe
-set md5=daf2d9aa422c3d065c6f4e8823644944
+set md5=2459a629ace148286360b860442221a2
 set path1=FAT32_GUI_Formatter\
 goto:downloadstart
 

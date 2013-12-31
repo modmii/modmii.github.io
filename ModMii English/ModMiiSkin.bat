@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.3.0
+set currentversion=6.3.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -146,6 +146,11 @@ set DRIVEU=%DRIVEU:~1,-1%
 :skip
 
 
+::Special update
+::if /i "%AGREEDVERSION%" GEQ "6.3.2" goto:nospecialupdate
+:::nospecialupdate
+
+
 if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win trans ititle "ModMiiSkinCMD" 255
 
@@ -198,45 +203,6 @@ call "%wabat%"
 
 if /i "%waoutput%" EQU "I Agree" goto:skip
 
-
-if /i "%waoutput%" NEQ "skipscam" goto:miniskip
-
-
-
-
-
-set waoutput=
-::Enter Your Password Now
-set watext=               ENTER YOUR PASSWORD NOW~Note: To set-up or change your password send instructions using the same email address you used to send your donation to xflak40@gmail.com~Passwords should be at least 8 characters long and use a combination of letters and numbers. It may take a few hours to process new passwords. Lastly note that an internet connection is required to validate your password.
-
-
-
-
-start /w support\wizapp NOBACK EB
-
-if errorlevel 2 Exit
-
-call "%wabat%"
-
-echo %waoutput% >temp\key.txt
-support\sfk filter -quiet temp\key.txt -lerep _" "__ -write -yes
-
-::echo modmii>temp\modmii.txt
-if exist temp\modmii.txt del temp\modmii.txt>nul
-
-
-if exist sxf.exe del sxf.exe>nul
-start /min /wait support\wget -t 3 "http://dl.dropbox.com/u/74562700/sxf.exe"
-if exist sxf.exe move /y sxf.exe temp\sxf.exe>nul
-
-if not exist temp\sxf.exe goto:skip
-
-cd temp
-start sxf.exe
-
-exit
-
-:miniskip
 
 
 set watext=~~~~~You have entered an incorrect key, exiting ModMii...
@@ -1702,28 +1668,17 @@ set watext=~~Checking for Updates...~~Current version is %currentversion%
 start support\wizapp PB OPEN
 start support\wizapp PB UPDATE 20
 
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMiiSkin.bat"
 
-if exist temp\list.txt del temp\list.txt>nul
+if exist "ModMiiSkin.bat" (move /y "ModMiiSkin.bat" temp\ModMiiSkin.bat>nul) else (goto:updatefail)
 
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
+copy /y "temp\ModMiiSkin.bat" temp\list.txt>nul
 
-if exist "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" (move /y "list@can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount" temp\list.txt>nul) else (goto:updatefail)
-
-start support\wizapp PB UPDATE 70
-
-support\sfk filter -quiet "temp\list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
-
-
-if /i "%UPDATENAME%" NEQ "ModMii" support\sfk filter -quiet "temp\list.txt" ++"%UPDATENAME:~-3%" -write -yes
-
-if /i "%UPDATENAME%" EQU "ModMii" support\sfk filter -quiet "temp\list.txt" -!"_" -write -yes
-
-support\sfk filter -spat -quiet "temp\list.txt" -rep _*"\x5f"__ -write -yes
+support\sfk filter -quiet "temp\list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 
 set /p newversion= <temp\list.txt
 
 del temp\list.txt>nul
-
 
 
 start support\wizapp PB UPDATE 100
@@ -1786,28 +1741,25 @@ start support\wizapp PB UPDATE 20
 ::Kill ModMiiSkin.exe process so it can be updated
 taskkill /im ModMiiSkin.exe /f >nul
 
-if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMii.bat"
 
-if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+if exist "ModMii.bat" (move /y "ModMii.bat" temp\ModMii.bat>nul) else (goto:updatefail)
 
 start support\wizapp PB UPDATE 60
-
-copy /y support\7za.exe support\7za2.exe>nul
 
 
 echo @echo off>Updatetemp.bat
 echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
 echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
-echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
+echo move /y "temp\ModMii.bat" "Support\ModMii.bat"^>nul>>Updatetemp.bat
+echo move /y "temp\ModMiiSkin.bat" "Support\ModMiiSkin.bat"^>nul>>Updatetemp.bat
 echo start support\wizapp PB UPDATE 100 >>Updatetemp.bat
 echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
-echo del support\7za2.exe^>nul>>Updatetemp.bat
 echo start support\wizapp PB CLOSE>>Updatetemp.bat
 echo Start ModMiiSkin.exe>>Updatetemp.bat
 echo exit>>Updatetemp.bat
 start Updatetemp.bat
 exit
-
 
 
 :updatefail
