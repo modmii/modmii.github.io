@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.5
+set currentversion=6.3.6
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -16179,7 +16179,7 @@ if /i "%WiiGSC%" EQU "*" (echo "Wii Game Shortcut Creator (saved with shortcuts)
 
 
 if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader">>temp\DLnames.txt) & (echo "usbfolder">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
@@ -16189,15 +16189,15 @@ if /i "%FLOWF%" EQU "*" (echo "WiiFlow Forwarder Channel\dol">>temp\DLnames.txt)
 if /i "%PLC%" EQU "*" (echo "Post Loader Forwarder Channel">>temp\DLnames.txt) & (echo "PLC">>temp\DLgotos.txt)
 if /i "%S2U%" EQU "*" (echo "Switch2Uneek">>temp\DLnames.txt) & (echo "S2U">>temp\DLgotos.txt)
 if /i "%nSwitch%" EQU "*" (echo "nSwitch">>temp\DLnames.txt) & (echo "nSwitch">>temp\DLgotos.txt)
-if /i "%WiiMC%" EQU "*" (echo "WiiMC - Media Player (Most Recent Release)">>temp\DLnames.txt) & (echo "WIIMC">>temp\DLgotos.txt)
-if /i "%fceugx%" EQU "*" (echo "FCEUGX - NES Emulator for the Wii (Most Recent Release)">>temp\DLnames.txt) & (echo "fceugx">>temp\DLgotos.txt)
-if /i "%snes9xgx%" EQU "*" (echo "SNES9xGX - SNES Emulator for the Wii (Most Recent Release)">>temp\DLnames.txt) & (echo "snes9xgx">>temp\DLgotos.txt)
-if /i "%vbagx%" EQU "*" (echo "Visual Boy Advance GX - GB/GBA Emulator for the Wii (Most Recent Release)">>temp\DLnames.txt) & (echo "vbagx">>temp\DLgotos.txt)
+if /i "%WiiMC%" EQU "*" (echo "WiiMC - Media Player">>temp\DLnames.txt) & (echo "WIIMC">>temp\DLgotos.txt)
+if /i "%fceugx%" EQU "*" (echo "FCEUGX - NES Emulator for the Wii">>temp\DLnames.txt) & (echo "fceugx">>temp\DLgotos.txt)
+if /i "%snes9xgx%" EQU "*" (echo "SNES9xGX - SNES Emulator for the Wii">>temp\DLnames.txt) & (echo "snes9xgx">>temp\DLgotos.txt)
+if /i "%vbagx%" EQU "*" (echo "Visual Boy Advance GX - GB/GBA Emulator for the Wii">>temp\DLnames.txt) & (echo "vbagx">>temp\DLgotos.txt)
 if /i "%WII64%" EQU "*" (echo "Wii64 beta1.1 (N64 Emulator)">>temp\DLnames.txt) & (echo "WII64">>temp\DLgotos.txt)
 if /i "%WIISX%" EQU "*" (echo "WiiSX beta2.1 (Playstation 1 Emulator)">>temp\DLnames.txt) & (echo "WIISX">>temp\DLgotos.txt)
-if /i "%SGM%" EQU "*" (echo "SaveGame Manager GX (Most Recent Release)">>temp\DLnames.txt) & (echo "SGM">>temp\DLgotos.txt)
-if /i "%PL%" EQU "*" (echo "Postloader (Most Recent Release)">>temp\DLnames.txt) & (echo "PL">>temp\DLgotos.txt)
-if /i "%WIIX%" EQU "*" (echo "WiiXplorer (Most Recent Release)">>temp\DLnames.txt) & (echo "WIIX">>temp\DLgotos.txt)
+if /i "%SGM%" EQU "*" (echo "SaveGame Manager GX">>temp\DLnames.txt) & (echo "SGM">>temp\DLgotos.txt)
+if /i "%PL%" EQU "*" (echo "Postloader">>temp\DLnames.txt) & (echo "PL">>temp\DLgotos.txt)
+if /i "%WIIX%" EQU "*" (echo "WiiXplorer">>temp\DLnames.txt) & (echo "WIIX">>temp\DLgotos.txt)
 if /i "%HBB%" EQU "*" (echo "Homebrew Browser">>temp\DLnames.txt) & (echo "HBB">>temp\DLgotos.txt)
 if /i "%locked%" EQU "*" (echo "Locked Apps Folder for HBC (PASS=UDLRAB)">>temp\DLnames.txt) & (echo "locked">>temp\DLgotos.txt)
 
