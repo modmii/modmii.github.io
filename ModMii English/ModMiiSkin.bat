@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.3.1
+set currentversion=6.3.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -357,7 +357,7 @@ if /i "%waoutnum%" EQU "6" (set Menu1=S) & (set wabmp=support\bmp\SNEEK.bmp) & (
 if /i "%waoutnum%" EQU "7" (set Menu1=O) & (set wabmp=support\bmp\OPTIONS.bmp) & (goto:OPTIONS)
 
 
-if /i "%waoutnum%" EQU "8" (start http://modmii.zzl.org/credits.html) & (goto:MENU)
+if /i "%waoutnum%" EQU "8" (start http://modmii.comuf.com/credits.html) & (goto:MENU)
 
 
 if /i "%waoutnum%" EQU "9" (start ModMii.exe) & (exit)
@@ -1668,11 +1668,9 @@ set watext=~~Checking for Updates...~~Current version is %currentversion%
 start support\wizapp PB OPEN
 start support\wizapp PB UPDATE 20
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMiiSkin.bat"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/p/modmii/code/HEAD/tree/trunk/ModMii English/ModMiiSkin.bat?format=raw"
 
-if exist "ModMiiSkin.bat" (move /y "ModMiiSkin.bat" temp\ModMiiSkin.bat>nul) else (goto:updatefail)
-
-copy /y "temp\ModMiiSkin.bat" temp\list.txt>nul
+if exist "ModMiiSkin.bat@format=raw" (move /y "ModMiiSkin.bat@format=raw" temp\list.txt>nul) else (goto:updatefail)
 
 support\sfk filter -quiet "temp\list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 
@@ -1711,7 +1709,7 @@ if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
 
 
 :openchangelog
-start http://modmii.zzl.org/changelog.html
+start http://modmii.comuf.com/changelog.html
 
 :updateconfirm
 ::set updatenow=
@@ -1741,9 +1739,9 @@ start support\wizapp PB UPDATE 20
 ::Kill ModMiiSkin.exe process so it can be updated
 taskkill /im ModMiiSkin.exe /f >nul
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMii.bat"
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sourceforge.net/projects/modmii/files/%UPDATENAME%%newversion%.zip
 
-if exist "ModMii.bat" (move /y "ModMii.bat" temp\ModMii.bat>nul) else (goto:updatefail)
+if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
 
 start support\wizapp PB UPDATE 60
 
@@ -1751,10 +1749,10 @@ start support\wizapp PB UPDATE 60
 echo @echo off>Updatetemp.bat
 echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
 echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
-echo move /y "temp\ModMii.bat" "Support\ModMii.bat"^>nul>>Updatetemp.bat
-echo move /y "temp\ModMiiSkin.bat" "Support\ModMiiSkin.bat"^>nul>>Updatetemp.bat
+echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
 echo start support\wizapp PB UPDATE 100 >>Updatetemp.bat
 echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
+echo del support\7za2.exe^>nul>>Updatetemp.bat
 echo start support\wizapp PB CLOSE>>Updatetemp.bat
 echo Start ModMiiSkin.exe>>Updatetemp.bat
 echo exit>>Updatetemp.bat
@@ -1873,7 +1871,7 @@ if /i "%SNKCIOS%" EQU "Y" set wainput=%wainput%~* Install cIOS249 rev14
 
 if /i "%SNKcBC%" EQU "NMM" set wainput=%wainput%~* Install NMM (No More Memory-Cards)
 
-if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML %CurrentDMLRev% to Real NAND
+if /i "%SNKcBC%" EQU "DML" set wainput=%wainput%~* Install DML to Real NAND
 
 if /i "%SNKPRI%" EQU "Y" set wainput=%wainput%~* Install Priiloader
 
@@ -2176,9 +2174,8 @@ if /i "%waoutnum%" EQU "2" (set SNEEKSELECT=3) & (goto:NEEKrevSelect)
 if exist temp\list.txt del temp\list.txt>nul
 if exist temp\list2.txt del temp\list2.txt>nul
 
-if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
-if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
-
+if /i "%neek2o%" EQU "ON" (set googlecode=neek2o) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neekname=neek)
 
 ::echo Checking which %neekname% versions are hosted online...
 
@@ -2190,21 +2187,16 @@ start support\wizapp PB OPEN
 
 
 ::get all list
-start %ModMiimin%/wait support\wget -N "http://code.google.com/p/%googlecode%/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
 
 start support\wizapp PB UPDATE 20
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
-copy /y "temp\list.txt" "temp\list2.txt">nul
+if exist index.html* (move /y index.html* temp\list.txt>nul) else (goto:nowifi)
+::copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"/download\x22" ++"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 40
-
-::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
-
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 start support\wizapp PB UPDATE 60
 
@@ -2274,7 +2266,7 @@ IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
 
-if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" set wainput=%wainput%%CurrentRev% (hosted on google code)%FeaturedTag%;
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" set wainput=%wainput%%CurrentRev% (hosted online)%FeaturedTag%;
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" set wainput=%wainput%%CurrentRev%%FeaturedTag%;
 
 goto:EOF
@@ -2301,7 +2293,7 @@ goto:SNKPAGE1
 :notback
 
 ::remove featured\hosted tags before retrieving selection
-support\sfk filter "%wabat%" -rep _" (hosted on google code)"__ -rep _" - Featured"__ -write -yes>nul
+support\sfk filter "%wabat%" -rep _" (hosted online)"__ -rep _" - Featured"__ -write -yes>nul
 
 call "%wabat%"
 
@@ -2310,152 +2302,6 @@ if "%waoutput%"=="" goto:neekrevsfound
 set CurrentRev=%waoutput%
 
 goto:SNKPAGE2
-
-
-
-::...................................SNEEK Page - DML rev Selection...............................
-:CurrentDMLRevSelect
-
-if exist temp\list.txt del temp\list.txt>nul
-if exist temp\list2.txt del temp\list2.txt>nul
-
-::set googlecode=diosmioslite
-
-::echo Checking which DML versions are hosted online...
-
-set watext=~~~~     Checking which DML versions are hosted online...
-
-
-::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
-::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
-::start support\wizapp PB OPEN
-
-
-::get all list
-::start %ModMiimin%/wait support\wget -N "http://code.google.com/p/diosmioslite/downloads/list?can=1"
-
-::start support\wizapp PB UPDATE 20
-
-
-::if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
-::copy /y "temp\list.txt" "temp\list2.txt">nul
-
-::support\sfk filter -spat "temp\list.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad" -!zip -rep _*"/"__ -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
-
-::start support\wizapp PB UPDATE 40
-
-::get featured list
-::support\sfk filter -spat "temp\list2.txt" ++"diosmioslite.googlecode.com/files/" ++"diosmioslitesv" ++".wad', 'Featured" -rep _*"/"__ -write -yes>nul
-
-
-::support\sfk filter -spat "temp\list2.txt" -+"Featured" -!zip -!DMLST.wad -rep _".wad*"__ -rep _"*files/"__ -rep _diosmioslitesv__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
-
-::start support\wizapp PB UPDATE 60
-
-:nowifi
-
-::get local list
-
-if not exist "temp\DML\*.wad" goto:nolocallist
-
-dir "temp\DML\*.wad" /b /O:-N>>temp\list.txt
-
-::support\sfk filter "temp\list.txt" -rep _"diosmioslitesv"__ -rep _".wad"__ -write -yes>nul
-support\sfk filter "temp\list.txt" -rep _".wad"__ -write -yes>nul
-support\sfk filter "temp\list.txt" -unique -write -yes>nul
-
-::start support\wizapp PB UPDATE 80
-
-:nolocallist
-
-
-::------actual page start----------
-:CurrentDMLRevSelect2
-
-::start support\wizapp PB UPDATE 100
-
-::count # of folders in advance to set "mode"
-setlocal ENABLEDELAYEDEXPANSION
-SET DMLTOTAL=0
-if exist temp\list.txt for /f "delims=" %%i in (temp\list.txt) do set /a DMLTOTAL=!DMLTOTAL!+1
-setlocal DISABLEDELAYEDEXPANSION
-
-
-start support\wizapp PB CLOSE
-
-
-::Error if no revs found
-if /i "%DMLTOTAL%" NEQ "0" goto:DMLrevsfound
-
-if not exist temp\DML mkdir temp\DML
-
-set watext=~~~No DML (or Dios Mios) versions saved locally~~To add versions to the below list, download them from here:~~http://code.google.com/p/diosmios/wiki/Downloads~~~Then save them to ModMii's "temp\DML" folder
-
-start /w support\wizapp TB
-
-set DML=
-set CurrentDMLRev=
-goto:SNKPAGE4a3
-
-
-::-------------------
-:DMLrevsfound
-Set DMLrev=
-set waoutnum=
-set waoutput=
-set wafile=
-set wainput=
-
-
-Set watext=Select the version of DML (or Dios Mios) to install:~~To add versions to the list, download them from here:~http://code.google.com/p/diosmios/wiki/Downloads~Then save them to ModMii's "temp\DML" folder~~DML requires either Sneek+DI r157+ or NeoGamma R9 beta 55+
-
-if not exist temp\list.txt goto:quickskip
-
-::Loop through the the following once for EACH line in *.txt
-for /F "tokens=*" %%A in (temp\list.txt) do call :processDMLlist %%A
-goto:quickskip
-:processDMLlist
-set CurrentDMLRev=%*
-
-::if not exist temp\list2.txt goto:nofeaturedcheck
-::findStr /I /C:"%CurrentDMLRev%" "temp\list2.txt" >nul
-::IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
-:nofeaturedcheck
-
-::if not exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev% (hosted on google code)%FeaturedTag%;
-::if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" set wainput=%wainput%%CurrentDMLRev%%FeaturedTag%;
-set wainput=%wainput%%CurrentDMLRev%;
-
-goto:EOF
-:quickskip
-
-::remove last ; to delete empty selection
-set wainput=%wainput:~0,-1%
-
-start /w support\wizapp LB SINGLE
-
-
-if errorlevel 2 goto:MENU
-if not errorlevel 1 goto:notback
-set DML=
-set CurrentDMLRev=
-goto:SNKPAGE4a3
-:notback
-
-
-
-::remove featured\hosted tags before retrieving selection
-::disabled
-::support\sfk filter "%wabat%" -rep _" (hosted on google code)"__ -rep _" - Featured"__ -write -yes>nul
-
-call "%wabat%"
-
-if "%waoutput%"=="" goto:DMLrevsfound
-
-set CurrentDMLRev=%waoutput%
-
-goto:SNKPAGE5
-
 
 
 ::...................................SNEEK Page2 - SNEEK TYPE...............................
@@ -2804,7 +2650,7 @@ call "%wabat%"
 
 set SNKcBCMarked=%waoutnum%
 
-if /i "%waoutnum%" EQU "0" (set SNKcBC=DML) & (goto:CurrentDMLRevSelect)
+if /i "%waoutnum%" EQU "0" (set SNKcBC=DML)
 if /i "%waoutnum%" EQU "1" set SNKcBC=NMM
 
 if "%SNKcBC%"=="" goto:SNKPAGE4a3
@@ -2856,9 +2702,8 @@ if not errorlevel 1 goto:notback
 if /i "%AbstinenceWiz%" EQU "Y" goto:SNKPAGE4a
 if /i "%SNEEKTYPE%" NEQ "SD" goto:SNKPAGE4a
 if "%SNKcBC%"=="" goto:SNKPAGE4a
-
 if /i "%SNKcBC%" EQU "NMM" goto:SNKPAGE4a3
-if /i "%SNKcBC%" EQU "DML" goto:CurrentDMLRevSelect
+if /i "%SNKcBC%" EQU "DML" goto:SNKPAGE4a3
 if /i "%SNEEKTYPE%" EQU "SD" goto:SNKPAGE4a3
 goto:SNKPAGE4a
 :notback
@@ -2922,6 +2767,7 @@ goto:WPAGE3
 ::start support\wizapp PB OPEN
 
 if /i "%MENU1%" EQU "L" goto:sendcmd
+
 
 ::---------ModMii Wizard-------------
 if /i "%MENU1%" NEQ "W" goto:notwizard
@@ -3063,9 +2909,8 @@ goto:sendCMD
 if /i "%MENU1%" NEQ "S" goto:notS
 
 if /i "%SNEEKSELECT%" EQU "1" (set classicCMD=S %SNEEKTYPE% REV:%CurrentRev%) & (goto:sendCMD)
-if /i "%SNEEKSELECT%" EQU "2" set classicCMD=E %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%
+if /i "%SNEEKSELECT%" EQU "2" set classicCMD=E %SNEEKTYPE% %SNKVERSION% %SNKREGION% SN:%SNKSERIAL%
 if /i "%SNEEKSELECT%" EQU "3" set classicCMD=SE %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%
-
 
 
 ::------Abstinence only stuff------
@@ -3116,13 +2961,12 @@ if /i "%Speak%" EQU "Y" set classicCMD=%classicCMD% SPEAK
 
 if not "%addwadfolder%"=="" set classicCMD=%classicCMD% WADdir:%addwadfolder%?
 
-
 if /i "%SNKPLC%" EQU "Y" set classicCMD=%classicCMD% PLC
 if /i "%SNKCIOS%" EQU "Y" set classicCMD=%classicCMD% 249
 if /i "%SNKPRI%" EQU "Y" set classicCMD=%classicCMD% Pri
 if /i "%SNKFLOW%" EQU "Y" set classicCMD=%classicCMD% FLOW
 if /i "%SNKcBC%" EQU "NMM" set classicCMD=%classicCMD% NMM
-if /i "%SNKcBC%" EQU "DML" set classicCMD=%classicCMD% DML DMLRev:%CurrentDMLRev%
+if /i "%SNKcBC%" EQU "DML" set classicCMD=%classicCMD% DML
 
 goto:sendCMD
 
@@ -3169,7 +3013,6 @@ if exist temp\ModMii_CMD_LINE_NEEK_Errors.txt del temp\ModMii_CMD_LINE_NEEK_Erro
 ::start support\wizapp PB CLOSE
 ::goto:FINISH
 :::skipforcewait
-
 
 ModMii.exe %classicCMD:&=^&% Skin:E
 start support\wizapp PB CLOSE

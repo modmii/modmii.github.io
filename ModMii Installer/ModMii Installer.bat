@@ -11,7 +11,7 @@ set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
-set InstallerVersion=6.2
+set InstallerVersion=6.3
 
 chcp 437>nul
 
@@ -86,9 +86,6 @@ goto:updaterpage3
 
 
 
-
-
-
 :updaterpage3
 ::set shortcut=
 set waoutnum=0;1;2;3;4
@@ -143,37 +140,21 @@ IF not ERRORLEVEL 1 set AutoStart=Y
 
 :skipcheck
 
-del "%wabat%">nul
+if exist "%wabat%" del "%wabat%">nul
 
 
 :proceed
 
-
 if exist list.txt del list.txt>nul
-
-start %ModMiimin%/wait wget -N "http://code.google.com/p/modmii/downloads/list?can=3&q=&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-
-start wizapp PB UPDATE 20
-
-if exist list* (move /y list* list.txt>nul) else (goto:updatefail)
-
-sfk filter -quiet "list.txt" ++"ModMii" ++"zip" ++"modmii.googlecode.com/files/" -rep _*"files/ModMii"__ -rep _".zip"*__ -write -yes
-
-
-if /i "%UPDATENAME%" NEQ "ModMii" sfk filter -quiet "list.txt" ++"%UPDATENAME:~-3%" -write -yes
-
-if /i "%UPDATENAME%" EQU "ModMii" sfk filter -quiet "list.txt" -!"_" -write -yes
-
-sfk filter -spat -quiet "list.txt" -rep _*"\x5f"__ -write -yes
-
+start %ModMiimin%/wait wget --no-check-certificate -N "https://sourceforge.net/p/modmii/code/HEAD/tree/trunk/ModMii English/ModMiiSkin.bat?format=raw"
+if exist "ModMiiSkin.bat@format=raw" (move /y "ModMiiSkin.bat@format=raw" list.txt>nul) else (goto:updatefail)
+sfk filter -quiet "list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 set /p newversion= <list.txt
-
 del list.txt>nul
-
 
 start wizapp PB UPDATE 25
 
-if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait wget -t 3 http://modmii.googlecode.com/files/%UPDATENAME%%newversion%.zip
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait wget --no-check-certificate -t 3 http://sourceforge.net/projects/modmii/files/%UPDATENAME%%newversion%.zip
 
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
 
@@ -184,7 +165,6 @@ start wizapp PB UPDATE 60
 del %UPDATENAME%%newversion%.zip>nul
 
 start wizapp PB UPDATE 90
-
 
 
 if /i "%skinD%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMiiSkin.exe" "~$folder.desktop$" "ModMii Skin"
@@ -201,6 +181,9 @@ if /i "%ClassicS%" EQU "Y" nircmd.exe shortcut "%InstallPath%\ModMii.exe" "~$fol
 start wizapp PB UPDATE 100
 start wizapp PB CLOSE
 
+@ping 127.0.0.1 -n 2 -w 1000> nul
+if exist "%wabat%" del "%wabat%">nul
+
 if /i "%AutoStart%" NEQ "Y" EXIT
 
 cd /d "%InstallPath%"
@@ -216,5 +199,7 @@ start wizapp PB CLOSE
 set watext=~~~~Installation has failed,~~~check your internet connection and firewall settings and try again.
 
 start /w wizapp FINISH TB
+
+if exist "%wabat%" del "%wabat%">nul
 
 EXIT
