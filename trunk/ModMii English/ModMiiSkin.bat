@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.3.3
+set currentversion=6.3.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -1742,6 +1742,8 @@ taskkill /im ModMiiSkin.exe /f >nul
 if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sourceforge.net/projects/modmii/files/%UPDATENAME%%newversion%.zip
 
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+
+copy /y support\7za.exe support\7za2.exe>nul
 
 start support\wizapp PB UPDATE 60
 
