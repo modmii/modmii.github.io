@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.1
+set currentversion=6.3.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -475,11 +475,6 @@ echo         "Pri" Priiloader (and hacks)
 echo         "FLOW" WiiFlow Forwarder and App
 echo         "NMM" No More Memory Cards [cannot be used simultaneously with DML]
 echo         "DML" Dios Mios Lite [only for SNEEK+DI]
-echo.
-echo         "DMLRev:[WADNAME]" WADNAME must be saved to temp\DML
-echo            Note: If a Rev # is not specified ModMii will build the
-echo                  rev currently Featured on the google-code page
-echo                  (or newest version saved locally if you are offline)
 echo.
 echo         "SN:Serial-Number" - default serial will be used if not specified
 echo.
@@ -1843,45 +1838,6 @@ if /i "%SNKREGION%" EQU "K" set SNKSERIAL=LJM101175683
 :skipSNdefaults
 
 
-::-----------DMLRev:#---------------
-set DMLRev=1
-
-findStr /I " DMLRev:" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (goto:noDMLRevcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
-
-set DMLRev=
-
-support\sfk filter -spat temp\cmdinput2.txt -rep _"* DMLRev:"__ -rep _\x20*__ -write -yes>nul
-
-set /p CurrentDMLRev= <temp\cmdinput2.txt
-
-::remove hard option from cmdinput.txt (first compensate for underscores)
-support\sfk -spat filter temp\cmdinput2.txt -rep _\x5f_\x5cx5f_ -write -yes>nul
-
-set /p removeme= <temp\cmdinput2.txt
-support\sfk -spat filter temp\cmdinput.txt -rep _" DMLRev:%removeme%"__ -write -yes>nul
-
-
-::if exist "temp\DML\diosmioslitesv%CurrentDMLRev%.wad" goto:noDMLRevcmd
-
-if exist "temp\DML\%CurrentDMLRev%.wad" goto:noDMLRevcmd
-
-::set googlecode=diosmioslite
-
-
-::disabled
-goto:noDMLRevcmd
-::---------------SKIN MODE-------------
-if /i "%SkinMode%" EQU "Y" goto:noDMLRevcmd
-
-start /min /wait support\wget --no-check-certificate -t 3 "http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
-if not exist "diosmioslitesv%CurrentDMLRev%.wad" (echo "%CurrentDMLRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/diosmioslite/downloads/list?can=1) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
-
-if not exist "temp\DML" mkdir "temp\DML"
-move /y "diosmioslitesv%CurrentDMLRev%.wad" "temp\DML\diosmioslitesv%CurrentDMLRev%.wad">nul
-
-:noDMLRevcmd
-
 
 ::-----------Rev:#---------------
 set neekrev=1
@@ -1996,11 +1952,6 @@ if /i "%SNKcBC%" EQU "NMM" goto:skipDMLcmd
 if /i "%SNEEKTYPE%" NEQ "SD" goto:skipDMLcmd
 findStr /I " DML" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set SNKcBC=N) else (set SNKcBC=DML)
-
-if /i "%SNKcBC%" NEQ "DML" set DMLRev=
-
-::set default DML rev if not specified
-if /i "%DMLRev%" EQU "1" goto:CurrentDMLRevSelect
 :skipDMLcmd
 
 findStr /I " Pri" temp\cmdinput.txt >nul
@@ -2299,7 +2250,6 @@ set cfgfullrelease=NONE
 SET EXPLOIT=default
 if /i "%USBCONFIG%" EQU "USB" set DRIVE=%DRIVETEMP%
 set addwadfolder=
-set CurrentDMLRev=
 set AbstinenceWiz=
 :MENUafterbadvars
 
@@ -2359,8 +2309,6 @@ set basewadb=none
 set AdvNumber=0
 if exist temp\DLnamesADV.txt del temp\DLnamesADV.txt>nul
 if exist temp\DLgotosADV.txt del temp\DLgotosADV.txt>nul
-
-::if /i "%cmdlinemode%" NEQ "Y" set CurrentDMLRev=
 
 set EULAU=
 set EULAE=
@@ -2484,8 +2432,6 @@ set wiimod=
 set ARC=
 set yawm=
 set neogamma=
-set cfg249=
-set cfg222=
 set usbfolder=
 set WiiMC=
 set fceugx=
@@ -2494,7 +2440,6 @@ set vbagx=
 set SGM=
 set PL=
 set WIIX=
-set cfgr=
 set flow=
 set wbm=
 set CheatCodes=
@@ -2642,7 +2587,6 @@ set cIOS222[38]-v4=
 set cIOS223[37-38]-v4=
 set cBC=
 set DML=
-::set CurrentDMLRev=
 set cIOS222[38]-v5=
 set cIOS223[37]-v5=
 set cIOS224[57]-v5=
@@ -2852,7 +2796,7 @@ echo.
 echo           M = ModMii Skin Mode: use your mouse instead of your keyboard!
 echo.
 echo      *********MORE INFO*********
-support\sfk echo -spat \x20 \x20 [RED] WWW = Open http://modmii.zzl.org to ask questions, provide feedback or vote
+support\sfk echo -spat \x20 \x20 [RED] WWW = Open http://modmii.comuf.com to ask questions, provide feedback or vote
 echo.
 echo      Use the ModMii Wizard to set-up your SD card with all you need to softmod
 echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
@@ -2886,7 +2830,7 @@ if /i "%MENU1%" EQU "AW" (set MENU1=S) & (set SNEEKSELECT=3) & (set AbstinenceWi
 
 
 
-if /i "%MENU1%" EQU "CR" (start http://modmii.zzl.org/credits.html) & (goto:MENU)
+if /i "%MENU1%" EQU "CR" (start http://modmii.comuf.com/credits.html) & (goto:MENU)
 
 if /i "%MENU1%" EQU "WWW" (start http://89d89449.miniurls.co) & (goto:MENU)
 
@@ -3800,6 +3744,9 @@ goto:Options
 
 
 :UpdateModMii
+
+if exist "ModMiiSkin.bat@format=raw" del "ModMiiSkin.bat@format=raw">nul
+
 cls
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
@@ -3810,12 +3757,9 @@ echo.
 echo                                 Checking for updates...
 echo.
 
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/p/modmii/code/HEAD/tree/trunk/ModMii English/ModMiiSkin.bat?format=raw"
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMiiSkin.bat"
-
-if exist "ModMiiSkin.bat" (move /y "ModMiiSkin.bat" temp\ModMiiSkin.bat>nul) else (goto:updatefail)
-
-copy /y "temp\ModMiiSkin.bat" temp\list.txt>nul
+if exist "ModMiiSkin.bat@format=raw" (move /y "ModMiiSkin.bat@format=raw" temp\list.txt>nul) else (goto:updatefail)
 
 support\sfk filter -quiet "temp\list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 
@@ -3837,7 +3781,7 @@ if %currentversion% EQU %newversion% (echo                              This ver
 
 
 ::openchangelog
-start http://modmii.zzl.org/changelog.html
+start http://modmii.comuf.com/changelog.html
 
 
 :updateconfirm
@@ -3893,9 +3837,11 @@ echo                                     Please Wait...
 echo.
 
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "https://modmii.googlecode.com/svn/trunk/ModMii English/ModMii.bat"
+if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sourceforge.net/projects/modmii/files/%UPDATENAME%%newversion%.zip
 
-if exist "ModMii.bat" (move /y "ModMii.bat" temp\ModMii.bat>nul) else (goto:updatefail)
+if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+
+copy /y support\7za.exe support\7za2.exe>nul
 
 echo @echo off>Updatetemp.bat
 echo mode con cols=85 lines=54 >>Updatetemp.bat
@@ -3913,14 +3859,11 @@ echo echo.>>Updatetemp.bat
 
 echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
 echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
-
-echo move /y "temp\ModMii.bat" "Support\ModMii.bat"^>nul>>Updatetemp.bat
-echo move /y "temp\ModMiiSkin.bat" "Support\ModMiiSkin.bat"^>nul>>Updatetemp.bat
-
+echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
+echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
+echo del support\7za2.exe^>nul>>Updatetemp.bat
 echo Start ModMii.exe>>Updatetemp.bat
 echo exit>>Updatetemp.bat
-
-
 start Updatetemp.bat
 exit
 
@@ -3931,8 +3874,6 @@ echo   Update check has failed, check your internet connection and firewall sett
 set currentversion=%currentversioncopy%
 
 if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:menu)
-
-
 
 
 ::-------------------------------File Cleanup------------------------------------
@@ -6627,8 +6568,8 @@ goto:SNKPAGE1
 if exist temp\list.txt del temp\list.txt>nul
 if exist temp\list2.txt del temp\list2.txt>nul
 
-if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
-if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+if /i "%neek2o%" EQU "ON" (set googlecode=neek2o) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neekname=neek)
 
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" goto:quickskip2
@@ -6637,17 +6578,12 @@ echo Checking which %neekname% versions are hosted online...
 
 
 ::get all list
-start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/%googlecode%/downloads/list?can=2&q=zip&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
-copy /y "temp\list.txt" "temp\list2.txt">nul
+if exist index.html* (move /y index.html* temp\list.txt>nul) else (goto:nowifi)
+::copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
-
-::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"%googlecode%.googlecode.com/files/" ++"%neekname%-rev" ++".zip', 'Featured'" -rep _*"/"__ -write -yes>nul
-
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"/download\x22" ++"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 :nowifi
 
@@ -6707,7 +6643,7 @@ findStr /I /C:"%CurrentRev%" "temp\list2.txt" >nul
 IF ERRORLEVEL 1 (set FeaturedTag=) else (set FeaturedTag= - Featured)
 :nofeaturedcheck
 
-if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" echo       %RevCount% = %CurrentRev% (hosted on google code)%FeaturedTag%
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" echo       %RevCount% = %CurrentRev% (hosted online)%FeaturedTag%
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" echo       %RevCount% = %CurrentRev%%FeaturedTag%
 
 goto:EOF
@@ -6780,6 +6716,9 @@ goto:NEEKrevSelect2
 
 ::...................................SNEEK Page - DML rev Selection...............................
 :CurrentDMLRevSelect
+
+::DISABLED
+goto:%AfterDMLRevSelect%
 
 if exist temp\list.txt del temp\list.txt>nul
 if exist temp\list2.txt del temp\list2.txt>nul
@@ -10013,15 +9952,15 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] USB-Loader Files  \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 Just For Fun!
 echo.
-echo      %usbfolder% CFG = CFG-Loader (Full v249)        %WiiMC% WMC = WiiMC (Media Player)
-echo   %cfg249% CFG249 = CFG-Loader (Beta v249)        %fceugx% NES = FCEUGX (NES Emulator)
-echo   %cfg222% CFG222 = CFG-Loader (Beta v222)       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
-echo     %cfgr% CFGR = Configurator-CFG-Loader       %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo     %FLOW% FLOW = WiiFlow                       %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
-echo     %USBX% USBX = USB-Loader Fwdr Chnl           %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
-echo      %neogamma% NEO = Neogamma Backup Disc Loader    %HBB% HBB = Homebrew Browser
-echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %SGM% SGM = SaveGame Manager GX
-echo       %AccioHacks% AH = AccioHacks                      %WIIX% WX = WiiXplorer
+echo      %usbfolder% CFG = CFG-Loader Mod                 %WiiMC% WMC = WiiMC (Media Player)
+echo     %FLOW% FLOW = WiiFlow                        %fceugx% NES = FCEUGX (NES Emulator)
+echo     %USBX% USBX = USB-Loader Fwdr Channel       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
+echo      %neogamma% NEO = Neogamma Backup Disc Loader    %vbagx% VBA = VBAGX (GB/GBA Emulator)
+echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
+echo       %AccioHacks% AH = AccioHacks                     %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
+echo                                            %HBB% HBB = Homebrew Browser
+echo                                            %SGM% SGM = SaveGame Manager GX
+echo                                             %WIIX% WX = WiiXplorer
 echo                                             %locked% LA = Locked HBC Folder (Pass: UDLRAB)
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]PC Programs [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20%FLOWF% FLOWF = WiiFlow Forwarder Channel/dol
@@ -10046,8 +9985,8 @@ echo      %Pri% Pri = Priiloader v0.7 (236 Mod)      %Twi% Twi = Twilight Hack (
 echo      %HAX% HAX = Priiloader Hacks                %TOS% EH = Eri HaKawai (USA\EUR\JAP)
 echo      %PLC% PLC = Post Loader Channel             %Wilbrand% WB = Wilbrand (4.3 USA\EUR\JAP\KOR)
 
-if /i "%Wilbrand%" EQU "*" echo       %PL% PL = Postloader                            MAC:%macaddress%  Region:%REGION%
-if /i "%Wilbrand%" NEQ "*" echo       %PL% PL = Postloader
+if /i "%Wilbrand%" EQU "*" echo       %PL% PL = Postloader                             MAC:%macaddress%  Region:%REGION%
+if /i "%Wilbrand%" NEQ "*" echo       %PL% PL = Postloader
 
 echo       %syscheck% SC = sysCheck
 echo       %WiiMod% WM = WiiMod
@@ -10114,8 +10053,6 @@ if /i "%OLDLIST%" EQU "236" goto:SwitchIOS236Installer
 if /i "%OLDLIST%" EQU "SIP" goto:SwitchSIP
 if /i "%OLDLIST%" EQU "yawm" goto:Switchyawm
 if /i "%OLDLIST%" EQU "neo" goto:Switchneogamma
-if /i "%OLDLIST%" EQU "cfg249" goto:Switchcfg249
-if /i "%OLDLIST%" EQU "cfg222" goto:Switchcfg222
 if /i "%OLDLIST%" EQU "cfg" goto:Switchusbfolder
 if /i "%OLDLIST%" EQU "WMC" goto:SwitchWiiMC
 if /i "%OLDLIST%" EQU "NES" goto:Switchfceugx
@@ -10124,7 +10061,6 @@ if /i "%OLDLIST%" EQU "VBA" goto:Switchvbagx
 if /i "%OLDLIST%" EQU "SGM" goto:SwitchSGM
 if /i "%OLDLIST%" EQU "PL" goto:SwitchPL
 if /i "%OLDLIST%" EQU "WX" goto:SwitchWIIX
-if /i "%OLDLIST%" EQU "cfgr" goto:Switchcfgr
 if /i "%OLDLIST%" EQU "wbm" goto:Switchwbm
 if /i "%OLDLIST%" EQU "cc" goto:SwitchCheatCodes
 
@@ -10254,18 +10190,6 @@ goto:OLDLIST
 if /i "%neogamma%" EQU "*" (set neogamma=) else (set neogamma=*)
 goto:OLDLIST
 
-:Switchcfg249
-if /i "%cfg249%" EQU "*" (set cfg249=) else (set cfg249=*)
-goto:OLDLIST
-
-:Switchcfg222
-if /i "%cfg222%" EQU "*" (set cfg222=) else (set cfg222=*)
-goto:OLDLIST
-
-:Switchcfgr
-if /i "%cfgr%" EQU "*" (set cfgr=) else (set cfgr=*)
-goto:OLDLIST
-
 :Switchwbm
 if /i "%wbm%" EQU "*" (set wbm=) else (set wbm=*)
 goto:OLDLIST
@@ -10358,10 +10282,7 @@ goto:OLDLIST
 :SELECTALLOLD
 
 :USBLOADERSELECT
-set cfg249=*
-set cfg222=*
 set usbfolder=*
-set cfgr=*
 set neogamma=*
 set CheatCodes=*
 set AccioHacks=*
@@ -12186,24 +12107,20 @@ goto:ADVANCED
 :betaswitch
 
 if exist temp\list.txt del temp\list.txt>nul
+if exist temp\list2.txt del temp\list2.txt>nul
 
 echo Checking for new d2x beta's hosted online...
 
 ::get all list
-start %ModMiimin%/wait support\wget --no-check-certificate -N "http://code.google.com/p/d2x-cios/downloads/list?can=2&q=&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
+start %ModMiimin%/wait support\wget --no-check-certificate -N "https://github.com/davebaol/d2x-cios/releases"
 
-if exist list* (move /y list* temp\list.txt>nul) else (goto:nowifi)
-copy /y "temp\list.txt" "temp\list2.txt">nul
+if exist releases (move /y releases temp\list.txt>nul) else (goto:nowifi)
+::copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"d2x-cios.googlecode.com/files/" ++".zip" -!"vwii" -!"uwii" -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" ++"/davebaol/d2x-cios/releases/download/" ++".7z" -!"vwii" -!"uwii" -rep _*"download/"__ -rep _".7z*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
-
-::get featured list
-support\sfk filter -spat "temp\list2.txt" ++"d2x-cios.googlecode.com/files/" ++".zip', 'Featured'" -!"vwii" -!"uwii" -rep _*"/"__ -write -yes>nul
-support\sfk filter -spat "temp\list2.txt" -+"Featured" -rep _".zip*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 :nowifi
-
 
 ::get local list
 dir support\More-cIOSs /a:d /b>>temp\list.txt
@@ -12251,14 +12168,11 @@ goto:quickskip
 set CurrentcIOS=%*
 set /a MorecIOSsNum=%MorecIOSsNum%+1
 
+::findStr /I /C:"%CurrentcIOS%" "temp\list2.txt" >nul
+::IF ERRORLEVEL 1 (set d2xFeatured=) else (set d2xFeatured= - Featured)
 
-findStr /I /C:"%CurrentcIOS%" "temp\list2.txt" >nul
-IF ERRORLEVEL 1 (set d2xFeatured=) else (set d2xFeatured= - Featured)
-
-
-
-if not exist "support\More-cIOSs\%CurrentcIOS%" echo       %MorecIOSsNum% = %CurrentcIOS% (hosted on google code)%d2xFeatured%
-if exist "support\More-cIOSs\%CurrentcIOS%" echo       %MorecIOSsNum% = %CurrentcIOS%%d2xFeatured%
+if not exist "support\More-cIOSs\%CurrentcIOS%" echo       %MorecIOSsNum% = %CurrentcIOS% (Online)%d2xFeatured%
+if exist "support\More-cIOSs\%CurrentcIOS%" echo       %MorecIOSsNum% = %CurrentcIOS% (Local)%d2xFeatured%
 
 goto:EOF
 :quickskip
@@ -12287,10 +12201,7 @@ goto:d2xfix
 :notN
 
 if "%betacios%"=="" goto:badkey
-
-
 if /i "%d2xTOTAL%" EQU "0" goto:badkey
-
 echo set betacios=%betacios% >temp\temp.bat
 support\sfk filter -quiet temp\temp.bat -rep _.__ -lerep _" "__ -write -yes
 call temp\temp.bat
@@ -12315,11 +12226,13 @@ goto:EOF
 :quickskip
 
 
+set DLcIOS=%CurrentcIOS%
+set CurrentcIOS=%CurrentcIOS:*/=%
+
 if exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" goto:nodownload
-
-
 if not exist "support\More-cIOSs\%CurrentcIOS%" mkdir "support\More-cIOSs\%CurrentcIOS%"
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://d2x-cios.googlecode.com/files/%CurrentcIOS%.zip"
+
+start %ModMiimin%/wait support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/davebaol/d2x-cios/releases/download/%DLcIOS%.7z"
 if not exist "%CurrentcIOS%.zip" goto:badkey
 support\7za e -aoa "%CurrentcIOS%.zip" -o"support\More-cIOSs\%CurrentcIOS%" *.* -r
 del "%CurrentcIOS%.zip">nul
@@ -16265,10 +16178,7 @@ if /i "%WiiGSC%" EQU "*" (echo "Wii Game Shortcut Creator (saved with shortcuts)
 
 
 
-if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader (Most recent Full 249 version)">>temp\DLnames.txt) & (echo "usbfolder">>temp\DLgotos.txt)
-if /i "%cfg249%" EQU "*" (echo "Configurable USB Loader (Most recent 249 version)">>temp\DLnames.txt) & (echo "cfg249">>temp\DLgotos.txt)
-if /i "%cfg222%" EQU "*" (echo "Configurable USB Loader (Most recent 222 version)">>temp\DLnames.txt) & (echo "cfg222">>temp\DLgotos.txt)
-if /i "%cfgr%" EQU "*" (echo "Configurator for Configurable USB Loader (Most recent version)">>temp\DLnames.txt) & (echo "cfgr">>temp\DLgotos.txt)
+if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader">>temp\DLnames.txt) & (echo "usbfolder">>temp\DLgotos.txt)
 if /i "%FLOW%" EQU "*" (echo "WiiFlow (Most recent version)">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
@@ -16926,8 +16836,6 @@ if /i "%WiiMod%" EQU "*" echo SET WiiMod=%WiiMod%>> "temp\DownloadQueues\%DLQUEU
 if /i "%ARC%" EQU "*" echo SET ARC=%ARC%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%yawm%" EQU "*" echo SET yawm=%yawm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%neogamma%" EQU "*" echo SET neogamma=%neogamma%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cfg249%" EQU "*" echo SET cfg249=%cfg249%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cfg222%" EQU "*" echo SET cfg222=%cfg222%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%usbfolder%" EQU "*" echo SET usbfolder=%usbfolder%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%WiiMC%" EQU "*" echo SET WiiMC=%WiiMC%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%fceugx%" EQU "*" echo SET fceugx=%fceugx%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -16950,7 +16858,6 @@ if /i "%FLOWF%" EQU "*" echo SET FLOWF=%FLOWF%>> "temp\DownloadQueues\%DLQUEUENA
 if /i "%S2U%" EQU "*" echo SET S2U=%S2U%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%nSwitch%" EQU "*" echo SET nSwitch=%nSwitch%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%PLC%" EQU "*" echo SET PLC=%PLC%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cfgr%" EQU "*" echo SET cfgr=%cfgr%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%Pri%" EQU "*" echo SET Pri=%Pri%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%HAX%" EQU "*" echo SET HAX=%HAX%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%MII%" EQU "*" echo SET MII=%MII%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -17340,10 +17247,8 @@ start support\wizapp PB UPDATE %percent%
 
 
 ::---------Exceptions----------------
-if /i "%category%" EQU "cfg" goto:CFGDOWNLOADER
 if /i "%category%" EQU "cfgr" goto:CFGRDOWNLOADER
 if /i "%category%" EQU "TANTRIC" goto:TANTRIC
-if /i "%category%" EQU "GOOGLEUPDATE" goto:GOOGLEUPDATE
 if /i "%category%" EQU "CHEATS" goto:CHEATS
 if /i "%category%" EQU "ManualUpdate" goto:MANUALUPDATE
 if /i "%category%" EQU "fullextract" goto:fullextract
@@ -19130,765 +19035,6 @@ if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.ba
 goto:NEXT
 
 
-
-
-
-
-::------------------------------------------CFG USB Loader Downloader--------------------------------------
-:CFGDOWNLOADER
-
-::choice=1 for most recent 249 and choice=2 for most recent 222
-if /i "%cfg249%" EQU "*" set cfgchoice=1
-if /i "%cfg222%" EQU "*" set cfgchoice=2
-
-if not exist "%Drive%\apps\USBLoader_cfg\meta.xml" goto:doesntexist
-
-echo.
-echo This app already exists...
-
-
-::get current version if app already exists, skip if its the most recent version
-support\sfk filter -quiet "%Drive%\apps\USBLoader_cfg\meta.xml" -+"/version" -rep _"*<version>"_"set currentcode="_ -rep _"</version*"__ >currentcode.bat
-call currentcode.bat
-del currentcode.bat>nul
-echo.
-echo Current version is %currentcode%
-echo.
-echo Checking for updates...
-echo.
-
-:doesntexist
-
-::Download updates.txt
-start %ModMiimin%/wait support\wget --no-check-certificate http://cfg-loader.googlecode.com/svn/trunk/updates.txt
-
-if not exist updates.txt goto:missing
-
-
-::Most Recent Version Download Link
-support\sfk filter updates.txt -ls+url>cfgurl.txt
-FINDSTR /N url cfgurl.txt>cfgurl2.txt
-support\sfk filter cfgurl2.txt -rep _"url = "__>cfgurl.txt
-del cfgurl2.txt>nul
-support\sfk filter cfgurl.txt -ls+"%cfgchoice%:" -ls!"%cfgchoice%%cfgchoice%:" -lsrep _"%cfgchoice%:"_"set cfgurl="_>cfgDLsettings.bat
-del cfgurl.txt>nul
-
-::Most Recent Version Release Number
-support\sfk filter updates.txt -ls+release>cfgrelease.txt
-FINDSTR /N release cfgrelease.txt>cfgrelease2.txt
-support\sfk filter cfgrelease2.txt -rep _"release = "__>cfgrelease.txt
-del cfgrelease2.txt>nul
-support\sfk filter cfgrelease.txt -ls+"%cfgchoice%:" -ls!"%cfgchoice%%cfgchoice%:" -lsrep _"%cfgchoice%:"_"set cfgrelease="_>>cfgDLsettings.bat
-del cfgrelease.txt>nul
-
-::Most Recent Version Release Date
-support\sfk filter updates.txt -ls+date>cfgdate.txt
-FINDSTR /N date cfgdate.txt>cfgdate2.txt
-support\sfk filter cfgdate2.txt -rep _"date = "__>cfgdate.txt
-del cfgdate2.txt>nul
-support\sfk filter cfgdate.txt -ls+"%cfgchoice%:" -ls!"%cfgchoice%%cfgchoice%:" -lsrep _"%cfgchoice%:"_"set cfgdate="_>>cfgDLsettings.bat
-del cfgdate.txt>nul
-
-::Most Recent FULL Version number, used to download most recent 'usb-loader' folder
-support\sfk filter updates.txt -ls+"release = " -rep _"release = "__>cfgFullRelease.txt
-support\sfk filter cfgFullRelease.txt ++release -write -yes>nul
-FINDSTR /N release cfgFullRelease.txt>cfgFullRelease2.txt
-::support\sfk filter cfgFullRelease2.txt -rep _" (release)"__>cfgFullRelease.txt
-del cfgFullRelease.txt>nul
-support\sfk filter cfgFullRelease2.txt -ls+"1:" -ls!"11:" -lsrep _"1:"_"set cfgfullrelease="_>>cfgDLsettings.bat
-del cfgFullRelease2.txt>nul
-
-
-del updates.txt>nul
-call cfgDLsettings.bat
-del cfgDLsettings.bat>nul
-
-
-if /i "%name%" EQU "Configurable USB-Loader (Most recent Full 249 version)" goto:usbloaderFolder
-
-if not exist "%Drive%\apps\USBLoader_cfg\meta.xml" goto:doesntalreadyexist
-
-
-if "%currentcode%" EQU "%cfgrelease%" goto:noupdate
-
-echo Updating from %currentcode% to %cfgrelease%
-echo.
-goto:update
-
-:noupdate
-support\sfk echo -spat \x20 [Green] Your current version of %currentcode% is up to date, skipping download
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgrelease%">>temp\ModMii_Log.bat
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:next
-
-
-
-
-::Download most recent version of cfg loader
-:doesntalreadyexist
-Echo.
-Echo Downloading most recent version: %cfgrelease%
-
-:update
-start %ModMiimin%/wait support\wget --no-check-certificate %cfgurl%
-if not exist "%Drive%"\apps\USBLoader_cfg mkdir "%Drive%"\apps\USBLoader_cfg
-move /Y *.dol "%Drive%"\apps\USBLoader_cfg\boot.dol> nul
-
-
-:geticon
-if exist "%Drive%"\apps\USBLoader_cfg\icon.png goto:meta
-
-if exist temp\cfgicon.png goto:skip
-start %ModMiimin%/wait support\wget --no-check-certificate http://code.google.com/p/cfg-loader/logo?cct=1263052802
-move /Y "logo@cct=1263052802" temp\cfgicon.png>nul
-
-:skip
-copy /Y temp\cfgicon.png "%Drive%"\apps\USBLoader_cfg\icon.png>nul
-
-
-
-:meta
-if exist temp\cfgtemplate_meta.xml goto:skip
-start %ModMiimin%/wait support\wget --no-check-certificate "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/meta.xml"
-move /Y meta.xml temp\cfgtemplate_meta.xml>nul
-:skip
-
-copy /Y temp\cfgtemplate_meta.xml "%Drive%"\apps\USBLoader_cfg\meta.xml>nul
-support\sfk filter "%Drive%"\apps\USBLoader_cfg\meta.xml -rep _cfgrelease_"%cfgrelease%"_ -rep _cfgdate_"%cfgdate%"_ -write -yes>nul
-
-
-::----simple version check after downloading----
-if exist "%Drive%\%path1%boot.dol" goto:checkexisting
-
-:missing
-if /i "%attempt%" EQU "1" goto:missingretry
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-goto:MetaChecker
-::goto:NEXT
-
-:missingretry
-echo.
-support\sfk echo [Yellow] The file is missing, retrying download.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:checkexisting
-::get current version from meta.xml
-support\sfk filter -quiet "%Drive%\%path1%meta.xml" -+"/version" -rep _"*<version>"_"set currentcode="_ -rep _"</version*"__ >currentcode.bat
-call currentcode.bat
-del currentcode.bat>nul
-if "%currentcode%" EQU "%cfgrelease%" goto:pass
-
-:fail
-if /i "%attempt%" NEQ "1" goto:multiplefail
-echo.
-support\sfk echo [Yellow] This file already exists but it failed to update properly.
-support\sfk echo [Yellow] Retrying to download the most recent release of the file.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:multiplefail
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-set multiplefail=Y
-goto:MetaChecker
-::goto:NEXT
-
-:pass
-echo.
-support\sfk echo [Green]Download Successful
-echo.
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgrelease%">>temp\ModMii_Log.bat
-goto:NEXT
-
-
-
-
-:usbloaderFolder
-if not exist "%Drive%\apps\USBLoader_cfg\meta.xml" goto:skip
-
-if "%currentcode%" EQU "%cfgfullrelease%" goto:noupdate
-
-echo Updating from %currentcode% to %cfgfullrelease%
-echo.
-:skip
-
-::Download most recent full version for USB-Loader Folder
-echo Downloading most recent Full/Official Configurable USB-Loader: Version %cfgfullrelease%
-if exist "%Drive%\usb-loader" Echo.
-if exist "%Drive%\usb-loader" Echo Note: Existing USB-Loader Folder will be renamed
-start %ModMiimin%/wait support\wget --no-check-certificate http://cfg-loader.googlecode.com/files/Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip
-
-::rename exsiting usb-loader folder if applicable
-:renameusbloader
-if not exist "%Drive%\usb-loader" goto:extractusbloader
-SET /a COUNT9=%COUNT9%+1
-if exist "%Drive%\usb-loader%COUNT9%" goto:renameusbloader
-move "%Drive%\usb-loader" "%Drive%\usb-loader%COUNT9%">nul
-
-
-:extractusbloader
-if not exist "%DRIVE%\usb-loader" mkdir "%DRIVE%\usb-loader"
-if not exist %Drive%\apps\USBLoader_cfg mkdir %Drive%\apps\USBLoader_cfg
-
-
-support\7za e -aoa Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip -o"%Drive%\apps\USBLoader_cfg" Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\apps\USBLoader\* -r
-
-support\7za x -aoa Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip -o"%Drive%" Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\* -r
-
-::move all files
-move /y "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\*" "%Drive%\usb-loader">nul
-
-::move all folders
-dir "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader" /a:d /b>temp\list.txt
-
-::Loop through the the following once for EACH line in *.txt
-for /F "tokens=*" %%A in (temp\list.txt) do call :processlist7 %%A
-goto:quickskipthis
-:processlist7
-set CurrentDIR=%*
-move /y "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%\inSDRoot\usb-loader\%CurrentDIR%" "%Drive%\usb-loader\%CurrentDIR%">nul
-goto:EOF
-:quickskipthis
-
-rd /s /q "%Drive%\Cfg_USB_Loader_%cfgfullrelease:~0,-10%"
-
-del Cfg_USB_Loader_%cfgfullrelease:~0,-10%.zip>nul
-
-
-::------extra for USB-Loader Setup Guide-------
-if /i "%FORMAT%" EQU "NONE" goto:skip
-::FAT or NTFS partition will only be valid if the \wbfs folder exists
-if not exist "%Drive%\wbfs" mkdir "%Drive%\wbfs"
-if not exist "%DRIVE%"\usb-loader\music mkdir "%DRIVE%"\usb-loader\music
-
-echo Save music Here>"%DRIVE%\usb-loader\music\Save MP3s Here To Play at USB-Loader Menu"
-if /i "%USBCONFIG%" EQU "USB" echo music = usb:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
-if /i "%USBCONFIG%" NEQ "USB" echo music = sd:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
-
-echo unlock_password = AAAA>>"%DRIVE%\usb-loader\config.txt"
-echo disable_remove = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
-echo disable_format = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
-echo admin_unlock = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
-
-support\sfk filter -write -yes "%DRIVE%\usb-loader\config.txt" -rep _BLAHBLAH_1_> nul
-
-:skip
-
-if /i "%USBCONFIG%" NEQ "USB" goto:skip
-echo covers_path = usb:/usb-loader/covers>>"%DRIVE%\usb-loader\config.txt"
-echo covers_path_2d = usb:/usb-loader/covers/2d>>"%DRIVE%\usb-loader\config.txt"
-echo covers_path_3d = usb:/usb-loader/covers/3d>>"%DRIVE%\usb-loader\config.txt"
-echo covers_path_disc = usb:/usb-loader/covers/disc>>"%DRIVE%\usb-loader\config.txt"
-echo covers_path_full = usb:/usb-loader/covers/full>>"%DRIVE%\usb-loader\config.txt"
-
-if /i "%FORMAT%" EQU "2" support\sfk filter -write -yes "%DRIVE%\usb-loader\config.txt" -rep _usb:_ntfs:_> nul
-:skip
-
-::partition = auto is now the default value
-::Will select first valid from: WBFS1, FAT1, NTFS1
-::FAT or NTFS partition will only be valid if the /wbfs folder exists
-::if /i "%FORMAT%" EQU "1" echo partition = FAT1>>"%DRIVE%\usb-loader\config.txt"
-::if /i "%FORMAT%" EQU "2" echo partition = NTFS1>>"%DRIVE%\usb-loader\config.txt"
-::if /i "%FORMAT%" EQU "3" echo partition = FAT1>>"%DRIVE%\usb-loader\config.txt"
-::if /i "%FORMAT%" EQU "4" echo partition = WBFS1>>"%DRIVE%\usb-loader\config.txt"
-::if /i "%FORMAT%" EQU "5" echo partition = WBFS1>>"%DRIVE%\usb-loader\config.txt"
-
-
-::----simple version check after downloading----
-if exist "%Drive%"\apps\USBLoader_cfg\boot.dol goto:checkexisting
-
-:missing
-if /i "%attempt%" EQU "1" goto:missingretry
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-goto:MetaChecker
-::goto:NEXT
-
-:missingretry
-echo.
-support\sfk echo [Yellow] The file is missing, retrying download.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:checkexisting
-::get current version from meta.xml
-support\sfk filter -quiet "%Drive%\apps\USBLoader_cfg\meta.xml" -+"/version" -rep _"*<version>"_"set currentcode="_ -rep _"</version*"__ >currentcode.bat
-call currentcode.bat
-del currentcode.bat>nul
-if "%currentcode%" EQU "%cfgfullrelease%" goto:pass
-
-:fail
-if /i "%attempt%" NEQ "1" goto:multiplefail
-echo.
-support\sfk echo [Yellow] This file already exists but it failed to update properly.
-support\sfk echo [Yellow] Retrying to download the most recent release of the file.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:multiplefail
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-set multiplefail=Y
-goto:MetaChecker
-::goto:NEXT
-
-:pass
-echo.
-support\sfk echo [Green]Download Successful
-echo.
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgfullrelease%">>temp\ModMii_Log.bat
-goto:NEXT
-
-
-
-:noupdate
-support\sfk echo -spat \x20 [Green] Your current version of %currentcode% is up to date, skipping download
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgfullrelease%">>temp\ModMii_Log.bat
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:next
-
-
-::------------------------------------------CONFIGURATOR FOR CFG USB Loader Downloader--------------------------------------
-:CFGRDOWNLOADER
-
-::Download updates.txt
-start %ModMiimin%/wait support\wget --no-check-certificate "http://gwht.wdfiles.com/local--files/configurable-options/updates.txt"
-if not exist updates.txt goto:missing
-
-
-::Most Recent Version Download Link
-support\sfk filter updates.txt -ls+url>cfgrurl.txt
-FINDSTR /N url cfgrurl.txt>cfgrurl2.txt
-support\sfk filter cfgrurl2.txt -rep _"url = "__>cfgrurl.txt
-del cfgrurl2.txt>nul
-support\sfk filter cfgrurl.txt -ls+"1:" -ls!"11:" -lsrep _"1:"_"set cfgrurl="_>cfgrDLsettings.bat
-del cfgrurl.txt>nul
-
-::Most Recent Version Release Number
-support\sfk filter updates.txt -ls+release>cfgrrelease.txt
-FINDSTR /N release cfgrrelease.txt>cfgrrelease2.txt
-support\sfk filter cfgrrelease2.txt -rep _" "__ -rep _"release="__>cfgrrelease.txt
-del cfgrrelease2.txt>nul
-support\sfk filter cfgrrelease.txt -ls+"1:" -ls!"11:" -lsrep _"1:"_"set cfgrrelease="_>>cfgrDLsettings.bat
-del cfgrrelease.txt>nul
-
-del updates.txt>nul
-call cfgrDLsettings.bat
-del cfgrDLsettings.bat>nul
-
-::Download most recent version
-if not exist "%DRIVE%\usb-loader\cfgrrev.txt" goto:skip
-echo.
-echo This app already exists...
-echo.
-set cfgrreleaseOLD=
-attrib -r -h -s "%DRIVE%\usb-loader\cfgrrev.txt"
-copy /y "%DRIVE%\usb-loader\cfgrrev.txt" "%DRIVE%\usb-loader\cfgrev.bat">nul
-attrib +r +h +s "%DRIVE%\usb-loader\cfgrrev.txt"
-call "%DRIVE%\usb-loader\cfgrev.bat"
-del "%DRIVE%\usb-loader\cfgrev.bat">nul
-echo Current version is %cfgrreleaseOLD%
-echo.
-echo Checking for updates...
-echo.
-if %cfgrreleaseOLD% GEQ %cfgrrelease% goto:noupdate
-:skip
-
-Echo.
-Echo Downloading most recent version: %cfgrrelease%
-start %ModMiimin%/wait support\wget --no-check-certificate %cfgrurl%
-if not exist "%Drive%"\USB-Loader mkdir "%Drive%"\USB-Loader
-
-::Move most recent usb-loader folder to root of drive
-support\7za e -aoa CfgLoaderConfiguratorv%cfgrrelease%.zip -o"%Drive%"\usb-loader\ * -r
-del CfgLoaderConfiguratorv%cfgrrelease%.zip>nul
-
-
-::----simple version check after downloading----
-if exist "%DRIVE%"\usb-loader\CfgLoaderConfigurator.exe goto:pass
-
-:missing
-if /i "%attempt%" EQU "1" goto:missingretry
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-if /i "%AdvancedDownload%" NEQ "Y" echo "support\sfk echo %name%: [Red]Missing">>temp\ModMii_Log.bat
-goto:NEXT
-
-:missingretry
-echo.
-support\sfk echo [Yellow] The file is missing, retrying download.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:pass
-echo.
-support\sfk echo [Green]Download Successful
-echo.
-::save version info for next time!
-if exist "%DRIVE%\usb-loader\cfgrrev.txt" attrib -r -h -s "%DRIVE%\usb-loader\cfgrrev.txt"
-echo set cfgrreleaseOLD=%cfgrrelease%>"%DRIVE%\usb-loader\cfgrrev.txt"
-attrib +r +h +s "%DRIVE%\usb-loader\cfgrrev.txt"
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgrrelease%">>temp\ModMii_Log.bat
-goto:NEXT
-
-:noupdate
-support\sfk echo -spat \x20 [Green] Your current version of %cfgrreleaseOLD% is up to date, skipping download
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %cfgrrelease%">>temp\ModMii_Log.bat
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:next
-
-
-::--------------------------TANTRIC APPS AUTO-UDPATE------------------------
-:TANTRIC
-
-
-if not exist "%DRIVE%\%path1%\meta.xml" goto:doesntexist
-
-echo.
-echo This app already exists...
-
-
-::get current version if app already exists, skip if its the most recent version
-support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"/version" -rep _"*<version>"_"set currentcode="_ -rep _"</version*"__ >currentcode.bat
-call currentcode.bat
-del currentcode.bat>nul
-echo.
-echo Current version is %currentcode%
-echo.
-echo Checking for updates...
-echo.
-
-:doesntexist
-start %ModMiimin%/wait support\wget --no-check-certificate "%updateurl%"
-
-if not exist update.xml goto:missing
-
-support\sfk filter -quiet update.xml -+"app version" -rep _"<app version=""_"set newcode="_ -write -yes
-support\sfk filter -quiet update.xml -rep _">_""_ -write -yes
-support\sfk filter -quiet update.xml -rep _""""__>code.bat
-del update.xml>nul
-call code.bat
-del code.bat>nul
-
-if not exist "%DRIVE%\%path1%\meta.xml" goto:doesntalreadyexist
-
-
-if %currentcode% GEQ %newcode% goto:noupdate
-echo Updating from %currentcode% to %newcode%
-goto:update
-
-:noupdate
-support\sfk echo -spat \x20 [Green] Your current version of %currentcode% is up to date, skipping download
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %newcode%">>temp\ModMii_Log.bat
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:next
-
-:doesntalreadyexist
-
-::Download most recent version
-Echo.
-Echo Downloading most recent version: %newcode%
-:update
-echo.
-start %ModMiimin%/wait support\wget --no-check-certificate "%code1%%newcode%%code2%"
-if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
-
-
-set wadname="%zip1%%newcode%%zip2%"
-
-support\7za x -aoa %wadname% -o"%Drive%"
-::support\7za e -aoa %wadname% -o"%Drive%"/%path1% *.%version% -r
-
-del %wadname%>nul
-
-::----simple version check after downloading----
-if exist "%DRIVE%\%path1%\meta.xml" goto:checkexisting
-
-:missing
-if /i "%attempt%" EQU "1" goto:missingretry
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-goto:MetaChecker
-::goto:NEXT
-
-:missingretry
-echo.
-support\sfk echo [Yellow] The file is missing, retrying download.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:checkexisting
-::get current version from meta.xml
-support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"/version" -rep _"*<version>"_"set currentcode="_ -rep _"</version*"__ >currentcode.bat
-call currentcode.bat
-del currentcode.bat>nul
-if %currentcode% GEQ %newcode% goto:pass
-
-:fail
-if /i "%attempt%" NEQ "1" goto:multiplefail
-echo.
-support\sfk echo [Yellow] This file already exists but it failed to update properly.
-support\sfk echo [Yellow] Retrying to download the most recent release of the file.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:multiplefail
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-set multiplefail=Y
-goto:MetaChecker
-::goto:NEXT
-
-:pass
-echo.
-support\sfk echo [Green]Download Successful
-echo.
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %newcode%">>temp\ModMii_Log.bat
-goto:NEXT
-
-
-
-
-
-
-
-::--------------------------GOOGLE CODE 'MANUAL' AUTO-UDPATE------------------------
-:GOOGLEUPDATE
-
-
-if not exist "%DRIVE%\%path1%\meta.xml" goto:doesntexist
-
-echo.
-echo This app already exists...
-
-::get current version if app already exists, skip if its the most recent version
-support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
-
-support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-
-support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -rep _\x22__ -write -yes
-
-set /p currentcode= <temp\currentcode.txt
-del /f /q temp\currentcode.txt
-
-
-echo.
-echo Current version is %currentcode%
-echo.
-echo Checking for updates...
-echo.
-
-:doesntexist
-start %ModMiimin%/wait support\wget --no-check-certificate %updateurl%
-
-if not exist %updatedlname% goto:missing
-move /y %updatedlname% code.bat>nul
-
-if /i "%path1%" EQU "apps\postloader\" goto:postloaderfilter
-if /i "%path1%" EQU "apps\WiiFlow\" goto:WiiFlowfilter
-if /i "%name%" EQU "WiiXplorer (Most Recent Release)" goto:WiiXplorerfilter
-
-support\sfk filter -quiet code.bat -+"feature" -!"deprec" -rep _".dol&amp;*"__ -write -yes
-support\sfk filter -quiet code.bat -rep _%code2%*__ -rep _"*files/R"_"set newcode="_ -write -yes
-support\sfk filter -quiet code.bat -ls+"set newcode" -write -yes
-support\sfk filter -quiet code.bat -unique -write -yes
-
-call code.bat
-del code.bat>nul
-goto:skippostloaderfilter
-
-
-:WiiXplorerfilter
-support\sfk filter -quiet code.bat -rep _%code2%*__ -rep _"*files/R"_"set newcode="_ -write -yes
-support\sfk filter -quiet code.bat -ls+"set newcode" -rep _"set newcode="__ -write -yes
-support\sfk filter -quiet code.bat -unique -write -yes
-set /p newcode= <code.bat
-del /f /q code.bat
-goto:skippostloaderfilter
-
-
-:WiiFlowfilter
-support\sfk filter -quiet code.bat ++"zip" ++"WiiFlow" -!cert -rep _.zip*__ -write -yes
-support\sfk filter -spat -quiet code.bat ++"WiiFlow\x2520v" -rep _*v__ -write -yes
-set /p newcode= <code.bat
-del /f /q code.bat
-goto:skippostloaderfilter
-
-
-:postloaderfilter
-support\sfk filter -quiet code.bat -+"feature" -!"deprec" -!"dol" -rep _"*postloader.googlecode.com/files/postloader."_"set newcode="_ -rep _".zip*"__ -write -yes
-support\sfk filter -spat -quiet code.bat -ls+"set newcode" -rep _*\x3d__ -write -yes
-support\sfk filter -quiet code.bat -unique -write -yes
-set /p newcode= <code.bat
-del /f /q code.bat
-:skippostloaderfilter
-
-
-
-if /i "%newcode:~0,1%" EQU "0" (set newcodeNoZeros=%newcode:~1%) else (set newcodeNoZeros=%newcode%)
-
-
-if not exist "%DRIVE%\%path1%\meta.xml" goto:doesntalreadyexist
-
-if %currentcode% GEQ %newcodeNoZeros% goto:noupdate
-echo Updating from %currentcode% to %newcodeNoZeros%
-goto:update
-
-:noupdate
-support\sfk echo -spat \x20 [Green] Your current version of %currentcode% is up to date, skipping download
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %currentcode%">>temp\ModMii_Log.bat
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:next
-
-:doesntalreadyexist
-
-::Download most recent version
-Echo.
-Echo Downloading most recent version: %newcodeNoZeros%
-
-:update
-echo.
-
-
-start %ModMiimin%/wait support\wget --no-check-certificate "%code1%%newcode%%code2%"
-
-if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
-
-
-if /i "%path1%" NEQ "apps\WiiFLow\" goto:miniskip
-if not exist "WiiFlow v%newcode%%code2%" goto:miniskip
-support\7za X -aoa "WiiFlow v%newcode%%code2%" -o"%Drive%" -r
-del "WiiFlow v%newcode%%code2%">nul
-goto:skip
-:miniskip
-
-
-if /i "%path1%" NEQ "apps\postloader\" goto:miniskip
-if not exist "postloader.%newcode%%code2%" goto:miniskip
-support\7za X -aoa "postloader.%newcode%%code2%" -o"%Drive%" -r -x!*.txt
-del "postloader.%newcode%%code2%">nul
-goto:skip
-:miniskip
-
-::----move file to new location!----
-set wadname="%wadname1%%newcode%%wadname2%"
-move /y %wadname% "%DRIVE%\%path1%\boot.dol">nul
-
-
-::----not needed (yet), only applies when downloading zips, not dols---
-::set wadname="%zip1%%newcode%%zip2%"
-::support\7za x -aoa %wadname% -o"%Drive%"
-::del %wadname%
-
-
-::geticon if doesn't exist
-if not exist "%DRIVE%\%path1%\icon.png" start %ModMiimin%/wait support\wget --no-check-certificate %iconurl%
-if exist "icon.png" move /Y "icon.png" "%DRIVE%\%path1%\icon.png">nul
-if exist "logo*" move /Y "logo*" "%DRIVE%\%path1%\icon.png">nul
-
-::meta
-start %ModMiimin%/wait support\wget --no-check-certificate %metaurl%
-if not exist meta.xml goto:skip
-move /Y meta.xml "%DRIVE%\%path1%\meta.xml">nul
-
-::adjust meta.xml and create "%DRIVE%\config\WiiXplorer" folder if downloading WiiXplorer
-::correct possibly incorrect meta.xml
-
-if /i "%name%" NEQ "WiiXplorer (Most Recent Release)" goto:skip
-if not exist "%DRIVE%\config\WiiXplorer" mkdir "%DRIVE%\config\WiiXplorer"
-
-support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ >temp\currentcode.txt
-support\sfk filter -quiet temp\currentcode.txt -!"<" -!">" -write -yes
-support\sfk filter -spat -quiet temp\currentcode.txt -rep _*"=\x22"__ -rep _"\x22>"*__ -write -yes
-set /p wrongcode= <temp\currentcode.txt
-del /f /q temp\currentcode.txt
-if /i %wrongcode% GTR %newcodeNoZeros% support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -rep _%wrongcode%_%newcodeNoZeros%_ -write -yes
-
-:skip
-
-
-::----simple version check after downloading----
-if exist "%DRIVE%\%path1%\meta.xml" goto:checkexisting
-
-:missing
-if /i "%attempt%" EQU "1" goto:missingretry
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-goto:MetaChecker
-::goto:NEXT
-
-:missingretry
-echo.
-support\sfk echo [Yellow] The file is missing, retrying download.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:checkexisting
-::get current version from meta.xml
-support\sfk filter -quiet "%DRIVE%\%path1%\meta.xml" -+"version" >temp\currentcode.txt
-
-support\sfk filter -quiet temp\currentcode.txt -+"version" -!"app version" -!"xml version" -rep _"*<version>rev"__ -rep _"*<version>R"__ -rep _"</version*"__ -write -yes
-
-support\sfk filter -spat -quiet temp\currentcode.txt -!"\x3f" -rep _*"=\x22"__ -rep _"\x22>"*__ -rep _*"\x3e"__ -rep _\x22__ -write -yes
-
-set /p currentcode= <temp\currentcode.txt
-del /f /q temp\currentcode.txt
-
-
-if %currentcode% EQU %newcodeNoZeros% goto:pass
-
-:fail
-if /i "%attempt%" NEQ "1" goto:multiplefail
-echo.
-support\sfk echo [Yellow] This file already exists but it failed to update properly.
-support\sfk echo [Yellow] Retrying to download the most recent release of the file.
-echo.
-SET /a retry=%retry%+1
-SET /a attempt=%attempt%+1
-goto:DOWNLOADSTART2
-
-:multiplefail
-echo.
-support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
-echo.
-set multiplefail=Y
-goto:MetaChecker
-::goto:NEXT
-
-:pass
-echo.
-support\sfk echo [Green]Download Successful
-echo.
-if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Found Version %currentcode%">>temp\ModMii_Log.bat
-goto:NEXT
-
-
 ::--------------------------------------Cheat Codes: txtcodes from geckocodes.org------------------------------
 :CHEATS
 
@@ -20971,11 +20117,11 @@ goto:skipnormalextraction
 :skipPLC
 
 
-if /i "%name%" NEQ "%CurrentDMLRev%" goto:skipdios
-if not exist "temp\DML" mkdir "temp\DML"
+if /i "%name%" NEQ "DML" goto:skipdios
+::if not exist "temp\DML" mkdir "temp\DML"
 if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
-if exist "temp\%wadname%" move /y "temp\%wadname%" "temp\DML\%wadname%" >nul
-copy /y "temp\DML\%wadname%" "%Drive%\WAD\%wadname%" >nul
+::if exist "temp\%wadname%" move /y "temp\%wadname%" "temp\DML\%wadname%" >nul
+copy /y "temp\%wadname%" "%Drive%\WAD\%wadname%" >nul
 goto:simpleDMLcheck
 :skipdios
 
@@ -21087,6 +20233,53 @@ goto:skipnormalextraction
 :notWiiGSC
 
 
+
+if /i "%path1%" NEQ "apps\usbloader_cfg\" goto:skipusbloadercfg
+
+::rename existing usb-loader folder if applicable
+set COUNT9=0
+:renameusbloader
+if not exist "%Drive%\usb-loader" goto:extractusbloader
+SET /a COUNT9=%COUNT9%+1
+if exist "%Drive%\usb-loader%COUNT9%" goto:renameusbloader
+move "%Drive%\usb-loader" "%Drive%\usb-loader%COUNT9%">nul
+
+:extractusbloader
+support\7za x -aoa temp\%wadname% -o"%Drive%"
+
+::------extra for USB-Loader Setup Guide-------
+if /i "%FORMAT%" EQU "NONE" goto:skip
+::FAT or NTFS partition will only be valid if the \wbfs folder exists
+if not exist "%Drive%\wbfs" mkdir "%Drive%\wbfs"
+if not exist "%DRIVE%"\usb-loader\music mkdir "%DRIVE%"\usb-loader\music
+
+echo Save music Here>"%DRIVE%\usb-loader\music\Save MP3s Here To Play at USB-Loader Menu"
+if /i "%USBCONFIG%" EQU "USB" echo music = usb:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
+if /i "%USBCONFIG%" NEQ "USB" echo music = sd:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
+
+echo unlock_password = AAAA>>"%DRIVE%\usb-loader\config.txt"
+echo disable_remove = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
+echo disable_format = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
+echo admin_unlock = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
+
+support\sfk filter -write -yes "%DRIVE%\usb-loader\config.txt" -rep _BLAHBLAH_1_> nul
+
+:skip
+
+if /i "%USBCONFIG%" NEQ "USB" goto:skip
+echo covers_path = usb:/usb-loader/covers>>"%DRIVE%\usb-loader\config.txt"
+echo covers_path_2d = usb:/usb-loader/covers/2d>>"%DRIVE%\usb-loader\config.txt"
+echo covers_path_3d = usb:/usb-loader/covers/3d>>"%DRIVE%\usb-loader\config.txt"
+echo covers_path_disc = usb:/usb-loader/covers/disc>>"%DRIVE%\usb-loader\config.txt"
+echo covers_path_full = usb:/usb-loader/covers/full>>"%DRIVE%\usb-loader\config.txt"
+
+if /i "%FORMAT%" EQU "2" support\sfk filter -write -yes "%DRIVE%\usb-loader\config.txt" -rep _usb:_ntfs:_> nul
+:skip
+
+
+goto:skipnormalextraction
+:skipusbloadercfg
+
 if /i "%wadname%" EQU "twilight_hack_v0.1_beta1.zip" support\7za X -aoa temp\%wadname% -o"%Drive%" private -r
 if /i "%wadname%" EQU "twilight_hack_v0.1_beta1.zip" goto:skipnormalextraction
 if /i "%path1%" EQU "apps\homebrew_browser\" support\7za X -aoa temp\%wadname% -o"%Drive%"\apps homebrew_browser -r
@@ -21097,17 +20290,16 @@ if /i "%wadname%" EQU "YU-GI-OWNED-ALL.zip" goto:skipnormalextraction
 
 
 if /i "%path1%" EQU "apps\DOP-Mii\" support\7za e -aoa temp\%wadname% -o"%Drive%"/%path1% -x!*.cfg
-if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%DOP-Mii" -r >nul
-if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%DOP-Mii v13" -r >nul
-if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%config" -r >nul
-if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%apps" -r >nul
+if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%DOP-Mii"
+if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%DOP-Mii v13"
+if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%config"
+if /i "%path1%" EQU "apps\DOP-Mii\" rd /s /q "%Drive%\%path1%apps"
 if /i "%path1%" EQU "apps\DOP-Mii\" mkdir "%DRIVE%\config"
 if /i "%path1%" EQU "apps\DOP-Mii\" move /y "%Drive%\%path1%\DOP-Mii.cfg" "%Drive%\config\DOP-Mii.cfg" >nul
 if /i "%path1%" EQU "apps\DOP-Mii\" goto:skipnormalextraction
 
 support\7za x -aoa temp\%wadname% -o"%Drive%" -x!README
 :skipnormalextraction
-
 goto:URLverifyretry
 ::DONE (will retry if necessary)
 
@@ -21843,15 +21035,10 @@ rename "%DRIVE%"\bootmii bootmii_SDBooter%countbootmii% >nul
 :skip
 
 
-
 ::delete sneek files from USB (interfere's with nswitch)
 if exist "%DRIVEU%"\SNEEK\kernel.bin del "%DRIVEU%"\SNEEK\kernel.bin>nul
 if exist "%DRIVEU%"\SNEEK\di.bin del "%DRIVEU%"\SNEEK\di.bin>nul
 if exist "%DRIVEU%"\SNEEK\font.bin del "%DRIVEU%"\SNEEK\font.bin>nul
-
-
-
-
 
 
 if /i "%neek2o%" EQU "on" goto:neek2obuild
@@ -21882,8 +21069,6 @@ if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
 if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
-
-
 
 
 
@@ -21920,7 +21105,7 @@ if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
 mkdir temp\%wadname:~0,-4%
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sneek.googlecode.com/files/%wadname%
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://iweb.dl.sourceforge.net/project/sneek-modmii/%wadname%
 
 if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
 
@@ -22024,7 +21209,7 @@ echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://iweb.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -22602,7 +21787,7 @@ if /i "%SNKcBC%" EQU "NMM" echo NMM (No More Memory-Cards) Installed >>"%nandpat
 :noNMM
 
 if /i "%BCtype%" EQU "DML" goto:noDML
-if /i "%SNKcBC%" EQU "DML" echo %CurrentDMLRev%.WAD (install to real NAND) >>"%nandpath%\nandinfo.txt"
+if /i "%SNKcBC%" EQU "DML" echo DML WAD (install to real NAND) >>"%nandpath%\nandinfo.txt"
 :noDML
 
 
@@ -22835,7 +22020,7 @@ echo          but it will be much quicker the second time around.
 echo.
 
 if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
-echo        * Install the %CurrentDMLRev%.WAD using MMM to your
+echo        * Install the DML WAD using MMM to your
 echo          REAL NAND in order for your Emulated NAND to use DML. DML currently
 echo          requires SNEEK+DI r157 or higher and neek2o has yet to support DML.
 echo.
@@ -25191,12 +24376,14 @@ set md5=719a2a338121a17bedd3984faa8bd722
 set path1=apps\IOS236-v5-Mod\
 goto:downloadstart
 
+
 :sysCheck
+set category=fullextract
 set name=sysCheck v2.1.0.b19
 set code1=URL
-set code2=http://syscheck.googlecode.com/files/syscheckb19.zip
+set code2=http://s5.filetrip.net/p/5365/275808-syscheckb19.zip
 set version=*
-set dlname=syscheckb19.zip
+set dlname=275808-syscheckb19.zip
 set wadname=syscheckb19.zip
 set filename=boot.dol
 set md5=3b53fe8fa9e036b0885a5d1aec153d1a
@@ -25315,9 +24502,9 @@ goto:downloadstart
 set name=Dop-Mii v13
 set category=fullextract
 set code1=URL
-set code2="http://dop-mii.googlecode.com/files/DOP-Mii v13.zip"
+set code2="http://s2.filetrip.net/p/5365/275810-DOP-Mii_v13.zip"
 set version=*
-set dlname="DOP-Mii v13.zip"
+set dlname="275810-DOP-Mii_v13.zip"
 set wadname=DOP-Mii_v13.zip
 set filename=boot.dol
 set md5=7cbd40d4987d17d85d4184bafc886c1c
@@ -25354,9 +24541,9 @@ goto:downloadstart
 set name=MyMenuifyMod
 ::set category=fullextract
 set code1=URL
-set code2=http://mymenuifymod.googlecode.com/files/MyMenuifyModv1.5.zip
+set code2=http://s2.filetrip.net/p/5365/275812-MyMenuifyModv1.5.zip
 set version=*
-set dlname=MyMenuifyModv1.5.zip
+set dlname=275812-MyMenuifyModv1.5.zip
 set wadname=MyMenuifyModv1.5.zip
 set filename=boot.dol
 set md5=8d232e7ecd5ede5966c2abc3649fd108
@@ -25392,9 +24579,9 @@ goto:downloadstart
 :yawm
 set name=Yet Another Wad Manager Mod
 set code1=URL
-set code2="http://yawmm.googlecode.com/files/YAWMM.zip"
+set code2="http://s2.filetrip.net/p/5365/275814-YAWMM.zip"
 set version=*
-set dlname="YAWMM.zip"
+set dlname="275814-YAWMM.zip"
 set wadname=YAWMM.zip
 set filename=boot.dol
 set md5=e475232c74f630aae3444e67e17d5f27
@@ -25402,43 +24589,30 @@ set path1=apps\yawmm\
 goto:downloadstart
 
 :usbfolder
-set name=Configurable USB-Loader (Most recent Full 249 version)
-set wadname=Configurable USB-Loader (Most recent Full 249 version)
-set category=cfg
+set name=Configurable USB-Loader Mod
+set category=fullextract
+set code1=URL
+set code2="expresstek.org/xflak/files/Cfg_USB_Loader_70_Mod_r65.zip"
+set version=*
+set dlname=Cfg_USB_Loader_70_Mod_r65.zip
+set wadname=Cfg_USB_Loader_70_Mod_r65.zip
+set filename=boot.dol
+set md5=d1a39c8bebbc074590e1b6aa4493ca25
 set path1=apps\usbloader_cfg\
-goto:downloadstart
-
-:cfg249
-set name=Configurable USB Loader (Most recent 249 version)
-set category=cfg
-set path1=apps\usbloader_cfg\
-goto:downloadstart
-
-:cfg222
-set name=Configurable USB Loader (Most recent 222 version)
-set category=cfg
-set path1=apps\usbloader_cfg\
-goto:downloadstart
-
-:cfgr
-set name=Configurator for Configurable USB Loader (Most recent version)
-set category=cfgr
-set path1=usb-loader\
 goto:downloadstart
 
 
 :FLOW
-set name=WiiFlow (Most Recent Release)
-set category=GOOGLEUPDATE
+set name=WiiFlow
+set category=fullextract
+set code1=URL
+set code2="expresstek.org/xflak/files/WiiFlow_v4.2.1.zip"
+set version=*
+set dlname=WiiFlow_v4.2.1.zip
+set wadname=WiiFlow_v4.2.1.zip
+set filename=boot.dol
+set md5=06c2c97254dc7adb0547530fc400826f
 set path1=apps\WiiFlow\
-set updateurl="http://code.google.com/p/wiiflow/downloads/list?can=2&q=&sort=-releasedate&colspec=Filename%20Summary%20Uploaded%20ReleaseDate%20Size%20DownloadCount"
-set updatedlname="list@can=2&q=&sort=-releasedate&colspec=Filename0Summary0Uploaded0ReleaseDate0Size0DownloadCount"
-set code1=http://wiiflow.googlecode.com/files/WiiFlow v
-set code2=.zip
-set iconurl=
-set metaurl=
-set wadname1=r
-set wadname2=.dol
 goto:downloadstart
 
 
@@ -25531,7 +24705,7 @@ goto:downloadstart
 :PLC
 set name=Post Loader Forwarder Channel
 set code1=ZIP
-set code2="http://postloader.googlecode.com/files/plforwarder.4.wad"
+set code2="expresstek.org/xflak/files/plforwarder.4.wad"
 set version=*
 set dlname="plforwarder.4.wad"
 set wadname=plforwarder.4.wad
@@ -25561,9 +24735,9 @@ goto:downloadstart
 set name=ShowMiiWads
 set category=fullextract
 set code1=URL
-set code2="http://showmiiwads.googlecode.com/files/ShowMiiWads 1.4.rar"
+set code2="http://s2.filetrip.net/p/5365/275816-ShowMiiWads 1.4.rar"
 set version=*
-set dlname="ShowMiiWads 1.4.rar"
+set dlname="275816-ShowMiiWads 1.4.rar"
 set wadname=ShowMiiWads 1.4.rar
 set filename=ShowMiiWads.exe
 set md5=58277ad0974e59493bb3e9f8a8aca82b
@@ -25574,9 +24748,9 @@ goto:downloadstart
 set name=Customize Mii
 set category=fullextract
 set code1=URL
-set code2="http://customizemii.googlecode.com/files/CustomizeMii 3.11.rar"
+set code2="http://filetrip.net/f/22023-CustomizeMii 3.11.rar"
 set version=*
-set dlname="CustomizeMii 3.11.rar"
+set dlname="22023-CustomizeMii 3.11.rar"
 set wadname=CustomizeMii 3.11.rar
 set filename=CustomizeMii.exe
 set md5=e35d75c3ad0a058149bdf45155595cfc
@@ -25596,97 +24770,129 @@ set md5=3779833ec3279dff3d415c7bd6e56fec
 set path1=WiiGSC\
 goto:downloadstart
 
-::TANTRIC APPS!!!!
+
+:dopmii
+set name=Dop-Mii v13
+set category=fullextract
+set code1=URL
+set code2="http://s2.filetrip.net/p/5365/275810-DOP-Mii_v13.zip"
+set version=*
+set dlname="275810-DOP-Mii_v13.zip"
+set wadname=DOP-Mii_v13.zip
+set filename=boot.dol
+set md5=7cbd40d4987d17d85d4184bafc886c1c
+set path1=apps\DOP-Mii\
+goto:downloadstart
+
+
 
 :WIIMC
-set name=WiiMC - Media Player (Most Recent Release)
-set category=TANTRIC
+set name=WiiMC - Media Player
+set category=fullextract
+set code1=URL
+set code2="http://s2.filetrip.net/p/5365/275818-WiiMC.1.3.4.New.Install.zip"
+set version=*
+set dlname="275818-WiiMC.1.3.4.New.Install.zip"
+set wadname=WiiMC.1.3.4.New.Install.zip
+set filename=boot.dol
+set md5=cc2fc8abed046de33997fdb701db660c
 set path1=apps\WiiMC\
-set updateurl=http://wiimc.googlecode.com/svn/trunk/update.xml
-set code1=http://wiimc.googlecode.com/files/WiiMC 
-set code2= (New Install).zip
-set zip1=WiiMC 
-set zip2= (New Install).zip
-::set version=*
 goto:downloadstart
 
 :fceugx
-set name=FCEUGX - NES Emulator for the Wii (Most Recent Release)
-set category=TANTRIC
+set name=FCEUGX - NES Emulator for the Wii
+set category=fullextract
+set code1=URL
+set code2="http://s4.filetrip.net/p/5365/275819-FCE.Ultra.GX.3.3.4.zip"
+set version=*
+set dlname="275819-FCE.Ultra.GX.3.3.4.zip"
+set wadname=FCE.Ultra.GX.3.3.4.zip
+set filename=boot.dol
+set md5=1a2c54ff5da63e31f60c9bc08a769768
 set path1=apps\fceugx\
-set updateurl=http://fceugc.googlecode.com/svn/trunk/update.xml
-set code1=http://fceugc.googlecode.com/files/FCE Ultra GX 
-set code2=.zip
-set zip1=FCE Ultra GX 
-set zip2=.zip
-::set version=*
 goto:downloadstart
 
+
 :snes9xgx
-set name=SNES9xGX - SNES Emulator for the Wii (Most Recent Release)
-set category=TANTRIC
+set name=SNES9xGX - SNES Emulator for the Wii
+set category=fullextract
+set code1=URL
+set code2="http://s5.filetrip.net/p/5365/275822-Snes9x.GX.4.3.2.zip"
+set version=*
+set dlname="275822-Snes9x.GX.4.3.2.zip"
+set wadname=Snes9x.GX.4.3.2.zip
+set filename=boot.dol
+set md5=8b4cc0958a6c342a18283f3d4a607f8f
 set path1=apps\snes9xgx\
-set updateurl=http://snes9x-gx.googlecode.com/svn/trunk/update.xml
-set code1=http://snes9x-gx.googlecode.com/files/Snes9x GX 
-set code2=.zip
-set zip1=Snes9x GX 
-set zip2=.zip
-::set version=*
 goto:downloadstart
 
 :vbagx
-set name=Visual Boy Advance GX - GB/GBA Emulator for the Wii (Most Recent Release)
-set category=TANTRIC
+set name=Visual Boy Advance GX - GB/GBA Emulator for the Wii
+set category=fullextract
+set code1=URL
+set code2="http://s6.filetrip.net/p/30026/230195-Visual Boy Advance GX 2.2.8.zip"
+set version=*
+set dlname="230195-Visual Boy Advance GX 2.2.8.zip"
+set wadname=VisualBoyAdvanceGX.2.2.8.zip
+set filename=boot.dol
+set md5=001fe833bfd35e23c68ea0a59bd520ec
 set path1=apps\vbagx\
-set updateurl=http://vba-wii.googlecode.com/svn/trunk/update.xml
-set code1=http://vba-wii.googlecode.com/files/Visual Boy Advance GX 
-set code2=.zip
-set zip1=Visual Boy Advance GX 
-set zip2=.zip
-::set version=*
 goto:downloadstart
 
 
 :SGM
-set name=SaveGame Manager GX (Most Recent Release)
-set category=GOOGLEUPDATE
+set name=SaveGame Manager GX
+::set category=fullextract
+set code1=URL
+set code2="expresstek.org/xflak/files/savegame-manager-gx_R127.zip"
+set version=*
+set dlname="savegame-manager-gx_R127.zip"
+set wadname=savegame-manager-gx_R127.zip
+set filename=boot.dol
+set md5=4435b05aa39761a32ac68765ca74304e
 set path1=apps\SaveGameManagerGX\
-set updateurl="http://code.google.com/p/savegame-manager-gx/downloads/list?can=2&q=dol+-forwarder&colspec=Filename+Summary+Uploaded+Size+DownloadCount"
-set updatedlname="list@can=2&q=dol+-forwarder&colspec=Filename+Summary+Uploaded+Size+DownloadCount"
-set code1="http://savegame-manager-gx.googlecode.com/files/R"
-set code2=.dol
-set iconurl="http://code.google.com/p/savegame-manager-gx/logo?cct=1311098207"
-set metaurl="http://savegame-manager-gx.googlecode.com/svn/trunk/HBC/meta.xml"
-set wadname1=R
-set wadname2=.dol
 goto:downloadstart
+
+
+:WII64
+set name=Wii64 beta1.1 (N64 Emulator)
+set category=fullextract
+set code1=URL
+set code2="expresstek.org/xflak/files/wii64-beta1.1.zip"
+set version=*
+set dlname="wii64-beta1.1.zip"
+set wadname=wii64-beta1.1.zip
+set filename=boot.dol
+set md5=630dbc8b8a5be6527b76d49b65c47f23
+set path1=apps\wii64\
+goto:downloadstart
+
 
 :PL
-set name=Postloader (Most Recent Release)
-set category=GOOGLEUPDATE
+set name=Postloader
+set category=fullextract
+set code1=URL
+set code2="http://postloader.mooo.com/downloads/postloader.4.7.4.zip"
+set version=*
+set dlname="postloader.4.7.4.zip"
+set wadname=postloader.4.7.4.zip
+set filename=boot.dol
+set md5=102acc7db95d127bb93f088d0996fd01
 set path1=apps\postloader\
-set updateurl="http://code.google.com/p/postloader/downloads/list?can=3&q=zip&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-set updatedlname="list@can=3&q=zip&colspec=Filename+Summary+Uploaded+ReleaseDate+Size+DownloadCount"
-set code1="http://postloader.googlecode.com/files/postloader."
-set code2=.zip
-set iconurl=
-set metaurl=
-set wadname1=R
-set wadname2=.dol
 goto:downloadstart
 
+
 :WIIX
-set name=WiiXplorer (Most Recent Release)
-set category=GOOGLEUPDATE
-set path1=apps\WiiExplorer\
-set updateurl="https://code.google.com/p/wiixplorer/downloads/list?can=1&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
-set updatedlname="list?can=1&q=dol&colspec=Filename+Summary+Uploaded+Size+DownloadCount+UploadedBy"
-set code1="http://wiixplorer.googlecode.com/files/R"
-set code2=.dol
-set iconurl="http://wiixplorer.googlecode.com/svn/trunk/HBC/icon.png"
-set metaurl="http://wiixplorer.googlecode.com/svn/trunk/HBC/meta.xml"
-set wadname1=R
-set wadname2=.dol
+set name=WiiXplorer
+::set category=fullextract
+set code1=URL
+set code2="expresstek.org/xflak/files/WiiXplorer_R259.zip"
+set version=*
+set dlname="WiiXplorer_R259.zip"
+set wadname=WiiXplorer_R259.zip
+set filename=boot.dol
+set md5=cf87f97410b15fc107e010e02beb14aa
+set path1=apps\WiiXplorer\
 goto:downloadstart
 
 
@@ -25722,9 +24928,9 @@ goto:downloadstart
 set name=Casper
 set category=fullextract
 set code1=URL
-set code2="http://giantpune.zzl.org/download.php?get=casper_0.3.elf.tar.gz"
+set code2="http://s2.filetrip.net/p/5365/275825-casper_0.3.elf.tar.gz"
 set version=*
-set dlname="download.php@get=casper_0.3.elf.tar.gz"
+set dlname="275825-casper_0.3.elf.tar.gz"
 set wadname=casper_0.3.elf.tar.gz
 set filename=boot.elf
 set md5=3e9d8254c3b197dca97d5ceb8bb5b7db
@@ -25747,15 +24953,15 @@ goto:downloadstart
 
 
 :WIISX
-set name=WiiSX beta2.1 (Playstation 1 Emulator)
+set name=WiiSX Beta 2.1.1 (Playstation 1 Emulator)
 set category=fullextract
 set code1=URL
-set code2="http://pcsxgc.googlecode.com/files/WiiSX-beta2.1.zip"
+set code2="http://filetrip.net/f/32021-WiiSX-beta2.1.1[a].zip"
 set version=*
-set dlname="WiiSX-beta2.1.zip"
-set wadname=WiiSX-beta2.1.zip
+set dlname="32021-WiiSX-beta2.1.1[a].zip"
+set wadname=WiiSX-beta2.1.1[a].zip
 set filename=boot.dol
-set md5=9c245a7bcfd7b2f99ac9f01712736d43
+set md5=b54900bd47ef6855fb3a018af5893b5b
 set path1=apps\wiiSX\
 goto:downloadstart
 
@@ -25869,16 +25075,15 @@ goto:downloadstart
 
 
 :DML
-set name=%CurrentDMLRev%
+set name=DML
 set code1=ZIP
-set code2="http://diosmioslite.googlecode.com/files/diosmioslitesv%CurrentDMLRev%.wad"
+set code2="http://iweb.dl.sourceforge.net/project/diosmioslite/diosmioslitesv1.3.wad"
 set version=*
-::set dlname="diosmioslitesv%CurrentDMLRev%.wad"
-::set wadname=diosmioslitesv%CurrentDMLRev%.wad
-::set filename=diosmioslitesv%CurrentDMLRev%.wad
-set dlname="%CurrentDMLRev%.wad"
-set wadname=%CurrentDMLRev%.wad
-set filename=%CurrentDMLRev%.wad
+set dlname="diosmioslitesv1.3.wad"
+set wadname=diosmioslitesv1.3.wad
+set filename=diosmioslitesv1.3.wad
+set md5=f3d314648cbf453dfc2c895c7cd311dc
+set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
 goto:downloadstart

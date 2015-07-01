@@ -1,6 +1,6 @@
 <!-------------------------Installing WADs section below--------------------------->
 <font size="5"><li>Install WADs</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/_OUlkjGzqE4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://nusad.googlecode.com/files/WADs.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/_OUlkjGzqE4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://iweb.dl.sourceforge.net/project/nusad2/WADs.gif" border="0"/></a><br>
 Load Multi-Mod Manager (MMM) via the HomeBrew Channel.<br>
 If IOS236 is not already loaded, select "Load another IOS", then select IOS236<br>
 
