@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.3
+set currentversion=6.3.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
