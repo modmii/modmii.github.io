@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.6
+set currentversion=6.3.8
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -17214,10 +17214,13 @@ set attempt=1
 ::change drive to usb if applicable
 set DRIVE=%REALDRIVE%
 if /i "%USBCONFIG%" NEQ "USB" goto:skipchange
-
+if /i "%FORMAT%" EQU "2" goto:skipchange
+if /i "%FORMAT%" EQU "4" goto:skipchange
+if /i "%FORMAT%" EQU "5" goto:skipchange
 if /i "%WADNAME%" EQU "WiiBackupManager.zip" set DRIVE=%DRIVEU%
-if /i "%WADNAME%" EQU "Configurable USB-Loader (Most recent Full 249 version)" set DRIVE=%DRIVEU%
+if /i "%PATH1%" EQU "apps\usbloader_cfg\" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\WiiFlow\" set DRIVE=%DRIVEU%
+if /i "%PATH1%" EQU "FAT32_GUI_Formatter\" set DRIVE=%DRIVEU%
 
 :skipchange
 
@@ -17247,8 +17250,6 @@ start support\wizapp PB UPDATE %percent%
 
 
 ::---------Exceptions----------------
-if /i "%category%" EQU "cfgr" goto:CFGRDOWNLOADER
-if /i "%category%" EQU "TANTRIC" goto:TANTRIC
 if /i "%category%" EQU "CHEATS" goto:CHEATS
 if /i "%category%" EQU "ManualUpdate" goto:MANUALUPDATE
 if /i "%category%" EQU "fullextract" goto:fullextract
@@ -17257,7 +17258,6 @@ if /i "%basewad%" NEQ "none" goto:CIOSMAKER
 if /i "%name%" EQU "Hackmii Installer" goto:wget
 if /i "%category%" EQU "userdefined" goto:CustomDL
 if /i "%category%" EQU "FORWARDER" goto:FORWARDER
-
 
 
 if /i "%code1%" EQU "SNEEKAPP" goto:DownloadApp
@@ -21105,7 +21105,7 @@ if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
 mkdir temp\%wadname:~0,-4%
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://iweb.dl.sourceforge.net/project/sneek-modmii/%wadname%
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://ufpr.dl.sourceforge.net/project/sneek-modmii/%wadname%
 
 if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
 
@@ -21209,7 +21209,7 @@ echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://iweb.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -22338,7 +22338,12 @@ set REALDRIVE=%DRIVE%
 
 if /i "%MENU1%" EQU "W" goto:guide
 if /i "%MENU1%" EQU "H" goto:guide
-if /i "%MENU1%" EQU "U" goto:guide
+
+if /i "%MENU1%" NEQ "U" goto:miniskip
+if /i "%USBCONFIG%" EQU "USB" set DRIVE=%DRIVEU%
+goto:guide
+:miniskip
+
 if /i "%MENU1%" EQU "SU" goto:guide
 if /i "%MENU1%" EQU "RC" goto:guide
 
@@ -25077,7 +25082,7 @@ goto:downloadstart
 :DML
 set name=DML
 set code1=ZIP
-set code2="http://iweb.dl.sourceforge.net/project/diosmioslite/diosmioslitesv1.3.wad"
+set code2="http://ufpr.dl.sourceforge.net/project/diosmioslite/diosmioslitesv1.3.wad"
 set version=*
 set dlname="diosmioslitesv1.3.wad"
 set wadname=diosmioslitesv1.3.wad
