@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.8
+set currentversion=6.3.9
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -20473,6 +20473,7 @@ goto:NEXT
 
 ::---------------HackMii Installer support\wget --no-check-certificate Download CODE-----------------------
 :wget
+
 ::----if exist and fails md5 check, delete and redownload----
 if not exist "%Drive%"\apps\HackMii_Installer\boot.elf goto:nocheckexisting
 set md5check=
@@ -20501,11 +20502,11 @@ if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.ba
 goto:alreadyhavehackmii
 :nocheckexisting
 
+if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%
 
 
-if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%*
-
-if not exist temp\%wadname% move /y get.*.* temp\%wadname%>nul
+if not exist temp\%wadname% move /y "get.php@file=%wadname%*" temp\%wadname%>nul
+if exist get.* del /f /q get.*
 if not exist "%Drive%"\apps\HackMii_Installer mkdir "%Drive%"\apps\HackMii_Installer
 support\7za e -aoa temp\%wadname% -o"%Drive%"\apps\HackMii_Installer *.%version% *.txt -r
 support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
@@ -24362,8 +24363,8 @@ set code1=URL
 ::set code2="http://bootmii.org/download/"
 set code2="http://bootmii.org/download/"
 set version=elf
-::set dlname=
 set wadname=hackmii_installer_v1.2.zip
+::set dlname=
 set filename=boot.elf
 set path1=
 set md5=729eebb48f6b562b94a47a3eb0543bf4
