@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.3.9
+set currentversion=6.4.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -360,7 +360,7 @@ if /i "%waoutnum%" EQU "7" (set Menu1=O) & (set wabmp=support\bmp\OPTIONS.bmp) &
 if /i "%waoutnum%" EQU "8" (start http://modmii.comuf.com/credits.html) & (goto:MENU)
 
 
-if /i "%waoutnum%" EQU "9" (start ModMii.exe) & (exit)
+if /i "%waoutnum%" EQU "9" (set SkinMode=) & (start ModMii.exe) & (exit)
 
 
 ::...................................PICK Download Queue...............................

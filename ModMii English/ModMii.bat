@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.3.9
+set currentversion=6.4.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -351,7 +351,7 @@ echo.
 echo Press Any Key to Close the Help Menu...
 pause>nul
 exit
-
+`
 :cmdlineHMhelp
 title ModMii HackMii Solutions Command Line Help
 
@@ -1735,14 +1735,15 @@ set /p CurrentRev= <temp\cmdinput2.txt
 set /p removeme= <temp\cmdinput2.txt
 support\sfk -spat filter temp\cmdinput.txt -rep _" Rev:%removeme%"__ -write -yes>nul
 
-if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
-if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+if /i "%neek2o%" EQU "ON" (set googlecode=neek2o) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neekname=neek)
 
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
-if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+start /min /wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+
+if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
 move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
@@ -1854,16 +1855,16 @@ set /p CurrentRev= <temp\cmdinput2.txt
 set /p removeme= <temp\cmdinput2.txt
 support\sfk -spat filter temp\cmdinput.txt -rep _" Rev:%removeme%"__ -write -yes>nul
 
-if /i "%neek2o%" EQU "ON" (set googlecode=custom-di) & (set neekname=neek2o)
-if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler) & (set neekname=neek)
+if /i "%neek2o%" EQU "ON" (set googlecode=neek2o) & (set neekname=neek2o)
+if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neekname=neek)
 
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" EQU "Y" goto:noRevcmd
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget --no-check-certificate -t 3 "http://%googlecode%.googlecode.com/files/%neekname%-rev%CurrentRev%.zip"
-if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: http://code.google.com/p/%googlecode%/downloads/list) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
+start /min /wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, try again...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
 move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
@@ -6575,7 +6576,6 @@ if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neeknam
 if /i "%SkinMode%" EQU "Y" goto:quickskip2
 
 echo Checking which %neekname% versions are hosted online...
-
 
 ::get all list
 start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
@@ -18770,7 +18770,7 @@ echo.
 goto:download_mym2
 :nocheckexisting
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/%mym0%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "expresstek.org/xflak/files/%mym0%"
 if exist "%mym0%" move /Y "%mym0%" temp>nul
 
 
@@ -18887,7 +18887,7 @@ goto:build_csm
 :nocheckexisting
 
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/%ThemeMiiZip%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "expresstek.org/xflak/files/%ThemeMiiZip%"
 
 if exist %ThemeMiiZip% support\7za e -aoa %ThemeMiiZip% -otemp *.* -r
 if exist %ThemeMiiZip% del %ThemeMiiZip%>nul
@@ -21182,8 +21182,8 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 60
 if /i "%SNKFONT%" EQU "B" echo Downloading Black font.bin (this can be changed to White in Options)
 if /i "%SNKFONT%" EQU "W" echo Downloading White font.bin (this can be changed to Black in Options)
 
-if /i "%SNKFONT%" EQU "B" set fonturl=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/fontb.bin
-if /i "%SNKFONT%" EQU "W" set fonturl=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/fontw.bin
+if /i "%SNKFONT%" EQU "B" set fonturl=expresstek.org/xflak/files/fontb.bin
+if /i "%SNKFONT%" EQU "W" set fonturl=expresstek.org/xflak/files/fontw.bin
 
 if not exist temp\font%SNKFONT%.bin start %ModMiimin%/wait support\wget --no-check-certificate -t 3 %fonturl%
 
@@ -21713,7 +21713,8 @@ if /i "%SNKPRI%" NEQ "Y" goto:skipSNKpri
 echo.
 echo Downloading Priiloader v0.7 (mod for neek2o)
 echo.
-if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://custom-di.googlecode.com/files/priiloader.app
+if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://ufpr.dl.sourceforge.net/project/neek2o/priiloader.app
+
 if exist priiloader.app move /Y priiloader.app temp\Priiloader-v0.7neek.app>nul
 
 
@@ -24335,7 +24336,7 @@ goto:downloadstart
 :mmm
 set name=Multi-Mod Manager (MMM) v13.4
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/Multi-Mod-Manager_v13.4.zip"
+set code2="expresstek.org/xflak/files/Multi-Mod-Manager_v13.4.zip"
 set version=*
 set dlname="Multi-Mod-Manager_v13.4.zip"
 set wadname=Multi-Mod-Manager_v13.4.zip
@@ -24347,7 +24348,7 @@ goto:downloadstart
 :WiiMod
 set name=WiiMod
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/wiimod_v3_2.zip"
+set code2="expresstek.org/xflak/files/wiimod_v3_2.zip"
 set version=*
 set dlname="wiimod_v3_2.zip"
 set wadname=wiimod_v3_2.zip
@@ -24373,7 +24374,7 @@ goto:downloadstart
 :IOS236Installer
 set name=IOS236 Installer v5 Mod
 set code1=URL
-set code2=https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/ios236_v5_mod.zip
+set code2=expresstek.org/xflak/files/ios236_v5_mod.zip
 set version=*
 set dlname=ios236_v5_mod.zip
 set wadname=ios236_v5_mod.zip
@@ -24467,7 +24468,7 @@ goto:downloadstart
 set category=fullextract
 set name=Eri HaKawai (USA, PAL and JAP)
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/EriHaKawai-USA+PAL+JAP.zip"
+set code2="expresstek.org/xflak/files/EriHaKawai-USA+PAL+JAP.zip"
 set version=*
 set dlname="EriHaKawai-USA+PAL+JAP.zip"
 set wadname=EriHaKawai-USA+PAL+JAP.zip
@@ -24480,7 +24481,7 @@ goto:downloadstart
 set category=fullextract
 set name=YU-GI-OWNED (USA, PAL and JAP)
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/yu-gi-vah-ALL.zip"
+set code2="expresstek.org/xflak/files/yu-gi-vah-ALL.zip"
 set version=*
 set dlname="yu-gi-vah-ALL.zip"
 set wadname=yu-gi-vah-ALL.zip
@@ -24495,7 +24496,7 @@ goto:downloadstart
 set name=Smash Stack (USA, PAL, JAP and KOR)
 set category=fullextract
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/Smashstack_AllRegions.zip"
+set code2="expresstek.org/xflak/files/Smashstack_AllRegions.zip"
 set version=*
 set dlname="Smashstack_AllRegions.zip"
 set wadname=Smashstack_AllRegions.zip
@@ -24521,7 +24522,7 @@ goto:downloadstart
 set name=Locked Apps Folder for HBC (PASS=UDLRAB)
 set category=fullextract
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/LockedApps-Categorii.zip"
+set code2="expresstek.org/xflak/files/LockedApps-Categorii.zip"
 set version=*
 set dlname=LockedApps-Categorii.zip
 set wadname=LockedApps-Categorii.zip
@@ -24645,7 +24646,7 @@ goto:downloadstart
 :USBX
 set name=USB-Loader Forwarder Channel v12
 set code1=ZIP
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
+set code2="expresstek.org/xflak/files/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
 set version=*
 set dlname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
 set wadname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
@@ -24660,7 +24661,7 @@ goto:downloadstart
 :FLOWF
 set name=WiiFlow Forwarder Channel\dol
 set code1=ZIP
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/WiiFlow_Forwarder_wad_dol_v14b.zip"
+set code2="expresstek.org/xflak/files/WiiFlow_Forwarder_wad_dol_v14b.zip"
 set version=*
 set dlname=WiiFlow_Forwarder_wad_dol_v14b.zip
 set wadname=WiiFlow_Forwarder_wad_dol_v14b.zip
@@ -24675,7 +24676,7 @@ goto:downloadstart
 :S2U
 set name=Switch2Uneek
 set code1=ZIP
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/switch2uneek_ModMiiBundle_v12.zip"
+set code2="expresstek.org/xflak/files/switch2uneek_ModMiiBundle_v12.zip"
 set version=*
 set dlname=switch2uneek_ModMiiBundle_v12.zip
 set wadname=switch2uneek_ModMiiBundle_v12.zip
@@ -24696,9 +24697,9 @@ goto:downloadstart
 :nSwitch
 set name=nSwitch
 set code1=ZIP
-set code2="http://custom-di.googlecode.com/files/neek2o NK2O_1 .wad"
+set code2="http://ufpr.dl.sourceforge.net/project/neek2o/neek2o%20NK2O_1.wad"
 set version=*
-set dlname="neek2o NK2O_1 .wad"
+set dlname="neek2o NK2O_1.wad"
 set wadname=neek2o_NK2O_1.wad
 set filename=neek2o_NK2O_1.wad
 set md5=2b68b689d182a6151fb9d9154430889f
@@ -24767,7 +24768,7 @@ goto:downloadstart
 set name=Wii Game Shortcut Creator
 set category=fullextract
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/WiiGSC-Unpacked-1.06b.zip"
+set code2="expresstek.org/xflak/files/WiiGSC-Unpacked-1.06b.zip"
 set version=*
 set dlname=WiiGSC-Unpacked-1.06b.zip
 set wadname=WiiGSC-Unpacked-1.06b.zip
@@ -24906,7 +24907,7 @@ goto:downloadstart
 set name=Homebrew Browser v0.3.9c
 set category=fullextract
 set code1=URL
-set code2="http://www.codemii.com/wiihomebrew/homebrew_browser_v0.3.9c.zip"
+set code2="expresstek.org/xflak/files/homebrew_browser_v0.3.9c.zip"
 set version=*
 set dlname="homebrew_browser_v0.3.9c.zip"
 set wadname=homebrew_browser_v0.3.9c.zip
@@ -24920,7 +24921,7 @@ goto:downloadstart
 set name=Wii64 beta1.1 (N64 Emulator)
 set category=fullextract
 set code1=URL
-set code2="http://mupen64gc.googlecode.com/files/wii64-beta1.1.zip"
+set code2="expresstek.org/xflak/files/wii64-beta1.1.zip"
 set version=*
 set dlname="wii64-beta1.1.zip"
 set wadname=wii64-beta1.1.zip
@@ -24948,7 +24949,7 @@ goto:downloadstart
 set name=Wilbrand
 set category=fullextract
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/Wilbrand.exe"
+set code2="expresstek.org/xflak/files/Wilbrand.exe"
 set version=*
 set dlname="Wilbrand.exe"
 set wadname=Wilbrand.exe
@@ -24975,7 +24976,7 @@ goto:downloadstart
 :Priiloader
 set name=Priiloader v0.7 (236 LULZ Mod)
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/priiloader_MOD_IOS236_r142_LULZ.zip"
+set code2="expresstek.org/xflak/files/priiloader_MOD_IOS236_r142_LULZ.zip"
 set version=*
 set dlname=priiloader_MOD_IOS236_r142_LULZ.zip
 set wadname=priiloader_MOD_IOS236_r142_LULZ.zip
@@ -24988,7 +24989,7 @@ goto:downloadstart
 :PriiHacks
 set name=Priiloader Hacks
 set code1=URL
-set code2="https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/PriiloaderHacks_2.zip"
+set code2="expresstek.org/xflak/files/PriiloaderHacks_2.zip"
 set version=*
 set dlname="PriiloaderHacks_2.zip"
 set wadname=PriiloaderHacks_2.zip
@@ -27807,7 +27808,7 @@ move /y "%Drive%"\%guidename% "%DRIVE%"\%guidename:~0,-5%%COUNT6%.html >nul
 support\sfk echo -spat \x3chtml\x3e >"%Drive%"\%guidename%
 support\sfk echo -spat \x3chead\x3e >>"%Drive%"\%guidename%
 support\sfk echo -spat \x3ctitle\x3e%tabname%\x3c/title\x3e >>"%Drive%"\%guidename%
-support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22https://googledrive.com/host/0BzWzf-jnAnp1YkFURFF0cDdsRUE/ModMii/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22expresstek.org/xflak/files/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cstyle type=\x22text/css\x22\x3e>>"%Drive%"\%guidename%
 support\sfk echo -spat body { font-family: Calibri, Arial, Helvetica, \x22Century Gothic\x22, sans-serif; }>>"%Drive%"\%guidename%
