@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.0
+set currentversion=6.4.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -24697,7 +24697,7 @@ goto:downloadstart
 :nSwitch
 set name=nSwitch
 set code1=ZIP
-set code2="http://ufpr.dl.sourceforge.net/project/neek2o/neek2o%20NK2O_1.wad"
+set code2="http://ufpr.dl.sourceforge.net/project/neek2o/neek2o NK2O_1.wad"
 set version=*
 set dlname="neek2o NK2O_1.wad"
 set wadname=neek2o_NK2O_1.wad
