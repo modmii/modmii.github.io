@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.1
+set currentversion=6.4.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2797,7 +2797,7 @@ echo.
 echo           M = ModMii Skin Mode: use your mouse instead of your keyboard!
 echo.
 echo      *********MORE INFO*********
-support\sfk echo -spat \x20 \x20 [RED] WWW = Open http://modmii.comuf.com to ask questions, provide feedback or vote
+support\sfk echo -spat \x20 \x20 [RED] WWW = Open modmii.000webhostapp.com to ask questions, provide feedback or vote
 echo.
 echo      Use the ModMii Wizard to set-up your SD card with all you need to softmod
 echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
@@ -2831,7 +2831,7 @@ if /i "%MENU1%" EQU "AW" (set MENU1=S) & (set SNEEKSELECT=3) & (set AbstinenceWi
 
 
 
-if /i "%MENU1%" EQU "CR" (start http://modmii.comuf.com/credits.html) & (goto:MENU)
+if /i "%MENU1%" EQU "CR" (start http://modmii.000webhostapp.com/credits.html) & (goto:MENU)
 
 if /i "%MENU1%" EQU "WWW" (start http://89d89449.miniurls.co) & (goto:MENU)
 
@@ -3782,7 +3782,7 @@ if %currentversion% EQU %newversion% (echo                              This ver
 
 
 ::openchangelog
-start http://modmii.comuf.com/changelog.html
+start http://modmii.000webhostapp.com/changelog.html
 
 
 :updateconfirm
@@ -17465,7 +17465,7 @@ goto:NEXT
 
 ::missing Support folder error message and skip
 if not exist Support support\sfk echo -spat [Yellow] Missing "Support" folder - Required to make cIOSs/cMIOSs
-if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Redownload ModMii from tinyurl.com/ModMiiNow
+if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Redownload ModMii from http://modmii.000webhostapp.com
 if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Skipping download
 if not exist Support @ping 127.0.0.1 -n 5 -w 1000> nul
 if not exist Support goto:NEXT
@@ -24299,7 +24299,7 @@ goto:downloadstart
 :BannerBomb1
 set name=Bannerbomb v1 (for 3.0 - 4.1 Wii's)
 set code1=URL
-set code2=http://bannerbomb.qoid.us/aads/aad1f_v108.zip
+set code2="expresstek.org/xflak/files/aad1f_v108.zip"
 set version=bin
 set dlname=aad1f_v108.zip
 set wadname=BB1.zip
@@ -24311,7 +24311,7 @@ goto:downloadstart
 :BannerBomb2
 set name=Bannerbomb v2 (for 4.2 Wii's)
 set code1=URL
-set code2=http://bannerbomb.qoid.us/abds/abd6a_v200.zip
+set code2="expresstek.org/xflak/files/abd6a_v200.zip"
 set version=bin
 set dlname=abd6a_v200.zip
 set wadname=BB2.zip
