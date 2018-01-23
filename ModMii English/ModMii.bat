@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.2
+set currentversion=6.4.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -6584,6 +6584,10 @@ if exist index.html* (move /y index.html* temp\list.txt>nul) else (goto:nowifi)
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
 support\sfk filter -spat "temp\list.txt" ++"/download\x22" ++"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+
+support\sfk filter -spat "temp\list.txt" -!"\x22" -!"n" -write -yes>nul
+
+
 
 :nowifi
 
@@ -17815,7 +17819,7 @@ if exist "temp\%dlname:~0,-4%\FixElf\FixELF.exe" goto:gotit
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -19972,7 +19976,7 @@ if /i "%path1%" NEQ "apps\MyMenuifyMod\" goto:notmym
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -20168,7 +20172,7 @@ if not exist "%DRIVE%"\ShowMiiWads mkdir "%DRIVE%"\ShowMiiWads
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -20201,7 +20205,7 @@ if not exist "%DRIVE%"\CustomizeMii mkdir "%DRIVE%"\CustomizeMii
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 temp\unrar.exe x -y "temp\%wadname%" "%Drive%\CustomizeMii"
@@ -21068,7 +21072,7 @@ if /i "%SSD%" NEQ "on" echo SNEEK and SNEEK+DI SD Access Disabled (can be change
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://files.cybergamer.com.au/richard/FIFA Online 2 Full Client v200/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
