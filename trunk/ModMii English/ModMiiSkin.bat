@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.4.3
+set currentversion=6.4.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
