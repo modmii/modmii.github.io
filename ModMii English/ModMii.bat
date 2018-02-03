@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.3
+set currentversion=6.4.4
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -24883,7 +24883,7 @@ goto:downloadstart
 set name=Postloader
 set category=fullextract
 set code1=URL
-set code2="http://postloader.mooo.com/downloads/postloader.4.7.4.zip"
+set code2="expresstek.org/xflak/files/postloader.4.7.4.zip"
 set version=*
 set dlname="postloader.4.7.4.zip"
 set wadname=postloader.4.7.4.zip
