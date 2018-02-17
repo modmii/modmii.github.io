@@ -11,7 +11,7 @@ set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
-set InstallerVersion=6.3
+set InstallerVersion=6.5
 
 chcp 437>nul
 
@@ -27,6 +27,7 @@ set wainput=
 set waico=icon.ico
 set temp=
 set wabat=wabat.bat
+set wabat2=wabat2.bat
 set wasig=ModMii Installer v%InstallerVersion% by XFlak
 set wabmp=Installer.bmp
 
@@ -121,27 +122,28 @@ call "%wabat%"
 
 if "%waoutnum%"=="" goto:skipcheck
 
-echo %waoutnum% >"%wabat%"
 
-findStr /I /C:"0" "%wabat%" >nul
+echo %waoutnum% >"%wabat2%"
+
+findStr /I /C:"0" "%wabat2%" >nul
 IF not ERRORLEVEL 1 set skinD=Y
 
-findStr /I /C:"1" "%wabat%" >nul
+findStr /I /C:"1" "%wabat2%" >nul
 IF not ERRORLEVEL 1 set skinS=Y
 
-findStr /I /C:"2" "%wabat%" >nul
+findStr /I /C:"2" "%wabat2%" >nul
 IF not ERRORLEVEL 1 set ClassicD=Y
 
-findStr /I /C:"3" "%wabat%" >nul
+findStr /I /C:"3" "%wabat2%" >nul
 IF not ERRORLEVEL 1 set ClassicS=Y
 
-findStr /I /C:"4" "%wabat%" >nul
+findStr /I /C:"4" "%wabat2%" >nul
 IF not ERRORLEVEL 1 set AutoStart=Y
 
 :skipcheck
 
 if exist "%wabat%" del "%wabat%">nul
-
+if exist "%wabat2%" del "%wabat2%">nul
 
 :proceed
 
@@ -183,6 +185,7 @@ start wizapp PB CLOSE
 
 @ping 127.0.0.1 -n 2 -w 1000> nul
 if exist "%wabat%" del "%wabat%">nul
+if exist "%wabat2%" del "%wabat2%">nul
 
 if /i "%AutoStart%" NEQ "Y" EXIT
 
@@ -201,5 +204,6 @@ set watext=~~~~Installation has failed,~~~check your internet connection and fir
 start /w wizapp FINISH TB
 
 if exist "%wabat%" del "%wabat%">nul
+if exist "%wabat2%" del "%wabat2%">nul
 
 EXIT
