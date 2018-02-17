@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.4
+set currentversion=6.4.5
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -20506,7 +20506,7 @@ if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.ba
 goto:alreadyhavehackmii
 :nocheckexisting
 
-if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject "*.html" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%
+if not exist temp\%wadname% start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject "*.html" --reject "index.html.tmp" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2%
 
 
 if not exist temp\%wadname% move /y "get.php@file=%wadname%*" temp\%wadname%>nul
@@ -21131,7 +21131,8 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 15
 
 echo Downloading Autoit
 if exist temp\autoit3.exe goto:AlreadyinTemp
-if not exist autoit-v3.zip start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3.zip
+if not exist autoit-v3.zip start %ModMiimin%/wait support\wget --content-disposition --no-check-certificate -t 3 http://www.autoitscript.com/cgi-bin/getfile.pl?autoit3/autoit-v3.zip
+
 if exist autoit-v3.zip support\7za e -aoa autoit-v3.zip -otemp autoit3.exe -r
 if exist autoit-v3.zip del autoit-v3.zip>nul
 if not exist temp\autoit3.exe goto:sneekwarning
