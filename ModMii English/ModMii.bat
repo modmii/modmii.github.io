@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.5
+set currentversion=6.4.8
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -24330,7 +24330,7 @@ set name=Any Region Changer (1.1b Mod06 Offline)
 set code1=URL
 set code2=http://filetrip.net/d26999-Any-Region-Changer-06.html
 set version=*
-set dlname=26999-ARCmod06_Offline.zip
+set dlname=d26999-Any-Region-Changer-06.html
 set wadname=ARCmod06_Offline.zip
 set md5=01889b98b95279258201387de1d0a8f7
 set path1=apps\ARCmod06_Offline\
@@ -24435,7 +24435,7 @@ set name=Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)
 set code1=URL
 set code2="http://filetrip.net/d2425-Twilight-Hack-v0-1-beta1.html"
 set version=*
-set dlname="[2711]twilight_hack_v0.1_beta1.zip"
+set dlname="d2425-Twilight-Hack-v0-1-beta1.html"
 set wadname=twilight_hack_v0.1_beta1.zip
 set filename=data.bin
 set md5=704bd625ea5b42d7ac06fc937af74d38
@@ -24640,7 +24640,7 @@ set category=fullextract
 set code1=URL
 set code2="http://filetrip.net/d26812-Wii-Backup-Manager-0-4-5-build-78.html"
 set version=*
-set dlname=26812-WiiBackupManager_Build78.zip
+set dlname=d26812-Wii-Backup-Manager-0-4-5-build-78.html
 set wadname=WiiBackupManager.zip
 set filename=WiiBackupManager_Win32.exe
 set md5=8ee733c1c126260962bcc83926d3cea6
