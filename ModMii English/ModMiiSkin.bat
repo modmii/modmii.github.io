@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.4.8
+set currentversion=6.4.9
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -333,7 +333,7 @@ set SNKcBCMarked=
 set macaddress=
 
 
-set watext=~~                           Choose an activity:~~Most ModMii activities build a custom guide for you based on your answers to a few simple questions.
+set watext=                           Choose an activity:~Most ModMii activities build a custom guide for you based on your answers to a few simple questions.~~WARNING: Nintendo servers are shutting down in 2019! Download while you still can! After ModMii's downloaded~   files to its temp folder you can delete COPY_TO_SD~     (L)oad a prepared download queue to get started.
 
 set wainput= ModMii ^&Wizard +Guide (Start Here to Mod Your Wii!); ^&Abstinence Wizard +Guide (Use Casper without mod); ^&USB-Loader Setup +Guide; ^&HackMii Solutions +Guide; R^&egion Change +Guide; ^&Load Download Queue; ^&SNEEK Installation and NAND Builder; ^&Options; Credi^&ts; ^&ModMii Classic Mode for more activities
 
@@ -1558,7 +1558,7 @@ if /i "%MENU1%" EQU "W" goto:noskip
 if /i "%MENU1%" EQU "U" goto:noskip
 goto:skip
 :noskip
-if /i "%USBCONFIG%" EQU "USB" (set backB4DRIVEU=DRIVEUCHANGE) & (goto:DRIVEUCHANGE)
+if /i "%USBCONFIG%" EQU "USB" (set backB4DRIVEU=DRIVECHANGE) & (goto:DRIVEUCHANGE)
 if /i "%USBCONFIG%" NEQ "USB" (set backB4wpageLast=DRIVECHANGE) & (goto:WPAGELAST)
 :skip
 
@@ -1973,9 +1973,10 @@ goto:skip2
 set wainput=%wainput%~* External Hard Drive already Formatted as %FORMATNAME%
 :skip2
 
+if /i "%LOADER%" EQU "GX" set wainput=%wainput%~* Download USB-Loader GX
 if /i "%LOADER%" EQU "CFG" set wainput=%wainput%~* Download Configurable USB-Loader
 if /i "%LOADER%" EQU "FLOW" set wainput=%wainput%~* Download WiiFlow
-if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download Configurable USB-Loader and WiiFlow
+if /i "%LOADER%" EQU "ALL" set wainput=%wainput%~* Download USB-Loader GX, Configurable USB-Loader and WiiFlow
 if /i "%USBCONFIG%" EQU "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to USB
 if /i "%USBCONFIG%" NEQ "USB" set wainput=%wainput%~* USB-Loader Settings\config-files saved to SD Card
 
@@ -2013,7 +2014,7 @@ if not "%FORMATMarked%"=="" (set waoutnum=%FORMATMarked%) else (set waoutnum=0)
 
 set watext=~~~How would you like your external Hard Drive Formatted?
 
-if /i "%AbstinenceWiz%" NEQ "Y" set wainput= ^&FAT32; ^&NTFS; ^&Partioned partially as FAT32 and partially as NTFS; HDD already ^&WBFS + I don't want to change; ^&HDD already FAT32/WBFS + I don't want to change
+if /i "%AbstinenceWiz%" NEQ "Y" set wainput= ^&FAT32 (Recommended); ^&NTFS; ^&Partioned partially as FAT32 and partially as NTFS; HDD already ^&WBFS + I don't want to change; ^&HDD already FAT32/WBFS + I don't want to change
 
 if /i "%AbstinenceWiz%" EQU "Y" set wainput= ^&FAT32 (Recommended); ^&Partioned partially as FAT32 and partially as NTFS
 
@@ -2059,7 +2060,7 @@ if not "%LOADERMarked%"=="" (set waoutnum=%LOADERMarked%) else (set waoutnum=0)
 
 set watext=~~~~           What USB-Loader would you like to use?
 
-set wainput= ^&Configurable USB-Loader (Recommended); ^&WiiFlow; ^&Both Configurable USB-Loader and WiiFlow
+set wainput= ^&USB-Loader GX (Recommended); ^&Configurable USB-Loader; ^&WiiFlow; ^&All of the above
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -2072,9 +2073,10 @@ call "%wabat%"
 
 set LOADERMarked=%waoutnum%
 
-if /i "%waoutnum%" EQU "0" set LOADER=CFG
-if /i "%waoutnum%" EQU "1" set LOADER=FLOW
-if /i "%waoutnum%" EQU "2" set LOADER=ALL
+if /i "%waoutnum%" EQU "0" set LOADER=GX
+if /i "%waoutnum%" EQU "1" set LOADER=CFG
+if /i "%waoutnum%" EQU "2" set LOADER=FLOW
+if /i "%waoutnum%" EQU "3" set LOADER=ALL
 
 
 if /i "%FORMAT%" EQU "1" goto:UPAGE2
@@ -2803,9 +2805,10 @@ if /i "%FORMAT%" EQU "3" set classicCMD=%classicCMD% FAT32-NTFS
 if /i "%FORMAT%" EQU "4" set classicCMD=%classicCMD% WBFS
 if /i "%FORMAT%" EQU "5" set classicCMD=%classicCMD% WBFS-FAT32
 
+if /i "%LOADER%" EQU "GX" set classicCMD=%classicCMD% GX
 if /i "%LOADER%" EQU "CFG" set classicCMD=%classicCMD% CFG
 if /i "%LOADER%" EQU "FLOW" set classicCMD=%classicCMD% FLOW
-if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW
+if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW-GX
 
 if /i "%USBCONFIG%" EQU "USB" set classicCMD=%classicCMD% USBConfig
 if /i "%USBCONFIG%" EQU "SD" set classicCMD=%classicCMD% SDConfig
@@ -2864,9 +2867,10 @@ if /i "%FORMAT%" EQU "3" set classicCMD=%classicCMD% FAT32-NTFS
 if /i "%FORMAT%" EQU "4" set classicCMD=%classicCMD% WBFS
 if /i "%FORMAT%" EQU "5" set classicCMD=%classicCMD% WBFS-FAT32
 
+if /i "%LOADER%" EQU "GX" set classicCMD=%classicCMD% GX
 if /i "%LOADER%" EQU "CFG" set classicCMD=%classicCMD% CFG
 if /i "%LOADER%" EQU "FLOW" set classicCMD=%classicCMD% FLOW
-if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW
+if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW-GX
 
 if /i "%USBCONFIG%" EQU "USB" set classicCMD=%classicCMD% USBConfig
 if /i "%USBCONFIG%" EQU "SD" set classicCMD=%classicCMD% SDConfig

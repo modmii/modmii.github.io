@@ -1,6 +1,6 @@
 <!----------------------------------FAT32 + NTFS BELOW-------------------------------->
 <font size="5"><li>Partition and Format the External Hard Drive for FAT32 + NTFS</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/ujM7c5MCVq4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/FAT32NTFS.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/ujM7c5MCVq4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/FAT32NTFS.gif" border="0"/></a><br>
 If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you complete this step.<br>
 <br>
 Right-click "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".<br>

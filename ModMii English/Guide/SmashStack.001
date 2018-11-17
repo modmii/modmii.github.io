@@ -1,5 +1,5 @@
 <b>Smash Stack</b><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/3_dqzcxqPAc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/SmashStack.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/3_dqzcxqPAc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/SmashStack.gif" border="0"/></a><br>
 Requirements: A copy of "Super Smash Brothers Brawl" and a standard SD card (will not work with an SDHC card).<br>
 <ol type="A"><li>Insert the Super Smash Brothers Brawl Game.</li>
 <li>Launch the game <b>without</b> the SD card in your Wii, create a save file if you don't have one already, then go into the stage builder and delete all the stages. Then exit the game.</li>

@@ -1,5 +1,5 @@
 <b>Bathaxx</b><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/54jHBVZkbSc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/Bathaxx.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/54jHBVZkbSc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/Bathaxx.gif" border="0"/></a><br>
 Requirements: A copy of "LEGO Batman", a standard SD card (will not work with an SDHC card), and a nunchuck.<br>
 <ol type="A"><li>Load the LEGO Batman game at least once (otherwise you won't be able to copy over the hack).</li>
 <li>Delete or move\backup your personal "LEGO Batman" save file before copying the files to your SD Card.</li>
