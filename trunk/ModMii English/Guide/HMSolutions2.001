@@ -6,7 +6,7 @@ This runs the Hackmii Installer.<br>
 
 
 <font size="5"><li>Installing the Homebrew Channel (HBC) And Bootmii</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/HackMii.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/HackMii.gif" border="0"/></a><br>
 Use the Hackmii Installer to fix/re-install the HBC. If you haven't done so already, you should also install Bootmii as IOS and Bootmii as Boot2 (if possible).<br>
 <br>
 Once you've successfully reinstalled the HBC, you are finished with this guide.<br>

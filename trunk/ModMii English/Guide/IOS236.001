@@ -11,7 +11,7 @@ Once either method successfully installs IOS236, you can move onto the next step
 <br>
 <ul>
 <li><b>Method A: Using IOS236 Installer</b></li><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/Asq6_bh7Yko?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/IOS236Installer.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/Asq6_bh7Yko?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/IOS236Installer.gif" border="0"/></a><br>
 After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "IOS236 Installer v5 MOD".<br>
 <b>Note:</b> This app must be launched using HBC v1.0.7 or higher in order to work properly.<br>
 It should say "IOS236 installation is complete!" and return to The Homebrew Channel.<br>
@@ -21,7 +21,7 @@ If you continue to experience errors you can try using Simple IOS Patcher instea
 <br>
 
 <li><b>Method B: Using Simple IOS Patcher</b></li><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/fKJVmp4WeCA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://ufpr.dl.sourceforge.net/project/nusad2/SimpleIOSPatcher.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('http://www.youtube.com/embed/fKJVmp4WeCA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/SimpleIOSPatcher.gif" border="0"/></a><br>
 After waiting 30-60 seconds for the HBC to attempt to initialize the network, launch "Simple IOS Patcher".<br>
 <b>Note:</b> This app must be launched using HBC v1.0.7 or higher in order to work properly.<br>
 Choose "IOS36" (already selected by default) and push A, then select "Install IOS to slot" and choose 236. Select "Install patched IOS36" leaving the 4 patches set to "yes" and press A, then choose "Load IOS from SD card". Confirm your choice with the A button and, when prompted, push A to continue the installation. When the installation is finished press the B button to exit the Main Menu.<br>

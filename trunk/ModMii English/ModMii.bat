@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.8
+set currentversion=6.4.9
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -206,7 +206,8 @@ echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
 echo              "FLOW" Use WiiFlow
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo              "GX" Use USB-Loader GX
+echo              "CFG-FLOW-GX" Use Configurable USB-Loader, WiiFlow and USB-Loader GX
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -337,7 +338,8 @@ echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
 echo          B - "CFG" Use Configurable USB-Loader [default]
 echo              "FLOW" Use WiiFlow
-echo              "CFG-FLOW" Use both Configurable USB-Loader and WiiFlow
+echo              "GX" Use USB-Loader GX
+echo              "CFG-FLOW-GX" Use both Configurable USB-Loader, WiiFlow and USB-Loader GX
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -1306,13 +1308,18 @@ findStr /I " WBFS" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
 :donecmdformat
 
-::Loader - CFG (or 1) is default
-findStr /I " CFG-FLOW" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=ALL)
-if /i "%LOADER%" NEQ "CFG" goto:donecmdloader
+::Loader - GX (or 1) is default
+set LOADER=GX
+findStr /I " CFG-FLOW-GX" temp\cmdinput.txt >nul
+IF NOT ERRORLEVEL 1 set LOADER=ALL
+if /i "%LOADER%" EQU "ALL" goto:donecmdloader
+
+findStr /I " CFG" temp\cmdinput.txt >nul
+IF NOT ERRORLEVEL 1 set LOADER=CFG
+if /i "%LOADER%" EQU "CFG" goto:donecmdloader
 
 findStr /I " FLOW" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=FLOW)
+IF NOT ERRORLEVEL 1 set LOADER=FLOW
 :donecmdloader
 
 ::USB-Loader Config files (USB is default)
@@ -1550,19 +1557,23 @@ findStr /I " WBFS" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
 :donecmdformat
 
-::Loader - CFG (or 1) is default
-findStr /I " CFG-FLOW" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=ALL)
-if /i "%LOADER%" NEQ "CFG" goto:donecmdloader
+::Loader - GX (or 1) is default
+set LOADER=GX
+findStr /I " CFG-FLOW-GX" temp\cmdinput.txt >nul
+IF NOT ERRORLEVEL 1 set LOADER=ALL
+if /i "%LOADER%" NEQ "ALL" goto:donecmdloader
+
+findStr /I " CFG" temp\cmdinput.txt >nul
+IF NOT ERRORLEVEL 1 set LOADER=CFG
+if /i "%LOADER%" EQU "CFG" goto:donecmdloader
 
 findStr /I " FLOW" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set LOADER=CFG) else (set LOADER=FLOW)
+IF NOT ERRORLEVEL 1 set LOADER=FLOW
 :donecmdloader
 
 ::USB-Loader Config files (USB is default)
 findStr /I " SDConfig" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set USBCONFIG=USB) else (set USBCONFIG=SD)
-
 
 findStr /I " Guide" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
@@ -2416,6 +2427,8 @@ set Wilbrand=
 set syscheck=
 set locked=
 set AccioHacks=
+set usbgx=
+set nintendont=
 set MyM=
 set HBB=
 set WII64=
@@ -2784,8 +2797,9 @@ echo           4 = Download Page 4 (cIOSs and cMIOSs)
 echo.
 echo           A = Advanced Downloads and Forwarder DOL\ISO Builder
 echo.
-echo           L = Load Download Queue
-echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 L = Load Download Queue:[Yellow] Nintendo servers are shutting down in 2019!
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]Download from NUS while you still can! After ModMii's downloaded
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]files to its temp folder for future use you can delete COPY_TO_SD
 echo.
 echo           C = Build Config Files for BootMii, Wad Manager or Multi-Mod Manager
 echo.
@@ -2802,7 +2816,6 @@ echo.
 echo      Use the ModMii Wizard to set-up your SD card with all you need to softmod
 echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
 echo      a custom guide is built based on your answers to a few simple questions.
-echo.
 echo      ***************************
 echo.
 set /p MENU1=     Enter Selection Here: 
@@ -2833,7 +2846,7 @@ if /i "%MENU1%" EQU "AW" (set MENU1=S) & (set SNEEKSELECT=3) & (set AbstinenceWi
 
 if /i "%MENU1%" EQU "CR" (start http://modmii.000webhostapp.com/credits.html) & (goto:MENU)
 
-if /i "%MENU1%" EQU "WWW" (start http://89d89449.miniurls.co) & (goto:MENU)
+if /i "%MENU1%" EQU "WWW" (start http://modmii.000webhostapp.com) & (goto:MENU)
 
 
 ::if not exist temp\DownloadQueues\*.bat goto:noload
@@ -6136,7 +6149,8 @@ echo           * External Hard Drive already Formatted as %FORMATNAME%
 
 if /i "%LOADER%" EQU "CFG" echo           * Download Configurable USB-Loader
 if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow
-if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader and WiiFlow
+if /i "%LOADER%" EQU "GX" echo           * Download USB-Loader GX
+if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader, WiiFlow & USB-Loader GX
 if /i "%USBCONFIG%" EQU "USB" echo           * USB-Loader Settings and config files saved to USB Hard Drive
 if /i "%USBCONFIG%" NEQ "USB" echo           * USB-Loader Settings and config files saved to SD Card
 
@@ -6285,7 +6299,7 @@ echo.
 echo        2 = NTFS
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Green] Pros:[def] Capable of storing files greater than 4GB
-echo                  CFG USB-Loader can access games, covers and music stored on NTFS
+echo                  Most USB-Loaders can access games, covers and music stored on NTFS
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] Cons:[def] The Wii cannot access apps stored on NTFS, so an SD card
 echo                  is required to run the USB-Loader (or a SM Channel)
@@ -6366,13 +6380,13 @@ echo         What USB-Loader would you like to use?
 echo.
 echo.
 echo.
-support\sfk echo -spat \x20 \x20 \x20 [Green] 1 = Configurable USB-Loader (RECOMMENDED)
+support\sfk echo -spat \x20 \x20 \x20 [Green] 1 = USB-Loader GX (RECOMMENDED)
 echo.
+echo        2 = Configurable USB-Loader
 echo.
-echo        2 = WiiFlow
+echo        3 = WiiFlow
 echo.
-echo.
-echo        3 = Both
+echo        4 = All of the above
 echo.
 echo.
 echo.
@@ -6390,15 +6404,19 @@ if /i "%LOADER%" EQU "B" goto:UPAGE1
 
 set wbm=*
 
-if /i "%LOADER%" EQU "1" set LOADER=CFG
-if /i "%LOADER%" EQU "2" set LOADER=FLOW
-if /i "%LOADER%" EQU "3" set LOADER=ALL
+if /i "%LOADER%" EQU "1" set LOADER=GX
+if /i "%LOADER%" EQU "2" set LOADER=CFG
+if /i "%LOADER%" EQU "3" set LOADER=FLOW
+if /i "%LOADER%" EQU "4" set LOADER=ALL
 
+if /i "%LOADER%" EQU "GX" set usbgx=*
+if /i "%LOADER%" EQU "ALL" set usbgx=*
 if /i "%LOADER%" EQU "CFG" set usbfolder=*
 if /i "%LOADER%" EQU "ALL" set usbfolder=*
 if /i "%LOADER%" EQU "FLOW" set FLOW=*
 if /i "%LOADER%" EQU "ALL" set FLOW=*
 
+if /i "%LOADER%" EQU "GX" goto:nextstep
 if /i "%LOADER%" EQU "CFG" goto:nextstep
 if /i "%LOADER%" EQU "FLOW" goto:nextstep
 if /i "%LOADER%" NEQ "ALL" goto:skip
@@ -9803,6 +9821,13 @@ set IU=*
 set WU=*
 set NU=*
 set WSU=*
+set SM3.2U=*
+set SM4.3U=*
+set SM4.2U=*
+set SM4.1U=*
+set EULAU=*
+set RSU=*
+set BC=*
 if /i "%LIST%" EQU "U" goto:list
 
 :EALL
@@ -9814,6 +9839,13 @@ set IE=*
 set WE=*
 set NE=*
 set WSE=*
+set SM3.2E=*
+set SM4.3E=*
+set SM4.2E=*
+set SM4.1E=*
+set EULAE=*
+set RSE=*
+set BC=*
 if /i "%LIST%" EQU "E" goto:list
 
 :JALL
@@ -9825,6 +9857,13 @@ set IJ=*
 set WJ=*
 set NJ=*
 set WSJ=*
+set SM3.2J=*
+set SM4.3J=*
+set SM4.2J=*
+set SM4.1J=*
+set EULAJ=*
+set RSJ=*
+set BC=*
 if /i "%LIST%" EQU "J" goto:list
 
 :KALL
@@ -9834,13 +9873,13 @@ set PK=*
 set SK=*
 ::set IOS70K=*
 set IOS80K=*
-
+set SM4.3K=*
+set SM4.2K=*
+set SM4.1K=*
+set EULAK=*
+set RSK=*
+set BC=*
 if /i "%LIST%" EQU "K" goto:list
-
-
-
-
-
 
 :BASEWADS
 set IOS37=*
@@ -9962,8 +10001,8 @@ echo     %USBX% USBX = USB-Loader Fwdr Channel       %snes9xgx% SNES = SNES9xGX 
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %vbagx% VBA = VBAGX (GB/GBA Emulator)
 echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
 echo       %AccioHacks% AH = AccioHacks                     %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
-echo                                            %HBB% HBB = Homebrew Browser
-echo                                            %SGM% SGM = SaveGame Manager GX
+echo       %usbgx% GX = USB Loader GX                  %HBB% HBB = Homebrew Browser
+echo       %nintendont% ND = Nintendont (Gamcube)           %SGM% SGM = SaveGame Manager GX
 echo                                             %WIIX% WX = WiiXplorer
 echo                                             %locked% LA = Locked HBC Folder (Pass: UDLRAB)
 
@@ -10029,6 +10068,8 @@ if /i "%OLDLIST%" EQU "ADV" goto:ADVANCED
 IF "%OLDLIST%"=="" goto:LIST3
 
 if /i "%OLDLIST%" EQU "AH" goto:SwitchAccioHacks
+if /i "%OLDLIST%" EQU "GX" goto:SwitchGX
+if /i "%OLDLIST%" EQU "ND" goto:SwitchND
 if /i "%OLDLIST%" EQU "BSD" goto:Switchbootmiisd
 
 
@@ -10087,6 +10128,14 @@ goto:OLDLIST
 
 :SwitchAccioHacks
 if /i "%AccioHacks%" EQU "*" (set AccioHacks=) else (set AccioHacks=*)
+goto:OLDLIST
+
+:SwitchGX
+if /i "%usbgx%" EQU "*" (set usbgx=) else (set usbgx=*)
+goto:OLDLIST
+
+:SwitchND
+if /i "%nintendont%" EQU "*" (set nintendont=) else (set nintendont=*)
 goto:OLDLIST
 
 :Switchbootmiisd
@@ -10290,6 +10339,8 @@ set usbfolder=*
 set neogamma=*
 set CheatCodes=*
 set AccioHacks=*
+set usbgx=*
+set nintendont=*
 set FLOW=*
 set USBX=*
 if /i "%OLDLIST%" EQU "U" goto:OLDLIST
@@ -11780,8 +11831,8 @@ set cIOS202[60]-v5.1R=*
 set cIOS222[38]-v4=*
 set cIOS223[37-38]-v4=*
 set cIOS224[57]-v5.1R=*
-set cIOS249[56]-d2x-v8-final=*
-set cIOS250[57]-d2x-v8-final=*
+set cIOS249[57]-d2x-v8-final=*
+set cIOS250[56]-d2x-v8-final=*
 set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 if /i "%LIST4%" EQU "REC" goto:LIST4
 
@@ -14838,11 +14889,25 @@ IF not ERRORLEVEL 1 set cIOS223[37-38]-v4=
 findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
-findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v8-final=*) else (set cIOS249[56]-d2x-v8-final=)
+findStr /I /C:"IOS249[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v8-final=*) else (set cIOS249[57]-d2x-v8-final=)
+
+findStr /I /C:"IOS250[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS250[56]-d2x-v8-final=*) else (set cIOS250[56]-d2x-v8-final=)
+
+
+::also accept 249/250 reversed
 
 findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v8-final=*) else (set cIOS250[57]-d2x-v8-final=)
+IF ERRORLEVEL 1 goto:skip
+findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 goto:skip
+::found both 249[56] and 250[57]
+set cIOS249[57]-d2x-v8-final=
+set cIOS250[56]-d2x-v8-final=
+
+:skip
+
 
 goto:skipv2.0.1
 
@@ -14873,10 +14938,19 @@ findStr /I /C:"IOS224 (rev 65535): Trucha Bug, NAND Access, USB 2.0" "%sysCheckN
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 
 findStr /I /C:"IOS249 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v8-final=*) else (set cIOS249[56]-d2x-v8-final=)
+IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v8-final=*) else (set cIOS249[57]-d2x-v8-final=)
 
 findStr /I /C:"IOS250 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[57]-d2x-v8-final=*) else (set cIOS250[57]-d2x-v8-final=)
+IF ERRORLEVEL 1 (set cIOS250[56]-d2x-v8-final=*) else (set cIOS250[56]-d2x-v8-final=)
+
+::also accept 249/250 reversed
+findStr /I /C:"IOS250 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS250[56]-d2x-v8-final=
+
+::loophole check to make sure base56 isn't installed to both slots
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" set cIOS249[57]-d2x-v8-final=*
+findStr /I /C:"IOS249 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS249[57]-d2x-v8-final=
 
 :skipv2.0.1
 
@@ -15044,8 +15118,8 @@ if /i "%cIOS202[60]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS222[38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS223[37-38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%cIOS224[57]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
+if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
 if /i "%IOS9%" EQU "*" set mmm=*
 if /i "%IOS12%" EQU "*" set mmm=*
 if /i "%IOS13%" EQU "*" set mmm=*
@@ -15614,6 +15688,8 @@ if /i "%LOADER%" EQU "CFG" set usbfolder=*
 if /i "%LOADER%" EQU "ALL" set usbfolder=*
 if /i "%LOADER%" EQU "FLOW" set FLOW=*
 if /i "%LOADER%" EQU "ALL" set FLOW=*
+if /i "%LOADER%" EQU "GX" set usbgx=*
+if /i "%LOADER%" EQU "ALL" set usbgx=*
 set wbm=*
 if /i "%FORMAT%" EQU "1" set f32=*
 if /i "%FORMAT%" EQU "3" set f32=*
@@ -15658,8 +15734,8 @@ set cIOS202[60]-v5.1R=*
 set cIOS222[38]-v4=*
 set cIOS223[37-38]-v4=*
 set cIOS224[57]-v5.1R=*
-set cIOS249[56]-d2x-v8-final=*
-set cIOS250[57]-d2x-v8-final=*
+set cIOS249[57]-d2x-v8-final=*
+set cIOS250[56]-d2x-v8-final=*
 
 
 
@@ -15720,8 +15796,8 @@ if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS223[37-38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS224[57]-v5.1R=*
-if /i "%RECCIOS%" EQU "Y" set cIOS249[56]-d2x-v8-final=*
-if /i "%RECCIOS%" EQU "Y" set cIOS250[57]-d2x-v8-final=*
+if /i "%RECCIOS%" EQU "Y" set cIOS249[57]-d2x-v8-final=*
+if /i "%RECCIOS%" EQU "Y" set cIOS250[56]-d2x-v8-final=*
 
 if /i "%CMIOSOPTION%" EQU "off" goto:quickskip
 if /i "%RECCIOS%" EQU "Y" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
@@ -15756,6 +15832,7 @@ if %LINES% LEQ 54 goto:noresize
 mode con cols=85 lines=%LINES%
 :noresize
 
+if not exist temp\DownloadQueues mkdir temp\DownloadQueues
 
 set DLQUEUE=
 cls
@@ -15978,6 +16055,8 @@ if /i "%LOADER%" EQU "CFG" set usbfolder=*
 if /i "%LOADER%" EQU "ALL" set usbfolder=*
 if /i "%LOADER%" EQU "FLOW" set FLOW=*
 if /i "%LOADER%" EQU "ALL" set FLOW=*
+if /i "%LOADER%" EQU "GX" set usbgx=*
+if /i "%LOADER%" EQU "ALL" set usbgx=*
 set wbm=*
 if /i "%FORMAT%" EQU "1" set f32=*
 if /i "%FORMAT%" EQU "3" set f32=*
@@ -16186,6 +16265,9 @@ if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader">>temp\DLnames.txt) &
 if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
 if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
 if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
+if /i "%usbgx%" EQU "*" (echo "USB Loader GX">>temp\DLnames.txt) & (echo "usbgx">>temp\DLgotos.txt)
+if /i "%nintendont%" EQU "*" (echo "Nintendont">>temp\DLnames.txt) & (echo "Nintendont">>temp\DLgotos.txt)
+
 if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
 if /i "%USBX%" EQU "*" (echo "USB-Loader Forwarder Channel">>temp\DLnames.txt) & (echo "USBX">>temp\DLgotos.txt)
 
@@ -16816,6 +16898,9 @@ if /i "%SIP%" EQU "*" echo SET SIP=%SIP%>> "temp\DownloadQueues\%DLQUEUENAME%.ba
 if /i "%dop%" EQU "*" echo SET dop=%dop%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%syscheck%" EQU "*" echo SET syscheck=%syscheck%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%AccioHacks%" EQU "*" echo SET AccioHacks=%AccioHacks%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%usbgx%" EQU "*" echo SET usbgx=%usbgx%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%nintendont%" EQU "*" echo SET nintendont=%nintendont%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+
 if /i "%MyM%" EQU "*" echo SET MyM=%MyM%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%locked%" EQU "*" echo SET locked=%locked%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%HBB%" EQU "*" echo SET HBB=%HBB%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -16917,9 +17002,9 @@ if /i "%A0e%" EQU "*" echo SET A0e=%A0e%>> "temp\DownloadQueues\%DLQUEUENAME%.ba
 if /i "%A01%" EQU "*" echo SET A01=%A01%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
 if /i "%A0e_70%" EQU "*" echo SET A0e_70=%A0e_70%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%A01%" EQU "*" echo SET A01__60=%A01_60%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%A01_60%" EQU "*" echo SET A01_60=%A01_60%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%A0e_60%" EQU "*" echo SET A0e_60=%A0e_60%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%A01%" EQU "*" echo SET A01=%A01%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%A01_70%" EQU "*" echo SET A01_70=%A01_70%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%A0c%" EQU "*" echo SET A0c=%A0c%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
 if /i "%A40%" EQU "*" echo SET A40=%A40%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -17223,6 +17308,7 @@ if /i "%FORMAT%" EQU "4" goto:skipchange
 if /i "%FORMAT%" EQU "5" goto:skipchange
 if /i "%WADNAME%" EQU "WiiBackupManager.zip" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\usbloader_cfg\" set DRIVE=%DRIVEU%
+if /i "%PATH1%" EQU "apps\usbloader_gx\" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\WiiFlow\" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "FAT32_GUI_Formatter\" set DRIVE=%DRIVEU%
 
@@ -19971,16 +20057,8 @@ if exist %dlname% move /y %dlname% "temp\%wadname%">nul
 
 ::extract selected apps differently...
 
-
 if /i "%path1%" NEQ "apps\MyMenuifyMod\" goto:notmym
-::download unrar if missing
-if not exist temp\UnRAR.exe echo.
-if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
-if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
-
-
-temp\unrar.exe x -y "temp\%wadname%" "%Drive%\apps\"
+support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% -r
 goto:skipnormalextraction
 :notmym
 
@@ -24548,17 +24626,43 @@ set md5=e321da8d59578313890a50b7a31aff7b
 set path1=apps\AccioHacks\
 goto:downloadstart
 
+:usbgx
+set category=fullextract
+set name=USB Loader GX
+set code1=URL
+set code2="http://sourceforge.net/projects/usbloadergx/files/latest/download"
+set version=*
+set dlname="download"
+set wadname=USBLoaderGX_r1268.7z
+set filename=boot.dol
+set md5=e90ccba45057c40273ce4765d5a5bda2
+set path1=apps\usbloader_gx\
+goto:downloadstart
+
+:Nintendont
+set name=Nintendont
+set category=fullextract
+set code1=URL
+set code2="https://s2.filetrip.net/dl.php?fn=L3AvNTM2NS80MTUwMTItTmludGVuZG9udF80LjQzMS56aXA=&dn=TmludGVuZG9udF80LjQzMS56aXA=&fs=MTAzOTIxNA=="
+set version=*
+set dlname="dl.php*"
+set wadname=Nintendont_4.431.zip
+set filename=boot.dol
+set md5=7c6297e6d7a65626ba5bc1c32f476a70
+set path1=apps\Nintendont\
+goto:downloadstart
+
 
 :MyM
 set name=MyMenuifyMod
-::set category=fullextract
+set category=fullextract
 set code1=URL
-set code2=http://s2.filetrip.net/p/5365/275812-MyMenuifyModv1.5.zip
+set code2="https://s2.filetrip.net/dl.php?fn=L3AvNTM2NS80MTYwOTAtTXlNZW51aWZ5TW9kdjEuNi56aXA=&dn=TXlNZW51aWZ5TW9kdjEuNi56aXA=&fs=MTY2NTA4Mw=="
 set version=*
-set dlname=275812-MyMenuifyModv1.5.zip
-set wadname=MyMenuifyModv1.5.zip
+set dlname="dl.php*"
+set wadname=MyMenuifyModv1.6.zip
 set filename=boot.dol
-set md5=8d232e7ecd5ede5966c2abc3649fd108
+set md5=30cb44237f583bb4c05cc3a2c1b393cc
 set path1=apps\MyMenuifyMod\
 goto:downloadstart
 
@@ -27976,8 +28080,9 @@ support\sfk echo -spat \x3cli\x3eExternal Hard Drive already Formatted as %FORMA
 :skip2
 
 if /i "%LOADER%" EQU "CFG" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "GX" support\sfk echo -spat \x3cli\x3eDownload USB-Loader GX\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat \x3cli\x3eDownload WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload Configurable USB-Loader and WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" support\sfk echo -spat \x3cli\x3eDownload USB-Loader GX, Configurable USB-Loader and WiiFlow\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to USB Hard Drive\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to SD Card\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipusb
@@ -28011,6 +28116,10 @@ support\sfk echo -spat \x3cli\x3ecIOS249 rev18 or higher required to use Hard Dr
 :skipthis
 
 support\sfk echo -spat \x3cli\x3eNot all external hard drive's are compatible with the Wii, for a list of which USB hard drive's are compatible, see this webpage: \x3ca href="http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank"\x3ehttp://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List\x3c/a\x3e\x3c/li\x3e>>"%Drive%"\%guidename%
+
+support\sfk echo -spat \x3cli\x3eAfter completing this guide, you can launch your USB-Loader via the Homebrew Channel or a USB-Loader forwarder channel.\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eMake sure to always plug your hard drive into usb port0 - the one nearest the edge of the wii.\x3c/li\x3e>>"%Drive%"\%guidename%
 
 :skipall
 ::-------------------------
@@ -28272,8 +28381,8 @@ if /i "%cIOS202[60]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS202[60]
 if /i "%cIOS222[38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS222[38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%cIOS223[37-38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS223[37-38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%cIOS224[57]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS224[57]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
 
 if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%
 
