@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.4.9
+set currentversion=6.5.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -24630,12 +24630,12 @@ goto:downloadstart
 set category=fullextract
 set name=USB Loader GX
 set code1=URL
-set code2="http://sourceforge.net/projects/usbloadergx/files/latest/download"
+set code2="https://sourceforge.net/projects/usbloadergx/files/Releases/New revisions (3.0+)/USBLoaderGX r1271.7z/download"
 set version=*
 set dlname="download"
-set wadname=USBLoaderGX_r1268.7z
+set wadname=USBLoaderGX_r1271.7z
 set filename=boot.dol
-set md5=e90ccba45057c40273ce4765d5a5bda2
+set md5=7c364d69d917d61e276c98fe230fd41d
 set path1=apps\usbloader_gx\
 goto:downloadstart
 
@@ -24695,13 +24695,15 @@ goto:downloadstart
 :yawm
 set name=Yet Another Wad Manager Mod
 set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275814-YAWMM.zip"
+set code2="https://sites.google.com/site/completesg/how-to-use/wad-manager/YAWMM_EN.zip"
 set version=*
-set dlname="275814-YAWMM.zip"
-set wadname=YAWMM.zip
-set filename=boot.dol
-set md5=e475232c74f630aae3444e67e17d5f27
-set path1=apps\yawmm\
+set dlname="YAWMM_EN.zip"
+set wadname=YAWMM_EN_rev5e.zip
+set filename=boot.elf
+set md5=0646978c46967a019e5fca7d8d08ac4c
+set path1=apps\YAWMM_EN\
+::special override for yawmm_en, wm_config introduces odd behaviour
+if exist "%Drive%"\WAD\wm_config.txt del "%Drive%"\WAD\wm_config.txt>nul
 goto:downloadstart
 
 :usbfolder
