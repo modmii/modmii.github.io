@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.5.0
+set currentversion=6.5.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -26,7 +26,11 @@ chcp 437>nul
 ::chcp 850>nul
 ::chcp 1252>nul
 
-if not exist temp mkdir temp
+::if not exist temp mkdir temp
+if not exist temp\DownloadQueues mkdir temp\DownloadQueues
+if exist Support\DownloadQueues\* move /y Support\DownloadQueues\* temp\DownloadQueues>nul
+if exist Support\DownloadQueues rd /s /q "Support\DownloadQueues">nul
+
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
@@ -2797,7 +2801,7 @@ echo           4 = Download Page 4 (cIOSs and cMIOSs)
 echo.
 echo           A = Advanced Downloads and Forwarder DOL\ISO Builder
 echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 L = Load Download Queue:[Yellow] Nintendo servers are shutting down in 2019!
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 L = Load Download Queue:[Yellow] Nintendo could possibly shut down their servers!
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]Download from NUS while you still can! After ModMii's downloaded
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]files to its temp folder for future use you can delete COPY_TO_SD
 echo.
@@ -17729,7 +17733,7 @@ echo.
 
 if exist "temp\DML\FixELF.exe" goto:gotfixelf
 
-if not exist "FixELF.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://tiny.cc/FixELF"
+if not exist "FixELF.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://tiny.cc/fixelfmirror"
 
 if not exist "FixELF.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
@@ -24406,9 +24410,9 @@ goto:downloadstart
 :ARC
 set name=Any Region Changer (1.1b Mod06 Offline)
 set code1=URL
-set code2=http://filetrip.net/d26999-Any-Region-Changer-06.html
+set code2=http://tiny.cc/arcmod
 set version=*
-set dlname=d26999-Any-Region-Changer-06.html
+set dlname=arcmod
 set wadname=ARCmod06_Offline.zip
 set md5=01889b98b95279258201387de1d0a8f7
 set path1=apps\ARCmod06_Offline\
@@ -24471,9 +24475,9 @@ goto:downloadstart
 set category=fullextract
 set name=sysCheck v2.1.0.b19
 set code1=URL
-set code2=http://s5.filetrip.net/p/5365/275808-syscheckb19.zip
+set code2=http://tiny.cc/syscheckb19
 set version=*
-set dlname=275808-syscheckb19.zip
+set dlname=syscheckb19
 set wadname=syscheckb19.zip
 set filename=boot.dol
 set md5=3b53fe8fa9e036b0885a5d1aec153d1a
@@ -24485,9 +24489,9 @@ goto:downloadstart
 set category=fullextract
 set name=Simple IOS Patcher
 set code1=URL
-set code2=http://filetrip.net/f/25749-sip_v1.14.zip
+set code2=http://tiny.cc/simpleiospatcher
 set version=*
-set dlname=25749-sip_v1.14.zip
+set dlname=simpleiospatcher
 set wadname=sip_v1.14.zip
 set filename=boot.dol
 set md5=fbaeb401e44cdbe0e455490190cc196d
@@ -24511,9 +24515,9 @@ goto:downloadstart
 set category=fullextract
 set name=Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)
 set code1=URL
-set code2="http://filetrip.net/d2425-Twilight-Hack-v0-1-beta1.html"
+set code2="http://tiny.cc/twilighthack"
 set version=*
-set dlname="d2425-Twilight-Hack-v0-1-beta1.html"
+set dlname=twilighthack
 set wadname=twilight_hack_v0.1_beta1.zip
 set filename=data.bin
 set md5=704bd625ea5b42d7ac06fc937af74d38
@@ -24592,9 +24596,9 @@ goto:downloadstart
 set name=Dop-Mii v13
 set category=fullextract
 set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275810-DOP-Mii_v13.zip"
+set code2="http://tiny.cc/dopmii"
 set version=*
-set dlname="275810-DOP-Mii_v13.zip"
+set dlname=dopmii
 set wadname=DOP-Mii_v13.zip
 set filename=boot.dol
 set md5=7cbd40d4987d17d85d4184bafc886c1c
@@ -24643,9 +24647,9 @@ goto:downloadstart
 set name=Nintendont
 set category=fullextract
 set code1=URL
-set code2="https://s2.filetrip.net/dl.php?fn=L3AvNTM2NS80MTUwMTItTmludGVuZG9udF80LjQzMS56aXA=&dn=TmludGVuZG9udF80LjQzMS56aXA=&fs=MTAzOTIxNA=="
+set code2="http://tiny.cc/nintendont"
 set version=*
-set dlname="dl.php*"
+set dlname=nintendont
 set wadname=Nintendont_4.431.zip
 set filename=boot.dol
 set md5=7c6297e6d7a65626ba5bc1c32f476a70
@@ -24657,9 +24661,9 @@ goto:downloadstart
 set name=MyMenuifyMod
 set category=fullextract
 set code1=URL
-set code2="https://s2.filetrip.net/dl.php?fn=L3AvNTM2NS80MTYwOTAtTXlNZW51aWZ5TW9kdjEuNi56aXA=&dn=TXlNZW51aWZ5TW9kdjEuNi56aXA=&fs=MTY2NTA4Mw=="
+set code2="http://tiny.cc/mymenuify"
 set version=*
-set dlname="dl.php*"
+set dlname=mymenuify
 set wadname=MyMenuifyModv1.6.zip
 set filename=boot.dol
 set md5=30cb44237f583bb4c05cc3a2c1b393cc
@@ -24683,9 +24687,9 @@ goto:downloadstart
 set name=Neogamma Backup Disc Loader
 set category=fullextract
 set code1=URL
-set code2="http://filetrip.net/f/27066-NeoGammaR9beta56.zip"
+set code2="http://tiny.cc/neogamma"
 set version=*
-set dlname="27066-NeoGammaR9beta56.zip"
+set dlname=neogamma
 set wadname=NeoGammaR9beta56.zip
 set filename=boot.dol
 set md5=603a7c4cba387aa81a6149f1a76cada1
@@ -24695,9 +24699,9 @@ goto:downloadstart
 :yawm
 set name=Yet Another Wad Manager Mod
 set code1=URL
-set code2="https://sites.google.com/site/completesg/how-to-use/wad-manager/YAWMM_EN.zip"
+set code2="http://tiny.cc/yawmm"
 set version=*
-set dlname="YAWMM_EN.zip"
+set dlname="yawmm"
 set wadname=YAWMM_EN_rev5e.zip
 set filename=boot.elf
 set md5=0646978c46967a019e5fca7d8d08ac4c
@@ -24744,9 +24748,9 @@ goto:downloadstart
 set name=Wii Backup Manager v0.4.5 build 78
 set category=fullextract
 set code1=URL
-set code2="http://filetrip.net/d26812-Wii-Backup-Manager-0-4-5-build-78.html"
+set code2="http://tiny.cc/WiiBackupManager"
 set version=*
-set dlname=d26812-Wii-Backup-Manager-0-4-5-build-78.html
+set dlname=WiiBackupManager
 set wadname=WiiBackupManager.zip
 set filename=WiiBackupManager_Win32.exe
 set md5=8ee733c1c126260962bcc83926d3cea6
@@ -24853,9 +24857,9 @@ goto:downloadstart
 set name=ShowMiiWads
 set category=fullextract
 set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275816-ShowMiiWads 1.4.rar"
+set code2="http://tiny.cc/showmiiwads"
 set version=*
-set dlname="275816-ShowMiiWads 1.4.rar"
+set dlname=showmiiwads
 set wadname=ShowMiiWads 1.4.rar
 set filename=ShowMiiWads.exe
 set md5=58277ad0974e59493bb3e9f8a8aca82b
@@ -24866,9 +24870,9 @@ goto:downloadstart
 set name=Customize Mii
 set category=fullextract
 set code1=URL
-set code2="http://filetrip.net/f/22023-CustomizeMii 3.11.rar"
+set code2="http://tiny.cc/customizemii"
 set version=*
-set dlname="22023-CustomizeMii 3.11.rar"
+set dlname=customizemii
 set wadname=CustomizeMii 3.11.rar
 set filename=CustomizeMii.exe
 set md5=e35d75c3ad0a058149bdf45155595cfc
@@ -24889,28 +24893,13 @@ set path1=WiiGSC\
 goto:downloadstart
 
 
-:dopmii
-set name=Dop-Mii v13
-set category=fullextract
-set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275810-DOP-Mii_v13.zip"
-set version=*
-set dlname="275810-DOP-Mii_v13.zip"
-set wadname=DOP-Mii_v13.zip
-set filename=boot.dol
-set md5=7cbd40d4987d17d85d4184bafc886c1c
-set path1=apps\DOP-Mii\
-goto:downloadstart
-
-
-
 :WIIMC
 set name=WiiMC - Media Player
 set category=fullextract
 set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275818-WiiMC.1.3.4.New.Install.zip"
+set code2="http://tiny.cc/wiimc"
 set version=*
-set dlname="275818-WiiMC.1.3.4.New.Install.zip"
+set dlname="wiimc"
 set wadname=WiiMC.1.3.4.New.Install.zip
 set filename=boot.dol
 set md5=cc2fc8abed046de33997fdb701db660c
@@ -24921,9 +24910,9 @@ goto:downloadstart
 set name=FCEUGX - NES Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://s4.filetrip.net/p/5365/275819-FCE.Ultra.GX.3.3.4.zip"
+set code2="http://tiny.cc/fceugx"
 set version=*
-set dlname="275819-FCE.Ultra.GX.3.3.4.zip"
+set dlname="fceugx"
 set wadname=FCE.Ultra.GX.3.3.4.zip
 set filename=boot.dol
 set md5=1a2c54ff5da63e31f60c9bc08a769768
@@ -24935,9 +24924,9 @@ goto:downloadstart
 set name=SNES9xGX - SNES Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://s5.filetrip.net/p/5365/275822-Snes9x.GX.4.3.2.zip"
+set code2="http://tiny.cc/snes9xgx"
 set version=*
-set dlname="275822-Snes9x.GX.4.3.2.zip"
+set dlname="snes9xgx"
 set wadname=Snes9x.GX.4.3.2.zip
 set filename=boot.dol
 set md5=8b4cc0958a6c342a18283f3d4a607f8f
@@ -24948,9 +24937,9 @@ goto:downloadstart
 set name=Visual Boy Advance GX - GB/GBA Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://s6.filetrip.net/p/30026/230195-Visual Boy Advance GX 2.2.8.zip"
+set code2="http://tiny.cc/visualboy"
 set version=*
-set dlname="230195-Visual Boy Advance GX 2.2.8.zip"
+set dlname="visualboy"
 set wadname=VisualBoyAdvanceGX.2.2.8.zip
 set filename=boot.dol
 set md5=001fe833bfd35e23c68ea0a59bd520ec
@@ -25046,9 +25035,9 @@ goto:downloadstart
 set name=Casper
 set category=fullextract
 set code1=URL
-set code2="http://s2.filetrip.net/p/5365/275825-casper_0.3.elf.tar.gz"
+set code2="http://tiny.cc/casperpune"
 set version=*
-set dlname="275825-casper_0.3.elf.tar.gz"
+set dlname="casperpune"
 set wadname=casper_0.3.elf.tar.gz
 set filename=boot.elf
 set md5=3e9d8254c3b197dca97d5ceb8bb5b7db
@@ -25074,9 +25063,9 @@ goto:downloadstart
 set name=WiiSX Beta 2.1.1 (Playstation 1 Emulator)
 set category=fullextract
 set code1=URL
-set code2="http://filetrip.net/f/32021-WiiSX-beta2.1.1[a].zip"
+set code2="http://tiny.cc/wiisx"
 set version=*
-set dlname="32021-WiiSX-beta2.1.1[a].zip"
+set dlname="wiisx"
 set wadname=WiiSX-beta2.1.1[a].zip
 set filename=boot.dol
 set md5=b54900bd47ef6855fb3a018af5893b5b

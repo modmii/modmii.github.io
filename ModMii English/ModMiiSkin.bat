@@ -31,7 +31,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.5.0
+set currentversion=6.5.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -42,7 +42,10 @@ set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
 chcp 437>nul
 ::chcp 1252>nul
 
-if not exist temp mkdir temp
+::if not exist temp mkdir temp
+if not exist temp\DownloadQueues mkdir temp\DownloadQueues
+if exist Support\DownloadQueues\* move /y Support\DownloadQueues\* temp\DownloadQueues>nul
+if exist Support\DownloadQueues rd /s /q "Support\DownloadQueues">nul
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
@@ -333,7 +336,7 @@ set SNKcBCMarked=
 set macaddress=
 
 
-set watext=                           Choose an activity:~Most ModMii activities build a custom guide for you based on your answers to a few simple questions.~~WARNING: Nintendo servers are shutting down in 2019! Download while you still can! After ModMii's downloaded~   files to its temp folder you can delete COPY_TO_SD~     (L)oad a prepared download queue to get started.
+set watext=                           Choose an activity:~Most ModMii activities build a custom guide for you based on your answers to a few simple questions.~~    WARNING: Nintendo could shut down their servers! Download while you still can! After ModMii's downloaded~   files to its temp folder you can delete COPY_TO_SD~     (L)oad a prepared download queue to get started.
 
 set wainput= ModMii ^&Wizard +Guide (Start Here to Mod Your Wii!); ^&Abstinence Wizard +Guide (Use Casper without mod); ^&USB-Loader Setup +Guide; ^&HackMii Solutions +Guide; R^&egion Change +Guide; ^&Load Download Queue; ^&SNEEK Installation and NAND Builder; ^&Options; Credi^&ts; ^&ModMii Classic Mode for more activities
 
