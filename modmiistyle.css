@@ -1,0 +1,13 @@
+body
+{
+font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif;
+background:#000000 url('Images/Gradient.png') repeat-x top;
+font-smooth:always;
+color:#d3d3d3;
+margin-right:200px;
+}
+A:link {text-decoration: none;color: blue;}
+A:visited {text-decoration: none;color: blue;}
+A:active {text-decoration: none;color: blue;}
+A:hover {text-decoration: none; color: red;}
+div.justify {text-align:justify;text-justify:inter-word;}
