@@ -1,0 +1,6 @@
+C:\ModMii\tests\ModMii_Launcher\bin\Release\ModMii_Launcher.exe.config
+C:\ModMii\tests\ModMii_Launcher\bin\Release\ModMii_Launcher.exe
+C:\ModMii\tests\ModMii_Launcher\bin\Release\ModMii_Launcher.pdb
+C:\ModMii\tests\ModMii_Launcher\obj\x86\Release\ResolveAssemblyReference.cache
+C:\ModMii\tests\ModMii_Launcher\obj\x86\Release\ModMii_Launcher.exe
+C:\ModMii\tests\ModMii_Launcher\obj\x86\Release\ModMii_Launcher.pdb
