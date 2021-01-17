@@ -1,0 +1,8 @@
+<font size="5"><li>Launch Multi-Mod Manager</li></font><br>
+
+Start the Homebrew Channel (HBC) and load Multi-Mod Manager (MMM). Once you've loaded MMM, move onto the next step.<br>
+
+If you are missing the HBC or it is failing to load any apps (just blackscreens), you will need to launch MMM using another method.<br><br>
+
+<b>Note:</b> if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch MMM instead of an exploit. Just save the boot.dol from the app you want to load (ie. SD:\apps\MMM\boot.dol) to the location used by your <u>specific</u> Forwarder Channel (ie. SD:\apps\usbloader\boot.dol). Then start the channel and the app will load.<br>
+<br>

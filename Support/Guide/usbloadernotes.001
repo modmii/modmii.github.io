@@ -1,0 +1,14 @@
+<!-------------------------Important notes chapter below--------------------->
+<font size="6"><li><a name="Notes">Important Notes</a></li></font><br>
+<ul>
+<!-------------------------------USB LOADER NOTES BELOW---------------------------------->
+<li>cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.</li>
+<li>cIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222\223\224 rev4 or higher also works).</li>
+<li>Not all external hard drive's are compatible with the Wii, for a list of which USB hard drive's are compatible, see this webpage: <a href="http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List</a></li>
+<!-------------------------------USB LOADER NOTES ABOVE---------------------------------->
+
+<li>If you have questions, a more detailed guide can be found at <a href="http://www.sites.google.com/site/completesg/" taget="_blank">www.sites.google.com/site/completesg/</a></li>
+</ul>
+<!-------------------------Important notes chapter above--------------------->
+
+<br>

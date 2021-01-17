@@ -1,0 +1,10 @@
+Optional: additional themes can be found here: <a href="http://wii.spiffy360.com/themes.php" target="_blank">http://wii.spiffy360.com/themes.php</a><br>
+<br>
+
+<b>Important notes on default settings:</b><br>
+Two potentially dangerous features have been locked:<br>
+<ul>
+<li>The ability to remove/delete games</li>
+<li>The ability to format a hard drive</li>
+</ul>
+To unlock these features, while in the configurable USB-Loader menu, hold "1" for 5 seconds, then enter the password to unlock these features. The password is "AAAA", you can change the password/settings by using the Configurator for Configurable USB-Loader. Hold "1" again for 5 seconds to lock the USB-Loader again (or it will lock automatically again once you exit the USB-Loader).<br>

@@ -1,0 +1,23 @@
+<!----------------------------After Modding section below----------------------------->
+<font size="6"><li><a name="Done">After modding your Wii</a></li></font><br>
+After you are done modding your Wii, you can optionally delete any unnecesarry files by using ModMii's "File Cleanup" Feature.<br><br> 
+
+If you used Bannerbomb and choose not to use the File Cleanup feature, in order to avoid having your Wii freeze when accessing the SD Card Menu, you should delete the "aktn" folder where bannerbomb is saved (SD:\private\wii\title\aktn), or rename the entire "private" folder.<br><br>
+
+At this point you're practically done.<br>
+Now you should be downloading the latest homebrew applications and setting them up on your SD Card (or FAT32 USB Hard Drive) so they can be launched via the HBC.<br>
+<br>
+For playing your backups off a USB hard drive, run the USB-Loader Setup feature from ModMii's Main Menu.<br>
+<br>
+For downloading applications, you should:<br>
+<ul><li>Check out ModMii's batch download pages as it has many popular apps available for download.</li>
+<li>Download <a href="http://www.sites.google.com/site/completesg/how-to-use/hbb" target="_blank">Homebrew Browser</a> via ModMii to get many popular apps, but this is an online only Wii application.</li>
+<li>For those without internet on their Wii, check out this list of <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">Homebrew applications.</a></li></ul>
+Another great resource is <a href="http://webrewwii.blogspot.com" target="_blank">webrewwii.blogspot.com</a><br><br>
+
+After getting whatever apps you want, you should get a boot.dol file and possibly a icon.png and meta.xml.<br>
+For HBC to read your SD/USB correctly, your card must be structured SD:/apps/application name/boot.dol<br>
+If you have a *.dol not named boot.dol, rename it boot.dol, otherwise it will not be recognized by the HBC.<br>
+(optional: the icon.png and meta.xml should be saved in the same place as the boot.dol)<br>
+<br>
+<!----------------------------After Modding section above----------------------------->
