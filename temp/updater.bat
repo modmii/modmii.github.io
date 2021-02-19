@@ -1,6 +1,7 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected
 @echo off
 set newversion=6.5.1
+set changelogURL=https://modmii.github.io/changelog.html
 if exist temp\currentversion.txt (set /p currentversion= <temp\currentversion.txt) else (goto:ReturnToCaller)
 title ModMiiUpdater
 set UPDATENAME=ModMii
