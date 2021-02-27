@@ -1,7 +1,9 @@
-<ul>
+<ul style=align="left" type="disc">
 <li>When loading an emulated NAND for the first time, it could take a long time to load the System Menu, but it will be much quicker the second time around.</li>
 
 <li>If you have problems loading your Emulated NAND, copy cert.sys from an original nand dump to your emulated nand's sys folder.</li>
 
-<li>ShowMiiWads can be used to decrypt your real Wii's BootMii NAND dump (nand.bin) to use as an emulated NAND, and it can add custom
+<li>If you would like to make a NAND backup of your Wii without modding it, double-click Casper2BootMii.bat saved to ModMii's Support folder and update the files on your SD Card. Then repeat the exploit step of this guide and this time you will be taken to Bootmii. You can make a Bootmii NAND backup following <a href="https://youtu.be/J9QyWw9a7u4&t=0m13s" target="_blank">these steps</a>.</li>
+
+<li>ShowMiiWads can be used to decrypt your real Wii's Bootmii NAND dump (nand.bin) to use as an emulated NAND, and it can add custom
 channels/WADs to an emulated NAND. ShowMiiWads is available on ModMii's Download Page 2.</li>

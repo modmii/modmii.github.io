@@ -1,24 +1,62 @@
-
+<br>
 This will launch Multi-Mod Manager.<br>
 <br>
 
 <!-------------------Install IOS53 Section Below--------------------------->
 
 <font size="5"><li>Install IOS53 then start Casper</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/RU2Z8GgrAEA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/Casper.gif" border="0"/></a><br>
-
-In Multi-Mod Manager's main menu, Go down to select "WAD Manager".<br>
-If you cannot load your SD card, select "Load another IOS", then try using IOS36 or another IOS until you detect your SD card.<br>
-
-Now install IOS53-64-v5663.<br>
-Navigate to the WAD and hit A twice to install the IOS individually.<br>
-Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).<br>
-Make sure the file installs properly before continuing.<br><br>
-
-After successfully installing the WAD, use "B" to go back to MMM's main menu and choose "App Manager" then press A.<br>
-Select Casper using "A"<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/LA1YVvk0FfE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Casper.gif" border="0"/></a><br>
+<i>MMM has many tools, but we'll mainly be using it as a WAD Manager. A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
 <br>
-Note: After installing IOS53 on a Wii once, you can skip installing it the next time you follow this guide and just use MMM's "App Manager" to launch Casper. To have configure your SD Card to launch Casper immediately instead of first loading MMM, copy SD:\apps\Casper\boot.elf and paste it to SD:\boot.elf (overwriting the boot.elf for MMM).<br>
 
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. Stick to your ModMii guide and you'll be fine.<br>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click here to learn what IOSs and cIOSs are! " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Fact   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click here to learn what IOSs and cIOSs are!  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<i>Fun Fact! I mentioned IOSs and cIOSs before, "the Wii console uses the 'IOS' system to communicate with the hardware, it's like a driver (compared to Windows). It contains information and communication tools (like how to access the Disc drive, how to access USB, read the savegames data stored on internal memory, etc.)" ~Cyan. If you're curious to learn more about IOSs or cIOSs, a thorough explanation can be found in <a href="https://gbatemp.net/threads/d2xl-cios-a-fork-of-davebaols-d2x-cios.558581/#post-8968173" target="_blank">Cyan's IOS Explanation post</a>.</i><br>
+</p>
+</div></div></div>
+
+
+<ol type="A">
+<li><b>On your Wii, in Multi-Mod Manager's main menu, go down to select "WAD Manager"</b>.
+
+	<ul style=align="left" type="disc">
+	<li>If you cannot load your SD card, select "Load another IOS", then select IOS36.</b>
+	<li>If the Wii was previously softmodded, you can also try loading IOS250 (or others like 251, 222, etc.)</b>
+	</ul>
+
+<li><b>Install IOS53-64-v5663</b>.
+
+	<ul style=align="left" type="disc">
+	<li>Navigate to the WAD and press the <kbd>A</kbd> button twice to install the IOS individually.
+	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
+	<li>Make sure the file installs properly before continuing.
+	</ul>
+
+<li>After successfully installing IOS53, <b>press any button to continue.</b>
+
+
+<li>Then <b>press the <kbd>B</kbd> button</b> to go back to MMM's main menu.
+<li><b>Choose "App Manager"</b> then press <kbd>A</kbd>.
+<li><b>Launch "Casper"</b> by navigating to it and pressing the <kbd>A</kbd> button.
+</ol>
+<br>
+
+<ul style=align="left" type="disc">
+
+<li>If you are able to load MMM but the Wiimote doesn't respond, try using an older Wiimote without Motion+ built in as MMM doesn't support these newer contollers; a gamecube controller also works. If you don't have either, you can update the console via the Wii Settings Menu and repeat the Abstinence Wizard but this time enter 4.3 as your firmware version.
+<li>Note: After installing IOS53 on a Wii once, you can skip installing it the next time you follow this guide and just use MMM's "App Manager" to launch Casper. To configure your SD Card to launch Casper immediately instead of first loading MMM, double-click SD:\ExploitAppSelector.bat and select "..\Casper\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of Casper's boot.elf to SD:\boot.elf (overwriting the boot.elf for MMM).
+
+
+</ul>
+<br>
 <!-------------------Install IOS53 Section Above--------------------------->
 

@@ -1,0 +1,55 @@
+<!-------------------------Installing WADs section below--------------------------->
+<font size="5"><li>Install WADs</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/OJle-hEeUTw?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/yawmm.gif" border="0"/></a><br>
+<i>YAWMM stands for "Yet Another Wad Manager Mod". A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<br>
+
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, Some YAWMM Mod, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click here to learn what IOSs and cIOSs are! " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Fact   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click here to learn what IOSs and cIOSs are!  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<i>Fun Fact! I mentioned IOSs and cIOSs before, "the Wii console uses the 'IOS' system to communicate with the hardware, it's like a driver (compared to Windows). It contains information and communication tools (like how to access the Disc drive, how to access USB, read the savegames data stored on internal memory, etc.)" ~Cyan. If you're curious to learn more about IOSs or cIOSs, a thorough explanation can be found in <a href="https://gbatemp.net/threads/d2xl-cios-a-fork-of-davebaols-d2x-cios.558581/#post-8968173" target="_blank">Cyan's IOS Explanation post</a>.</i><br>
+</p>
+</div></div></div>
+
+
+
+<ol type="A">
+<li><b>On your Wii, load "Some YAWMM Mod" from the HomeBrew Channel</b>.
+<li>Make sure the source device is set to "Wii SD Slot" and <b>Press A</b>.
+<li><b>Install your custom list of <u>guidewadcountplaceholder WADs</u> found in the spoiler below</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
+	</ul>
+<li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
+
+	<ul style=align="left" type="disc">
+	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd><br>
+	</ul>
+
+<li>After you've marked all the WADs listed below, <b>press <kbd>A</kbd> on any marked WAD to install them all</b>.
+<li>Confirm the total number selected for installation is guidewadcountplaceholder, then <b>press <kbd>A</kbd> again to install</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>If any WADs fail to install properly please retry installing them.<br>
+	</ul>
+
+<li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd>Home</kbd> button on your Wiimote to exit Some YAWMM Mod.</b>
+</ol>
+
+<br>
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click to See Your Unique List of guidewadcountplaceholder WADs to Install  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide your list of WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to See Your Unique List of guidewadcountplaceholder WADs to Install  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<b>Here's your unique list of guidewadcountplaceholder WADs to install:</b>
+<ol>

@@ -1,0 +1,20 @@
+<!--------------------------------------FAT32 BELOW----------------------------------->
+<font size="5"><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/UAsBVvA30Ys?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/SDcheck.gif" border="0"/></a><br>
+<i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup). Make sure to always plug your hard drive into usb port0 - the one nearest the edge of the Wii.</i><br>
+<br>
+<ul style=align="left" type="disc">
+<li>First, insert your SD Card into your PC and determine if it needs to be formatted by checking the current Format\File-System of the SD Card.
+	<ul style=align="left" type="disc">
+	<li>Open "This PC" or "My Computer", right-click the SD Card you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+	<li>Make note of the Drive Letter of the SD Card as this will be important later.
+	<li>If the "File-System" is already FAT32, you can skip this step.
+	</ul>
+<li><b>If you have anything saved on the SD Card, you should back it up now as all the data will be lost once you format it.</b>
+</ul>
+<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/UUva1MuymDk?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/fat32sd.gif" border="0"/></a><br>
+<ul style=align="left" type="disc">

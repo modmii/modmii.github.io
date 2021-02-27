@@ -1,11 +1,51 @@
 <!------------------------------Nand backup section below-------------------------->
-<font size="5"><li>Making a NAND backup</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/0u_Xgq-MfGw?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/NANDBackup.gif" border="0"/></a><br>
-While inside the Homebrew Channel, load BootMii by pressing home and clicking Launch Bootmii.<br>
-Press the power button on the Wii 3 times to get to the last option, then press the reset button (you can also navigate with a Gamecube controller).<br>
-Press reset to choose the first option, then follow the directions on the screen to make your NAND backup (bad blocks are no problem).<br>
-Backup the Bootmii folder, nand.bin, and keys.bin elsewhere and erase from the SD card (or rename it). You'll need these in case of emergencies, so don't lose them.<br>
-Go back to The Homebrew Channel.<br>
-<b>Note:</b> if Bootmii was installed as boot2, then it will show up as soon as the Wii is turned on AS LONG AS it finds the bootmii folder (mentioned above) on the root of the SD card.<br>
+<font size="5"><li>Make a NAND backup</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/J9QyWw9a7u4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>
+<i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.</i><br>
+<br>
+
+<ul style=align="left" type="disc">
+<li>Bootmii does not work with Wiimotes, the steps below will direct you to use the front buttons on the Wii console itself.
+	<ul style=align="left" type="square">
+	<li><kbd>Power</kbd> button = Advance to next item
+	<li><kbd>Reset</kbd> button = Select highlighted item
+	</ul>
+<li>Bootmii also works with gamecube controllers; in fact, one is required to <i>restore</i> NAND backups on consoles that could not install Bootmii to boot2.
+</ul>
+
+<br>
+<ol type="A">
+<li><b>From inside the Homebrew Channel press the <kbd>Home</kbd> button and select "Launch Bootmii"</b>.
+<li><b>Press the <kbd>Power</kbd> button on the Wii console 3 times</b> to get to the last option to access the Settings (the button with gears), <b>then press the <kbd>Reset</kbd> button</b> to select it.
+<li><b>Press <kbd>Reset</kbd></b> to select the first backup option (the button with the green arrow)
+<li><b>Press <kbd>Reset</kbd> again</b> to make your NAND backup.
+	<ul style=align="left" type="disc">
+	<li>Do not power off your Wii when making your NAND backup.
+	<li>This process takes about 8 minutes to complete; your mileage may vary.
+	<li>Having some black "Bad Blocks" is normal and nothing to worry about.
+	<li>After backing up the NAND, Bootmii will begin verifying it. While this is recommended, it can be skipped by pressing the <kbd>Eject</kbd> button on your console.
+	</ul>	
+
+<li><b>Press any button on the console</b> to exit the NAND backup screen.
+<li><b>Exit Bootmii and launch the HBC</b> by pressing the <kbd>Power</kbd> button on the Wii console 3 times to advance to the last option (the one with the back arrow), then press the <kbd>Reset</kbd> button to select it. Then press <kbd>Power</kbd> 1 time to advance to the Homebrew Channel, then press the <kbd>Reset</kbd> button to launch it.
+</ol>
+
+<br>
+At this point, or immediately following the completion of this guide, you should remove the SD card from the Wii (it is safe to do so while inside the HBC), backup the Bootmii folder, nand.bin, and keys.bin from your SD to a hard drive, or the cloud, or anywhere safe. You might need these in case of emergencies, so don't lose them. Optionally erase them from the SD card after backing them up, or rename the Bootmii folder to avoid autobooting into Bootmii at startup for consoles with Bootmii installed to boot2. When done, safely remove your SD Card from your computer and reinsert it into your Wii and proceed to the next step.<br>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for some Fun Facts about NAND Backups!  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Facts   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for some Fun Facts about NAND Backups!  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<i>Fun Fact! If you ever need to restore a NAND backup, you can do so by launching Bootmii with an SD card containing the appropriately named Bootmii folder, nand.bin, and keys.bin, and follow the procedure described above except this time select the option with the red arrow going the other direction.<br>
+<br>
+Another Fun Fact! You can extract the contents of your nand.bin using windows tools like ShowMiiWads (see ModMii Classic's Download Page 2), then save it to a hard drive or SD Card to act as an Emulated NAND (or virtual NAND), allowing you switch between the Wii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the Wii's 500MB. ModMii can help generate brand new Emulated NANDs free of any games saves or other settings if you prefer a fresh start. For more help on this, after completing this guide, check out ModMii's SNEEK Installation Wizard.</i><br>
+
+</p>
+</div></div></div>
 <br>
 <!------------------------------Nand backup section above-------------------------->

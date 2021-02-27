@@ -1,8 +1,13 @@
 <!---------------------------ANY REGION CHANGER SECTION BELOW------------------------------>
-<font size="5"><li>Use Any Region Changer</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/gwJgWofoQeM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/ARC.gif" border="0"/></a><br>
-Launch "ARC 1.1b mod06 Offline" via the Homebrew Channel<br>
-After the app loads, select IOS236 then press "A".<br>
-After reading the warning, press "1".<br><br>
-You will see this error at the top of the screen: "WARNING: AREA: SysMenu MISMATCH!"<br>
-Go down to select "System Menu Region" and
+<font size="5"><li>Use Any Region Changer ModMii Edition</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ZbIszQY8VbM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/ARCME.gif" border="0"/></a><br>
+<ol type="A">
+<li>Launch "Any Region Changer ModMii Edition" via the Homebrew Channel
+<li>After reading the warning, press <kbd>A</kbd> to continue.
+<ul style=align="left" type="disc"><li>You will see this error at the top of the screen: "WARNING: AREA/SysMenu MISMATCH!"</ul>
+<li>Press <kbd>↓</kbd> until "Auto Fix Settings" is selected and press <kbd>A</kbd>.
+<li>Press any key to continue, and the "WARNING: AREA/SysMenu MISMATCH!" error should disappear.
+<li>Now return to the HBC by pressing the <kbd>Home</kbd> button or by navigating to "Exit to the Homebrew Channel" and pressing <kbd>A</kbd>.
+</ol>
+<br>
+<!---------------------------ANY REGION CHANGER SECTION ABOVE------------------------------>

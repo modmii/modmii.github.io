@@ -1,19 +1,27 @@
-<li><u>USBLoader(s)-ahbprot58-SD-USB-v11b-IDCL</u></li>
-</ul>
-<br>
-The above underlined forwarder channel will load the first file it finds from the following list:<br>
-<ul style="list-style: none;">
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  USBLoader Forwarder Boot Order and Other Info " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Forwarder Info   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  USBLoader Forwarder Boot Order and Other Info  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+The USBLoader(s) forwarder channel will boot the first app it finds from this list:<br>
+<ol type="i">
+<li>SD+USB:\apps\usbloader_gx\boot.dol</li>
+<li>SD+USB:\apps\usbloader_gx\boot.elf</li>
+<li>SD+USB:\apps\WiiFlow\boot.dol</li>
+<li>SD+USB:\apps\WiiFlow\boot.elf</li>
+<li>SD+USB:\apps\usbloader_cfg\boot.dol</li>
+<li>SD+USB:\apps\usbloader_cfg\boot.elf</li>
 <li>SD+USB:\apps\usbloader\boot.dol</li>
 <li>SD+USB:\apps\usbloader\boot.elf</li>
 <li>SD+USB:\apps\usb-loader\boot.dol</li>
 <li>SD+USB:\apps\usb-loader\boot.elf</li>
-<li>SD+USB:\apps\usbloader_cfg\boot.dol</li>
-<li>SD+USB:\apps\usbloader_cfg\boot.elf</li>
-<li>SD+USB:\apps\WiiFlow\boot.dol</li>
-<li>SD+USB:\apps\WiiFlow\boot.elf</li>
-<li>SD+USB:\apps\usbloader_gx\boot.dol</li>
-<li>SD+USB:\apps\usbloader_gx\boot.elf</li>
-</ul>
+</ol>
 <br>
-<b>Note:</b> IOS58 is required for the forwarder to launch apps from an SD Card and hard drives formatted as FAT32, NTFS, ext2, ext3 and ext4. It also supports meta.xml arguments and is able to launch apps with direct hardware access.<br>
+Note: Forwarder requires IOS58. SD paths are all checked first, then USB. It's capable of launching apps from an SD Card and hard drives formatted as FAT32, NTFS, ext2, ext3 and ext4. It also supports meta.xml arguments and is able to launch apps with direct hardware access.<br>
+<br>
+<i>Want to customize some of your channels? There's an app for that! First make sure you finish this guide and install Priiloader if you haven't already, then get CustomizeMii from ModMii Classic's Download Page 2. You can use this tool to make changes to the audio or visual effects of a channel, and even inject a new "dol" for it to launch. You can build forwarder dol's for custom paths, channels, or website URLs from ModMii Classic's Advanced Downloads Page.</i>
+
+</div></div></div>
+
 <!-------------------------Installing WADs section above--------------------------->

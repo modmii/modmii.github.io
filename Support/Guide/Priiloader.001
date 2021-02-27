@@ -1,22 +1,162 @@
 <!---------------------------Install Priiloader below------------------------------>
-<font size="5"><li>Install Priiloader</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/If1XSrEVhfY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/Priiloader.gif" border="0"/></a><br>
-Launch "Priiloader 236 Mod" via the Homebrew Channel<br>
-After the Priiloader Installer loads, press + to install it.<br>
-After successfully installing Priiloader, access it by powering off the Wii, then powering it back on while holding reset until you see the Priiloader menu.<br>
-You should install some system menu hacks now (by going to System Menu hacks option).<br>
+<font size="5"><li>Install and Configure Priiloader</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/3oP_jJbbKQM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
+
+<i>Priiloader loads just before the System Menu and is invisible unless holding down the reset button while powering on the console. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). <a href="http://www.sites.google.com/site/completesg/system-hacks/Priiloader" target="_blank">Click here</a> for directions on installing a "dol" file in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu.</i><br>
 <br>
-<b>RECOMMENDED HACKS</b>
-<ul>
-<li>Block Disc Updates</li>
-<li>Block Online Updates</li>
-<li>Replace Health Screen</li>
-<li>Move Disc Channel</li>
+
+<ul style=align="left" type="disc">
+<li>You can navigate the Priiloader menu using a Wiimote, GameCube controller, USB Keyboard, or the Power/Reset buttons on the front of the console itself similar to Bootmii (if using the front buttons you will not be able to access the system menu hacks, file/dol & password menus).
 </ul>
+
 <br>
-The priiloader menu is white by default, you can change it to black in the Priiloader settings if you prefer.<br>
+
+<ol type="A">
+<li><b>Launch the "Priiloader Installer"</b> from the Homebrew Channel.
+<li>After the Priiloader Installer loads, <b>press <kbd>+</kbd></b> to install it.
+	<ul style=align="left" type="disc">
+	<li>When successful the installer should display "Install done!"
+	</ul>
+<li><b>Press <kbd>A</kbd></b> to exit back to the Homebrew Channel.
+<li>Access Priiloader by powering off the Wii, then <b>hold down the <kbd>Reset</kbd> button while powering on your Wii</b> until you see the Priiloader menu.
 <br>
-One of the special functions of Priiloader is that it can autoboot any app/file instead of the system menu. Some apps (like crazyIntro) can't be used without it.<br>
-For details on how to do so, visit <a href="http://www.sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">www.sites.google.com/site/completesg/system-hacks/priiloader</a><br>
+You can also start Priiloader by loading the "Priiloader Launcher" via the HBC, or by holding escape on a USB connected keyboard while turning on your Wii.
+
+<li>From the Priiloader menu, <b>select "System Menu Hacks"</b> and enable some system menu hacks.
 <br>
+<br>
+Be careful not to haphazardly enable just any hack, for example do not enable "Lock System Menu with Black Screen".<br>
+<br>
+<b>RECOMMENDED HACKS*</b>
+	<ul style=align="left" type="square">
+	<li>Block Disc Updates</li>
+	<li>Block Online Updates</li>
+	<li>Region Free EVERYTHING</li>
+	<li>480p graphics fix in system menu</li>
+	</ul>
+*Your available System Menu hacks may vary.<br>
+<br>
+<li>Scroll down to "save settings" and press <kbd>A</kbd>, then press <kbd>B</kbd> to go back to Priiloader's main menu.
+<li>Navigate to "Homebrew Channel" and press <kbd>A</kbd> to launch it.<br>
+</ol>
+<br>
+<i>Pro tip! If you update or (re)install any System Menu it <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected.<br>
+<br>
+Another Pro tip! If you keep a hard drive plugged into your Wii at all times you can enable "Ignore standby" in Priiloader's settings so your Wii turns off completely by default. This will stop the hard drive from spinning 24/7 when it's not being used.</i>
+<br>
+<br>
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for complete list of Priiloader Hacks  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Priiloader Hacks   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for complete list of Priiloader Hacks  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<table>
+<thead>
+<tr>
+<th>Hack</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Block Disc Updates</td>
+<td>Removes the "Wii System Update" screen that is included on some games forcing you to update them to play the game.</td>
+</tr>
+<tr>
+<td>Block Online Updates</td>
+<td>Disables updating your Wii. Updates will fail with error 32007.</td>
+</tr>
+<tr>
+<td>Auto-Press A at Health Screen</td>
+<td>Automatically presses the A Button to get past the "Health and Safety" screen.</td>
+</tr>
+<tr>
+<td>Replace Health Screen with Backmenu</td>
+<td>Changes the "Health and Safety" screen to the animation played when returning to the Wii menu.</td>
+</tr>
+<tr>
+<td>Move Disc Channel</td>
+<td>Enables moving the Disc Channel anywhere on the Wii Menu. It's normally stuck in the top left of the first page.</td>
+</tr>
+<tr>
+<td>Wiimmfi Patch v2</td>
+<td>Automatically patches all games you run from the Disc Channel for use with Wiimmfi</td>
+</tr>
+<tr>
+<td>480p graphics fix in system menu</td>
+<td>Fixes a small issue with 480p on the Wii Menu.</td>
+</tr>
+<tr>
+<td>Remove NoCopy Save File Protection</td>
+<td>Allows you to copy normally disallowed save files to your SD card from data management</td>
+</tr>
+<tr>
+<td>Region Free EVERYTHING</td>
+<td>Disables region locking for any Wii application, including downloaded ones.</td>
+</tr>
+<tr>
+<td>Region Free GC Games (No VM Patch)</td>
+<td>Disables region locking for GameCube disks.</td>
+</tr>
+<tr>
+<td>Region Free Wii Games</td>
+<td>Disables region locking for Wii disks.</td>
+</tr>
+<tr>
+<td>Region Free Channels</td>
+<td>Disables region locking for installed channels</td>
+</tr>
+<tr>
+<td>No System Menu Sounds AT ALL</td>
+<td>Disables all the Wii Menu sound effects.</td>
+</tr>
+<tr>
+<td>No System Menu Background Music</td>
+<td>Disables the Wii Menu background music.</td>
+</tr>
+<tr>
+<td>Re-Enable Bannerbomb v2</td>
+<td>Enables the "Bannerbomb" exploit on the latest Wii version. Not needed when the Homebrew Channel is already installed.</td>
+</tr>
+<tr>
+<td>OSReport to UsbGecko(slot B)</td>
+<td>Sends Wii Menu logs to a debugging device in memory card slot B.</td>
+</tr>
+<tr>
+<td>OSReport to UsbGecko(GeckoOS,B)</td>
+<td>Sends Wii Menu logs to a debugging device in memory card slot B, if the Wii Menu is launched by Gecko OS.</td>
+</tr>
+<tr>
+<td>Force Standard Recovery Mode</td>
+<td>Automatically launches the console in recovery mode. Used to launch recovery discs, letting users unbrick their Wii systems.</td>
+</tr>
+<tr>
+<td>Remove Diagnostic Disc Check</td>
+<td>Removes a check in the Wii to see if an inserted game is the "Wii Startup Disc".</td>
+</tr>
+<tr>
+<td>Lock System Menu with Black Screen</td>
+<td>Makes your Wii Menu load to a black screen, making you unable to use it. (Do not enable this)</td>
+</tr>
+<tr>
+<td>No-Delete HAXX,JODI,DVDX,DISC,DISK,RZDx</td>
+<td>Re-enable channels with these title IDs (originally blocked in system updates due to them being exploits).</td>
+</tr>
+<tr>
+<td>Force Disc Games to run under IOS249</td>
+<td>Make discs use cIOS 249 as the game's IOS. Can be used to enable older model (pre 2010) Wii's outfitted with DVD-R compatible Disc readers to play backup discs from the Disc Channel.</td>
+</tr>
+</tbody>
+</table>
+
+</p>
+</div></div></div>
+
+
+<br>
+
+
 <!---------------------------Install Priiloader above------------------------------>

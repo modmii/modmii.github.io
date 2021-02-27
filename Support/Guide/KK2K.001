@@ -1,0 +1,15 @@
+<br>
+<!---------------------------ANY REGION CHANGER SECTION BELOW------------------------------>
+<font size="5"><li>Optional: Add the Korean Key</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/Xr-6cPrNeIs?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/KKadd.gif" border="0"/></a><br>
+<i>With KoreanKii, you can add or remove the Korean key from your SEEPROM. This eliminates the need for patching IOS60 into slots if you have a region changed Korean Wii. This program comes with no warranty. You, and you alone are responsible if this damages your Wii in any way. Nothing, not even Bootmii installed to boot2, will save your Wii if this corrupts your SEEPROM.<br>
+<br>
+The Korean Key is required to play Korean games from the disc channel, although there are some other ways to accomplish the same thing, a stock Korean Wii would have the Korean Key so perhaps you want to install it for a more complete region change.<br></i>
+<br>
+<b>WARNING:</b> if you have a non-Korean system menu (4.2+) (which you shouldn't if you followed the steps above) adding the Korean Key will cause a 003 brick unless you have IOS60 patched into your System Menu IOS (which you should if you followed the steps above).<br>
+<br>
+<ol type="A">
+<li>Launch "KoreanKii" using the Homebrew Channel.
+<li>Press <kbd>+</kbd> or <kbd>R</kbd> using a GameCube controller to add the Korean Key, then press <kbd>A</kbd> to confirm.
+</ol>
+<br>

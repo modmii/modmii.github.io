@@ -1,17 +1,36 @@
-After successfully installing the WADs, use "B" to go back to MMM's main menu and choose "App Manager" then press A.<br>
-Select HackMii_Installer using "A"<br>
-This runs the Hackmii Installer.<br>
-<br>
+<li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
 
+	<ul style=align="left" type="disc">
+	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd><br>
+	</ul>
+
+<li>After you've marked all the WADs listed below, <b>press <kbd>A</kbd></b>.<li>Double check the total number selected for installation matches your list above, then <b>press <kbd>A</kbd> again to install</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>If any WADs fail to install properly please retry installing them.<br>
+	</ul>
+
+<li><b>After successfully installing all the WADs, press any button to continue.</b>
+
+
+<li>Then <b>press the "B" button</b> to go back to MMM's main menu.
+<li><b>Choose "App Manager"</b> then press <kbd>A</kbd>.
+<li>Navigate to "HackMii_Installer" and press <kbd>A</kbd> again.
+	<ul style=align="left" type="disc">
+	<li>This will <b>launch the HackMii Installer</b>.
+	</ul>
+</ol>
+<br>
 
 
 <font size="5"><li>Installing the Homebrew Channel (HBC) And Bootmii</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/jISATc1NKaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/HackMii.gif" border="0"/></a><br>
-Use the Hackmii Installer to fix/re-install the HBC. If you haven't done so already, you should also install Bootmii as IOS and Bootmii as Boot2 (if possible).<br>
+
+<i>After you have completed this step and successfully (re)installed the HBC and Bootmii, you are finished with this guide and should continue with the main ModMii Wizard to update the rest of your softmods, starting with making a NAND backup.</i><br>
+
+<ul style=align="left" type="disc">
+
 <br>
-Once you've successfully reinstalled the HBC, you are finished with this guide.<br>
-<br>
-If you already exited MMM, you can load the HackMii_Installer from the Homebrew Channel.<br>
-If the HBC is failing to load any apps (just blackscreens), instead launch MMM using the method described in Step 1, then in MMM's main menu, select "App Manager" and then select the HackMii_Installer.<br>
-This will launch the HackMii Installer, use it to re-install your Homebrew Channel.<br>
-<br>
+<li>If you already exited MMM, you can load the HackMii Installer from the Homebrew Channel.
+<li>If the HBC is failing to load any apps, instead launch MMM using the exploit described earlier, then in MMM's main menu, select "App Manager" and then select "HackMii_Installer" to launch it.
+<li>If you used YAWMM instead of MMM because of lack of Wii Motion+ controller support, and you don't have the Homebrew Channel, double-click SD:\ExploitAppSelector.bat and select "..\HackMii_Installer\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of the HackMii Installer's boot.elf to the SD root (ie. SD:\boot.elf). Then repeat the exploit described above to launch the HackMii Installer.
+</ul>

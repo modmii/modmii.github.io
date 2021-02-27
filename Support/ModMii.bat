@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.5.1
+set currentversion=6.6.0
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -17,12 +17,18 @@ set agreedversion=
 if exist Support\settings.bat support\sfk filter -spat Support\settings.bat -!"\x26" -write -yes>nul
 if exist Support\settings.bat call Support\settings.bat
 
+set d2x-beta-rev=10-beta52
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+
 set cygwin=nodosfilewarning
 set ModMiiDrive=%cd:~0,2%
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp
 
-chcp 437>nul
+
+::65001 used to fix paths with special characters like é for Sneek Installer. Other downloads may still fail if a special character exists in the path, but work fine if using the default COPY_TO_SD relative path. Previous default is 437, hopefully no side effects of switching
+::chcp 437>nul
+chcp 65001>nul
 ::chcp 850>nul
 ::chcp 1252>nul
 
@@ -30,13 +36,18 @@ chcp 437>nul
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
 if exist Support\DownloadQueues\* move /y Support\DownloadQueues\* temp\DownloadQueues>nul
 if exist Support\DownloadQueues rd /s /q "Support\DownloadQueues">nul
+if not exist Support\More-cIOSs mkdir Support\More-cIOSs
 
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
 
 if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del updatetemp.bat>nul
+if exist Updatetemp.bat del Updatetemp.bat>nul
+
+
+::set to Y to keep invalid some files for debug purposes
+set KeepInvalidOverride=N
 
 
 ::-------------------CMD LINE SUPPORT----------------------
@@ -185,7 +196,7 @@ echo 3) Region: "U","E","J","K"
 echo.       If your Wii was Region Changed but not originally Korean,
 echo        select the Region you are currently on
 echo 4) DesiredSystemMenu (Optional): "4.1", "4.2", "4.3"
-echo    Note: If DesiredSystemMenu not specified ModMii use recommended SystemMenu
+echo    Note: If DesiredSystemMenu not specified ModMii uses recommended SystemMenu
 echo.
 echo Extras:
 echo         "Red" Red Theme [cannot be used simultaneously with other themes]
@@ -208,23 +219,25 @@ echo              "NTFS" Format HDD as NTFS
 echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
-echo          B - "CFG" Use Configurable USB-Loader [default]
+echo          B - "CFG" Use Configurable USB-Loader
 echo              "FLOW" Use WiiFlow
-echo              "GX" Use USB-Loader GX
+echo              "GX" Use USB-Loader GX [default]
 echo              "CFG-FLOW-GX" Use Configurable USB-Loader, WiiFlow and USB-Loader GX
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
 echo          "Min" Minimal Update - Choose one or more of the following updates:
-echo               "HBC" Homebrew Channel and\or BootMii
+echo               "HBC" Homebrew Channel and\or Bootmii
 echo               "REC" Recommended cIOSs (and cMIOS if enabled in options)
-echo               "YAWMM" Yet Another Wad Manager Mod
-echo               "236" IOS236
-echo               "Pri" Priiloader v0.7 and hacks_hash.ini
+::echo               "YAWMM" Yet Another Wad Manager Mod
+::echo               "236" IOS236
+echo               "Pri" Priiloader and hacks_hash.ini
 echo.
 echo         "Guide" Generate Guide ONLY
 echo.
-echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo         "str2hax" to use str2hax
+echo         "MAC:aabbccddeeff" to use Wilbrand 4.3 exploit
+echo         "LetterBomb" to use LetterBomb 4.3 exploit
 echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
@@ -234,11 +247,12 @@ echo               "ROTJ"        Return of the Jodi (U\E\J)
 echo               "YuGiOwned"   Yu-Gi Owned (U\E\J)
 echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
-echo               "AllExploits" All Disc Based Exploits
+echo         "AllExploits" All Exploits
+echo.
 echo         Notes:
 echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
-echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
+echo         Guides for 3.0-4.2 Wii's always use Bannerbomb as primary
 echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe W 3.X U 4.1
@@ -270,7 +284,9 @@ echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
 echo.
-echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo         "str2hax" to use str2hax
+echo         "MAC:aabbccddeeff" to use Wilbrand 4.3 exploit
+echo         "LetterBomb" to use LetterBomb 4.3 exploit
 echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
@@ -280,11 +296,12 @@ echo               "ROTJ"        Return of the Jodi (U\E\J)
 echo               "YuGiOwned"   Yu-Gi Owned (U\E\J)
 echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
-echo               "AllExploits" All Disc Based Exploits
+echo         "AllExploits" All Exploits
+echo.
 echo         Notes:
 echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
-echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
+echo         Guides for 3.0-4.2 Wii's always use Bannerbomb as primary
 echo.
 echo         "Rev:#" Build a Specific Rev # of neek or neek2o
 echo.
@@ -340,10 +357,10 @@ echo              "NTFS" Format HDD as NTFS
 echo              "FAT32-NTFS" Partition HDD as part FAT32 and part NTFS
 echo              "WBFS" HDD already formatted as WBFS
 echo              "WBFS-FAT32" HDD already partitioned as part FAT32 and part WBFS
-echo          B - "CFG" Use Configurable USB-Loader [default]
+echo          B - "CFG" Use Configurable USB-Loader
 echo              "FLOW" Use WiiFlow
-echo              "GX" Use USB-Loader GX
-echo              "CFG-FLOW-GX" Use both Configurable USB-Loader, WiiFlow and USB-Loader GX
+echo              "GX" Use USB-Loader GX [default]
+echo              "CFG-FLOW-GX" Use Configurable USB-Loader, WiiFlow and USB-Loader GX
 echo          C - "USBConfig" Save USB-Loader Config files to USB [default]
 echo              "SDConfig" Save USB-Loader Config files to SD Card
 echo.
@@ -357,7 +374,7 @@ echo.
 echo Press Any Key to Close the Help Menu...
 pause>nul
 exit
-`
+
 :cmdlineHMhelp
 title ModMii HackMii Solutions Command Line Help
 
@@ -373,7 +390,9 @@ echo.
 echo Extras:
 echo         "Guide" Generate Guide ONLY
 echo.
-echo         "MAC:aabbccddeeff" needed for 4.3 virgin Wii's to use Wilbrand exploit
+echo         "str2hax" to use str2hax
+echo         "MAC:aabbccddeeff" to use Wilbrand 4.3 exploit
+echo         "LetterBomb" to use LetterBomb 4.3 exploit
 echo.
 echo         Force a disc based exploit for 4.3 and ^<2.2 Wii's
 echo               "SmashStack"  Smash Stack (U\E\J\K)
@@ -383,11 +402,12 @@ echo               "ROTJ"        Return of the Jodi (U\E\J)
 echo               "YuGiOwned"   Yu-Gi Owned (U\E\J)
 echo               "EriHakawai"  Eri Hakawai (U\E\J)
 echo               "Twilight"    Twilight Hack (^<2.2 U\E\J\K)
-echo               "AllExploits" All Disc Based Exploits
+echo         "AllExploits" All Exploits
+echo.
 echo         Notes:
 echo         Default for 4.3 Wii's is "AllExploits"
 echo         Default for ^<2.2 Wii's is "AllExploits"
-echo         Guides for 3.0-4.2 Wii's always use Bannerbomb
+echo         Guides for 3.0-4.2 Wii's always use Bannerbomb as primary
 echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe HS 4.3
@@ -412,14 +432,12 @@ echo 1) sysCheck Updater "SU"
 echo 2) sysCheck Log Path\Name
 echo.
 echo Extras:
-echo         "Pri" Install Priiloader if unable to determine if already installed
-echo                 otherwise it will not be installed
 echo         "Guide" Generate Guide ONLY
 echo.
 support\sfk echo [Blue]Examples:
 echo ModMii.exe SU sysCheck.csv
 echo ModMii.exe SU X:\New Folder\syscheck.csv
-echo ModMii.exe SU "XFlaks-sysCheck.csv" Pri Guide
+echo ModMii.exe SU "XFlaks-sysCheck.csv" Guide
 echo.
 echo Press Any Key to Close the Help Menu...
 pause>nul
@@ -614,6 +632,16 @@ echo.
 echo Where;
 echo E = Enabled and D = Disabled
 echo.
+
+support\sfk echo [Cyan]Include hermes cIOSs in ModMii's Recommended cIOSs
+
+echo ModMii.exe [base command] hermes:E
+echo ModMii.exe [base command] hermes:D
+echo.
+echo Where;
+echo E = Enabled and D = Disabled
+echo.
+
 
 support\sfk echo [Cyan]Play Sound at Finish
 
@@ -986,6 +1014,30 @@ support\sfk filter temp\cmdinput.txt -rep _" CMIOS:%removeme%"__ -write -yes>nul
 :noCMIOScmd
 
 
+
+
+::-----------hermes: Option---------------
+findStr /I " hermes:" temp\cmdinput.txt >nul
+IF ERRORLEVEL 1 (goto:nohermescmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
+
+support\sfk filter -spat temp\cmdinput2.txt -rep _"* hermes:"__ -rep _\x20*__ -write -yes>nul
+
+set /p hermesOPTIONcmd= <temp\cmdinput2.txt
+
+if /i "%hermesOPTIONcmd%" EQU "E" set hermesOPTION=ON
+if /i "%hermesOPTIONcmd%" EQU "D" set hermesOPTION=OFF
+
+::overwrite option in settings.bat
+support\sfk filter Support\settings.bat -!"Set hermesOPTION=" -write -yes>nul
+echo Set hermesOPTION=%hermesOPTION%>>Support\settings.bat
+
+::remove hard option from cmdinput.txt
+set /p removeme= <temp\cmdinput2.txt
+support\sfk filter temp\cmdinput.txt -rep _" hermes:%removeme%"__ -write -yes>nul
+:nohermescmd
+
+
+
 ::-----------USB-Loader Forwarder: Option---------------
 findStr /I " FWD:" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (goto:noFWDcmd) else (copy /y temp\cmdinput.txt temp\cmdinput2.txt>nul)
@@ -1315,16 +1367,15 @@ IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
 ::Loader - GX (or 1) is default
 set LOADER=GX
 findStr /I " CFG-FLOW-GX" temp\cmdinput.txt >nul
-IF NOT ERRORLEVEL 1 set LOADER=ALL
-if /i "%LOADER%" EQU "ALL" goto:donecmdloader
+IF NOT ERRORLEVEL 1 set (LOADER=ALL) & (goto:donecmdloader)
 
 findStr /I " CFG" temp\cmdinput.txt >nul
-IF NOT ERRORLEVEL 1 set LOADER=CFG
-if /i "%LOADER%" EQU "CFG" goto:donecmdloader
+IF NOT ERRORLEVEL 1 (set LOADER=CFG) & (goto:donecmdloader)
 
 findStr /I " FLOW" temp\cmdinput.txt >nul
 IF NOT ERRORLEVEL 1 set LOADER=FLOW
 :donecmdloader
+
 
 ::USB-Loader Config files (USB is default)
 findStr /I " SDConfig" temp\cmdinput.txt >nul
@@ -1341,11 +1392,11 @@ IF ERRORLEVEL 1 (set HMInstaller=N) else (set HMInstaller=Y)
 findStr /I " REC" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set RECCIOS=N) else (set RECCIOS=Y)
 
-findStr /I " YAWMM" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set yawmQ=N) else (set yawmQ=Y)
+::findStr /I " YAWMM" temp\cmdinput.txt >nul
+::IF ERRORLEVEL 1 (set yawmQ=N) else (set yawmQ=Y)
 
-findStr /I " 236" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set IOS236InstallerQ=N) else (set IOS236InstallerQ=Y)
+::findStr /I " 236" temp\cmdinput.txt >nul
+::IF ERRORLEVEL 1 (set IOS236InstallerQ=N) else (set IOS236InstallerQ=Y)
 
 findStr /I " Pri" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set PRIQ=N) else (set PRIQ=Y)
@@ -1453,6 +1504,9 @@ exit
 :noMACcmd
 
 
+:cmdlineDiscExploits
+findStr /I /C:" LetterBomb" temp\cmdinput.txt >nul
+IF not ERRORLEVEL 1 (set EXPLOIT=W) & (set macaddress=S)
 
 
 :cmdlineDiscExploits
@@ -1484,6 +1538,14 @@ if not "%EXPLOIT%"=="" goto:nocmdlineDiscExploits
 if /i "%firmstart%" EQU "4.3" set EXPLOIT=?
 if /i "%firmstart%" EQU "o" set EXPLOIT=?
 :nocmdlineDiscExploits
+
+
+::set macaddress to (S)kip for letterbomb if no MAC provided and all exploits selected
+if not "%macaddress%"=="" goto:skip
+if /i "%EXPLOIT%" NEQ "?" goto:skip
+if /i "%firmstart%" EQU "4.3" set macaddress=S
+:skip
+
 
 goto:go
 
@@ -1564,16 +1626,15 @@ IF ERRORLEVEL 1 (set FORMAT=1) else (set FORMAT=4)
 ::Loader - GX (or 1) is default
 set LOADER=GX
 findStr /I " CFG-FLOW-GX" temp\cmdinput.txt >nul
-IF NOT ERRORLEVEL 1 set LOADER=ALL
-if /i "%LOADER%" NEQ "ALL" goto:donecmdloader
+IF NOT ERRORLEVEL 1 (set LOADER=ALL) & (goto:donecmdloader)
 
 findStr /I " CFG" temp\cmdinput.txt >nul
-IF NOT ERRORLEVEL 1 set LOADER=CFG
-if /i "%LOADER%" EQU "CFG" goto:donecmdloader
+IF NOT ERRORLEVEL 1 (set LOADER=CFG) & (goto:donecmdloader)
 
 findStr /I " FLOW" temp\cmdinput.txt >nul
 IF NOT ERRORLEVEL 1 set LOADER=FLOW
 :donecmdloader
+
 
 ::USB-Loader Config files (USB is default)
 findStr /I " SDConfig" temp\cmdinput.txt >nul
@@ -1621,10 +1682,6 @@ set /p removeme= <temp\cmdinput2.txt
 support\sfk -spat filter temp\cmdinput.txt -rep _" %removeme%"__ -write -yes>nul
 
 del temp\cmdinput2.txt>nul
-
-
-findStr /I " PRI" temp\cmdinput.txt >nul
-IF ERRORLEVEL 1 (set PRICMD=) else (set PRICMD=Y)
 
 findStr /I " Guide" temp\cmdinput.txt >nul
 IF ERRORLEVEL 1 (set cmdguide=) else (set cmdguide=G)
@@ -2015,7 +2072,6 @@ goto:defaultsettings
 ::---------------------------------------------------------
 
 
-
 ::title ModMii
 mode con cols=85 lines=54
 color 1f
@@ -2023,6 +2079,9 @@ color 1f
 ::SET FILENAME=%~nx0 //this returns the name of the batch file running (doesn't work when packaged in an exe)
 ::SET PATHNAME=%0 //this returns the filename but also with absolute path
 
+if exist support\skipscam.txt (set /p skipversion= <support\skipscam.txt) else (goto:dontskip)
+if /i "%skipversion%" EQU "%currentversion%" goto:skip
+:dontskip
 
 ::Bushing from Team Twizzers specifically requested ModMii include a scam warning
 
@@ -2068,6 +2127,19 @@ echo.
 set /p warning=     Enter Selection Here: 
 
 if /i "%warning%" EQU "I Agree" goto:skip
+
+if /i "%warning%" EQU "skipscam" goto:doit
+if /i "%warning%" NEQ "skip scam" goto:dontdoit
+:doit
+
+if exist support\skipscam.txt attrib -r -h -s support\skipscam.txt
+echo %currentversion%>Support\skipscam.txt
+attrib +r +h +s support\skipscam.txt
+goto:skip
+:dontdoit
+
+
+
 echo.
 echo                                Exiting ModMii...
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -2091,8 +2163,10 @@ IF "%PCSAVE%"=="" set PCSAVE=Auto
 IF "%OPTION1%"=="" set OPTION1=off
 IF "%OPTION36%"=="" set OPTION36=on
 IF "%AudioOption%"=="" set AudioOption=on
+IF "%hermesOPTION%"=="" set hermesOPTION=off
 IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%FWDOPTION%"=="" set FWDOPTION=on
+IF "%ExtraProtectionOPTION%"=="" set ExtraProtectionOPTION=on
 IF "%Drive%"=="" set Drive=COPY_TO_SD
 IF "%DriveU%"=="" set DriveU=COPY_TO_USB
 IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
@@ -2245,6 +2319,7 @@ if /i "%cmdlinemode%" EQU "Y" goto:MENUafterbadvars
 SET VIRGIN=
 set REGIONCHANGE=
 SET FIRMSTART=
+set macaddress=
 set STUB=
 set PIC=
 set NET=
@@ -2448,6 +2523,7 @@ set smash=
 set mmm=
 set wiimod=
 set ARC=
+set KK=
 set yawm=
 set neogamma=
 set usbfolder=
@@ -2648,26 +2724,27 @@ set cIOS249[57]-v21=
 set cIOS250[57]-v21=
 set cIOS249[58]-v21=
 set cIOS250[58]-v21=
-set cIOS249[37]-d2x-v8-final=
-set cIOS249[38]-d2x-v8-final=
-set cIOS249[53]-d2x-v8-final=
-set cIOS249[55]-d2x-v8-final=
-set cIOS249[56]-d2x-v8-final=
-set cIOS249[57]-d2x-v8-final=
-set cIOS249[58]-d2x-v8-final=
-set cIOS249[60]-d2x-v8-final=
-set cIOS249[70]-d2x-v8-final=
-set cIOS249[80]-d2x-v8-final=
-set cIOS250[37]-d2x-v8-final=
-set cIOS250[38]-d2x-v8-final=
-set cIOS250[53]-d2x-v8-final=
-set cIOS250[55]-d2x-v8-final=
-set cIOS250[56]-d2x-v8-final=
-set cIOS250[57]-d2x-v8-final=
-set cIOS250[58]-d2x-v8-final=
-set cIOS250[60]-d2x-v8-final=
-set cIOS250[70]-d2x-v8-final=
-set cIOS250[80]-d2x-v8-final=
+set cIOS251[38]-d2x-v10-beta52=
+set cIOS249[37]-d2x-v10-beta52=
+set cIOS249[38]-d2x-v10-beta52=
+set cIOS249[53]-d2x-v10-beta52=
+set cIOS249[55]-d2x-v10-beta52=
+set cIOS249[56]-d2x-v10-beta52=
+set cIOS249[57]-d2x-v10-beta52=
+set cIOS249[58]-d2x-v10-beta52=
+set cIOS249[60]-d2x-v10-beta52=
+set cIOS249[70]-d2x-v10-beta52=
+set cIOS249[80]-d2x-v10-beta52=
+set cIOS250[37]-d2x-v10-beta52=
+set cIOS250[38]-d2x-v10-beta52=
+set cIOS250[53]-d2x-v10-beta52=
+set cIOS250[55]-d2x-v10-beta52=
+set cIOS250[56]-d2x-v10-beta52=
+set cIOS250[57]-d2x-v10-beta52=
+set cIOS250[58]-d2x-v10-beta52=
+set cIOS250[60]-d2x-v10-beta52=
+set cIOS250[70]-d2x-v10-beta52=
+set cIOS250[80]-d2x-v10-beta52=
 
 if /i "%secondrun%" NEQ "Y" goto:miniskip
 if /i "%cleardownloadsettings%" NEQ "yes" goto:miniskip
@@ -2778,34 +2855,30 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x
 echo.
 echo           W = ModMii Wizard + Guide (Start Here to Mod Your Wii!)
 echo.
-echo          AW = Abstinence Wizard + Guide (Use Casper without modding your Wii)
+echo          SU = sysCheck Updater (update only your outdated softmods) + Guide
 echo.
 echo           U = USB-Loader Setup + Guide
 echo.
 echo           H = HackMii Solutions (Upside-Down HBC\No Vulnerable IOS Fix) + Guide
 echo.
-echo          SU = sysCheck Updater (update only your outdated softmods) + Guide
+echo          AW = Abstinence Wizard + Guide (Use Casper without modding your Wii)
 echo.
 echo          RC = Region Change + Guide
 echo.
-echo           S = SNEEK Installation, Nand Builder, Game Bulk Extractor
+echo           S = SNEEK Installation, EmuNAND Builder\Modifier, Game Bulk Extractor
 echo.
-echo.
-echo           1 = Download Page 1 (System Menu's, IOSs, MIOSs, Channels, etc.)
-echo.
+echo           1 = Download Page 1 (System Menus, IOSs, MIOSs, Channels, etc.)
 echo           2 = Download Page 2 (Apps, USB-Loader Files, CheatCodes, etc.)
-echo.
 echo           3 = Download Page 3 (System Menu Themes)
-echo.
 echo           4 = Download Page 4 (cIOSs and cMIOSs)
 echo.
 echo           A = Advanced Downloads and Forwarder DOL\ISO Builder
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 L = Load Download Queue:[Yellow] Nintendo could possibly shut down their servers!
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]Download from NUS while you still can! After ModMii's downloaded
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]files to its temp folder for future use you can delete COPY_TO_SD
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Yellow]files to its temp folder for future use you can delete 'COPY_TO_SD'
 echo.
-echo           C = Build Config Files for BootMii, Wad Manager or Multi-Mod Manager
+echo           C = Build Config Files for Bootmii, Wad Manager or Multi-Mod Manager
 echo.
 echo          FC = File Cleanup: Remove un-needed files after Modding
 echo.
@@ -2815,7 +2888,7 @@ echo.
 echo           M = ModMii Skin Mode: use your mouse instead of your keyboard!
 echo.
 echo      *********MORE INFO*********
-support\sfk echo -spat \x20 \x20 [RED] WWW = Open modmii.000webhostapp.com to ask questions, provide feedback or vote
+support\sfk echo -spat \x20 \x20 [RED] WWW = Visit modmii.github.io for more info, support, vote or to donate!
 echo.
 echo      Use the ModMii Wizard to set-up your SD card with all you need to softmod
 echo      your Wii or up/downgrade it and much more. When using the ModMii Wizard,
@@ -2848,9 +2921,9 @@ if /i "%MENU1%" EQU "AW" (set MENU1=S) & (set SNEEKSELECT=3) & (set AbstinenceWi
 
 
 
-if /i "%MENU1%" EQU "CR" (start http://modmii.000webhostapp.com/credits.html) & (goto:MENU)
+if /i "%MENU1%" EQU "CR" (start https://modmii.github.io/credits.html) & (goto:MENU)
 
-if /i "%MENU1%" EQU "WWW" (start http://modmii.000webhostapp.com) & (goto:MENU)
+if /i "%MENU1%" EQU "WWW" (start https://modmii.github.io) & (goto:MENU)
 
 
 ::if not exist temp\DownloadQueues\*.bat goto:noload
@@ -2874,6 +2947,9 @@ goto:MENU
 .......
 :OPTIONS
 
+mode con cols=85 lines=60
+
+
 Set WLAST=
 Set Options=
 set cheatoption=
@@ -2884,14 +2960,47 @@ echo.
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]Enter the option # (or letter) to enable/disable it
 echo.
-echo           D = Change Drive letter (Current Setting: %Drive%)
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 D = Change Drive letter (Current Setting: [Cyan]%Drive%)
 echo.
-echo          DU = Change Drive letter for USB (Current Setting: %DriveU%)
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20DU = Change Drive letter for USB (Current Setting: [Cyan]%DriveU%)
 echo.
-echo          CC = Cheat Code Options
+support\sfk echo -spat \x20 \x20 \x20 \x20 d2x = change d2x cIOS version built (Current Setting: [Cyan]v%d2x-beta-rev%)
+echo.
+if /i "%hermesOPTION%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 H = Hermes cIOSs (202 ^& 222-224) will also be recommended [Red](Disabled)
+if /i "%hermesOPTION%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 H = Hermes cIOSs (202 ^& 222-224) will also be recommended [Green](Enabled)
 
+echo               * Generally no longer necessary but may still be useful in some cases
 echo.
-echo          PC = PC Programs Save Location (Current Setting: %PCSAVE%)
+
+
+if /i "%CMIOSOPTION%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20CM = cMIOS included in recommended cIOSs [Red](Disabled)
+if /i "%CMIOSOPTION%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20CM = cMIOS included in recommended cIOSs [Green](Enabled)
+echo               * A cMIOS allows older non-chipped Wii's to play GameCube backup discs
+echo.
+
+if /i "%ExtraProtectionOPTION%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20            E = Extra Brick Protection in ModMii Wizard Guides [Red](Disabled)
+if /i "%ExtraProtectionOPTION%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20            E = Extra Brick Protection in ModMii Wizard Guides [Green](Enabled)
+echo               * When enabled, a patched IOS60 will be installed to other system menu
+echo                 IOS slots to prevent bricks from users manually up\downgrading Wii's
+echo.
+
+if /i "%ACTIVEIOS%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 U = Update IOSs. Wizard/sysCheck-Updater to update Active IOSs [Red](Disabled)
+if /i "%ACTIVEIOS%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 U = Update IOSs. Wizard/sysCheck-Updater to update Active IOSs [Green](Enabled)
+echo.
+
+if /i "%ACTIVEIOS%" EQU "OFF" goto:skip36
+if /i "%OPTION36%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x2036 = Install IOS36 when updating all Active IOS Downloads [Red](Disabled)
+if /i "%OPTION36%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x2036 = Install IOS36 when updating all Active IOS Downloads [Green](Enabled)
+echo               * Your existing IOS36 may be patched. The downloaded IOS36 is not
+echo.
+:skip36
+
+if /i "%FWDOPTION%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 FWD = Install USB-Loader Forwarder in ModMii Wizard Guides [Red](Disabled)
+if /i "%FWDOPTION%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 FWD = Install USB-Loader Forwarder in ModMii Wizard Guides [Green](Enabled)
+echo.
+
+
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20PC = PC Programs Save Location (Current Setting: [Cyan]%PCSAVE%)
 if /i "%PCSAVE%" EQU "Local" echo               * PC Programs saved to %HomeDrive%
 if /i "%PCSAVE%" EQU "Local" echo               * Shortcuts will be installed to Start Menu and Desktop
 
@@ -2903,75 +3012,63 @@ echo               * PC programs saved portably if not running ModMii from %home
 :skip
 
 echo.
-if /i "%ROOTSAVE%" EQU "ON" echo          RS = Root Save: Save IOSs\MIOSs to Root instead of WAD Folder (Enabled)
-if /i "%ROOTSAVE%" EQU "OFF" echo          RS = Root Save: Save IOSs\MIOSs to Root instead of WAD Folder (Disabled)
+echo          CC = Cheat Code Options
+
+
+echo.
+if /i "%ROOTSAVE%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20RS = Root Save: Save IOSs\MIOSs to Root instead of WAD Folder [Green](Enabled)
+if /i "%ROOTSAVE%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20RS = Root Save: Save IOSs\MIOSs to Root instead of WAD Folder [Red](Disabled)
 echo               * Does NOT affect ModMii Wizard and only applies to IOSs\MIOSs
 echo               * Useful for Wii Apps that require IOSs\MIOSs saved to Root
-echo.
+::echo.
 
 ::echo          CE = Channel Effect for custom system menu themes: %effect%
 ::echo               * Choose from 3 effects: No-Spin, Spin and Fast-Spin
 ::echo.
 
 
-
-if /i "%OPTION1%" EQU "OFF" echo           1 = Do not Keep 00000001 or NUS Folders for IOSs\MIOSs\SMs etc
+if /i "%OPTION1%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 1 = Do not Keep 00000001 or NUS Folders for IOSs\MIOSs\SMs etc [Cyan](Default)
 if /i "%OPTION1%" EQU "OFF" echo               * Folder sometimes required for offline usage of a few Wii Apps
-if /i "%OPTION1%" EQU "ON" echo           1 = Keep 00000001 Folder for IOSs\MIOSs\SMs etc
+
+if /i "%OPTION1%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 1 = Keep 00000001 Folder for IOSs\MIOSs\SMs etc [Cyan](Option 2)
 if /i "%OPTION1%" EQU "ON" echo               * Useful for offline usage of Wii Apps like Dop-Mii
 
-if /i "%OPTION1%" EQU "NUS" echo           1 = Keep NUS\00000001000000##v# Folder for IOSs\MIOSs\SMs etc
+if /i "%OPTION1%" EQU "NUS" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 1 = Keep NUS Folder for IOSs\MIOSs\SMs etc [Cyan](Option 3: NUS)
 if /i "%OPTION1%" EQU "NUS" echo               * Useful for offline usage of Wii Apps like d2x\Hermes cIOS Installers
 
-if /i "%OPTION1%" EQU "ALL" echo           1 = Keep NUS\00000001000000##v# and 00000001 Folder for IOSs\MIOSs\SMs etc
+if /i "%OPTION1%" EQU "ALL" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 1 = Keep NUS and 00000001 Folder for IOSs\MIOSs\SMs etc [Cyan](Option 4: ALL)
 if /i "%OPTION1%" EQU "ALL" echo               * Useful for offline usage of a handful of Wii Apps
 echo.
 
-if /i "%ACTIVEIOS%" EQU "OFF" echo           U = Update IOSs. Wizard/sysCheck-Updater to update Active IOSs (Disabled)
-if /i "%ACTIVEIOS%" EQU "ON" echo           U = Update IOSs. Wizard/sysCheck-Updater to update Active IOSs (Enabled)
-echo.
-
-if /i "%ACTIVEIOS%" EQU "OFF" goto:skip36
-if /i "%OPTION36%" EQU "OFF" echo          36 = Install IOS36 when updating all Active IOS Downloads (Disabled)
-if /i "%OPTION36%" EQU "ON" echo          36 = Install IOS36 when updating all Active IOS Downloads (Enabled)
-echo               * Your existing IOS36 may be patched. The downloaded IOS36 is not
-echo.
-:skip36
-
-if /i "%CMIOSOPTION%" EQU "OFF" echo          CM = cMIOS included in ModMii Wizard Guides (Disabled)
-if /i "%CMIOSOPTION%" EQU "ON" echo          CM = cMIOS included in ModMii Wizard Guides (Enabled)
-echo               * A cMIOS allows older non-chipped Wii's to play GameCube backup discs
-echo.
-
-if /i "%FWDOPTION%" EQU "OFF" echo         FWD = Install USB-Loader Forwarder in ModMii Wizard Guides (Disabled)
-if /i "%FWDOPTION%" EQU "ON" echo         FWD = Install USB-Loader Forwarder in ModMii Wizard Guides (Enabled)
-echo.
-
-if /i "%AudioOption%" EQU "OFF" echo          SO = Play sound at at Finish (Disabled)
-if /i "%AudioOption%" EQU "ON" echo          SO = Play sound at at Finish (Enabled)
-echo.
-
-if /i "%ModMiiverbose%" EQU "off" echo           V = Verbose Output maximized when using wget or Sneek Installer (Disabled)
-if /i "%ModMiiverbose%" EQU "on" echo           V = Verbose Output maximized when using wget or Sneek Installer (Enabled)
-echo.
 
 
-if /i "%neek2o%" EQU "off" echo         n2o = neek2o - build mod of s\uneek instead of original (Disabled)
-if /i "%neek2o%" EQU "on" echo         n2o = neek2o - build mod of s\uneek instead of original (Enabled)
-echo.
+
+if /i "%neek2o%" EQU "off" support\sfk echo -spat \x20 \x20 \x20 \x20 n2o = neek2o - build mod of s\uneek instead of original [Red](Disabled)
+if /i "%neek2o%" EQU "on" support\sfk echo -spat \x20 \x20 \x20 \x20 n2o = neek2o - build mod of s\uneek instead of original [Green](Enabled)
+::echo.
 
 
-if /i "%SSD%" EQU "off" echo         SSD = SNEEK and SNEEK+DI SD Access (Disabled)
-if /i "%SSD%" EQU "on" echo         SSD = SNEEK and SNEEK+DI SD Access (Enabled)
-echo.
-
-if /i "%sneekverbose%" EQU "off" echo          SV = SNEEK Verbose Output (Disabled)
-if /i "%sneekverbose%" EQU "on" echo          SV = SNEEK Verbose Output (Enabled)
-echo.
+if /i "%SSD%" EQU "off" support\sfk echo -spat \x20 \x20 \x20 \x20 SSD = SNEEK and SNEEK+DI SD Access [Red](Disabled)
+if /i "%SSD%" EQU "on" support\sfk echo -spat \x20 \x20 \x20 \x20 SSD = SNEEK and SNEEK+DI SD Access [Green](Enabled)
+::echo.
 
 if /i "%SNKFONT%" EQU "W" echo           F = Font.bin Colour for SNEEK+DI/UNEEK+DI (WHITE)
-if /i "%SNKFONT%" EQU "B" echo           F = Font.bin Colour for SNEEK+DI/UNEEK+DI (BLACK)
+if /i "%SNKFONT%" EQU "B" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 F = Font.bin Colour for SNEEK+DI/UNEEK+DI (BLACK)
+::echo.
+if /i "%sneekverbose%" EQU "off" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20SV = SNEEK Verbose Output [Red](Disabled)
+if /i "%sneekverbose%" EQU "on" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20SV = SNEEK Verbose Output [Green](Enabled)
 echo.
+
+if /i "%ModMiiverbose%" EQU "off" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 V = Verbose Output maximized when using wget or Sneek Installer [Red](Disabled)
+if /i "%ModMiiverbose%" EQU "on" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 V = Verbose Output maximized when using wget or Sneek Installer [Green](Enabled)
+echo.
+
+
+if /i "%AudioOption%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20SO = Play sound at at Finish [Red](Disabled)
+if /i "%AudioOption%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20SO = Play sound at at Finish [Green](Enabled)
+echo.
+
+
 
 if not exist "%DRIVE%" goto:nodrivefolder
 echo           C = Create Custom.md5 file to verify all files in %DRIVE%
@@ -2979,8 +3076,8 @@ if exist Custom.md5 echo          C2 = Verify files in %DRIVE% against Custom.md
 :nodrivefolder
 if exist Custom.md5 echo          C3 = Delete Custom.md5
 echo.
-if /i "%AUTOUPDATE%" EQU "OFF" echo           A = Auto-Update ModMii at program start (Disabled)
-if /i "%AUTOUPDATE%" EQU "ON" echo           A = Auto-Update ModMii at program start (Enabled)
+if /i "%AUTOUPDATE%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20            A = Auto-Update ModMii at program start [Red](Disabled)
+if /i "%AUTOUPDATE%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 \x20            A = Auto-Update ModMii at program start [Green](Enabled)
 ::echo.
 echo           N = Check for New versions of ModMii right now
 echo.
@@ -2988,6 +3085,8 @@ echo       S = Save Settings       R = Restore Default Settings       M = Main M
 echo.
 set /p OPTIONS=     Enter Selection Here: 
 
+
+if /i "%OPTIONS%" EQU "d2x" (set backbeforebetaswitch=OPTIONS) & (goto:betaswitch)
 
 if /i "%OPTIONS%" EQU "RS" goto:ROOTSAVE
 if /i "%OPTIONS%" EQU "PC" goto:PCSAVE
@@ -2997,8 +3096,10 @@ if /i "%OPTIONS%" EQU "N" goto:UpdateModMii
 if /i "%OPTIONS%" EQU "A" goto:AutoUpdate
 if /i "%OPTIONS%" EQU "36" goto:Option36
 if /i "%OPTIONS%" EQU "SO" goto:AudioOption
+if /i "%OPTIONS%" EQU "H" goto:hermesOPTION
 if /i "%OPTIONS%" EQU "CM" goto:CMIOSOPTION
 if /i "%OPTIONS%" EQU "FWD" goto:FWDOPTION
+if /i "%OPTIONS%" EQU "E" goto:ExtraProtectionOPTION
 if /i "%OPTIONS%" EQU "sv" goto:OptionSneekverbose
 if /i "%OPTIONS%" EQU "n2o" goto:Optionneek2o
 if /i "%OPTIONS%" EQU "v" goto:OptionModMiiverbose
@@ -3041,13 +3142,14 @@ if /i "%OPTIONS%" EQU "D" set BACKB4DRIVE=OPTIONS
 if /i "%OPTIONS%" EQU "D" goto:DRIVECHANGE
 if /i "%OPTIONS%" EQU "DU" set BACKB4DRIVEU=OPTIONS
 if /i "%OPTIONS%" EQU "DU" goto:DRIVEUCHANGE
+
 if /i "%OPTIONS%" EQU "CC" goto:cheatcodeoptions
 
 if /i "%OPTIONS%" EQU "U" goto:ACTIVEIOS
 if /i "%OPTIONS%" EQU "S" goto:SaveSettings
 if /i "%OPTIONS%" EQU "R" goto:RestoreSettings
 if /i "%OPTIONS%" EQU "M" goto:MENU
-
+if /i "%OPTIONS%" EQU "B" goto:MENU
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -3061,14 +3163,19 @@ goto:OPTIONS
 
 
 :RestoreSettings
+if exist support\d2x-beta (rd /s /q support\d2x-beta) & (set backbeforebetaswitch=RestoreSettings) & (goto:d2xfix)
+set d2x-beta-rev=10-beta52
+
 set ROOTSAVE=off
 set effect=No-Spin
 set PCSAVE=Auto
 set OPTION1=off
 set OPTION36=on
 set AudioOption=on
+set hermesOPTION=off
 set CMIOSOPTION=off
 set FWDOPTION=on
+set ExtraProtectionOPTION=on
 set Drive=COPY_TO_SD
 set DriveU=COPY_TO_USB
 set ACTIVEIOS=on
@@ -3103,7 +3210,7 @@ set TurboGraFX-CDcheat=ON
 if /i "%cheatoption%" EQU "A" goto:cheatcodeoptions
 if /i "%cheatoption%" EQU "D" goto:cheatcodeoptions
 goto:savesettingsnow
-
+::note: set d2x-beta-rev=x does not need to be saved, just edit replace to update it
 
 
 
@@ -3121,8 +3228,10 @@ echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
 echo Set Option1=%Option1%>> Support\settings.bat
 echo Set OPTION36=%OPTION36%>> Support\settings.bat
 echo Set AudioOption=%AudioOption%>> Support\settings.bat
+echo Set hermesOPTION=%hermesOPTION%>> Support\settings.bat
 echo Set CMIOSOPTION=%CMIOSOPTION%>> Support\settings.bat
 echo Set FWDOPTION=%FWDOPTION%>> Support\settings.bat
+echo Set ExtraProtectionOPTION=%ExtraProtectionOPTION%>> Support\settings.bat
 echo Set Drive=%DRIVE%>> Support\settings.bat
 echo Set DriveU=%DRIVEU%>> Support\settings.bat
 echo Set overwritecodes=%overwritecodes%>> Support\settings.bat
@@ -3151,6 +3260,7 @@ echo Set MSXcheat=%MSXcheat%>> Support\settings.bat
 echo Set TurboGraFX-16cheat=%TurboGraFX-16cheat%>> Support\settings.bat
 echo Set TurboGraFX-CDcheat=%TurboGraFX-CDcheat%>> Support\settings.bat
 echo set AGREEDVERSION=%currentversion%>> Support\settings.bat
+
 if /i "%OPTIONS%" EQU "R" goto:OPTIONS
 if exist Support\settings.bat echo                                     Settings Saved.
 echo.
@@ -3214,6 +3324,15 @@ goto:OPTIONS
 Set CMIOSOPTION=OFF
 goto:OPTIONS
 
+:hermesOPTION
+if /i "%hermesOPTION%" EQU "ON" goto:hermesOPTIONoff
+Set hermesOPTION=ON
+goto:OPTIONS
+
+:hermesOPTIONoff
+Set hermesOPTION=OFF
+goto:OPTIONS
+
 :FWDOPTION
 if /i "%FWDOPTION%" EQU "ON" goto:FWDOPTIONoff
 Set FWDOPTION=ON
@@ -3221,6 +3340,10 @@ goto:OPTIONS
 
 :FWDOPTIONoff
 Set FWDOPTION=OFF
+goto:OPTIONS
+
+:ExtraProtectionOPTION
+if /i "%ExtraProtectionOPTION%" EQU "ON" (Set ExtraProtectionOPTION=OFF) else (set ExtraProtectionOPTION=ON)
 goto:OPTIONS
 
 :OptionSneekverbose
@@ -3302,14 +3425,16 @@ echo.
 echo                                  CHEAT CODE OPTIONS
 echo.
 echo.
-echo           R = Region to download cheats for: (%cheatregion%)
+support\sfk echo -spat \x20 \x20 \x20 \x20 R = Region to download cheats for: [Cyan](%cheatregion%)
 echo.
-if /i "%overwritecodes%" EQU "OFF" echo           O = Overwrite existing txtcodes (Disabled)
-if /i "%overwritecodes%" EQU "ON" echo           O = Overwrite existing txtcodes (Enabled)
+
+
+if /i "%overwritecodes%" EQU "OFF" support\sfk echo -spat \x20 \x20 \x20 \x20 O = Overwrite existing txtcodes [Red](Disabled)
+if /i "%overwritecodes%" EQU "ON" support\sfk echo -spat \x20 \x20 \x20 \x20 O = Overwrite existing txtcodes [Green](Enabled)
 echo.
-if /i "%cheatlocation%" EQU "B" echo           L = Location(s) to save cheats: (Both 1 and 2)
-if /i "%cheatlocation%" EQU "T" echo           L = Location(s) to save cheats: (1: txtcodes)
-if /i "%cheatlocation%" EQU "C" echo           L = Location(s) to save cheats: (2: codes\X\L)
+if /i "%cheatlocation%" EQU "B" support\sfk echo -spat \x20 \x20 \x20 \x20 L = Location(s) to save cheats: [Cyan](Both 1 and 2)
+if /i "%cheatlocation%" EQU "T" support\sfk echo -spat \x20 \x20 \x20 \x20 L = Location(s) to save cheats: [Cyan](1: txtcodes)
+if /i "%cheatlocation%" EQU "C" support\sfk echo -spat \x20 \x20 \x20 \x20 L = Location(s) to save cheats: [Cyan](2: codes\X\L)
 echo               1: - txtcodes: location used by most apps, including CFG USB-Loader
 echo               2: - codes\X\L\: location used by Accio Hacks
 echo                        X = Console ID Letter (ie. Wii = R)
@@ -3325,7 +3450,7 @@ if /i "%wiicheat%" EQU "ON" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x2
 if /i "%WiiWarecheat%" EQU "ON" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]2 = WiiWare) else (echo                 2 = WiiWare)
 
 ::if /i "%VCArcadecheat%" EQU "ON" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]3 = VC Arcade)  else (echo                 3 = VC Arcade)
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]3 = VC Arcade (Disabled due to geckocodes.org error)
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]3 = VC Arcade (Disabled due to codes.rc24.xyz error)
 
 if /i "%WiiChannelscheat%" EQU "ON" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]4 = Wii Channels)  else (echo                 4 = Wii Channels)
 if /i "%Gamecubecheat%" EQU "ON" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green]5 = Gamecube)  else (echo                 5 = Gamecube)
@@ -3409,8 +3534,15 @@ if /i "%countconsoles%" EQU "0" echo Select at least one console to download che
 if /i "%countconsoles%" EQU "0" @ping 127.0.0.1 -n 3 -w 1000> nul
 if /i "%countconsoles%" EQU "0" goto:cheatcodeoptions
 
-if /i "%cheatoption%" EQU "B" goto:Options
 if /i "%cheatoption%" EQU "M" goto:MENU
+
+
+if /i "%cheatoption%" NEQ "B" goto:notback
+if /i "%MENU1%" NEQ "O" goto:OLDLIST
+goto:Options
+:notback
+
+
 
 
 
@@ -3527,12 +3659,9 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo.
 echo         Enter the drive letter (or Path) to save files for your SD Card
 echo.
-echo.
-echo             Current Setting:   %Drive%
-echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 Current Setting: [Cyan]%Drive%
 echo.
 echo         Notes: * To continue using Current Settings
 echo                  leave the selection blank and hit enter.
@@ -3540,12 +3669,16 @@ echo.
 echo                * You can drag and drop the Drive/folder into this
 echo                  window to save yourself having to manually type it
 echo.
-echo                * If you continue to experience errors, try using default settings
+echo                * If you experience errors, try using default settings
 echo.
+echo                * If your SD Card is not already formatted as FAT32 (or if
+echo                  you are unsure), it may save some time by using default settings
 echo.
+echo                * If your Wii's SD Card reader is broken, you can use a Hard Drive
+echo                  formatted as FAT32 in place of an SD Card to complete most things
+echo                  (SD notably required for Bootmii, NAND backup ^& SNEEK).
 echo.
 echo         EXAMPLES
-echo.
 echo.
 echo            L:
 echo.
@@ -3558,14 +3691,11 @@ echo.
 echo            C:\Users\XFlak\Desktop\New Folder
 echo.
 echo.
-echo.
 echo         D = Default Setting: COPY_TO_SD
-echo.
 echo.
 echo         B = Back
 echo.
 echo         M = Main Menu
-echo.
 echo.
 set /p Drivetemp=     Enter Selection Here: 
 
@@ -3577,7 +3707,6 @@ del temp\temp.bat>nul
 del temp\temp.txt>nul
 
 
-
 if /i "%DRIVETEMP%" EQU "M" goto:MENU
 if /i "%DRIVETEMP%" EQU "B" goto:%BACKB4DRIVE%
 if /i "%DRIVETEMP%" EQU "D" set DRIVETEMP=COPY_TO_SD
@@ -3585,11 +3714,12 @@ if /i "%DRIVETEMP%" EQU "D" set DRIVETEMP=COPY_TO_SD
 
 :doublecheck
 set fixslash=
+if "%DRIVETEMP%"=="" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVECHANGE)
 if /i "%DRIVETEMP:~-1%" EQU "\" set fixslash=yes
 if /i "%DRIVETEMP:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set DRIVETEMP=%DRIVETEMP:~0,-1%
 if /i "%fixslash%" EQU "yes" goto:doublecheck
-
+:skip
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVETEMP:~1,1%" NEQ ":" goto:skipcheck
@@ -3598,6 +3728,12 @@ echo %DRIVETEMP:~0,2% doesn't exist, please try again...
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:DRIVECHANGE
 :skipcheck
+
+
+::try making directory, and if fails, don't use this setting
+if not exist "%DRIVETEMP%" mkdir "%DRIVETEMP%"
+if not exist "%DRIVETEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVECHANGE)
+
 
 
 set DRIVE=%DRIVETEMP%
@@ -3653,7 +3789,7 @@ echo.
 echo         Enter the drive letter (or Path) to save files for your USB Hard Drive
 echo.
 echo.
-echo             Current Setting:   %DriveU%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 Current Setting: [Cyan]%DriveU%
 echo.
 echo.
 echo         Notes: * To continue using Current Settings
@@ -3662,12 +3798,12 @@ echo.
 echo                * You can drag and drop the Drive/folder into this
 echo                  window to save yourself having to manually type it
 echo.
-echo                * If you continue to experience errors, try using default settings
+echo                * If you experience errors, try using default settings
 echo.
-echo.
+echo                * If your Hard Drive is not already formatted properly (or if
+echo                  you are unsure), it may save some time by using default settings
 echo.
 echo         EXAMPLES
-echo.
 echo.
 echo            L:
 echo.
@@ -3678,7 +3814,6 @@ echo            ModMii\4.2U
 echo                  Note: this creates ModMii\4.2U folders where this program is Saved
 echo.
 echo            C:\Users\XFlak\Desktop\New Folder
-echo.
 echo.
 echo.
 echo         D = Default Setting: COPY_TO_USB
@@ -3708,6 +3843,7 @@ if /i "%DRIVEUTEMP%" EQU "D" set DRIVEUTEMP=COPY_TO_USB
 
 :doublecheckU
 set fixslash=
+if "%DRIVEUTEMP%"=="" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVEUCHANGE)
 if /i "%DRIVEUTEMP:~-1%" EQU "\" set fixslash=yes
 if /i "%DRIVEUTEMP:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set DRIVEUTEMP=%DRIVEUTEMP:~0,-1%
@@ -3723,6 +3859,9 @@ echo %DRIVEUTEMP:~0,2% doesn't exist, please try again...
 goto:DRIVEUCHANGE
 :skipcheck
 
+::try making directory, and if fails, don't use this setting
+if not exist "%DRIVETEMP%" mkdir "%DRIVETEMP%"
+if not exist "%DRIVETEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVEUCHANGE)
 
 
 set DRIVEU=%DRIVEUTEMP%
@@ -3763,7 +3902,6 @@ goto:Options
 
 :UpdateModMii
 
-if exist "ModMiiSkin.bat@format=raw" del "ModMiiSkin.bat@format=raw">nul
 
 cls
 echo                                        ModMii                                v%currentversion%
@@ -3775,32 +3913,52 @@ echo.
 echo                                 Checking for updates...
 echo.
 
-start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/p/modmii/code/HEAD/tree/trunk/ModMii English/ModMiiSkin.bat?format=raw"
 
-if exist "ModMiiSkin.bat@format=raw" (move /y "ModMiiSkin.bat@format=raw" temp\list.txt>nul) else (goto:updatefail)
+::only if temp\currentversion.txt exists updater.bat will do start updating when called or started, otherwise will just get info and return to loader ::echo %currentversion%>>temp\currentversion.txt
+if exist "temp\currentversion.txt" del "temp\currentversion.txt">nul
 
-support\sfk filter -quiet "temp\list.txt" ++"set currentversion=" -rep _"set currentversion="__ -write -yes
 
-set /p newversion= <temp\list.txt
+::comment these for local Updatetemp.bat for testing... (updater.bat is renamed to Updatetemp.bat for legacy purposes)
+if exist Updatetemp.bat del Updatetemp.bat>nul
 
-del temp\list.txt>nul
+
+start %ModMiimin%/wait support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat
+if not exist Updatetemp.bat goto:altlink
+::DELETE IF NULL
+for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+
+
+:altlink
+if not exist "Updatetemp.bat" start %ModMiimin%/wait support\wget --no-check-certificate "http://tiny.cc/modmiiupdater" -O Updatetemp.bat
+
+if not exist Updatetemp.bat goto:updatefail
+::DELETE IF NULL
+for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+
+::Call to get new version info and changelogURL
+if exist Updatetemp.bat (call Updatetemp.bat) else (goto:updatefail)
+if "%newversion%"=="" goto:updatefail
 
 
 if /i "%MENU1%" EQU "O" goto:skip
 
-if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
-
-if %currentversion% EQU %newversion% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
+if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (del Updatetemp.bat>nul) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
+if %currentversion% EQU %newversion% (echo                              This version is up to date) & (del Updatetemp.bat>nul) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
 
 :skip
-if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
+if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (del Updatetemp.bat>nul) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
+if %currentversion% EQU %newversion% (echo                              This version is up to date) & (del Updatetemp.bat>nul) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
 
-if %currentversion% EQU %newversion% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:OPTIONS)
+
+
+::if you made it this far, there's an update!
 
 
 ::openchangelog
-start http://modmii.000webhostapp.com/changelog.html
 
+
+
+start %changelogURL%
 
 :updateconfirm
 set updatenow=
@@ -3842,48 +4000,15 @@ goto:updateconfirm
 
 
 :updatenow
-
-cls
-echo                                        ModMii                                v%currentversion%
-echo                                       by XFlak
-echo.
-echo.
-echo                            Updating from v%currentversion% to v%newversion%
-echo.
-echo.
-echo                                     Please Wait...
-echo.
-
-
-if not exist "%UPDATENAME%%newversion%.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://sourceforge.net/projects/modmii/files/%UPDATENAME%%newversion%.zip
-
-if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
-
-copy /y support\7za.exe support\7za2.exe>nul
-
-echo @echo off>Updatetemp.bat
-echo mode con cols=85 lines=54 >>Updatetemp.bat
-echo color 1f>>Updatetemp.bat
-echo echo                                        ModMii                                v%currentversion%>>Updatetemp.bat
-echo echo                                       by XFlak>>Updatetemp.bat
-echo echo.>>Updatetemp.bat
-echo echo.>>Updatetemp.bat
-echo echo                            Updating from v%currentversion% to v%newversion%>>Updatetemp.bat
-echo echo.>>Updatetemp.bat
-echo echo.>>Updatetemp.bat
-echo echo                                     Please Wait...>>Updatetemp.bat
-echo echo.>>Updatetemp.bat
-
-
-echo if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat">>Updatetemp.bat
-echo if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat">>Updatetemp.bat
-echo support\7za2 x %UPDATENAME%%newversion%.zip -aoa>>Updatetemp.bat
-echo del %UPDATENAME%%newversion%.zip^>nul>>Updatetemp.bat
-echo del support\7za2.exe^>nul>>Updatetemp.bat
-echo Start ModMii.exe>>Updatetemp.bat
-echo exit>>Updatetemp.bat
+::launch updater with temp\currentversion.txt to do the update
+::only if temp\currentversion.txt exists updater will do start updating when called or started
+::updater runs in skin mode if temp\skin.txt detected
+echo %currentversion%>>temp\currentversion.txt
+if exist temp\skin.txt del temp\skin.txt>nul
 start Updatetemp.bat
 exit
+
+
 
 
 :updatefail
@@ -3912,8 +4037,11 @@ if exist "%DRIVE%"\apps\DOP-Mii SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MMM SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\WiiMod SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\ARCmod06_Offline SET /a cleanitems=%cleanitems%+1
+if exist "%DRIVE%"\apps\ARCME SET /a cleanitems=%cleanitems%+1
+if exist "%DRIVE%"\apps\KoreanKii SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\MIOSPatcher SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\Priiloader SET /a cleanitems=%cleanitems%+1
+if exist "%DRIVE%"\apps\Priiloader_launcher SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\YAWMM SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\HackMii_Installer SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\apps\IOS236-v5-Mod SET /a cleanitems=%cleanitems%+1
@@ -3922,7 +4050,7 @@ if exist "%DRIVE%"\*.dol SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\*.elf SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\*.wad SET /a cleanitems=%cleanitems%+1
 if exist "%DRIVE%"\*.md5 SET /a cleanitems=%cleanitems%+1
-
+if exist "%DRIVE%"\ModMii*.html SET /a cleanitems=%cleanitems%+1
 
 ::smash stack USA check
 set path2clean=%DRIVE%\private\wii\app\rsbe\st\st_080805_0933.bin
@@ -4280,8 +4408,11 @@ if exist "%DRIVE%"\apps\DOP-Mii echo          * apps\DOP-Mii
 if exist "%DRIVE%"\apps\MMM echo          * apps\MMM
 if exist "%DRIVE%"\apps\WiiMOd echo          * apps\WiiMod
 if exist "%DRIVE%"\apps\ARCmod06_Offline echo          * apps\ARCmod06_Offline
+if exist "%DRIVE%"\apps\ARCME echo          * apps\ARCME
+if exist "%DRIVE%"\apps\KoreanKii echo          * apps\KoreanKii
 if exist "%DRIVE%"\apps\MIOSPatcher echo          * apps\MIOSPatcher
 if exist "%DRIVE%"\apps\Priiloader echo          * apps\Priiloader
+if exist "%DRIVE%"\apps\Priiloader_launcher echo          * apps\Priiloader_launcher
 if exist "%DRIVE%"\apps\YAWMM echo          * apps\YAWMM
 if exist "%DRIVE%"\apps\HackMii_Installer echo          * apps\HackMii_Installer
 if exist "%DRIVE%"\apps\IOS236-v5-Mod echo          * apps\IOS236-v5-Mod
@@ -4291,6 +4422,7 @@ if exist "%DRIVE%"\*.dol echo          * dol's from root of device
 if exist "%DRIVE%"\*.elf echo          * elf's from root of device
 if exist "%DRIVE%"\*.wad echo          * wad's from root of device
 if exist "%DRIVE%"\*.md5 echo          * md5's from root of device
+if exist "%DRIVE%"\ModMii*.html echo          * ModMii html guides from root of device
 echo.
 echo         Note: All the above files, with the exception of custom WADs,
 echo               can be retrieved again later using ModMii
@@ -4339,6 +4471,7 @@ echo.
 echo.
 echo                                    CLEANING FILES...
 echo.
+if exist "%DRIVE%"\ModMii*.html del "%DRIVE%"\ModMii*.html> nul
 if exist "%DRIVE%"\*.dol del "%DRIVE%"\*.dol> nul
 if exist "%DRIVE%"\*.elf del "%DRIVE%"\*.elf> nul
 if exist "%DRIVE%"\*.wad del "%DRIVE%"\*.wad> nul
@@ -4353,8 +4486,11 @@ if exist "%DRIVE%"\apps\DOP-Mii rd /s /q "%DRIVE%"\apps\DOP-Mii> nul
 if exist "%DRIVE%"\apps\MMM rd /s /q "%DRIVE%"\apps\MMM> nul
 if exist "%DRIVE%"\apps\WiiMod rd /s /q "%DRIVE%"\apps\WiiMod> nul
 if exist "%DRIVE%"\apps\ARCmod06_Offline rd /s /q "%DRIVE%"\apps\ARCmod06_Offline> nul
+if exist "%DRIVE%"\apps\ARCME rd /s /q "%DRIVE%"\apps\ARCME> nul
+if exist "%DRIVE%"\apps\KoreanKii rd /s /q "%DRIVE%"\apps\KoreanKii> nul
 if exist "%DRIVE%"\apps\MIOSPatcher rd /s /q "%DRIVE%"\apps\MIOSPatcher> nul
 if exist "%DRIVE%"\apps\Priiloader rd /s /q "%DRIVE%"\apps\Priiloader> nul
+if exist "%DRIVE%"\apps\Priiloader_launcher rd /s /q "%DRIVE%"\apps\Priiloader_launcher> nul
 if exist "%DRIVE%"\apps\YAWMM rd /s /q "%DRIVE%"\apps\YAWMM> nul
 if exist "%DRIVE%"\apps\HackMii_Installer rd /s /q "%DRIVE%"\apps\HackMii_Installer> nul
 if exist "%DRIVE%"\apps\IOS236-v5-Mod rd /s /q "%DRIVE%"\apps\IOS236-v5-Mod> nul
@@ -4443,9 +4579,10 @@ echo         * If you use the Wii Shopping Channel, you must start the channel a
 echo           delete your account before starting this guide on your Wii.
 echo           If you don't the Wii Shop Channel will error.
 echo.
-echo         * ModMii's region changing guide assumes your Wii is already softmodded
-echo           with the Homebrew Channel, IOS236 and Bootmii. If you are missing any
-echo           of those use the ModMii Wizard before continuing with this guide.
+echo         * ModMii's Region Change guide assumes your Wii has already been softmodded
+echo           and SD Card ^(or USB^) properly formatted by following the ModMii Wizard
+echo           or SysCheck Updater Wizard. If this is not the case please do so before
+echo           going any further.
 echo.
 echo.
 echo.
@@ -4524,7 +4661,7 @@ if /i "%pri%" EQU "Y" set PRIQ=Y
 if /i "%H5%" EQU "Y" set RECCIOS=Y
 if /i "%HM%" EQU "Y" set HMInstaller=Y
 if /i "%yawmm%" EQU "Y" set yawmq=Y
-if /i "%IOS236Installer%" EQU "Y" set IOS236InstallerQ=Y
+::if /i "%IOS236Installer%" EQU "Y" set IOS236InstallerQ=Y
 goto:WPAGELAST
 :skip
 
@@ -4829,11 +4966,13 @@ echo.
 echo      Select the Exploit you would like to use on your Wii.
 echo.
 echo.
+echo                X = str2hax: no disc or SD card needed, but requires WiFi on Wii
+
 if /i "%FIRMSTART%" EQU "o" goto:skipbomb
-echo                W = Wilbrand (discless exploit)
+echo                W = Wilbrand\LetterBomb: no disc needed, but requires SD card
 echo.
 echo.
-echo      The following 4.3 exploits require you own one of the following games:
+echo      The exploits below require you own one of the following games:
 :skipbomb
 
 
@@ -4860,10 +4999,17 @@ support\sfk echo -spat \x20 [Red] Important Notes:
 echo.
 echo    Alternatively, you can update your Wii to v3.0-4.3 then repeat the
 echo    Wizard using your new System Menu in order to hack your
-echo    Wii without requiring one of the above games
+echo    Wii without requiring a games or WiFi on your Wii
 echo.
 :skipOmsg
 
+support\sfk echo -spat \x20 \x20[Red] NOTE IF YOU ARE MISSING AN SD CARD
+echo     Using str2hax you can install the HBC even if you don't have an SD card,
+echo     or if your SD card reader is broken. But without an sd card you will 
+echo     not be able to install bootmii and make a NAND backup.
+echo     You can still proceed with the remaining steps of your custom ModMii guide
+echo     using a FAT32 formatted USB hard drive in place of an SD card.
+echo     More help on formatting your HDD if you use ModMii to set up a USB Loader. 
 echo.
 echo.
 echo.
@@ -4894,12 +5040,16 @@ if /i "%EXPLOIT%" EQU "LB" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "LS" goto:WPAGE3D
 if /i "%EXPLOIT%" EQU "TOS" goto:WPAGE3D
 :skip
-if /i "%EXPLOIT%" EQU "?" goto:WPAGE3D
-if /i "%EXPLOIT%" EQU "S" goto:WPAGE3D
 
 if /i "%FIRMSTART%" EQU "o" goto:notbomb
 if /i "%EXPLOIT%" EQU "W" goto:macaddress
+if /i "%EXPLOIT%" EQU "?" goto:macaddress
 :notbomb
+
+if /i "%EXPLOIT%" EQU "X" goto:WPAGE3D
+if /i "%EXPLOIT%" EQU "?" goto:WPAGE3D
+if /i "%EXPLOIT%" EQU "S" goto:WPAGE3D
+
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -4921,9 +5071,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo    Enter your Wii's MAC address (required for Wilbrand exploit)
-echo.
-echo.
+echo    Enter your Wii's MAC address (required for Wilbrand\LetterBomb exploit)
 echo.
 echo    Examples:
 echo             AABBCCDDEEFF
@@ -4944,8 +5092,15 @@ echo.
 echo.
 echo.
 echo.
-echo                B = Back
-echo                M = Main Menu
+if /i "%MENU1%" EQU "1" goto:skip
+if /i "%MENU1%" EQU "2" goto:skip
+if /i "%MENU1%" EQU "3" goto:skip
+if /i "%MENU1%" EQU "4" goto:skip
+if /i "%MENU1%" EQU "A" goto:skip
+echo         S = Skip this for now and enter it later if you're not near your Wii
+:skip
+echo         B = Back
+echo         M = Main Menu
 echo.
 echo.
 echo.
@@ -4969,6 +5124,15 @@ if /i "%macaddress%" NEQ "Help" goto:nohelp
 start /D SUPPORT MAC.html
 goto:macaddress
 :nohelp
+
+::don't allow skipping for manual downloads
+if /i "%MENU1%" EQU "1" goto:skip
+if /i "%MENU1%" EQU "2" goto:skip
+if /i "%MENU1%" EQU "3" goto:skip
+if /i "%MENU1%" EQU "4" goto:skip
+if /i "%MENU1%" EQU "A" goto:skip
+if /i "%macaddress%" EQU "S" goto:WPAGE3D
+:skip
 
 echo %macaddress% >temp\temp.txt
 
@@ -5024,6 +5188,8 @@ if /i "%testme%" EQU "c" goto:confirmMACaddy
 if /i "%testme%" EQU "d" goto:confirmMACaddy
 if /i "%testme%" EQU "e" goto:confirmMACaddy
 if /i "%testme%" EQU "f" goto:confirmMACaddy
+
+
 
 goto:badkey
 :quickskip
@@ -5085,7 +5251,6 @@ if /i "%Virgin%" EQU "N" echo      If you previously used ModMii to fully softmo
 if /i "%Virgin%" EQU "N" echo      have these installed.
 if /i "%FirmStart%" EQU "4.3" echo      You're on System Menu 4.3, so you likely already have the latest IOSs.
 if /i "%FirmStart%" EQU "4.3" echo      If your Wii has truly never been modified before, you can say No.
-
 echo.
 echo.
 echo      Y = Yes
@@ -5093,7 +5258,7 @@ echo.
 echo      If your Wii has DarkCorp/cIOSCorp installed, you can say Yes to overwrite it.
 echo      If original Wii discs or WiiWare are not working properly, say Yes to fix it.
 echo.
-echo.
+echo      If unsure, there is no harm in saying yes, it just may take a bit longer.
 echo.
 echo.
 echo.
@@ -5118,8 +5283,12 @@ if /i "%UpdatesIOSQ%" EQU "N" goto:WPAGE4
 
 if /i "%VIRGIN%" EQU "N" goto:backtowpage3
 ::if /i "%REGION%" EQU "K" goto:backtowpage3
-if /i "%exploit%" NEQ "W" goto:backtowpage3c
+if /i "%exploit%" EQU "W" goto:backtomacaddress
+if /i "%exploit%" EQU "?" goto:backtomacaddress
 
+goto:backtowpage3c
+
+:backtomacaddress
 
 if /i "%UpdatesIOSQ%" EQU "B" goto:macaddress
 
@@ -5159,9 +5328,7 @@ if /i "%MENU1%" NEQ "RC" (echo.) & (echo.) & (echo.) & (echo   Note: if current 
 echo.
 echo.
 echo.
-echo.
-echo.
-echo.
+
 
 
 if /i "%FIRMSTART%" EQU "4.3" (support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Green] 4.3 = 4.3 [RECOMMENDED]) else (echo                4.3 = 4.3)
@@ -5179,7 +5346,12 @@ goto:skipWhite4.1
 echo                4.1 = 4.1
 
 :skipWhite4.1
-
+echo.
+echo.
+echo   ModMii recommends unnecessarily changing system menus if already on 4.1 or higher.
+echo   System Menu 4.2 and 4.3 add nothing except failed attempts to prevent homebrew.
+echo   Even RiiConnect24 fully works on lower firmwares using ModMii's System Menu IOSs.
+echo.
 
 echo.
 echo                B = Back
@@ -5244,13 +5416,20 @@ echo.
 echo.
 echo           * Photo
 if /i "%REGIONTEMP%" NEQ "K" echo           * Internet
-if /i "%REGIONTEMP%" NEQ "K" echo           * Weather
-if /i "%REGIONTEMP%" NEQ "K" echo           * News
+if /i "%REGIONTEMP%" NEQ "K" echo           * Weather^^
+
+if /i "%REGIONTEMP%" NEQ "K" echo           * News^^
+if /i "%REGIONTEMP%" NEQ "K" echo           * Wii Speak^^^^
 echo           * Mii
-echo           * Shopping
-if /i "%REGIONTEMP%" NEQ "K" echo           * Wii Speak
+echo           * Shopping (can only re-download content you have already purchased)
 echo.
 echo.
+if /i "%REGIONTEMP%" EQU "K" goto:notk
+echo     ^^marked channels require RiiConnect24 to work
+echo     ^^^^Wii Speak Channel requires RiiConnect24 and Wiimmfi to work.
+echo       Check these out after finishing with ModMii at https://rc24.xyz
+:notk
+
 echo.
 echo                A = All
 echo                S = Some
@@ -5386,6 +5565,8 @@ echo.
 echo      Install the Weather Channel?
 echo.
 echo.
+echo      Note: requires RiiConnect24 to work
+echo      Check it out after finishing with ModMii at https://rc24.xyz
 echo.
 echo                Y = Yes
 echo                N = No
@@ -5424,6 +5605,9 @@ echo.
 echo      Install the News Channel?
 echo.
 echo.
+echo      Note: requires RiiConnect24 to work
+echo      Check it out after finishing with ModMii at https://rc24.xyz
+
 echo.
 echo                Y = Yes
 echo                N = No
@@ -5509,6 +5693,7 @@ if /i "%MENU1%" NEQ "S" echo.
 if /i "%MENU1%" NEQ "S" echo          Note: IOS56 will also be downloaded
 echo.
 echo.
+echo    Note: this can only re-download content you have already purchased
 echo.
 echo                Y = Yes
 echo                N = No
@@ -5549,6 +5734,8 @@ echo.
 echo      Install the Wii Speak Channel?
 echo.
 echo.
+echo      Note: requires RiiConnect24 and Wiimmfi to work
+echo      Check them out after finishing with ModMii at https://rc24.xyz
 echo.
 echo                Y = Yes
 echo                N = No
@@ -5584,7 +5771,7 @@ set HMInstaller=
 set RECCIOS=
 set yawmQ=
 set PRIQ=
-set IOS236InstallerQ=
+::set IOS236InstallerQ=
 set ThemeSelection=N
 cls
 echo                                        ModMii                                v%currentversion%
@@ -5595,18 +5782,18 @@ echo      Would you like to install and\or update any of the following:
 echo.
 echo.
 echo.
-echo           * Homebrew Channel and\or BootMii
+echo           * Homebrew Channel and\or Bootmii
 echo.
 
 if /i "%CMIOSOPTION%" EQU "on" (echo           * Recommended cIOSs and cMIOS) else (echo           * Recommended cIOSs)
 
 
 echo.
-echo           * Yet Another Wad Manager Mod (YAWMM)
-echo.
-echo           * IOS236
-echo.
-echo           * Priiloader v0.7 (or system menu hacks)
+::echo           * Yet Another Wad Manager Mod (YAWMM)
+::echo.
+::echo           * IOS236
+::echo.
+echo           * Priiloader (or system menu hacks)
 echo.
 echo           * A System Menu Theme
 echo.
@@ -5658,7 +5845,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo      Would you like to install and\or update the Homebrew Channel and\or BootMii?
+echo      Would you like to install and\or update the Homebrew Channel and\or Bootmii?
 echo.
 echo      Note: This will download the HackMii Installer and IOS58
 echo.
@@ -5674,10 +5861,10 @@ echo.
 ::echo.
 ::echo      * HackMii Installer
 ::if /i "%FIRMSTART%" EQU "o" echo      * All available exploits
-::if /i "%FIRMSTART%" EQU "3.X" echo      * BannerBomb v1
-::if /i "%FIRMSTART%" EQU "4.0" echo      * BannerBomb v1
-::if /i "%FIRMSTART%" EQU "4.1" echo      * BannerBomb v1
-::if /i "%FIRMSTART%" EQU "4.2" echo      * BannerBomb v2
+::if /i "%FIRMSTART%" EQU "3.X" echo      * Bannerbomb v1
+::if /i "%FIRMSTART%" EQU "4.0" echo      * Bannerbomb v1
+::if /i "%FIRMSTART%" EQU "4.1" echo      * Bannerbomb v1
+::if /i "%FIRMSTART%" EQU "4.2" echo      * Bannerbomb v2
 ::if /i "%FIRMSTART%" EQU "4.3" echo      * All available exploits
 ::echo      * IOS58
 ::if /i "%FIRMSTART%" EQU "4.3" (echo.) & (echo      Note: Letterbomb exploit available here - http://please.hackmii.com)
@@ -5720,9 +5907,6 @@ goto:WPAGE13B
 :WPAGE14
 set RECCIOS=
 
-set d2x-beta-rev=8-final
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-
 cls
 
 echo                                        ModMii                                v%currentversion%
@@ -5762,8 +5946,10 @@ echo.
 echo.
 set /p RECCIOS=     Enter Selection Here: 
 
-if /i "%RECCIOS%" EQU "Y" goto:WPAGE17
-if /i "%RECCIOS%" EQU "N" goto:WPAGE17
+
+::skip goto:WPAGE17 & 18 for YAWM & IOS236 in v6.5.2
+if /i "%RECCIOS%" EQU "Y" goto:WPAGE19
+if /i "%RECCIOS%" EQU "N" goto:WPAGE19
 if /i "%RECCIOS%" EQU "M" goto:MENU
 
 
@@ -5890,7 +6076,8 @@ if /i "%PRIQ%" EQU "Y" goto:WPAGE20
 if /i "%PRIQ%" EQU "N" goto:WPAGE20
 if /i "%PRIQ%" EQU "M" goto:MENU
 
-if /i "%PRIQ%" EQU "B" goto:WPAGE18
+::skip goto:WPAGE17 & 18 for YAWM & IOS236 in v6.5.2
+if /i "%PRIQ%" EQU "B" goto:WPAGE14
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -6104,7 +6291,9 @@ if /i "%FIRMSTART%" EQU "o" echo           * Current System Menu is less than 2.
 
 echo           * Desired System Menu is %FIRM%%REGION%
 
+if /i "%macaddress%" EQU "S" goto:skip
 if /i "%Exploit%" EQU "W" (echo.) & (echo           * MAC Address: %macaddress%)
+:skip
 
 echo.
 if /i "%PIC%" EQU "Y" echo           * Install the Photo Channel
@@ -6116,7 +6305,7 @@ if /i "%Shop%" EQU "Y" echo           * Install the Shopping Channel (and IOS56)
 if /i "%Speak%" EQU "Y" echo           * Install the Wii Speak Channel
 echo.
 
-if /i "%HMInstaller%" EQU "Y" echo           * Install and\or update the Homebrew Channel and BootMii
+if /i "%HMInstaller%" EQU "Y" echo           * Install and\or update the Homebrew Channel and Bootmii
 
 
 if /i "%RECCIOS%" NEQ "Y" goto:smallskip
@@ -6154,7 +6343,7 @@ echo           * External Hard Drive already Formatted as %FORMATNAME%
 if /i "%LOADER%" EQU "CFG" echo           * Download Configurable USB-Loader
 if /i "%LOADER%" EQU "FLOW" echo           * Download WiiFlow
 if /i "%LOADER%" EQU "GX" echo           * Download USB-Loader GX
-if /i "%LOADER%" EQU "ALL" echo           * Download Configurable USB-Loader, WiiFlow & USB-Loader GX
+if /i "%LOADER%" EQU "ALL" echo           * Download all USB-Loaders available in ModMii
 if /i "%USBCONFIG%" EQU "USB" echo           * USB-Loader Settings and config files saved to USB Hard Drive
 if /i "%USBCONFIG%" NEQ "USB" echo           * USB-Loader Settings and config files saved to SD Card
 
@@ -6299,7 +6488,6 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] Cons:[def] Cannot store fi
 echo                  to Wii games, which can be split into parts. This will likely not
 echo                  affect you unless the drive is also used to store high-def videos
 echo.
-echo.
 echo        2 = NTFS
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Green] Pros:[def] Capable of storing files greater than 4GB
@@ -6309,10 +6497,9 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] Cons:[def] The Wii cannot 
 echo                  is required to run the USB-Loader (or a SM Channel)
 echo                  Incompatible with SNEEK/Triiforce Nand Emulation.
 echo.
-echo.
 echo        3 = Partioned partially as FAT32 and partially as NTFS
 echo.
-echo            Note: Small flash drives cannot be partitioned
+echo            Note: May not be possible with some low capacity USB flash drives
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Green] Pros:[def] You can access Wii apps on the FAT32 partition while still
 echo                  being able to save files greater than 4GBs on the NTFS partition
@@ -6321,6 +6508,8 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] Cons:[def] A little more w
 echo.
 echo.
 echo        4 = Drive is currently formatted as WBFS and I don't want to change
+echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Green] Pros:[def] Sometimes works with small thumb drives where FAT32 fails.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [Red] Cons:[def] WBFS can ONLY be read by the Wii and ONLY used to store Wii Games
 echo.
@@ -6393,6 +6582,8 @@ echo.
 echo        4 = All of the above
 echo.
 echo.
+echo    Note: The "Nintendont" Gamecube plugin is supported by all of these
+echo          loaders and will also be downloaded.
 echo.
 echo.
 echo         B = Back
@@ -6407,23 +6598,15 @@ if /i "%LOADER%" EQU "M" goto:MENU
 if /i "%LOADER%" EQU "B" goto:UPAGE1
 
 set wbm=*
+set nintendont=*
 
-if /i "%LOADER%" EQU "1" set LOADER=GX
-if /i "%LOADER%" EQU "2" set LOADER=CFG
-if /i "%LOADER%" EQU "3" set LOADER=FLOW
-if /i "%LOADER%" EQU "4" set LOADER=ALL
+if /i "%LOADER%" EQU "1" (set LOADER=GX) & (set usbgx=*) & (goto:nextstep)
+if /i "%LOADER%" EQU "2" (set LOADER=CFG) & (set usbfolder=*) & (goto:nextstep)
+if /i "%LOADER%" EQU "3" (set LOADER=FLOW) & (set FLOW=*) & (goto:nextstep)
+if /i "%LOADER%" EQU "4" (set LOADER=ALL) & (set usbgx=*) & (set FLOW=*) & (set usbfolder=*) & (goto:nextstep)
 
-if /i "%LOADER%" EQU "GX" set usbgx=*
-if /i "%LOADER%" EQU "ALL" set usbgx=*
-if /i "%LOADER%" EQU "CFG" set usbfolder=*
-if /i "%LOADER%" EQU "ALL" set usbfolder=*
-if /i "%LOADER%" EQU "FLOW" set FLOW=*
-if /i "%LOADER%" EQU "ALL" set FLOW=*
 
-if /i "%LOADER%" EQU "GX" goto:nextstep
-if /i "%LOADER%" EQU "CFG" goto:nextstep
-if /i "%LOADER%" EQU "FLOW" goto:nextstep
-if /i "%LOADER%" NEQ "ALL" goto:skip
+goto:skip
 
 :nextstep
 if /i "%FORMAT%" EQU "1" goto:UPAGE2
@@ -6534,12 +6717,12 @@ echo                4 = Game Bulk Extractor (for SNEEK)
 echo                    * Supported formats include ISO, CISO and WBFS files
 echo.
 echo.
-echo                5 = Emulated NAND Modifer
+echo                5 = Emulated NAND Modifier
 echo                    * Edit your existing Emulated NAND
 echo.
 echo   Requirements:
 echo.
-echo         * If you don't have BootMii installed in order to run SNEEK you will
+echo         * If you don't have Bootmii installed in order to run SNEEK you will
 echo           have to first use the ModMii Wizard or the Abstinence Wizard.
 echo.
 echo         * To optimize the speed of your SNEEK or SNEEK+DI emulated nand,
@@ -6602,13 +6785,12 @@ echo Checking which %neekname% versions are hosted online...
 ::get all list
 start %ModMiimin%/wait support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
 
-if exist index.html* (move /y index.html* temp\list.txt>nul) else (goto:nowifi)
+if exist index.html@* (move /y index.html@* temp\list.txt>nul) else (goto:nowifi)
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
 support\sfk filter -spat "temp\list.txt" ++"/download\x22" ++"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
-support\sfk filter -spat "temp\list.txt" -!"\x22" -!"n" -write -yes>nul
-
+support\sfk filter -spat "temp\list.txt" -!"\x22" -!"n" -unique -no-empty-lines -no-blank-lines -write -yes>nul
 
 
 :nowifi
@@ -6917,7 +7099,7 @@ if /i "%SNEEKSELECT%" EQU "2" echo         What type of SNEEK would you like to 
 echo.
 echo.
 if /i "%SNEEKSELECT%" NEQ "1" echo   Note: NANDs built for any type of SNEEK work with any other type of SNEEK.
-if /i "%SNEEKSELECT%" NEQ "1" echo           However, ANY region Wii can use ANY region emulated NAND
+if /i "%SNEEKSELECT%" NEQ "1" echo           Also, ANY region Wii can use ANY region emulated NAND
 if /i "%SNEEKSELECT%" NEQ "1" echo.
 echo.
 echo         UD = UNEEK+DI
@@ -7172,8 +7354,11 @@ echo.
 echo         Post Loader aims to replace the Homebrew Channel, Forwarders,
 echo         USB-Loader with emulated NAND support, etc.
 echo.
-echo         It's not possible to install the latest version of the Homebrew Channel
-echo         to emulated nands and this is a great alternative.
+echo         It's used to be impossible to install the latest Homebrew Channel
+echo         to emulated nands so this gained much popularity as an alternative.
+echo.
+echo         Today you can use the Open Homebrew Channel by FIX94 on your EmuNAND,
+echo         just find and install the WAD using ModMii, ShowMiiWads, etc.
 echo.
 echo.
 echo.
@@ -7453,7 +7638,7 @@ echo         Would you like a WiiFlow Forwarder Channel on your emulated NAND?
 echo.
 echo.
 
-if /i "%SNKPRI%" EQU "Y" echo         Note: WiiFlow Forwarder dol will also be added as priiloader's
+if /i "%SNKPRI%" EQU "Y" echo         Note: WiiFlow Forwarder dol will also be added as Priiloader's
 if /i "%SNKPRI%" EQU "Y" echo               installed file. Priiloader's autoboot settings will still need
 if /i "%SNKPRI%" EQU "Y" echo               to be changed if you would like your emulated nand to autoboot
 if /i "%SNKPRI%" EQU "Y" echo               the installed file.
@@ -8504,7 +8689,7 @@ if /i "%SNKREGION%" EQU "J" set defaultserial=LJM101175683
 if /i "%SNKREGION%" EQU "K" set defaultserial=LJM101175683
 :miniskip
 
-::check for priiloader
+::check for Priiloader
 if exist "%DRIVETEMP%\title\00000001\00000002\content\1%SMAPP:~1%.app" (set PRIIFOUND=YES) else (set PRIIFOUND=NO)
 
 
@@ -9219,6 +9404,7 @@ cls
 echo                                        ModMii                                v%currentversion%
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[Red]DOWNLOAD PAGE 1 [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20by XFlak
 echo.
+support\sfk echo -spat \x20[Yellow] WARNING: using these files MAY CAUSE BRICK if you do NOT know what you are doing!
 echo      Choose files to add/remove to download queue (Selected files marked with an *)
 echo.
 echo       D = Download Selected Files    1/2/3/4 = Page 1/2/3/4        M = Main Menu
@@ -9228,7 +9414,6 @@ support\sfk echo -spat \x20Select Group: [Red](A)[def]ll, [Red](U)[def]SA, [Red]
 
 echo.
 support\sfk echo -spat \x20 \x20 [Red] System Menus \x20 \x20 \x20 \x20 \x20 Non-Fakesigned IOSs\MIOS \x20 \x20 \x20 \x20 Other WADs
-echo.
 echo    %SM3.2U% 3.2U = 3.2U SM             %IOS9% 9 = IOS9v1034         %RSU% RSU = Region Select v2(U)
 echo    %SM4.1U% 4.1U = 4.1U SM	      %IOS12% 12 = IOS12v526         %RSE% RSE = Region Select v2(E)
 echo    %SM4.2U% 4.2U = 4.2U SM	      %IOS13% 13 = IOS13v1032        %RSJ% RSJ = Region Select v2(J)
@@ -9269,9 +9454,6 @@ echo   %WSE% WSE = WiiSpeak(EUR)      %IOS80% 80NP = IOS80v6944         %A01% 01
 echo   %WSJ% WSJ = WiiSpeak(JAP)       %M10% M10 = MIOSv10         %A01_70% 01_70 = 01.app IOS70v6687
 echo   %MII% Mii = Mii (RF)                                   %A01_60% 01_60 = 01.app IOS60v6174
 echo                                                        %A0c% 0c = 0c.app MIOSv10
-echo.
-echo.
-echo.
 echo.
 set /p LIST=     Enter Selection Here: 
 
@@ -9989,6 +10171,7 @@ echo                                        ModMii                              
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[Red]DOWNLOAD PAGE 2 [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20by XFlak
 
 echo.
+support\sfk echo -spat \x20[Yellow] WARNING: using these files MAY CAUSE BRICK if you do NOT know what you are doing!
 echo      Choose files to add/remove to download queue (Selected files marked with an *)
 echo.
 echo       D = Download Selected Files    1/2/3/4 = Page 1/2/3/4        M = Main Menu
@@ -9998,20 +10181,20 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 Select Group: [Red](A)[def]ll, [
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](W)[def]ii Apps, [Red](E)[def]xploits
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] USB-Loader Files  \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 Just For Fun!
-echo.
 echo      %usbfolder% CFG = CFG-Loader Mod                 %WiiMC% WMC = WiiMC (Media Player)
 echo     %FLOW% FLOW = WiiFlow                        %fceugx% NES = FCEUGX (NES Emulator)
 echo     %USBX% USBX = USB-Loader Fwdr Channel       %snes9xgx% SNES = SNES9xGX (SNES Emulator)
 echo      %neogamma% NEO = Neogamma Backup Disc Loader    %vbagx% VBA = VBAGX (GB/GBA Emulator)
-echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes        %WII64% W64 = Wii64 beta1.1 (N64 Emulator)
-echo       %AccioHacks% AH = AccioHacks                     %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
-echo       %usbgx% GX = USB Loader GX                  %HBB% HBB = Homebrew Browser
-echo       %nintendont% ND = Nintendont (Gamcube)           %SGM% SGM = SaveGame Manager GX
-echo                                             %WIIX% WX = WiiXplorer
-echo                                             %locked% LA = Locked HBC Folder (Pass: UDLRAB)
+echo       %nintendont% ND = Nintendont (Gamecube)          %WII64% W64 = Wii64 beta1.2 (N64 Emulator)
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]PC Programs [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20%FLOWF% FLOWF = WiiFlow Forwarder Channel/dol
+echo       %usbgx% GX = USB Loader GX                  %WIISX% WSX = WiiSX beta2.1 (PS1 Emulator)
+echo       %AccioHacks% AH = AccioHacks                     %HBB% HBB = Homebrew Browser
+echo       %CheatCodes% CC = %cheatregion% Region Cheat Codes^^        %SGM% SGM = SaveGame Manager GX
+echo             ^^This may take awhile           %WIIX% WX = WiiXplorer
+echo       CCO = go to Cheat Code Options        %locked% LA = Locked HBC Folder (Pass: UDLRAB)
+
 echo                                            %S2U% S2U = Switch2Uneek
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red]PC Programs [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20%FLOWF% FLOWF = WiiFlow Forwarder Channel/dol
 echo      %F32% F32 = FAT32 GUI Formatter             %nswitch% NS = nSwitch
 echo      %wbm% WBM = WiiBackupManager
 echo     %WiiGSC% WGSC = Wii Game Shortcut Creator
@@ -10020,28 +10203,25 @@ echo       %CM% CM = Customize Mii
 echo.
 
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] Wii Apps \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 Exploits
-echo.
-echo       %HM% HM = HackMii Installer             %BB1% BB1 = Bannerbomb v1
-echo      %bootmiisd% BSD = BootMii SD Files              %BB2% BB2 = Bannerbomb v2
+echo       %HM% HM = HackMii Installer             %BB1% BB1 = Bannerbomb v1
+echo      %bootmiisd% BSD = Bootmii SD Files              %BB2% BB2 = Bannerbomb v2
 echo     %yawm% YAWM = Yet Another Wad Manager Mod   %Pwns% PWNS = Indiana Pwns (USA\EUR\JAP)
 echo      %MMM% MMM = Multi-Mod Manager               %Smash% SS = Smash Stack (USA\EUR\JAP\KOR)
 echo      %dop% DOP = Dop-Mii                         %YUGI% YU = YU-GI-OWNED (USA\EUR\JAP)
 echo      %IOS236Installer% 236 = IOS236 Installer                %Bathaxx% BH = Bathaxx (USA\EUR\JAP)
 echo      %SIP% SIP = Simple IOS Patcher              %ROTJ% RJ = Return of the Jodi (USA\EUR\JAP)
-echo      %Pri% Pri = Priiloader v0.7 (236 Mod)      %Twi% Twi = Twilight Hack (USA\EUR\JAP)
-echo      %HAX% HAX = Priiloader Hacks                %TOS% EH = Eri HaKawai (USA\EUR\JAP)
+echo      %Pri% Pri = Priiloader v0.9                %Twi% Twi = Twilight Hack (USA\EUR\JAP)
+echo      %HAX% HAX = Old Priiloader hacks.ini        %TOS% EH = Eri HaKawai (USA\EUR\JAP)
 echo      %PLC% PLC = Post Loader Channel             %Wilbrand% WB = Wilbrand (4.3 USA\EUR\JAP\KOR)
 
 if /i "%Wilbrand%" EQU "*" echo       %PL% PL = Postloader                             MAC:%macaddress%  Region:%REGION%
 if /i "%Wilbrand%" NEQ "*" echo       %PL% PL = Postloader
 
-echo       %syscheck% SC = sysCheck
+echo       %syscheck% SC = SysCheck HDE
 echo       %WiiMod% WM = WiiMod
-echo      %ARC% ARC = Any Region Changer (1.1b Mod06 Offline)
+echo      %ARC% ARC = Any Region Changer ModMii Edition
+echo       %KK% KK = KoreanKii
 echo       %casper% CA = Casper
-echo.
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] LEGEND:[def] \x22=\x22 Auto-Updating Downloads
-echo.
 echo.
 set /p OLDLIST=     Enter Selection Here: 
 
@@ -10052,7 +10232,7 @@ if /i "%OLDLIST%" EQU "D" goto:DOWNLOADQUEUE
 if /i "%OLDLIST%" EQU "DR" set BACKB4DRIVE=OLDLIST
 if /i "%OLDLIST%" EQU "DR" goto:DRIVECHANGE
 if /i "%OLDLIST%" EQU "C" goto:CLEAR
-
+if /i "%OLDLIST%" EQU "CCO" goto:cheatcodeoptions
 
 
 
@@ -10098,6 +10278,7 @@ if /i "%OLDLIST%" EQU "ss" goto:Switchsmash
 if /i "%OLDLIST%" EQU "mmm" goto:Switchmmm
 if /i "%OLDLIST%" EQU "WM" goto:SwitchWiiMOd
 if /i "%OLDLIST%" EQU "ARC" goto:SwitchARC
+if /i "%OLDLIST%" EQU "KK" goto:SwitchKK
 if /i "%OLDLIST%" EQU "236" goto:SwitchIOS236Installer
 if /i "%OLDLIST%" EQU "SIP" goto:SwitchSIP
 if /i "%OLDLIST%" EQU "yawm" goto:Switchyawm
@@ -10111,6 +10292,8 @@ if /i "%OLDLIST%" EQU "SGM" goto:SwitchSGM
 if /i "%OLDLIST%" EQU "PL" goto:SwitchPL
 if /i "%OLDLIST%" EQU "WX" goto:SwitchWIIX
 if /i "%OLDLIST%" EQU "wbm" goto:Switchwbm
+
+
 if /i "%OLDLIST%" EQU "cc" goto:SwitchCheatCodes
 
 if /i "%OLDLIST%" EQU "WGSC" goto:SwitchWGSC
@@ -10231,6 +10414,10 @@ goto:OLDLIST
 if /i "%ARC%" EQU "*" (set ARC=) else (set ARC=*)
 goto:OLDLIST
 
+:SwitchKK
+if /i "%KK%" EQU "*" (set KK=) else (set KK=*)
+goto:OLDLIST
+
 :SwitchIOS236Installer
 if /i "%IOS236Installer%" EQU "*" (set IOS236Installer=) else (set IOS236Installer=*)
 goto:OLDLIST
@@ -10341,7 +10528,7 @@ goto:OLDLIST
 :USBLOADERSELECT
 set usbfolder=*
 set neogamma=*
-set CheatCodes=*
+::set CheatCodes=*
 set AccioHacks=*
 set usbgx=*
 set nintendont=*
@@ -10361,6 +10548,7 @@ if /i "%OLDLIST%" EQU "PC" goto:OLDLIST
 set mmm=*
 set WiiMod=*
 set ARC=*
+set KK=*
 set HM=*
 set dop=*
 set syscheck=*
@@ -10418,40 +10606,39 @@ echo                                        ModMii                              
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[Red]DOWNLOAD PAGE 3 [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20by XFlak
 
 echo.
+support\sfk echo -spat \x20[Yellow] WARNING: using these files MAY CAUSE BRICK if you do NOT know what you are doing!
 echo      Choose files to add/remove to download queue (Selected files marked with an *)
 echo.
 echo       D = Download Selected Files    1/2/3/4 = Page 1/2/3/4        M = Main Menu
 echo       C = Clear Download Queue       (blank) = Cycle Pages        DR = Drive Menu
 echo.
-echo.
-support\sfk echo -spat \x20 \x20[Red]DON'T INSTALL THEMES WITHOUT PROTECTION: BOOTMII, PRIILOADER AND NAND BACKUP
-support\sfk echo -spat \x20 \x20[Red]ONLY INSTALL THEMES FOR YOUR SPECIFIC SYSTEM MENU VERSION AND REGION!
-echo.
+support\sfk echo -spat \x20 \x20[Yellow]DON'T INSTALL THEMES WITHOUT PROTECTION: BOOTMII, PRIILOADER[Red]*[Yellow] AND NAND BACKUP
+
+support\sfk echo -spat \x20 \x20 [Red]*Priiloader gets REMOVED when installing ANY System Menu, reinstall it ASAP.
+support\sfk echo -spat \x20 \x20 \x20[Red]It's safer to use CSMs and MyMenuify to change themes. Themed System Menu WADs
+support\sfk echo -spat \x20 \x20 \x20[Red]were intended to only be used if changing System Menus anyway.
+support\sfk echo -spat \x20 \x20[Yellow]ONLY INSTALL THEMES FOR YOUR SPECIFIC SYSTEM MENU VERSION AND REGION!
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20Select Group: [Red](A)[def]ll, Themes for [Red](U)[def]SA, [Red](E)[def]uro, [Red](J)[def]ap, [Red](K)[def]orean
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20System Menu's w/ Themes for [Red](US)[def]A, [Red](EU)[def]ro, [Red](JA)[def]p, [Red](KO)[def]rean
-echo.
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20System Menus w/ Themes for [Red](US)[def]A, [Red](EU)[def]ro, [Red](JA)[def]p, [Red](KO)[def]rean
 echo.
 if "%selectedtheme%"=="" set selectedtheme=R
+
+echo     WWW = View All Available Themes on Youtube
+echo           Supported themes include: DarkWii Red\Green\Blue\Orange
+echo.
 
 if /i "%selectedtheme%" EQU "R" echo       S = Switch Download List to View Another Theme: DarkWii Red
 if /i "%selectedtheme%" EQU "G" echo       S = Switch Download List to View Another Theme: DarkWii Green
 if /i "%selectedtheme%" EQU "B" echo       S = Switch Download List to View Another Theme: DarkWii Blue
 if /i "%selectedtheme%" EQU "O" echo       S = Switch Download List to View Another Theme: DarkWii Orange
-
-echo           Supported themes include: DarkWii Red\Green\Blue\Orange
-echo.
-echo      CE = Channel Effect for custom system menu themes: %effect%
+echo      CE = Channel Effect* for custom system menu themes: %effect%
 echo           * Choose from 3 effects: No-Spin, Spin and Fast-Spin
 echo.
 echo    %MyM% MyM = MyMenuifyMod
 echo.
-echo     WWW = View All Available Themes on Youtube
-echo.
-
 if /i "%selectedtheme%" NEQ "R" goto:skipred
 support\sfk echo -spat \x20 [Red]DarkWii Red CSMs \x20 \x20 \x20 \x20 \x20 DarkWii Red System Menus \x20 \x20 Original Wii Themes
-echo.
 echo    %DarkWii_Red_4.3U% 3U = 4.3U                    %SM4.3U-DWR% 4.3U = 4.3U            %A97% 97 = 97.app SM4.3U
 echo    %DarkWii_Red_4.2U% 2U = 4.2U                    %SM4.2U-DWR% 4.2U = 4.2U            %A87% 87 = 87.app SM4.2U
 echo    %DarkWii_Red_4.1U% 1U = 4.1U                    %SM4.1U-DWR% 4.1U = 4.1U            %A7b% 7b = 7b.app SM4.1U
@@ -10558,7 +10745,6 @@ echo    %darkwii_orange_4.1K% 1K = 4.1K                    %SM4.1K-DWO% 4.1K = 4
 
 
 echo.
-echo.
 
 set /p LIST3=     Enter Selection Here: 
 
@@ -10650,7 +10836,6 @@ if /i "%LIST3%" EQU "4.1K" goto:SwitchSM4.1K-DWR
 ::Green
 if /i "%selectedtheme%" NEQ "G" goto:skipgreen
 if /i "%LIST3%" EQU "S" (set selectedtheme=B)&&(goto:LIST3)
-if /i "%LIST3%" EQU "WWW" (start www.youtube.com/watch?v=Rn0CnTo5kRI)&&(goto:LIST3)
 if /i "%LIST3%" EQU "3U" goto:SwitchDarkWii_Green_4.3U
 if /i "%LIST3%" EQU "2U" goto:SwitchDarkWii_Green_4.2U
 if /i "%LIST3%" EQU "1U" goto:SwitchDarkWii_Green_4.1U
@@ -11383,6 +11568,7 @@ echo                                        ModMii                              
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[Red]DOWNLOAD PAGE 4 [def]\x20 \x20 \x20 \x20 \x20 \x20 \x20by XFlak
 
 echo.
+support\sfk echo -spat \x20[Yellow] Unrecommended cIOSs are intended for compatibility testing or unique situations
 echo      Choose files to add/remove to download queue (Selected files marked with an *)
 echo.
 echo       D = Download Selected Files    1/2/3/4 = Page 1/2/3/4        M = Main Menu
@@ -11417,38 +11603,35 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v20) cIOSs
 echo            %cIOS249[38]-v20% 2492038 = cIOS249[38]-v20    %RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2% 10 = WiiGator+WiiPower cMIOS-v65535(v10)
 echo            %cIOS250[38]-v20% 2502038 = cIOS250[38]-v20   %RVL-cmios-v4_WiiGator_GCBL_v0.2% 0.2 = WiiGator cMIOS-v4 v0.2
 echo            %cIOS249[56]-v20% 2492056 = cIOS249[56]-v20     %RVL-cmios-v4_Waninkoko_rev5% 5 = Waninkoko cMIOS-v4 rev5
-echo            %cIOS250[56]-v20% 2502056 = cIOS250[56]-v20
 
 
-set d2x-beta-rev=8-final
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20%cIOS250[56]-v20%\x202502056 = cIOS250[56]-v20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](d2x) cIOSs
+echo            %cIOS249[57]-v20% 2492057 = cIOS249[57]-v20     %cIOS251[38]-d2x-v10-beta52% 25138 = cIOS251[38]-d2x-v%d2x-beta-rev%
 
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20%cIOS249[57]-v20%\x202492057 = cIOS249[57]-v20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red](d2x) cIOSs
-
-echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v8-final% 24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[37]-d2x-v8-final% 25037 = cIOS250[37]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v20% 2502057 = cIOS250[57]-v20     %cIOS249[37]-d2x-v10-beta52% 24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[37]-d2x-v10-beta52% 25037 = cIOS250[37]-d2x-v%d2x-beta-rev%
 
 
-support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v8-final%\x2024938 = cIOS249[38]-d2x-v%d2x-beta-rev%
+support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 [Red] Waninkoko (v21) cIOSs[def]\x20 \x20 \x20 \x20 %cIOS249[38]-d2x-v10-beta52%\x2024938 = cIOS249[38]-d2x-v%d2x-beta-rev%
 
-echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v8-final% 25038 = cIOS250[38]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v8-final% 24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v8-final% 25053 = cIOS250[53]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v8-final% 24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v8-final% 25055 = cIOS250[55]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v8-final% 24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v8-final% 25056 = cIOS250[56]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v8-final% 24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v8-final% 25057 = cIOS250[57]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v8-final% 24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v8-final% 25058 = cIOS250[58]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v8-final% 24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v8-final% 25060 = cIOS250[60]-d2x-v%d2x-beta-rev%
-echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v8-final% 24970 = cIOS249[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[70]-d2x-v8-final% 25070 = cIOS250[70]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS249[80]-d2x-v8-final% 24980 = cIOS249[80]-d2x-v%d2x-beta-rev%
-echo                                           %cIOS250[80]-d2x-v8-final% 25080 = cIOS250[80]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[37]-v21% 2492137 = cIOS249[37]-v21     %cIOS250[38]-d2x-v10-beta52% 25038 = cIOS250[38]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[37]-v21% 2502137 = cIOS250[37]-v21     %cIOS249[53]-d2x-v10-beta52% 24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[38]-v21% 2492138 = cIOS249[38]-v21     %cIOS250[53]-d2x-v10-beta52% 25053 = cIOS250[53]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[38]-v21% 2502138 = cIOS250[38]-v21     %cIOS249[55]-d2x-v10-beta52% 24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[53]-v21% 2492153 = cIOS249[53]-v21     %cIOS250[55]-d2x-v10-beta52% 25055 = cIOS250[55]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[53]-v21% 2502153 = cIOS250[53]-v21     %cIOS249[56]-d2x-v10-beta52% 24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[55]-v21% 2492155 = cIOS249[55]-v21     %cIOS250[56]-d2x-v10-beta52% 25056 = cIOS250[56]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[55]-v21% 2502155 = cIOS250[55]-v21     %cIOS249[57]-d2x-v10-beta52% 24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[56]-v21% 2492156 = cIOS249[56]-v21     %cIOS250[57]-d2x-v10-beta52% 25057 = cIOS250[57]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[56]-v21% 2502156 = cIOS250[56]-v21     %cIOS249[58]-d2x-v10-beta52% 24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[57]-v21% 2492157 = cIOS249[57]-v21     %cIOS250[58]-d2x-v10-beta52% 25058 = cIOS250[58]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[57]-v21% 2502157 = cIOS250[57]-v21     %cIOS249[60]-d2x-v10-beta52% 24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS249[58]-v21% 2492158 = cIOS249[58]-v21     %cIOS250[60]-d2x-v10-beta52% 25060 = cIOS250[60]-d2x-v%d2x-beta-rev%
+echo            %cIOS250[58]-v21% 2502158 = cIOS250[58]-v21     %cIOS249[70]-d2x-v10-beta52% 24970 = cIOS249[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[70]-d2x-v10-beta52% 25070 = cIOS250[70]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS249[80]-d2x-v10-beta52% 24980 = cIOS249[80]-d2x-v%d2x-beta-rev%
+echo                                           %cIOS250[80]-d2x-v10-beta52% 25080 = cIOS250[80]-d2x-v%d2x-beta-rev%
 echo                                             BETA = d2x beta settings
 
 ::echo.
@@ -11541,26 +11724,27 @@ if /i "%LIST4%" EQU "2492157" goto:SwitchcIOS249[57]-v21
 if /i "%LIST4%" EQU "2502157" goto:SwitchcIOS250[57]-v21
 if /i "%LIST4%" EQU "2492158" goto:SwitchcIOS249[58]-v21
 if /i "%LIST4%" EQU "2502158" goto:SwitchcIOS250[58]-v21
-if /i "%LIST4%" EQU "24937" goto:SwitchcIOS249[37]-d2x-v8-final
-if /i "%LIST4%" EQU "24938" goto:SwitchcIOS249[38]-d2x-v8-final
-if /i "%LIST4%" EQU "24953" goto:SwitchcIOS249[53]-d2x-v8-final
-if /i "%LIST4%" EQU "24955" goto:SwitchcIOS249[55]-d2x-v8-final
-if /i "%LIST4%" EQU "24956" goto:SwitchcIOS249[56]-d2x-v8-final
-if /i "%LIST4%" EQU "24957" goto:SwitchcIOS249[57]-d2x-v8-final
-if /i "%LIST4%" EQU "24958" goto:SwitchcIOS249[58]-d2x-v8-final
-if /i "%LIST4%" EQU "24960" goto:SwitchcIOS249[60]-d2x-v8-final
-if /i "%LIST4%" EQU "24970" goto:SwitchcIOS249[70]-d2x-v8-final
-if /i "%LIST4%" EQU "24980" goto:SwitchcIOS249[80]-d2x-v8-final
-if /i "%LIST4%" EQU "25037" goto:SwitchcIOS250[37]-d2x-v8-final
-if /i "%LIST4%" EQU "25038" goto:SwitchcIOS250[38]-d2x-v8-final
-if /i "%LIST4%" EQU "25053" goto:SwitchcIOS250[53]-d2x-v8-final
-if /i "%LIST4%" EQU "25055" goto:SwitchcIOS250[55]-d2x-v8-final
-if /i "%LIST4%" EQU "25056" goto:SwitchcIOS250[56]-d2x-v8-final
-if /i "%LIST4%" EQU "25057" goto:SwitchcIOS250[57]-d2x-v8-final
-if /i "%LIST4%" EQU "25058" goto:SwitchcIOS250[58]-d2x-v8-final
-if /i "%LIST4%" EQU "25060" goto:SwitchcIOS250[60]-d2x-v8-final
-if /i "%LIST4%" EQU "25070" goto:SwitchcIOS250[70]-d2x-v8-final
-if /i "%LIST4%" EQU "25080" goto:SwitchcIOS250[80]-d2x-v8-final
+if /i "%LIST4%" EQU "25138" goto:SwitchcIOS251[38]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24937" goto:SwitchcIOS249[37]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24938" goto:SwitchcIOS249[38]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24953" goto:SwitchcIOS249[53]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24955" goto:SwitchcIOS249[55]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24956" goto:SwitchcIOS249[56]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24957" goto:SwitchcIOS249[57]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24958" goto:SwitchcIOS249[58]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24960" goto:SwitchcIOS249[60]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24970" goto:SwitchcIOS249[70]-d2x-v10-beta52
+if /i "%LIST4%" EQU "24980" goto:SwitchcIOS249[80]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25037" goto:SwitchcIOS250[37]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25038" goto:SwitchcIOS250[38]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25053" goto:SwitchcIOS250[53]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25055" goto:SwitchcIOS250[55]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25056" goto:SwitchcIOS250[56]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25057" goto:SwitchcIOS250[57]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25058" goto:SwitchcIOS250[58]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25060" goto:SwitchcIOS250[60]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25070" goto:SwitchcIOS250[70]-d2x-v10-beta52
+if /i "%LIST4%" EQU "25080" goto:SwitchcIOS250[80]-d2x-v10-beta52
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:LIST4
@@ -11745,99 +11929,104 @@ goto:LIST4
 if /i "%cIOS250[58]-v21%" EQU "*" (set cIOS250[58]-v21=) else (set cIOS250[58]-v21=*)
 goto:LIST4
 
-:SwitchcIOS249[53]-d2x-v8-final
-if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" (set cIOS249[53]-d2x-v8-final=) else (set cIOS249[53]-d2x-v8-final=*)
+:SwitchcIOS251[38]-d2x-v10-beta52
+if /i "%cIOS251[38]-d2x-v10-beta52%" EQU "*" (set cIOS251[38]-d2x-v10-beta52=) else (set cIOS251[38]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS249[55]-d2x-v8-final
-if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" (set cIOS249[55]-d2x-v8-final=) else (set cIOS249[55]-d2x-v8-final=*)
+:SwitchcIOS249[53]-d2x-v10-beta52
+if /i "%cIOS249[53]-d2x-v10-beta52%" EQU "*" (set cIOS249[53]-d2x-v10-beta52=) else (set cIOS249[53]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS249[56]-d2x-v8-final
-if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (set cIOS249[56]-d2x-v8-final=) else (set cIOS249[56]-d2x-v8-final=*)
+:SwitchcIOS249[55]-d2x-v10-beta52
+if /i "%cIOS249[55]-d2x-v10-beta52%" EQU "*" (set cIOS249[55]-d2x-v10-beta52=) else (set cIOS249[55]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS249[57]-d2x-v8-final
-if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (set cIOS249[57]-d2x-v8-final=) else (set cIOS249[57]-d2x-v8-final=*)
+:SwitchcIOS249[56]-d2x-v10-beta52
+if /i "%cIOS249[56]-d2x-v10-beta52%" EQU "*" (set cIOS249[56]-d2x-v10-beta52=) else (set cIOS249[56]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS249[58]-d2x-v8-final
-if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" (set cIOS249[58]-d2x-v8-final=) else (set cIOS249[58]-d2x-v8-final=*)
+:SwitchcIOS249[57]-d2x-v10-beta52
+if /i "%cIOS249[57]-d2x-v10-beta52%" EQU "*" (set cIOS249[57]-d2x-v10-beta52=) else (set cIOS249[57]-d2x-v10-beta52=*)
 goto:LIST4
 
-
-:SwitchcIOS249[60]-d2x-v8-final
-if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" (set cIOS249[60]-d2x-v8-final=) else (set cIOS249[60]-d2x-v8-final=*)
-goto:LIST4
-
-:SwitchcIOS249[70]-d2x-v8-final
-if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" (set cIOS249[70]-d2x-v8-final=) else (set cIOS249[70]-d2x-v8-final=*)
-goto:LIST4
-
-:SwitchcIOS249[80]-d2x-v8-final
-if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" (set cIOS249[80]-d2x-v8-final=) else (set cIOS249[80]-d2x-v8-final=*)
+:SwitchcIOS249[58]-d2x-v10-beta52
+if /i "%cIOS249[58]-d2x-v10-beta52%" EQU "*" (set cIOS249[58]-d2x-v10-beta52=) else (set cIOS249[58]-d2x-v10-beta52=*)
 goto:LIST4
 
 
-:SwitchcIOS249[37]-d2x-v8-final
-if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" (set cIOS249[37]-d2x-v8-final=) else (set cIOS249[37]-d2x-v8-final=*)
+:SwitchcIOS249[60]-d2x-v10-beta52
+if /i "%cIOS249[60]-d2x-v10-beta52%" EQU "*" (set cIOS249[60]-d2x-v10-beta52=) else (set cIOS249[60]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS249[38]-d2x-v8-final
-if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" (set cIOS249[38]-d2x-v8-final=) else (set cIOS249[38]-d2x-v8-final=*)
+:SwitchcIOS249[70]-d2x-v10-beta52
+if /i "%cIOS249[70]-d2x-v10-beta52%" EQU "*" (set cIOS249[70]-d2x-v10-beta52=) else (set cIOS249[70]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[53]-d2x-v8-final
-if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" (set cIOS250[53]-d2x-v8-final=) else (set cIOS250[53]-d2x-v8-final=*)
+:SwitchcIOS249[80]-d2x-v10-beta52
+if /i "%cIOS249[80]-d2x-v10-beta52%" EQU "*" (set cIOS249[80]-d2x-v10-beta52=) else (set cIOS249[80]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[55]-d2x-v8-final
-if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" (set cIOS250[55]-d2x-v8-final=) else (set cIOS250[55]-d2x-v8-final=*)
+
+:SwitchcIOS249[37]-d2x-v10-beta52
+if /i "%cIOS249[37]-d2x-v10-beta52%" EQU "*" (set cIOS249[37]-d2x-v10-beta52=) else (set cIOS249[37]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[56]-d2x-v8-final
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (set cIOS250[56]-d2x-v8-final=) else (set cIOS250[56]-d2x-v8-final=*)
+:SwitchcIOS249[38]-d2x-v10-beta52
+if /i "%cIOS249[38]-d2x-v10-beta52%" EQU "*" (set cIOS249[38]-d2x-v10-beta52=) else (set cIOS249[38]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[57]-d2x-v8-final
-if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (set cIOS250[57]-d2x-v8-final=) else (set cIOS250[57]-d2x-v8-final=*)
+:SwitchcIOS250[53]-d2x-v10-beta52
+if /i "%cIOS250[53]-d2x-v10-beta52%" EQU "*" (set cIOS250[53]-d2x-v10-beta52=) else (set cIOS250[53]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[37]-d2x-v8-final
-if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" (set cIOS250[37]-d2x-v8-final=) else (set cIOS250[37]-d2x-v8-final=*)
+:SwitchcIOS250[55]-d2x-v10-beta52
+if /i "%cIOS250[55]-d2x-v10-beta52%" EQU "*" (set cIOS250[55]-d2x-v10-beta52=) else (set cIOS250[55]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[38]-d2x-v8-final
-if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" (set cIOS250[38]-d2x-v8-final=) else (set cIOS250[38]-d2x-v8-final=*)
+:SwitchcIOS250[56]-d2x-v10-beta52
+if /i "%cIOS250[56]-d2x-v10-beta52%" EQU "*" (set cIOS250[56]-d2x-v10-beta52=) else (set cIOS250[56]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[58]-d2x-v8-final
-if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" (set cIOS250[58]-d2x-v8-final=) else (set cIOS250[58]-d2x-v8-final=*)
+:SwitchcIOS250[57]-d2x-v10-beta52
+if /i "%cIOS250[57]-d2x-v10-beta52%" EQU "*" (set cIOS250[57]-d2x-v10-beta52=) else (set cIOS250[57]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[60]-d2x-v8-final
-if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" (set cIOS250[60]-d2x-v8-final=) else (set cIOS250[60]-d2x-v8-final=*)
+:SwitchcIOS250[37]-d2x-v10-beta52
+if /i "%cIOS250[37]-d2x-v10-beta52%" EQU "*" (set cIOS250[37]-d2x-v10-beta52=) else (set cIOS250[37]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[70]-d2x-v8-final
-if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" (set cIOS250[70]-d2x-v8-final=) else (set cIOS250[70]-d2x-v8-final=*)
+:SwitchcIOS250[38]-d2x-v10-beta52
+if /i "%cIOS250[38]-d2x-v10-beta52%" EQU "*" (set cIOS250[38]-d2x-v10-beta52=) else (set cIOS250[38]-d2x-v10-beta52=*)
 goto:LIST4
 
-:SwitchcIOS250[80]-d2x-v8-final
-if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" (set cIOS250[80]-d2x-v8-final=) else (set cIOS250[80]-d2x-v8-final=*)
+:SwitchcIOS250[58]-d2x-v10-beta52
+if /i "%cIOS250[58]-d2x-v10-beta52%" EQU "*" (set cIOS250[58]-d2x-v10-beta52=) else (set cIOS250[58]-d2x-v10-beta52=*)
+goto:LIST4
+
+:SwitchcIOS250[60]-d2x-v10-beta52
+if /i "%cIOS250[60]-d2x-v10-beta52%" EQU "*" (set cIOS250[60]-d2x-v10-beta52=) else (set cIOS250[60]-d2x-v10-beta52=*)
+goto:LIST4
+
+:SwitchcIOS250[70]-d2x-v10-beta52
+if /i "%cIOS250[70]-d2x-v10-beta52%" EQU "*" (set cIOS250[70]-d2x-v10-beta52=) else (set cIOS250[70]-d2x-v10-beta52=*)
+goto:LIST4
+
+:SwitchcIOS250[80]-d2x-v10-beta52
+if /i "%cIOS250[80]-d2x-v10-beta52%" EQU "*" (set cIOS250[80]-d2x-v10-beta52=) else (set cIOS250[80]-d2x-v10-beta52=*)
 goto:LIST4
 
 :SELECTALLLIST4
 
 
 :RECOMMENDEDCIOSS
-set cIOS202[60]-v5.1R=*
-set cIOS222[38]-v4=*
-set cIOS223[37-38]-v4=*
-set cIOS224[57]-v5.1R=*
-set cIOS249[57]-d2x-v8-final=*
-set cIOS250[56]-d2x-v8-final=*
-set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
+if /i "%hermesOPTION%" EQU "on" set cIOS202[60]-v5.1R=*
+if /i "%hermesOPTION%" EQU "on" set cIOS222[38]-v4=*
+if /i "%hermesOPTION%" EQU "on" set cIOS223[37-38]-v4=*
+if /i "%hermesOPTION%" EQU "on" set cIOS224[57]-v5.1R=*
+set cIOS251[38]-d2x-v10-beta52=*
+set cIOS249[57]-d2x-v10-beta52=*
+set cIOS250[56]-d2x-v10-beta52=*
+if /i "%CMIOSOPTION%" EQU "on" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 if /i "%LIST4%" EQU "REC" goto:LIST4
 
 
@@ -11905,26 +12094,27 @@ set cIOS250[58]-v21=*
 if /i "%LIST4%" EQU "v21" goto:LIST4
 
 :d2xcIOSs
-set cIOS249[37]-d2x-v8-final=*
-set cIOS249[38]-d2x-v8-final=*
-set cIOS249[53]-d2x-v8-final=*
-set cIOS249[55]-d2x-v8-final=*
-set cIOS249[56]-d2x-v8-final=*
-set cIOS249[57]-d2x-v8-final=*
-set cIOS249[58]-d2x-v8-final=*
-set cIOS249[60]-d2x-v8-final=*
-set cIOS249[70]-d2x-v8-final=*
-set cIOS249[80]-d2x-v8-final=*
-set cIOS250[37]-d2x-v8-final=*
-set cIOS250[38]-d2x-v8-final=*
-set cIOS250[53]-d2x-v8-final=*
-set cIOS250[55]-d2x-v8-final=*
-set cIOS250[56]-d2x-v8-final=*
-set cIOS250[57]-d2x-v8-final=*
-set cIOS250[58]-d2x-v8-final=*
-set cIOS250[60]-d2x-v8-final=*
-set cIOS250[70]-d2x-v8-final=*
-set cIOS250[80]-d2x-v8-final=*
+set cIOS251[38]-d2x-v10-beta52=*
+set cIOS249[37]-d2x-v10-beta52=*
+set cIOS249[38]-d2x-v10-beta52=*
+set cIOS249[53]-d2x-v10-beta52=*
+set cIOS249[55]-d2x-v10-beta52=*
+set cIOS249[56]-d2x-v10-beta52=*
+set cIOS249[57]-d2x-v10-beta52=*
+set cIOS249[58]-d2x-v10-beta52=*
+set cIOS249[60]-d2x-v10-beta52=*
+set cIOS249[70]-d2x-v10-beta52=*
+set cIOS249[80]-d2x-v10-beta52=*
+set cIOS250[37]-d2x-v10-beta52=*
+set cIOS250[38]-d2x-v10-beta52=*
+set cIOS250[53]-d2x-v10-beta52=*
+set cIOS250[55]-d2x-v10-beta52=*
+set cIOS250[56]-d2x-v10-beta52=*
+set cIOS250[57]-d2x-v10-beta52=*
+set cIOS250[58]-d2x-v10-beta52=*
+set cIOS250[60]-d2x-v10-beta52=*
+set cIOS250[70]-d2x-v10-beta52=*
+set cIOS250[80]-d2x-v10-beta52=*
 if /i "%LIST4%" EQU "d2x" goto:LIST4
 
 :cMIOSs
@@ -11999,6 +12189,7 @@ cls
 echo                                        ModMii                                v%currentversion%
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[Red]ADVANCED DOWNLOADS[def]\x20 \x20 \x20 \x20 \x20 \x20by XFlak
 echo.
+support\sfk echo -spat \x20[Yellow] WARNING: using these files MAY CAUSE BRICK if you do NOT know what you are doing!
 echo       D = Download Selected Files    1/2/3/4 = Page 1/2/3/4        M = Main Menu
 echo       C = Clear Download Queue       (blank) = Cycle Pages        DR = Drive Menu
 echo.
@@ -12008,12 +12199,6 @@ echo       U = User-Defined Custom Download            F = Forwarder DOL\ISO Bui
 echo           (Get any IOS, MIOS or System Menu)
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [Red] IOSs \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 cIOSs
-echo.
-
-
-set d2x-beta-rev=8-final
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-
 
 
 echo                 9 = IOS9v1034		 2224 = cIOS222[38]-v4
@@ -12040,19 +12225,17 @@ echo                46 = IOS46v3607        2492155 = cIOS249[55]-v21
 echo                48 = IOS48v4124        2492156 = cIOS249[56]-v21
 echo                53 = IOS53v5663        2492157 = cIOS249[57]-v21
 echo                55 = IOS55v5663        2492158 = cIOS249[58]-v21
-echo                56 = IOS56v5662          24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
-echo                57 = IOS57v5919          24938 = cIOS249[38]-d2x-v%d2x-beta-rev%
-echo                58 = IOS58v6176          24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
-echo                60 = IOS60v6174          24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
-echo                61 = IOS61v5662          24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
-echo                62 = IOS62v6430          24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
-echo                70 = IOS70v6687          24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
-echo                80 = IOS80v6944          24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
-echo                                         24970 = cIOS249[70]-d2x-v%d2x-beta-rev%
+echo                56 = IOS56v5662            60P = IOS60-Patched
+echo                57 = IOS57v5919          24937 = cIOS249[37]-d2x-v%d2x-beta-rev%
+echo                58 = IOS58v6176          24938 = cIOS249[38]-d2x-v%d2x-beta-rev%
+echo                60 = IOS60v6174          24953 = cIOS249[53]-d2x-v%d2x-beta-rev%
+echo                61 = IOS61v5662          24955 = cIOS249[55]-d2x-v%d2x-beta-rev%
+echo                62 = IOS62v6430          24956 = cIOS249[56]-d2x-v%d2x-beta-rev%
+echo                70 = IOS70v6687          24957 = cIOS249[57]-d2x-v%d2x-beta-rev%
+echo                80 = IOS80v6944          24958 = cIOS249[58]-d2x-v%d2x-beta-rev%
+echo                                         24960 = cIOS249[60]-d2x-v%d2x-beta-rev%
+echo              BETA = d2x beta settings   24970 = cIOS249[70]-d2x-v%d2x-beta-rev%   
 echo                                         24980 = cIOS249[80]-d2x-v%d2x-beta-rev%
-echo.
-echo                                          BETA = d2x beta settings
-echo.
 echo      %AdvNumber% Advanced Downloads in Queue
 echo.
 set /p ADVLIST=     Enter Selection Here: 
@@ -12114,6 +12297,7 @@ if /i "%ADVLIST%" EQU "56" goto:IOS56
 if /i "%ADVLIST%" EQU "57" goto:IOS57
 if /i "%ADVLIST%" EQU "58" goto:IOS58
 if /i "%ADVLIST%" EQU "60" goto:IOS60
+if /i "%ADVLIST%" EQU "60P" goto:IOS60P
 if /i "%ADVLIST%" EQU "61" goto:IOS61
 if /i "%ADVLIST%" EQU "62" goto:IOS62
 if /i "%ADVLIST%" EQU "70" goto:IOS70
@@ -12147,16 +12331,16 @@ if /i "%ADVLIST%" EQU "2492153" goto:cIOS249[53]-v21
 if /i "%ADVLIST%" EQU "2492155" goto:cIOS249[55]-v21
 if /i "%ADVLIST%" EQU "2492157" goto:cIOS249[57]-v21
 if /i "%ADVLIST%" EQU "2492158" goto:cIOS249[58]-v21
-if /i "%ADVLIST%" EQU "24937" goto:cIOS249[37]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24938" goto:cIOS249[38]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24953" goto:cIOS249[53]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24955" goto:cIOS249[55]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24956" goto:cIOS249[56]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24957" goto:cIOS249[57]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24958" goto:cIOS249[58]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24960" goto:cIOS249[60]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24970" goto:cIOS249[70]-d2x-v8-final
-if /i "%ADVLIST%" EQU "24980" goto:cIOS249[80]-d2x-v8-final
+if /i "%ADVLIST%" EQU "24937" goto:cIOS249[37]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24938" goto:cIOS249[38]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24953" goto:cIOS249[53]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24955" goto:cIOS249[55]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24956" goto:cIOS249[56]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24957" goto:cIOS249[57]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24958" goto:cIOS249[58]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24960" goto:cIOS249[60]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24970" goto:cIOS249[70]-d2x-v10-beta52
+if /i "%ADVLIST%" EQU "24980" goto:cIOS249[80]-d2x-v10-beta52
 
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
@@ -12178,6 +12362,8 @@ if exist releases (move /y releases temp\list.txt>nul) else (goto:nowifi)
 
 support\sfk filter -spat "temp\list.txt" ++"/davebaol/d2x-cios/releases/download/" ++".7z" -!"vwii" -!"uwii" -rep _*"download/"__ -rep _".7z*"__ -rep _"*files/"__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
+copy /y "temp\list.txt" "temp\list2.txt">nul
+support\sfk filter "temp\list.txt" -rep _"*/"__ -write -yes>nul
 
 :nowifi
 
@@ -12206,8 +12392,12 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                    Select the beta d2x cIOS you would like to build:
+echo                    Select the d2x cIOS version you would like to build:
 echo.
+echo            Current Setting: v%d2x-beta-rev%
+echo.
+echo            Notes: * d2x-v8-final is nearly identical to v10-beta52
+echo                   * d2x-v10-beta53 not recommended unless you are bug testing
 echo.
 echo            Warning: ModMii will report beta d2x cIOSs older than v8 beta 42
 echo                     as "invalid" for bases 60, 70 and 80
@@ -12215,7 +12405,7 @@ echo.
 echo.
 
 if /i "%d2xTOTAL%" EQU "0" (echo                 No d2x-betas were found in the support\More-cIOSs Folder) & (goto:quickskip)
-echo       N = None, build the d2x cIOSs that came with ModMii v%currentversion%
+echo       D = Default that came with ModMii v%currentversion%
 echo.
 
 set MorecIOSsNum=0
@@ -12253,11 +12443,12 @@ if /i "%betacios%" EQU "B" (mode con cols=85 lines=54) & (goto:%backbeforebetasw
 
 if /i "%betacios%" EQU "WWW" (start http://gbatemp.net/t277659-ciosx-rev21d2x-v2-yet-another-hot-fix) & (goto:betaswitch)
 
-if /i "%betacios%" NEQ "N" goto:notN
+if /i "%betacios%" NEQ "D" goto:notD
 if exist support\d2x-beta rd /s /q support\d2x-beta
 mode con cols=85 lines=54
+set d2x-beta-rev=10-beta52
 goto:d2xfix
-:notN
+:notD
 
 if "%betacios%"=="" goto:badkey
 if /i "%d2xTOTAL%" EQU "0" goto:badkey
@@ -12285,8 +12476,12 @@ goto:EOF
 :quickskip
 
 
-set DLcIOS=%CurrentcIOS%
-set CurrentcIOS=%CurrentcIOS:*/=%
+support\sfk filter "temp\list2.txt" ++"%CurrentcIOS%" -write -yes>nul
+
+set /p DLcIOS= <"temp\list2.txt"
+
+::set DLcIOS=%CurrentcIOS%
+::set CurrentcIOS=%CurrentcIOS:*/=%
 
 if exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" goto:nodownload
 if not exist "support\More-cIOSs\%CurrentcIOS%" mkdir "support\More-cIOSs\%CurrentcIOS%"
@@ -12301,7 +12496,9 @@ if not exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" (rd /s /q "support\
 if exist support\d2x-beta rd /s /q support\d2x-beta
 mkdir support\d2x-beta
 copy /y "support\More-cIOSs\%CurrentcIOS%\*" "support\d2x-beta">nul
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 del temp\list.txt>nul
+del temp\list2.txt>nul
 mode con cols=85 lines=54
 goto:d2xfix
 
@@ -12348,7 +12545,7 @@ set oldfullname=%name%
 
 set advDLCheck0=%advDLCheck%
 
-set d2x-beta-rev=8-final
+set d2x-beta-rev=10-beta52
 set advDLCheck=%advDLCheck:~0,17%%d2x-beta-rev%
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
@@ -12409,6 +12606,10 @@ echo BLAH%wadname%>wadnametemp.bat
 support\sfk filter wadnametemp.bat -rep _BLAH_"set wadnameless="_ -rep _-64-__ -rep _RVL-__ -rep _.wad__ -write -yes>nul
 call wadnametemp.bat
 del wadnametemp.bat>nul
+
+
+if /i "%wadname%" EQU "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])" goto:ADVPAGE3
+
 if /i "%ADVTYPE%" EQU "CIOS" goto:ADVPAGE3
 :skip
 
@@ -12664,20 +12865,20 @@ set /p ADVSLOT=     Enter Selection Here:
 
 if /i "%ADVSLOT%" EQU "M" goto:MENU
 
-
+if /i "%wadname%" EQU "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])" goto:BACKTOMENUFIRST
 if /i "%ADVTYPE%" EQU "CIOS" goto:BACKTOMENUFIRST
 if /i "%ADVSLOT%" EQU "B" goto:ADVPAGE2
 :BACKTOMENUFIRST
 if /i "%ADVSLOT%" EQU "B" goto:ADVANCED
 
 
+if /i "%ADVSLOT%" NEQ "N" goto:notnone
+if /i "%ADVTYPE%" EQU "CIOS" (set ADVSLOT=%wadname:~4,3%) & (goto:ADVPAGE4)
+if /i "%wadname%" EQU "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])" (set ADVSLOT=60) & (goto:ADVPAGE4)
+:notnone
+
 set SLOTCODE= -slot %ADVSLOT%
 set SLOTNAME=-slot%ADVSLOT%
-
-
-if /i "%ADVTYPE%" NEQ "CIOS" goto:notcIOS
-if /i "%ADVSLOT%" EQU "N" (set ADVSLOT=%wadname:~4,3%) & (goto:ADVPAGE4)
-:notcIOS
 
 if /i "%ADVSLOT%" EQU "N" goto:ADVPAGE4
 
@@ -12748,6 +12949,7 @@ if /i "%ADVLIST%" EQU "24958" set versionreal=%ciosversion%
 if /i "%ADVLIST%" EQU "24960" set versionreal=%ciosversion%
 if /i "%ADVLIST%" EQU "24970" set versionreal=%ciosversion%
 if /i "%ADVLIST%" EQU "24980" set versionreal=%ciosversion%
+if /i "%ADVLIST%" EQU "60P" set versionreal=%ciosversion%
 
 if /i "%ADVTYPE%" NEQ "CIOS" goto:miniskip
 if /i "%ADVSLOT%" EQU "%wadname:~4,3%" set SLOTCODE=
@@ -12767,10 +12969,13 @@ echo                                       by XFlak
 echo.
 echo.
 echo.
-echo    Would you like to change the version # of %wadnameless%%patchname%%slotname%
+echo       Would you like to change the version # of this WAD:
+echo.
+echo       %wadnameless%%patchname%%slotname%
 echo.
 echo.
-echo                                Note: MAX is 65535
+echo       Note: MAX is 65535
+echo.
 echo.
 echo.
 echo              MAX = MAX (65535)
@@ -12928,6 +13133,9 @@ goto:ADVCONFIRM
 
 
 :SaveADVdlSettings
+echo.
+echo Adding Advanced Download to queue, this may take a few seconds...
+echo.
 echo "set name=Advanced Download: %wadnameless%%patchname%%slotname%%versionname%">temp\AdvDL%AdvNumber%.bat
 echo "set wadname=%wadname%">>temp\AdvDL%AdvNumber%.bat
 echo "set ciosslot=%ciosSLOT%">>temp\AdvDL%AdvNumber%.bat
@@ -13756,7 +13964,7 @@ echo          Which Wii App would you like to configure?
 echo.
 echo.
 echo.
-echo          BM = BootMii (create bootmii.ini)
+echo          BM = Bootmii (create bootmii.ini)
 echo.
 echo         MMM = Multi-Mod Manager (create mmmconfig.txt)
 echo.
@@ -13789,7 +13997,7 @@ goto:CONFIGFILEMENU
 
 
 
-::...................................BootMii CONFIGURATOR (bootmii.ini)...............................
+::...................................Bootmii CONFIGURATOR (bootmii.ini)...............................
 :BMCONFIG
 set BMVIDEO=
 cls
@@ -13799,12 +14007,12 @@ echo.
 echo.
 echo.
 echo                 This will create a bootmii.ini file in %DRIVE%\bootmii\
-echo                        to determine how BootMii is launched.
+echo                        to determine how Bootmii is launched.
 echo.
 echo.
 echo.
 echo.
-echo      Enter the Video Mode you would like BootMii to use:
+echo      Enter the Video Mode you would like Bootmii to use:
 echo.
 echo.
 echo.
@@ -13846,7 +14054,7 @@ goto:BMCONFIG
 
 
 
-::...................................BootMii CONFIGURATOR (bootmii.ini)...............................
+::...................................Bootmii CONFIGURATOR (bootmii.ini)...............................
 :BMCONFIG2
 set BMBOOT=
 cls
@@ -13855,11 +14063,11 @@ echo                                       by XFlak
 echo.
 echo.
 echo.
-echo      What would you like BootMii to AutoBoot?
+echo      What would you like Bootmii to AutoBoot?
 echo.
 echo.
 echo.
-echo                 O = OFF     (BootMii)
+echo                 O = OFF     (Bootmii)
 echo                 H = HBC     (Homebrew Channel)
 echo                 S = SYSMENU (System Menu)
 echo.
@@ -13893,7 +14101,7 @@ goto:BMCONFIG2
 
 
 
-::...................................BootMii CONFIGURATOR (bootmii.ini)...............................
+::...................................Bootmii CONFIGURATOR (bootmii.ini)...............................
 :BMCONFIG3
 set BMDELAY=
 cls
@@ -13902,8 +14110,8 @@ echo                                       by XFlak
 echo.
 echo.
 echo.
-if /i "%BMBOOT%" EQU "HBC" echo      How many seconds should BootMii to wait to autoboot the HomeBrew Channel?
-if /i "%BMBOOT%" EQU "SYSMENU" echo      How many seconds should BootMii to wait to autoboot the System Menu?
+if /i "%BMBOOT%" EQU "HBC" echo      How many seconds should Bootmii to wait to autoboot the HomeBrew Channel?
+if /i "%BMBOOT%" EQU "SYSMENU" echo      How many seconds should Bootmii to wait to autoboot the System Menu?
 echo.
 echo.
 echo.
@@ -13948,7 +14156,7 @@ goto:BMCONFIG3
 
 
 
-::...................................BootMii CONFIGURATOR (bootmii.ini)...............................
+::...................................Bootmii CONFIGURATOR (bootmii.ini)...............................
 :BMCONFIG4
 set BMSD=
 cls
@@ -13957,12 +14165,12 @@ echo                                       by XFlak
 echo.
 echo.
 echo.
-echo      Would you also like to download BootMii SD Files required to launch BootMii?
+echo      Would you also like to download Bootmii SD Files required to launch Bootmii?
 echo.
 echo.
 echo.
 echo          Note: these are the same files generated by the HackMii Installer
-echo                by installing BootMii as Boot2 or by Preparing an SD Card
+echo                by installing Bootmii as boot2 or by Preparing an SD Card
 echo.
 echo.
 echo.
@@ -14002,7 +14210,7 @@ goto:BMCONFIG4
 
 
 
-::...................................BootMii CONFIGURATOR page 5...............................
+::...................................Bootmii CONFIGURATOR page 5...............................
 :BMCONFIG5
 set BMCONFIRM=
 cls
@@ -14022,7 +14230,7 @@ echo.
 echo      AutoBoot Delay is set to %BMDELAY% seconds
 :nodelay
 echo.
-if /i "%BMSD%" EQU "Y" echo      * Download BootMii SD Files to Launch BootMii
+if /i "%BMSD%" EQU "Y" echo      * Download Bootmii SD Files to Launch Bootmii
 echo.
 echo.
 echo.
@@ -14058,7 +14266,7 @@ goto:BMCONFIG5
 if not exist "%Drive%"\bootmii mkdir "%Drive%"\bootmii
 
 
-echo # BootMii Config File> "%Drive%"\bootmii\bootmii.ini
+echo # Bootmii Config File> "%Drive%"\bootmii\bootmii.ini
 echo # Created by ModMii>> "%Drive%"\bootmii\bootmii.ini
 echo #>> "%Drive%"\bootmii\bootmii.ini
 echo # Video mode, possible settings:>> "%Drive%"\bootmii\bootmii.ini
@@ -14344,7 +14552,7 @@ echo         R = Right
 echo         U = Up
 echo         D = Down
 echo.
-echo      Note: Password is entered on the WiiMote or GC Controller, max 10 characters
+echo      Note: Password is entered on the Wiimote or GC Controller, max 10 characters
 echo.
 echo      Note: If you don't have a password, the default is no password
 echo.
@@ -14707,7 +14915,7 @@ echo      or a shortcut to ModMii.
 echo.
 echo.
 echo.
-echo      Note: You can download sysCheck from ModMii's Download Page 2.
+echo      Note: You can download SysCheck HDE from ModMii's Download Page 2.
 echo            Simply save it to your SD card or FAT32 HDD and run it from the
 echo            Homebrew Channel. It will then save a sysCheck.csv log to the root
 echo            of your SD Card or FAT32 HDD.
@@ -14751,12 +14959,44 @@ goto:sysCheckName
 ::----------------------------------------sysCheck Analyzer-------------------------------------
 :sysCheckAnalyzer
 cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo Analyzing syscheck: %sysCheckName%
+echo.
+echo Please wait...
+echo.
 
-::get syscheck version
+::if v8-final, save a copy and edit replace "d2x-v10beta52" with "d2x-v8final" (since they're the same), and vice versa
+copy /y "%sysCheckName%" temp\syscheck_original.csv>nul
+set sysCheckName=temp\syscheck_original.csv
+
+if /i "%d2x-beta-rev%" EQU "10-beta52" support\sfk filter "%sysCheckName%" -rep _d2x-v8final_d2x-v10beta52_ -write -yes>nul
+if /i "%d2x-beta-rev%" EQU "8-final" support\sfk filter "%sysCheckName%" -rep _d2x-v10beta52_d2x-v8final_ -write -yes>nul
+
+
+
+::confirm SysCheck HDE
+findStr /I /C:"SysCheck HDE" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 goto:allgood
+echo Please use SysCheck Hacksden Edition (HDE) and try again...
+echo.
+@ping 127.0.0.1 -n 5 -w 1000> nul
+goto:sysCheckName
+:allgood
+
+
+::check for vWii
 copy /y "%sysCheckName%" temp\syscheck.txt>nul
-support\sfk filter -quiet temp\syscheck.txt -ls+"sysCheck" -rep _"sysCheck v"__ -rep _" by*"__ -write -yes
-set /p syscheckversion= <temp\syscheck.txt
+support\sfk filter -quiet temp\syscheck.txt -ls+"Console Type: " -rep _"Console Type: "__ -write -yes
+set /p consoletype= <temp\syscheck.txt
 del temp\syscheck.txt>nul
+if /i "%consoletype%" NEQ "vWii" goto:NOTvWii
+echo This syscheck is for a vWii and is not currently supported, aborting analysis...
+echo.
+@ping 127.0.0.1 -n 5 -w 1000> nul
+goto:sysCheckName
+:NOTvWii
 
 ::get System Menu info (ie. "System Menu 4.3E")
 copy /y "%sysCheckName%" temp\syscheck.txt>nul
@@ -14768,11 +15008,9 @@ set region=%firmstart:~-1%
 set firmstart=%firmstart:~0,-1%
 if /i "%firmstart:~0,1%" EQU "3" set firmstart=3.X
 if /i "%firmstart:~0,1%" EQU "2" set firmstart=o
-::echo %firmstart%%region%
 del temp\syscheck.txt>nul
 
 set firm=%firmstart%
-
 
 
 set firmwarechange=no
@@ -14789,55 +15027,18 @@ if /i "%REGION%" EQU "K" set SM4.1K=*
 :noSM
 
 
-::check if priiloader is installed
+::check if Priiloader is installed
 set pri=*
 if /i "%firmwarechange%" EQU "yes" (set pri=*) & (goto:skipprianalysis)
-if /i "%syscheckversion%" EQU "2.0.1" goto:skipprianalysis
-::note: Priiloader is spelled wrong in SOME syscheck logs
-findStr /I /C:"Priilaoder installed" "%sysCheckName%" >nul
-IF not ERRORLEVEL 1 set pri=
-findStr /I /C:"Priiloader installed" "%sysCheckName%" >nul
+
+findStr /I /C:"Priiloader" "%sysCheckName%" >nul
 IF not ERRORLEVEL 1 set pri=
 :skipprianalysis
 
-if /i "%syscheckversion%" NEQ "2.0.1" goto:nopriconfirmation
-if /i "%pri%" EQU "*" goto:nopriconfirmation
 
 
-:Prisyscheck
-
-::---------------CMD LINE MODE-------------
-if /i "%cmdlinemode%" NEQ "Y" goto:cmdskip
-if /i "%PRICMD%" EQU "Y" set pri=*
-goto:nopriconfirmation
-:cmdskip
-
-set Prisyscheck=
-cls
-echo Unable to determine if priiloader is installed using sysCheck v2.0.1 logs
-echo.
-echo Do you already have priiloader installed? (Y/N)
-echo.
-echo If you don't know, try accessing Priiloader by powering off the Wii,
-echo then powering it back on while holding reset.
-echo If Priiloader is installed you will be taken to the Priiloader menu.
-echo If you're still unsure, just answer "N".
-echo.
-set /p Prisyscheck=     Enter Selection Here: 
-
-if /i "%Prisyscheck%" EQU "Y" (set pri=) & (cls) & (goto:nopriconfirmation)
-if /i "%Prisyscheck%" EQU "N" (set pri=*) & (cls) & (goto:nopriconfirmation)
-
-echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:Prisyscheck
-:nopriconfirmation
-
-
-
-
-set d2x-beta-rev=8-final
-set ciosversion=21008
+set d2x-beta-rev=10-beta52
+set ciosversion=65535
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
@@ -14866,7 +15067,6 @@ del temp\cIOSsubversion.bat>nul
 
 
 ::check for recommended cIOSs and HBC
-if /i "%syscheckversion%" EQU "2.0.1" goto:v2.0.1
 
 set HM=*
 findStr /I /C:"Homebrew Channel 1.1.2 running on IOS58" "%sysCheckName%" >nul
@@ -14878,85 +15078,61 @@ findStr /I /C:"IOS58 " "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set IOS58=*) else (set IOS58=)
 :no58check
 
-findStr /I /C:"IOS202[60] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
 
-findStr /I /C:"IOS222[38] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
+if /i "%hermesOPTION%" EQU "OFF" goto:skipHERMEScheck
+findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermesrodries-v6" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
+findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermesrodries-v5.1" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS202[60]-v5.1R=
+findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermesrodries-5.1" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS202[60]-v5.1R=
+
+findStr /I /R /C:"IOS222\[38\] (rev [0-9]*, Info: hermes-v4" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS222[38]-v4=*) else (set cIOS222[38]-v4=)
 
 set cIOS223[37-38]-v4=*
-findStr /I /C:"IOS223[75] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
-IF not ERRORLEVEL 1 set cIOS223[37-38]-v4=
-findStr /I /C:"IOS223[38+37] (rev 4, Info: hermes-v4" "%sysCheckName%" >nul
+findStr /I /R /C:"IOS223\[38+37\] (rev [0-9]*, Info: hermes-v4" "%sysCheckName%" >nul
 IF not ERRORLEVEL 1 set cIOS223[37-38]-v4=
 
-findStr /I /C:"IOS224[57] (rev 65535, Info: hermesrodries-v6" "%sysCheckName%" >nul
+findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermesrodries-v6" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
+findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermesrodries-v5.1" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS224[57]-v5.1R=
+findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermesrodries-5.1" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set cIOS224[57]-v5.1R=
+:skipHERMEScheck
 
-findStr /I /C:"IOS249[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v8-final=*) else (set cIOS249[57]-d2x-v8-final=)
 
-findStr /I /C:"IOS250[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[56]-d2x-v8-final=*) else (set cIOS250[56]-d2x-v8-final=)
+::set IOS236=*
+::findStr /I /R /C:"IOS236\[36\] (rev [0-9]*, Info: rev 3351" "%sysCheckName%" >nul
+::IF NOT ERRORLEVEL 1 set IOS236=
+::findStr /I /R /C:"IOS236 (rev [0-9]*): Trucha Bug, ES Identify, NAND Access" "%sysCheckName%" >nul
+::IF NOT ERRORLEVEL 1 set IOS236=
+
+
+findStr /I /R /C:"IOS251\[38\] (rev [0-9]*, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS251[38]-d2x-v10-beta52=*) else (set cIOS251[38]-d2x-v10-beta52=)
+
+findStr /I /R /C:"IOS249\[57\] (rev [0-9]*, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v10-beta52=*) else (set cIOS249[57]-d2x-v10-beta52=)
+
+findStr /I /R /C:"IOS250\[56\] (rev [0-9]*, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+IF ERRORLEVEL 1 (set cIOS250[56]-d2x-v10-beta52=*) else (set cIOS250[56]-d2x-v10-beta52=)
 
 
 ::also accept 249/250 reversed
 
-findStr /I /C:"IOS250[57] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+findStr /I /R /C:"IOS250\[57\] (rev [0-9]*, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 goto:skip
-findStr /I /C:"IOS249[56] (rev %ciosversion%, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
+findStr /I /R /C:"IOS249\[56\] (rev [0-9]*, Info: d2x-v%cIOSversionNum%%cIOSsubversion%" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 goto:skip
 ::found both 249[56] and 250[57]
-set cIOS249[57]-d2x-v8-final=
-set cIOS250[56]-d2x-v8-final=
+set cIOS249[57]-d2x-v10-beta52=
+set cIOS250[56]-d2x-v10-beta52=
 
 :skip
 
 
-goto:skipv2.0.1
-
-
-
-
-:v2.0.1
-
-findStr /I /C:"runs on IOS58" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set HM=*) else (set HM=)
-
-::check for any version of IOS58
-if /i "%HM%" NEQ "*" goto:no58check
-findStr /I /C:"IOS58 " "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS58=*) else (set IOS58=)
-:no58check
-
-findStr /I /C:"IOS202 (rev 65535): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS202[60]-v5.1R=*) else (set cIOS202[60]-v5.1R=)
-
-findStr /I /C:"IOS222 (rev 4): Trucha Bug, ES Identify" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS222[38]-v4=*) else (set cIOS222[38]-v4=)
-
-findStr /I /C:"IOS223 (rev 4): Trucha Bug, ES Identify" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS223[37-38]-v4=*) else (set cIOS223[37-38]-v4=)
-
-findStr /I /C:"IOS224 (rev 65535): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
-
-findStr /I /C:"IOS249 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v8-final=*) else (set cIOS249[57]-d2x-v8-final=)
-
-findStr /I /C:"IOS250 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set cIOS250[56]-d2x-v8-final=*) else (set cIOS250[56]-d2x-v8-final=)
-
-::also accept 249/250 reversed
-findStr /I /C:"IOS250 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF NOT ERRORLEVEL 1 set cIOS250[56]-d2x-v8-final=
-
-::loophole check to make sure base56 isn't installed to both slots
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" set cIOS249[57]-d2x-v8-final=*
-findStr /I /C:"IOS249 (rev %ciosversion%): Trucha Bug, NAND Access, USB 2.0" "%sysCheckName%" >nul
-IF NOT ERRORLEVEL 1 set cIOS249[57]-d2x-v8-final=
-
-:skipv2.0.1
 
 
 
@@ -15067,32 +15243,76 @@ IF ERRORLEVEL 1 (set IOS62=*) else (set IOS62=)
 
 ::patched IOS check
 
+if /i "%FIRM%" EQU "4.1" goto:forcecheck
+if /i "%ExtraProtectionOPTION%" EQU "off" goto:smallskip
+:forcecheck
+set IOS60P=*
 findStr /I /C:"IOS60 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS60P=*) else (set IOS60P=)
+IF NOT ERRORLEVEL 1 set IOS60P=
+findStr /I /R /C:"IOS60 (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS60P=
+:smallskip
 
+
+if /i "%FIRM%" EQU "4.2" goto:forcecheck
+if /i "%ExtraProtectionOPTION%" EQU "off" goto:smallskip
+:forcecheck
+set IOS70K=*
 findStr /I /C:"IOS70 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS70K=*) else (set IOS70K=)
+IF NOT ERRORLEVEL 1 set IOS70K=
+findStr /I /R /C:"IOS70\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS70K=
+:smallskip
 
+if /i "%FIRM%" EQU "4.3" goto:forcecheck
+if /i "%ExtraProtectionOPTION%" EQU "off" goto:smallskip
+:forcecheck
+set IOS80K=*
 findStr /I /C:"IOS80 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS80K=*) else (set IOS80K=)
+IF NOT ERRORLEVEL 1 set IOS80K=
+findStr /I /R /C:"IOS80\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS80K=
+:smallskip
+
+
+if /i "%ExtraProtectionOPTION%" EQU "off" goto:smallskip
+set IOS11P60=*
+set IOS20P60=*
+set IOS30P60=*
+set IOS40P60=*
+set IOS50P=*
+set IOS52P=*
 
 findStr /I /C:"IOS11 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS11P60=*) else (set IOS11P60=)
+IF NOT ERRORLEVEL 1 set IOS11P60=
+findStr /I /R /C:"IOS11\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS11P60=
 
 findStr /I /C:"IOS20 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS20P60=*) else (set IOS20P60=)
+IF NOT ERRORLEVEL 1 set IOS20P60=
+findStr /I /R /C:"IOS20\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS20P60=
 
 findStr /I /C:"IOS30 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS30P60=*) else (set IOS30P60=)
+IF NOT ERRORLEVEL 1 set IOS30P60=
+findStr /I /R /C:"IOS30\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS30P60=
 
 findStr /I /C:"IOS40 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS40P60=*) else (set IOS40P60=)
+IF NOT ERRORLEVEL 1 set IOS40P60=
+findStr /I /R /C:"IOS40\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS40P60=
 
 findStr /I /C:"IOS50 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS50P=*) else (set IOS50P=)
+IF NOT ERRORLEVEL 1 set IOS50P=
+findStr /I /R /C:"IOS50\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS50P=
 
 findStr /I /C:"IOS52 (rev 16174): Trucha Bug, NAND Access" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS52P=*) else (set IOS52P=)
+IF NOT ERRORLEVEL 1 set IOS52P=
+findStr /I /R /C:"IOS52\[60\] (rev [0-9]*, Info: ModMii-IOS60-v6174)" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS52P=
+:smallskip
 
 
 ::cMIOS
@@ -15108,56 +15328,110 @@ findStr /I /C:"MIOS v10" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (set M10=*) else (set M10=)
 :skipMIOScheck
 
+::removed IOS236 effective 6.5.2
+::::IOS236
+::findStr /I /C:"IOS236" "%sysCheckName%" >nul
+::IF ERRORLEVEL 1 (set IOS236Installer=*) else (set IOS236Installer=)
+::if /i "%IOS236Installer%" EQU "*" (set SIP=*) else (set SIP=)
+::if /i "%IOS236Installer%" EQU "*" (set IOS36=*) else (set IOS36=)
 
-::IOS236
-findStr /I /C:"IOS236" "%sysCheckName%" >nul
-IF ERRORLEVEL 1 (set IOS236Installer=*) else (set IOS236Installer=)
-if /i "%IOS236Installer%" EQU "*" (set SIP=*) else (set SIP=)
-if /i "%IOS236Installer%" EQU "*" (set IOS36=*) else (set IOS36=)
+
+::check for RiiConnect24 IOS31 and IOS80
+set RiiConnect24Detected=
+if /i "%IOS31%" EQU "*" goto:RiiConnect24Check
+if /i "%IOS80K%" EQU "*" goto:RiiConnect24Check
+goto:NoRiiConnect24Check
+
+:RiiConnect24Check
+cls
+findStr /I /C:"IOS31 (rev 3608): Trucha Bug, ES Identify, NAND Access" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set RiiConnect24Detected=Y
+
+::ModMii's IOS80 is compatible with RiiConnect24, so only check for RC24's IOS31
+::findStr /I /C:"IOS80 (rev 6944): Trucha Bug, NAND Access" "%sysCheckName%" >nul
+::IF NOT ERRORLEVEL 1 set RiiConnect24Detected=Y
+
+if /i "%RiiConnect24Detected%" NEQ "Y" goto:NoRiiConnect24Check
+
+cls
+echo                                        ModMii                                v%currentversion%
+echo                                       by XFlak
+echo.
+echo     ModMii's sysCheck Updater has detected RiiConnect24 in IOS31.
+echo     Would you like to remove\overwrite it?
+echo.
+echo     Y = Yes, remove\overwrite RiiConnect24
+echo     N = No, keep RiiConnect24
+echo.
+set /p RiiConnect24Check=     Enter Selection Here: 
+
+if "%RiiConnect24Check%"=="" goto:badkey
+if /i "%RiiConnect24Check%" EQU "Y" goto:NoRiiConnect24Check
+if /i "%RiiConnect24Check%" EQU "N" goto:KeepRiiConnect24
+
+:badkey
+echo You Have Entered an Incorrect Key
+@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:RiiConnect24Check
+
+:KeepRiiConnect24
+findStr /I /C:"IOS31 (rev 3608): Trucha Bug, ES Identify, NAND Access" "%sysCheckName%" >nul
+IF NOT ERRORLEVEL 1 set IOS31=
+::findStr /I /C:"IOS80 (rev 6944): Trucha Bug, NAND Access" "%sysCheckName%" >nul
+::IF NOT ERRORLEVEL 1 set IOS80K=
+:NoRiiConnect24Check
 
 
-set mmm=
+
+set yawm=
 set RECCIOS=
-if /i "%cIOS202[60]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS222[38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS223[37-38]-v4%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS224[57]-v5.1R%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (set mmm=*) & (set RECCIOS=Y)
-if /i "%IOS9%" EQU "*" set mmm=*
-if /i "%IOS12%" EQU "*" set mmm=*
-if /i "%IOS13%" EQU "*" set mmm=*
-if /i "%IOS14%" EQU "*" set mmm=*
-if /i "%IOS15%" EQU "*" set mmm=*
-if /i "%IOS17%" EQU "*" set mmm=*
-if /i "%IOS21%" EQU "*" set mmm=*
-if /i "%IOS22%" EQU "*" set mmm=*
-if /i "%IOS28%" EQU "*" set mmm=*
-if /i "%IOS31%" EQU "*" set mmm=*
-if /i "%IOS33%" EQU "*" set mmm=*
-if /i "%IOS34%" EQU "*" set mmm=*
-if /i "%IOS35%" EQU "*" set mmm=*
-if /i "%IOS36v3608%" EQU "*" set mmm=*
-if /i "%IOS37%" EQU "*" set mmm=*
-if /i "%IOS38%" EQU "*" set mmm=*
-if /i "%IOS41%" EQU "*" set mmm=*
-if /i "%IOS48v4124%" EQU "*" set mmm=*
-if /i "%IOS43%" EQU "*" set mmm=*
-if /i "%IOS45%" EQU "*" set mmm=*
-if /i "%IOS46%" EQU "*" set mmm=*
-if /i "%IOS53%" EQU "*" set mmm=*
-if /i "%IOS55%" EQU "*" set mmm=*
-if /i "%IOS56%" EQU "*" set mmm=*
-if /i "%IOS57%" EQU "*" set mmm=*
-if /i "%IOS58%" EQU "*" set mmm=*
-if /i "%IOS61%" EQU "*" set mmm=*
-if /i "%IOS62%" EQU "*" set mmm=*
-if /i "%IOS60P%" EQU "*" set mmm=*
-if /i "%IOS70K%" EQU "*" set mmm=*
-if /i "%IOS80K%" EQU "*" set mmm=*
-if /i "%IOS236%" EQU "*" set mmm=*
-if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" set mmm=*
-if /i "%M10%" EQU "*" set mmm=*
+if /i "%cIOS202[60]-v5.1R%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS222[38]-v4%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS223[37-38]-v4%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS224[57]-v5.1R%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS251[38]-d2x-v10-beta52%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS249[57]-d2x-v10-beta52%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%cIOS250[56]-d2x-v10-beta52%" EQU "*" (set yawm=*) & (set RECCIOS=Y)
+if /i "%IOS9%" EQU "*" set yawm=*
+if /i "%IOS12%" EQU "*" set yawm=*
+if /i "%IOS13%" EQU "*" set yawm=*
+if /i "%IOS14%" EQU "*" set yawm=*
+if /i "%IOS15%" EQU "*" set yawm=*
+if /i "%IOS17%" EQU "*" set yawm=*
+if /i "%IOS21%" EQU "*" set yawm=*
+if /i "%IOS22%" EQU "*" set yawm=*
+if /i "%IOS28%" EQU "*" set yawm=*
+if /i "%IOS31%" EQU "*" set yawm=*
+if /i "%IOS33%" EQU "*" set yawm=*
+if /i "%IOS34%" EQU "*" set yawm=*
+if /i "%IOS35%" EQU "*" set yawm=*
+if /i "%IOS36v3608%" EQU "*" set yawm=*
+if /i "%IOS37%" EQU "*" set yawm=*
+if /i "%IOS38%" EQU "*" set yawm=*
+if /i "%IOS41%" EQU "*" set yawm=*
+if /i "%IOS48v4124%" EQU "*" set yawm=*
+if /i "%IOS43%" EQU "*" set yawm=*
+if /i "%IOS45%" EQU "*" set yawm=*
+if /i "%IOS46%" EQU "*" set yawm=*
+if /i "%IOS53%" EQU "*" set yawm=*
+if /i "%IOS55%" EQU "*" set yawm=*
+if /i "%IOS56%" EQU "*" set yawm=*
+if /i "%IOS57%" EQU "*" set yawm=*
+if /i "%IOS58%" EQU "*" set yawm=*
+if /i "%IOS61%" EQU "*" set yawm=*
+if /i "%IOS62%" EQU "*" set yawm=*
+if /i "%IOS60P%" EQU "*" set yawm=*
+if /i "%IOS70K%" EQU "*" set yawm=*
+if /i "%IOS80K%" EQU "*" set yawm=*
+if /i "%IOS236%" EQU "*" set yawm=*
+if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" set yawm=*
+if /i "%M10%" EQU "*" set yawm=*
+if /i "%IOS11P60%" EQU "*" set yawm=*
+if /i "%IOS20P60%" EQU "*" set yawm=*
+if /i "%IOS30P60%" EQU "*" set yawm=*
+if /i "%IOS40P60%" EQU "*" set yawm=*
+if /i "%IOS50P%" EQU "*" set yawm=*
+if /i "%IOS52P%" EQU "*" set yawm=*
 
 
 set BACKB4QUEUE=sysCheckName
@@ -15190,15 +15464,21 @@ set IOS35=*
 set IOS36v3608=*
 set IOS58=*
 
+set F32=*
 set HM=*
 set bootmiisd=*
 set mmm=*
+set yawm=*
 if /i "%FIRMSTART%" EQU "4.1" set BB1=*
 if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
 
+
+if /i "%macaddress%" EQU "S" goto:skip
 if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
+:skip
+
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
@@ -15210,8 +15490,12 @@ if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
 
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits2
 if /i "%FIRMSTART%" EQU "o" set Twi=*
-set SMASH=*
 
+if /i "%macaddress%" EQU "S" goto:skip
+if /i "%FIRMSTART%" EQU "4.3" set Wilbrand=*
+:skip
+
+set SMASH=*
 if /i "%REGION%" NEQ "K" set PWNS=*
 if /i "%REGION%" NEQ "K" set YUGI=*
 if /i "%REGION%" NEQ "K" set Bathaxx=*
@@ -15248,7 +15532,11 @@ if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.2" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
+
+if /i "%macaddress%" EQU "S" goto:skip
 if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
+:skip
+
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "T" set Twi=*
@@ -15258,7 +15546,11 @@ if /i "%EXPLOIT%" EQU "LS" set ROTJ=*
 if /i "%EXPLOIT%" EQU "TOS" set TOS=*
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits
 if /i "%FIRMSTART%" EQU "o" set Twi=*
-set SMASH=*
+
+if /i "%macaddress%" EQU "S" goto:skip
+if /i "%FIRMSTART%" EQU "4.3" set Wilbrand=*
+:skip
+
 if /i "%REGION%" NEQ "K" set PWNS=*
 if /i "%REGION%" NEQ "K" set YUGI=*
 if /i "%REGION%" NEQ "K" set Bathaxx=*
@@ -15271,6 +15563,7 @@ if /i "%FIRMSTART%" EQU "4.3" goto:smallskip
 if /i "%FIRMSTART%" EQU "4.2" goto:smallskip
 set IOS53=*
 set mmm=*
+set yawmm=*
 :smallskip
 
 if /i "%SNEEKTYPE:~0,1%" EQU "U" set f32=*
@@ -15607,9 +15900,10 @@ if /i "%FIRM%" EQU "4.2" set IOS70K=*
 if /i "%FIRM%" EQU "4.3" set IOS80K=*
 :miniskip
 
+if /i "%UpdatesIOSQ%" EQU "Y" goto:forceSMIOSs
+if /i "%ExtraProtectionOPTION%" EQU "OFF" goto:skipBuggedSMIOS
 if /i "%VIRGIN%" EQU "Y" goto:forceSMIOSs
-if /i "%ACTIVEIOS%" EQU "off" goto:skipBuggedSMIOS
-if /i "%UpdatesIOSQ%" EQU "N" goto:skipBuggedSMIOS
+
 :forceSMIOSs
 set IOS11P60=*
 set IOS20P60=*
@@ -15632,6 +15926,7 @@ if /i "%REGION%" EQU "U" (set EULAU=*) & (set RSU=*)
 if /i "%REGION%" EQU "E" (set EULAE=*) & (set RSE=*)
 if /i "%REGION%" EQU "J" (set EULAJ=*) & (set RSJ=*)
 if /i "%REGION%" EQU "K" (set EULAK=*) & (set RSK=*)
+set KK=*
 goto:DOWNLOADQUEUE
 :notRC
 
@@ -15647,7 +15942,7 @@ if /i "%UpdatesIOSQ%" EQU "N" goto:skipactiveios
 
 
 :ACTIVEIOS
-set mmm=*
+set yawm=*
 set M10=*
 set IOS9=*
 set IOS12=*
@@ -15685,7 +15980,7 @@ if /i "%MIIQ%" EQU "Y" set Mii=*
 
 
 
-if /i "%FWDOPTION%" EQU "on" (set usbx=*) & (set mmm=*)
+if /i "%FWDOPTION%" EQU "on" (set usbx=*) & (set yawm=*)
 
 if /i "%USBGUIDE%" NEQ "Y" goto:NoUSBSETUP
 if /i "%LOADER%" EQU "CFG" set usbfolder=*
@@ -15694,6 +15989,7 @@ if /i "%LOADER%" EQU "FLOW" set FLOW=*
 if /i "%LOADER%" EQU "ALL" set FLOW=*
 if /i "%LOADER%" EQU "GX" set usbgx=*
 if /i "%LOADER%" EQU "ALL" set usbgx=*
+set nintendont=*
 set wbm=*
 if /i "%FORMAT%" EQU "1" set f32=*
 if /i "%FORMAT%" EQU "3" set f32=*
@@ -15703,6 +15999,7 @@ if /i "%FORMAT%" EQU "3" set f32=*
 
 if /i "%VIRGIN%" NEQ "Y" goto:notvirgin
 :virgin
+set F32=*
 set HM=*
 set bootmiisd=*
 set IOS58=*
@@ -15711,7 +16008,11 @@ if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 if /i "%FIRMSTART%" EQU "3.2" set BB1=*
 if /i "%FIRMSTART%" EQU "3.x" set BB1=*
 if /i "%FIRMSTART%" EQU "4.2" set BB2=*
+
+if /i "%macaddress%" EQU "S" goto:skip
 if /i "%EXPLOIT%" EQU "W" set Wilbrand=*
+:skip
+
 if /i "%EXPLOIT%" EQU "S" set SMASH=*
 if /i "%EXPLOIT%" EQU "L" set PWNS=*
 if /i "%EXPLOIT%" EQU "T" set Twi=*
@@ -15719,8 +16020,14 @@ if /i "%EXPLOIT%" EQU "Y" set YUGI=*
 if /i "%EXPLOIT%" EQU "LB" set Bathaxx=*
 if /i "%EXPLOIT%" EQU "LS" set ROTJ=*
 if /i "%EXPLOIT%" EQU "TOS" set TOS=*
+
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits
 if /i "%FIRMSTART%" EQU "o" set Twi=*
+
+if /i "%macaddress%" EQU "S" goto:skip
+if /i "%FIRMSTART%" EQU "4.3" set Wilbrand=*
+:skip
+
 set SMASH=*
 if /i "%REGION%" NEQ "K" set PWNS=*
 if /i "%REGION%" NEQ "K" set YUGI=*
@@ -15729,17 +16036,20 @@ if /i "%REGION%" NEQ "K" set ROTJ=*
 if /i "%REGION%" NEQ "K" set TOS=*
 :notallexploits
 
-::set IOS236=*
-set IOS236Installer=*
-set SIP=*
-set IOS36=*
 
-set cIOS202[60]-v5.1R=*
-set cIOS222[38]-v4=*
-set cIOS223[37-38]-v4=*
-set cIOS224[57]-v5.1R=*
-set cIOS249[57]-d2x-v8-final=*
-set cIOS250[56]-d2x-v8-final=*
+::removed IOS236 Installer and 236 all together effective 6.5.2
+::set IOS236=*
+::set IOS236Installer=*
+::set SIP=*
+::set IOS36=*
+
+if /i "%hermesOPTION%" EQU "on" set cIOS202[60]-v5.1R=*
+if /i "%hermesOPTION%" EQU "on" set cIOS222[38]-v4=*
+if /i "%hermesOPTION%" EQU "on" set cIOS223[37-38]-v4=*
+if /i "%hermesOPTION%" EQU "on" set cIOS224[57]-v5.1R=*
+set cIOS251[38]-d2x-v10-beta52=*
+set cIOS249[57]-d2x-v10-beta52=*
+set cIOS250[56]-d2x-v10-beta52=*
 
 
 
@@ -15747,7 +16057,14 @@ if /i "%CMIOSOPTION%" EQU "on" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=
 if /i "%CMIOSOPTION%" EQU "on" set M10=
 set pri=*
 ::set HAX=*
+set yawm=*
+
+
+If /i "%REGION%" NEQ "K" goto:nonkorean
+If /i "%FIRMSTART%" EQU "4.3" goto:nonkorean
 set mmm=*
+
+:nonkorean
 
 goto:DOWNLOADQUEUE
 
@@ -15755,19 +16072,20 @@ goto:DOWNLOADQUEUE
 
 :notvirgin
 
-::set mmm=*
-if /i "%PIC%" EQU "Y" set mmm=*
-if /i "%NET%" EQU "Y" set mmm=*
-if /i "%WEATHER%" EQU "Y" set mmm=*
-if /i "%NEWS%" EQU "Y" set mmm=*
-if /i "%SHOP%" EQU "Y" set mmm=*
-if /i "%SPEAK%" EQU "Y" set mmm=*
+::set yawm=*
+if /i "%PIC%" EQU "Y" set yawm=*
+if /i "%NET%" EQU "Y" set yawm=*
+if /i "%WEATHER%" EQU "Y" set yawm=*
+if /i "%NEWS%" EQU "Y" set yawm=*
+if /i "%SHOP%" EQU "Y" set yawm=*
+if /i "%SPEAK%" EQU "Y" set yawm=*
 
 if /i "%HMInstaller%" NEQ "Y" goto:noHMInstallerforNonVirgin
+set F32=*
 set HM=*
 set bootmiisd=*
 set IOS58=*
-set mmm=*
+set yawm=*
 ::if /i "%FIRMSTART%" EQU "4.1" set BB1=*
 ::if /i "%FIRMSTART%" EQU "4.0" set BB1=*
 ::if /i "%FIRMSTART%" EQU "3.x" set BB1=*
@@ -15790,18 +16108,22 @@ goto:skipextra2
 
 :noHMInstallerforNonVirgin
 
-if /i "%FIRM%" NEQ "%FIRMSTART%" set mmm=*
+if /i "%FIRM%" NEQ "%FIRMSTART%" set yawm=*
 
-if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236Installer=*) & (set SIP=*) & (set IOS36=*)
+::if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236Installer=*) & (set SIP=*) & (set IOS36=*)
 ::if /i "%IOS236InstallerQ%" EQU "Y" (set IOS236=*) & (set mmm=*)
 
-if /i "%RECCIOS%" EQU "Y" set mmm=*
+if /i "%RECCIOS%" EQU "Y" set yawm=*
+
+if /i "%hermesOPTION%" EQU "on" goto:skipHermes
 if /i "%RECCIOS%" EQU "Y" set cIOS202[60]-v5.1R=*
 if /i "%RECCIOS%" EQU "Y" set cIOS222[38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS223[37-38]-v4=*
 if /i "%RECCIOS%" EQU "Y" set cIOS224[57]-v5.1R=*
-if /i "%RECCIOS%" EQU "Y" set cIOS249[57]-d2x-v8-final=*
-if /i "%RECCIOS%" EQU "Y" set cIOS250[56]-d2x-v8-final=*
+:skipHermes
+if /i "%RECCIOS%" EQU "Y" set cIOS251[38]-d2x-v10-beta52=*
+if /i "%RECCIOS%" EQU "Y" set cIOS249[57]-d2x-v10-beta52=*
+if /i "%RECCIOS%" EQU "Y" set cIOS250[56]-d2x-v10-beta52=*
 
 if /i "%CMIOSOPTION%" EQU "off" goto:quickskip
 if /i "%RECCIOS%" EQU "Y" set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
@@ -15810,6 +16132,8 @@ if /i "%RECCIOS%" EQU "Y" set M10=
 
 if /i "%yawmQ%" EQU "Y" set YAWM=*
 
+
+if /i "%FIRM%" NEQ "%FIRMSTART%" set pri=*
 
 if /i "%PRIQ%" NEQ "Y" goto:DOWNLOADQUEUE
 set pri=*
@@ -15957,7 +16281,7 @@ set settings=
 if /i "%cmdguide%" EQU "G" set settings=G
 
 
-set d2x-beta-rev=8-final
+set d2x-beta-rev=10-beta52
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 ::--------------
@@ -15968,9 +16292,9 @@ findStr "d2x" temp\DLnamesADV.txt >nul
 IF ERRORLEVEL 1 goto:DLCOUNT
 
 
-::split out default d2x cIOSs and force "8-final" (ie. set d2x-beta-rev=8-final)
+::split out default d2x cIOSs and force "8-final" (ie. set d2x-beta-rev=10-beta52)
 support\sfk filter -spat "temp\DownloadQueues\%CurrentQueue%" -ls+"SET cIOS" -le+"\x3d\x2a">temp\temp.bat
-support\sfk filter -spat temp\temp.bat ++"-d2x-v" -rep _"-d2x-"*_"-d2x-v8-final\x3d\x2a"_ -write -yes>nul
+support\sfk filter -spat temp\temp.bat ++"-d2x-v" -rep _"-d2x-"*_"-d2x-v10-beta52\x3d\x2a"_ -write -yes>nul
 call temp\temp.bat
 
 
@@ -16003,7 +16327,7 @@ set oldfullname=%name%
 
 set advDLCheck0=%advDLCheck%
 
-set d2x-beta-rev=8-final
+set d2x-beta-rev=10-beta52
 set advDLCheck=%advDLCheck:~0,17%%d2x-beta-rev%
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
@@ -16061,294 +16385,27 @@ if /i "%LOADER%" EQU "FLOW" set FLOW=*
 if /i "%LOADER%" EQU "ALL" set FLOW=*
 if /i "%LOADER%" EQU "GX" set usbgx=*
 if /i "%LOADER%" EQU "ALL" set usbgx=*
+set nintendont=*
+
 set wbm=*
 if /i "%FORMAT%" EQU "1" set f32=*
 if /i "%FORMAT%" EQU "3" set f32=*
 :nocmdlineusbloadersettings
 
-
-
-if /i "%EULAU%" EQU "*" (echo "EULA v3 (USA)">>temp\DLnames.txt) & (echo "EULAU">>temp\DLgotos.txt)
-if /i "%EULAE%" EQU "*" (echo "EULA v3 (PAL)">>temp\DLnames.txt) & (echo "EULAE">>temp\DLgotos.txt)
-if /i "%EULAJ%" EQU "*" (echo "EULA v3 (JAP)">>temp\DLnames.txt) & (echo "EULAJ">>temp\DLgotos.txt)
-if /i "%EULAK%" EQU "*" (echo "EULA v3 (KOR)">>temp\DLnames.txt) & (echo "EULAK">>temp\DLgotos.txt)
-if /i "%RSU%" EQU "*" (echo "Region Select v2 (USA)">>temp\DLnames.txt) & (echo "RSU">>temp\DLgotos.txt)
-if /i "%RSE%" EQU "*" (echo "Region Select v2 (PAL)">>temp\DLnames.txt) & (echo "RSE">>temp\DLgotos.txt)
-if /i "%RSJ%" EQU "*" (echo "Region Select v2 (JAP)">>temp\DLnames.txt) & (echo "RSJ">>temp\DLgotos.txt)
-if /i "%RSK%" EQU "*" (echo "Region Select v2 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
-if /i "%BC%" EQU "*" (echo "BC">>temp\DLnames.txt) & (echo "BC">>temp\DLgotos.txt)
-if /i "%cBC%" EQU "*" (echo "NMM">>temp\DLnames.txt) & (echo "NMM">>temp\DLgotos.txt)
-if /i "%DML%" EQU "*" (echo "DML %CurrentDMLRev% ">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
-if /i "%SM3.2U%" EQU "*" (echo "System Menu 3.2U">>temp\DLnames.txt) & (echo "SM3.2U">>temp\DLgotos.txt)
-if /i "%SM4.1U%" EQU "*" (echo "System Menu 4.1U">>temp\DLnames.txt) & (echo "SM4.1U">>temp\DLgotos.txt)
-if /i "%SM4.2U%" EQU "*" (echo "System Menu 4.2U">>temp\DLnames.txt) & (echo "SM4.2U">>temp\DLgotos.txt)
-if /i "%SM4.3U%" EQU "*" (echo "System Menu 4.3U">>temp\DLnames.txt) & (echo "SM4.3U">>temp\DLgotos.txt)
-if /i "%SM3.2E%" EQU "*" (echo "System Menu 3.2E">>temp\DLnames.txt) & (echo "SM3.2E">>temp\DLgotos.txt)
-if /i "%SM4.1E%" EQU "*" (echo "System Menu 4.1E">>temp\DLnames.txt) & (echo "SM4.1E">>temp\DLgotos.txt)
-if /i "%SM4.2E%" EQU "*" (echo "System Menu 4.2E">>temp\DLnames.txt) & (echo "SM4.2E">>temp\DLgotos.txt)
-if /i "%SM4.3E%" EQU "*" (echo "System Menu 4.3E">>temp\DLnames.txt) & (echo "SM4.3E">>temp\DLgotos.txt)
-if /i "%SM3.2J%" EQU "*" (echo "System Menu 3.2J">>temp\DLnames.txt) & (echo "SM3.2J">>temp\DLgotos.txt)
-if /i "%SM4.1J%" EQU "*" (echo "System Menu 4.1J">>temp\DLnames.txt) & (echo "SM4.1J">>temp\DLgotos.txt)
-if /i "%SM4.2J%" EQU "*" (echo "System Menu 4.2J">>temp\DLnames.txt) & (echo "SM4.2J">>temp\DLgotos.txt)
-if /i "%SM4.3J%" EQU "*" (echo "System Menu 4.3J">>temp\DLnames.txt) & (echo "SM4.3J">>temp\DLgotos.txt)
-if /i "%SM4.1K%" EQU "*" (echo "System Menu 4.1K">>temp\DLnames.txt) & (echo "SM4.1K">>temp\DLgotos.txt)
-if /i "%SM4.2K%" EQU "*" (echo "System Menu 4.2K">>temp\DLnames.txt) & (echo "SM4.2K">>temp\DLgotos.txt)
-if /i "%SM4.3K%" EQU "*" (echo "System Menu 4.3K">>temp\DLnames.txt) & (echo "SM4.3K">>temp\DLgotos.txt)
-
-if /i "%SM4.1U-DWR%" EQU "*" (echo "System Menu 4.1U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWR">>temp\DLgotos.txt)
-if /i "%SM4.2U-DWR%" EQU "*" (echo "System Menu 4.2U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWR">>temp\DLgotos.txt)
-if /i "%SM4.3U-DWR%" EQU "*" (echo "System Menu 4.3U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWR">>temp\DLgotos.txt)
-if /i "%SM4.1E-DWR%" EQU "*" (echo "System Menu 4.1E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWR">>temp\DLgotos.txt)
-if /i "%SM4.2E-DWR%" EQU "*" (echo "System Menu 4.2E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWR">>temp\DLgotos.txt)
-if /i "%SM4.3E-DWR%" EQU "*" (echo "System Menu 4.3E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWR">>temp\DLgotos.txt)
-if /i "%SM4.1J-DWR%" EQU "*" (echo "System Menu 4.1J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWR">>temp\DLgotos.txt)
-if /i "%SM4.2J-DWR%" EQU "*" (echo "System Menu 4.2J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWR">>temp\DLgotos.txt)
-if /i "%SM4.3J-DWR%" EQU "*" (echo "System Menu 4.3J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWR">>temp\DLgotos.txt)
-if /i "%SM4.1K-DWR%" EQU "*" (echo "System Menu 4.1K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWR">>temp\DLgotos.txt)
-if /i "%SM4.2K-DWR%" EQU "*" (echo "System Menu 4.2K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWR">>temp\DLgotos.txt)
-if /i "%SM4.3K-DWR%" EQU "*" (echo "System Menu 4.3K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWR">>temp\DLgotos.txt)
-
-if /i "%SM4.1U-DWG%" EQU "*" (echo "System Menu 4.1U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWG">>temp\DLgotos.txt)
-if /i "%SM4.2U-DWG%" EQU "*" (echo "System Menu 4.2U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWG">>temp\DLgotos.txt)
-if /i "%SM4.3U-DWG%" EQU "*" (echo "System Menu 4.3U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWG">>temp\DLgotos.txt)
-if /i "%SM4.1E-DWG%" EQU "*" (echo "System Menu 4.1E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWG">>temp\DLgotos.txt)
-if /i "%SM4.2E-DWG%" EQU "*" (echo "System Menu 4.2E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWG">>temp\DLgotos.txt)
-if /i "%SM4.3E-DWG%" EQU "*" (echo "System Menu 4.3E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWG">>temp\DLgotos.txt)
-if /i "%SM4.1J-DWG%" EQU "*" (echo "System Menu 4.1J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWG">>temp\DLgotos.txt)
-if /i "%SM4.2J-DWG%" EQU "*" (echo "System Menu 4.2J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWG">>temp\DLgotos.txt)
-if /i "%SM4.3J-DWG%" EQU "*" (echo "System Menu 4.3J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWG">>temp\DLgotos.txt)
-if /i "%SM4.1K-DWG%" EQU "*" (echo "System Menu 4.1K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWG">>temp\DLgotos.txt)
-if /i "%SM4.2K-DWG%" EQU "*" (echo "System Menu 4.2K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWG">>temp\DLgotos.txt)
-if /i "%SM4.3K-DWG%" EQU "*" (echo "System Menu 4.3K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWG">>temp\DLgotos.txt)
-
-if /i "%SM4.1U-DWB%" EQU "*" (echo "System Menu 4.1U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWB">>temp\DLgotos.txt)
-if /i "%SM4.2U-DWB%" EQU "*" (echo "System Menu 4.2U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWB">>temp\DLgotos.txt)
-if /i "%SM4.3U-DWB%" EQU "*" (echo "System Menu 4.3U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWB">>temp\DLgotos.txt)
-if /i "%SM4.1E-DWB%" EQU "*" (echo "System Menu 4.1E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWB">>temp\DLgotos.txt)
-if /i "%SM4.2E-DWB%" EQU "*" (echo "System Menu 4.2E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWB">>temp\DLgotos.txt)
-if /i "%SM4.3E-DWB%" EQU "*" (echo "System Menu 4.3E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWB">>temp\DLgotos.txt)
-if /i "%SM4.1J-DWB%" EQU "*" (echo "System Menu 4.1J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWB">>temp\DLgotos.txt)
-if /i "%SM4.2J-DWB%" EQU "*" (echo "System Menu 4.2J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWB">>temp\DLgotos.txt)
-if /i "%SM4.3J-DWB%" EQU "*" (echo "System Menu 4.3J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWB">>temp\DLgotos.txt)
-if /i "%SM4.1K-DWB%" EQU "*" (echo "System Menu 4.1K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWB">>temp\DLgotos.txt)
-if /i "%SM4.2K-DWB%" EQU "*" (echo "System Menu 4.2K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWB">>temp\DLgotos.txt)
-if /i "%SM4.3K-DWB%" EQU "*" (echo "System Menu 4.3K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWB">>temp\DLgotos.txt)
-
-if /i "%SM4.1U-DWO%" EQU "*" (echo "System Menu 4.1U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWO">>temp\DLgotos.txt)
-if /i "%SM4.2U-DWO%" EQU "*" (echo "System Menu 4.2U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWO">>temp\DLgotos.txt)
-if /i "%SM4.3U-DWO%" EQU "*" (echo "System Menu 4.3U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWO">>temp\DLgotos.txt)
-if /i "%SM4.1E-DWO%" EQU "*" (echo "System Menu 4.1E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWO">>temp\DLgotos.txt)
-if /i "%SM4.2E-DWO%" EQU "*" (echo "System Menu 4.2E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWO">>temp\DLgotos.txt)
-if /i "%SM4.3E-DWO%" EQU "*" (echo "System Menu 4.3E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWO">>temp\DLgotos.txt)
-if /i "%SM4.1J-DWO%" EQU "*" (echo "System Menu 4.1J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWO">>temp\DLgotos.txt)
-if /i "%SM4.2J-DWO%" EQU "*" (echo "System Menu 4.2J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWO">>temp\DLgotos.txt)
-if /i "%SM4.3J-DWO%" EQU "*" (echo "System Menu 4.3J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWO">>temp\DLgotos.txt)
-if /i "%SM4.1K-DWO%" EQU "*" (echo "System Menu 4.1K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWO">>temp\DLgotos.txt)
-if /i "%SM4.2K-DWO%" EQU "*" (echo "System Menu 4.2K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWO">>temp\DLgotos.txt)
-if /i "%SM4.3K-DWO%" EQU "*" (echo "System Menu 4.3K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWO">>temp\DLgotos.txt)
-
-if /i "%DarkWii_Red_4.1U%" EQU "*" (echo "DarkWii Red Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1U">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.2U%" EQU "*" (echo "DarkWii Red Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2U">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.3U%" EQU "*" (echo "DarkWii Red Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3U">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.1E%" EQU "*" (echo "DarkWii Red Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1E">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.2E%" EQU "*" (echo "DarkWii Red Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2E">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.3E%" EQU "*" (echo "DarkWii Red Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3E">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.1J%" EQU "*" (echo "DarkWii Red Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1J">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.2J%" EQU "*" (echo "DarkWii Red Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2J">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.3J%" EQU "*" (echo "DarkWii Red Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3J">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.1K%" EQU "*" (echo "DarkWii Red Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1K">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.2K%" EQU "*" (echo "DarkWii Red Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2K">>temp\DLgotos.txt)
-if /i "%DarkWii_Red_4.3K%" EQU "*" (echo "DarkWii Red Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3K">>temp\DLgotos.txt)
-
-if /i "%DarkWii_Green_4.1U%" EQU "*" (echo "DarkWii Green Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1U">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.2U%" EQU "*" (echo "DarkWii Green Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2U">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.3U%" EQU "*" (echo "DarkWii Green Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3U">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.1E%" EQU "*" (echo "DarkWii Green Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1E">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.2E%" EQU "*" (echo "DarkWii Green Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2E">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.3E%" EQU "*" (echo "DarkWii Green Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3E">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.1J%" EQU "*" (echo "DarkWii Green Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1J">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.2J%" EQU "*" (echo "DarkWii Green Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2J">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.3J%" EQU "*" (echo "DarkWii Green Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3J">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.1K%" EQU "*" (echo "DarkWii Green Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1K">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.2K%" EQU "*" (echo "DarkWii Green Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2K">>temp\DLgotos.txt)
-if /i "%DarkWii_Green_4.3K%" EQU "*" (echo "DarkWii Green Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3K">>temp\DLgotos.txt)
-
-if /i "%DarkWii_Blue_4.1U%" EQU "*" (echo "DarkWii Blue Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1U">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.2U%" EQU "*" (echo "DarkWii Blue Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2U">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.3U%" EQU "*" (echo "DarkWii Blue Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3U">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.1E%" EQU "*" (echo "DarkWii Blue Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1E">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.2E%" EQU "*" (echo "DarkWii Blue Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2E">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.3E%" EQU "*" (echo "DarkWii Blue Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3E">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.1J%" EQU "*" (echo "DarkWii Blue Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1J">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.2J%" EQU "*" (echo "DarkWii Blue Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2J">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.3J%" EQU "*" (echo "DarkWii Blue Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3J">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.1K%" EQU "*" (echo "DarkWii Blue Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1K">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.2K%" EQU "*" (echo "DarkWii Blue Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2K">>temp\DLgotos.txt)
-if /i "%DarkWii_Blue_4.3K%" EQU "*" (echo "DarkWii Blue Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3K">>temp\DLgotos.txt)
-
-if /i "%darkwii_orange_4.1U%" EQU "*" (echo "DarkWii Orange Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1U">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.2U%" EQU "*" (echo "DarkWii Orange Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2U">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.3U%" EQU "*" (echo "DarkWii Orange Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3U">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.1E%" EQU "*" (echo "DarkWii Orange Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1E">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.2E%" EQU "*" (echo "DarkWii Orange Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2E">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.3E%" EQU "*" (echo "DarkWii Orange Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3E">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.1J%" EQU "*" (echo "DarkWii Orange Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1J">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.2J%" EQU "*" (echo "DarkWii Orange Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2J">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.3J%" EQU "*" (echo "DarkWii Orange Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3J">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.1K%" EQU "*" (echo "DarkWii Orange Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1K">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.2K%" EQU "*" (echo "DarkWii Orange Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2K">>temp\DLgotos.txt)
-if /i "%darkwii_orange_4.3K%" EQU "*" (echo "DarkWii Orange Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3K">>temp\DLgotos.txt)
-
-if /i "%IOS11P60%" EQU "*" (echo "IOS11v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS11P60">>temp\DLgotos.txt)
-if /i "%IOS20P60%" EQU "*" (echo "IOS20v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS20P60">>temp\DLgotos.txt)
-if /i "%IOS30%" EQU "*" (echo "IOS30v2576">>temp\DLnames.txt) & (echo "IOS30">>temp\DLgotos.txt)
-if /i "%IOS30P60%" EQU "*" (echo "IOS30v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS30P60">>temp\DLgotos.txt)
-if /i "%IOS30P%" EQU "*" (echo "IOS30v12576(IOS30v2576[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS30P">>temp\DLgotos.txt)
-if /i "%IOS40P60%" EQU "*" (echo "IOS40v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS40P60">>temp\DLgotos.txt)
-if /i "%IOS50P%" EQU "*" (echo "IOS50v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS50P">>temp\DLgotos.txt)
-if /i "%IOS52P%" EQU "*" (echo "IOS52v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS52P">>temp\DLgotos.txt)
-if /i "%IOS60%" EQU "*" (echo "IOS60v6174">>temp\DLnames.txt) & (echo "IOS60">>temp\DLgotos.txt)
-if /i "%IOS60P%" EQU "*" (echo "IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS60P">>temp\DLgotos.txt)
-if /i "%IOS70%" EQU "*" (echo "IOS70v6687">>temp\DLnames.txt) & (echo "IOS70">>temp\DLgotos.txt)
-if /i "%IOS70P%" EQU "*" (echo "IOS70v16687(IOS70v6687[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS70P">>temp\DLgotos.txt)
-if /i "%IOS70K%" EQU "*" (echo "IOS70v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS70K">>temp\DLgotos.txt)
-if /i "%IOS80K%" EQU "*" (echo "IOS80v16174(IOS60v6174[FS-ES-NP-VP-DIP])">>temp\DLnames.txt) & (echo "IOS80K">>temp\DLgotos.txt)
-if /i "%IOS80%" EQU "*" (echo "IOS80v6944">>temp\DLnames.txt) & (echo "IOS80">>temp\DLgotos.txt)
-if /i "%IOS80P%" EQU "*" (echo "IOS80v16944(IOS80v6944[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS80P">>temp\DLgotos.txt)
-
-if /i "%mmm%" EQU "*" (echo "Multi-Mod Manager (MMM) v13.4">>temp\DLnames.txt) & (echo "mmm">>temp\DLgotos.txt)
-if /i "%ARC%" EQU "*" (echo "Any Region Changer (1.1b Mod06 Offline)">>temp\DLnames.txt) & (echo "ARC">>temp\DLgotos.txt)
-if /i "%WiiMod%" EQU "*" (echo "WiiMod">>temp\DLnames.txt) & (echo "WiiMod">>temp\DLgotos.txt)
-if /i "%yawm%" EQU "*" (echo "Yet Another Wad Manager Mod">>temp\DLnames.txt) & (echo "yawm">>temp\DLgotos.txt)
-if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\DLgotos.txt)
-
-if /i "%syscheck%" EQU "*" (echo "sysCheck">>temp\DLnames.txt) & (echo "sysCheck">>temp\DLgotos.txt)
-if /i "%Casper%" EQU "*" (echo "Casper">>temp\DLnames.txt) & (echo "Casper">>temp\DLgotos.txt)
-if /i "%Wilbrand%" EQU "*" (echo "Wilbrand - 4.3%REGION% - MAC:%macaddress%">>temp\DLnames.txt) & (echo "Wilbrand">>temp\DLgotos.txt)
-
-if /i "%HM%" EQU "*" (echo "HackMii Installer">>temp\DLnames.txt) & (echo "HackmiiInstaller">>temp\DLgotos.txt)
-if /i "%bootmiisd%" EQU "*" (echo "BootMii SD Files">>temp\DLnames.txt) & (echo "bootmiisd">>temp\DLgotos.txt)
-if /i "%BB1%" EQU "*" (echo "Bannerbomb v1">>temp\DLnames.txt) & (echo "BannerBomb1">>temp\DLgotos.txt)
-if /i "%BB2%" EQU "*" (echo "Bannerbomb v2">>temp\DLnames.txt) & (echo "BannerBomb2">>temp\DLgotos.txt)
-if /i "%smash%" EQU "*" (echo "Smash Stack (USA, PAL, JAP and KOR)">>temp\DLnames.txt) & (echo "smash">>temp\DLgotos.txt)
-if /i "%pwns%" EQU "*" (echo "Indiana Pwns">>temp\DLnames.txt) & (echo "pwns">>temp\DLgotos.txt)
-if /i "%Bathaxx%" EQU "*" (echo "Bathaxx (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "Bathaxx">>temp\DLgotos.txt)
-if /i "%ROTJ%" EQU "*" (echo "Return of the Jodi (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "ROTJ">>temp\DLgotos.txt)
-if /i "%TOS%" EQU "*" (echo "Eri HaKawai (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "TOS">>temp\DLgotos.txt)
-if /i "%YUGI%" EQU "*" (echo "YU-GI-OWNED (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "YUGI">>temp\DLgotos.txt)
-if /i "%Twi%" EQU "*" (echo "Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)">>temp\DLnames.txt) & (echo "Twi">>temp\DLgotos.txt)
-
-if /i "%IOS236Installer%" EQU "*" (echo "IOS236 Installer v5 Mod">>temp\DLnames.txt) & (echo "IOS236Installer">>temp\DLgotos.txt)
-if /i "%SIP%" EQU "*" (echo "Simple IOS Patcher">>temp\DLnames.txt) & (echo "SIP">>temp\DLgotos.txt)
-if /i "%Pri%" EQU "*" (echo "Priiloader v0.7 (236 Mod)">>temp\DLnames.txt) & (echo "Priiloader">>temp\DLgotos.txt)
-if /i "%HAX%" EQU "*" (echo "Priiloader Hacks">>temp\DLnames.txt) & (echo "PriiHacks">>temp\DLgotos.txt)
-if /i "%MyM%" EQU "*" (echo "MyMenuifyMod">>temp\DLnames.txt) & (echo "Mym">>temp\DLgotos.txt)
-
-if /i "%PCSAVE%" EQU "Local" goto:local
+::get PCconfig for PC Apps
+set PCconfig=(Portable installation)
+if /i "%PCSAVE%" EQU "Local" set PCconfig=(Local installation with shortcuts)
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
-if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:local
+if /i "%Homedrive%" EQU "%ModMiiDrive%" set PCconfig=(Local installation with shortcuts)
 :skip
-if /i "%f32%" EQU "*" (echo "FAT32 GUI Formatter">>temp\DLnames.txt) & (echo "F32">>temp\DLgotos.txt)
-if /i "%CM%" EQU "*" (echo "Customize Mii">>temp\DLnames.txt) & (echo "CM">>temp\DLgotos.txt)
-if /i "%SMW%" EQU "*" (echo "ShowMiiWads">>temp\DLnames.txt) & (echo "SMW">>temp\DLgotos.txt)
-if /i "%wbm%" EQU "*" (echo "Wii Backup Manager">>temp\DLnames.txt) & (echo "WBM">>temp\DLgotos.txt)
-if /i "%WiiGSC%" EQU "*" (echo "Wii Game Shortcut Creator">>temp\DLnames.txt) & (echo "WiiGSC">>temp\DLgotos.txt)
-goto:skiplocal
-:local
 
-if /i "%f32%" EQU "*" (echo "FAT32 GUI Formatter (saved with shortcuts)">>temp\DLnames.txt) & (echo "F32">>temp\DLgotos.txt)
-if /i "%wbm%" EQU "*" (echo "Wii Backup Manager (saved with shortcuts)">>temp\DLnames.txt) & (echo "WBM">>temp\DLgotos.txt)
-if /i "%CM%" EQU "*" (echo "Customize Mii (saved with shortcuts)">>temp\DLnames.txt) & (echo "CM">>temp\DLgotos.txt)
-if /i "%SMW%" EQU "*" (echo "ShowMiiWads (saved with shortcuts)">>temp\DLnames.txt) & (echo "SMW">>temp\DLgotos.txt)
-if /i "%WiiGSC%" EQU "*" (echo "Wii Game Shortcut Creator (saved with shortcuts)">>temp\DLnames.txt) & (echo "WiiGSC">>temp\DLgotos.txt)
-:skiplocal
-
-
-
-if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader">>temp\DLnames.txt) & (echo "usbfolder">>temp\DLgotos.txt)
-if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
-if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
-if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
-if /i "%usbgx%" EQU "*" (echo "USB Loader GX">>temp\DLnames.txt) & (echo "usbgx">>temp\DLgotos.txt)
-if /i "%nintendont%" EQU "*" (echo "Nintendont">>temp\DLnames.txt) & (echo "Nintendont">>temp\DLgotos.txt)
-
-if /i "%CheatCodes%" EQU "*" (echo "%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
-if /i "%USBX%" EQU "*" (echo "USB-Loader Forwarder Channel">>temp\DLnames.txt) & (echo "USBX">>temp\DLgotos.txt)
-
-if /i "%FLOWF%" EQU "*" (echo "WiiFlow Forwarder Channel\dol">>temp\DLnames.txt) & (echo "FLOWF">>temp\DLgotos.txt)
-if /i "%PLC%" EQU "*" (echo "Post Loader Forwarder Channel">>temp\DLnames.txt) & (echo "PLC">>temp\DLgotos.txt)
-if /i "%S2U%" EQU "*" (echo "Switch2Uneek">>temp\DLnames.txt) & (echo "S2U">>temp\DLgotos.txt)
-if /i "%nSwitch%" EQU "*" (echo "nSwitch">>temp\DLnames.txt) & (echo "nSwitch">>temp\DLgotos.txt)
-if /i "%WiiMC%" EQU "*" (echo "WiiMC - Media Player">>temp\DLnames.txt) & (echo "WIIMC">>temp\DLgotos.txt)
-if /i "%fceugx%" EQU "*" (echo "FCEUGX - NES Emulator for the Wii">>temp\DLnames.txt) & (echo "fceugx">>temp\DLgotos.txt)
-if /i "%snes9xgx%" EQU "*" (echo "SNES9xGX - SNES Emulator for the Wii">>temp\DLnames.txt) & (echo "snes9xgx">>temp\DLgotos.txt)
-if /i "%vbagx%" EQU "*" (echo "Visual Boy Advance GX - GB/GBA Emulator for the Wii">>temp\DLnames.txt) & (echo "vbagx">>temp\DLgotos.txt)
-if /i "%WII64%" EQU "*" (echo "Wii64 beta1.1 (N64 Emulator)">>temp\DLnames.txt) & (echo "WII64">>temp\DLgotos.txt)
-if /i "%WIISX%" EQU "*" (echo "WiiSX beta2.1 (Playstation 1 Emulator)">>temp\DLnames.txt) & (echo "WIISX">>temp\DLgotos.txt)
-if /i "%SGM%" EQU "*" (echo "SaveGame Manager GX">>temp\DLnames.txt) & (echo "SGM">>temp\DLgotos.txt)
-if /i "%PL%" EQU "*" (echo "Postloader">>temp\DLnames.txt) & (echo "PL">>temp\DLgotos.txt)
-if /i "%WIIX%" EQU "*" (echo "WiiXplorer">>temp\DLnames.txt) & (echo "WIIX">>temp\DLgotos.txt)
-if /i "%HBB%" EQU "*" (echo "Homebrew Browser">>temp\DLnames.txt) & (echo "HBB">>temp\DLgotos.txt)
-if /i "%locked%" EQU "*" (echo "Locked Apps Folder for HBC (PASS=UDLRAB)">>temp\DLnames.txt) & (echo "locked">>temp\DLgotos.txt)
-
-if /i "%MII%" EQU "*" (echo "MII Channel">>temp\DLnames.txt) & (echo "MII">>temp\DLgotos.txt)
-
-if /i "%P0%" EQU "*" (echo "Photo Channel (USA / PAL / JAP /KOR)">>temp\DLnames.txt) & (echo "PHOTO0">>temp\DLgotos.txt)
-if /i "%P%" EQU "*" (echo "Photo Channel 1.1 (USA / PAL / JAP)">>temp\DLnames.txt) & (echo "PHOTO">>temp\DLgotos.txt)
-if /i "%PK%" EQU "*" (echo "KOREAN Photo Channel 1.1">>temp\DLnames.txt) & (echo "PHOTO_K">>temp\DLgotos.txt)
-if /i "%S%" EQU "*" (echo "Shopping Channel (USA / PAL / JAP)">>temp\DLnames.txt) & (echo "SHOP">>temp\DLgotos.txt)
-if /i "%SK%" EQU "*" (echo "KOREAN Shopping Channel">>temp\DLnames.txt) & (echo "SHOP_K">>temp\DLgotos.txt)
-if /i "%IU%" EQU "*" (echo "USA Internet Channel">>temp\DLnames.txt) & (echo "NET_U">>temp\DLgotos.txt)
-if /i "%IE%" EQU "*" (echo "PAL Internet Channel">>temp\DLnames.txt) & (echo "NET_E">>temp\DLgotos.txt)
-if /i "%IJ%" EQU "*" (echo "JAP Internet Channel">>temp\DLnames.txt) & (echo "NET_J">>temp\DLgotos.txt)
-if /i "%WU%" EQU "*" (echo "USA Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_U">>temp\DLgotos.txt)
-if /i "%WE%" EQU "*" (echo "PAL Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_E">>temp\DLgotos.txt)
-if /i "%WJ%" EQU "*" (echo "JAP Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_J">>temp\DLgotos.txt)
-if /i "%NU%" EQU "*" (echo "USA NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_U">>temp\DLgotos.txt)
-if /i "%NE%" EQU "*" (echo "PAl NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_E">>temp\DLgotos.txt)
-if /i "%NJ%" EQU "*" (echo "JAP NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_J">>temp\DLgotos.txt)
-if /i "%WSU%" EQU "*" (echo "USA Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_U">>temp\DLgotos.txt)
-if /i "%WSE%" EQU "*" (echo "PAL Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_E">>temp\DLgotos.txt)
-if /i "%WSJ%" EQU "*" (echo "JAP Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_J">>temp\DLgotos.txt)
-
-if /i "%M10%" EQU "*" (echo "MIOSv10">>temp\DLnames.txt) & (echo "M10">>temp\DLgotos.txt)
-if /i "%IOS9%" EQU "*" (echo "IOS9">>temp\DLnames.txt) & (echo "IOS9">>temp\DLgotos.txt)
-if /i "%IOS12%" EQU "*" (echo "IOS12">>temp\DLnames.txt) & (echo "IOS12">>temp\DLgotos.txt)
-if /i "%IOS13%" EQU "*" (echo "IOS13">>temp\DLnames.txt) & (echo "IOS13">>temp\DLgotos.txt)
-if /i "%IOS14%" EQU "*" (echo "IOS14">>temp\DLnames.txt) & (echo "IOS14">>temp\DLgotos.txt)
-if /i "%IOS15%" EQU "*" (echo "IOS15">>temp\DLnames.txt) & (echo "IOS15">>temp\DLgotos.txt)
-if /i "%IOS17%" EQU "*" (echo "IOS17">>temp\DLnames.txt) & (echo "IOS17">>temp\DLgotos.txt)
-if /i "%IOS21%" EQU "*" (echo "IOS21">>temp\DLnames.txt) & (echo "IOS21">>temp\DLgotos.txt)
-if /i "%IOS22%" EQU "*" (echo "IOS22">>temp\DLnames.txt) & (echo "IOS22">>temp\DLgotos.txt)
-if /i "%IOS28%" EQU "*" (echo "IOS28">>temp\DLnames.txt) & (echo "IOS28">>temp\DLgotos.txt)
-if /i "%IOS31%" EQU "*" (echo "IOS31">>temp\DLnames.txt) & (echo "IOS31">>temp\DLgotos.txt)
-if /i "%IOS33%" EQU "*" (echo "IOS33">>temp\DLnames.txt) & (echo "IOS33">>temp\DLgotos.txt)
-if /i "%IOS34%" EQU "*" (echo "IOS34">>temp\DLnames.txt) & (echo "IOS34">>temp\DLgotos.txt)
-if /i "%IOS35%" EQU "*" (echo "IOS35">>temp\DLnames.txt) & (echo "IOS35">>temp\DLgotos.txt)
-if /i "%IOS36%" EQU "*" (echo "IOS36v3351">>temp\DLnames.txt) & (echo "IOS36">>temp\DLgotos.txt)
-if /i "%IOS36v3608%" EQU "*" (echo "IOS36v3608">>temp\DLnames.txt) & (echo "IOS36v3608">>temp\DLgotos.txt)
-if /i "%IOS37%" EQU "*" (echo "IOS37">>temp\DLnames.txt) & (echo "IOS37">>temp\DLgotos.txt)
-if /i "%IOS38%" EQU "*" (echo "IOS38">>temp\DLnames.txt) & (echo "IOS38">>temp\DLgotos.txt)
-if /i "%IOS41%" EQU "*" (echo "IOS41">>temp\DLnames.txt) & (echo "IOS41">>temp\DLgotos.txt)
-if /i "%IOS43%" EQU "*" (echo "IOS43">>temp\DLnames.txt) & (echo "IOS43">>temp\DLgotos.txt)
-if /i "%IOS45%" EQU "*" (echo "IOS45">>temp\DLnames.txt) & (echo "IOS45">>temp\DLgotos.txt)
-if /i "%IOS46%" EQU "*" (echo "IOS46">>temp\DLnames.txt) & (echo "IOS46">>temp\DLgotos.txt)
-if /i "%IOS48v4124%" EQU "*" (echo "IOS48">>temp\DLnames.txt) & (echo "IOS48v4124">>temp\DLgotos.txt)
-if /i "%IOS53%" EQU "*" (echo "IOS53">>temp\DLnames.txt) & (echo "IOS53">>temp\DLgotos.txt)
-if /i "%IOS55%" EQU "*" (echo "IOS55">>temp\DLnames.txt) & (echo "IOS55">>temp\DLgotos.txt)
-if /i "%IOS56%" EQU "*" (echo "IOS56">>temp\DLnames.txt) & (echo "IOS56">>temp\DLgotos.txt)
-if /i "%IOS57%" EQU "*" (echo "IOS57">>temp\DLnames.txt) & (echo "IOS57">>temp\DLgotos.txt)
-if /i "%IOS58%" EQU "*" (echo "IOS58">>temp\DLnames.txt) & (echo "IOS58">>temp\DLgotos.txt)
-if /i "%IOS61%" EQU "*" (echo "IOS61">>temp\DLnames.txt) & (echo "IOS61">>temp\DLgotos.txt)
-if /i "%IOS62%" EQU "*" (echo "IOS62">>temp\DLnames.txt) & (echo "IOS62">>temp\DLgotos.txt)
-if /i "%A0e%" EQU "*" (echo "0000000e.app from IOS80 v6943 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e">>temp\DLgotos.txt)
-
-if /i "%A01%" EQU "*" (echo "00000001.app from IOS80 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER01">>temp\DLgotos.txt)
-if /i "%A0e_70%" EQU "*" (echo "0000000e.app from IOS70 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e_70">>temp\DLgotos.txt)
-if /i "%A01_70%" EQU "*" (echo "00000001.app from IOS70 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER01_70">>temp\DLgotos.txt)
-if /i "%A0e_60%" EQU "*" (echo "0000000e.app from IOS60 v6174 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e_60">>temp\DLgotos.txt)
-if /i "%A0c%" EQU "*" (echo "0000000c.app from MIOS v10 (DIOS MIOS)">>temp\DLnames.txt) & (echo "NUSGRABBER0c">>temp\DLgotos.txt)
 if /i "%A01_60%" EQU "*" (echo "00000001.app from IOS60 v6174 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER01_60">>temp\DLgotos.txt)
+if /i "%A01_70%" EQU "*" (echo "00000001.app from IOS70 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER01_70">>temp\DLgotos.txt)
+if /i "%A01%" EQU "*" (echo "00000001.app from IOS80 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER01">>temp\DLgotos.txt)
+if /i "%A0c%" EQU "*" (echo "0000000c.app from MIOS v10 (DIOS MIOS)">>temp\DLnames.txt) & (echo "NUSGRABBER0c">>temp\DLgotos.txt)
+if /i "%A0e_60%" EQU "*" (echo "0000000e.app from IOS60 v6174 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e_60">>temp\DLgotos.txt)
+if /i "%A0e_70%" EQU "*" (echo "0000000e.app from IOS70 v6687 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e_70">>temp\DLgotos.txt)
+if /i "%A0e%" EQU "*" (echo "0000000e.app from IOS80 v6943 (SNEEK)">>temp\DLnames.txt) & (echo "NUSGRABBER0e">>temp\DLgotos.txt)
 if /i "%A40%" EQU "*" (echo "00000040.app from System Menu 3.2J (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER40">>temp\DLgotos.txt)
 if /i "%A42%" EQU "*" (echo "00000042.app from System Menu 3.2U (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER42">>temp\DLgotos.txt)
 if /i "%A45%" EQU "*" (echo "00000045.app from System Menu 3.2E (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER45">>temp\DLgotos.txt)
@@ -16367,80 +16424,311 @@ if /i "%A94%" EQU "*" (echo "00000094.app from System Menu 4.3J (for MyMenuify)"
 if /i "%A97%" EQU "*" (echo "00000097.app from System Menu 4.3U (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER97">>temp\DLgotos.txt)
 if /i "%A9a%" EQU "*" (echo "0000009a.app from System Menu 4.3E (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER9a">>temp\DLgotos.txt)
 if /i "%A9d%" EQU "*" (echo "0000009d.app from System Menu 4.3K (for MyMenuify)">>temp\DLnames.txt) & (echo "NUSGRABBER9d">>temp\DLgotos.txt)
-
-if /i "%IOS236%" EQU "*" (echo "IOS236v65535(IOS36v3351[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS236">>temp\DLgotos.txt)
-
-if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" (echo "cIOS249[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[37]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" (echo "cIOS249[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[38]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" (echo "cIOS249[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[53]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" (echo "cIOS249[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[55]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" (echo "cIOS249[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[56]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" (echo "cIOS249[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[57]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" (echo "cIOS249[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[58]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" (echo "cIOS249[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[60]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" (echo "cIOS249[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[70]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" (echo "cIOS249[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[80]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" (echo "cIOS250[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[37]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" (echo "cIOS250[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[38]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" (echo "cIOS250[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[53]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" (echo "cIOS250[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[55]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" (echo "cIOS250[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[56]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" (echo "cIOS250[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[57]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" (echo "cIOS250[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[58]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" (echo "cIOS250[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[60]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" (echo "cIOS250[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[70]-d2x-v8-final">>temp\DLgotos.txt)
-if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" (echo "cIOS250[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[80]-d2x-v8-final">>temp\DLgotos.txt)
-
-if /i "%cIOS222[38]-v4%" EQU "*" (echo "cIOS222[38]-v4">>temp\DLnames.txt) & (echo "cIOS222[38]-v4">>temp\DLgotos.txt)
-if /i "%cIOS223[37-38]-v4%" EQU "*" (echo "cIOS223[37-38]-v4">>temp\DLnames.txt) & (echo "cIOS223[37-38]-v4">>temp\DLgotos.txt)
-
-if /i "%cIOS222[38]-v5%" EQU "*" (echo "cIOS222[38]-v5">>temp\DLnames.txt) & (echo "cIOS222[38]-v5">>temp\DLgotos.txt)
-if /i "%cIOS223[37]-v5%" EQU "*" (echo "cIOS223[37]-v5">>temp\DLnames.txt) & (echo "cIOS223[37]-v5">>temp\DLgotos.txt)
-if /i "%cIOS224[57]-v5%" EQU "*" (echo "cIOS224[57]-v5">>temp\DLnames.txt) & (echo "cIOS224[57]-v5">>temp\DLgotos.txt)
-
+if /i "%AccioHacks%" EQU "*" (echo "Accio Hacks">>temp\DLnames.txt) & (echo "AccioHacks">>temp\DLgotos.txt)
+if /i "%ARC%" EQU "*" (echo "Any Region Changer ModMii Edition">>temp\DLnames.txt) & (echo "ARC">>temp\DLgotos.txt)
+if /i "%BB1%" EQU "*" (echo "Bannerbomb v1">>temp\DLnames.txt) & (echo "Bannerbomb1">>temp\DLgotos.txt)
+if /i "%BB2%" EQU "*" (echo "Bannerbomb v2">>temp\DLnames.txt) & (echo "Bannerbomb2">>temp\DLgotos.txt)
+if /i "%Bathaxx%" EQU "*" (echo "Bathaxx (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "Bathaxx">>temp\DLgotos.txt)
+if /i "%BC%" EQU "*" (echo "BC">>temp\DLnames.txt) & (echo "BC">>temp\DLgotos.txt)
+if /i "%bootmiisd%" EQU "*" (echo "Bootmii SD Files">>temp\DLnames.txt) & (echo "bootmiisd">>temp\DLgotos.txt)
+if /i "%Casper%" EQU "*" (echo "Casper">>temp\DLnames.txt) & (echo "Casper">>temp\DLgotos.txt)
+if /i "%CheatCodes%" EQU "*" (echo "Cheat Codes for %cheatregion% Region: txtcodes from codes.rc24.xyz">>temp\DLnames.txt) & (echo "CheatCodes">>temp\DLgotos.txt)
 if /i "%cIOS202[60]-v5.1R%" EQU "*" (echo "cIOS202[60]-v5.1R">>temp\DLnames.txt) & (echo "cIOS202[60]-v5.1R">>temp\DLgotos.txt)
+if /i "%cIOS222[38]-v4%" EQU "*" (echo "cIOS222[38]-v4">>temp\DLnames.txt) & (echo "cIOS222[38]-v4">>temp\DLgotos.txt)
+if /i "%cIOS222[38]-v5%" EQU "*" (echo "cIOS222[38]-v5">>temp\DLnames.txt) & (echo "cIOS222[38]-v5">>temp\DLgotos.txt)
 if /i "%cIOS222[38]-v5.1R%" EQU "*" (echo "cIOS222[38]-v5.1R">>temp\DLnames.txt) & (echo "cIOS222[38]-v5.1R">>temp\DLgotos.txt)
+if /i "%cIOS223[37]-v5%" EQU "*" (echo "cIOS223[37]-v5">>temp\DLnames.txt) & (echo "cIOS223[37]-v5">>temp\DLgotos.txt)
 if /i "%cIOS223[37]-v5.1R%" EQU "*" (echo "cIOS223[37]-v5.1R">>temp\DLnames.txt) & (echo "cIOS223[37]-v5.1R">>temp\DLgotos.txt)
+if /i "%cIOS223[37-38]-v4%" EQU "*" (echo "cIOS223[37-38]-v4">>temp\DLnames.txt) & (echo "cIOS223[37-38]-v4">>temp\DLgotos.txt)
+if /i "%cIOS224[57]-v5%" EQU "*" (echo "cIOS224[57]-v5">>temp\DLnames.txt) & (echo "cIOS224[57]-v5">>temp\DLgotos.txt)
 if /i "%cIOS224[57]-v5.1R%" EQU "*" (echo "cIOS224[57]-v5.1R">>temp\DLnames.txt) & (echo "cIOS224[57]-v5.1R">>temp\DLgotos.txt)
-
-if /i "%cIOS249-v14%" EQU "*" (echo "cIOS249-v14">>temp\DLnames.txt) & (echo "cIOS249-v14">>temp\DLgotos.txt)
-if /i "%cIOS250-v14%" EQU "*" (echo "cIOS250-v14">>temp\DLnames.txt) & (echo "cIOS250-v14">>temp\DLgotos.txt)
-
-if /i "%cIOS249-v17b%" EQU "*" (echo "cIOS249-v17b">>temp\DLnames.txt) & (echo "cIOS249-v17b">>temp\DLgotos.txt)
-if /i "%cIOS250-v17b%" EQU "*" (echo "cIOS250-v17b">>temp\DLnames.txt) & (echo "cIOS250-v17b">>temp\DLgotos.txt)
-
+if /i "%cIOS249[37]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[37]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS249[37]-v19%" EQU "*" (echo "cIOS249[37]-v19">>temp\DLnames.txt) & (echo "cIOS249[37]-v19">>temp\DLgotos.txt)
-if /i "%cIOS249[38]-v19%" EQU "*" (echo "cIOS249[38]-v19">>temp\DLnames.txt) & (echo "cIOS249[38]-v19">>temp\DLgotos.txt)
-if /i "%cIOS249[57]-v19%" EQU "*" (echo "cIOS249[57]-v19">>temp\DLnames.txt) & (echo "cIOS249[57]-v19">>temp\DLgotos.txt)
-if /i "%cIOS250[37]-v19%" EQU "*" (echo "cIOS250[37]-v19">>temp\DLnames.txt) & (echo "cIOS250[37]-v19">>temp\DLgotos.txt)
-if /i "%cIOS250[38]-v19%" EQU "*" (echo "cIOS250[38]-v19">>temp\DLnames.txt) & (echo "cIOS250[38]-v19">>temp\DLgotos.txt)
-if /i "%cIOS250[57]-v19%" EQU "*" (echo "cIOS250[57]-v19">>temp\DLnames.txt) & (echo "cIOS250[57]-v19">>temp\DLgotos.txt)
-
-if /i "%cIOS249[38]-v20%" EQU "*" (echo "cIOS249[38]-v20">>temp\DLnames.txt) & (echo "cIOS249[38]-v20">>temp\DLgotos.txt)
-if /i "%cIOS249[56]-v20%" EQU "*" (echo "cIOS249[56]-v20">>temp\DLnames.txt) & (echo "cIOS249[56]-v20">>temp\DLgotos.txt)
-if /i "%cIOS249[57]-v20%" EQU "*" (echo "cIOS249[57]-v20">>temp\DLnames.txt) & (echo "cIOS249[57]-v20">>temp\DLgotos.txt)
-if /i "%cIOS250[38]-v20%" EQU "*" (echo "cIOS250[38]-v20">>temp\DLnames.txt) & (echo "cIOS250[38]-v20">>temp\DLgotos.txt)
-if /i "%cIOS250[56]-v20%" EQU "*" (echo "cIOS250[56]-v20">>temp\DLnames.txt) & (echo "cIOS250[56]-v20">>temp\DLgotos.txt)
-if /i "%cIOS250[57]-v20%" EQU "*" (echo "cIOS250[57]-v20">>temp\DLnames.txt) & (echo "cIOS250[57]-v20">>temp\DLgotos.txt)
-
 if /i "%cIOS249[37]-v21%" EQU "*" (echo "cIOS249[37]-v21">>temp\DLnames.txt) & (echo "cIOS249[37]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[38]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[38]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249[38]-v19%" EQU "*" (echo "cIOS249[38]-v19">>temp\DLnames.txt) & (echo "cIOS249[38]-v19">>temp\DLgotos.txt)
+if /i "%cIOS249[38]-v20%" EQU "*" (echo "cIOS249[38]-v20">>temp\DLnames.txt) & (echo "cIOS249[38]-v20">>temp\DLgotos.txt)
 if /i "%cIOS249[38]-v21%" EQU "*" (echo "cIOS249[38]-v21">>temp\DLnames.txt) & (echo "cIOS249[38]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[53]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[53]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS249[53]-v21%" EQU "*" (echo "cIOS249[53]-v21">>temp\DLnames.txt) & (echo "cIOS249[53]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[55]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[55]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS249[55]-v21%" EQU "*" (echo "cIOS249[55]-v21">>temp\DLnames.txt) & (echo "cIOS249[55]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[56]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[56]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249[56]-v20%" EQU "*" (echo "cIOS249[56]-v20">>temp\DLnames.txt) & (echo "cIOS249[56]-v20">>temp\DLgotos.txt)
 if /i "%cIOS249[56]-v21%" EQU "*" (echo "cIOS249[56]-v21">>temp\DLnames.txt) & (echo "cIOS249[56]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[57]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[57]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249[57]-v19%" EQU "*" (echo "cIOS249[57]-v19">>temp\DLnames.txt) & (echo "cIOS249[57]-v19">>temp\DLgotos.txt)
+if /i "%cIOS249[57]-v20%" EQU "*" (echo "cIOS249[57]-v20">>temp\DLnames.txt) & (echo "cIOS249[57]-v20">>temp\DLgotos.txt)
 if /i "%cIOS249[57]-v21%" EQU "*" (echo "cIOS249[57]-v21">>temp\DLnames.txt) & (echo "cIOS249[57]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[58]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[58]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS249[58]-v21%" EQU "*" (echo "cIOS249[58]-v21">>temp\DLnames.txt) & (echo "cIOS249[58]-v21">>temp\DLgotos.txt)
+if /i "%cIOS249[60]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[60]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249[70]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[70]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249[80]-d2x-v10-beta52%" EQU "*" (echo "cIOS249[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS249[80]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS249-v14%" EQU "*" (echo "cIOS249-v14">>temp\DLnames.txt) & (echo "cIOS249-v14">>temp\DLgotos.txt)
+if /i "%cIOS249-v17b%" EQU "*" (echo "cIOS249-v17b">>temp\DLnames.txt) & (echo "cIOS249-v17b">>temp\DLgotos.txt)
+if /i "%cIOS250[37]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[37]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[37]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[37]-v19%" EQU "*" (echo "cIOS250[37]-v19">>temp\DLnames.txt) & (echo "cIOS250[37]-v19">>temp\DLgotos.txt)
 if /i "%cIOS250[37]-v21%" EQU "*" (echo "cIOS250[37]-v21">>temp\DLnames.txt) & (echo "cIOS250[37]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[38]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[38]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[38]-v19%" EQU "*" (echo "cIOS250[38]-v19">>temp\DLnames.txt) & (echo "cIOS250[38]-v19">>temp\DLgotos.txt)
+if /i "%cIOS250[38]-v20%" EQU "*" (echo "cIOS250[38]-v20">>temp\DLnames.txt) & (echo "cIOS250[38]-v20">>temp\DLgotos.txt)
 if /i "%cIOS250[38]-v21%" EQU "*" (echo "cIOS250[38]-v21">>temp\DLnames.txt) & (echo "cIOS250[38]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[53]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[53]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[53]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS250[53]-v21%" EQU "*" (echo "cIOS250[53]-v21">>temp\DLnames.txt) & (echo "cIOS250[53]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[55]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[55]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[55]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS250[55]-v21%" EQU "*" (echo "cIOS250[55]-v21">>temp\DLnames.txt) & (echo "cIOS250[55]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[56]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[56]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[56]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[56]-v20%" EQU "*" (echo "cIOS250[56]-v20">>temp\DLnames.txt) & (echo "cIOS250[56]-v20">>temp\DLgotos.txt)
 if /i "%cIOS250[56]-v21%" EQU "*" (echo "cIOS250[56]-v21">>temp\DLnames.txt) & (echo "cIOS250[56]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[57]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[57]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[57]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[57]-v19%" EQU "*" (echo "cIOS250[57]-v19">>temp\DLnames.txt) & (echo "cIOS250[57]-v19">>temp\DLgotos.txt)
+if /i "%cIOS250[57]-v20%" EQU "*" (echo "cIOS250[57]-v20">>temp\DLnames.txt) & (echo "cIOS250[57]-v20">>temp\DLgotos.txt)
 if /i "%cIOS250[57]-v21%" EQU "*" (echo "cIOS250[57]-v21">>temp\DLnames.txt) & (echo "cIOS250[57]-v21">>temp\DLgotos.txt)
+if /i "%cIOS250[58]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[58]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[58]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%cIOS250[58]-v21%" EQU "*" (echo "cIOS250[58]-v21">>temp\DLnames.txt) & (echo "cIOS250[58]-v21">>temp\DLgotos.txt)
-
-if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" (echo "WiiGator+WiiPower cMIOS-v65535(v10)">>temp\DLnames.txt) & (echo "RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2">>temp\DLgotos.txt)
-if /i "%RVL-cmios-v4_WiiGator_GCBL_v0.2%" EQU "*" (echo "cMIOS-v4 WiiGator GCBL v0.2">>temp\DLnames.txt) & (echo "RVL-cmios-v4_WiiGator_GCBL_v0.2">>temp\DLgotos.txt)
+if /i "%cIOS250[60]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[60]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[60]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[70]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[70]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[70]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250[80]-d2x-v10-beta52%" EQU "*" (echo "cIOS250[80]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS250[80]-d2x-v10-beta52">>temp\DLgotos.txt)
+if /i "%cIOS250-v14%" EQU "*" (echo "cIOS250-v14">>temp\DLnames.txt) & (echo "cIOS250-v14">>temp\DLgotos.txt)
+if /i "%cIOS250-v17b%" EQU "*" (echo "cIOS250-v17b">>temp\DLnames.txt) & (echo "cIOS250-v17b">>temp\DLgotos.txt)
+if /i "%cIOS251[38]-d2x-v10-beta52%" EQU "*" (echo "cIOS251[38]-d2x-v%d2x-beta-rev%">>temp\DLnames.txt) & (echo "cIOS251[38]-d2x-v10-beta52">>temp\DLgotos.txt)
 if /i "%RVL-cmios-v4_Waninkoko_rev5%" EQU "*" (echo "cMIOS-v4 Waninkoko rev5">>temp\DLnames.txt) & (echo "RVL-cmios-v4_Waninkoko_rev5">>temp\DLgotos.txt)
+if /i "%RVL-cmios-v4_WiiGator_GCBL_v0.2%" EQU "*" (echo "cMIOS-v4 WiiGator GCBL v0.2">>temp\DLnames.txt) & (echo "RVL-cmios-v4_WiiGator_GCBL_v0.2">>temp\DLgotos.txt)
+if /i "%usbfolder%" EQU "*" (echo "Configurable USB-Loader">>temp\DLnames.txt) & (echo "usbfolder">>temp\DLgotos.txt)
+if /i "%CM%" EQU "*" (echo "Customize Mii %PCconfig%">>temp\DLnames.txt) & (echo "CM">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.1E%" EQU "*" (echo "DarkWii Blue Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1E">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.1J%" EQU "*" (echo "DarkWii Blue Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1J">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.1K%" EQU "*" (echo "DarkWii Blue Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1K">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.1U%" EQU "*" (echo "DarkWii Blue Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.1U">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.2E%" EQU "*" (echo "DarkWii Blue Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2E">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.2J%" EQU "*" (echo "DarkWii Blue Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2J">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.2K%" EQU "*" (echo "DarkWii Blue Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2K">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.2U%" EQU "*" (echo "DarkWii Blue Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.2U">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.3E%" EQU "*" (echo "DarkWii Blue Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3E">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.3J%" EQU "*" (echo "DarkWii Blue Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3J">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.3K%" EQU "*" (echo "DarkWii Blue Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3K">>temp\DLgotos.txt)
+if /i "%DarkWii_Blue_4.3U%" EQU "*" (echo "DarkWii Blue Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Blue_4.3U">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.1E%" EQU "*" (echo "DarkWii Green Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1E">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.1J%" EQU "*" (echo "DarkWii Green Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1J">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.1K%" EQU "*" (echo "DarkWii Green Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1K">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.1U%" EQU "*" (echo "DarkWii Green Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.1U">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.2E%" EQU "*" (echo "DarkWii Green Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2E">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.2J%" EQU "*" (echo "DarkWii Green Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2J">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.2K%" EQU "*" (echo "DarkWii Green Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2K">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.2U%" EQU "*" (echo "DarkWii Green Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.2U">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.3E%" EQU "*" (echo "DarkWii Green Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3E">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.3J%" EQU "*" (echo "DarkWii Green Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3J">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.3K%" EQU "*" (echo "DarkWii Green Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3K">>temp\DLgotos.txt)
+if /i "%DarkWii_Green_4.3U%" EQU "*" (echo "DarkWii Green Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Green_4.3U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1E%" EQU "*" (echo "DarkWii Orange Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1J%" EQU "*" (echo "DarkWii Orange Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1K%" EQU "*" (echo "DarkWii Orange Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.1U%" EQU "*" (echo "DarkWii Orange Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.1U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2E%" EQU "*" (echo "DarkWii Orange Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2J%" EQU "*" (echo "DarkWii Orange Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2K%" EQU "*" (echo "DarkWii Orange Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.2U%" EQU "*" (echo "DarkWii Orange Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.2U">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3E%" EQU "*" (echo "DarkWii Orange Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3E">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3J%" EQU "*" (echo "DarkWii Orange Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3J">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3K%" EQU "*" (echo "DarkWii Orange Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3K">>temp\DLgotos.txt)
+if /i "%darkwii_orange_4.3U%" EQU "*" (echo "DarkWii Orange Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "darkwii_orange_4.3U">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.1E%" EQU "*" (echo "DarkWii Red Theme (4.1E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1E">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.1J%" EQU "*" (echo "DarkWii Red Theme (4.1J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1J">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.1K%" EQU "*" (echo "DarkWii Red Theme (4.1K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1K">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.1U%" EQU "*" (echo "DarkWii Red Theme (4.1U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.1U">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.2E%" EQU "*" (echo "DarkWii Red Theme (4.2E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2E">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.2J%" EQU "*" (echo "DarkWii Red Theme (4.2J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2J">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.2K%" EQU "*" (echo "DarkWii Red Theme (4.2K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2K">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.2U%" EQU "*" (echo "DarkWii Red Theme (4.2U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.2U">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.3E%" EQU "*" (echo "DarkWii Red Theme (4.3E) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3E">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.3J%" EQU "*" (echo "DarkWii Red Theme (4.3J) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3J">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.3K%" EQU "*" (echo "DarkWii Red Theme (4.3K) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3K">>temp\DLgotos.txt)
+if /i "%DarkWii_Red_4.3U%" EQU "*" (echo "DarkWii Red Theme (4.3U) - %effect%">>temp\DLnames.txt) & (echo "DarkWii_Red_4.3U">>temp\DLgotos.txt)
+if /i "%DML%" EQU "*" (echo "DML %CurrentDMLRev% ">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
+if /i "%dop%" EQU "*" (echo "Dop-Mii">>temp\DLnames.txt) & (echo "dopmii">>temp\DLgotos.txt)
+if /i "%TOS%" EQU "*" (echo "Eri HaKawai (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "TOS">>temp\DLgotos.txt)
+if /i "%EULAJ%" EQU "*" (echo "EULA v3 (JAP)">>temp\DLnames.txt) & (echo "EULAJ">>temp\DLgotos.txt)
+if /i "%EULAK%" EQU "*" (echo "EULA v3 (KOR)">>temp\DLnames.txt) & (echo "EULAK">>temp\DLgotos.txt)
+if /i "%EULAE%" EQU "*" (echo "EULA v3 (PAL)">>temp\DLnames.txt) & (echo "EULAE">>temp\DLgotos.txt)
+if /i "%EULAU%" EQU "*" (echo "EULA v3 (USA)">>temp\DLnames.txt) & (echo "EULAU">>temp\DLgotos.txt)
+if /i "%f32%" EQU "*" (echo "FAT32 GUI Formatter %PCconfig%">>temp\DLnames.txt) & (echo "F32">>temp\DLgotos.txt)
+if /i "%fceugx%" EQU "*" (echo "FCEUGX - NES Emulator for the Wii">>temp\DLnames.txt) & (echo "fceugx">>temp\DLgotos.txt)
+if /i "%HM%" EQU "*" (echo "HackMii Installer">>temp\DLnames.txt) & (echo "HackmiiInstaller">>temp\DLgotos.txt)
+if /i "%HBB%" EQU "*" (echo "Homebrew Browser">>temp\DLnames.txt) & (echo "HBB">>temp\DLgotos.txt)
+if /i "%pwns%" EQU "*" (echo "Indiana Pwns">>temp\DLnames.txt) & (echo "pwns">>temp\DLgotos.txt)
+if /i "%IOS9%" EQU "*" (echo "IOS9">>temp\DLnames.txt) & (echo "IOS9">>temp\DLgotos.txt)
+if /i "%IOS11P60%" EQU "*" (echo "IOS11v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS11P60">>temp\DLgotos.txt)
+if /i "%IOS12%" EQU "*" (echo "IOS12">>temp\DLnames.txt) & (echo "IOS12">>temp\DLgotos.txt)
+if /i "%IOS13%" EQU "*" (echo "IOS13">>temp\DLnames.txt) & (echo "IOS13">>temp\DLgotos.txt)
+if /i "%IOS14%" EQU "*" (echo "IOS14">>temp\DLnames.txt) & (echo "IOS14">>temp\DLgotos.txt)
+if /i "%IOS15%" EQU "*" (echo "IOS15">>temp\DLnames.txt) & (echo "IOS15">>temp\DLgotos.txt)
+if /i "%IOS17%" EQU "*" (echo "IOS17">>temp\DLnames.txt) & (echo "IOS17">>temp\DLgotos.txt)
+if /i "%IOS20P60%" EQU "*" (echo "IOS20v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS20P60">>temp\DLgotos.txt)
+if /i "%IOS21%" EQU "*" (echo "IOS21">>temp\DLnames.txt) & (echo "IOS21">>temp\DLgotos.txt)
+if /i "%IOS22%" EQU "*" (echo "IOS22">>temp\DLnames.txt) & (echo "IOS22">>temp\DLgotos.txt)
+if /i "%IOS28%" EQU "*" (echo "IOS28">>temp\DLnames.txt) & (echo "IOS28">>temp\DLgotos.txt)
+if /i "%IOS30P%" EQU "*" (echo "IOS30v12576(IOS30v2576[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS30P">>temp\DLgotos.txt)
+if /i "%IOS30%" EQU "*" (echo "IOS30v2576">>temp\DLnames.txt) & (echo "IOS30">>temp\DLgotos.txt)
+if /i "%IOS30P60%" EQU "*" (echo "IOS30v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS30P60">>temp\DLgotos.txt)
+if /i "%IOS31%" EQU "*" (echo "IOS31">>temp\DLnames.txt) & (echo "IOS31">>temp\DLgotos.txt)
+if /i "%IOS33%" EQU "*" (echo "IOS33">>temp\DLnames.txt) & (echo "IOS33">>temp\DLgotos.txt)
+if /i "%IOS34%" EQU "*" (echo "IOS34">>temp\DLnames.txt) & (echo "IOS34">>temp\DLgotos.txt)
+if /i "%IOS35%" EQU "*" (echo "IOS35">>temp\DLnames.txt) & (echo "IOS35">>temp\DLgotos.txt)
+if /i "%IOS36v3608%" EQU "*" (echo "IOS36">>temp\DLnames.txt) & (echo "IOS36v3608">>temp\DLgotos.txt)
+if /i "%IOS36%" EQU "*" (echo "IOS36v3351">>temp\DLnames.txt) & (echo "IOS36">>temp\DLgotos.txt)
+if /i "%IOS37%" EQU "*" (echo "IOS37">>temp\DLnames.txt) & (echo "IOS37">>temp\DLgotos.txt)
+if /i "%IOS38%" EQU "*" (echo "IOS38">>temp\DLnames.txt) & (echo "IOS38">>temp\DLgotos.txt)
+if /i "%IOS40P60%" EQU "*" (echo "IOS40v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS40P60">>temp\DLgotos.txt)
+if /i "%IOS41%" EQU "*" (echo "IOS41">>temp\DLnames.txt) & (echo "IOS41">>temp\DLgotos.txt)
+if /i "%IOS43%" EQU "*" (echo "IOS43">>temp\DLnames.txt) & (echo "IOS43">>temp\DLgotos.txt)
+if /i "%IOS45%" EQU "*" (echo "IOS45">>temp\DLnames.txt) & (echo "IOS45">>temp\DLgotos.txt)
+if /i "%IOS46%" EQU "*" (echo "IOS46">>temp\DLnames.txt) & (echo "IOS46">>temp\DLgotos.txt)
+if /i "%IOS48v4124%" EQU "*" (echo "IOS48">>temp\DLnames.txt) & (echo "IOS48v4124">>temp\DLgotos.txt)
+if /i "%IOS50P%" EQU "*" (echo "IOS50v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS50P">>temp\DLgotos.txt)
+if /i "%IOS52P%" EQU "*" (echo "IOS52v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS52P">>temp\DLgotos.txt)
+if /i "%IOS53%" EQU "*" (echo "IOS53">>temp\DLnames.txt) & (echo "IOS53">>temp\DLgotos.txt)
+if /i "%IOS55%" EQU "*" (echo "IOS55">>temp\DLnames.txt) & (echo "IOS55">>temp\DLgotos.txt)
+if /i "%IOS56%" EQU "*" (echo "IOS56">>temp\DLnames.txt) & (echo "IOS56">>temp\DLgotos.txt)
+if /i "%IOS57%" EQU "*" (echo "IOS57">>temp\DLnames.txt) & (echo "IOS57">>temp\DLgotos.txt)
+if /i "%IOS58%" EQU "*" (echo "IOS58">>temp\DLnames.txt) & (echo "IOS58">>temp\DLgotos.txt)
+if /i "%IOS60%" EQU "*" (echo "IOS60v6174">>temp\DLnames.txt) & (echo "IOS60">>temp\DLgotos.txt)
+if /i "%IOS60P%" EQU "*" (echo "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS60P">>temp\DLgotos.txt)
+if /i "%IOS61%" EQU "*" (echo "IOS61">>temp\DLnames.txt) & (echo "IOS61">>temp\DLgotos.txt)
+if /i "%IOS62%" EQU "*" (echo "IOS62">>temp\DLnames.txt) & (echo "IOS62">>temp\DLgotos.txt)
+if /i "%IOS70P%" EQU "*" (echo "IOS70v16687(IOS70v6687[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS70P">>temp\DLgotos.txt)
+if /i "%IOS70K%" EQU "*" (echo "IOS70v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS70K">>temp\DLgotos.txt)
+if /i "%IOS70%" EQU "*" (echo "IOS70v6687">>temp\DLnames.txt) & (echo "IOS70">>temp\DLgotos.txt)
+if /i "%IOS80P%" EQU "*" (echo "IOS80v16944(IOS80v6944[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS80P">>temp\DLgotos.txt)
+if /i "%IOS80K%" EQU "*" (echo "IOS80v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])">>temp\DLnames.txt) & (echo "IOS80K">>temp\DLgotos.txt)
+if /i "%IOS80%" EQU "*" (echo "IOS80v6944">>temp\DLnames.txt) & (echo "IOS80">>temp\DLgotos.txt)
+if /i "%IOS236%" EQU "*" (echo "IOS236v65535(IOS36v3351[FS-ES-NP-VP])">>temp\DLnames.txt) & (echo "IOS236">>temp\DLgotos.txt)
+if /i "%IOS236Installer%" EQU "*" (echo "IOS236 Installer v5 Mod">>temp\DLnames.txt) & (echo "IOS236Installer">>temp\DLgotos.txt)
+if /i "%IJ%" EQU "*" (echo "JAP Internet Channel">>temp\DLnames.txt) & (echo "NET_J">>temp\DLgotos.txt)
+if /i "%NJ%" EQU "*" (echo "JAP NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_J">>temp\DLgotos.txt)
+if /i "%WJ%" EQU "*" (echo "JAP Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_J">>temp\DLgotos.txt)
+if /i "%WSJ%" EQU "*" (echo "JAP Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_J">>temp\DLgotos.txt)
+if /i "%PK%" EQU "*" (echo "KOREAN Photo Channel 1.1">>temp\DLnames.txt) & (echo "PHOTO_K">>temp\DLgotos.txt)
+if /i "%SK%" EQU "*" (echo "KOREAN Shopping Channel">>temp\DLnames.txt) & (echo "SHOP_K">>temp\DLgotos.txt)
+if /i "%KK%" EQU "*" (echo "KoreanKii">>temp\DLnames.txt) & (echo "KK">>temp\DLgotos.txt)
+if /i "%locked%" EQU "*" (echo "Locked Apps Folder for HBC (PASS=UDLRAB)">>temp\DLnames.txt) & (echo "locked">>temp\DLgotos.txt)
+if /i "%MII%" EQU "*" (echo "MII Channel">>temp\DLnames.txt) & (echo "MII">>temp\DLgotos.txt)
+if /i "%M10%" EQU "*" (echo "MIOSv10">>temp\DLnames.txt) & (echo "M10">>temp\DLgotos.txt)
+if /i "%mmm%" EQU "*" (echo "Multi-Mod Manager (MMM) v13.4">>temp\DLnames.txt) & (echo "mmm">>temp\DLgotos.txt)
+if /i "%MyM%" EQU "*" (echo "MyMenuifyMod">>temp\DLnames.txt) & (echo "Mym">>temp\DLgotos.txt)
+if /i "%neogamma%" EQU "*" (echo "Neogamma Backup Disc Loader">>temp\DLnames.txt) & (echo "neogamma">>temp\DLgotos.txt)
+if /i "%nintendont%" EQU "*" (echo "Nintendont">>temp\DLnames.txt) & (echo "Nintendont">>temp\DLgotos.txt)
+if /i "%cBC%" EQU "*" (echo "NMM">>temp\DLnames.txt) & (echo "NMM">>temp\DLgotos.txt)
+if /i "%nSwitch%" EQU "*" (echo "nSwitch">>temp\DLnames.txt) & (echo "nSwitch">>temp\DLgotos.txt)
+if /i "%IE%" EQU "*" (echo "PAL Internet Channel">>temp\DLnames.txt) & (echo "NET_E">>temp\DLgotos.txt)
+if /i "%NE%" EQU "*" (echo "PAl NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_E">>temp\DLgotos.txt)
+if /i "%WE%" EQU "*" (echo "PAL Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_E">>temp\DLgotos.txt)
+if /i "%WSE%" EQU "*" (echo "PAL Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_E">>temp\DLgotos.txt)
+if /i "%P0%" EQU "*" (echo "Photo Channel (USA / PAL / JAP /KOR)">>temp\DLnames.txt) & (echo "PHOTO0">>temp\DLgotos.txt)
+if /i "%P%" EQU "*" (echo "Photo Channel 1.1 (USA / PAL / JAP)">>temp\DLnames.txt) & (echo "PHOTO">>temp\DLgotos.txt)
+if /i "%PLC%" EQU "*" (echo "Post Loader Forwarder Channel">>temp\DLnames.txt) & (echo "PLC">>temp\DLgotos.txt)
+if /i "%PL%" EQU "*" (echo "Postloader">>temp\DLnames.txt) & (echo "PL">>temp\DLgotos.txt)
+if /i "%HAX%" EQU "*" (echo "Priiloader Hacks">>temp\DLnames.txt) & (echo "PriiHacks">>temp\DLgotos.txt)
+if /i "%Pri%" EQU "*" (echo "Priiloader v0.9">>temp\DLnames.txt) & (echo "Priiloader">>temp\DLgotos.txt)
+if /i "%RSJ%" EQU "*" (echo "Region Select v2 (JAP)">>temp\DLnames.txt) & (echo "RSJ">>temp\DLgotos.txt)
+if /i "%RSK%" EQU "*" (echo "Region Select v2 (KOR)">>temp\DLnames.txt) & (echo "RSK">>temp\DLgotos.txt)
+if /i "%RSE%" EQU "*" (echo "Region Select v2 (PAL)">>temp\DLnames.txt) & (echo "RSE">>temp\DLgotos.txt)
+if /i "%RSU%" EQU "*" (echo "Region Select v2 (USA)">>temp\DLnames.txt) & (echo "RSU">>temp\DLgotos.txt)
+if /i "%ROTJ%" EQU "*" (echo "Return of the Jodi (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "ROTJ">>temp\DLgotos.txt)
+if /i "%SGM%" EQU "*" (echo "SaveGame Manager GX">>temp\DLnames.txt) & (echo "SGM">>temp\DLgotos.txt)
+if /i "%S%" EQU "*" (echo "Shopping Channel (USA / PAL / JAP)">>temp\DLnames.txt) & (echo "SHOP">>temp\DLgotos.txt)
+if /i "%SMW%" EQU "*" (echo "ShowMiiWads %PCconfig%">>temp\DLnames.txt) & (echo "SMW">>temp\DLgotos.txt)
+if /i "%SIP%" EQU "*" (echo "Simple IOS Patcher">>temp\DLnames.txt) & (echo "SIP">>temp\DLgotos.txt)
+if /i "%smash%" EQU "*" (echo "Smash Stack (USA, PAL, JAP and KOR)">>temp\DLnames.txt) & (echo "smash">>temp\DLgotos.txt)
+if /i "%snes9xgx%" EQU "*" (echo "SNES9xGX - SNES Emulator for the Wii">>temp\DLnames.txt) & (echo "snes9xgx">>temp\DLgotos.txt)
+if /i "%S2U%" EQU "*" (echo "Switch2Uneek">>temp\DLnames.txt) & (echo "S2U">>temp\DLgotos.txt)
+if /i "%syscheck%" EQU "*" (echo "SysCheck HDE">>temp\DLnames.txt) & (echo "sysCheck">>temp\DLgotos.txt)
+if /i "%SM3.2E%" EQU "*" (echo "System Menu 3.2E">>temp\DLnames.txt) & (echo "SM3.2E">>temp\DLgotos.txt)
+if /i "%SM3.2J%" EQU "*" (echo "System Menu 3.2J">>temp\DLnames.txt) & (echo "SM3.2J">>temp\DLgotos.txt)
+if /i "%SM3.2U%" EQU "*" (echo "System Menu 3.2U">>temp\DLnames.txt) & (echo "SM3.2U">>temp\DLgotos.txt)
+if /i "%SM4.1E%" EQU "*" (echo "System Menu 4.1E">>temp\DLnames.txt) & (echo "SM4.1E">>temp\DLgotos.txt)
+if /i "%SM4.1E-DWB%" EQU "*" (echo "System Menu 4.1E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWB">>temp\DLgotos.txt)
+if /i "%SM4.1E-DWG%" EQU "*" (echo "System Menu 4.1E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWG">>temp\DLgotos.txt)
+if /i "%SM4.1E-DWO%" EQU "*" (echo "System Menu 4.1E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWO">>temp\DLgotos.txt)
+if /i "%SM4.1E-DWR%" EQU "*" (echo "System Menu 4.1E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1E-DWR">>temp\DLgotos.txt)
+if /i "%SM4.1J%" EQU "*" (echo "System Menu 4.1J">>temp\DLnames.txt) & (echo "SM4.1J">>temp\DLgotos.txt)
+if /i "%SM4.1J-DWB%" EQU "*" (echo "System Menu 4.1J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWB">>temp\DLgotos.txt)
+if /i "%SM4.1J-DWG%" EQU "*" (echo "System Menu 4.1J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWG">>temp\DLgotos.txt)
+if /i "%SM4.1J-DWO%" EQU "*" (echo "System Menu 4.1J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWO">>temp\DLgotos.txt)
+if /i "%SM4.1J-DWR%" EQU "*" (echo "System Menu 4.1J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1J-DWR">>temp\DLgotos.txt)
+if /i "%SM4.1K%" EQU "*" (echo "System Menu 4.1K">>temp\DLnames.txt) & (echo "SM4.1K">>temp\DLgotos.txt)
+if /i "%SM4.1K-DWB%" EQU "*" (echo "System Menu 4.1K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWB">>temp\DLgotos.txt)
+if /i "%SM4.1K-DWG%" EQU "*" (echo "System Menu 4.1K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWG">>temp\DLgotos.txt)
+if /i "%SM4.1K-DWO%" EQU "*" (echo "System Menu 4.1K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWO">>temp\DLgotos.txt)
+if /i "%SM4.1K-DWR%" EQU "*" (echo "System Menu 4.1K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1K-DWR">>temp\DLgotos.txt)
+if /i "%SM4.1U%" EQU "*" (echo "System Menu 4.1U">>temp\DLnames.txt) & (echo "SM4.1U">>temp\DLgotos.txt)
+if /i "%SM4.1U-DWB%" EQU "*" (echo "System Menu 4.1U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWB">>temp\DLgotos.txt)
+if /i "%SM4.1U-DWG%" EQU "*" (echo "System Menu 4.1U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWG">>temp\DLgotos.txt)
+if /i "%SM4.1U-DWO%" EQU "*" (echo "System Menu 4.1U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWO">>temp\DLgotos.txt)
+if /i "%SM4.1U-DWR%" EQU "*" (echo "System Menu 4.1U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.1U-DWR">>temp\DLgotos.txt)
+if /i "%SM4.2E%" EQU "*" (echo "System Menu 4.2E">>temp\DLnames.txt) & (echo "SM4.2E">>temp\DLgotos.txt)
+if /i "%SM4.2E-DWB%" EQU "*" (echo "System Menu 4.2E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWB">>temp\DLgotos.txt)
+if /i "%SM4.2E-DWG%" EQU "*" (echo "System Menu 4.2E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWG">>temp\DLgotos.txt)
+if /i "%SM4.2E-DWO%" EQU "*" (echo "System Menu 4.2E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWO">>temp\DLgotos.txt)
+if /i "%SM4.2E-DWR%" EQU "*" (echo "System Menu 4.2E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2E-DWR">>temp\DLgotos.txt)
+if /i "%SM4.2J%" EQU "*" (echo "System Menu 4.2J">>temp\DLnames.txt) & (echo "SM4.2J">>temp\DLgotos.txt)
+if /i "%SM4.2J-DWB%" EQU "*" (echo "System Menu 4.2J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWB">>temp\DLgotos.txt)
+if /i "%SM4.2J-DWG%" EQU "*" (echo "System Menu 4.2J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWG">>temp\DLgotos.txt)
+if /i "%SM4.2J-DWO%" EQU "*" (echo "System Menu 4.2J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWO">>temp\DLgotos.txt)
+if /i "%SM4.2J-DWR%" EQU "*" (echo "System Menu 4.2J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2J-DWR">>temp\DLgotos.txt)
+if /i "%SM4.2K%" EQU "*" (echo "System Menu 4.2K">>temp\DLnames.txt) & (echo "SM4.2K">>temp\DLgotos.txt)
+if /i "%SM4.2K-DWB%" EQU "*" (echo "System Menu 4.2K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWB">>temp\DLgotos.txt)
+if /i "%SM4.2K-DWG%" EQU "*" (echo "System Menu 4.2K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWG">>temp\DLgotos.txt)
+if /i "%SM4.2K-DWO%" EQU "*" (echo "System Menu 4.2K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWO">>temp\DLgotos.txt)
+if /i "%SM4.2K-DWR%" EQU "*" (echo "System Menu 4.2K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2K-DWR">>temp\DLgotos.txt)
+if /i "%SM4.2U%" EQU "*" (echo "System Menu 4.2U">>temp\DLnames.txt) & (echo "SM4.2U">>temp\DLgotos.txt)
+if /i "%SM4.2U-DWB%" EQU "*" (echo "System Menu 4.2U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWB">>temp\DLgotos.txt)
+if /i "%SM4.2U-DWG%" EQU "*" (echo "System Menu 4.2U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWG">>temp\DLgotos.txt)
+if /i "%SM4.2U-DWO%" EQU "*" (echo "System Menu 4.2U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWO">>temp\DLgotos.txt)
+if /i "%SM4.2U-DWR%" EQU "*" (echo "System Menu 4.2U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.2U-DWR">>temp\DLgotos.txt)
+if /i "%SM4.3E%" EQU "*" (echo "System Menu 4.3E">>temp\DLnames.txt) & (echo "SM4.3E">>temp\DLgotos.txt)
+if /i "%SM4.3E-DWB%" EQU "*" (echo "System Menu 4.3E with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWB">>temp\DLgotos.txt)
+if /i "%SM4.3E-DWG%" EQU "*" (echo "System Menu 4.3E with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWG">>temp\DLgotos.txt)
+if /i "%SM4.3E-DWO%" EQU "*" (echo "System Menu 4.3E with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWO">>temp\DLgotos.txt)
+if /i "%SM4.3E-DWR%" EQU "*" (echo "System Menu 4.3E with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3E-DWR">>temp\DLgotos.txt)
+if /i "%SM4.3J%" EQU "*" (echo "System Menu 4.3J">>temp\DLnames.txt) & (echo "SM4.3J">>temp\DLgotos.txt)
+if /i "%SM4.3J-DWB%" EQU "*" (echo "System Menu 4.3J with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWB">>temp\DLgotos.txt)
+if /i "%SM4.3J-DWG%" EQU "*" (echo "System Menu 4.3J with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWG">>temp\DLgotos.txt)
+if /i "%SM4.3J-DWO%" EQU "*" (echo "System Menu 4.3J with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWO">>temp\DLgotos.txt)
+if /i "%SM4.3J-DWR%" EQU "*" (echo "System Menu 4.3J with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3J-DWR">>temp\DLgotos.txt)
+if /i "%SM4.3K%" EQU "*" (echo "System Menu 4.3K">>temp\DLnames.txt) & (echo "SM4.3K">>temp\DLgotos.txt)
+if /i "%SM4.3K-DWB%" EQU "*" (echo "System Menu 4.3K with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWB">>temp\DLgotos.txt)
+if /i "%SM4.3K-DWG%" EQU "*" (echo "System Menu 4.3K with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWG">>temp\DLgotos.txt)
+if /i "%SM4.3K-DWO%" EQU "*" (echo "System Menu 4.3K with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWO">>temp\DLgotos.txt)
+if /i "%SM4.3K-DWR%" EQU "*" (echo "System Menu 4.3K with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3K-DWR">>temp\DLgotos.txt)
+if /i "%SM4.3U%" EQU "*" (echo "System Menu 4.3U">>temp\DLnames.txt) & (echo "SM4.3U">>temp\DLgotos.txt)
+if /i "%SM4.3U-DWB%" EQU "*" (echo "System Menu 4.3U with Dark Wii Blue Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWB">>temp\DLgotos.txt)
+if /i "%SM4.3U-DWG%" EQU "*" (echo "System Menu 4.3U with Dark Wii Green Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWG">>temp\DLgotos.txt)
+if /i "%SM4.3U-DWO%" EQU "*" (echo "System Menu 4.3U with Dark Wii Orange Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWO">>temp\DLgotos.txt)
+if /i "%SM4.3U-DWR%" EQU "*" (echo "System Menu 4.3U with Dark Wii Red Theme - %effect%">>temp\DLnames.txt) & (echo "SM4.3U-DWR">>temp\DLgotos.txt)
+if /i "%Twi%" EQU "*" (echo "Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)">>temp\DLnames.txt) & (echo "Twi">>temp\DLgotos.txt)
+if /i "%IU%" EQU "*" (echo "USA Internet Channel">>temp\DLnames.txt) & (echo "NET_U">>temp\DLgotos.txt)
+if /i "%NU%" EQU "*" (echo "USA NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_U">>temp\DLgotos.txt)
+if /i "%WU%" EQU "*" (echo "USA Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_U">>temp\DLgotos.txt)
+if /i "%WSU%" EQU "*" (echo "USA Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_U">>temp\DLgotos.txt)
+if /i "%usbgx%" EQU "*" (echo "USB Loader GX">>temp\DLnames.txt) & (echo "usbgx">>temp\DLgotos.txt)
+if /i "%USBX%" EQU "*" (echo "USB-Loader Forwarder Channel">>temp\DLnames.txt) & (echo "USBX">>temp\DLgotos.txt)
+if /i "%vbagx%" EQU "*" (echo "Visual Boy Advance GX - GB/GBA Emulator for the Wii">>temp\DLnames.txt) & (echo "vbagx">>temp\DLgotos.txt)
+if /i "%wbm%" EQU "*" (echo "Wii Backup Manager %PCconfig%">>temp\DLnames.txt) & (echo "WBM">>temp\DLgotos.txt)
+if /i "%WiiGSC%" EQU "*" (echo "Wii Game Shortcut Creator %PCconfig%">>temp\DLnames.txt) & (echo "WiiGSC">>temp\DLgotos.txt)
+if /i "%WII64%" EQU "*" (echo "Wii64 beta1.2 (N64 Emulator)">>temp\DLnames.txt) & (echo "WII64">>temp\DLgotos.txt)
+if /i "%FLOW%" EQU "*" (echo "WiiFlow">>temp\DLnames.txt) & (echo "FLOW">>temp\DLgotos.txt)
+if /i "%FLOWF%" EQU "*" (echo "WiiFlow Forwarder Channel\dol">>temp\DLnames.txt) & (echo "FLOWF">>temp\DLgotos.txt)
+if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" (echo "WiiGator+WiiPower cMIOS-v65535(v10)">>temp\DLnames.txt) & (echo "RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2">>temp\DLgotos.txt)
+if /i "%WiiMC%" EQU "*" (echo "WiiMC - Media Player">>temp\DLnames.txt) & (echo "WIIMC">>temp\DLgotos.txt)
+if /i "%WiiMod%" EQU "*" (echo "WiiMod">>temp\DLnames.txt) & (echo "WiiMod">>temp\DLgotos.txt)
+if /i "%WIISX%" EQU "*" (echo "WiiSX beta2.1 (Playstation 1 Emulator)">>temp\DLnames.txt) & (echo "WIISX">>temp\DLgotos.txt)
+if /i "%WIIX%" EQU "*" (echo "WiiXplorer">>temp\DLnames.txt) & (echo "WIIX">>temp\DLgotos.txt)
+if /i "%Wilbrand%" EQU "*" (echo "Wilbrand - 4.3%REGION% - MAC:%macaddress%">>temp\DLnames.txt) & (echo "Wilbrand">>temp\DLgotos.txt)
+if /i "%yawm%" EQU "*" (echo "Yet Another Wad Manager Mod">>temp\DLnames.txt) & (echo "yawm">>temp\DLgotos.txt)
+if /i "%YUGI%" EQU "*" (echo "YU-GI-OWNED (USA, PAL and JAP)">>temp\DLnames.txt) & (echo "YUGI">>temp\DLgotos.txt)
+
+
 
 if exist temp\DLnames.txt support\sfk filter -quiet "temp\DLnames.txt" -rep _"""__ -write -yes
 if exist temp\DLgotos.txt support\sfk filter -quiet "temp\DLgotos.txt" -rep _"""__ -write -yes
@@ -16927,6 +17215,7 @@ if /i "%smash%" EQU "*" echo SET smash=%smash%>> "temp\DownloadQueues\%DLQUEUENA
 if /i "%mmm%" EQU "*" echo SET mmm=%mmm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%WiiMod%" EQU "*" echo SET WiiMod=%WiiMod%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%ARC%" EQU "*" echo SET ARC=%ARC%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%KK%" EQU "*" echo SET KK=%KK%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%yawm%" EQU "*" echo SET yawm=%yawm%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%neogamma%" EQU "*" echo SET neogamma=%neogamma%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%usbfolder%" EQU "*" echo SET usbfolder=%usbfolder%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -17080,26 +17369,27 @@ if /i "%cIOS249[57]-v21%" EQU "*" echo SET cIOS249[57]-v21=%cIOS249[57]-v21%>> "
 if /i "%cIOS250[57]-v21%" EQU "*" echo SET cIOS250[57]-v21=%cIOS250[57]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cIOS249[58]-v21%" EQU "*" echo SET cIOS249[58]-v21=%cIOS249[58]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%cIOS250[58]-v21%" EQU "*" echo SET cIOS250[58]-v21=%cIOS250[58]-v21%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[37]-d2x-v8-final%" EQU "*" echo SET cIOS249[37]-d2x-v8-final=%cIOS249[37]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[38]-d2x-v8-final%" EQU "*" echo SET cIOS249[38]-d2x-v8-final=%cIOS249[38]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[56]-d2x-v8-final%" EQU "*" echo SET cIOS249[56]-d2x-v8-final=%cIOS249[56]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[53]-d2x-v8-final%" EQU "*" echo SET cIOS249[53]-d2x-v8-final=%cIOS249[53]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[55]-d2x-v8-final%" EQU "*" echo SET cIOS249[55]-d2x-v8-final=%cIOS249[55]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" echo SET cIOS249[57]-d2x-v8-final=%cIOS249[57]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[58]-d2x-v8-final%" EQU "*" echo SET cIOS249[58]-d2x-v8-final=%cIOS249[58]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[60]-d2x-v8-final%" EQU "*" echo SET cIOS249[60]-d2x-v8-final=%cIOS249[60]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[70]-d2x-v8-final%" EQU "*" echo SET cIOS249[70]-d2x-v8-final=%cIOS249[70]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS249[80]-d2x-v8-final%" EQU "*" echo SET cIOS249[80]-d2x-v8-final=%cIOS249[80]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[37]-d2x-v8-final%" EQU "*" echo SET cIOS250[37]-d2x-v8-final=%cIOS250[37]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[38]-d2x-v8-final%" EQU "*" echo SET cIOS250[38]-d2x-v8-final=%cIOS250[38]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[53]-d2x-v8-final%" EQU "*" echo SET cIOS250[53]-d2x-v8-final=%cIOS250[53]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[55]-d2x-v8-final%" EQU "*" echo SET cIOS250[55]-d2x-v8-final=%cIOS250[55]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" echo SET cIOS250[56]-d2x-v8-final=%cIOS250[56]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[57]-d2x-v8-final%" EQU "*" echo SET cIOS250[57]-d2x-v8-final=%cIOS250[57]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[58]-d2x-v8-final%" EQU "*" echo SET cIOS250[58]-d2x-v8-final=%cIOS250[58]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[60]-d2x-v8-final%" EQU "*" echo SET cIOS250[60]-d2x-v8-final=%cIOS250[60]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[70]-d2x-v8-final%" EQU "*" echo SET cIOS250[70]-d2x-v8-final=%cIOS250[70]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%cIOS250[80]-d2x-v8-final%" EQU "*" echo SET cIOS250[80]-d2x-v8-final=%cIOS250[80]-d2x-v8-final%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[37]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[37]-d2x-v10-beta52=%cIOS249[37]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[38]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[38]-d2x-v10-beta52=%cIOS249[38]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[56]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[56]-d2x-v10-beta52=%cIOS249[56]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[53]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[53]-d2x-v10-beta52=%cIOS249[53]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[55]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[55]-d2x-v10-beta52=%cIOS249[55]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[57]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[57]-d2x-v10-beta52=%cIOS249[57]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[58]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[58]-d2x-v10-beta52=%cIOS249[58]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[60]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[60]-d2x-v10-beta52=%cIOS249[60]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[70]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[70]-d2x-v10-beta52=%cIOS249[70]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS249[80]-d2x-v10-beta52%" EQU "*" echo SET cIOS249[80]-d2x-v10-beta52=%cIOS249[80]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[37]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[37]-d2x-v10-beta52=%cIOS250[37]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[38]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[38]-d2x-v10-beta52=%cIOS250[38]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[53]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[53]-d2x-v10-beta52=%cIOS250[53]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[55]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[55]-d2x-v10-beta52=%cIOS250[55]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[56]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[56]-d2x-v10-beta52=%cIOS250[56]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[57]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[57]-d2x-v10-beta52=%cIOS250[57]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[58]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[58]-d2x-v10-beta52=%cIOS250[58]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[60]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[60]-d2x-v10-beta52=%cIOS250[60]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[70]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[70]-d2x-v10-beta52=%cIOS250[70]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS250[80]-d2x-v10-beta52%" EQU "*" echo SET cIOS250[80]-d2x-v10-beta52=%cIOS250[80]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%cIOS251[38]-d2x-v10-beta52%" EQU "*" echo SET cIOS251[38]-d2x-v10-beta52=%cIOS251[38]-d2x-v10-beta52%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" echo SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cmios-v4_WiiGator_GCBL_v0.2%" EQU "*" echo SET RVL-cmios-v4_WiiGator_GCBL_v0.2=%RVL-cmios-v4_WiiGator_GCBL_v0.2%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%RVL-cmios-v4_Waninkoko_rev5%" EQU "*" echo SET RVL-cmios-v4_Waninkoko_rev5=%RVL-cmios-v4_Waninkoko_rev5%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -17313,7 +17603,7 @@ if /i "%FORMAT%" EQU "5" goto:skipchange
 if /i "%WADNAME%" EQU "WiiBackupManager.zip" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\usbloader_cfg\" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "apps\usbloader_gx\" set DRIVE=%DRIVEU%
-if /i "%PATH1%" EQU "apps\WiiFlow\" set DRIVE=%DRIVEU%
+if /i "%PATH1%" EQU "apps\wiiflow\" set DRIVE=%DRIVEU%
 if /i "%PATH1%" EQU "FAT32_GUI_Formatter\" set DRIVE=%DRIVEU%
 
 :skipchange
@@ -17331,7 +17621,6 @@ if /i "%retry%" EQU "1" support\sfk echo [Red]Downloading %CURRENTDL% of %DLTOTA
 if /i "%retry%" NEQ "1" support\sfk echo [Yellow]Re-Downloading %CURRENTDL% of %DLTOTAL%: %name%
 echo.
 
-
 ::---------------SKIN MODE-------------
 if /i "%SkinMode%" NEQ "Y" goto:notskin
 if /i "%CURRENTDL%" EQU "1" set percent=0
@@ -17341,6 +17630,7 @@ set /a percent=%CURRENTDL%00/%DLTOTAL%
 if %percent% LSS %percentlast% set percent=%percentlast%
 start support\wizapp PB UPDATE %percent%
 :notskin
+
 
 
 ::---------Exceptions----------------
@@ -17454,6 +17744,8 @@ copy /y temp\%code1%\%code2%\v%version% "%Drive%"\NUS\%code1%%code2%v%version% >
 :option1notNUS
 
 :wadverifyretry
+
+
 ::----check after downloading - if md5 check fails, delete and redownload----
 if exist "%Drive%"\WAD\%wadname% goto:checkexisting
 
@@ -17476,6 +17768,7 @@ goto:DOWNLOADSTART2
 :checkexisting
 set md5check=
 set md5altcheck=
+
 support\sfk md5 -quiet -verify %md5% "%Drive%"\WAD\%wadname%
 if errorlevel 1 set md5check=fail
 IF "%md5check%"=="" set md5check=pass
@@ -17486,6 +17779,7 @@ IF "%md5altcheck%"=="" set md5altcheck=pass
 if /i "%md5altcheck%" NEQ "fail" goto:pass
 
 :fail
+
 echo.
 if /i "%attempt%" NEQ "1" goto:multiplefail
 support\sfk echo [Yellow] This file already exists but it failed MD5 verification.
@@ -17502,7 +17796,10 @@ goto:DOWNLOADSTART2
 support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
 set multiplefail=Y
 echo.
+
+if /i "%KeepInvalidOverride%" NEQ "Y" (if exist "%Drive%\WAD\%wadname%" del "%Drive%\WAD\%wadname%">nul) & (if exist "%Drive%\%code1%\%code2%\v%version%" rd /s /q "%Drive%\%code1%\%code2%\v%version%")
 if /i "%AdvancedDownload%" NEQ "Y" echo "support\sfk echo %wadname%: [Red]Invalid">>temp\ModMii_Log.bat
+
 goto:NEXT
 
 :pass
@@ -17559,7 +17856,7 @@ goto:NEXT
 
 ::missing Support folder error message and skip
 if not exist Support support\sfk echo -spat [Yellow] Missing "Support" folder - Required to make cIOSs/cMIOSs
-if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Redownload ModMii from http://modmii.000webhostapp.com
+if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Redownload ModMii from https://modmii.github.io
 if not exist Support support\sfk echo -spat \x20 \x20 [Yellow] Skipping download
 if not exist Support @ping 127.0.0.1 -n 5 -w 1000> nul
 if not exist Support goto:NEXT
@@ -17688,9 +17985,13 @@ if "%lastbasemodule%"=="" patchios "%DRIVEadj%"\WAD\%wadname%.wad -FS -ES -NP -V
 if not "%lastbasemodule%"=="" patchios "%DRIVEadj%"\WAD\%wadname%.wad -FS -ES -NP -VP
 cd..
 if "%wadname:~-4%" NEQ ".wad" set wadname=%wadname%.wad
+
 goto:wadverifyretry
 :notpatchios
 ::----------------------------------------
+
+
+
 
 ::unpack base wad
 echo.
@@ -17733,7 +18034,7 @@ echo.
 
 if exist "temp\DML\FixELF.exe" goto:gotfixelf
 
-if not exist "FixELF.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "http://tiny.cc/fixelfmirror"
+if not exist "FixELF.zip" start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://tiny.cc/fixelfmirror"
 
 if not exist "FixELF.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [Magenta] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [Red]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
@@ -17909,7 +18210,7 @@ if exist "temp\%dlname:~0,-4%\FixElf\FixELF.exe" goto:gotit
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://sourceforge.net/projects/menuui/files/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -17957,7 +18258,7 @@ goto:repackwad
 
 
 
-::------for theming system menu's only----------
+::------for theming system Menus only----------
 if /i "%category%" NEQ "SMTHEME" goto:skip
 goto:mym_download
 :SMTHEME2
@@ -18007,11 +18308,12 @@ echo.
 echo Patching A handful of BaseWad Component Files
 echo.
 
+
 if /i "%code2%" NEQ "%code2new%" ren %basecios%\%code1%%code2%.cert %code1%%code2new%.cert
 if /i "%code2%" NEQ "%code2new%" ren %basecios%\%code1%%code2%.footer %code1%%code2new%.footer
 
 
-::skip for d2x cIOSs
+::skip for non d2x cIOSs
 set usetmdedit=
 if /i "%basecios:~12,3%" NEQ "d2x" goto:notd2x
 
@@ -18023,6 +18325,9 @@ if /i "%d2x-beta-rev%" EQU "9-beta(r47)" set usetmdedit=
 ::set usetmdedit=
 if /i "%usetmdedit%" EQU "Y" (goto:NotRenamedOriginal2) else (goto:NotRenamedOriginal)
 :notd2x
+
+
+
 
 if exist support\Diffs\%diffpath%\%diffpath%_00.diff ren %basecios%\00000000.app 00000000-original.app
 if exist support\Diffs\%diffpath%\%diffpath%_01.diff ren %basecios%\00000001.app 00000001-original.app
@@ -18089,6 +18394,11 @@ if exist %basecios%\%lastbasemodule%-original.app del %basecios%\%lastbasemodule
 ::--for cMIOS's that have tiks and tmds renamed to -original
 if exist %basecios%\%code1%%code2%-original.tik del %basecios%\%code1%%code2%-original.tik>nul
 if exist %basecios%\%code1%%code2%-original.tmd del %basecios%\%code1%%code2%-original.tmd>nul
+
+::override for IOS60
+if /i "%basecios%" EQU "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])" goto:signcios
+
+
 if /i "%code2%" EQU "00000101" goto:repackwad
 if /i "%category%" EQU "patchios" goto:repackwad
 
@@ -18099,13 +18409,15 @@ if /i "%usetmdedit%" NEQ "Y" if exist %basecios%\%code1%%code2%.tmd del %basecio
 
 
 ::---------------Korean Key Patch---------------
-
 ::skip korean key patch and copying of custom modules for d2x cIOSs (will be done later)
 if /i "%basecios:~12,3%" EQU "d2x" goto:signcios
 
 if /i "%basewad:~3,2%" EQU "38" goto:nokorpatch
 if /i "%basecios%" EQU "cIOS223[37-38]-v4" goto:nokorpatch
 if /i "%wadname:~0,3%" EQU "cBC" goto:repackwad
+
+if /i "%basecios%" EQU "IOS236v65535(IOS36v3351[FS-ES-NP-VP])" goto:repackwad
+
 
 echo.
 echo Patching %lastbasemodule%.app to support the Korean Common Key
@@ -18305,7 +18617,6 @@ if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FFSP.app %basec
 
 
 
-
 ::------sign cIOS with details---------
 :signcios
 set d2xNumber=
@@ -18315,12 +18626,16 @@ set basehexNumber=
 set d2xsubversion=
 set string=
 set string1=
+set cIOSsubversion=
+
+
 
 if /i "%code2%" EQU "00000101" goto:repackwad
 
 echo.
-echo Signing 00000000.app with cIOS details
+echo Tagging 00000000.app with cIOS details
 echo.
+
 
 ::----convert some values from dec to hex----
 
@@ -18348,9 +18663,9 @@ set /p basehexNumber= <hex.txt
 if exist hex.txt del hex.txt>nul
 
 
-set cIOSsubversion=
 ::-----cIOSFamilyName (this part required for d2x betas only)-------
 if /i "%basecios:~12,3%" NEQ "d2x" goto:tinyjump
+set cIOSsubversion=
 set cIOSFamilyName=d2x
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
@@ -18408,6 +18723,22 @@ set cIOSsubversionhex=0x%cIOSsubversionhex:~0,-4%
 support\hexalter.exe "%basecios%\00000000.app" 0x20=%cIOSsubversionhex%
 :tinyjump
 
+
+
+
+::---------RC24 Replace nintendo's RSA public key [A7144290...919AF969] with RC24's----------
+::override for IOS60
+if /i "%basecios%" EQU "IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])" (set offset=5A7F8) & (goto:RC24key)
+goto:skipRC24key
+:RC24key
+
+echo.
+echo Patching the RiiConnect24 RSA public key
+echo.
+
+support\hexalter.exe "%basecios%\00000006.app" 0x%offset%=0xDC,0x60,0x8C,0x0D,0x49,0x3A,0x2B,0x8C,0x5B,0x24,0x3C,0xE6,0xD1,0xB8,0x1D,0x0F,0x63,0xFF,0x66,0x07,0xAC,0x5C,0xFA,0x20,0xB5,0xF3,0xB5,0x5A,0x2F,0x11,0xEE,0xA1,0x1E,0x4C,0x9C,0xEA,0xD7,0xA3,0x38,0x86,0x39,0xBC,0xAF,0x60,0x1C,0x85,0xCD,0xEC,0x0A,0xE5,0xFD,0x73,0xC5,0xC0,0x73,0x98,0x49,0x94,0xF9,0x75,0xC2,0xA5,0x0E,0xE0,0x78,0x69,0x89,0xDE,0x69,0x6E,0x46,0x5F,0x62,0x63,0xBE,0x10,0x1C,0x68,0x23,0x79,0x28,0x93,0xCB,0xFA,0xA4,0x94,0xDE,0xF7,0x4C,0xD8,0x27,0x90,0x5C,0x32,0x16,0x2E,0x3B,0x0B,0x07,0xCD,0x6C,0xC2,0x3F,0x2D,0xC9,0x1A,0x13,0x5A,0x58,0x26,0x0C,0x06,0x2C,0xDA,0xFA,0x12,0x48,0xD0,0x13,0x89,0xF2,0x0F,0xBF,0xE6,0xA0,0x6A,0x0D,0xE5,0x1A,0x9A,0xD7,0x48,0x3C,0x57,0x25,0xF6,0x79,0x92,0x6B,0x75,0xC4,0x19,0xE6,0xB6,0xA0,0x5C,0x67,0x8C,0x42,0x56,0x5E,0x69,0x25,0x34,0x93,0xD3,0x32,0x3A,0xB9,0xC4,0x51,0x79,0x93,0x24,0x55,0x3E,0x8E,0x69,0xC6,0x99,0xE6,0x1A,0x84,0x85,0xEB,0x9E,0x23,0x70,0x25,0xEC,0x89,0x76,0x63,0x33,0xCB,0xBB,0x96,0x42,0x46,0x02,0xE8,0x82,0x84,0x98,0x05,0xF8,0x67,0xB5,0x8E,0xE4,0x57,0x39,0xC8,0x69,0x5C,0xC4,0x89,0x85,0x67,0x87,0x8F,0x3B,0x70,0x14,0x66,0xEC,0x88,0xE6,0x51,0x4D,0x81,0xF4,0xAE,0xBA,0x73,0x02,0x00,0x33,0x4E,0x1A,0x47,0xFE,0xA9,0x8E,0xAE,0x7F,0x82,0xE7,0xF5,0x6B,0x44,0x16,0x59,0x9E,0xE5,0xDA,0x4B,0x53,0x26,0x46,0xDB,0x93,0x5A,0x6F,0xBB,0x03
+
+:skipRC24key
 
 
 
@@ -18604,14 +18935,17 @@ echo.
 
 
 ::use tmdedit.exe to patch tmd
-if /i "%usetmdedit%" NEQ "Y" goto:repackwad
 
+if /i "%usetmdedit%" NEQ "Y" goto:repackwad
 if exist Support\d2x-beta\ciosmaps.xml (set xml=Support\d2x-beta\ciosmaps.xml) else (set xml=Support\d2xModules\ciosmaps.xml)
 
+::get tmd version from cIOS	; e.g. <ciosgroup name="d2x-v10-beta53-alt" version="21010" basescount="10">
+support\sfk -spat filter "%xml%" ++"ciosgroup name" ++"version" ++"basescount" -rep _*version\x3d\x22__ -rep _\x22*__ >temp\d2xversion.xml
+set /p tmdversion= <temp\d2xversion.xml
+del temp\d2xversion.xml>nul
 
-support\TMDedit.exe -b "%basecios%\%code1%%code2new%.tmd" -xml %xml% -group d2x-v%d2x-beta-rev% %ciosversion% -base %basewad:~3,2% %version% -folder "%basecios%" -basefile %basecios%\%code1%%code2%.tmd -outIOS 249
 
-
+support\TMDedit.exe -b "%basecios%\%code1%%code2new%.tmd" -xml %xml% -group d2x-v%d2x-beta-rev% %tmdversion% -base %basewad:~3,2% %version% -folder "%basecios%" -basefile %basecios%\%code1%%code2%.tmd -outIOS 249
 del %basecios%\%code1%%code2%.tmd>nul
 
 
@@ -18645,10 +18979,10 @@ echo.
 cd support
 if /i "%DRIVE:~1,1%" EQU ":" (set DRIVEadj=%DRIVE%) else (set DRIVEadj=..\%DRIVE%)
 patchios "%Driveadj%\WAD\%wadname%.wad" -slot %ciosslot% -v %ciosversion%
+
 cd..
 echo.
 :skip
-
 
 if "%wadname:~-4%" NEQ ".wad" set wadname=%wadname%.wad
 
@@ -18864,7 +19198,7 @@ echo.
 goto:download_mym2
 :nocheckexisting
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "expresstek.org/xflak/files/%mym0%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/%mym0%"
 if exist "%mym0%" move /Y "%mym0%" temp>nul
 
 
@@ -18981,7 +19315,7 @@ goto:build_csm
 :nocheckexisting
 
 
-start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "expresstek.org/xflak/files/%ThemeMiiZip%"
+start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/%ThemeMiiZip%"
 
 if exist %ThemeMiiZip% support\7za e -aoa %ThemeMiiZip% -otemp *.* -r
 if exist %ThemeMiiZip% del %ThemeMiiZip%>nul
@@ -19118,6 +19452,8 @@ echo.
 support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
 echo.
 set multiplefail=Y
+
+if /i "%KeepInvalidOverride%" NEQ "Y" (if exist "%Drive%\ModThemes\%wadname%.csm" del "%Drive%\ModThemes\%wadname%.csm">nul)
 if /i "%AdvancedDownload%" NEQ "Y" echo "support\sfk echo %name%: [Red]Invalid">>temp\ModMii_Log.bat
 goto:NEXT
 
@@ -19129,7 +19465,7 @@ if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.ba
 goto:NEXT
 
 
-::--------------------------------------Cheat Codes: txtcodes from geckocodes.org------------------------------
+::--------------------------------------Cheat Codes: txtcodes from codes.rc24.xyz------------------------------
 :CHEATS
 
 ::set cheatregion=all
@@ -19166,7 +19502,7 @@ echo.
 echo       Note: The above settings can be customized in the Cheat Code Options
 echo.
 echo.
-echo   Grabbing current list of cheats from geckocodes.org,
+echo   Grabbing current list of cheats from codes.rc24.xyz,
 echo   Please wait...
 echo.
 
@@ -19199,105 +19535,105 @@ if /i "%cheatregion%" NEQ "all" goto:skipall
 ::-------Wii Games--------
 set nextcheatlist=allwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=R&r=*&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :allwiiwarecheats
 set nextcheatlist=allvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=W&r=*&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :allVCcheats
 set nextcheatlist=allwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=D&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :allwiichannelcheats
 set nextcheatlist=allGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=H&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :allGCcheats
 set nextcheatlist=allNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=G&r=*&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :allNEScheats
 set nextcheatlist=allSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=F&r=*&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :allSNEScheats
 set nextcheatlist=allN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=J&r=*&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :allN64cheats
 set nextcheatlist=allSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=N&r=*&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :allSMScheats
 set nextcheatlist=allGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=L&r=*&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :allGenesischeats
 set nextcheatlist=allNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=M&r=*&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :allNEOcheats
 set nextcheatlist=allCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=E&r=*&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :allCOMcheats
 set nextcheatlist=allMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=C&r=*&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :allMSXcheats
 set nextcheatlist=allT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=X&r=*&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :allT16cheats
 set nextcheatlist=allTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=P&r=*&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :allTCDcheats
 set nextcheatlist=skipall
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=*&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=Q&r=*&l=all"
 goto:cheatrepeat
 
 :skipall
@@ -19310,105 +19646,105 @@ if /i "%cheatregion%" NEQ "USA" goto:skipUSA
 ::-------Wii Games--------
 set nextcheatlist=USAwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=R&r=E&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :USAwiiwarecheats
 set nextcheatlist=USAvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=W&r=E&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :USAVCcheats
 set nextcheatlist=USAwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=D&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :USAwiichannelcheats
 set nextcheatlist=USAGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=H&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :USAGCcheats
 set nextcheatlist=USANEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=G&r=E&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :USANEScheats
 set nextcheatlist=USASNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=F&r=E&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :USASNEScheats
 set nextcheatlist=USAN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=J&r=E&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :USAN64cheats
 set nextcheatlist=USASMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=N&r=E&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :USASMScheats
 set nextcheatlist=USAGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=L&r=E&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :USAGenesischeats
 set nextcheatlist=USANEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=M&r=E&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :USANEOcheats
 set nextcheatlist=USACOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=E&r=E&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :USACOMcheats
 set nextcheatlist=USAMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=C&r=E&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :USAMSXcheats
 set nextcheatlist=USAT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=X&r=E&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :USAT16cheats
 set nextcheatlist=USATCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=P&r=E&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :USATCDcheats
 set nextcheatlist=skipUSA
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=E&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=Q&r=E&l=all"
 goto:cheatrepeat
 
 :skipUSA
@@ -19423,105 +19759,105 @@ if /i "%cheatregion%" NEQ "PAL" goto:skipPAL
 ::-------Wii Games--------
 set nextcheatlist=PALwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=R&r=P&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :PALwiiwarecheats
 set nextcheatlist=PALvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=W&r=P&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :PALVCcheats
 set nextcheatlist=PALwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=D&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :PALwiichannelcheats
 set nextcheatlist=PALGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=H&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :PALGCcheats
 set nextcheatlist=PALNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=G&r=P&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :PALNEScheats
 set nextcheatlist=PALSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=F&r=P&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :PALSNEScheats
 set nextcheatlist=PALN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=J&r=P&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :PALN64cheats
 set nextcheatlist=PALSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=N&r=P&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :PALSMScheats
 set nextcheatlist=PALGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=L&r=P&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :PALGenesischeats
 set nextcheatlist=PALNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=M&r=P&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :PALNEOcheats
 set nextcheatlist=PALCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=E&r=P&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :PALCOMcheats
 set nextcheatlist=PALMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=C&r=P&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :PALMSXcheats
 set nextcheatlist=PALT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=X&r=P&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :PALT16cheats
 set nextcheatlist=PALTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=P&r=P&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :PALTCDcheats
 set nextcheatlist=skipPAL
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=P&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=Q&r=P&l=all"
 goto:cheatrepeat
 
 :skipPAL
@@ -19536,105 +19872,105 @@ if /i "%cheatregion%" NEQ "JAP" goto:skipJAP
 ::-------Wii Games--------
 set nextcheatlist=JAPwiiwarecheats
 if /i "%wiicheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=R&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=R&r=J&l=all"
 goto:cheatrepeat
 
 ::-------WiiWare------
 :JAPwiiwarecheats
 set nextcheatlist=JAPvccheats
 if /i "%WiiWarecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=W&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=W&r=J&l=all"
 goto:cheatrepeat
 
 ::-------VC Arcade------
 :JAPVCcheats
 set nextcheatlist=JAPwiichannelcheats
 if /i "%VCArcadecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=D&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=D&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Wii Channels------
 :JAPwiichannelcheats
 set nextcheatlist=JAPGCcheats
 if /i "%WiiChannelscheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=H&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=H&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Gamecube------
 :JAPGCcheats
 set nextcheatlist=JAPNEScheats
 if /i "%Gamecubecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=G&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=G&r=J&l=all"
 goto:cheatrepeat
 
 ::-------NES------
 :JAPNEScheats
 set nextcheatlist=JAPSNEScheats
 if /i "%NEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=F&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=F&r=J&l=all"
 goto:cheatrepeat
 
 ::-------SNES------
 :JAPSNEScheats
 set nextcheatlist=JAPN64cheats
 if /i "%SNEScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=J&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=J&r=J&l=all"
 goto:cheatrepeat
 
 ::-------N64------
 :JAPN64cheats
 set nextcheatlist=JAPSMScheats
 if /i "%N64cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=N&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=N&r=J&l=all"
 goto:cheatrepeat
 
 ::-------SMS------
 :JAPSMScheats
 set nextcheatlist=JAPGenesischeats
 if /i "%SMScheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=L&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=L&r=J&l=all"
 goto:cheatrepeat
 
 ::-------Genesis------
 :JAPGenesischeats
 set nextcheatlist=JAPNEOcheats
 if /i "%Segacheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=M&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=M&r=J&l=all"
 goto:cheatrepeat
 
 ::-------NEO------
 :JAPNEOcheats
 set nextcheatlist=JAPCOMcheats
 if /i "%NeoGeocheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=E&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=E&r=J&l=all"
 goto:cheatrepeat
 
 ::-------COMMODORE------
 :JAPCOMcheats
 set nextcheatlist=JAPMSXcheats
 if /i "%Commodorecheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=C&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=C&r=J&l=all"
 goto:cheatrepeat
 
 ::-------MSX------
 :JAPMSXcheats
 set nextcheatlist=JAPT16cheats
 if /i "%MSXcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=X&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=X&r=J&l=all"
 goto:cheatrepeat
 
 ::-------T16------
 :JAPT16cheats
 set nextcheatlist=JAPTCDcheats
 if /i "%TurboGraFX-16cheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=P&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=P&r=J&l=all"
 goto:cheatrepeat
 
 ::-------TCD------
 :JAPTCDcheats
 set nextcheatlist=skipJAP
 if /i "%TurboGraFX-CDcheat%" NEQ "on" goto:%nextcheatlist%
-start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "http://www.geckocodes.org/index.php?chid=Q&r=J&l=all"
+start %ModMiimin%/wait support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t10 -T30 --random-wait --accept index*l=all "https://codes.rc24.xyz/index.php?chid=Q&r=J&l=all"
 goto:cheatrepeat
 
 :skipJAP
@@ -19812,7 +20148,7 @@ if exist "%drive%\codes\%consolecode%\%letter1%\%titleid%.txt" echo Overwriting 
 :skip
 
 :downloadcheat
-start %ModMiimin%/wait support\wget --no-check-certificate "http://www.geckocodes.org/txt.php?txt=%titleid%"
+start %ModMiimin%/wait support\wget --no-check-certificate "https://codes.rc24.xyz/txt.php?txt=%titleid%"
 
 if /i "%cheatlocation%" EQU "T" move /y "txt.php@txt=%titleid%" "%drive%\txtcodes\%titleid%.txt">nul
 if /i "%cheatlocation%" EQU "C" move /y "txt.php@txt=%titleid%" "%drive%\codes\%consolecode%\%letter1%\%titleid%.txt">nul
@@ -19982,6 +20318,8 @@ support\sfk echo [Magenta] This file has failed to download properly multiple ti
 echo.
 set DRIVE=%DRIVErestore%
 set multiplefail=Y
+
+if /i "%KeepInvalidOverride%" NEQ "Y" (if exist "%Drive%\%path1%%filename%" del "%Drive%\%path1%%filename%">nul)
 if /i "%AdvancedDownload%" NEQ "Y" echo "support\sfk echo %name%: [Red]Invalid">>temp\ModMii_Log.bat
 goto:NEXT
 
@@ -20027,6 +20365,16 @@ if not exist "%Drive%\%path1%%filename%" goto:nocheckexisting
 set md5check=
 support\sfk md5 -quiet -verify %md5% "%Drive%\%path1%%filename%"
 if errorlevel 1 set md5check=fail
+
+if /i "%wadname%" NEQ "bootmii_sd_files.zip" goto:notbootmiisd
+set md5check=fail
+support\sfk md5 -quiet -verify %md5% "%Drive%\%path1%%filename%"
+if not errorlevel 1 set md5check=pass
+support\sfk md5 -quiet -verify %md5alt% "%Drive%\%path1%%filename%"
+if not errorlevel 1 set md5check=pass
+set md5alt=
+:notbootmiisd
+
 IF "%md5check%"=="" set md5check=pass
 if /i "%md5check%" NEQ "fail" goto:pass
 
@@ -20041,7 +20389,7 @@ del "%Drive%\%path1%%filename%">nul
 if exist temp\%wadname% del temp\%wadname%>nul
 set DRIVE=%DRIVErestore%
 goto:DOWNLOADSTART2
-
+8
 :pass
 support\sfk echo [Green]This file already exists and has been verified, Skipping download
 echo.
@@ -20052,13 +20400,11 @@ goto:NEXT
 
 
 :fullextract2
-
 if exist "temp\%wadname%" goto:FullExtractZipAlreadyExists
 if not exist temp\%dlname% start %ModMiimin%/wait support\wget --no-check-certificate %code2%
 if exist %dlname% move /y %dlname% "temp\%wadname%">nul
 
 :FullExtractZipAlreadyExists
-
 ::extract selected apps differently...
 
 if /i "%path1%" NEQ "apps\MyMenuifyMod\" goto:notmym
@@ -20067,25 +20413,58 @@ goto:skipnormalextraction
 :notmym
 
 
-if /i "%wadname:~0,20%" EQU "USBLoader(s)-ahbprot" support\7za e -aoa temp\%dlname% -o"%Drive%"/WAD *.%version% -r
-if /i "%wadname:~0,20%" EQU "USBLoader(s)-ahbprot" goto:skipnormalextraction
+if /i "%path1%" NEQ "apps\usbloader_gx\" goto:notGX
+support\7za x -aoa temp\%wadname% -o"%Drive%"
 
-if /i "%wadname%" EQU "indiana-pwns.zip" (support\7za X -aoa temp\%wadname% -o"%Drive%" private -r) & (goto:skipnormalextraction)
+::---!!!DISABLED BUILDING CONFIG!!!---::
+goto:skipnormalextraction
+::create config file only if doesn't exist already to return to IDCL forwarder, but only if the forwarder is also being downloaded
+if exist "%Drive%\%path1%GXGlobal.cfg" goto:skipnormalextraction
+if /i "%USBX%" NEQ "*" goto:skipnormalextraction
+echo # USB Loader GX R1272 - Main settings file>"%Drive%\%path1%GXGlobal.cfg"
+echo # Note: This file is automatically generated by ModMii to set returnTo IDCL>>"%Drive%\%path1%GXGlobal.cfg"
+echo returnTo = 4944434c>>"%Drive%\%path1%GXGlobal.cfg"
+goto:skipnormalextraction
+:notGX
 
-if /i "%wadname%" EQU "bathaxx.zip" support\7za X -aoa temp\%wadname% -o"%Drive%" private -r
+
+if /i "%path1%" NEQ "apps\wiiflow\" goto:notFLOW
+support\7za x -aoa temp\%wadname% -o"%Drive%" -x!wfl*changes.txt
+
+::---!!!DISABLED BUILDING CONFIG!!!---::
+goto:skipnormalextraction
+::create config file only if doesn't exist already to return to IDCL forwarder, but only if the forwarder is also being downloaded, and not downloading GX with has boot sequence priority
+if exist "%Drive%\%path1%wiiflow_lite.ini" goto:skipnormalextraction
+if /i "%USBX%" NEQ "*" goto:skipnormalextraction
+if /i "%usbgx%" EQU "*" goto:skipnormalextraction
+if exist "%Drive%\apps\usbloader_gx\boot.dol" goto:skipnormalextraction
+echo [GENERAL]>"%Drive%\%path1%wiiflow_lite.ini"
+echo returnto=IDCL>>"%Drive%\%path1%wiiflow_lite.ini"
+goto:skipnormalextraction
+:notFLOW
+
+
+if /i "%path1%" EQU "apps\Priiloader\" (support\7za X -aoa "temp\%wadname%" -o"%Drive%" -r) & (goto:skipnormalextraction)
+
+if /i "%wadname%" EQU "USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.zip" support\7za e -aoa temp\%dlname% -o"%Drive%"/WAD *.%version% -r
+if /i "%wadname%" EQU "USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.zip" goto:skipnormalextraction
+
+if /i "%wadname%" EQU "indiana-pwns.zip" (support\7za X -aoa "temp\%wadname%" -o"%Drive%" private -r) & (goto:skipnormalextraction)
+
+if /i "%wadname%" EQU "bathaxx.zip" support\7za X -aoa "temp\%wadname%" -o"%Drive%" private -r
 if /i "%wadname%" EQU "bathaxx.zip" goto:skipnormalextraction
 
-if /i "%wadname%" EQU "return-jodi.zip" support\7za X -aoa temp\%wadname% -o"%Drive%" private -r
+if /i "%wadname%" EQU "return-jodi.zip" support\7za X -aoa "temp\%wadname%" -o"%Drive%" private -r
 if /i "%wadname%" EQU "return-jodi.zip" goto:skipnormalextraction
 
-if /i "%wadname%" EQU "EriHaKawai-USA+PAL.zip" support\7za X -aoa temp\%wadname% -o"%Drive%" private -r
+if /i "%wadname%" EQU "EriHaKawai-USA+PAL.zip" support\7za X -aoa "temp\%wadname%" -o"%Drive%" private -r
 if /i "%wadname%" EQU "EriHaKawai-USA+PAL.zip" goto:skipnormalextraction
 
 
-if /i "%name%" EQU "Neogamma Backup Disc Loader" (support\7za X -aoa temp\%wadname% -o"%Drive%" apps -r) & (support\7za X -aoa temp\%wadname% -o"%Drive%" NeoGamma -r) & (goto:skipnormalextraction)
+if /i "%name%" EQU "Neogamma Backup Disc Loader" (support\7za X -aoa "temp\%wadname%" -o"%Drive%" apps -r) & (support\7za X -aoa "temp\%wadname%" -o"%Drive%" NeoGamma -r) & (goto:skipnormalextraction)
 
 
-if /i "%path1%" EQU "apps\SIP\" (support\7za X -aoa temp\%wadname% -o"%Drive%" apps -r) & (goto:skipnormalextraction)
+if /i "%path1%" EQU "apps\SIP\" (support\7za X -aoa "temp\%wadname%" -o"%Drive%" apps -r) & (goto:skipnormalextraction)
 
 
 if /i "%name%" NEQ "WiiFlow Forwarder Channel\dol" goto:skipFLOWF
@@ -20123,6 +20502,7 @@ if /i "%AbstinenceWiz%" NEQ "Y" goto:skipnormalextraction
 if /i "%FIRMSTART%" EQU "4.3" goto:skipnormalextraction
 if /i "%FIRMSTART%" EQU "4.2" goto:skipnormalextraction
 if exist "%Drive%"\apps\MMM\MMMv13.4boot.elf copy /Y "%Drive%"\apps\MMM\MMMv13.4boot.elf "%Drive%"\boot.elf >nul
+copy /Y "Support\ExploitAppSelector.bat" "%Drive%\ExploitAppSelector.bat" >nul
 goto:skipnormalextraction
 :skipcasper
 
@@ -20225,6 +20605,8 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
 if exist "%homedrive%\Program Files (x86)" (set OSbit=64) else (set OSbit=32)
+
+if not exist "%cd%\%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" goto:skip
 support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.desktop$" "WiiBackupManager"
 support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiBackupManager\WiiBackupManager_Win%OSbit%.exe" "~$folder.programs$\WiiBackupManager" "WiiBackupManager"
 :skip
@@ -20240,6 +20622,7 @@ if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
+if not exist "%cd%\%DRIVE%\%path1%FAT32_GUI_Formatter.exe" goto:skip
 support\nircmd.exe shortcut "%cd%\%DRIVE%\%path1%FAT32_GUI_Formatter.exe" "~$folder.desktop$" "FAT32 GUI Formatter"
 support\nircmd.exe shortcut "%cd%\%DRIVE%\%path1%FAT32_GUI_Formatter.exe" "~$folder.programs$\FAT32 GUI Formatter" "FAT32 GUI Formatter"
 :skip
@@ -20254,7 +20637,7 @@ if not exist "%DRIVE%"\ShowMiiWads mkdir "%DRIVE%"\ShowMiiWads
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://sourceforge.net/projects/menuui/files/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -20274,6 +20657,7 @@ if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
+if not exist "%cd%\%DRIVE%\ShowMiiWads\ShowMiiWads.exe" goto:skip
 support\nircmd.exe shortcut "%cd%\%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.desktop$" "ShowMiiWads"
 support\nircmd.exe shortcut "%cd%\%DRIVE%\ShowMiiWads\ShowMiiWads.exe" "~$folder.programs$\ShowMiiWads" "ShowMiiWads"
 :skip
@@ -20287,7 +20671,7 @@ if not exist "%DRIVE%"\CustomizeMii mkdir "%DRIVE%"\CustomizeMii
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://sourceforge.net/projects/menuui/files/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 temp\unrar.exe x -y "temp\%wadname%" "%Drive%\CustomizeMii"
@@ -20295,6 +20679,7 @@ if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
+if not exist "%cd%\%DRIVE%\CustomizeMii\CustomizeMii.exe" goto:skip
 support\nircmd.exe shortcut "%cd%\%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.desktop$" "CustomizeMii"
 support\nircmd.exe shortcut "%cd%\%DRIVE%\CustomizeMii\CustomizeMii.exe" "~$folder.programs$\CustomizeMii" "CustomizeMii"
 :skip
@@ -20309,10 +20694,11 @@ if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" EQU "%ModMiiDrive%" (goto:createshortcuts) else (goto:skip)
 :createshortcuts
-support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.desktop$" "WiiGSC"
-support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.programs$\Wiidewii" "WiiGSC"
-support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\CrazyInstaller.exe" "~$folder.programs$\Wiidewii" "CrazyInstaller"
-support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\KeyStego.exe" "~$folder.programs$\Wiidewii" "KeyStego"
+
+if exist "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.desktop$" "WiiGSC"
+if exist "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\WiiGSC.exe" "~$folder.programs$\Wiidewii" "WiiGSC"
+if exist "%cd%\%DRIVE%\WiiGSC\CrazyInstaller.exe" support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\CrazyInstaller.exe" "~$folder.programs$\Wiidewii" "CrazyInstaller"
+if exist "%cd%\%DRIVE%\WiiGSC\KeyStego.exe" support\nircmd.exe shortcut "%cd%\%DRIVE%\WiiGSC\KeyStego.exe" "~$folder.programs$\Wiidewii" "KeyStego"
 
 :skip
 goto:skipnormalextraction
@@ -20322,23 +20708,47 @@ goto:skipnormalextraction
 
 if /i "%path1%" NEQ "apps\usbloader_cfg\" goto:skipusbloadercfg
 
-::rename existing usb-loader folder if applicable
-set COUNT9=0
-:renameusbloader
-if not exist "%Drive%\usb-loader" goto:extractusbloader
-SET /a COUNT9=%COUNT9%+1
-if exist "%Drive%\usb-loader%COUNT9%" goto:renameusbloader
-move "%Drive%\usb-loader" "%Drive%\usb-loader%COUNT9%">nul
+::rename existing usb-loader folder if applicable - DISABLED, instead apps folder will be updated, and usb-loader folder will skip files if already found
+::set COUNT9=0
+:::renameusbloader
+::if not exist "%Drive%\usb-loader" goto:extractusbloader
+::SET /a COUNT9=%COUNT9%+1
+::if exist "%Drive%\usb-loader%COUNT9%" goto:renameusbloader
+::move "%Drive%\usb-loader" "%Drive%\usb-loader%COUNT9%">nul
 
 :extractusbloader
-support\7za x -aoa temp\%wadname% -o"%Drive%"
+::-aoa	Overwrite All existing files without prompt for app folder ONLY
+support\7za x -aoa temp\%wadname% -o"%Drive%" -x!usb-loader
+
+::-aos	Skip extracting of existing files
+support\7za x -aos temp\%wadname% -o"%Drive%" -x!apps
+
+
+::---!!!DISABLED BUILDING CONFIG!!!---::
+goto:noIDCL
+::only set return to IDCL if config doesn't exist, and if the forwarder is also being downloaded, and not downloading GX & Flow which have boot sequence priority
+if exist "%DRIVE%\usb-loader\config.txt" goto:noIDCL
+if /i "%USBX%" NEQ "*" goto:noIDCL
+if /i "%usbgx%" EQU "*" goto:noIDCL
+if /i "%FLOW%" EQU "*" goto:noIDCL
+if exist "%Drive%\apps\usbloader_gx\boot.dol" goto:noIDCL
+if exist "%Drive%\apps\wiiflow\boot.dol" goto:noIDCL
+echo return_to_channel = IDCL>>"%DRIVE%\usb-loader\config.txt"
+:noIDCL
+
 
 ::------extra for USB-Loader Setup Guide-------
 if /i "%FORMAT%" EQU "NONE" goto:skip
 ::FAT or NTFS partition will only be valid if the \wbfs folder exists
 if not exist "%Drive%\wbfs" mkdir "%Drive%\wbfs"
-if not exist "%DRIVE%"\usb-loader\music mkdir "%DRIVE%"\usb-loader\music
 
+
+::---!!!DISABLED BUILDING CONFIG!!!---::
+goto:skipnormalextraction
+
+
+
+if not exist "%DRIVE%"\usb-loader\music mkdir "%DRIVE%"\usb-loader\music
 echo Save music Here>"%DRIVE%\usb-loader\music\Save MP3s Here To Play at USB-Loader Menu"
 if /i "%USBCONFIG%" EQU "USB" echo music = usb:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
 if /i "%USBCONFIG%" NEQ "USB" echo music = sd:/usb-loader/music>>"%DRIVE%\usb-loader\config.txt"
@@ -20349,6 +20759,9 @@ echo disable_format = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
 echo admin_unlock = BLAHBLAH>>"%DRIVE%\usb-loader\config.txt"
 
 support\sfk filter -write -yes "%DRIVE%\usb-loader\config.txt" -rep _BLAHBLAH_1_> nul
+
+
+
 
 :skip
 
@@ -20598,6 +21011,12 @@ support\7za e -aoa temp\%wadname% -o"%Drive%"\apps\HackMii_Installer *.%version%
 support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
 
 
+::get custom icon and meta.xml
+if not exist temp\%zipname% start %ModMiimin%/wait support\wget --no-check-certificate %code3%
+if exist %zipname% move /y %zipname% "temp\%zipname%">nul
+if exist temp\%zipname% support\7za e -aoa temp\%zipname% -o"%Drive%"\apps\HackMii_Installer\ * -r
+
+
 
 ::----check after downloading - if md5 check fails, delete and redownload----
 if exist "%Drive%"\apps\HackMii_Installer\boot.elf goto:checkexisting
@@ -20643,6 +21062,9 @@ echo.
 support\sfk echo [Magenta] This file has failed to download properly multiple times, Skipping download.
 echo.
 set multiplefail=Y
+
+if /i "%KeepInvalidOverride%" NEQ "Y" (if exist "%Drive%\apps\HackMii_Installer\boot.elf" del "%Drive%\apps\HackMii_Installer\boot.elf">nul)
+
 if /i "%AdvancedDownload%" NEQ "Y" echo "support\sfk echo %name%: [Red]Invalid">>temp\ModMii_Log.bat
 goto:NEXT
 
@@ -20664,6 +21086,7 @@ goto:next
 ::-----Bannerbomb MMM instead of HackMii installer------
 :RenameBootToHackMii
 if exist "%Drive%"\apps\MMM\MMMv13.4boot.elf copy /Y "%Drive%"\apps\MMM\MMMv13.4boot.elf "%Drive%"\boot.elf >nul
+copy /Y "Support\ExploitAppSelector.bat" "%Drive%\ExploitAppSelector.bat" >nul
 ::if exist "%Drive%"\apps\WiiMod\boot.elf copy /Y "%Drive%"\apps\WiiMod\boot.elf "%Drive%"\boot.elf >nul
 goto:next
 
@@ -21099,10 +21522,135 @@ if not exist "%DRIVEU%" mkdir "%DRIVEU%"
 :skip
 
 
-::delete all files that may interfere with SNEEK
-if exist "%DRIVE%"\SNEEK\kernel.bin del "%DRIVE%"\SNEEK\kernel.bin>nul
+
+
+::if running uneek or uneek+di, check for sneek installations on SD, replace is default
+set SNEEKreplace=R
+if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:skipcheck
+
+if not exist "%DRIVE%\sneek\kernel.bin" goto:skipcheck
+if not exist "%DRIVE%\sneek\rev.txt" goto:prompt
+
+::prompt if SNEEK found, otherwise skipcheck and overwrite\update
+findStr /I "SNEEK" "%DRIVE%\sneek\rev.txt" >nul
+IF ERRORLEVEL 1 goto:skipcheck
+
+:prompt
+if exist "%DRIVE%\sneek\rev.txt" support\sfk echo [Red]SNEEK (SD Version) detected[def] in %DRIVE%\sneek
+if not exist "%DRIVE%\sneek\rev.txt" support\sfk echo [Red]SD:\sneek\ folder detected[def], but unable to determine what version
+
+echo If you want to launch UNEEK using Bootmii, Nswitch or Switch2Uneek,
+echo you need to replace SD:\sneek\kernel.bin with UNEEK's kernel.bin (USB version).
+echo.
+echo If you launch UNEEK using USB-Loader GX, it loads USB:\sneek\ directly so you
+echo can skip it to keep SNEEK (SD version) on your SD card.
+echo.
+if not exist "%DRIVE%\sneek\rev.txt" echo Note: If you know that the detected folder is for UNEEK or UNEEK+DI, then you should choose to replace.
+if not exist "%DRIVE%\sneek\rev.txt" echo.
+echo Replace or Skip? R/S
+echo.
+
+:SNEEKreplace
+set SNEEKreplace=
+set /p SNEEKreplace=     Enter Selection Here: 
+echo.
+if /i "%SNEEKreplace%" EQU "S" goto:skipcheck
+
+if /i "%SNEEKreplace%" NEQ "R" goto:notreplace
+::check for and delete font.bin and di.bin (kernel.bin will be overwritten even if only building neek without di)
+if exist "%DRIVE%\sneek\di.bin" del "%DRIVE%\sneek\di.bin">nul
+if exist "%DRIVE%\sneek\font.bin" del "%DRIVE%\sneek\font.bin">nul
+goto:skipcheck
+:notreplace
+
+
+echo You Have Entered an Incorrect Key
+goto:SNEEKreplace
+
+:skipcheck
+
+
+
+
+
+::if running sneek or sneek+di, check for uneek installations on SD, replace is default
+set UNEEKreplace=R
+if /i "%SNEEKTYPE:~0,1%" NEQ "S" goto:skipcheck
+if not exist "%DRIVE%\sneek\kernel.bin" goto:skipcheck
+::if di.bin found then this install is for SNEEK+DI and we will overwrite it
+if exist "%DRIVE%\sneek\di.bin" goto:skipcheck
+if not exist "%DRIVE%\sneek\rev.txt" goto:prompt
+
+::prompt if UNEEK found, otherwise skipcheck and overwrite\update
+findStr /I "UNEEK" "%DRIVE%\sneek\rev.txt" >nul
+IF ERRORLEVEL 1 goto:skipcheck
+
+:prompt
+if exist "%DRIVE%\sneek\rev.txt" support\sfk echo [Red]UNEEK (USB version) detected[def] in %DRIVE%\sneek
+if not exist "%DRIVE%\sneek\rev.txt" support\sfk echo [Red]SD:\sneek\ folder detected[def], but unable to determine what version
+
+echo If you want to launch UNEEK using Bootmii, Nswitch or Switch2Uneek,
+echo SD:\sneek\kernel.bin with UNEEK's kernel.bin (USB version) is needed.
+echo.
+echo If you launch UNEEK using USB-Loader GX, it loads USB:\sneek\ directly so you
+echo can replace it with SNEEK (SD version) on your SD card.
+echo.
+if not exist "%DRIVE%\sneek\rev.txt" echo Note: If you know that the detected folder is for SNEEK or SNEEK+DI, then you should choose to replace.
+if not exist "%DRIVE%\sneek\rev.txt" echo.
+echo Replace or Abort? R/A
+echo.
+
+:UNEEKreplace
+set UNEEKreplace=
+set /p UNEEKreplace=     Enter Selection Here: 
+echo.
+
+if /i "%UNEEKreplace%" NEQ "A" goto:notabort
+
+::---------------CMD LINE MODE-------------
+if /i "%cmdlinemode%" NEQ "Y" goto:MENU
+
+echo User aborted %neekname% installation due to conflict with UNEEK >temp\ModMii_CMD_LINE_NEEK_Errors.txt
+if /i "%SKINmode%" NEQ "Y" start notepad "temp\ModMii_CMD_LINE_NEEK_Errors.txt"
+if /i "%SNEEKSELECT%" EQU "3" goto:SNKNANDBUILDER
+if exist support\settings.bak move /y support\settings.bak support\settings.bat>nul
+if /i "%SKINmode%" EQU "Y" start support\wizapp PB CLOSE
+exit
+
+:notabort
+
+
+if /i "%UNEEKreplace%" NEQ "R" goto:notreplace
+::check for and delete font.bin and di.bin (kernel.bin will be overwritten even if only building neek without di)
+if exist "%DRIVE%\sneek\di.bin" del "%DRIVE%\sneek\di.bin">nul
+if exist "%DRIVE%\sneek\font.bin" del "%DRIVE%\sneek\font.bin"
+
+goto:skipcheck
+:notreplace
+
+echo You Have Entered an Incorrect Key
+goto:UNEEKreplace
+
+:skipcheck
+
+
+
+
+::delete DI files from USB if detected if building UNEEK (kernel will be replaced)
+if /i "%SNEEKTYPE%" NEQ "U" goto:skip
+::if exist "%DRIVEU%"\SNEEK\kernel.bin del "%DRIVEU%"\SNEEK\kernel.bin>nul
+if exist "%DRIVEU%"\SNEEK\di.bin del "%DRIVEU%"\SNEEK\di.bin>nul
+if exist "%DRIVEU%"\SNEEK\font.bin del "%DRIVEU%"\SNEEK\font.bin>nul
+:skip
+
+
+::delete DI files from SD if detected if building SNEEK (kernel will be replaced)
+if /i "%SNEEKTYPE%" NEQ "S" goto:skip
+::if exist "%DRIVE%"\SNEEK\kernel.bin del "%DRIVE%"\SNEEK\kernel.bin>nul
 if exist "%DRIVE%"\SNEEK\di.bin del "%DRIVE%"\SNEEK\di.bin>nul
 if exist "%DRIVE%"\SNEEK\font.bin del "%DRIVE%"\SNEEK\font.bin>nul
+:skip
+
 
 
 ::Special handling of bootmii\armboot.bin to avoid deleting Bootmii-SD Files
@@ -21120,12 +21668,6 @@ SET /a countbootmii=%countbootmii%+1
 if exist "%DRIVE%"\bootmii_SDBooter%countbootmii% goto:renamebootmii
 rename "%DRIVE%"\bootmii bootmii_SDBooter%countbootmii% >nul
 :skip
-
-
-::delete sneek files from USB (interfere's with nswitch)
-if exist "%DRIVEU%"\SNEEK\kernel.bin del "%DRIVEU%"\SNEEK\kernel.bin>nul
-if exist "%DRIVEU%"\SNEEK\di.bin del "%DRIVEU%"\SNEEK\di.bin>nul
-if exist "%DRIVEU%"\SNEEK\font.bin del "%DRIVEU%"\SNEEK\font.bin>nul
 
 
 if /i "%neek2o%" EQU "on" goto:neek2obuild
@@ -21154,7 +21696,7 @@ if /i "%SSD%" NEQ "on" echo SNEEK and SNEEK+DI SD Access Disabled (can be change
 ::download unrar if missing
 if not exist temp\UnRAR.exe echo.
 if not exist temp\UnRAR.exe echo Downloading UnRAR
-if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://ayera.dl.sourceforge.net/project/menuui/UnRAR.exe"
+if not exist temp\UnRAR.exe start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://sourceforge.net/projects/menuui/files/UnRAR.exe"
 if exist UnRAR.exe move /y UnRAR.exe temp\UnRAR.exe>nul
 
 
@@ -21269,30 +21811,29 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 60
 if /i "%SNKFONT%" EQU "B" echo Downloading Black font.bin (this can be changed to White in Options)
 if /i "%SNKFONT%" EQU "W" echo Downloading White font.bin (this can be changed to Black in Options)
 
-if /i "%SNKFONT%" EQU "B" set fonturl=expresstek.org/xflak/files/fontb.bin
-if /i "%SNKFONT%" EQU "W" set fonturl=expresstek.org/xflak/files/fontw.bin
+if /i "%SNKFONT%" EQU "B" set fonturl=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontb.bin
+if /i "%SNKFONT%" EQU "W" set fonturl=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontw.bin
 
 if not exist temp\font%SNKFONT%.bin start %ModMiimin%/wait support\wget --no-check-certificate -t 3 %fonturl%
 
 if exist font%SNKFONT%.bin move /Y font%SNKFONT%.bin temp\font%SNKFONT%.bin>nul
 :skip
 
-if /i "%SNEEKTYPE%" EQU "UD" goto:save2DriveU
+if /i "%SNEEKTYPE%" NEQ "SD" goto:skip
 if not exist "%DRIVE%"\SNEEK mkdir "%DRIVE%"\SNEEK
 if exist temp\font%SNKFONT%.bin copy /Y temp\font%SNKFONT%.bin "%DRIVE%"\SNEEK\font.bin>nul
 if not exist "%DRIVE%"\SNEEK\font.bin goto:sneekwarning
-echo.
-goto:GetNEEKfiles
+:skip
 
-:save2DriveU
+if /i "%SNEEKTYPE%" NEQ "UD" goto:skip
 if not exist "%DRIVEU%"\SNEEK mkdir "%DRIVEU%"\SNEEK
 if exist temp\font%SNKFONT%.bin copy /Y temp\font%SNKFONT%.bin "%DRIVEU%"\SNEEK\font.bin>nul
 if not exist "%DRIVEU%"\SNEEK\font.bin goto:sneekwarning
+:skip
+
+
+
 echo.
-
-
-:GetNEEKfiles
-
 echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
@@ -21327,6 +21868,8 @@ if exist "temp\dimodule-usb.elf" move /y "temp\dimodule-usb.elf" "temp\dimodule.
 :noUSBdi
 
 
+
+
 echo Building...
 echo.
 
@@ -21349,9 +21892,21 @@ if /i "%sneekverbose%" EQU "on" echo ControlClick ("SNEEK Installer","SNEEK setu
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:2]","%cd%\temp")>>custom.au3
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:3]","%cd%\temp")>>custom.au3
 
-if /i "%DRIVE:~1,1%" EQU ":" echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVE%")>>custom.au3
 
-if /i "%DRIVE:~1,1%" NEQ ":" echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%cd%\%DRIVE%")>>custom.au3
+set DRIVEabsolute=%cd%\%DRIVE%
+if /i "%DRIVE:~1,1%" EQU ":" set DRIVEabsolute=%DRIVE%
+
+::SNEEKreplace "S" skip requires override
+if /i "%SNEEKreplace%" NEQ "S" goto:next
+if not exist temp\neektemp mkdir temp\neektemp
+set DRIVEabsolute=%cd%\temp\neektemp
+:next
+
+echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsolute%")>>custom.au3
+
+
+
+:afteroverride
 
 ::how to only change field if empty
 ::echo $a = ControlGetText ("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]")>>custom.au3
@@ -21362,6 +21917,7 @@ if /i "%SNEEKTYPE%" EQU "SD" goto:skip
 
 set DRIVEUabsolute=%cd%\%DRIVEU%
 if /i "%DRIVEU:~1,1%" EQU ":" set DRIVEUabsolute=%DRIVEU%
+
 
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:4]","%DRIVEUabsolute%")>>custom.au3
 :skip
@@ -21411,33 +21967,33 @@ if /i "%neek2o%" EQU "on" goto:neek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 :skipsneekverbose
 goto:skipneek2orevinfo
 
@@ -21446,39 +22002,39 @@ goto:skipneek2orevinfo
 
 if /i "%sneekverbose%" EQU "on" goto:sneekverbose
 
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (with SD Access On) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (with SD Access On) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI neek2o rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK neek2o rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 goto:skipsneekverbose
 
 :sneekverbose
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 
 ::neek2o sd access temporarily always disabled
 goto:miniskip
 
 if /i "%SSD%" EQU "off" goto:miniskip
-if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "SD" echo SNEEK+DI (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "S" echo SNEEK (verbose and SD Access On) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
 :miniskip
 
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "UD" echo UNEEK+DI (verbose) neek2o rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVE%"\sneek\rev.txt
-if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVEU%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVEabsolute%"\sneek\rev.txt
+if /i "%SNEEKTYPE%" EQU "U" echo UNEEK (verbose) neek2o rev%CurrentRev% >"%DRIVEUabsolute%"\sneek\rev.txt
 :skipsneekverbose
 
 
@@ -21800,9 +22356,10 @@ if /i "%SNKPRI%" NEQ "Y" goto:skipSNKpri
 echo.
 echo Downloading Priiloader v0.7 (mod for neek2o)
 echo.
-if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget --no-check-certificate -t 3 http://ufpr.dl.sourceforge.net/project/neek2o/priiloader.app
+if not exist temp\Priiloader-v0.7neek.app start %ModMiimin%/wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Priiloader-v0.7neek.app"
+::Priiloader-v0.7neek.app is a mirror of: https://sourceforge.net/projects/neek2o/files/priiloader.app/download?use_mirror=master&download=&failedmirror=ufpr.dl.sourceforge.net
 
-if exist priiloader.app move /Y priiloader.app temp\Priiloader-v0.7neek.app>nul
+if exist Priiloader-v0.7neek.app move /Y Priiloader-v0.7neek.app temp\Priiloader-v0.7neek.app>nul
 
 
 if exist temp\Priiloader-v0.7neek.app (echo Priiloader v0.7 [mod for neek2o] Installed >>"%nandpath%\nandinfo.txt") else (echo Failed to Install Priiloader v0.7 [mod for neek2o] >>"%nandpath%\nandinfo.txt")
@@ -22098,58 +22655,85 @@ if /i "%DRIVEU%" NEQ "COPY_TO_USB" echo      the %DRIVEU% folder to your USB Har
 
 
 echo.
-echo    THINGS YOU NEED TO KNOW ABOUT SNEEK:
+echo    CUSTOMIZED NOTES FOR YOUR BUILD OF NEEK:
 echo.
-echo        * If you have problems with S/UNEEK or Mighty Channels, copy cert.sys
-echo          from an original nand dump to your emulated nand's sys folder.
+echo   * When launching any form of SNEEK for the first time, it could take a long time
+echo     to load the System Menu, but it will be much quicker the second time around.
 echo.
-echo        * When launching any form of SNEEK for the first time,
-echo          it could take a long time to load the System Menu,
-echo          but it will be much quicker the second time around.
+echo   * If you have problems loading your Emulated NAND, copy cert.sys
+echo     from an original nand dump to your emulated nand's sys folder.
+echo.
+echo   * You can manually override Bootmii to launch neek by renaming
+echo     your BootmiiNeek folder to SD:\Bootmii and launching "Bootmii"
+echo.
+echo   * You can launch uneek (or uneek+DI) without requiring an SD Card
+echo     using USB-Loader GX. USB-Loader GX also has an option to copy
+echo     a console's SYSCONF into your current emuNAND (channel) path,
+echo     so if you add new controllers or a balance board to your NAND,
+echo     use the copy SYSCONF feature to also put it into neek's emuNAND.
+echo.
+echo   * SD:\Bootmii is not required to launch neek from USB-Loader GX.
+echo     If you use USB-Loader GX's EmuNAND neek feature, you can have both SNEEK and
+echo     UNEEK at the same time (with or without DI). ModMii will detect SNEEK when
+echo     installing UNEEK and vice versa and ask if you want to overwrite SD files.
+echo     For dual boot you will want only SNEEK files on SD and only UNEEK files on USB.
+echo     The version of SNEEK\UNEEK that will be loaded is based on your EmuNAND
+echo     location in USB-Loader GX's settings: Sneek if on SD, and Uneek if on USB.
 echo.
 
-if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
-echo        * Install the DML WAD using MMM to your
-echo          REAL NAND in order for your Emulated NAND to use DML. DML currently
-echo          requires SNEEK+DI r157 or higher and neek2o has yet to support DML.
-echo.
-:skipDMLmsg
 
 if /i "%SNKS2U%" EQU "Y" goto:quickskip
-echo        * Install the neek2o channel using MMM then launch the channel
-echo          in order to start NEEK. You can also use this channel to return
-echo          to your real NAND.
-echo.
-echo        * If you have BootMii as Boot2, SNEEK can be started immediately
-echo          when the Wii powers on by renaming the BootMiiNeek folder to
-echo          BootMii on the SD Card.
+echo   * Install the neek2o channel using YAWMM then launch the channel in order to
+echo     start NEEK. You can also use this channel to return to your real NAND.
 echo.
 :quickskip
 
 if /i "%SNKS2U%" NEQ "Y" goto:quickskip
-echo        * Access UNEEK/UNEEK+DI by launching switch2uneek from the
-echo          Homebrew Channel. Alternatively, can use MMM to install the
-echo          switch2uneek forwarder channel that ModMii saved to your SD card.
+echo   * Access UNEEK/UNEEK+DI by launching switch2uneek from the
+echo     Homebrew Channel. Alternatively, can use YAWMM to install the
+echo     switch2uneek forwarder channel that ModMii saved to your SD card.
 echo.
 :quickskip
 
-echo        * When using SNEEK+DI or UNEEK+DI, you can access the Game/DI Menu
-echo          by pressing "1" on the WiiMote. To access other settings
-echo          (including Region Options), you must press "+" from within the DI Menu.
+if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
+echo   * Install the DML WAD using Yet Another WAD Manager Mod to your
+echo     REAL NAND in order for your Emulated NAND to use DML. DML currently
+echo     requires SNEEK+DI r157 or higher and neek2o has yet to support DML.
+echo.
+:skipDMLmsg
+
+
+
+if /i "%SNEEKTYPE%" EQU "S" goto:skipDIComments
+if /i "%SNEEKTYPE%" EQU "U" goto:skipDIComments
+
+if /i "%neek2o%" EQU "on" goto:skipDiscexWarning
+echo   * Warning: you have disabled ModMii's neek2o option and have built a DI
+echo     version of the original neek instead. At least 1 game must be saved to
+echo     your usb:/games folder in extracted neek format or DI freezes and
+echo     neek+di will not boot.
+echo.
+:skipDiscexWarning
+
+echo   * To add Games to the Game/DI Menu, you can use ModMii, WiiBackupManager
+echo     or wit.exe to extract Wii Games in neek format to your FAT32 USB Hard Drive.
+if /i "%neek2o%" EQU "on" echo     neek2o is also able to load standard game file formats from USB:\WBFS.
 echo.
 
-echo        * To add Games to the Game/DI Menu, you can use ModMii to extract
-echo          Wii Games to your FAT32 USB External Hard Drive.
-if /i "%neek2o%" EQU "on" echo          neek2o is also able to load games from USB:\WBFS
-if /i "%neek2o%" EQU "on" echo          which means you can also use WiiBackupManager.
+
+echo   * When using SNEEK+DI or UNEEK+DI, you can access the Game/DI Menu
+echo     by pressing "1" on the Wiimote. To access other settings
+echo     (including Region Options), you must press "+" from within the DI Menu.
 echo.
-echo        * ShowMiiWads can be used to decrypt your real Wii's BootMii NAND
-echo          dump (nand.bin) to use as an emulated NAND, and it can add custom
-echo          channels/WADs to an emulated NAND.
-echo          ShowMiiWads is available on ModMii's Download Page 2.
+
+:skipDIComments
+
+echo   * ShowMiiWads can be used to decrypt your real Wii's Bootmii NAND
+echo     dump (nand.bin) to use as an emulated NAND, and it can add custom
+echo     channels/WADs to an emulated NAND. See ModMii's Download Page 2.
 echo.
-echo        * For more SNEEK info, like formatting a USB Hard Drive for SNEEK,
-echo          or installing the HBC to an emulated NAND, visit: tinyurl.com/SNEEK-DI
+echo   * For more SNEEK info, like formatting a USB Hard Drive for SNEEK,
+echo     or installing the HBC to an emulated NAND, visit: tinyurl.com/SNEEK-DI
 echo.
 
 
@@ -22169,7 +22753,13 @@ if /i "%SNEEKSELECT%" EQU "4" goto:miniskip
 if exist "%nandpath%\nandinfo.txt" start notepad "%nandpath%\nandinfo.txt"
 :miniskip
 
+
+
 echo Press any key to return to the Main Menu.
+pause>nul
+echo.
+echo Are you sure^? Make sure you have read or copied these notes^!
+echo Press any key again to return to the Main Menu.
 pause>nul
 
 goto:MENU
@@ -22216,7 +22806,7 @@ if exist Custom.md5 for /f "delims=" %%i in (Custom.md5) do set /a loglines=!log
 :donecounting
 
 ::resize window
-SET /a LINES=%loglines%+25
+SET /a LINES=%loglines%+27
 if %LINES% LEQ 54 set lines=54
 mode con cols=85 lines=%LINES%
 
@@ -22289,23 +22879,42 @@ if /i "%DB%" EQU "C" goto:skipcopytoSDmsg
 echo.
 
 
-if /i "%problematicDLs%" EQU "0" (support\sfk echo -spat \x20 \x20[Green]* %DLTOTAL% file\x28s\x29 downloaded succcessfully) & (goto:noproblems)
+if /i "%problematicDLs%" NEQ "0" goto:problems
+support\sfk echo -spat \x20 \x20[Green]* %DLTOTAL% file\x28s\x29 downloaded succcessfully
+
+if /i "%MENU1%" EQU "W" goto:showme
+if /i "%MENU1%" EQU "H" goto:showme
+if /i "%MENU1%" EQU "U" goto:showme
+if /i "%MENU1%" EQU "SU" goto:showme
+if /i "%MENU1%" EQU "RC" goto:showme
+if /i "%AbstinenceWiz%" EQU "Y" goto:showme
+goto:dontshow
+
+:showme
+support\sfk echo -spat \x20 \x20 [Green] You should now follow your custom generated ModMii guide.
+:dontshow
+goto:noproblems
+
+
+
 
 :problems
 support\sfk echo -spat \x20 \x20[Red]* %problematicDLs% of %DLTOTAL% file\x28s\x29 are Invalid, Missing or were Not Updated properly
 echo.
 echo    * Make sure you have free space here: %DrivesNeedingFreeSpace%
 echo      Check internet connection (try disabling firewall/bypasing proxy if applicable)
-echo      It is recommended you select "R" to repeat download.
+support\sfk echo -spat \x20 \x20 [Red] Enter \x22R\x22 to repeat download before proceeding with your ModMii guide.
 goto:skipcopytoSDmsg
 
 :noproblems
 if /i "%USBCONFIG%" EQU "USB" goto:skipcopytoSDmsg
 echo.
-if /i "%Drive%" EQU "COPY_TO_SD" echo    * Copy the contents of the COPY_TO_SD folder to your SD Card
-if /i "%Drive%" NEQ "COPY_TO_SD" echo    * Make sure that %DRIVE% is your SD card Drive Letter
+if /i "%Drive%" EQU "COPY_TO_SD" echo    * Copy the contents of the COPY_TO_SD folder to your SD Card.
+if /i "%Drive%" NEQ "COPY_TO_SD" echo    * Make sure that %DRIVE% is your SD card Drive Letter.
 if /i "%Drive%" NEQ "COPY_TO_SD" echo    * If %DRIVE% is not your SD card Drive Letter,
-if /i "%Drive%" NEQ "COPY_TO_SD" echo      copy the contents of the %DRIVE% folder to your SD card
+if /i "%Drive%" NEQ "COPY_TO_SD" echo      copy the contents of the %DRIVE% folder to your SD card.
+echo    * After modding a Wii most homebrew (except Bootmii ^& Sneek) also work if copied
+echo      to a FAT32 Hard Drive and plugged into USB Port0 (the one nearest the edge).
 :skipcopytoSDmsg
 
 
@@ -22320,13 +22929,6 @@ echo          private folder names.
 
 
 echo.
-echo.
-
-
-
-
-
-
 if exist "%DRIVE%" echo          O = Open File Location (%Drive%)
 
 if /i "%DB%" NEQ "C" goto:miniskip
@@ -23835,204 +24437,222 @@ set category=ios
 goto:downloadstart
 
 
-
 :IOS60P
-set name=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set md5=c45a2bf6d560b2039f900f57cb00e7e1
+set wadname=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set md5=15f400dd6d66712b30fa71e67bb7fd9b
 set md5alt=%md5%
 set ciosslot=60
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
+
 
 
 ::IOS60 installed to a bunch of different SM IOS slots for brick protection
 :IOS11P60
-set name=IOS11v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS11v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS11v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=32f25aaefd0bb4cf53b76c2e984d12f7
+set wadname=IOS11v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=e149420528b3d32652ead31a66d53b66
 set md5alt=%md5%
 set ciosslot=11
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 
 :IOS20P60
-set name=IOS20v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS20v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS20v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=808f1d1f073adc9dc0406ead1d43a318
+set wadname=IOS20v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=70d1074ec2b2e2e83c63fbcbe433894f
 set md5alt=%md5%
 set ciosslot=20
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 
 :IOS30P60
-set name=IOS30v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS30v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS30v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=a68689125e3172faa04c00ef42a593b1
+set wadname=IOS30v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=a5e501ed22f3efa46422645de58a9441
 set md5alt=%md5%
 set ciosslot=30
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 :IOS40P60
-set name=IOS40v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS40v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS40v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=dd8fe0f58a019f45c792b92837125cd8
+set wadname=IOS40v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=52615f08b2c8d42e8fc77ac75d7bbb41
 set md5alt=%md5%
 set ciosslot=40
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 :IOS70K
-set name=IOS70v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS70v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS70v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=2ddf180d37b35f1e9abb6982fe55f587
+set wadname=IOS70v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=928e2701b1a1916bfc85f5a89779f154
 set md5alt=%md5%
 set ciosslot=70
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 :IOS80K
-set name=IOS80v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS80v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS80v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=23f3008dca379b5db2044bf09ec03276
+set wadname=IOS80v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=5fb9c4364b3d01d3438ab398dbac3e0d
 set md5alt=%md5%
 set ciosslot=80
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 :IOS50P
-set name=IOS50v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS50v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS50v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=3b1f2a76fd800ddb777744a47086844b
+set wadname=IOS50v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=ab0c22edae3ee36baf0e537c45215b65
 set md5alt=%md5%
 set ciosslot=50
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
 :IOS52P
-set name=IOS52v16174(IOS60v6174[FS-ES-NP-VP-DIP])
+set name=IOS52v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
 set code1=00000001
 set code2=0000003C
 set version=6174
-set wadname=IOS52v16174(IOS60v6174[FS-ES-NP-VP-DIP]).wad
-set md5=62fb16adb16b6b3823ef99746caaef03
+set wadname=IOS52v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24]).wad
+set md5=80e7aa73849c5079218cfeaa8c5b9f8d
 set md5alt=%md5%
 set ciosslot=52
-set ciosversion=16174
+set ciosversion=65535
 set category=patchios
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
 set md5basealt=%md5base%
-set basecios=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
-set diffpath=%basecios%
+set basecios=IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])
+set diffpath=IOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])
 set code2new=0000003C
 set lastbasemodule=0000000e
-set cIOSFamilyName=
+set cIOSFamilyName=ModMii-IOS60
+set cIOSversionNum=6174
+set cIOSsubversion=
 goto:downloadstart
 
 
@@ -24126,14 +24746,22 @@ set code1=00000001
 set code2=00000024
 set version=3351
 set wadname=IOS236v65535(IOS36v3351[FS-ES-NP-VP]).wad
-set md5=06259eb90e6ca115ba67720fc1a1ff80
+set md5=2988673ba949020dc0b725482fea3d40
 set md5alt=%md5%
 set ciosslot=236
 set ciosversion=65535
-set category=patchios
+set category=
 set basewad=IOS36-64-v3351
 set md5base=daa08e17264c523049e395edad5a50fe
 set md5basealt=%md5base%
+set basecios=IOS236v65535(IOS36v3351[FS-ES-NP-VP])
+set cIOSFamilyName=rev 3351
+set diffpath=cIOS236
+set code2new=000000ec
+set lastbasemodule=0000000e
+set cIOSversionNum=
+set cIOSsubversion=
+set code2new=000000ec
 goto:downloadstart
 
 
@@ -24383,10 +25011,10 @@ goto:downloadstart
 
 :URLDownloadDB
 
-:BannerBomb1
+:Bannerbomb1
 set name=Bannerbomb v1 (for 3.0 - 4.1 Wii's)
 set code1=URL
-set code2="expresstek.org/xflak/files/aad1f_v108.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/aad1f_v108.zip"
 set version=bin
 set dlname=aad1f_v108.zip
 set wadname=BB1.zip
@@ -24395,10 +25023,10 @@ set path1=private\wii\title\aktn\
 set filename=content.bin
 goto:downloadstart
 
-:BannerBomb2
+:Bannerbomb2
 set name=Bannerbomb v2 (for 4.2 Wii's)
 set code1=URL
-set code2="expresstek.org/xflak/files/abd6a_v200.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/abd6a_v200.zip"
 set version=bin
 set dlname=abd6a_v200.zip
 set wadname=BB2.zip
@@ -24408,14 +25036,27 @@ set filename=content.bin
 goto:downloadstart
 
 :ARC
-set name=Any Region Changer (1.1b Mod06 Offline)
+set name=Any Region Changer ModMii Edition
 set code1=URL
-set code2=http://tiny.cc/arcmod
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ARCME.zip"
 set version=*
-set dlname=arcmod
-set wadname=ARCmod06_Offline.zip
-set md5=01889b98b95279258201387de1d0a8f7
-set path1=apps\ARCmod06_Offline\
+set dlname="ARCME.zip"
+set wadname=ARCME.zip
+set md5=4ac81e6976b9232cbcfa5019c6135b04
+set path1=apps\ARCME\
+set filename=boot.dol
+goto:downloadstart
+
+
+:KK
+set name=KoreanKii
+set code1=URL
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/KoreanKii_v1.1.zip"
+set version=*
+set dlname="KoreanKii_v1.1.zip"
+set wadname=KoreanKii_v1.1.zip
+set md5=5205ce0a3ba230e27177cfca12ef115e
+set path1=apps\KoreanKii\
 set filename=boot.dol
 goto:downloadstart
 
@@ -24423,7 +25064,7 @@ goto:downloadstart
 :mmm
 set name=Multi-Mod Manager (MMM) v13.4
 set code1=URL
-set code2="expresstek.org/xflak/files/Multi-Mod-Manager_v13.4.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Multi-Mod-Manager_v13.4.zip"
 set version=*
 set dlname="Multi-Mod-Manager_v13.4.zip"
 set wadname=Multi-Mod-Manager_v13.4.zip
@@ -24435,7 +25076,7 @@ goto:downloadstart
 :WiiMod
 set name=WiiMod
 set code1=URL
-set code2="expresstek.org/xflak/files/wiimod_v3_2.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wiimod_v3_2.zip"
 set version=*
 set dlname="wiimod_v3_2.zip"
 set wadname=wiimod_v3_2.zip
@@ -24456,12 +25097,14 @@ set wadname=hackmii_installer_v1.2.zip
 set filename=boot.elf
 set path1=
 set md5=729eebb48f6b562b94a47a3eb0543bf4
+set code3=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/HackMii_Installer_1.2_meta_icon.zip
+set zipname=HackMii_Installer_1.2_meta_icon.zip
 goto:downloadstart
 
 :IOS236Installer
 set name=IOS236 Installer v5 Mod
 set code1=URL
-set code2=expresstek.org/xflak/files/ios236_v5_mod.zip
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ios236_v5_mod.zip"
 set version=*
 set dlname=ios236_v5_mod.zip
 set wadname=ios236_v5_mod.zip
@@ -24472,16 +25115,16 @@ goto:downloadstart
 
 
 :sysCheck
-set category=fullextract
-set name=sysCheck v2.1.0.b19
+::set category=fullextract
+set name=SysCheck HDE
 set code1=URL
-set code2=http://tiny.cc/syscheckb19
+set code2="https://wii.guide/assets/files/SysCheckHDE.zip"
 set version=*
-set dlname=syscheckb19
-set wadname=syscheckb19.zip
+set dlname=SysCheckHDE.zip
+set wadname=SysCheckHDE.zip
 set filename=boot.dol
-set md5=3b53fe8fa9e036b0885a5d1aec153d1a
-set path1=apps\sysCheck\
+set md5=0eae38f5619a3bd961e96cac50bd47cc
+set path1=apps\SysCheckHDE\
 goto:downloadstart
 
 
@@ -24489,7 +25132,7 @@ goto:downloadstart
 set category=fullextract
 set name=Simple IOS Patcher
 set code1=URL
-set code2=http://tiny.cc/simpleiospatcher
+set code2="https://tiny.cc/simpleiospatcher"
 set version=*
 set dlname=simpleiospatcher
 set wadname=sip_v1.14.zip
@@ -24515,7 +25158,7 @@ goto:downloadstart
 set category=fullextract
 set name=Twilight Hack v0.1 Beta1 (for Wii's 3.3 and below)
 set code1=URL
-set code2="http://tiny.cc/twilighthack"
+set code2="https://tiny.cc/twilighthack"
 set version=*
 set dlname=twilighthack
 set wadname=twilight_hack_v0.1_beta1.zip
@@ -24555,7 +25198,7 @@ goto:downloadstart
 set category=fullextract
 set name=Eri HaKawai (USA, PAL and JAP)
 set code1=URL
-set code2="expresstek.org/xflak/files/EriHaKawai-USA+PAL+JAP.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EriHaKawai-USA+PAL+JAP.zip"
 set version=*
 set dlname="EriHaKawai-USA+PAL+JAP.zip"
 set wadname=EriHaKawai-USA+PAL+JAP.zip
@@ -24568,7 +25211,7 @@ goto:downloadstart
 set category=fullextract
 set name=YU-GI-OWNED (USA, PAL and JAP)
 set code1=URL
-set code2="expresstek.org/xflak/files/yu-gi-vah-ALL.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/yu-gi-vah-ALL.zip"
 set version=*
 set dlname="yu-gi-vah-ALL.zip"
 set wadname=yu-gi-vah-ALL.zip
@@ -24583,7 +25226,7 @@ goto:downloadstart
 set name=Smash Stack (USA, PAL, JAP and KOR)
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/Smashstack_AllRegions.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Smashstack_AllRegions.zip"
 set version=*
 set dlname="Smashstack_AllRegions.zip"
 set wadname=Smashstack_AllRegions.zip
@@ -24596,7 +25239,7 @@ goto:downloadstart
 set name=Dop-Mii v13
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/dopmii"
+set code2="https://tiny.cc/dopmii"
 set version=*
 set dlname=dopmii
 set wadname=DOP-Mii_v13.zip
@@ -24609,7 +25252,7 @@ goto:downloadstart
 set name=Locked Apps Folder for HBC (PASS=UDLRAB)
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/LockedApps-Categorii.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/LockedApps-Categorii.zip"
 set version=*
 set dlname=LockedApps-Categorii.zip
 set wadname=LockedApps-Categorii.zip
@@ -24621,9 +25264,9 @@ goto:downloadstart
 :AccioHacks
 set name=Accio Hacks
 set code1=URL
-set code2=http://geckocodes.org/AH.php?dl
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/AccioHacks.zip"
 set version=*
-set dlname="AH.php@dl"
+set dlname="AccioHacks.zip"
 set wadname=AccioHacks.zip
 set filename=boot.dol
 set md5=e321da8d59578313890a50b7a31aff7b
@@ -24634,12 +25277,12 @@ goto:downloadstart
 set category=fullextract
 set name=USB Loader GX
 set code1=URL
-set code2="https://sourceforge.net/projects/usbloadergx/files/Releases/New revisions (3.0+)/USBLoaderGX r1271.7z/download"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/USBLoaderGX_r1272_mod_v5.7z"
 set version=*
-set dlname="download"
-set wadname=USBLoaderGX_r1271.7z
+set dlname=USBLoaderGX_r1272_mod_v5.7z
+set wadname=USBLoaderGX_r1272_mod_v5.7z
 set filename=boot.dol
-set md5=7c364d69d917d61e276c98fe230fd41d
+set md5=d658776df3236e02bc71d776e87698f5
 set path1=apps\usbloader_gx\
 goto:downloadstart
 
@@ -24647,12 +25290,12 @@ goto:downloadstart
 set name=Nintendont
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/nintendont"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Nintendont_6.490.zip"
 set version=*
-set dlname=nintendont
-set wadname=Nintendont_4.431.zip
+set dlname=Nintendont_6.490.zip
+set wadname=Nintendont_6.490.zip
 set filename=boot.dol
-set md5=7c6297e6d7a65626ba5bc1c32f476a70
+set md5=a1c76cd65152e791b4eea510e7afb45a
 set path1=apps\Nintendont\
 goto:downloadstart
 
@@ -24661,7 +25304,7 @@ goto:downloadstart
 set name=MyMenuifyMod
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/mymenuify"
+set code2="https://tiny.cc/mymenuify"
 set version=*
 set dlname=mymenuify
 set wadname=MyMenuifyModv1.6.zip
@@ -24671,7 +25314,7 @@ set path1=apps\MyMenuifyMod\
 goto:downloadstart
 
 :bootmiisd
-set name=BootMii SD Files
+set name=Bootmii SD Files
 set category=fullextract
 set code1=URL
 set code2="http://static.hackmii.com/bootmii_sd_files.zip"
@@ -24679,7 +25322,9 @@ set version=*
 set dlname="bootmii_sd_files.zip"
 set wadname=bootmii_sd_files.zip
 set filename=ppcboot.elf
+::latest md5 in case users already have the latest version of bootmii on SD
 set md5=4b2ac026e3b08a588a340841244f4e98
+set md5alt=cad3fad8e5d20cc41168dbb04bd5cde1
 set path1=bootmii\
 goto:downloadstart
 
@@ -24687,7 +25332,7 @@ goto:downloadstart
 set name=Neogamma Backup Disc Loader
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/neogamma"
+set code2="https://tiny.cc/neogamma"
 set version=*
 set dlname=neogamma
 set wadname=NeoGammaR9beta56.zip
@@ -24699,13 +25344,13 @@ goto:downloadstart
 :yawm
 set name=Yet Another Wad Manager Mod
 set code1=URL
-set code2="http://tiny.cc/yawmm"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/some-yawmm-mod-v1.0.zip"
 set version=*
-set dlname="yawmm"
-set wadname=YAWMM_EN_rev5e.zip
+set dlname="some-yawmm-mod-v1.0.zip"
+set wadname=some-yawmm-mod-v1.0.zip
 set filename=boot.elf
-set md5=0646978c46967a019e5fca7d8d08ac4c
-set path1=apps\YAWMM_EN\
+set md5=703613c07b9a2f61d7b514d252f0b885
+set path1=apps\YAWMM\
 ::special override for yawmm_en, wm_config introduces odd behaviour
 if exist "%Drive%"\WAD\wm_config.txt del "%Drive%"\WAD\wm_config.txt>nul
 goto:downloadstart
@@ -24714,12 +25359,12 @@ goto:downloadstart
 set name=Configurable USB-Loader Mod
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/Cfg_USB_Loader_70_Mod_r65.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Cfg_USB_Loader_70_Mod_r78.11.zip"
 set version=*
-set dlname=Cfg_USB_Loader_70_Mod_r65.zip
-set wadname=Cfg_USB_Loader_70_Mod_r65.zip
+set dlname=Cfg_USB_Loader_70_Mod_r78.11.zip
+set wadname=Cfg_USB_Loader_70_Mod_r78.11.zip
 set filename=boot.dol
-set md5=d1a39c8bebbc074590e1b6aa4493ca25
+set md5=15b825694dc7614f63930e4e90eec7fe
 set path1=apps\usbloader_cfg\
 goto:downloadstart
 
@@ -24728,18 +25373,18 @@ goto:downloadstart
 set name=WiiFlow
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/WiiFlow_v4.2.1.zip"
+set code2="https://github.com/Fledge68/WiiFlow_Lite/releases/download/5.4.8/wiiflow_v5.4.8.zip"
 set version=*
-set dlname=WiiFlow_v4.2.1.zip
-set wadname=WiiFlow_v4.2.1.zip
+set dlname=wiiflow_v5.4.8.zip
+set wadname=wiiflow_v5.4.8.zip
 set filename=boot.dol
-set md5=06c2c97254dc7adb0547530fc400826f
-set path1=apps\WiiFlow\
+set md5=6c97f3653a351d1d7a8b6d2d2be05dda
+set path1=apps\wiiflow\
 goto:downloadstart
 
 
 :CheatCodes
-set name=%cheatregion% Region Cheat Codes: txtcodes from geckocodes.org
+set name=%cheatregion% Region Cheat Codes: txtcodes from codes.rc24.xyz
 set category=CHEATS
 goto:downloadstart
 
@@ -24748,7 +25393,7 @@ goto:downloadstart
 set name=Wii Backup Manager v0.4.5 build 78
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/WiiBackupManager"
+set code2="https://tiny.cc/WiiBackupManager"
 set version=*
 set dlname=WiiBackupManager
 set wadname=WiiBackupManager.zip
@@ -24761,12 +25406,12 @@ goto:downloadstart
 :USBX
 set name=USB-Loader Forwarder Channel v12
 set code1=ZIP
-set code2="expresstek.org/xflak/files/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.zip"
 set version=*
-set dlname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
-set wadname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.zip
-set filename=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL.wad
-set md5=19edb88943527102dd5844e8c2b78b25
+set dlname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.zip
+set wadname=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.zip
+set filename=USBLoader(s)-ahbprot58-SD-USB-v12-IDCL-alt.wad
+set md5=355f070a05b5f8fa6008d5f0cb1824d0
 set md5alt=%md5%
 set category=fullextract
 set path1=WAD\
@@ -24776,7 +25421,7 @@ goto:downloadstart
 :FLOWF
 set name=WiiFlow Forwarder Channel\dol
 set code1=ZIP
-set code2="expresstek.org/xflak/files/WiiFlow_Forwarder_wad_dol_v14b.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/WiiFlow_Forwarder_wad_dol_v14b.zip"
 set version=*
 set dlname=WiiFlow_Forwarder_wad_dol_v14b.zip
 set wadname=WiiFlow_Forwarder_wad_dol_v14b.zip
@@ -24791,7 +25436,7 @@ goto:downloadstart
 :S2U
 set name=Switch2Uneek
 set code1=ZIP
-set code2="expresstek.org/xflak/files/switch2uneek_ModMiiBundle_v12.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/switch2uneek_ModMiiBundle_v12.zip"
 set version=*
 set dlname=switch2uneek_ModMiiBundle_v12.zip
 set wadname=switch2uneek_ModMiiBundle_v12.zip
@@ -24827,7 +25472,7 @@ goto:downloadstart
 :PLC
 set name=Post Loader Forwarder Channel
 set code1=ZIP
-set code2="expresstek.org/xflak/files/plforwarder.4.wad"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/plforwarder.4.wad"
 set version=*
 set dlname="plforwarder.4.wad"
 set wadname=plforwarder.4.wad
@@ -24843,7 +25488,7 @@ goto:downloadstart
 set name=FAT32 GUI Formatter
 set category=fullextract
 set code1=URL
-set code2="http://www.ridgecrop.demon.co.uk/guiformat.exe"
+set code2="http://ridgecrop.co.uk/guiformat.exe"
 set version=*
 set dlname=guiformat.exe
 set wadname=FAT32_GUI_Formatter.exe
@@ -24857,7 +25502,7 @@ goto:downloadstart
 set name=ShowMiiWads
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/showmiiwads"
+set code2="https://tiny.cc/showmiiwads"
 set version=*
 set dlname=showmiiwads
 set wadname=ShowMiiWads 1.4.rar
@@ -24870,7 +25515,7 @@ goto:downloadstart
 set name=Customize Mii
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/customizemii"
+set code2="https://tiny.cc/customizemii"
 set version=*
 set dlname=customizemii
 set wadname=CustomizeMii 3.11.rar
@@ -24883,7 +25528,7 @@ goto:downloadstart
 set name=Wii Game Shortcut Creator
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/WiiGSC-Unpacked-1.06b.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/WiiGSC-Unpacked-1.06b.zip"
 set version=*
 set dlname=WiiGSC-Unpacked-1.06b.zip
 set wadname=WiiGSC-Unpacked-1.06b.zip
@@ -24897,7 +25542,7 @@ goto:downloadstart
 set name=WiiMC - Media Player
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/wiimc"
+set code2="https://tiny.cc/wiimc"
 set version=*
 set dlname="wiimc"
 set wadname=WiiMC.1.3.4.New.Install.zip
@@ -24910,7 +25555,7 @@ goto:downloadstart
 set name=FCEUGX - NES Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/fceugx"
+set code2="https://tiny.cc/fceugx"
 set version=*
 set dlname="fceugx"
 set wadname=FCE.Ultra.GX.3.3.4.zip
@@ -24924,7 +25569,7 @@ goto:downloadstart
 set name=SNES9xGX - SNES Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/snes9xgx"
+set code2="https://tiny.cc/snes9xgx"
 set version=*
 set dlname="snes9xgx"
 set wadname=Snes9x.GX.4.3.2.zip
@@ -24937,7 +25582,7 @@ goto:downloadstart
 set name=Visual Boy Advance GX - GB/GBA Emulator for the Wii
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/visualboy"
+set code2="https://tiny.cc/visualboy"
 set version=*
 set dlname="visualboy"
 set wadname=VisualBoyAdvanceGX.2.2.8.zip
@@ -24951,26 +25596,26 @@ goto:downloadstart
 set name=SaveGame Manager GX
 ::set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/savegame-manager-gx_R127.zip"
+set code2="https://static.wiidatabase.de/SaveGame-Manager-GX-Beta.zip"
 set version=*
-set dlname="savegame-manager-gx_R127.zip"
-set wadname=savegame-manager-gx_R127.zip
+set dlname="SaveGame-Manager-GX-Beta.zip"
+set wadname=SaveGame-Manager-GX-Beta.zip
 set filename=boot.dol
-set md5=4435b05aa39761a32ac68765ca74304e
+set md5=6405236e186ac5ed27683830124333be
 set path1=apps\SaveGameManagerGX\
 goto:downloadstart
 
 
 :WII64
-set name=Wii64 beta1.1 (N64 Emulator)
+set name=Wii64 beta1.2 (N64 Emulator)
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/wii64-beta1.1.zip"
+set code2="https://github.com/FIX94/Wii64/releases/download/20171121/wii64_beta_1.2-20171121.zip"
 set version=*
-set dlname="wii64-beta1.1.zip"
-set wadname=wii64-beta1.1.zip
+set dlname="wii64_beta_1.2-20171121.zip"
+set wadname=wii64_beta_1.2-20171121.zip
 set filename=boot.dol
-set md5=630dbc8b8a5be6527b76d49b65c47f23
+set md5=0664bbbc48969a87801528d0f28c611a
 set path1=apps\wii64\
 goto:downloadstart
 
@@ -24979,7 +25624,7 @@ goto:downloadstart
 set name=Postloader
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/postloader.4.7.4.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/postloader.4.7.4.zip"
 set version=*
 set dlname="postloader.4.7.4.zip"
 set wadname=postloader.4.7.4.zip
@@ -24993,7 +25638,7 @@ goto:downloadstart
 set name=WiiXplorer
 ::set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/WiiXplorer_R259.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/WiiXplorer_R259.zip"
 set version=*
 set dlname="WiiXplorer_R259.zip"
 set wadname=WiiXplorer_R259.zip
@@ -25004,30 +25649,16 @@ goto:downloadstart
 
 
 :HBB
-set name=Homebrew Browser v0.3.9c
+set name=Homebrew Browser v0.3.9e
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/homebrew_browser_v0.3.9c.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/homebrew_browser_v0.3.9e.zip"
 set version=*
-set dlname="homebrew_browser_v0.3.9c.zip"
-set wadname=homebrew_browser_v0.3.9c.zip
+set dlname="homebrew_browser_v0.3.9e.zip"
+set wadname=homebrew_browser_v0.3.9e.zip
 set filename=boot.dol
-set md5=334a432365d4054bcf972c27c54b8eac
+set md5=207f1f67470a3c55c6a12b98246fa309
 set path1=apps\homebrew_browser\
-goto:downloadstart
-
-
-:WII64
-set name=Wii64 beta1.1 (N64 Emulator)
-set category=fullextract
-set code1=URL
-set code2="expresstek.org/xflak/files/wii64-beta1.1.zip"
-set version=*
-set dlname="wii64-beta1.1.zip"
-set wadname=wii64-beta1.1.zip
-set filename=boot.dol
-set md5=630dbc8b8a5be6527b76d49b65c47f23
-set path1=apps\wii64\
 goto:downloadstart
 
 
@@ -25035,7 +25666,7 @@ goto:downloadstart
 set name=Casper
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/casperpune"
+set code2="https://tiny.cc/casperpune"
 set version=*
 set dlname="casperpune"
 set wadname=casper_0.3.elf.tar.gz
@@ -25049,7 +25680,7 @@ goto:downloadstart
 set name=Wilbrand
 set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/Wilbrand.exe"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Wilbrand.exe"
 set version=*
 set dlname="Wilbrand.exe"
 set wadname=Wilbrand.exe
@@ -25063,7 +25694,7 @@ goto:downloadstart
 set name=WiiSX Beta 2.1.1 (Playstation 1 Emulator)
 set category=fullextract
 set code1=URL
-set code2="http://tiny.cc/wiisx"
+set code2="https://tiny.cc/wiisx"
 set version=*
 set dlname="wiisx"
 set wadname=WiiSX-beta2.1.1[a].zip
@@ -25074,14 +25705,16 @@ goto:downloadstart
 
 
 :Priiloader
-set name=Priiloader v0.7 (236 LULZ Mod)
+set name=Priiloader v0.9
+set category=fullextract
 set code1=URL
-set code2="expresstek.org/xflak/files/priiloader_MOD_IOS236_r142_LULZ.zip"
+::set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Priiloader_v0_9.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Priiloader_v0_9_plus_launcher.zip"
 set version=*
-set dlname=priiloader_MOD_IOS236_r142_LULZ.zip
-set wadname=priiloader_MOD_IOS236_r142_LULZ.zip
+set dlname=Priiloader_v0_9_plus_launcher.zip
+set wadname=Priiloader_v0_9_plus_launcher.zip
 set filename=boot.dol
-set md5=f3904649eb2677ffd50d8a55971826d9
+set md5=0958180e41f44ba84528dad18d2e38ee
 set path1=apps\Priiloader\
 goto:downloadstart
 
@@ -25089,7 +25722,7 @@ goto:downloadstart
 :PriiHacks
 set name=Priiloader Hacks
 set code1=URL
-set code2="expresstek.org/xflak/files/PriiloaderHacks_2.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/PriiloaderHacks_2.zip"
 set version=*
 set dlname="PriiloaderHacks_2.zip"
 set wadname=PriiloaderHacks_2.zip
@@ -25176,7 +25809,8 @@ set code2new=00000100
 set lastbasemodule=
 set cIOSFamilyName=
 set cIOSversionNum=
-set URL=http://crediar.no-ip.com/NMMv0.2a-cred.rar
+::set URL=http://crediar.no-ip.com/NMMv0.2a-cred.rar
+set URL=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/NMMv0.2a-cred.rar
 set dlname=NMMv0.2a-cred.rar
 goto:downloadstart
 
@@ -26021,12 +26655,12 @@ goto:downloadstart
 
 ::d2x cIOSs
 
-:cIOS249[37]-d2x-v8-final
-set name=cIOS249[37]-d2x-v8-final
-set wadname=cIOS249[37]-d2x-v8-final
+:cIOS249[37]-d2x-v10-beta52
+set name=cIOS249[37]-d2x-v10-beta52
+set wadname=cIOS249[37]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=26b2ab4b94378b92ee2a4802f80db5d0
+set ciosversion=65535
+set md5=d4e4d4b6c3d5a74dcc4f0d7bb7b3127b
 set md5alt=%md5%
 set basewad=IOS37-64-v5662
 set md5base=bdeb8d02ba1f3de7b430fbe12560a3eb
@@ -26034,7 +26668,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000025
 set version=5662
-set basecios=cIOS249[37]-d2x-v8-final
+set basecios=cIOS249[37]-d2x-v10-beta52
 set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26042,12 +26676,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[37]-d2x-v8-final
-set name=cIOS250[37]-d2x-v8-final
-set wadname=cIOS250[37]-d2x-v8-final
+:cIOS250[37]-d2x-v10-beta52
+set name=cIOS250[37]-d2x-v10-beta52
+set wadname=cIOS250[37]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=ae84bfa60623907bb8e427b2152bf644
+set ciosversion=65535
+set md5=53c8686d98dadb3d798c9de1b7029d59
 set md5alt=%md5%
 set basewad=IOS37-64-v5662
 set md5base=bdeb8d02ba1f3de7b430fbe12560a3eb
@@ -26055,7 +26689,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000025
 set version=5662
-set basecios=cIOS249[37]-d2x-v8-final
+set basecios=cIOS249[37]-d2x-v10-beta52
 set diffpath=cIOS249[37]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26063,12 +26697,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS249[38]-d2x-v8-final
-set name=cIOS249[38]-d2x-v8-final
-set wadname=cIOS249[38]-d2x-v8-final
+:cIOS249[38]-d2x-v10-beta52
+set name=cIOS249[38]-d2x-v10-beta52
+set wadname=cIOS249[38]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=3f6fb796a0f7353b2abdec94d54c848f
+set ciosversion=65535
+set md5=ea52201754ccd62b55a0aa0d1f6c2073
 set md5alt=%md5%
 set basewad=IOS38-64-v4123
 set md5base=fb3db1afa0685a5778cd83b148f74723
@@ -26076,7 +26710,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000026
 set version=4123
-set basecios=cIOS249[38]-d2x-v8-final
+set basecios=cIOS249[38]-d2x-v10-beta52
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26084,12 +26718,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[38]-d2x-v8-final
-set name=cIOS250[38]-d2x-v8-final
-set wadname=cIOS250[38]-d2x-v8-final
+:cIOS250[38]-d2x-v10-beta52
+set name=cIOS250[38]-d2x-v10-beta52
+set wadname=cIOS250[38]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=828434bf32e8955604fd97f279679ea4
+set ciosversion=65535
+set md5=d10cd79885b9c2e5ae08c2dc269966b8
 set md5alt=%md5%
 set basewad=IOS38-64-v4123
 set md5base=fb3db1afa0685a5778cd83b148f74723
@@ -26097,7 +26731,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000026
 set version=4123
-set basecios=cIOS249[38]-d2x-v8-final
+set basecios=cIOS249[38]-d2x-v10-beta52
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26106,12 +26740,49 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[53]-d2x-v8-final
-set name=cIOS249[53]-d2x-v8-final
-set wadname=cIOS249[53]-d2x-v8-final
+
+:cIOS251[38]-d2x-v10-beta52
+set name=cIOS251[38]-d2x-v10-beta52
+set wadname=cIOS251[38]-d2x-v10-beta52
+set ciosslot=251
+set ciosversion=65535
+set md5=1e4ec01bf9cb21b11a6326470174c97b
+set md5alt=%md5%
+set basewad=IOS38-64-v4123
+set md5base=fb3db1afa0685a5778cd83b148f74723
+set md5basealt=%md5base%
+set code1=00000001
+set code2=00000026
+set version=4123
+set basecios=cIOS249[38]-d2x-v10-beta52
+set diffpath=cIOS249[38]-v21
+set code2new=000000f9
+set lastbasemodule=0000000e
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
+
+::alt md5 to support legacy beta zips where 251 wasn't an explicit option
+if /i "%d2x-beta-rev%" EQU "10-beta53-alt" (set md5=e0d326690469a98eff688ddc29535e3f) & (goto:downloadstart)
+if %ciosversion% EQU 21008 set md5=0e97724eda07eabbb8fd895a0b15a0a3
+if %ciosversion% EQU 21007 set md5=223189e5caa37083ab5f84978179da12
+if %ciosversion% EQU 21006 set md5=7c5c5dd2e287d59effa104e99c65a120
+if %ciosversion% EQU 21005 set md5=1b4714ac76888fa03bc4742619c27d43
+if %ciosversion% EQU 21004 set md5=4aae2dffe4b6dd16391022e07c62dc62
+if %ciosversion% EQU 21003 set md5=04aa3d0ef1a9cd99654dd3c7930a7fd2
+if %ciosversion% EQU 21002 set md5=bb81468f1424d382226ef9ee1ac6a6ea
+if %ciosversion% EQU 21001 set md5=daf96f6200e6e677aba9f9cc78fb96e3
+
+if /i "%d2x-beta-rev%" NEQ "10-beta52" goto:downloadstart
+if %ciosversion% EQU 21010 set md5=6080b8f39e54e12514d13cd948acc3a0
+goto:downloadstart
+
+
+:cIOS249[53]-d2x-v10-beta52
+set name=cIOS249[53]-d2x-v10-beta52
+set wadname=cIOS249[53]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=45cacba5c6ec4354fdfc1897e181d0a9
+set ciosversion=65535
+set md5=cac557af91c741257405f7c2700fb4af
 set md5alt=%md5%
 set basewad=IOS53-64-v5662
 set md5base=ce7a5174a863488655f9c97b59e1b380
@@ -26119,7 +26790,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000035
 set version=5662
-set basecios=cIOS249[53]-d2x-v8-final
+set basecios=cIOS249[53]-d2x-v10-beta52
 set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26127,12 +26798,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[53]-d2x-v8-final
-set name=cIOS250[53]-d2x-v8-final
-set wadname=cIOS250[53]-d2x-v8-final
+:cIOS250[53]-d2x-v10-beta52
+set name=cIOS250[53]-d2x-v10-beta52
+set wadname=cIOS250[53]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=82bae3f38f80fb75283ea8b3f9f0dcf3
+set ciosversion=65535
+set md5=03aadcffc65a3c21e546daf8f2245fce
 set md5alt=%md5%
 set basewad=IOS53-64-v5662
 set md5base=ce7a5174a863488655f9c97b59e1b380
@@ -26140,7 +26811,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000035
 set version=5662
-set basecios=cIOS249[53]-d2x-v8-final
+set basecios=cIOS249[53]-d2x-v10-beta52
 set diffpath=cIOS249[53]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26149,12 +26820,12 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[55]-d2x-v8-final
-set name=cIOS249[55]-d2x-v8-final
-set wadname=cIOS249[55]-d2x-v8-final
+:cIOS249[55]-d2x-v10-beta52
+set name=cIOS249[55]-d2x-v10-beta52
+set wadname=cIOS249[55]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=6b89794840db07268969e42eadff65d3
+set ciosversion=65535
+set md5=e49165b5b4bcbda801865b29e044f5e9
 set md5alt=%md5%
 set basewad=IOS55-64-v5662
 set md5base=cf19171ee90455917e5da3ca56c52612
@@ -26162,7 +26833,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000037
 set version=5662
-set basecios=cIOS249[55]-d2x-v8-final
+set basecios=cIOS249[55]-d2x-v10-beta52
 set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26170,12 +26841,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[55]-d2x-v8-final
-set name=cIOS250[55]-d2x-v8-final
-set wadname=cIOS250[55]-d2x-v8-final
+:cIOS250[55]-d2x-v10-beta52
+set name=cIOS250[55]-d2x-v10-beta52
+set wadname=cIOS250[55]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=d8e2af0dc66b304e4a91ef02931681c1
+set ciosversion=65535
+set md5=353fd51171233783846e9a7e248f9e82
 set md5alt=%md5%
 set basewad=IOS55-64-v5662
 set md5base=cf19171ee90455917e5da3ca56c52612
@@ -26183,7 +26854,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000037
 set version=5662
-set basecios=cIOS249[55]-d2x-v8-final
+set basecios=cIOS249[55]-d2x-v10-beta52
 set diffpath=cIOS249[55]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26192,12 +26863,12 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[56]-d2x-v8-final
-set name=cIOS249[56]-d2x-v8-final
-set wadname=cIOS249[56]-d2x-v8-final
+:cIOS249[56]-d2x-v10-beta52
+set name=cIOS249[56]-d2x-v10-beta52
+set wadname=cIOS249[56]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=15b4f42b7c174bc59dde005d6308174b
+set ciosversion=65535
+set md5=4a0b4133156bffec27a54b015436ce9b
 set md5alt=%md5%
 set basewad=IOS56-64-v5661
 set md5base=726d464aa08fee191e76119ab0e0dc00
@@ -26205,7 +26876,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000038
 set version=5661
-set basecios=cIOS249[56]-d2x-v8-final
+set basecios=cIOS249[56]-d2x-v10-beta52
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26213,12 +26884,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[56]-d2x-v8-final
-set name=cIOS250[56]-d2x-v8-final
-set wadname=cIOS250[56]-d2x-v8-final
+:cIOS250[56]-d2x-v10-beta52
+set name=cIOS250[56]-d2x-v10-beta52
+set wadname=cIOS250[56]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=7768708751021d1726c0776b805e3a6f
+set ciosversion=65535
+set md5=64ad166c6326f1ca0a5aae1ce2230bdb
 set md5alt=%md5%
 set basewad=IOS56-64-v5661
 set md5base=726d464aa08fee191e76119ab0e0dc00
@@ -26226,7 +26897,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000038
 set version=5661
-set basecios=cIOS249[56]-d2x-v8-final
+set basecios=cIOS249[56]-d2x-v10-beta52
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26234,33 +26905,13 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS249[57]-d2x-v8-final
-set name=cIOS249[57]-d2x-v8-final
-set wadname=cIOS249[57]-d2x-v8-final
-set ciosslot=249
-set ciosversion=21008
-set md5=7acd515c425b45172f909c2c8d95ff40
-set md5alt=%md5%
-set basewad=IOS57-64-v5918
-set md5base=85e8101949d48a646448bde93640cdef
-set md5basealt=%md5base%
-set code1=00000001
-set code2=00000039
-set version=5918
-set basecios=cIOS249[57]-d2x-v8-final
-set diffpath=cIOS249[57]-v21
-set code2new=000000f9
-set lastbasemodule=00000012
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
-goto:downloadstart
 
-:cIOS250[57]-d2x-v8-final
-set name=cIOS250[57]-d2x-v8-final
-set wadname=cIOS250[57]-d2x-v8-final
-set ciosslot=250
-set ciosversion=21008
-set md5=7f3d117827fcd955f5675d895ae2a962
+:cIOS249[57]-d2x-v10-beta52
+set name=cIOS249[57]-d2x-v10-beta52
+set wadname=cIOS249[57]-d2x-v10-beta52
+set ciosslot=249
+set ciosversion=65535
+set md5=6778e4482181f8f05679135f6c77d841
 set md5alt=%md5%
 set basewad=IOS57-64-v5918
 set md5base=85e8101949d48a646448bde93640cdef
@@ -26268,7 +26919,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000039
 set version=5918
-set basecios=cIOS249[57]-d2x-v8-final
+set basecios=cIOS249[57]-d2x-v10-beta52
 set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
@@ -26277,42 +26928,21 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[58]-d2x-v8-final
-set name=cIOS249[58]-d2x-v8-final
-set wadname=cIOS249[58]-d2x-v8-final
-set ciosslot=249
-set ciosversion=21008
-set md5=ff2a70cb57f8e87298748b78fb28a11c
-set md5alt=%md5%
-set basewad=IOS58-64-v6175
-set md5base=791907a4993bf018cb52bf8f963cff92
-set md5basealt=%md5base%
-set code1=00000001
-set code2=0000003a
-set version=6175
-set basecios=cIOS249[58]-d2x-v8-final
-set diffpath=cIOS249[58]-v21
-set code2new=000000f9
-set lastbasemodule=00000012
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
-goto:downloadstart
-
-:cIOS250[58]-d2x-v8-final
-set name=cIOS250[58]-d2x-v8-final
-set wadname=cIOS250[58]-d2x-v8-final
+:cIOS250[57]-d2x-v10-beta52
+set name=cIOS250[57]-d2x-v10-beta52
+set wadname=cIOS250[57]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=6388a7fb31a40c13ac8e4eff5b1e25a5
+set ciosversion=65535
+set md5=849e8745d6f31783cef7f1fa47adc150
 set md5alt=%md5%
-set basewad=IOS58-64-v6175
-set md5base=791907a4993bf018cb52bf8f963cff92
+set basewad=IOS57-64-v5918
+set md5base=85e8101949d48a646448bde93640cdef
 set md5basealt=%md5base%
 set code1=00000001
-set code2=0000003a
-set version=6175
-set basecios=cIOS249[58]-d2x-v8-final
-set diffpath=cIOS249[58]-v21
+set code2=00000039
+set version=5918
+set basecios=cIOS249[57]-d2x-v10-beta52
+set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
@@ -26320,12 +26950,55 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[60]-d2x-v8-final
-set name=cIOS249[60]-d2x-v8-final
-set wadname=cIOS249[60]-d2x-v8-final
+:cIOS249[58]-d2x-v10-beta52
+set name=cIOS249[58]-d2x-v10-beta52
+set wadname=cIOS249[58]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=5b6e7d60e43de908286255c8562c8705
+set ciosversion=65535
+set md5=ad8d13459a56555339d7446a6c50876c
+set md5alt=%md5%
+set basewad=IOS58-64-v6175
+set md5base=791907a4993bf018cb52bf8f963cff92
+set md5basealt=%md5base%
+set code1=00000001
+set code2=0000003a
+set version=6175
+set basecios=cIOS249[58]-d2x-v10-beta52
+set diffpath=cIOS249[58]-v21
+set code2new=000000f9
+set lastbasemodule=00000012
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
+goto:downloadstart
+
+:cIOS250[58]-d2x-v10-beta52
+set name=cIOS250[58]-d2x-v10-beta52
+set wadname=cIOS250[58]-d2x-v10-beta52
+set ciosslot=250
+set ciosversion=65535
+set md5=776fb2a0c4dd14a83fbf14bc20745da4
+set md5alt=%md5%
+set basewad=IOS58-64-v6175
+set md5base=791907a4993bf018cb52bf8f963cff92
+set md5basealt=%md5base%
+set code1=00000001
+set code2=0000003a
+set version=6175
+set basecios=cIOS249[58]-d2x-v10-beta52
+set diffpath=cIOS249[58]-v21
+set code2new=000000f9
+set lastbasemodule=00000012
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
+goto:downloadstart
+
+
+:cIOS249[60]-d2x-v10-beta52
+set name=cIOS249[60]-d2x-v10-beta52
+set wadname=cIOS249[60]-d2x-v10-beta52
+set ciosslot=249
+set ciosversion=65535
+set md5=75565079269ef845128904522b168f62
 set md5alt=%md5%
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
@@ -26333,7 +27006,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003c
 set version=6174
-set basecios=cIOS249[60]-d2x-v8-final
+set basecios=cIOS249[60]-d2x-v10-beta52
 set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26341,12 +27014,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[60]-d2x-v8-final
-set name=cIOS250[60]-d2x-v8-final
-set wadname=cIOS250[60]-d2x-v8-final
+:cIOS250[60]-d2x-v10-beta52
+set name=cIOS250[60]-d2x-v10-beta52
+set wadname=cIOS250[60]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=54cdceddde554a2a8ca4147cda903cdf
+set ciosversion=65535
+set md5=39045f4886abb4491b7d2abaa5ec2ff6
 set md5alt=%md5%
 set basewad=IOS60-64-v6174
 set md5base=a8cfd7a77016227203639713db5ac34e
@@ -26354,7 +27027,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=0000003c
 set version=6174
-set basecios=cIOS249[60]-d2x-v8-final
+set basecios=cIOS249[60]-d2x-v10-beta52
 set diffpath=cIOS249[60]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26363,12 +27036,12 @@ if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
 
-:cIOS249[70]-d2x-v8-final
-set name=cIOS249[70]-d2x-v8-final
-set wadname=cIOS249[70]-d2x-v8-final
+:cIOS249[70]-d2x-v10-beta52
+set name=cIOS249[70]-d2x-v10-beta52
+set wadname=cIOS249[70]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=3feb0755ca2ddb4b13e68eaadf990959
+set ciosversion=65535
+set md5=1f2304d80b88dac7a5b5e13e7664a699
 set md5alt=%md5%
 set basewad=IOS70-64-v6687
 set md5base=c38ff50344c00e17b7fe58c05d35a91c
@@ -26376,7 +27049,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000046
 set version=6687
-set basecios=cIOS249[70]-d2x-v8-final
+set basecios=cIOS249[70]-d2x-v10-beta52
 set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26384,12 +27057,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[70]-d2x-v8-final
-set name=cIOS250[70]-d2x-v8-final
-set wadname=cIOS250[70]-d2x-v8-final
+:cIOS250[70]-d2x-v10-beta52
+set name=cIOS250[70]-d2x-v10-beta52
+set wadname=cIOS250[70]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=f51402e9d65c522bcb248d16dbc5c1ed
+set ciosversion=65535
+set md5=797de0bb1286eb7a4a50f918af279d11
 set md5alt=%md5%
 set basewad=IOS70-64-v6687
 set md5base=c38ff50344c00e17b7fe58c05d35a91c
@@ -26397,7 +27070,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000046
 set version=6687
-set basecios=cIOS249[70]-d2x-v8-final
+set basecios=cIOS249[70]-d2x-v10-beta52
 set diffpath=cIOS249[70]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26405,12 +27078,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS249[80]-d2x-v8-final
-set name=cIOS249[80]-d2x-v8-final
-set wadname=cIOS249[80]-d2x-v8-final
+:cIOS249[80]-d2x-v10-beta52
+set name=cIOS249[80]-d2x-v10-beta52
+set wadname=cIOS249[80]-d2x-v10-beta52
 set ciosslot=249
-set ciosversion=21008
-set md5=04d83f1ae06e6f078a1ad62c8980ae14
+set ciosversion=65535
+set md5=27c18e644f87e9a3c09a51784c193df0
 set md5alt=%md5%
 set basewad=IOS80-64-v6943
 set md5base=b6741d50aef2fde557d4e16901cf6346
@@ -26418,7 +27091,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000050
 set version=6943
-set basecios=cIOS249[80]-d2x-v8-final
+set basecios=cIOS249[80]-d2x-v10-beta52
 set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -26426,12 +27099,12 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:downloadstart
 
-:cIOS250[80]-d2x-v8-final
-set name=cIOS250[80]-d2x-v8-final
-set wadname=cIOS250[80]-d2x-v8-final
+:cIOS250[80]-d2x-v10-beta52
+set name=cIOS250[80]-d2x-v10-beta52
+set wadname=cIOS250[80]-d2x-v10-beta52
 set ciosslot=250
-set ciosversion=21008
-set md5=84fbd1f37ea17585e41cd3d1fcf4fee2
+set ciosversion=65535
+set md5=3e6d3951a5338d5264ad22a434032ba0
 set md5alt=%md5%
 set basewad=IOS80-64-v6943
 set md5base=b6741d50aef2fde557d4e16901cf6346
@@ -26439,7 +27112,7 @@ set md5basealt=%md5base%
 set code1=00000001
 set code2=00000050
 set version=6943
-set basecios=cIOS249[80]-d2x-v8-final
+set basecios=cIOS249[80]-d2x-v10-beta52
 set diffpath=cIOS249[80]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
@@ -27694,176 +28367,199 @@ set category=SMTHEME
 goto:downloadstart
 
 
-::--------------------------------------Custom Guide (for DL Wizard only)-------------------------------------
-
-:spoileropeningtag
-support\sfk echo -spat \x3cdiv style=\x22margin: 5px 10px 10px;\x22\x3e>>"%Drive%"\%guidename%
-support\sfk echo -spat \x3cdiv class=\x22smallfont\x22 style=\x22margin-bottom: 2px;\x22\x3e\x3cinput value=\x22%spoilername%\x22 style=\x22margin: 0px; padding: 0px; width: >>"%Drive%"\%guidename% 
-support\sfk echo -spat 200px; font-size: 11px;\x22 onclick=\x22if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != >>"%Drive%"\%guidename% 
-support\sfk echo -spat '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; >>"%Drive%"\%guidename% 
-support\sfk echo -spat this.value = '%spoilername%'; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = >>"%Drive%"\%guidename% 
-support\sfk echo -spat 'none'; this.innerText = ''; this.value = '%spoilername%'; }\x22 type=\x22button\x22\x3e>>"%Drive%"\%guidename%
-support\sfk echo -spat \x3c/div\x3e>>"%Drive%"\%guidename%
-support\sfk echo -spat \x3cdiv class=\x22alt2\x22 style=\x22border: 0px inset ; margin: 0px; padding: 2px;\x22\x3e>>"%Drive%"\%guidename%
-support\sfk echo -spat \x3cdiv style=\x22display: none;\x22\x3e>>"%Drive%"\%guidename%
-goto:%spoilerback%
-
-
 
 
 ::---------------------------EXPLOITS GUIDES------------------------------
 :EXPLOITS
 
+
+::check if only 1 exploit (since str2hax is always a secondary option, only happens if str2hax explicity selected. Unless on 4.3 then we'll make LetterBomb Secondary
+
+if /i "%FIRMSTART%" EQU "4.3" goto:skip
+if /i "%EXPLOIT%" EQU "X" (copy /y "%Drive%"\%guidename%+Support\Guide\str2hax.001 "%Drive%"\%guidename%>nul) & (goto:%afterexploit%)
+:skip
+
+if /i "%AbstinenceWiz%" EQU "Y" (echo You only need to perform ONE of the these exploits to complete this guide.^<br^>^<br^> >>"%Drive%"\%guidename%) & (goto:skipthispart)
+
 ::title for multiple exploits
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3cfont size="4"\x3e\x3cb\x3eLaunch an Exploit\x3c/b\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat You only need to perform ONE of the following exploits\x3cbr\x3e>>"%Drive%"\%guidename%
 
+echo ^<font size^=^"5^"^>^<b^>Launch an Exploit^<^/b^>^<^/font^>^<br^>>>"%Drive%"\%guidename%
+echo You only need to perform ONE of the these exploits to complete this guide.^<br^>^<br^>Note that if you're missing an SD Card or your SD Card reader is broken, you can use str2hax and a Hard Drive formatted as FAT32 in place of an SD Card to complete the majority of this guide ^(everything except installing Bootmii and making a nand backup^).^<br^>^<br^>>>"%Drive%"\%guidename%
 
-::BB1
-If /i "%BB1%" NEQ "*" goto:noBB1
-if /i "%EXPLOIT%" NEQ "?" goto:afterBB1spoiler
-set spoilername=BannerBomb v1 Exploit Instructions
-set spoilerback=afterBB1spoiler
-goto:spoileropeningtag
-:afterBB1spoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\BBv1.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noBB1
+:skipthispart
+
+echo ^<div style^>>>"%Drive%"\%guidename%
 
 
 
-
-::BB2
-If /i "%BB2%" NEQ "*" goto:noBB2
-if /i "%EXPLOIT%" NEQ "?" goto:afterBB2spoiler
-set spoilername=BannerBomb v2 Exploit Instructions
-set spoilerback=afterBB2spoiler
-goto:spoileropeningtag
-:afterBB2spoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\BBv2.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noBB2
-
-
-
-::SMASH
-If /i "%SMASH%" NEQ "*" goto:noSMASH
-if /i "%EXPLOIT%" NEQ "?" goto:afterSMASHspoiler
-set spoilername=Smash Stack Exploit Instructions
-set spoilerback=afterSMASHspoiler
-goto:spoileropeningtag
-:afterSMASHspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\SmashStack.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noSMASH
+::For 3.0-4.2 make Bannerbomb primary, str2hax secondary, copy script, and goto after
+if /i "%FIRMSTART%" EQU "3.x" (echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Bannerbomb v1'^)^"^>Bannerbomb v1^<^/button^>>>"%Drive%"\%guidename%) & (echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%) & (goto:afterbuttons)
+if /i "%FIRMSTART%" EQU "4.0" (echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Bannerbomb v1'^)^"^>Bannerbomb v1^<^/button^>>>"%Drive%"\%guidename%) & (echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%) & (goto:afterbuttons)
+if /i "%FIRMSTART%" EQU "4.1" (echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Bannerbomb v1'^)^"^>Bannerbomb v1^<^/button^>>>"%Drive%"\%guidename%) & (echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%) & (goto:afterbuttons)
+if /i "%FIRMSTART%" EQU "4.2" (echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Bannerbomb v2'^)^"^>Bannerbomb v2^<^/button^>>>"%Drive%"\%guidename%) & (echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%) & (goto:afterbuttons)
 
 
 
 
-::PWNS
-If /i "%PWNS%" NEQ "*" goto:noPWNS
-if /i "%EXPLOIT%" NEQ "?" goto:afterPWNSspoiler
-set spoilername=Indiana Pwns Exploit Instructions
-set spoilerback=afterPWNSspoiler
-goto:spoileropeningtag
-:afterPWNSspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\PWNS.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noPWNS
+::make whatever was selected the primary
+if /i "%EXPLOIT%" EQU "S" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Smash Stack'^)^"^>Smash Stack^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" NEQ "W" goto:skip
+if /i "%Wilbrand%" NEQ "*" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'LetterBomb'^)^"^>LetterBomb^<^/button^>>>"%Drive%"\%guidename%
+if /i "%Wilbrand%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Wilbrand'^)^"^>Wilbrand^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+
+if /i "%EXPLOIT%" EQU "L" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Indiana Pwns'^)^"^>Indiana Pwns^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" EQU "Y" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Yu-Gi Owned'^)^"^>Yu-Gi Owned^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" EQU "LB" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Bathaxx'^)^"^>Bathaxx^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" EQU "LS" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Return of the Jodi'^)^"^>Return of the Jodi^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" EQU "TOS" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Eri HaKawai'^)^"^>Eri HaKawai^<^/button^>>>"%Drive%"\%guidename%
+
+if /i "%EXPLOIT%" EQU "T" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Twilight Hack'^)^"^>Twilight Hack^<^/button^>>>"%Drive%"\%guidename%
 
 
 
-::YUGI
-If /i "%YUGI%" NEQ "*" goto:noYUGI
-if /i "%EXPLOIT%" NEQ "?" goto:afterYUGIspoiler
-set spoilername=Yu-Gi Owned Exploit Instructions
-set spoilerback=afterYUGIspoiler
-goto:spoileropeningtag
-:afterYUGIspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\YUGI.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noYUGI
+::str2hax primary if "all" exploits selected, unless MAC addy actually entered for Wilbrand, then make that primary cuz that took effort
+if /i "%EXPLOIT%" EQU "?" goto:stay
+if /i "%EXPLOIT%" EQU "X" (goto:stay) else (goto:skip)
+:stay
 
+if /i "%Wilbrand%" NEQ "*" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%
 
+if /i "%Wilbrand%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--primary^" id^=^"defaultOpen^" style^=^"font-size^: x-large^;^" onclick=^"openTab^(event, 'Wilbrand'^)^"^>Wilbrand^<^/button^>>>"%Drive%"\%guidename%
 
-::Bathaxx
-If /i "%Bathaxx%" NEQ "*" goto:noBathaxx
-if /i "%EXPLOIT%" NEQ "?" goto:afterBathaxxspoiler
-set spoilername=Bathaxx Exploit Instructions
-set spoilerback=afterBathaxxspoiler
-goto:spoileropeningtag
-:afterBathaxxspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\Bathaxx.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noBathaxx
-
-
-
-::ROTJ
-If /i "%ROTJ%" NEQ "*" goto:noROTJ
-if /i "%EXPLOIT%" NEQ "?" goto:afterROTJspoiler
-set spoilername=Return of the Jodi Exploit Instructions
-set spoilerback=afterROTJspoiler
-goto:spoileropeningtag
-:afterROTJspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\ROTJ.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noROTJ
+::str2hax secondary if "all" selected but mac addy entered
+if /i "%Wilbrand%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%
+:skip
 
 
 
 
-::TOS
-If /i "%TOS%" NEQ "*" goto:noTOS
-if /i "%EXPLOIT%" NEQ "?" goto:afterTOSspoiler
-set spoilername=Eri HaKawai Exploit Instructions
-set spoilerback=afterTOSspoiler
-goto:spoileropeningtag
-:afterTOSspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\EriHaKawai.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noTOS
+::str2hax secondary if exploit is NOT "all" OR "X" 
+if /i "%EXPLOIT%" EQU "?" goto:skip
+if /i "%EXPLOIT%" NEQ "X" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'str2hax'^)^"^>str2hax^<^/button^>>>"%Drive%"\%guidename%
+
+:skip
+
+::fill in secondaries
+
+::wilbrand is never a secondary, if it's secondary Letterbomb used instead
+
+::fill in secondaries
+if /i "%FIRMSTART%" NEQ "4.3" goto:skip
+if /i "%Wilbrand%" EQU "*" goto:skip
+if /i "%EXPLOIT%" NEQ "W" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'LetterBomb'^)^"^>LetterBomb^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+
+if /i "%EXPLOIT%" EQU "S" goto:skip
+If /i "%SMASH%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Smash Stack'^)^"^>Smash Stack^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+
+if /i "%EXPLOIT%" EQU "L" goto:skip
+If /i "%PWNS%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Indiana Pwns'^)^"^>Indiana Pwns^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+if /i "%EXPLOIT%" EQU "Y" goto:skip
+If /i "%YUGI%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Yu-Gi Owned'^)^"^>Yu-Gi Owned^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+if /i "%EXPLOIT%" EQU "LB" goto:skip
+If /i "%Bathaxx%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Bathaxx'^)^"^>Bathaxx^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+if /i "%EXPLOIT%" EQU "LS" goto:skip
+If /i "%ROTJ%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Return of the Jodi'^)^"^>Return of the Jodi^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+if /i "%EXPLOIT%" EQU "TOS" goto:skip
+If /i "%TOS%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Eri HaKawai'^)^"^>Eri HaKawai^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+if /i "%EXPLOIT%" EQU "T" goto:skip
+If /i "%TWI%" EQU "*" echo ^<button class^=^"tablinks btn btn--large btn--info^" style^=^"font-size^: x-large^;^" onclick^=^"openTab^(event, 'Twilight Hack'^)^"^>Twilight Hack^<^/button^>>>"%Drive%"\%guidename%
+:skip
+
+:afterbuttons
+
+echo ^<br^>^<br^>>>"%Drive%"\%guidename%
+
+echo ^<div id^=^"str2hax^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\str2hax.001 "%Drive%"\%guidename%>nul
+echo ^<^/div^>>>"%Drive%"\%guidename%
+
+
+if /i "%BB1%" EQU "*" echo ^<div id^=^"Bannerbomb v1^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+if /i "%BB1%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\BBv1.001 "%Drive%"\%guidename%>nul
+if /i "%BB1%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+
+if /i "%BB2%" EQU "*" echo ^<div id^=^"Bannerbomb v2^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+if /i "%BB2%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\BBv2.001 "%Drive%"\%guidename%>nul
+if /i "%BB2%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+
+
+if /i "%Wilbrand%" EQU "*" echo ^<div id^=^"Wilbrand^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+if /i "%Wilbrand%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\Wilbrand.001 "%Drive%"\%guidename%>nul
+if /i "%Wilbrand%" EQU "*" echo Note^: this exploit is console specific and has been created by ModMii for the ^<i^>4.3%region%^<^/i^> console with MAC address ^<i^>%macaddress:~0,-4%^*^*^*^*^<^/i^>. If you want to use this exploit on a different 4.3 console, use ModMii to build it again, or construct and download LetterBomb directly through your browser ^<a href^=^"https^:^/^/modmii.github.io^/LetterBomb.html^" target^=^"_blank^"^>here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%Wilbrand%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
 
 
 
 
-::TWI
-If /i "%TWI%" NEQ "*" goto:noTWI
-if /i "%EXPLOIT%" NEQ "?" goto:afterTWIspoiler
-set spoilername=Twilight Hack Exploit Instructions
-set spoilerback=afterTWIspoiler
-goto:spoileropeningtag
-:afterTWIspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\Twilight.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noTWI
 
 
+if /i "%FIRMSTART%" NEQ "4.3" goto:skip
+echo ^<div id^=^"LetterBomb^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\LetterBomb.001 "%Drive%"\%guidename%>nul
 
-::Wilbrand
-if /i "%Exploit%" NEQ "W" goto:noWilbrand
-if /i "%EXPLOIT%" NEQ "?" goto:afterWilbrandspoiler
-set spoilername=Wilbrand Exploit Instructions
-set spoilerback=afterWilbrandspoiler
-goto:spoileropeningtag
-:afterWilbrandspoiler
-copy /y "%Drive%"\%guidename%+Support\Guide\Wilbrand.001 "%Drive%"\%guidename%>nul
-::spoilerclosingtag
-if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3c/div\x3e\x3c/div\x3e\x3c/div\x3e>>"%Drive%"\%guidename%
-:noWilbrand
+if /i "%REGION%" NEQ "E" echo ^<li^>Input your Wii's MAC Address and ^set your System Menu Version to 4.3%REGION%.>>"%Drive%"\%guidename%
+if /i "%REGION%" EQU "E" echo ^<li^>Input your Wii's MAC Address and confirm System Menu Version 4.3E is selected.>>"%Drive%"\%guidename%
 
 
+copy /y "%Drive%"\%guidename%+Support\Guide\LetterBomb2.001 "%Drive%"\%guidename%>nul
+echo ^<^/div^>>>"%Drive%"\%guidename%
+:skip
 
-::If /i "%MENU1%" EQU "H" goto:HMsolution2
+
+If /i "%SMASH%" EQU "*" echo ^<div id^=^"Smash Stack^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%SMASH%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\SmashStack.001 "%Drive%"\%guidename%>nul
+If /i "%SMASH%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%PWNS%" EQU "*" echo ^<div id^=^"Indiana Pwns^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%PWNS%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\PWNS.001 "%Drive%"\%guidename%>nul
+If /i "%PWNS%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%YUGI%" EQU "*" echo ^<div id^=^"Yu-Gi Owned^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%YUGI%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\YUGI.001 "%Drive%"\%guidename%>nul
+If /i "%YUGI%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%Bathaxx%" EQU "*" echo ^<div id^=^"Bathaxx^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%Bathaxx%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\Bathaxx.001 "%Drive%"\%guidename%>nul
+If /i "%Bathaxx%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%ROTJ%" EQU "*" echo ^<div id^=^"Return of the Jodi^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%ROTJ%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\ROTJ.001 "%Drive%"\%guidename%>nul
+If /i "%ROTJ%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%TOS%" EQU "*" echo ^<div id^=^"Eri HaKawai^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%TOS%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\EriHaKawai.001 "%Drive%"\%guidename%>nul
+If /i "%TOS%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+If /i "%TWI%" EQU "*" echo ^<div id^=^"Twilight Hack^" class^=^"blanktabcontent^"^>>>"%Drive%"\%guidename%
+If /i "%TWI%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\Twilight.001 "%Drive%"\%guidename%>nul
+If /i "%TWI%" EQU "*" echo ^<^/div^>>>"%Drive%"\%guidename%
+
+
+copy /y "%Drive%"\%guidename%+Support\Guide\side_spoiler_script.001 "%Drive%"\%guidename%>nul
+
 
 goto:%afterexploit%
 
@@ -27883,10 +28579,16 @@ if /i "%MENU1%" EQU "SU" (set guidename=ModMii_sysCheck_Updater_Guide.html) & (s
 if /i "%MENU1%" EQU "RC" (set guidename=ModMii_Region_Change_Guide.html) & (set tabname=ModMii Region Change Guide)
 if /i "%AbstinenceWiz%" EQU "Y" (set guidename=ModMii_Abstinence_Guide.html) & (set tabname=ModMii Abstinence Guide)
 
+
+
 SET COUNT7=1
 cls
-if /i "%SETTINGS%" EQU "G" echo Generating Guide, please wait.
-if /i "%SETTINGS%" NEQ "G" echo Generating Guide, please wait, your downloads will begin shortly.
+
+echo Generating Guide, it should pop up in a moment.
+echo.
+if /i "%SETTINGS%" EQU "G" echo Please read your guide carefully.
+if /i "%SETTINGS%" NEQ "G" echo You can start to carefully read your guide while ModMii keeps working.
+if /i "%SETTINGS%" NEQ "G" @ping 127.0.0.1 -n 3 -w 1000> nul
 
 
 ::---------------SKIN MODE-------------
@@ -27904,20 +28606,29 @@ move /y "%Drive%"\%guidename% "%DRIVE%"\%guidename:~0,-5%%COUNT6%.html >nul
 
 ::HTML HEADER
 
-
+::so this works instead... why was I bothering with sfk echo before? Answer: it doesn't work with exclamation marks!
+::echo ^<html^>
 support\sfk echo -spat \x3chtml\x3e >"%Drive%"\%guidename%
 support\sfk echo -spat \x3chead\x3e >>"%Drive%"\%guidename%
 support\sfk echo -spat \x3ctitle\x3e%tabname%\x3c/title\x3e >>"%Drive%"\%guidename%
-support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22expresstek.org/xflak/files/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3clink rel=\x22icon\x22 type=\x22image/ico\x22 href=\x22https\x3a\x2f\x2fraw.githubusercontent.com/modmii/modmii.github.io/master/Support/icon.ico\x22\x3e\x3c/link\x3e>>"%Drive%"\%guidename%
 
 support\sfk echo -spat \x3cstyle type=\x22text/css\x22\x3e>>"%Drive%"\%guidename%
 support\sfk echo -spat body { font-family: Calibri, Arial, Helvetica, \x22Century Gothic\x22, sans-serif; }>>"%Drive%"\%guidename%
+
+echo ol ^> li^:^:marker ^{font^-weight^: bold^;^}>>"%Drive%"\%guidename%
+
 support\sfk echo -spat \x3c/style\x3e>>"%Drive%"\%guidename%
+
+
+::UTF-8 fix just in case
+echo ^<meta http-equiv^=^"Content-Type^" content^=^"text^/html^; charset^=UTF-8^"^> >>"%Drive%"\%guidename%
+::so this works... why was I bothering with sfk echo before? Answer: it doesn't work with exclamation marks!
+
 
 support\sfk echo -spat \x3c/head\x3e >>"%Drive%"\%guidename%
 support\sfk echo -spat \x3cbody style=\x22margin:5px 5px 5px 35px;\x22\x3e >>"%Drive%"\%guidename%
-support\sfk echo -spat Guide Generated by ModMii v%currentversion% on %DATE% - %TIME:~0,-6% \x3cbr\x3e\x3cbr\x3e >>"%Drive%"\%guidename%
-
+support\sfk echo -spat %tabname%\x3cspan style\x3d\x22float\x3aright\x3b\x22\x3ev%currentversion% Generated on %DATE% - %TIME:~0,-6%\x3c\x2fspan\x3e\x3cbr\x3e\x3cbr\x3e >>"%Drive%"\%guidename%
 
 
 copy /y "%Drive%"\%guidename%+Support\Guide\sprint-paramstart.001 "%Drive%"\%guidename%>nul
@@ -27992,7 +28703,7 @@ goto:skipusb
 if /i "%MENU1%" EQU "U" (set USBGUIDE=Y) & (goto:usbparam)
 
 if /i "%VIRGIN%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall and\or update all recommended softmods\x3c/li\x3e>>"%Drive%"\%guidename%
-
+if /i "%VIRGIN%" EQU "N" support\sfk echo -spat \x3cli\x3eInstall and\or update only user-selected softmods\x3c/li\x3e>>"%Drive%"\%guidename%
 
 if /i "%MENU1%" EQU "SU" goto:miniskip
 if /i "%FIRMSTART%" NEQ "o" support\sfk echo -spat \x3cli\x3eCurrent System Menu is %FIRMSTART%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
@@ -28004,27 +28715,18 @@ if /i "%MENU1%" EQU "H" goto:skipusb
 
 support\sfk echo -spat \x3cli\x3eDesired System Menu is %FIRM%%REGION%\x3c/li\x3e>>"%Drive%"\%guidename%
 
-
-
-
-if /i "%PIC%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Photo Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%NET%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Internet Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WEATHER%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Weather Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%NEWS%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall News Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%MIIQ%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Mii Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%Shop%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Shopping Channel (and IOS56)\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%Speak%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Wii Speak Channel\x3c/li\x3e>>"%Drive%"\%guidename%
-
 :miniskip
 
 if /i "%VIRGIN%" EQU "Y" goto:skipvirginstandard
-if /i "%HM%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall and\or update the Homebrew Channel and BootMii\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%HM%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall and\or update the Homebrew Channel and Bootmii\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%RECCIOS%" NEQ "Y" goto:smallskip
-if /i "%CMIOSOPTION%" EQU "on" (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs and cMIOS\x3c/li\x3e>>"%Drive%"\%guidename%) else (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%hermesOPTION%" EQU "on" (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs and cMIOS\x3c/li\x3e>>"%Drive%"\%guidename%) else (support\sfk echo -spat \x3cli\x3eInstall recommended cIOSs\x3c/li\x3e>>"%Drive%"\%guidename%)
 :smallskip
-if /i "%yawm%" EQU "*" support\sfk echo -spat \x3cli\x3eDownload Yet Another Wad Manager Mod (YAWMM)\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS236Installer%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall IOS236 \x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%pri%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall and\or update Priiloader\x3c/li\x3e>>"%Drive%"\%guidename%
+::if /i "%yawm%" EQU "*" support\sfk echo -spat \x3cli\x3eDownload Yet Another Wad Manager Mod (YAWMM)\x3c/li\x3e>>"%Drive%"\%guidename%
+::if /i "%IOS236Installer%" EQU "*" support\sfk echo -spat \x3cli\x3eInstall IOS236 \x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%PRIQ%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall and\or update Priiloader\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
 :skipvirginstandard
 
 if /i "%ThemeSelection%" EQU "R" support\sfk echo -spat \x3cli\x3eInstall Dark Wii Red Theme\x3c/li\x3e>>"%Drive%"\%guidename%
@@ -28047,8 +28749,24 @@ if /i "%CMIOSOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall a cMIOS 
 if /i "%CMIOSOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not Install a cMIOS (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :tinyskip
 
+if /i "%hermesOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install Hermes cIOSs (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%hermesOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall Hermes cIOSs (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+
+
 if /i "%FWDOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install a USB-Loader Forwarder Channel (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 if /i "%FWDOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall a USB-Loader Forwarder Channel (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%ExtraProtectionOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install Extra Brick Protection (patched IOS60 in unused system menu IOS slots) (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%ExtraProtectionOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall Extra Brick Protection (patched IOS60 in unused system menu IOS slots) (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+
+if /i "%PIC%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Photo Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NET%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Internet Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%WEATHER%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Weather Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%NEWS%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall News Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%MIIQ%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Mii Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%Shop%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Shopping Channel (and IOS56)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%Speak%" EQU "Y" support\sfk echo -spat \x3cli\x3eInstall Wii Speak Channel\x3c/li\x3e>>"%Drive%"\%guidename%
+
 
 
 
@@ -28078,68 +28796,166 @@ if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settin
 if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat \x3cli\x3eUSB-Loader Settings and config files saved to SD Card\x3c/li\x3e>>"%Drive%"\%guidename%
 :skipusb
 
+If /i "%MENU1%" EQU "SU" support\sfk echo -spat \x3cli\x3eGuide generated based on ModMii's analysis of the syscheck report contained in the spoiler below\x3c/li\x3e>>"%Drive%"\%guidename%
 
 ::closing tag and linebreak: </ul><br>
 support\sfk echo -spat \x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 
-:Important notes title and bullet opening tag
-support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3e\x3ca name=\x22Notes\x22\x3eImportant Notes\x3c/a\x3e\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3cul\x3e>>"%Drive%"\%guidename%
+::add syscheck spoiler for syscheck updater wizards
+If /i "%MENU1%" NEQ "SU" goto:SkipSyscheckSpoiler
 
-if /i "%AbstinenceWiz%" EQU "Y" copy /y "%Drive%"\%guidename%+Support\Guide\AbstinenceNotes.001 "%Drive%"\%guidename%>nul
-if /i "%AbstinenceWiz%" EQU "Y" goto:skipthis
+support\sfk echo -spat "<div style><div class=\x22spoilerfont\x22 style=\x22text-align:left;\x22><input value=\x22  Click to see Supplied SysCheck Report  \x22 style=\x22margin: 0px; padding: 0px; font-size: x-large;\x22 onclick=\x22if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Supplied SysCheck Report   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Supplied SysCheck Report  '; }\x22 type=\x22button\x22></div><div class=\x22alt2\x22 style=\x22border: 0px inset ; margin: 0px; padding: 6px;\x22><div style=\x22display: none;\x22>">>"%Drive%"\%guidename%
+
+
+
+::copy /y "%Drive%"\%guidename%+"%sysCheckName%" "%Drive%"\%guidename%>nul
+
+echo ^<ul style^=align^=^"left^" type^=^"disc^"^>>>"%Drive%"\%guidename%
+
+
+::Loop through the syscheck line by line to insert bullets and breaks
+
+if exist temp\syscheck.csv del temp\syscheck.csv>nul
+copy /y "%sysCheckName%" temp\syscheck.csv>nul
+cd temp
+
+for /F "tokens=*" %%A in (syscheck.csv) do call :sysprocess %%A
+goto:nextstep
+
+:sysprocess
+::this is repeated for each line of the txt.file
+::"%*" (no quotes) is the variable for each line as it passes through the loop
+set sysline=%*
+if "%sysline%"=="" echo ^<br^>^<br^>>>..\"%Drive%"\%guidename%
+if not "%sysline%"=="" echo ^<li^>%sysline%>>..\"%Drive%"\%guidename%
+goto:EOF
+:nextstep
+
+cd..
+
+If /i "%MENU1%" EQU "SU" echo ^<^/ul^>^<^/div^>^<^/div^>^<^/div^>^<br^>>>"%Drive%"\%guidename%
+:SkipSyscheckSpoiler
+
+
+:Important notes title and bullet opening tag
+
+echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Notes^"^>Important Notes^<^/a^>^<^/li^>^<^/font^>^<br^>^<ul style^=align^=^"left^" type^=^"disc^"^>>>"%Drive%"\%guidename%
+
+
+if /i "%AbstinenceWiz%" NEQ "Y" goto:skipAWnotes
+copy /y "%Drive%"\%guidename%+Support\Guide\AbstinenceNotes.001 "%Drive%"\%guidename%>nul
+if /i "%FIRMSTART%" EQU "4.3" goto:skipAWnotes
+if /i "%FIRMSTART%" EQU "4.2" goto:skipAWnotes
+support\sfk echo -spat \x3cli\x3eSince you are on an older firmware, this guide will direct you to install IOS53. This is an original\unmodified IOS, but if you are not comfortable installing this, then you can update to the latest firmware from the Wii Settings menu and try this wizard again - or just accept the very minimal risk and softmod your wii using ModMii's main wizard instead!\x3c/li\x3e>>"%Drive%"\%guidename%
+:skipAWnotes
 
 if /i "%MENU1%" EQU "RC" copy /y "%Drive%"\%guidename%+Support\Guide\RegionChangenotes.001 "%Drive%"\%guidename%>nul
 
-if /i "%MENU1%" NEQ "U" copy /y "%Drive%"\%guidename%+Support\Guide\softmodnotes.001 "%Drive%"\%guidename%>nul
+If /i "%EXPLOIT%" NEQ "X" support\sfk echo -spat \x3cli\x3eThis guide does not require a WiFi connection on your Wii.\x3c/li\x3e>>"%Drive%"\%guidename%
+If /i "%EXPLOIT%" EQU "X" support\sfk echo -spat \x3cli\x3eThis guide only requires a WiFi connection on your Wii for the str2hax step.\x3c/li\x3e>>"%Drive%"\%guidename%
 
+
+If /i "%MENU1%" EQU "SU" goto:notes4NoFAT32_SD
+If /i "%MENU1%" EQU "RC" (goto:notes4NoFAT32_SD) else (goto:skip)
+:notes4NoFAT32_SD
+echo ^<li^>Make sure the files ModMii downloaded are on your SD Card, and your SD Card is inserted in the Wii.^<^/li^>>>"%Drive%"\%guidename%
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%"\%guidename%
+echo ^<li^>If you don't have an SD Card, you can still accomplish ^<u^>most^<^/u^> things using a Hard Drive formatted as FAT32 in place of an SD Card ^(SD is notably required for Bootmii and NAND backup^).^<^/li^>>>"%Drive%"\%guidename%
+echo ^<li^>Use ModMii's USB-Loader Setup feature if you need help formatting your HDD as FAT32.^<^/li^>>>"%Drive%"\%guidename%
+echo ^<li^>Make sure to always plug your hard drive into usb port0 - the one nearest the edge of the Wii.^<^/li^>>>"%Drive%"\%guidename%
+echo ^<^/ul^>>>"%Drive%"\%guidename%
+
+:skip
+
+
+if /i "%AbstinenceWiz%" EQU "Y" goto:skipnotes
+if /i "%MENU1%" NEQ "U" copy /y "%Drive%"\%guidename%+Support\Guide\softmodnotes.001 "%Drive%"\%guidename%>nul
+:skipnotes
 
 
 ::----USB-Loader Notes----
 if /i "%USBGUIDE%" NEQ "Y" goto:skipall
-if /i "%cIOS223[37-38]-v4%" EQU "*" goto:skipthis
 
+if /i "%cIOS249[57]-d2x-v10-beta52%" NEQ "*" support\sfk echo -spat \x3cli\x3ecIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.\x3c/li\x3e>>"%Drive%"\%guidename%
 
-support\sfk echo -spat \x3cli\x3ecIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%AbstinenceWiz%" NEQ "Y" support\sfk echo -spat \x3cli\x3eAfter completing this guide, you can launch your USB-Loader via the Homebrew Channel or a USB-Loader forwarder channel.\x3c/li\x3e>>"%Drive%"\%guidename%
 
-support\sfk echo -spat \x3cli\x3ecIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222\223\224 rev4 or higher also works).\x3c/li\x3e>>"%Drive%"\%guidename%
+copy /y "%Drive%"\%guidename%+Support\Guide\usbloadernotes.001 "%Drive%"\%guidename%>nul
 
-:skipthis
-
-support\sfk echo -spat \x3cli\x3eNot all external hard drive's are compatible with the Wii, for a list of which USB hard drive's are compatible, see this webpage: \x3ca href="http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank"\x3ehttp://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List\x3c/a\x3e\x3c/li\x3e>>"%Drive%"\%guidename%
-
-support\sfk echo -spat \x3cli\x3eAfter completing this guide, you can launch your USB-Loader via the Homebrew Channel or a USB-Loader forwarder channel.\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat \x3cli\x3eMake sure to always plug your hard drive into usb port0 - the one nearest the edge of the wii.\x3c/li\x3e>>"%Drive%"\%guidename%
 
 :skipall
 ::-------------------------
 
 ::common important note, end bullet tag and line break
-support\sfk echo -spat \x3cli\x3eIf you have questions, a more detailed guide can be found at \x3ca href=\x22http://www.sites.google.com/site/completesg/\x22 taget=\x22_blank\x22\x3ewww.sites.google.com/site/completesg/\x3c/a\x3e\x3c/li\x3e\x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
+echo ^<li^>Detailed guides covering a broader range of Wii topics available at the ^<a href^=^"http://www.sites.google.com/site/completesg/^" target^=^"_blank^"^>Complete Softmod Guide^<^/a^> and ^<a href^=^"http://wii.guide^" target^=^"_blank^"^>wii.guide^</a^>^</li^> >>"%Drive%"\%guidename%
 
+echo ^<li^>If you come across a term or abbreviation that you're not familar with you can reference the ^<a href^=^"https://wiibrew.org/wiki/Glossary^" target^=^"_blank^"^>WiiBrew Glossary^<^/a^> or the ^<a href^=^"https://sites.google.com/site/completesg/other-stuff/wii-glossary^" target^=^"_blank^"^>CSG Glossary^</a^>^</li^> >>"%Drive%"\%guidename%
+
+echo ^<li^>If you need help, have questions, or just want to chat visit the ^<a href^=^"https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/^" target=^"_blank^"^>official ModMii page on gbatemp^</a^> or the ^<a href^=^"https://discord.gg/cMnBRACQwQ^" target^=^"_blank^"^>ModMii Discord Server^</a^> and ask away^!^</li^>^</ul^>^<br^> >>"%Drive%"\%guidename%
 
 
 
 ::Start of AbstinenceWizGUIDE steps listings. This must be here for the guide
 if /i "%AbstinenceWiz%" NEQ "Y" goto:NotAbstinenceWiz
-
 support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3e\x3ca name=\x22Hacking\x22\x3eLaunch %neekname% Without Hacking Your Wii\x3c/a\x3e\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3col\x3e>>"%Drive%"\%guidename%
-
-goto:CasperPickUp
+goto:SDformat
+::goto:CasperPickUp
 :NotAbstinenceWiz
 
 
 if /i "%MENU1%" EQU "U" goto:USBGUIDESTEP1
 
 
-::Start of hacking steps listings. This must be here for the hacking guide
-copy /y "%Drive%"\%guidename%+Support\Guide\softmodheader.001 "%Drive%"\%guidename%>nul
+::Start of hacking steps listings ordered list. This must be here for all guides (AW and U done above)
 
+if /i "%MENU1%" EQU "W" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your Wii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%"\%guidename%
+
+if /i "%MENU1%" EQU "SU" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Updating your Wii Hacks^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%"\%guidename%
+
+if /i "%MENU1%" EQU "H" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Resolving HackMii Installer Issues^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%"\%guidename%
+
+if /i "%MENU1%" EQU "RC" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Region Changing your Wii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%"\%guidename%
 
 if /i "%MENU1%" EQU "RC" copy /y "%Drive%"\%guidename%+Support\Guide\NANDBACKUP.001 "%Drive%"\%guidename%>nul
 if /i "%MENU1%" EQU "RC" goto:installwads
+
+
+
+::SD format stuff here...
+:SDformat
+if /i "%MENU1%" EQU "SU" goto:notfat32
+
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32_SD.001 "%Drive%"\%guidename%>nul
+
+
+if /i "%PCSAVE%" EQU "Portable" goto:portableF32
+if /i "%PCSAVE%" NEQ "Auto" goto:skip
+if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableF32
+:skip
+
+echo ^<li^>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.>>"%Drive%"\%guidename%
+goto:noportableF32
+
+:portableF32
+if /i "%USBCONFIG%" EQU "USB" echo ^<li^>Launch FAT32_GUI_Formatter.exe saved here: %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" echo ^<li^>Launch FAT32_GUI_Formatter.exe saved here: %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+:noportableF32
+
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32end_SD.001 "%Drive%"\%guidename%>nul
+
+if /i "%Drive:~1,1%" EQU ":" (set fulldrive=%Drive%) else (set fulldrive=%cd%\%Drive%)
+
+echo ^<li^>The files should be saved here: "%fulldrive%" >>"%Drive%"\%guidename%
+
+echo ^<li^>When the files are finished copying to the SD card, you should safely remove your SD Card from your computer and reinsert it into your Wii and proceed to the next step.^<^/ul^>^<br^> >>"%Drive%"\%guidename%
+:notfat32
+::::::::::::::::::
+
+
+::for Abstinence Wizard
+if /i "%AbstinenceWiz%" EQU "Y" goto:CasperPickUp
 
 
 
@@ -28162,7 +28978,7 @@ set afterexploit=continueHMsolutions
 goto:exploits
 :continueHMsolutions
 
-support\sfk echo -spat This will launch Multi-Mod Manager.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cbr\x3eThis will launch Multi-Mod Manager.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 
 copy /y "%Drive%"\%guidename%+Support\Guide\WADHMheader.001 "%Drive%"\%guidename%>nul
@@ -28172,6 +28988,9 @@ goto:wadlist
 :HMafterwadlist
 
 copy /y "%Drive%"\%guidename%+Support\Guide\HMSolutions2.001 "%Drive%"\%guidename%>nul
+
+
+copy /y "%Drive%"\%guidename%+Support\Guide\HBC2.001 "%Drive%"\%guidename%>nul
 
 ::--------End of hacking steps listings (and line break). This must be here for the hacking guide------------
 support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
@@ -28195,6 +29014,10 @@ goto:exploits
 :continueKorean
 
 copy /y "%Drive%"\%guidename%+Support\Guide\KoreanStart.001 "%Drive%"\%guidename%>nul
+copy /y "%Drive%"\%guidename%+Support\Guide\HBC2.001 "%Drive%"\%guidename%>nul
+
+support\sfk filter -spat "%Drive%"\%guidename% -rep _"<b>Use the HackMii Installer to install the HBC and Bootmii</b>"_"<li>Use the HackMii Installer to install the HBC and Bootmii</li>"_ -write -yes>nul
+
 
 goto:nandbackup
 
@@ -28230,10 +29053,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\NANDBACKUP.001 "%Drive%"\%guidename%
 ::----------------------------RESTORING THE TRUCHA BUG (using IOS236 Installer)--------------------------
 :TBRGUIDE
 
-If /i "%IOS236Installer%" NEQ "*" goto:PRIIGUIDE
-
-
-copy /y "%Drive%"\%guidename%+Support\Guide\IOS236.001 "%Drive%"\%guidename%>nul
+goto:PRIIGUIDE
 
 
 ::--------------------------INSTALL PRIILOADER-------------------------------
@@ -28259,13 +29079,9 @@ goto:installwads
 
 copy /y "%Drive%"\%guidename%+Support\Guide\ARC.001 "%Drive%"\%guidename%>nul
 
-if /i "%REGION%" EQU "U" echo change the region to USA.>>"%Drive%"\%guidename%
-if /i "%REGION%" EQU "E" echo change the region to Europe.>>"%Drive%"\%guidename%
-if /i "%REGION%" EQU "J" echo change the region to Jap.>>"%Drive%"\%guidename%
-if /i "%REGION%" EQU "K" echo change the region to Korean.>>"%Drive%"\%guidename%
+if /i "%REGION%" EQU "K" copy /y "%Drive%"\%guidename%+Support\Guide\KK2K.001 "%Drive%"\%guidename%>nul
 
-copy /y "%Drive%"\%guidename%+Support\Guide\ARC2.001 "%Drive%"\%guidename%>nul
-
+if /i "%REGION%" NEQ "K" copy /y "%Drive%"\%guidename%+Support\Guide\KK2O.001 "%Drive%"\%guidename%>nul
 
 goto:noMyM
 
@@ -28274,11 +29090,14 @@ goto:noMyM
 
 :installwads
 
+
+if /i "%YAWM%" EQU "*" goto:skipmmmfly
+
 if /i "%MMM%" NEQ "*" goto:SKIPWAD
 
 
 ::---------CREATE MMMCONFIG To Autoload 236--------
-set patchIOSnum=236
+set patchIOSnum=249
 if /i "%SETTINGS%" EQU "G" goto:skipmmmfly
 if /i "%SETTINGSHM%" EQU "G" goto:skipmmmfly
 echo ;MMMCONFIG (By ModMii)> "%Drive%"\mmmconfig.txt
@@ -28286,171 +29105,177 @@ echo AutoLoadIOS=%patchIOSnum%>> "%Drive%"\mmmconfig.txt
 :skipmmmfly
 
 
-copy /y "%Drive%"\%guidename%+Support\Guide\WADheader.001 "%Drive%"\%guidename%>nul
+if /i "%SETTINGS%" EQU "G" goto:skipconfig
+if /i "%SETTINGSHM%" EQU "G" goto:skipconfig
+
+if /i "%YAWM%" EQU "*" if not exist "%Drive%"\WAD mkdir "%Drive%"\WAD
+if /i "%YAWM%" EQU "*" echo ;wm_config.txt made by ModMii> "%Drive%"\WAD\wm_config.txt
+if /i "%YAWM%" EQU "*" echo NANDDevice=Disable>> "%Drive%"\WAD\wm_config.txt
+if /i "%YAWM%" EQU "*" echo StartupPath=/WAD>> "%Drive%"\WAD\wm_config.txt
+::if /i "%YAWM%" EQU "*" echo FatDevice=sd>> "%Drive%"\WAD\wm_config.txt
+:skipconfig
+
+if /i "%YAWM%" EQU "*" (copy /y "%Drive%"\%guidename%+Support\Guide\WADYAWMheader.001 "%Drive%"\%guidename%>nul) & (goto:wadlist)
+
+if /i "%MMM%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\WADheader.001 "%Drive%"\%guidename%>nul
 
 :wadlist
 
-if /i "%IOS11P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS11v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS20P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS20v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS30P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS30v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS40P60%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS40v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS50P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS50v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS52P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS52v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS60P%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS60v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS70K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS70v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS80K%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS80v16174(IOS60v6174[FS-ES-NP-VP-DIP])\x3c/li\x3e>>"%Drive%"\%guidename%
+set guidewadcount=0
+if /i "%cIOS202[60]-v5.1R%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS202[60]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS222[38]-v4%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS222[38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS223[37-38]-v4%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS223[37-38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS224[57]-v5.1R%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS224[57]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS249[57]-d2x-v10-beta52%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS249[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS250[56]-d2x-v10-beta52%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS250[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%cIOS251[38]-d2x-v10-beta52%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ecIOS251[38]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%EULAE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%EULAJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%EULAK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%EULAU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS11P60%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS11v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS12%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS12-64-v526\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS13%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS13-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS14%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS14-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS15%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS15-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS17%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS17-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS20P60%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS20v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS21%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS21-64-v1039\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS22%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS22-64-v1294\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS236%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS236v65535^(IOS36v3351[FS-ES-NP-VP]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS28%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS28-64-v1807\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS30P60%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS30v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS31%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS31-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS33%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS33-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS34%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS34-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS35%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS35-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS36v3608%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS36-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS37%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS37-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS38%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS38-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS40P60%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS40v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS41%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS41-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS43%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS43-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS45%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS45-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS46%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS46-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS48v4124%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS48-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS50P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS50v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS52P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS52v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS53%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS53-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS55%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS55-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS56%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS56-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS57%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS57-64-v5919\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS58%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS58-64-v6176\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS60P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS60v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS61%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS61-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS62%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS62-64-v6430\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS70K%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS70v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS80K%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS80v65535^(IOS60v6174[FS-ES-NP-VP-DIP-RC24]^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IOS9%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eIOS9-64-v1034\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%MII%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eMii-Channel-NUS-v6\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%NE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%NJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%NU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%IU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%PK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%RSE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%RSJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%RSK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%RSU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535^(v10^)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%M10%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRVL-mios-v10\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%S%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v21\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v21[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1E%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1E-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1E-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1E-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1E-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1J%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1J-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1J-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1J-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1J-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1K%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1K-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1K-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1K-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1K-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1U%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1U-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1U-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1U-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.1U-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2E%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2E-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2E-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2E-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2E-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2J%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2J-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2J-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2J-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2J-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2K%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2K-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2K-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2K-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2K-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2U%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2U-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2U-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2U-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.2U-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3E%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3E-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3E-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3E-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3E-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3J%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3J-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3J-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3J-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3J-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3K%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3K-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3K-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3K-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3K-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3U%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3U-DWB%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiBlue_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3U-DWG%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiGreen_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3U-DWO%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiOrange_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%SM4.3U-DWR%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiRed_%effect%\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%USBX%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eUSBLoader^(s^)-ahbprot58-SD-USB-v12-IDCL-alt ^(see spoiler for boot info^)\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WSE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WSJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%WSU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
 
+::replace "_guidewadcountplaceholder" (if exists) with number of wads
+support\sfk filter "%Drive%"\%guidename% -rep _guidewadcountplaceholder_%guidewadcount%_ -write -yes>nul
 
-
-if /i "%SM4.1U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3U%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3E%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3J%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3K%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%SM4.1U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWR%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiRed\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%SM4.1U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWG%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiGreen\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%SM4.1U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWB%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiBlue\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%SM4.1U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1U_v449_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2U_v481_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3U-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3U_v513_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1E_v450_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2E_v482_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3E-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3E_v514_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1J_v448_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2J_v480_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3J-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3J_v512_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.1K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.1K_v454_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.2K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.2K_v486_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SM4.3K-DWO%" EQU "*" support\sfk echo -spat \x3cli\x3eSystemMenu_4.3K_v518_DarkWiiOrange\x3c/li\x3e>>"%Drive%"\%guidename%
-
-
-if /i "%cIOS202[60]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS202[60]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS222[38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS222[38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS223[37-38]-v4%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS223[37-38]-v4\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS224[57]-v5.1R%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS224[57]-v5.1R\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS249[57]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS249[57]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%cIOS250[56]-d2x-v8-final%" EQU "*" support\sfk echo -spat \x3cli\x3ecIOS250[56]-d2x-v%d2x-beta-rev%\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2\x3c/li\x3e>>"%Drive%"\%guidename%
-
-
-if /i "%EULAU%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%RSU%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%EULAE%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%RSE%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%EULAJ%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%RSJ%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%EULAK%" EQU "*" support\sfk echo -spat \x3cli\x3eEULA-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%RSK%" EQU "*" support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[K]\x3c/li\x3e>>"%Drive%"\%guidename%
-
-
-
-if /i "%MII%" EQU "*" support\sfk echo -spat \x3cli\x3eMii-Channel-NUS-v6\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%P%" EQU "*" support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%PK%" EQU "*" support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%S%" EQU "*" support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v21\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%SK%" EQU "*" support\sfk echo -spat \x3cli\x3eShopping-Channel-NUS-v21[K]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IU%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IE%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IJ%" EQU "*" support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WU%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WE%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WJ%" EQU "*" support\sfk echo -spat \x3cli\x3eWeather-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%NU%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%NE%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%NJ%" EQU "*" support\sfk echo -spat \x3cli\x3eNEWS-Channel-NUS-v7[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WSU%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WSE%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%WSJ%" EQU "*" support\sfk echo -spat \x3cli\x3eWii-Speak-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%
-
-if /i "%M10%" EQU "*" support\sfk echo -spat \x3cli\x3eRVL-mios-v10\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS9%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS9-64-v1034\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS12%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS12-64-v526\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS13%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS13-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS14%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS14-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS15%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS15-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS17%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS17-64-v1032\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS21%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS21-64-v1039\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS22%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS22-64-v1294\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS28%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS28-64-v1807\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS31%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS31-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS33%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS33-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS34%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS34-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS35%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS35-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS36v3608%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS36-64-v3608\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS37%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS37-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS38%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS38-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS41%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS41-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS43%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS43-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS45%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS45-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS46%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS46-64-v3607\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS48v4124%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS48-64-v4124\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS53%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS53-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS55%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS55-64-v5663\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS56%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS56-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS57%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS57-64-v5919\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS58%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS58-64-v6176\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS61%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS61-64-v5662\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS62%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS62-64-v6430\x3c/li\x3e>>"%Drive%"\%guidename%
-if /i "%IOS236%" EQU "*" support\sfk echo -spat \x3cli\x3eIOS236v65535(IOS36v3351[FS-ES-NP-VP])\x3c/li\x3e>>"%Drive%"\%guidename%
-
-::add closing bullet tag and line break if no usbloader
-if /i "%USBX%" NEQ "*" support\sfk echo -spat \x3c/ul\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
-
-if /i "%USBX%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\ForwarderWAD.001 "%Drive%"\%guidename%>nul
-
+::add closing bullet tag and line break
+support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 if /i "%MENU1%" EQU "H" goto:HMafterwadlist
 
 
-if /i "%FIRM%" NEQ "%FIRMSTART%" support\sfk echo -spat \x3cbr\x3e\x3cb\x3eNote:\x3c/b\x3e Whenever you install a new System Menu, Priiloader is uninstalled. So be sure to reinstall it afterwards (especially if you do not have bootmii as boot2)\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%USBX%" EQU "*" copy /y "%Drive%"\%guidename%+Support\Guide\ForwarderWAD.001 "%Drive%"\%guidename%>nul
+
+::close spoiler for everything except AW and H (which is already gone)
+if /i "%MENU1%" NEQ "AW" echo ^<^/div^>^<^/div^>^<^/div^>>>"%Drive%"\%guidename%
+
+
+
+
+if /i "%MENU1%" EQU "RC" echo ^<font color^=^"red^"^>^<b^>WARNING: Do NOT power off your Wii or exit the HBC or you will semi-brick.^<^/b^>^<^/font^> At this critical stage you are halfway through a region change, unless you have Bootmii installed to boot2 you will semi-brick ^<u^>if^<^/u^> you exit the HBC before installing Priiloader or fixing your AREA/SysMenu mismatch using Any Region Changer.^<br^>^<br^>>>"%Drive%"\%guidename%
+
+if /i "%FIRM%" NEQ "%FIRMSTART%" support\sfk echo -spat \x3cb\x3eWARNING:\x3c/b\x3e Whenever you install a new System Menu, like you just did, Priiloader gets uninstalled. Be sure to continue with your guide to ^(re^)install it.\x3cbr\x3e>>"%Drive%"\%guidename%
 
 ::extra line break
 support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
@@ -28474,26 +29299,39 @@ if /i "%MENU1%" EQU "SU" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cl
 copy /y "%Drive%"\%guidename%+Support\Guide\HBCreinstall.001 "%Drive%"\%guidename%>nul
 
 
-if /i "%MENU1%" NEQ "SU" support\sfk echo -spat If the HBC is failing to load the HackMii_Installer (just blackscreens), instead launch the Hackmii Installer using the method described in the first Step.\x3cbr\x3e>>"%Drive%"\%guidename%
-
-support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
-
-
-
-
 
 ::------------------------Install Custom Theme Using MyMenuify----------------------------
 :MyMGuide
 
 If /i "%MyM%" NEQ "*" goto:noMyM
 
-support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eInstall Custom Wii Menu Theme using MyMenuifyMod (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
-
 copy /y "%Drive%"\%guidename%+Support\Guide\MyMenuify.001 "%Drive%"\%guidename%>nul
 
-support\sfk echo -spat Navigate to the theme you would like to install that corresponds to your specific System Menu Version (%FIRM%%REGION%) then press A to install it.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+echo ^<li^>Navigate to the theme you would like to install that corresponds to your specific System Menu Version ^(%FIRM%%REGION%^) then press ^<kbd^>A^<^/kbd^> to install it.>>"%Drive%"\%guidename%
 
-support\sfk echo -spat If you ever decide to restore the original Menu Wii theme, simply launch MyMenuifyMod again, navigate to 000000XX_%FIRM%%REGION%.app and press \x22A\x22 to install it.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>When finished it should display ^"Done^!^"^<^/ul^>>>"%Drive%"\%guidename%
+echo ^<li^>Press any button to exit MyMenuifyMod.>>"%Drive%"\%guidename%
+
+
+If /i "%FIRM%%REGION%" EQU "4.1J" set appfile=78
+If /i "%FIRM%%REGION%" EQU "4.1K" set appfile=81
+If /i "%FIRM%%REGION%" EQU "4.1U" set appfile=7b
+If /i "%FIRM%%REGION%" EQU "4.1E" set appfile=7e
+
+If /i "%FIRM%%REGION%" EQU "4.2J" set appfile=84
+If /i "%FIRM%%REGION%" EQU "4.2U" set appfile=87
+If /i "%FIRM%%REGION%" EQU "4.2E" set appfile=8a
+If /i "%FIRM%%REGION%" EQU "4.2K" set appfile=8d
+
+If /i "%FIRM%%REGION%" EQU "4.3J" set appfile=94
+If /i "%FIRM%%REGION%" EQU "4.3U" set appfile=97
+If /i "%FIRM%%REGION%" EQU "4.3E" set appfile=9a
+If /i "%FIRM%%REGION%" EQU "4.3K" set appfile=9d
+
+
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>If you later decide you want to restore the original Menu Wii theme, simply launch MyMenuifyMod again, navigate to 000000%appfile%_%FIRM%%REGION%.app and press ^"A^" to install it.^<^/ul^>^<^/ul^>^<br^>>>"%Drive%"\%guidename%
+
+
 
 :noMyM
 
@@ -28511,6 +29349,15 @@ if /i "%USBGUIDE%" EQU "Y" goto:USBGUIDESTEP1
 ::--------------------After Modding-----------------------
 :AFTERMODDING
 
+
+echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Done^"^>After modding your Wii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ul style^=^align^=^"left^" type^=^"disc^"^>>>"%Drive%"\%guidename%
+
+
+
+if /i "%MENU1%" EQU "U" goto:skip
+if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%"\%guidename%
+:skip
+
 copy /y "%Drive%"\%guidename%+Support\Guide\AfterModding.001 "%Drive%"\%guidename%>nul
 
 
@@ -28523,6 +29370,19 @@ copy /y "%Drive%"\%guidename%+Support\Guide\Credits-XFlak-End.001 "%Drive%"\%gui
 
 ::guide finish, remove carriage returns and open
 support\sfk filter "%Drive%"\%guidename% -lsrep _.__ -rep _"printbutton {"_".printbutton {"_ -write -yes>nul
+
+::replace <kbd> tags for keyboard buttons with <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">
+
+support\sfk filter -spat "%Drive%"\%guidename% -rep _"<kbd>"_"<kbd class=\x22keyboard-key nowrap\x22 style=\x22border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); <kbd2>"_ -write -yes>nul
+
+support\sfk filter -spat "%Drive%"\%guidename% -rep _"<kbd2>"_"background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;\x22>"_ -write -yes>nul
+
+
+::Inject Region Change warning into the Priiloader step
+if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%"\%guidename% -rep _"<li>Access Priiloader by powering off the Wii"_"<li><b>If Priiloader failed to install, do NOT power off your Wii or exit the HBC</b>, try the installer again. RCREPLACEME"_ -write -yes>nul
+if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%"\%guidename% -rep _"RCREPLACEME"_"If still unsuccessful, proceed immediately to the Any Region Changer step to fix your AREA/SysMenu mismatch RCREPLACEME"_ -write -yes>nul
+if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%"\%guidename% -rep _"RCREPLACEME"_"otherwise you will semi-brick once you exit a homebrew environment (unless you have Bootmii boot2).<li>Access Priiloader by powering off the Wii"_ -write -yes>nul
+
 
 
 
@@ -28567,11 +29427,12 @@ goto:DLSETTINGS2
 
 support\sfk echo -spat \x3cfont size=\x226\x22\x3e\x3cli\x3eUSB Loader and Hard Drive setup\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
-if /i "%MENU1%" EQU "W" support\sfk echo -spat The rest of the guide is performed on your computer in order to set up your USB-Loader\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%MENU1%" EQU "W" support\sfk echo -spat The rest of the guide is performed on your computer in order to set up your USB-Loader\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 :CasperPickUp
 
-support\sfk echo -spat \x3col\x3e>>"%Drive%"\%guidename%
+::add <ol> but not for Abstinence Wizard
+if /i "%AbstinenceWiz%" NEQ "Y" support\sfk echo -spat \x3col\x3e>>"%Drive%"\%guidename%
 
 
 
@@ -28586,16 +29447,16 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableF32
 :skip
 
-echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%Drive%"\%guidename%
+echo ^<li^>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.>>"%Drive%"\%guidename%
 goto:noportableF32
 
 :portableF32
-support\sfk echo -spat Launch FAT32_GUI_Formatter.exe saved here:\x3cbr\x3e>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" EQU "USB" echo %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" echo %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" echo Launch FAT32_GUI_Formatter.exe saved here: %DRIVEU%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" echo Launch FAT32_GUI_Formatter.exe saved here: %DRIVE%\FAT32_GUI_Formatter\FAT32_GUI_Formatter.exe>>"%Drive%"\%guidename%
 :noportableF32
 
-copy /y "%Drive%"\%guidename%+Support\Guide\FAT32-NTFSend.001 "%Drive%"\%guidename%>nul
+copy /y "%Drive%"\%guidename%+Support\Guide\FAT32end.001 "%Drive%"\%guidename%>nul
+echo ^<^/ol^>^<br^>>>"%Drive%"\%guidename%
 
 :skippartition
 
@@ -28612,7 +29473,7 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableF32
 :skip
 
-echo Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop>>"%Drive%"\%guidename%
+echo ^<li^>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.>>"%Drive%"\%guidename%
 goto:noportableF32
 
 :portableF32
@@ -28621,6 +29482,8 @@ if /i "%USBCONFIG%" NEQ "USB" echo Launch FAT32_GUI_Formatter.exe saved here: %D
 :noportableF32
 
 copy /y "%Drive%"\%guidename%+Support\Guide\FAT32end.001 "%Drive%"\%guidename%>nul
+
+echo ^<^/ul^>^<br^>>>"%Drive%"\%guidename%
 
 :notfat32
 
@@ -28639,13 +29502,20 @@ if /i "%FORMAT%" EQU "5" goto:skipcopytousb
 
 if /i "%USBCONFIG%" NEQ "USB" goto:skipcopytousb
 
-support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eCopy Files to the Hard Drive\x3c/li\x3e\x3c/font\x3e\x3cbr\x3eCopy everything inside the %DRIVEU% folder to the root of your FAT32 hard-drive\partition.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%DriveU:~1,1%" EQU ":" (set fulldriveu=%Driveu%) else (set fulldriveu=%cd%\%Driveu%)
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eCopy Files to the Hard Drive\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e^<ul style^=align^=^"left^" type^=^"disc^"^>^<li^>At this time you should copy the files ModMii downloaded to the root of your FAT32 hard-drive\partition.^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>The files should be saved here: "%fulldriveu%"^<^/ul^>^<^/ul^>\x3cbr\x3eWhen finished copying, you can proceed with the optional steps below or safely remove the hard drive from your computer and plug it into port0 on your Wii to start playing^!\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+
+
+
 
 :skipcopytousb
 
 ::-------------WiiBackupManager--------------
 support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eManage Wii backups using Wii Backup Manager (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
+echo ^<i^>Wii Backup Manager is a Windows program to help transfer Wii games to and from hard drives and SD cards.^<br^>It can also download game covers, list your games, identify what games are missing between devices, and more.^<^/i^>^<br^>^<br^>>>"%Drive%"\%guidename%
+
+echo ^<ul style^=align^=^"left^" type^=^"disc^"^>>>"%Drive%"\%guidename%
 
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableWBM
@@ -28653,41 +29523,65 @@ if /i "%PCSAVE%" NEQ "Auto" goto:skip
 if /i "%Homedrive%" NEQ "%cd:~0,2%" goto:portableWBM
 :skip
 
-support\sfk echo -spat Launch WiiBackupManager from shortcuts on your Start Menu or Desktop\x3cbr\x3e>>"%Drive%"\%guidename%
+echo ^<li^>Launch Wii Backup Manager from shortcuts on your Start Menu or Desktop.>>"%Drive%"\%guidename%
 goto:noportableWBM
 
 :portableWBM
-if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat Launch WiiBackupManager.exe saved here: %DRIVEU%\WiiBackupManager\x3cbr\x3e>>"%Drive%"\%guidename%
-if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat Launch WiiBackupManager.exe saved here: %DRIVE%\WiiBackupManager\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" EQU "USB" echo ^<li^>Launch WiiBackupManager.exe saved here: %DRIVEU%\WiiBackupManager>>"%Drive%"\%guidename%
+if /i "%USBCONFIG%" NEQ "USB" echo ^<li^>Launch WiiBackupManager.exe saved here: %DRIVE%\WiiBackupManager>>"%Drive%"\%guidename%
 :noportableWBM
 
 
 copy /y "%Drive%"\%guidename%+Support\Guide\WBM.001 "%Drive%"\%guidename%>nul
 
 
-if /i "%USBFOLDER%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch Configurable USB-Loader, and hit the plus sign \x22\x2b\x22. \x3cbr\x3e>>"%Drive%"\%guidename%
+echo ^<ul style^=align^=^"left^" type^=^"disc^"^>>>"%Drive%"\%guidename%
 
-if /i "%FLOW%" EQU "*" support\sfk echo -spat To copy \x3cu\x3eoriginal\x3c/u\x3e Wii Disc's, insert the disc into your Wii and Launch WiiFlow, go to page 2 of WiiFlow's Settings and select \x22Install\x22, then select \x22Go\x22.\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" support\sfk echo -spat "\x3cli\x3eTo copy \x3cu\x3eoriginal\x3c/u\x3e Wii Discs, launch USB-Loader GX or Configurable USB-Loader and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd>+</kbd> to start making a backup.">>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "CFG" support\sfk echo -spat "\x3cli\x3eTo copy \x3cu\x3eoriginal\x3c/u\x3e Wii Discs, launch Configurable USB-Loader and insert the disc into your Wii, then press <kbd>+</kbd>.">>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "GX" support\sfk echo -spat "\x3cli\x3eTo copy \x3cu\x3eoriginal\x3c/u\x3e Wii Discs, launch USB-Loader GX and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd>+</kbd> to start making a backup.">>"%Drive%"\%guidename%
 
-support\sfk echo -spat \x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat "\x3cli\x3eWiiFlow Lite cannot be used to copy \x3cu\x3eoriginal\x3c/u\x3e Wii Discs. You will have to use a different USB-Loader or an older version of WiiFlow.">>"%Drive%"\%guidename%
 
-if /i "%FORMAT%" EQU "2" support\sfk echo -spat \x3cb\x3eWarning\x3c/b\x3e: Ripping to NTFS is \x3cu\x3every\x3c/u\x3e unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%FORMAT%" EQU "2" echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>^<b^>Warning^<^/b^>^: Using your Wii to rip games to NTFS is ^<u^>very^<^/u^> unstable, it is highly recommended to rip games to FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer.^<^/ul^>>>"%Drive%"\%guidename%
+
+if /i "%FORMAT%" EQU "3" echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>^<b^>Warning^<^/b^>^: Using your Wii to rip games to NTFS is ^<u^>very^<^/u^> unstable, it is highly recommended to rip games to FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer.^<^/ul^>>>"%Drive%"\%guidename%
 
 
-if /i "%FORMAT%" EQU "3" support\sfk echo -spat \x3cb\x3eWarning\x3c/b\x3e: Ripping to NTFS is \x3cu\x3every\x3c/u\x3e unstable, it is highly recommended to only add games to an NTFS hard drive using your computer.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+echo ^<^/ul^>^<br^>>>"%Drive%"\%guidename%
 
 
-::-------------CONFIGURE/CUSTOMIZE CONFIGURABLE USB-LOADER (OPTIONAL)-------------
+::-------------CONFIGURE/CUSTOMIZE USB-LOADER (OPTIONAL)-------------
+
+
+copy /y "%Drive%"\%guidename%+Support\Guide\CustomizeLoader.001 "%Drive%"\%guidename%>nul
+
+
+if /i "%LOADER%" EQU "GX" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+
+if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+
+::USBFOLDER indicates cfg usb loader
 if /i "%USBFOLDER%" NEQ "*" goto:skip
 
-support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eConfigure/Customize Configurable USB-Loader (optional)\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
-
-if /i "%USBCONFIG%" EQU "USB" support\sfk echo -spat To Configure/Customize your USB-Loader, use the Configurator for Configurable USB-Loader found here: %DRIVEU%\usb-loader\CfgLoaderConfigurator.exe\x3cbr\x3e>>"%Drive%"\%guidename%
-
-if /i "%USBCONFIG%" NEQ "USB" support\sfk echo -spat To Configure/Customize your USB-Loader, use the Configurator for Configurable USB-Loader found here: %DRIVE%\usb-loader\CfgLoaderConfigurator.exe\x3cbr\x3e>>"%Drive%"\%guidename%
+::---!!!DISABLED BUILDING CONFIG!!!---::
+::copy /y "%Drive%"\%guidename%+Support\Guide\CustomizeCFG.001 "%Drive%"\%guidename%>nul
 
 
-copy /y "%Drive%"\%guidename%+Support\Guide\CustomizeCFG.001 "%Drive%"\%guidename%>nul
+if /i "%USBCONFIG%" EQU "USB" echo ^<li^>To customize CFG USB-Loader use the Configurator for Configurable USB-Loader found here: %DRIVEU%\usb-loader\CfgLoaderConfigurator.exe^<br^>>>"%Drive%"\%guidename%
+
+
+
+if /i "%USBCONFIG%" NEQ "USB" echo ^<li^>To customize CFG USB-Loader use the Configurator for Configurable USB-Loader found here: %DRIVE%\usb-loader\CfgLoaderConfigurator.exe^<br^>>>"%Drive%"\%guidename%
+
+
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%"\%guidename%
+echo ^<li^>For tips and tricks on using the Configurator ^<a href^=^"http^:^/^/gwht.wikidot.com^/configurable-options^" target^=^"_blank^"^>click here^<^/a^>.^<^/ul^>^<br^>>>"%Drive%"\%guidename%
+
+
+
 :skip
 
 
@@ -28705,7 +29599,7 @@ GOTO:supportxflak
 
 
 ::copy files to USB
-if /i "%SNEEKTYPE:~0,1%" EQU "U" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eCopy Files to the Hard Drive\x3c/li\x3e\x3c/font\x3e\x3cbr\x3eCopy everything inside the %DRIVEU% folder to the root of your FAT32 hard-drive\partition.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+if /i "%SNEEKTYPE:~0,1%" EQU "U" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eCopy Files to the Hard Drive\x3c/li\x3e\x3c/font\x3e\x3cbr\x3eCopy everything inside the %DRIVEU% folder to the root of your FAT32 hard-drive\partition.\x3cbr\x3eThen safely remove it from your computer and plug it into port0 on your Wii and proceed to the next step.\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 
 support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eLaunch an Exploit on Your Wii\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
@@ -28718,7 +29612,7 @@ goto:exploits
 :continueAbstinenceguide
 
 
-::Install IOS51 if required
+::Install IOS53 if required
 if /i "%FIRMSTART%" EQU "4.3" goto:skipWADIOS53
 if /i "%FIRMSTART%" EQU "4.2" goto:skipWADIOS53
 
@@ -28731,7 +29625,7 @@ support\sfk echo -spat This runs Casper which is configured to start %neekname%.
 
 ::NEEK TIPS
 
-support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eHelpful Hints on Using %neekname%\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eHelpful Hints on Using %neekname%\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 copy /y "%Drive%"\%guidename%+Support\Guide\NEEKTIPS.001 "%Drive%"\%guidename%>nul
 if /i "%SNEEKTYPE:~-1%" EQU "D" copy /y "%Drive%"\%guidename%+Support\Guide\NEEKDITIPS.001 "%Drive%"\%guidename%>nul
@@ -28739,7 +29633,7 @@ copy /y "%Drive%"\%guidename%+Support\Guide\NEEKTIPSEND.001 "%Drive%"\%guidename
 
 
 ::ADD end of ordered list and line break (</ol><br>)
-support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
+::support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%
 
 ::ADD end of ordered list and line break (</ol><br>)
 support\sfk echo -spat \x3c/ol\x3e\x3cbr\x3e>>"%Drive%"\%guidename%

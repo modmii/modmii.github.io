@@ -1,4 +1,4 @@
-<!----------Custom Printing CSS and button below--------------->
+<!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
   visibility: hidden;
@@ -8,34 +8,32 @@
   img {
     display: none !important;
   }
-
   * {
     background-image: none !important;
   }
 }
-
-
 </style>
+<!----------Print button disabled--------
 <script>
 document.write("<input type='button' " +
 "onClick='window.print()' " +
 "class='printbutton' " +
-"value='Print your custom guide'/>");
+"value='Print without images'/>");
 </script>
-<!----------Custom Printing CSS and button above--------------->
-
- 
-
+---------Custom Print button above------->
 
 
 <!--------------Title, pic and scam warning below------------------>
-<center><font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
-<a href="http://modmii.000webhostapp.com" target="_blank"><img src="http://modmii.000webhostapp.com/Images/modmiibanner.png" border="0"/></a></center>
-<center>This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
+<p style="text-align:center">
+<font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
+<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0"/></a><br>
+This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
 
 <b>THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.<br>
 NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!<br>
-USE THIS AT YOUR OWN RISK!</b></center><br><br>
+USE THIS AT YOUR OWN RISK!</b>
+</p>
+<br><br>
 <!--------------Title, pic and scam warning above------------------>
 
 
@@ -46,4 +44,4 @@ USE THIS AT YOUR OWN RISK!</b></center><br><br>
 <!-------------------------Chosen options chapter below--------------------->
 <font size="6"><li>Your chosen options</li></font><br>
 This guide was generated using the following parameters:<br>
-<ul>
+<ul style=align="left" type="disc">

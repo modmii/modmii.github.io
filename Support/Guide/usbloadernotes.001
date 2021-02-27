@@ -1,14 +1,7 @@
-<!-------------------------Important notes chapter below--------------------->
-<font size="6"><li><a name="Notes">Important Notes</a></li></font><br>
-<ul>
 <!-------------------------------USB LOADER NOTES BELOW---------------------------------->
-<li>cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii before setting up your USB-Loader and/or external Hard-Drive.</li>
-<li>cIOS249 rev18 or higher required to use Hard Drives Formatted as FAT32 or NTFS (cIOS222\223\224 rev4 or higher also works).</li>
-<li>Not all external hard drive's are compatible with the Wii, for a list of which USB hard drive's are compatible, see this webpage: <a href="http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">http://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List</a></li>
-<!-------------------------------USB LOADER NOTES ABOVE---------------------------------->
-
-<li>If you have questions, a more detailed guide can be found at <a href="http://www.sites.google.com/site/completesg/" taget="_blank">www.sites.google.com/site/completesg/</a></li>
-</ul>
-<!-------------------------Important notes chapter above--------------------->
-
-<br>
+<li>Double check that your hard drive is always plugged into usb port0 - the one nearest the edge of the Wii.
+<li>Not all external hard drive's are compatible with the Wii, small USB flash drives or 'thumb drives' in particular often don't work very well. For a list of which USB hard drive's are compatible, check out the <a href="https://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">USB Devices Compatibility List</a></li>
+	<ul style=align="left" type="square">
+	<li>If you are determined to try using a small USB flash drive or 'thumb drive', you may have more success if running the loader off of an SD Card and formatting the flash drive as WBFS instead of FAT32. This can be done using Wii Backup Manager. However, doing so will not only restrict the drive to storing only Wii games, but will not be accessible by your PC without a program like Wii Backup Manager. In fact, every time you plug the hard drive into your PC you will be prompted to reformat it.
+	</ul>
+<li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a></li></li>

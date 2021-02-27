@@ -1,11 +1,32 @@
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/DaESnuMzzbU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/HBCIOS.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/wo2uza5wwjs?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/HBCIOS.gif" border="0"/></a><br>
 <br>
-In the HomeBrew Channel, hit the "home" button. In the top right corner you will see the IOS used by the HBC.<br>
 
-If the HBC is using IOS58 and your HBC is not upside-down, you can skip this step.<br>
+<ul style=align="left" type="disc">
+<li>While in the HomeBrew Channel, press the <kbd>Home</kbd> button.
+
+	<ul style=align="left" type="square">
+	<li>In the top right corner you will see the IOS used by the HBC.
+
+		<ul style=align="left" type="square">
+		<li>If the HBC is using IOS58 and your HBC is not upside-down, you can skip this step.
+		<li>If the HBC is not using IOS58 or it is upside-down, you should continue with this step to reinstall it.
+		</ul>
+	</ul>
+</ul>
 <br>
-If the HBC is not using IOS58 or it is upside-down, you should continue with this step to reinstall it.<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/tup8Mwqa8QQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/ReinstallHBC.gif" border="0"/></a><br>
+
+
+<ul style=align="left" type="disc">
 <br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/vRlj4GXCk1g?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/ReinstallHBC.gif" border="0"/></a><br>
-Launch the HackMii_Installer via the HBC.<br>
-Use the Hackmii Installer to fix/re-install the HBC (using IOS58). Once you've successfully reinstalled the HBC, you can move onto the next step of the guide.<br>
+<li>Launch the HackMii Installer via the HBC.
+<li>Use the Hackmii Installer to fix/re-install the HBC following the same procedure as you did the first time.
+
+
+	<ul style=align="left" type="square">
+	<li>This time the HackMii Installer should use IOS58 since it's preferred and we just installed it.
+	</ul>
+
+<li>Once you've successfully reinstalled the HBC, you can move onto the next step of the guide.
+</ul>
+<br>

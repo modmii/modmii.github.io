@@ -1,20 +1,69 @@
 <!-------------------------Installing WADs section below--------------------------->
 <font size="5"><li>Install WADs</li></font><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/_OUlkjGzqE4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/WADs.gif" border="0"/></a><br>
-Load Multi-Mod Manager (MMM) via the HomeBrew Channel.<br>
-If IOS236 is not already loaded, select "Load another IOS", then select IOS236<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/rdnpbwjKi80?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/WADs.gif" border="0"/></a><br>
+<i>MMM has many tools, but we'll mainly be using it as a WAD Manager. A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<br>
 
-<b>Note:</b> If this step fails with error -ret 2011 or other, you may need to retry patching IOS236. If the Wii was previously softmodded, you can try loading cIOS250 (or others like 202,222,223,224,236,249)<br>
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. Stick to your ModMii guide and you'll be fine.<br>
 <br>
-In Multi-Mod Manager's main menu, go down to select "WAD Manager".<br>
-Install the following WADs from the WAD folder (this list of WADs is unique to the information you provided ModMii).<br>
-Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click here to learn what IOSs and cIOSs are! " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Fact   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click here to learn what IOSs and cIOSs are!  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<i>Fun Fact! I mentioned IOSs and cIOSs before, "the Wii console uses the 'IOS' system to communicate with the hardware, it's like a driver (compared to Windows). It contains information and communication tools (like how to access the Disc drive, how to access USB, read the savegames data stored on internal memory, etc.)" ~Cyan. If you're curious to learn more about IOSs or cIOSs, a thorough explanation can be found in <a href="https://gbatemp.net/threads/d2xl-cios-a-fork-of-davebaols-d2x-cios.558581/#post-8968173" target="_blank">Cyan's IOS Explanation post</a>.</i><br>
+</p>
+</div></div></div>
+
+
+
+<ol type="A">
+<li><b>On your Wii, load Multi-Mod Manager (MMM) from the Homebrew Channel</b>.
+
+	<ul style=align="left" type="disc">
+	<li>If IOS249 is not already loaded, select "Load another IOS", then select IOS249.</b>
+		<ul style=align="left" type="square">
+		<li>Note: If this step fails with error -ret 2011 or other, you may need to retry installing a custom IOS249. If the Wii was previously softmodded, you can try loading cIOS250 (or others like 251, 222, etc.)<br>
+		</ul>
+	</ul>
+
+<li><b>In Multi-Mod Manager's main menu, go down to select "WAD Manager".</b><br>
+<li><b>Install your custom list of <u>guidewadcountplaceholder WADs</u> found in the spoiler below</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
+	</ul>	
+
+<li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
+
+	<ul style=align="left" type="disc">
+	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd><br>
+	</ul>
+
+<li>After you've marked all guidewadcountplaceholder WADs, <b>press <kbd>A</kbd></b>.
+<li>Confirm the total number selected for installation is guidewadcountplaceholder, then <b>press <kbd>A</kbd> again to install</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>If any WADs fail to install properly please retry installing them.<br>
+	</ul>
+
+<li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd>Home</kbd> button on your Wiimote to exit MMM.</b>
+</ol>
+
 <br>
-Mark each of the following WADs for installation by navigating to each WAD and hitting "+"<br>
-Alternatively, you can hold "+" for 2 seconds to select all the WADs in the folder.<br>
-After you've marked all the WADs listed below, press 'A' twice to install them.<br>
-<br>
-If any files fail to install properly, they will remain marked for installation, so just retry installing those files.<br>
-<br>
-<b>Your unique list of WADs to install are as follows:</b>
-<ul>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click to See Your Unique List of guidewadcountplaceholder WADs to Install  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide your list of WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to See Your Unique List of guidewadcountplaceholder WADs to Install  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+
+<b>Here's your unique list of guidewadcountplaceholder WADs to install:</b>
+<ol>
+
+

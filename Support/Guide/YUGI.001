@@ -1,11 +1,14 @@
 <b>Yu-Gi Owned</b><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/rnfzVAADujM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/Yu-GiOwned.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/VnY80QT8aKg?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Yu-GiOwned.gif" border="0"/></a><br>
 Requirements: A copy of "Yu-Gi-Oh! 5D's", a standard SD card (will not work with an SDHC card), and a nunchuck or classic controller.<br>
+<br>
 <ol type="A"><li>Load the Yu-Gi-Oh game at least once (otherwise you won't be able to copy over the hack).</li>
-<li>Delete or move\backup your personal "Yu-Gi-Oh! 5D's" save file before copying the files to your SD Card.</li>
-<li>Copy the ModMii files to the root of your SD card (if you haven’t already) and insert it into your Wii.</li>
+<li>Delete or move\backup your personal "Yu-Gi-Oh! 5D's" save file.</li>
+	<ul style=align="left" type="disc">
+	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the Wii to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your Wii before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
+	</ul>
 <li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Yu-Gi-Oh" save that corresponds to your region.</li>
-<li>Start the Yu-Gi-Oh game. The exploit is launched after continuing past
-the opening menu.</li></ol><br>
-
-<b>Note to European Users:</b> The default Yu-Gi Owned PAL exploit is 60Hz. If it does not work on your 50Hz TV, navigate to "SD:\private\wii\title\" and rename "RYOP" to something else then rename "RYOP-50hz" to "RYOP" and try again.
+<li>Start the Yu-Gi-Oh game. Continue past the opening menu to launch the exploit and load your homebrew application.</li></ol><br>
+<ul style=align="left" type="disc">
+<li><b>Note for European Users:</b> The default Yu-Gi Owned PAL exploit is 60Hz. If it does not work on your 50Hz TV, navigate to "SD:\private\wii\title\" and rename "RYOP" to something else then rename "RYOP-50hz" to "RYOP" and try again.
+</ul>

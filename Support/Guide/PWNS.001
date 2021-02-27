@@ -1,9 +1,12 @@
 <b>Indiana Pwns</b><br>
-<A href="" onClick="popup = window.open('http://www.youtube.com/embed/-GN4cdhxjsI?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="http://expresstek.org/xflak/files/gifs/IndianaPwns.gif" border="0"/></a><br>
-Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC card), and a nunchuck.<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/OBWGgL0S-Gk?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IndianaPwns.gif" border="0"/></a><br>
+Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC card), and a nunchuck controller.<br>
+<br>
 <ol type="A"><li>Load the "LEGO Indiana Jones" game at least once (otherwise you won't be able to copy over the hack).</li>
-<li>Delete or move\backup your personal LEGO Indiana Jones save file before copying the files to your SD Card.</li>
-<li>Copy the ModMii files to the root of your SD card (if you haven’t already) and insert it into your Wii.</li>
+<li>Delete or move\backup your personal LEGO Indiana Jones save file.</li>
+	<ul style=align="left" type="disc">
+	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the Wii to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your Wii before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
+	</ul>
 <li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Indiana Pwns" save that corresponds to your region.</li>
 <li>Play the Lego Indiana Jones game. Load the new save file.</li>
 <li>You will be in the Main hall, walk towards the camera, enter the first door on the right (Indy's left) and go into the "Courtyard".</li>
