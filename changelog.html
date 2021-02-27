@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 
 <head>
@@ -19,7 +18,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 }
 </SCRIPT>
 // -->
-
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
 
@@ -29,36 +28,132 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 
 
-<div id="menu" align="center" >
-<a href="home.html"><img src="Images/Home.png" onmouseover="this.src='Images/Home2.png'" onmouseout="this.src='Images/Home.png'" border="0" alt="Home"></a>
-<a href="usage.html"><img src="Images/Usage.png" onmouseover="this.src='Images/Usage2.png'" onmouseout="this.src='Images/Usage.png'" border="0" alt="Usage"></a>
-<a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/"><img src="Images/Support.png" onmouseover="this.src='Images/Support2.png'" onmouseout="this.src='Images/Support.png'" border="0" alt="Support"></a>
-<a href="credits.html"><img src="Images/Credits.png" onmouseover="this.src='Images/Credits2.png'" onmouseout="this.src='Images/Credits.png'" border="0" alt="Credits"></a>
+<p style="text-align:center">
+<a href="index.html" class="BUTTON_BCZ"><font color="white"><b>Home</b></font></a>
+<a href="usage.html" class="BUTTON_BCZ"><font color="white"><b>Usage</b></font></a>
+<a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank" class="BUTTON_BCZ"><font color="white"><b>Help</b></font></a>
+<a href="https://discord.gg/cMnBRACQwQ" target="_blank" class="BUTTON_BCZ"><font color="white"><b>Discord</b></font></a>
+<a href="credits.html" class="BUTTON_BCZ"><font color="white"><b>Credits</b></font></a>
+<a href="donations.html" class="BUTTON_BCZ"><font color="white"><b>Donate</b></font></a>
+</p>
 
-</div>
+<p style="text-align:center">
+<img src="Images/modmiibanner.png" border="0" alt="ModMii Banner"><br>
+</p>
 
-<center>
-<div class="disclamer" id="disclamer">
-<br>
-<img src="Images/modmiibanner.png" border="0"/><br>
-
-This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
-
-<b>THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.<br>
-NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!<br>
-USE THIS SOFTWARE AT YOUR OWN RISK!</b>
-</div>
-</center>
-<br><br>
 
 
 
 <center>
 <div class="justify" align="left" style="width:800px;">
 <!-- Start of the changelog -->
-<ul>
+<ul style=align="left" type="disc">
 
-<h1>6.5.1 Changelog:</h1>
+<h1>6.6.0 Changelog - 2021:02-28:</h1>
+
+<h1>Summary (6.6.0)</h1>
+<li>New\updated website, exploits, recommended cIOSs, System Menu IOSs, apps, modding steps, videos, discord server and donations page.
+<li>Major improvements to ModMii's custom generated guides, updates to many of ModMii's downloads, and fixed a handful of broken links.
+<br>
+<h1>General (6.6.0)</h1>
+<li>Updated links to ModMii's new site; modmii.github.io and migrated the project from sourceforge to github.
+<li>Added str2hax exploit to ModMii, enabling you to softmod using a FAT32 HDD in place of an SD Card to do most things. This is always included as an exploit option in all of ModMii's guides.
+<li>Rewrote ModMii's updater to be able to adapt to potential website changes. Updates should work even if github goes down or ModMii moves to a different home for some other reason.
+<li>ModMii's File Cleanup feature now also removes the Priiloader Launcher (new) and ModMii Guides.
+<li>Added a dedicated "Extra Brick Protection" setting to Options menu. Previously it had a shared setting with "Update IOSs".
+<li>Added d2x version selector to the main Options menu in addition to Download Page 4 and Advanced Downloads Page.
+<li>Added hermes cIOS setting to Options menu; when enabled 202 & 222-224 are included in recommended cIOSs. Default is disabled since they are generally redundant with other recommended cIOSs
+<li>Added a check to prevent creating dead-end shortcuts if PC Apps are not downloaded successfully.
+<li>Created a new ModMii Discord Support Server for users who prefer to use Discord instead of email or gbatemp: https://discord.gg/cMnBRACQwQ
+<li>Donations now accepted (again) at modmii.github.io/donations.html. No easter eggs or perks given in exchange for donations. Support is given freely and equally.
+<br>
+
+<h1>CIOS (6.6.0)</h1>
+<li>Updated default version of d2x from v8-final to v10-beta52 and rev number maxxed out to 65535.
+<li>ModMii and wii.guide have coordinated updating our recommended cIOSs to install d2x cIOS with base 38 to slot 251. Previously ModMii didn't install anything to this slot, and wii.guide recommended base 58 to this slot. There are 2 games that are supported by d2x base 38 that do not fully work with the standard d2x base 57 & 56 setup in slots 249 & 250. Wii.guide previously recommended installing d2x base 58 to slot 251, but this only worked for 1 of these games. Similarly ModMii previously recommended Hermes cIOSs by default which worked in these cases. Today I am proud to say that these two great Wii modding resources are fully aligned in their recommended cIOS setup. More info here: https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List
+<li>Made three new changes to the patched IOS60v6174 that ModMii installs to System Menu IOS slots; 1) tagged 00000000.app for better sysCheck IOS detection; 2) changed version number from 16174 to 65535 since it is no longer needed for sysCheck IOS detection; and 3) replaced Nintendo's RSA Public key with RC24's enabling it to support RiiConnect24, including Wii Mail. With this System Menu IOS you can use RiiConnect24 without having to be on SM4.3. Note that for full RiiConnect24 functionality you will still need to use the RiiConnect24 patcher, but you can skip updating to 4.3 and installing RC24's IOS80 (which carries some small 003 brick potential). ModMii's sysCheck updater will accept both the current and previous versions as being up to date since these changes are non-vital improvements.
+<li>Hermes cIOSs 202 & 222-234 are no longer included in recommended cIOSs by default since they are generally redundant with other recommended cIOSs. This can be re-enabled in ModMii's Options.
+<li>Adjusted the tag on the IOS236 WAD from Download Page 1 so that it reports the same detailed info in sysCheck logs as the version installed by the IOS236 Installer homebrew. This WAD is still not used in any ModMii functions, but it remains available for download.
+<br>
+
+
+<h1>Wizards/Guides (6.6.0)</h1>
+<li>Removed IOS236 installation from main modding procedure; instead Priiloader and WADs are installed using ahbprot access. IOS236 WAD, IOS236 installer and Simple IOS Patcher still available in Download Pages.
+<li>Replaced MMM with Some YAWMM Mod for ModMii's main wizard and sysCheck Updater wizard as it has support for Motion+ controllers. WiiMod Lite is not supported because of reasons identified here: http://tiny.cc/0ihotz
+<li>MMM is still used in some guides where it's launched directly from an exploit to install WADs then use it's App Launcher to load the next app without having to rename files and repeat an exploit. Notes added to these guides on how to proceed you only have Motion+ remotes.
+<li>Bundled a new stand-alone script saved to ModMii's Support folder: ExploitAppSelector.bat. It does exactly what it says and works when saved to the root of any SD or COPY_TO_SD folder, or ModMii's main\support folders. ModMii wizards that launch MMM via an exploit also save this script to COPY_TO_SD and reference it in guides to help users change the app launched by exploits.
+<li>Added a new first step to guides to explicitly check the format of your SD card (or HDD) and to format it as FAT32 if necessary. Not applicable to Region Change Guides and sysCheck Updater guides as these users will already have done this. These steps were already present in ModMii's USB-Loader setup guides.
+<li>In the ModMii main wizard, if a user indicates his wii is not a virgin and knows specifically what he wants to update, and they decide to change SM versions but say no to installing Priiloader, ModMii will override this poor decision and include Priiloader in its guide. I don't think many people are using ModMii this way, but just in case.
+<li>Added KoreanKii to region change guides as an optional step to add or remove the Korean Key.
+<li>Updated many gifs used in ModMii guides as well as created new ones for ModMii's new videos.
+<li>Nintendont is now downloaded as a Gamecube "plugin" when setting up a USB-Loader with one of ModMii's wizards. All apps still available on a stand-alone basis in classic download pages.
+<li>Major improvements to the content and formatting of ModMii's custom guides. "Fun Facts" and other pro-tips were added in an attempt to help first-time modders learn more about what they're doing instead of just following steps.
+<li>Added support for the LetterBomb exploit to ModMii's guides. This was essentially already supported in the form of Wilbrand's Mailbox Bomb. However, now when ModMii prompts users for their Wii's MAC Address they will be given the option to skip this for now and enter it later. Wilbrand's Mailbox Bomb is constructed if a MAC address is provided; but if skipped, ModMii will not prepare the exploit directly but instead instruct users to download and save LetterBomb to their SD Card. If on SM4.3, LetterBomb is always set to be a secondary exploit option.
+<li>SysCheck Updater guides now include a copy of the original sysCheck in a spoiler.
+<li>Alphabetized WADs in ModMii's guides as well as downloads in general.
+<br>
+
+
+<h1>App Updates (6.6.0)</h1>
+<li>Priiloader updated to v0.9 with lots of new features; ModMii bundles it with the Priiloader Launcher app and a modified hacks_hash with the "Lock System Menu with Black Screen" hack removed. Added some important info and warnings to meta.xml; e.g. how to access Priiloader, how it can be removed when updating or (un)installing a new System Menu, name changed to "Priiloader Installer", etc.
+<li>Reordered paths for USB-Loader Forwarder Channel to prioritize USBLoaderGX first, WiiFlow second, and CFG third. Also the removed splash screen to speed up load time.
+<li>Updated Any Region Changer (ARC) to ARC ModMii Edition (ARCME) by scooby74029; if ARCME detects a region mismatch, you only have to select the "Auto Fix Settings" to correct it. Older versions of ARC required you to set a Region, save, then change the video mode back to it's previous setting, and save again. ARCME's "Auto Fix Settings" takes care of all that (i.e. it does not change the video mode but changes everything else to align with the installed System Menu region). It's a minor improvement over the original but don't forget it also supports Motion+ remotes so ARCME FTW!
+<li>Updated USBLoaderGX to blackb0x's r1272 mod v5 released in Feb 2021. It's changelog is quite impressive, you should read it: http://tiny.cc/gxenhanced
+<li>Updated WiiFlow Lite to Fledge68's v5.4.8
+<li>Updated Nintendont to v6.490.
+<li>Updated Wii64 beta 1.1 to beta 1.2; which was released 3 years ago, sorry for missing it! Please report if you notice something like this!
+<li>Updated Savegame Manager GX to rev76 by Dj_Skual.
+<li>Updated Homebrew Browser from v0.3.9c to v0.3.9e.
+<li>Updated sysCheck to the latest, slightly modified, version of sysCheck HDE. The only change is an updated URL to re-enable uploading of reports; thanks to the RC24 team for maintaining this functionality!
+<li>Two versions of Bootmii SD Files are now considered valid. The older version hosted online by Team Twiizer, and now also the newer version that the latest HackMii Installer creates when preparing an SD card.
+<li>Added custom meta.xml and icon.png to the HackMii Installer. The installer itself is still downloaded from the original source and NOT mirrored.
+<li>Updated Configurable USB Loader MOD Patched to the latest version 70r78.11 by nitro from 2017/01/15 (mighty.dol plugin also updated) http://tiny.cc/r5kqtz
+<li>CFG USBLoader downloads will only update\overwrite apps folder, existing usb-loader config files will not be overwritten. Previous behaviour would have renamed the usb-folder if detected; now it just skips any duplicates when copying config files.
+<li>No longer creates a custom CFG USBLoader config.txt to avoid potential user error\overwrite if manually copying files over to SD or USB.
+<br>
+
+
+<h1>SysCheck Updater (6.6.0)</h1>
+<li>d2x v8-final and v10-beta52 are considered equivalent by ModMii's sysCheck updater.
+<li>SysCheck updater will now consider cIOSs valid regardless of their installed version number (i.e. d2x v10 will be considered valid if it's v65535, v21010 or some other number).
+<li>Added check for RiiConnect24's IOS31 to ModMii's sysCheck Updater, if detected users will be prompted whether they want to keep or overwrite RiiConnect24.
+<li>Added check to sysCheck updater to abort if console type is detected as vWii
+<br>
+
+
+<h1>SNEEK (6.6.0)</h1>
+<li>Added checks for SNEEK when building UNEEK, and vice versa. Users are prompted if there's a conflict to choose whether to skip or overwrite SD files for one with the other. This is especially helpful for users trying to set up a SNEEK and UNEEK dual-boot configuration. Users are instructed how to have both SNEEK and UNEEK (with or without DI) set up simultaneously to allow quickly switching between them using USBLoaderGX.
+<li>Added many more SNEEK notes to help users get started, and notes are now also displayed if using ModMii Skin.
+<br>
+
+
+<h1>Videos (6.6.0)</h1>
+<li>9 new or updated videos added to ModMii guides (although the KoreanKii videos are so short they almost don't count)
+<li>str2hax and Priiloader v0.9 videos by Foxlet and directed by XFlak.
+<li>Some YAWMM Mod, ARCME, KoreanKii removal videos recorded by Clutz450, edited by alexander1970 and directed by XFlak.
+<li>KoreanKii installation video by JoostinOnline.
+<li>LetterBomb and Downloading LetterBomb videos by DeadlyFoez. He recorded these ages ago but they were never used until now.
+<li>Updated HackMii Installer video recorded by Foxlet, combined with older footage from DeadlyFoez, edited by alexander1970, directed by XFlak. This video now shows what the installer looks like if you can install Bootmii as boot2 as well as if you cannot.
+<br>
+
+
+<h1>Fixed dead links (6.6.0)</h1>
+<li>Updated ModMii's cheat code downloader to use codes.rc24.xyz since geckocodes.org has shut down.
+<li>Updated broken links for Accio Hacks, FAT32 GUI Formatter and UnRAR (UnRAR required for SNEEK installations). Broken links were only problematic if the files had not been previously downloaded and saved to ModMii's temp folder.
+<li>If you happen to type "scam" after typing "skip" and accidentally press enter at the scam warning screen, ModMii will no longer prompt you with the aforementioned screen until the next software update. Yes I know this isn't a dead link, but if you made it this far into the changelog and are still paying attention you earned an egg!
+<li>Reuploaded and updated links for ModMii's youtube videos.
+<br>
+
+
+<h1>Other (6.6.0)</h1>
+<li>Other minor changes.
+<li>So this is the final FINAL update... again... see you for the next one!
+<br>
+<br>
+<br>
+<br>
+
+<h1>6.5.1 Changelog - 2019-03-24:</h1>
 <li>Updated the ModMii Installer. It does a better job of avoiding false-positive antivirus alerts. It also now includes an Uninstaller.
 <li>Updated download links in response to pending filetrip shutdown.
 <li>Other minor changes.
@@ -247,7 +342,7 @@ USE THIS SOFTWARE AT YOUR OWN RISK!</b>
 
 
 <h1>6.1.0 Changelog:</h1><li>Letterbomb was replaced by Wilbrand. Wilbrand was created by giantpune and he has given ModMii the unique privilege of being the first to use and share Wilbrand. Wilbrand, named after the inventor of TNT, is a discless Wii Message Board exploit, or "bomb" if you will. ModMii users will no longer need to be instructed to manually download the Letterbomb exploit; instead ModMii will prompt users for their Wii's unique MAC address and build the exploit on the fly. Unlike Letterbomb, ModMii will only require a wifi connection the first time it constructs the Wilbrand exploit. ModMii will only build the Wilbrand exploit for 4.3 system menu's; however, Wilbrand is supported on all system menu's from 3.0 to 4.3. The reason ModMii does not offer Wilbrand exploits for system menu's 3.0 - 4.2 is because bannerbomb, another discless exploit, can be used instead and it does not require knowing your Wii's MAC Address. Wilbrand is available on ModMii's Download Page 2 as well as other wizard\guide functions. A big thank you goes out to giantpune for creating Wilbrand and allowing ModMii to share it with the world.</li><li>ModMii's forwarder dol builder and all of ModMii's supported forwarder channels were updated from v11c to v12 and now support 3TB+ hard drives. Thanks for this goes out to FIX94 and the WiiXplorer team.</li><li>Fixed bug that sometimes occurred when building an "Advanced cIOS" from ModMii's Advanced Downloads page. If a new IOS slot was not identified then version number patches were not applied. Thanks to JoostinOnline for spotting and reporting this bug.</li><li>Fixed rare bug where the wrong guide was generated if installing a custom theme without also using MMM to install at least one WAD.</li><li>sysCheck updated from 2.1.0.b17 to 2.1.0.b18 on ModMii's download page 2.</li><li>WiiFlow-Mod was renamed back to WiiFlow at the request of the WiiFlow team.</li><li>Other minor changes.</li><br>
-<center>ModMii versions 7.0.0 and 7.0.1 were all part of an elaborate <a href="http://gbatemp.net/topic/207126-modmii-for-windows-official-support-topic/page__view__findpost__p__4167035">April Fools Joke.</a></center>
+<center>ModMii versions 7.0.0 and 7.0.1 were all part of an elaborate <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/page-329#post-4167035">April Fools Joke.</a></center>
 <del><h1>7.0.1 Changelog:</h1>
 
 <li>Corrected an issue that some users were having when updating to ModMii v7.0.0.</li>

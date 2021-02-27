@@ -1,13 +1,1 @@
-body
-{
-font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif;
-background:#000000 url('Images/Gradient.png') repeat-x top;
-font-smooth:always;
-color:#d3d3d3;
-margin-right:200px;
-}
-A:link {text-decoration: none;color: blue;}
-A:visited {text-decoration: none;color: blue;}
-A:active {text-decoration: none;color: blue;}
-A:hover {text-decoration: none; color: red;}
-div.justify {text-align:justify;text-justify:inter-word;}
+body{font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif;background:#000000 url('Images/Gradient.png') repeat-x top;font-smooth:always;color:#d3d3d3;margin-right:200px;}A:link {text-decoration: none;color: blue;}A:visited {text-decoration: none;color: blue;}A:active {text-decoration: none;color: blue;}A:hover {text-decoration: none; color: red;}div.justify {text-align:justify;text-justify:inter-word;}.BUTTON_BCZ {   -webkit-border-radius: 20px;   -moz-border-radius: 20px;   border-radius: 20px;   height: 0;   line-height: 0;   color: #FFFFFF;   font-family: Helvetica;   width: 100px;   font-size: 24px;   font-weight: 100;   padding: 17px;   background-color: #000000;   text-decoration: none;   display: inline-block;   cursor: pointer;   text-align: center;}.BUTTON_BCZ:hover {   border: solid #000000 0;   background: rgba(14, 14, 14, 0.46);   background-image: -webkit-linear-gradient(top, rgba(14, 14, 14, 0.46), rgba(168, 171, 176, 0.48));   background-image: -moz-linear-gradient(top, rgba(14, 14, 14, 0.46), rgba(168, 171, 176, 0.48));   background-image: -ms-linear-gradient(top, rgba(14, 14, 14, 0.46), rgba(168, 171, 176, 0.48));   background-image: -o-linear-gradient(top, rgba(14, 14, 14, 0.46), rgba(168, 171, 176, 0.48));   background-image: -webkit-gradient(to bottom, rgba(14, 14, 14, 0.46), rgba(168, 171, 176, 0.48));   -webkit-border-radius: 20px;   -moz-border-radius: 20px;   border-radius: 20px;   text-decoration: none;}
