@@ -56,6 +56,8 @@ exit
 support\nircmd.exe win trans ititle "ModMiiUpdater" 0
 support\nircmd.exe win hide ititle "ModMiiUpdater"
 
+copy /y support\wizapp.exe support\wizapp2.exe>nul
+
 setlocal
 chcp 437>nul
 
