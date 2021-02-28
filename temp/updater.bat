@@ -85,9 +85,10 @@ if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%
 if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
 support\7za2 x %UPDATENAME%%newversion%.zip -aoa
 start support\wizapp2.exe PB UPDATE 100
-del support\7za2.exe>nul
 del %UPDATENAME%%newversion%.zip>nul
 start support\wizapp2.exe PB CLOSE
+del support\7za2.exe>nul
+del support\wizapp2.exe>nul
 Start ModMiiSkin.exe
 exit
 
