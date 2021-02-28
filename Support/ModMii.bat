@@ -9,7 +9,7 @@ if not exist support cd..
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=6.6.0
+set currentversion=6.6.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -3850,7 +3850,6 @@ if /i "%fixslash%" EQU "yes" set DRIVEUTEMP=%DRIVEUTEMP:~0,-1%
 if /i "%fixslash%" EQU "yes" goto:doublecheckU
 
 
-
 ::if second char is ":" check if drive exists
 if /i "%DRIVEUTEMP:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVEUTEMP:~0,2%" (goto:skipcheck) else (echo.)
@@ -3859,9 +3858,10 @@ echo %DRIVEUTEMP:~0,2% doesn't exist, please try again...
 goto:DRIVEUCHANGE
 :skipcheck
 
+
 ::try making directory, and if fails, don't use this setting
-if not exist "%DRIVETEMP%" mkdir "%DRIVETEMP%"
-if not exist "%DRIVETEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVEUCHANGE)
+if not exist "%DRIVEUTEMP%" mkdir "%DRIVEUTEMP%"
+if not exist "%DRIVEUTEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVEUCHANGE)
 
 
 set DRIVEU=%DRIVEUTEMP%
@@ -28746,7 +28746,7 @@ if /i "%RECCIOS%" EQU "Y" goto:semiskip
 if /i "%VIRGIN%" EQU "N" goto:tinyskip
 if /i "%CMIOSOPTION%" EQU "on" support\sfk echo -spat \x3cli\x3eInstall a cMIOS (can be disabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :semiskip
-if /i "%CMIOSOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not Install a cMIOS (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
+if /i "%CMIOSOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install a cMIOS (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
 :tinyskip
 
 if /i "%hermesOPTION%" EQU "off" support\sfk echo -spat \x3cli\x3eDo not install Hermes cIOSs (can be enabled in options)\x3c/li\x3e>>"%Drive%"\%guidename%
