@@ -49,6 +49,43 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <!-- Start of the changelog -->
 <ul style=align="left" type="disc">
 
+
+<h1>6.6.2 Changelog - 2021:04-06:</h1>
+
+<li>Added multi-language support for analyzing syscheck.csv logs (English, German, French, Spanish & Italian).
+<li>NAND backups are now included in syscheck updater guides when updating the HBC or Bootmii.
+<li>Improvements to syscheck updater guide based on the version of the HBC currently installed:
+	<ul style=align="left" type="square">
+	<li>If the HBC/Bootmii needs to be updated, and IOS58 is already installed, updating the HBC is the first step.
+	<li>If the HBC/Bootmii needs to be updated, and IOS58 is not already installed, ModMii will have you update this AFTER the install WADs (or Priiloader) step in order to have the HBC reinstall to use IOS58.
+	<li>If the HBC is super old (older than v1.0.7), updating the HBC is the first step in order to gain ahbprot\no-ios-reload support, then ONLY if IOS58 was not already installed according to the syscheck the HBC is reinstalled after the install Wads (or Priiloader) step in order to have the HBC reinstall to use IOS58.
+	</ul>
+<li>ModMii now detects if it's missing write access to the installation folder, and only if necessary, prompts you to either change the installation directory or press any key to re-launch itself as admin. When relaunching itself, if the standard ModMii shortcuts are detected, they will also be updated to launch ModMii as admin in the future.
+<li>Added write permissions check for SD and USB directory settings.
+<li>ModMii now works when installed to folders with special characters.
+<li>Updated launchers (ModMii.exe and ModMiiSkin.exe) by person66 to support carets in installation path.
+<li>Fixed bug where advanced download IOS patches were not being applied if the slot number was left unchanged.
+<li>tmdedit.exe is no longer used to build d2x v10beta52 and 53alt cIOSs. One user briefly encountered problems with tmdedit that have not resurfaced, but just in case.
+<li>Fixed bug when saving\loading MAC address for Wilbrand in ModMii Classic's saved wizard settings from a previous session.
+<li>Restored code page to 437 as some users reported slowdowns with unicode (65001). Unicode still used but very sparingly when running the sneek installer (Windows 10 only).
+<li>Updated cygwin1.dll to clear warnings when running ModMii's sneek game extractor or forwarder ISO creator; warnings made no difference on the output of files.
+<li>Added note to Region Change guides on how to update Nintendo channels (e.g. News, Internet, etc.) in case existing channels don't work on the new region.
+<li>Removed the HBC Reinstallation youtube video and gif from guides (redundant).
+<li>Priiloader updated to v0.9.1 and updated hacks_hash for WiimmFi v4.
+<li>Updated the version of Priiloader (and hacks) that get installed to Emulated NANDs to v0.9.1 (from v0.7 neek mod). Also added note when installing Priiloader to an EmuNAND that it is bypassed in neek2o rev 93-96.
+<li>USB Loader GX updated to v3.0 r1272 mod v6.
+<li>WiiFlow Lite updated to v5.4.9.
+<li>Nintendont updated to v6.492.
+<li>ShowMiiWads updated to v1.5 Mod; now includes 64bit version in addition to 32bit.
+<li>If ModMii appears infected you should quarantine for 2 weeks before gaming online.
+<li>Other minor changes.
+
+
+
+<br>
+
+
+
 <h1>6.6.1 Changelog - 2021:02-28:</h1>
 <li>Quick bugfix.
 <br>
