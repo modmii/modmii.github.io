@@ -17,7 +17,7 @@ support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 ::-------------------CMD LINE SUPPORT----------------------
 ::pass all arguments to modmii classic
 
-set one=%~1
+set "one=%~1"
 if "%one%"=="" (goto:notcmd)
 
 set cmdinput=%*
@@ -31,15 +31,66 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=6.6.1
+set currentversion=6.6.2
 set currentversioncopy=%currentversion%
 set agreedversion=
+
+
+
+::check for write access
+if exist "temp\test" goto:skip
+mkdir "temp\test"
+if not exist "temp\test" (goto:WriteError) else (goto:donecheck)
+
+:skip
+if not exist temp\test\test.txt goto:skip
+del temp\test\test.txt>nul
+if exist temp\test\test.txt (goto:WriteError) else (goto:donecheck)
+
+:skip
+echo test>temp\test\test.txt
+if exist temp\test\test.txt goto:donecheck
+
+:WriteError
+
+::for skin mode, force screen to be visible
+support\nircmd.exe win activate ititle "ModMiiSkinCMD"
+support\nircmd.exe win trans ititle "ModMiiSkinCMD" 255
+
+cls
+echo ModMii needs to be run as an Administrator if saved to this directory.
+echo Please either run ModMii from somewhere else like C:\ModMii or run as admin
+echo.
+echo Press any key to update shortcuts and run ModMii Skin as administrator...
+pause>nul
+
+set cmdinput=%*
+if not "%cmdinput%"=="" set cmdinput=%cmdinput:"=%
+if not "%cmdinput%"=="" support\nircmd.exe shortcut "%cd%\ModMiiSkin.exe" "%temp%" "ModMiiSkin" "%cmdinput%"
+if "%cmdinput%"=="" support\nircmd.exe shortcut "%cd%\ModMiiSkin.exe" "%temp%" "ModMiiSkin"
+support\hexalter.exe "%temp%\ModMiiSkin.lnk" 0x15=0x20>nul
+
+if exist "%userprofile%\Desktop\ModMii.lnk" support\hexalter.exe "%userprofile%\Desktop\ModMii.lnk" 0x15=0x20>nul
+if exist "%userprofile%\Desktop\ModMii Skin.lnk" support\hexalter.exe "%userprofile%\Desktop\ModMii Skin.lnk" 0x15=0x20>nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ModMii.lnk" support\hexalter.exe "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ModMii.lnk" 0x15=0x20>nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ModMii Skin.lnk" support\hexalter.exe "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ModMii Skin.lnk" 0x15=0x20>nul
+cd "%temp%"
+start ModMiiSkin.lnk
+exit
+
+:donecheck
+if exist "temp\test" rd /s /q "temp\test"> nul
+
+
+
+
+
 
 set SkinMode=Y
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
 
-chcp 65001>nul
+chcp 437>nul
 
 ::if not exist temp mkdir temp
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
@@ -90,8 +141,8 @@ IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%hermesOPTION%"=="" set hermesOPTION=off
 IF "%FWDOPTION%"=="" set FWDOPTION=on
 IF "%ExtraProtectionOPTION%"=="" set ExtraProtectionOPTION=on
-IF "%Drive%"=="" set Drive=COPY_TO_SD
-IF "%DriveU%"=="" set DriveU=COPY_TO_USB
+IF "%Drive%"=="" set "Drive=%cd%\COPY_TO_SD"
+IF "%DriveU%"=="" set "DRIVEU=%cd%\COPY_TO_USB"
 IF "%ACTIVEIOS%"=="" set ACTIVEIOS=on
 IF "%AUTOUPDATE%"=="" set AUTOUPDATE=on
 IF "%ModMiiverbose%"=="" set ModMiiverbose=off
@@ -121,32 +172,15 @@ IF "%TurboGraFX-16cheat%"=="" set TurboGraFX-16cheat=ON
 IF "%TurboGraFX-CDcheat%"=="" set TurboGraFX-CDcheat=ON
 
 
-::check if drive folder exists--if second char is ":" check if drive exists
-if /i "%DRIVE%" NEQ "COPY_TO_SD" goto:skip
-set DRIVE="%cd%\COPY_TO_SD"
-set DRIVE=%DRIVE:&=^&%
-set DRIVE=%DRIVE:~1,-1%
-:skip
-
-if /i "%DRIVE:~1,1%" EQU ":" goto:skip
-set DRIVE="%cd%\%DRIVE%"
-set DRIVE=%DRIVE:&=^&%
-set DRIVE=%DRIVE:~1,-1%
-:skip
 
 
-::check if DRIVEU folder exists--if second char is ":" check if DRIVEU exists
-if /i "%DRIVEU%" NEQ "COPY_TO_USB" goto:skip
-set DRIVEU="%cd%\COPY_TO_USB"
-set DRIVEU=%DRIVEU:&=^&%
-set DRIVEU=%DRIVEU:~1,-1%
-:skip
+::convert drive to absolute path if applicable, and if second char is ":" check if drive exists
+if /i "%DRIVE:~1,1%" NEQ ":" set "DRIVE=%cd%\%DRIVE%"
+if not exist "%DRIVE:~0,2%" set "DRIVE=%cd%\COPY_TO_SD"
 
-if /i "%DRIVEU:~1,1%" EQU ":" goto:skip
-set DRIVEU="%cd%\%DRIVEU%"
-set DRIVEU=%DRIVEU:&=^&%
-set DRIVEU=%DRIVEU:~1,-1%
-:skip
+if /i "%DRIVEU:~1,1%" NEQ ":" set "DRIVEU=%cd%\%DRIVEU%"
+if not exist "%DRIVEU:~0,2%" set "DRIVEU=%cd%\COPY_TO_USB"
+
 
 
 ::Special update
@@ -369,7 +403,7 @@ if /i "%waoutnum%" EQU "6" (set Menu1=S) & (set wabmp=support\bmp\SNEEK.bmp) & (
 if /i "%waoutnum%" EQU "7" (set Menu1=O) & (set wabmp=support\bmp\OPTIONS.bmp) & (goto:OPTIONS)
 
 
-if /i "%waoutnum%" EQU "8" (start https://modmii.github.io/credits.html) & (goto:MENU)
+if /i "%waoutnum%" EQU "8" (start https://modmii.github.io) & (goto:MENU)
 
 
 if /i "%waoutnum%" EQU "9" (set SkinMode=) & (start ModMii.exe) & (exit)
@@ -381,7 +415,7 @@ set DLQUEUE=
 set waoutnum=
 ::set waoutput=
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
-set waoutput=%cd:&=^&%\temp\DownloadQueues\YourQueueHere.bat
+set "waoutput=%cd%\temp\DownloadQueues\YourQueueHere.bat"
 
 set watext=Select the ModMii Download Queue you want to download.~~Note, when you click Finish ModMii will begin downloading immediately. To view the contents of your queue before downloading it use ModMii Classic to load it.~~To create custom Download Queues use ModMii Classic.
 
@@ -395,11 +429,19 @@ start /w support\wizapp FINISH FB
 if errorlevel 2 goto:MENU
 if errorlevel 1 goto:MENU
 
+
+::double escape real carrots, but correct ^^& back to ^& (which is done by default by wizapp)
+support\sfk filter -spat -quiet "%wabat%" -rep _\x5e_\x5e\x5e_ -rep _\x5e\x5e\x26_\x5e\x26_ -write -yes>nul
+
 call "%wabat%"
 
+set "DLQUEUE=%waoutput%"
 
+::remove quotes (if applicable)
+setlocal ENABLEDELAYEDEXPANSION
+set DLQUEUE=!DLQUEUE:"=!
+setlocal DISABLEDELAYEDEXPANSION
 
-set DLQUEUE=%waoutput:&=^&%
 
 if not exist "%DLQUEUE%" goto:PICKDOWNLOADQUEUE
 
@@ -408,15 +450,20 @@ IF ERRORLEVEL 1 goto:PICKDOWNLOADQUEUE
 
 copy /y "%DLQUEUE%" temp\DownloadQueues >nul
 
+
 ::get file name without path or extension
-echo %DLQUEUE:&=^&% >temp\temp.txt
+echo "%DLQUEUE%">temp\temp.txt
+support\sfk filter -spat "temp\temp.txt" -lsrep _\x22__ -lerep _\x22__ -write -yes>nul
+
+
+
 support\sfk filter -quiet temp\temp.txt -rep _*\__ -rep _.bat*__ -write -yes
 set /p DLQUEUE= <temp\temp.txt
 
 
-if not exist "%DRIVE:&=^&%" mkdir "%DRIVE:&=^&%"
+if not exist "%DRIVE%" mkdir "%DRIVE%"
 
-set classicCMD=L %DLQUEUE:&=^&%
+set "classicCMD=L %DLQUEUE%"
 
 goto:StartModMiiClassic
 
@@ -433,9 +480,9 @@ set waoutput=
 set watext=              Select an Option to review or change:~~               All Settings will be saved automatically~                           when you click "Back"~~              Or click "Cancel" to discard changes~~More options and info available in ModMii Classic Mode
 
 
-if /i "%AudioOption%" EQU "on" set wainput= SD Card ^&Drive\Path; ^&USB HDD Drive\Path; ^&PC Programs Save Location; ^&Other Miscellaneous Options; ^&SNEEK Options; Check for ModMii Updates ^&Now; Disable sound at ^&Finish (Currently Enabled); ^&Restore Default Settings
+if /i "%AudioOption%" EQU "on" set wainput= SD Card ^&Drive\Path; ^&USB HDD Drive\Path; ^&PC Programs Save Location: %PCSAVE%; ^&Other Miscellaneous Options; ^&SNEEK Options; Check for ModMii Updates ^&Now; Disable sound at ^&Finish (Currently Enabled); ^&Restore Default Settings
 
-if /i "%AudioOption%" NEQ "on" set wainput= SD Card ^&Drive\Path; ^&USB HDD Drive\Path; ^&PC Programs Save Location; ^&Other Miscellaneous Options; ^&SNEEK Options; Check for ModMii Updates ^&Now; Enable sound at ^&Finish (Currently Disabled); ^&Restore Default Settings
+if /i "%AudioOption%" NEQ "on" set wainput= SD Card ^&Drive\Path; ^&USB HDD Drive\Path; ^&PC Programs Save Location: %PCSAVE%; ^&Other Miscellaneous Options; ^&SNEEK Options; Check for ModMii Updates ^&Now; Enable sound at ^&Finish (Currently Disabled); ^&Restore Default Settings
 
 start /w support\wizapp RB
 
@@ -471,13 +518,9 @@ set CMIOSOPTION=off
 set hermesOPTION=off
 set FWDOPTION=on
 set ExtraProtectionOPTION=on
-set DRIVE="%cd%\COPY_TO_SD"
-set DRIVE=%DRIVE:&=^&%
-set DRIVE=%DRIVE:~1,-1%
+set "DRIVE=%cd%\COPY_TO_SD"
 
-set DRIVEU="%cd%\COPY_TO_USB"
-set DRIVEU=%DRIVEU:&=^&%
-set DRIVEU=%DRIVEU:~1,-1%
+set "DRIVEU=%cd%\COPY_TO_USB"
 
 set ACTIVEIOS=on
 set AUTOUPDATE=on
@@ -527,17 +570,8 @@ echo Set CMIOSOPTION=%CMIOSOPTION%>> Support\settings.bat
 echo Set hermesOPTION=%hermesOPTION%>> Support\settings.bat
 echo Set FWDOPTION=%FWDOPTION%>> Support\settings.bat
 echo Set ExtraProtectionOPTION=%ExtraProtectionOPTION%>> Support\settings.bat
-
-echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
-echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
-support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
-
-support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
-
-support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
-
-
-
+echo Set "Drive=%DRIVE%">> Support\settings.bat
+echo Set "DriveU=%DRIVEU%">> Support\settings.bat
 echo Set overwritecodes=%overwritecodes%>> Support\settings.bat
 echo Set cheatregion=%cheatregion%>> Support\settings.bat
 echo Set cheatlocation=%cheatlocation%>> Support\settings.bat
@@ -1248,7 +1282,7 @@ if /i "%MENU1%" EQU "S" (set REGIONTEMP=%SNKREGION%) else (set REGIONTEMP=%REGIO
 if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo; ^&Mii; ^&Shop (with IOS56)
 
 if /i "%MENU1%" NEQ "S" goto:notS
-set wainput= ^&Photo; ^&Mii; ^&Shop; ^&Internet; ^&Weather; ^&News; ^&Wii Speak
+set wainput= ^&Photo; ^&Mii; ^&Shop; ^&Internet; ^&Weather^^; ^&News^^; ^&Wii Speak^^^^
 if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo; ^&Mii; ^&Shop
 :notS
 
@@ -1332,9 +1366,9 @@ if not "%AdvancedMarked%"=="" set waoutnum=%AdvancedMarked%
 
 set watext=~~~~       Select which of the following to Install or Update
 
-if /i "%CMIOSOPTION%" EQU "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs and cMIOS; ^&Priiloader v0.7 (and System Menu hacks); ^&System Menu Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
+if /i "%CMIOSOPTION%" EQU "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs and cMIOS; ^&Priiloader v0.9.1 (and System Menu hacks); ^&System Menu Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
 
-if /i "%CMIOSOPTION%" NEQ "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs; ^&Priiloader v0.7 (and System Menu hacks); System Menu ^&Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
+if /i "%CMIOSOPTION%" NEQ "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs; ^&Priiloader v0.9.1 (and System Menu hacks); System Menu ^&Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
 
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -1504,11 +1538,10 @@ if "%USBGUIDE%"=="" goto:WPAGE21
 
 ::...................................SD Card Location...............................
 :DriveChange
-set drivetemp=%DRIVE:&=^&%
+set "drivetemp=%DRIVE%"
 set waoutnum=
-set waoutput=%DRIVE:&=^&%
-
-set wabmplast=%wabmp%
+set "waoutput=%DRIVE%"
+set "wabmplast=%wabmp%"
 set wabmp=support\bmp\SDCARD.bmp
 
 
@@ -1523,51 +1556,70 @@ start /w support\wizapp FB DIR
 
 if errorlevel 2 goto:MENU
 if not errorlevel 1 goto:notback
-set wabmp=%wabmplast%
+set "wabmp=%wabmplast%"
 if /i "%MENU1%" EQU "O" goto:notback
 goto:%BACKB4DRIVE%
 :notback
 
+
+
+::double escape real carrots, but correct ^^& back to ^& (which is done by default by wizapp)
+support\sfk filter -spat -quiet "%wabat%" -rep _\x5e_\x5e\x5e_ -rep _\x5e\x5e\x26_\x5e\x26_ -write -yes>nul
+
 call "%wabat%"
 
-set DRIVETEMP=%waoutput:&=^&%
+set "DRIVETEMP=%waoutput%"
 
-
-
-::remove quotes from variable (if applicable)
-echo "set DRIVETEMP=%DRIVETEMP%">temp\temp.txt
-support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
-
-support\sfk filter -spat -quiet temp\temp.bat -rep _\x26_\x5e\x26_ -write -yes
-
-call temp\temp.bat
-del temp\temp.bat>nul
-del temp\temp.txt>nul
+::remove quotes (if applicable)
+setlocal ENABLEDELAYEDEXPANSION
+set Drivetemp=!Drivetemp:"=!
+setlocal DISABLEDELAYEDEXPANSION
 
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVETEMP:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVETEMP:~0,2%" (goto:skipcheck) else (echo.)
+echo "%DRIVETEMP:~0,2%" doesn't exist, please try again...
+goto:DRIVECHANGE
 :skipcheck
+
 
 
 ::try making directory, and if fails, don't use this setting
 if not exist "%DRIVETEMP%" mkdir "%DRIVETEMP%"
-if not exist "%DRIVETEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:DRIVECHANGE)
+if not exist "%DRIVETEMP%" (echo You Have Entered an Incorrect Key or need Admin rights for this location) & (if /i "%AudioOption%" NEQ "off" start support\nircmd.exe mediaplay 3000 "support\FAIL.mp3") & (goto:DRIVECHANGE)
 
 
-set DRIVE=%DRIVETEMP:&=^&%
-set REALDRIVE=%DRIVE:&=^&%
+::check for write access
+if not exist "%DRIVETEMP%\test.txt" goto:skip
+del "%DRIVETEMP%\test.txt">nul
+if exist "%DRIVETEMP%\test.txt" (goto:WriteError) else (goto:donecheck)
+
+:skip
+echo test>"%DRIVETEMP%\test.txt"
+if exist "%DRIVETEMP%\test.txt" goto:donecheck
+
+:WriteError
+echo You need Admin rights to use this location
+if /i "%AudioOption%" NEQ "off" start support\nircmd.exe mediaplay 3000 "support\FAIL.mp3"
+::@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:DRIVECHANGE
+
+:donecheck
+if exist "%DRIVETEMP%\test.txt" del "%DRIVETEMP%\test.txt">nul
+
+
+
+set "DRIVE=%DRIVETEMP%"
 
 
 ::autosave drive setting to settings.bat
-support\sfk filter Support\settings.bat -!"Set Drive=" -write -yes>nul
-echo Set Drive=%DRIVE:&=^&%>>Support\settings.bat
-support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
-support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
-::goto:
+support\sfk filter Support\settings.bat -!"Set*Drive=" -write -yes>nul
+echo Set "Drive=%DRIVE%">>Support\settings.bat
+::support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
+::support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
 
-set wabmp=%wabmplast%
+set "wabmp=%wabmplast%"
 
 ::if /i "%MENU1%" EQU "FC" goto:FileCleanup
 
@@ -1602,15 +1654,15 @@ if /i "%SNEEKSELECT%" EQU "1" (set backB4wpageLast=DRIVECHANGE) & (goto:WPAGELAS
 
 ::...................................USB Hard Drive Location...............................
 :DriveUChange
-set driveUtemp=%DRIVEU:&=^&%
+set "driveUtemp=%DRIVEU%"
 set waoutnum=
-set waoutput=%DRIVEU:&=^&%
+set "waoutput=%DRIVEU%"
 
-set wabmplast=%wabmp%
+set "wabmplast=%wabmp%"
 set wabmp=support\bmp\USBDIR.bmp
 
 ::makedrive if not exist
-::if not exist "%DRIVE:&=^&%" mkdir "%DRIVE:&=^&%"
+::if not exist "%DRIVE%" mkdir "%DRIVE%"
 
 set watext=~~Select where to save files for your USB Hard Drive~~Note: if your USB Hard Drive is not already formatted properly (or if you are unsure), it may save some time to choose a location that is not your USB Hard Drive
 
@@ -1621,49 +1673,68 @@ start /w support\wizapp FB DIR
 
 if errorlevel 2 goto:MENU
 if not errorlevel 1 goto:notback
-set wabmp=%wabmplast%
+set "wabmp=%wabmplast%"
 if /i "%MENU1%" EQU "O" goto:notback
 goto:%BACKB4DRIVEU%
 :notback
 
+
+::double escape real carrots, but correct ^^& back to ^& (which is done by default by wizapp)
+support\sfk filter -spat -quiet "%wabat%" -rep _\x5e_\x5e\x5e_ -rep _\x5e\x5e\x26_\x5e\x26_ -write -yes>nul
+
 call "%wabat%"
 
-set DRIVEUTEMP=%waoutput:&=^&%
+set "DRIVEUTEMP=%waoutput%"
 
-
-::remove quotes from variable (if applicable)
-echo "set DRIVEUTEMP=%DRIVEUTEMP%">temp\temp.txt
-support\sfk filter -quiet temp\temp.txt -rep _""""__>temp\temp.bat
-support\sfk filter -spat -quiet temp\temp.bat -rep _\x26_\x5e\x26_ -write -yes
-call temp\temp.bat
-del temp\temp.bat>nul
-del temp\temp.txt>nul
+::remove quotes (if applicable)
+setlocal ENABLEDELAYEDEXPANSION
+set DRIVEUTEMP=!DRIVEUTEMP:"=!
+setlocal DISABLEDELAYEDEXPANSION
 
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVEUTEMP:~1,1%" NEQ ":" goto:skipcheck
-if exist "%DRIVEUTEMP:~0,2%" goto:skipcheck
-goto:DRIVEUCHANGE
+if exist "%DRIVEUTEMP:~0,2%" (goto:skipcheck) else (echo.)
+echo "%DRIVEUTEMP:~0,2%" doesn't exist, please try again...
+goto:DRIVECHANGE
 :skipcheck
+
 
 
 ::try making directory, and if fails, don't use this setting
 if not exist "%DRIVEUTEMP%" mkdir "%DRIVEUTEMP%"
-if not exist "%DRIVEUTEMP%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000^> nul) & (goto:DRIVEUCHANGE)
+if not exist "%DRIVEUTEMP%" (echo You Have Entered an Incorrect Key or need Admin rights for this location) & (if /i "%AudioOption%" NEQ "off" start support\nircmd.exe mediaplay 3000 "support\FAIL.mp3") & (goto:DRIVEUCHANGE)
 
 
-set DRIVEU=%DRIVEUTEMP:&=^&%
+::check for write access
+if not exist "%DRIVEUTEMP%\test.txt" goto:skip
+del "%DRIVEUTEMP%\test.txt">nul
+if exist "%DRIVEUTEMP%\test.txt" (goto:WriteError) else (goto:donecheck)
+
+:skip
+echo test>"%DRIVEUTEMP%\test.txt"
+if exist "%DRIVEUTEMP%\test.txt" goto:donecheck
+
+:WriteError
+echo You need Admin rights to use this location
+if /i "%AudioOption%" NEQ "off" start support\nircmd.exe mediaplay 3000 "support\FAIL.mp3"
+::@ping 127.0.0.1 -n 2 -w 1000> nul
+goto:DRIVEUCHANGE
+
+:donecheck
+if exist "%DRIVEUTEMP%\test.txt" del "%DRIVEUTEMP%\test.txt">nul
+
+
+
+set "DRIVEU=%DRIVEUTEMP%"
 
 
 ::autosave drive setting to settings.bat
-support\sfk filter Support\settings.bat -!"Set DriveU=" -write -yes>nul
-echo Set DriveU=%DRIVEU:&=^&%>>Support\settings.bat
-support\sfk filter	 -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
-support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
+support\sfk filter Support\settings.bat -!"Set*DriveU=" -write -yes>nul
+echo Set "DriveU=%DRIVEU%">>Support\settings.bat
 
-::goto:
 
-set wabmp=%wabmplast%
+set "wabmp=%wabmplast%"
 
 if /i "%MENU1%" EQU "O" goto:options
 
@@ -1680,7 +1751,6 @@ if /i "%SNEEKSELECT%" EQU "2" (set B4SNKPAGE3=DRIVEUCHANGE) & (goto:snkpage3)
 if /i "%SNEEKSELECT%" EQU "3" (set B4SNKPAGE3=DRIVEUCHANGE) & (goto:snkpage3)
 if /i "%SNEEKSELECT%" EQU "4" goto:SNKDISCEX2
 
-pause
 
 ::...................................Check For Updates...............................
 
@@ -1815,28 +1885,28 @@ set watext=Confirm your settings are correct then click "Finish"
 
 
 if /i "%MENU1%" NEQ "W" goto:notwizard
-if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive:&=^&%
-if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %Drive:&=^&%~and to: %DriveU:&=^&%
+if /i "%USBCONFIG%" NEQ "USB" set "watext=%watext%~~Save files to: %Drive%"
+if /i "%USBCONFIG%" EQU "USB" set "watext=%watext%~~Save files to: %Drive%~and to: %DriveU%"
 :notwizard
 
 if /i "%MENU1%" NEQ "U" goto:notusb
-if /i "%USBCONFIG%" EQU "USB" set watext=%watext%~~Save files to: %DriveU:&=^&%
-if /i "%USBCONFIG%" NEQ "USB" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%USBCONFIG%" EQU "USB" set "watext=%watext%~~Save files to: %DriveU%"
+if /i "%USBCONFIG%" NEQ "USB" set "watext=%watext%~~Save files to: %Drive%"
 :notusb
 
 
 if /i "%MENU1%" NEQ "S" goto:notS
 if /i "%SNEEKSELECT%" NEQ "2" goto:not2
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive:&=^&%
-if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %DriveU:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set "watext=%watext%~~Save files to: %Drive%"
+if /i "%SNEEKTYPE:~0,1%" NEQ "S" set "watext=%watext%~~Save files to: %DriveU%"
 goto:notS
 :not2
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set watext=%watext%~~Save files to: %Drive:&=^&%
-if /i "%SNEEKTYPE:~0,1%" NEQ "S" set watext=%watext%~~Save files to: %Drive:&=^&%~and to: %DriveU:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set "watext=%watext%~~Save files to: %Drive%"
+if /i "%SNEEKTYPE:~0,1%" NEQ "S" set "watext=%watext%~~Save files to: %Drive%~and to: %DriveU%"
 :notS
 
-if /i "%MENU1%" EQU "H" set watext=%watext%~~Save files to: %Drive:&=^&%
-if /i "%MENU1%" EQU "RC" set watext=%watext%~~Save files to: %Drive:&=^&%
+if /i "%MENU1%" EQU "H" set "watext=%watext%~~Save files to: %Drive%"
+if /i "%MENU1%" EQU "RC" set "watext=%watext%~~Save files to: %Drive%"
 
 
 if /i "%MENU1%" EQU "H" set wainput=%wainput%                       HackMii Solutions Guide~
@@ -1909,8 +1979,8 @@ if /i "%SNKFLOW%" EQU "Y" set wainput=%wainput%~* Install WiiFlow
 
 IF not "%addwadfolder%"=="" set wainput=%wainput%~* Install wads from custom folder:~  %addwadfolder%
 
-
 if /i "%ThemeSelection%" EQU "R" set wainput=%wainput%~* Install Dark Wii Red Theme - %effect%
+
 if /i "%ThemeSelection%" EQU "G" set wainput=%wainput%~* Install Dark Wii Green Theme - %effect%
 if /i "%ThemeSelection%" EQU "BL" set wainput=%wainput%~* Install Dark Wii Blue Theme - %effect%
 if /i "%ThemeSelection%" EQU "O" set wainput=%wainput%~* Install Dark Wii Orange Theme - %effect%
@@ -1948,6 +2018,11 @@ if /i "%FIRMSTART%" EQU "o" set wainput=%wainput%~* Current System Menu is less 
 
 set wainput=%wainput%~* Desired System Menu is %FIRM%%REGION%
 
+if /i "%macaddress%" EQU "S" goto:skip
+if not "%macaddress%"=="" set wainput=%wainput%~* MAC Address - %macaddress%
+:skip
+
+
 set wainput=%wainput%~
 if /i "%PIC%" EQU "Y" set wainput=%wainput%~* Install the Photo Channel
 if /i "%NET%" EQU "Y" set wainput=%wainput%~* Install the Internet Channel
@@ -1962,7 +2037,7 @@ if /i "%Speak%" EQU "Y" set wainput=%wainput%~* Install the Wii Speak Channel
 if /i "%HMInstaller%" EQU "Y" set wainput=%wainput%~* Install\Update the Homebrew Channel and Bootmii
 
 if /i "%RECCIOS%" NEQ "Y" goto:smallskip
-if /i "%CMIOSOPTION%" EQU "on" (set wainput=%wainput%~* Install\Update recommended cIOSs and cMIOS) else (set wainput=%wainput%~* Install\Update recommended cIOSs)
+if /i "%CMIOSOPTION%" EQU "on" (set "wainput=%wainput%~* Install\Update recommended cIOSs and cMIOS") else (set "wainput=%wainput%~* Install\Update recommended cIOSs")
 :smallskip
 
 if /i "%UpdatesIOSQ%" EQU "Y" set wainput=%wainput%~* Install Active IOSs and patched System Menu IOSs
@@ -2436,8 +2511,8 @@ goto:SNKPAGE2
 ::...................................SNEEK Page3 - SNEEK REGION...............................
 :SNKPAGE3
 
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE:&=^&%
-if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set "nandpath=%DRIVE%"
+if /i "%SNEEKTYPE:~0,1%" EQU "U" set "nandpath=%DRIVEU%"
 
 set DITYPE=off
 if /i "%SNEEKTYPE%" EQU "UD" set DITYPE=on
@@ -2463,9 +2538,12 @@ start /w support\wizapp RB
 if errorlevel 2 goto:MENU
 if errorlevel 1 goto:%B4SNKPAGE3%
 
+::double escape real carrots, but correct ^^& back to ^& (which is done by default by wizapp)
+support\sfk filter -spat -quiet "%wabat%" -rep _\x5e_\x5e\x5e_ -rep _\x5e\x5e\x26_\x5e\x26_ -write -yes>nul
+
 call "%wabat%"
 
-set SNKREGIONMarked=%waoutnum%
+set "SNKREGIONMarked=%waoutnum%"
 
 if /i "%waoutnum%" EQU "0" set SNKREGION=U
 if /i "%waoutnum%" EQU "1" set SNKREGION=E
@@ -2537,7 +2615,7 @@ set waoutput=
 if not "%SNKMarked%"=="" set waoutnum=%SNKMarked%
 
 
-set watext=~~Select which of the following to install to your Emulated NAND?
+set watext=~Select which of the following to install to your Emulated NAND?~~Note: neek2o rev93-96 will bypass Priiloader if detected on EmuNAND. To access Priiloader on your emulated NAND, hold reset just as your EmuNAND is booting up.
 
 
 ::use question marks instead of ^&, will be replaced later
@@ -2627,10 +2705,10 @@ set waoutput=
 
 
 ::recall checked items
-if not "%addwadfolder%"=="" set waoutput=%addwadfolder%
+if not "%addwadfolder%"=="" set "waoutput=%addwadfolder%"
 
 
-set watext=~~~Select the folder of WADs you'd like to install to your emulated NAND
+set "watext=~Select the folder of WADs you'd like to install to your emulated NAND~~Make sure path does not contain & ( ) ^"
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -2639,11 +2717,35 @@ start /w support\wizapp FB DIR
 if errorlevel 2 goto:MENU
 if errorlevel 1 goto:SNKPAGE4a
 
+::double escape real carrots, but correct ^^& back to ^& (which is done by default by wizapp)
+support\sfk filter -spat -quiet "%wabat%" -rep _\x5e_\x5e\x5e_ -rep _\x5e\x5e\x26_\x5e\x26_ -write -yes>nul
+
 call "%wabat%"
 
-if not exist "%waoutput%\*.wad" goto:noWADserror
+set "addwadfolder=%waoutput%"
 
-set addwadfolder=%waoutput%
+::remove quotes (if applicable)
+setlocal ENABLEDELAYEDEXPANSION
+set addwadfolder=!addwadfolder:"=!
+setlocal DISABLEDELAYEDEXPANSION
+
+
+::fix so addwadfolder works without quotes
+::set "addwadfolder=%addwadfolder:^=^^%"
+::set "addwadfolder=%addwadfolder:&=^&%"
+
+
+if not exist "%addwadfolder%\*.wad" goto:noWADserror
+
+
+findStr /I /C:"^" "%wabat%" >nul
+IF not ERRORLEVEL 1 (set "watext=~~Select a folder without special characters and try again.") & (start /w support\wizapp TB) & (goto:addwadfolder)
+
+findStr /I /C:"(" "%wabat%" >nul
+IF not ERRORLEVEL 1 (set "watext=~~Select a folder without special characters and try again.") & (start /w support\wizapp TB) & (goto:addwadfolder)
+
+findStr /I /C:")" "%wabat%" >nul
+IF not ERRORLEVEL 1 (set "watext=~~Select a folder without special characters and try again.") & (start /w support\wizapp TB) & (goto:addwadfolder)
 
 
 ::goto
@@ -2672,7 +2774,7 @@ set waoutput=
 
 
 ::recall checked items
-if not "%SNKcBCMarked%"=="" set waoutnum=%SNKcBCMarked%
+if not "%SNKcBCMarked%"=="" set "waoutnum=%SNKcBCMarked%"
 
 set watext=          Would you like to use DML or NMM?~~DML is installed to real NAND and accessed via an emulated NAND (or NeoGamma) to allow you to play gamecube games off an SD Card.~~NMM allows you to save\load GameCube game saves using an SD Card instead of a GC Memory Card.
 
@@ -2707,8 +2809,8 @@ goto:SNKPAGE5
 set waoutnum=
 set waoutput=
 
-if /i "%SNEEKTYPE:~0,1%" EQU "S" set nandpath=%DRIVE:&=^&%
-if /i "%SNEEKTYPE:~0,1%" EQU "U" set nandpath=%DRIVEU:&=^&%
+if /i "%SNEEKTYPE:~0,1%" EQU "S" set "nandpath=%DRIVE%"
+if /i "%SNEEKTYPE:~0,1%" EQU "U" set "nandpath=%DRIVEU%"
 
 if /i "%neek2o%" EQU "ON" goto:DOIT
 if /i "%SNKS2U%" EQU "N" goto:quickskip
@@ -2718,13 +2820,13 @@ if /i "%SNKREGION%" EQU "U" set nandregion=us
 if /i "%SNKREGION%" EQU "E" set nandregion=eu
 if /i "%SNKREGION%" EQU "J" set nandregion=jp
 if /i "%SNKREGION%" EQU "K" set nandregion=kr
-if not exist "%nandpath:&=^&%\nands\pl_%nandregion%" set nandpath=%nandpath:&=^&%\nands\pl_%nandregion%
-if not exist "%nandpath:&=^&%\nands\pl_%nandregion%" goto:quickskip
+if not exist "%nandpath%\nands\pl_%nandregion%" set "nandpath=%nandpath%\nands\pl_%nandregion%"
+if not exist "%nandpath%\nands\pl_%nandregion%" goto:quickskip
 
 :NANDname
 SET /a NANDcount=%NANDcount%+1
-if not exist "%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%" set nandpath=%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%
-if not exist "%nandpath:&=^&%\nands\pl_%nandregion%%NANDcount%" goto:quickskip
+if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" set "nandpath=%nandpath%\nands\pl_%nandregion%%NANDcount%"
+if not exist "%nandpath%\nands\pl_%nandregion%%NANDcount%" goto:quickskip
 goto:NANDname
 :quickskip
 
@@ -2815,42 +2917,42 @@ if /i "%MENU1%" EQU "L" goto:sendcmd
 ::---------ModMii Wizard-------------
 if /i "%MENU1%" NEQ "W" goto:notwizard
 
-set classicCMD=W %FIRMSTART% %REGION% %FIRM%
+set "classicCMD=W %FIRMSTART% %REGION% %FIRM%"
 
 ::THEMES
-if /i "%ThemeSelection%" EQU "R" set classicCMD=%classicCMD% Red
-if /i "%ThemeSelection%" EQU "G" set classicCMD=%classicCMD% Green
-if /i "%ThemeSelection%" EQU "BL" set classicCMD=%classicCMD% Blue
-if /i "%ThemeSelection%" EQU "O" set classicCMD=%classicCMD% Orange
+if /i "%ThemeSelection%" EQU "R" set "classicCMD=%classicCMD% Red"
+if /i "%ThemeSelection%" EQU "G" set "classicCMD=%classicCMD% Green"
+if /i "%ThemeSelection%" EQU "BL" set "classicCMD=%classicCMD% Blue"
+if /i "%ThemeSelection%" EQU "O" set "classicCMD=%classicCMD% Orange"
 
 ::Wii CHANNELS
-if /i "%PIC%" EQU "Y" set classicCMD=%classicCMD% PHOTO
-if /i "%MIIQ%" EQU "Y" set classicCMD=%classicCMD% MII
-if /i "%Shop%" EQU "Y" set classicCMD=%classicCMD% SHOP
-if /i "%NET%" EQU "Y" set classicCMD=%classicCMD% NET
-if /i "%Weather%" EQU "Y" set classicCMD=%classicCMD% WEATHER
-if /i "%NEWS%" EQU "Y" set classicCMD=%classicCMD% NEWS
-if /i "%Speak%" EQU "Y" set classicCMD=%classicCMD% SPEAK
+if /i "%PIC%" EQU "Y" set "classicCMD=%classicCMD% PHOTO"
+if /i "%MIIQ%" EQU "Y" set "classicCMD=%classicCMD% MII"
+if /i "%Shop%" EQU "Y" set "classicCMD=%classicCMD% SHOP"
+if /i "%NET%" EQU "Y" set "classicCMD=%classicCMD% NET"
+if /i "%Weather%" EQU "Y" set "classicCMD=%classicCMD% WEATHER"
+if /i "%NEWS%" EQU "Y" set "classicCMD=%classicCMD% NEWS"
+if /i "%Speak%" EQU "Y" set "classicCMD=%classicCMD% SPEAK"
 
 
 ::------USB-Loader Check---------
 if /i "%USBGUIDE%" NEQ "Y" goto:nousb
 
-set classicCMD=%classicCMD% USB
+set "classicCMD=%classicCMD% USB"
 
-if /i "%FORMAT%" EQU "1" set classicCMD=%classicCMD% FAT32
-if /i "%FORMAT%" EQU "2" set classicCMD=%classicCMD% NTFS
-if /i "%FORMAT%" EQU "3" set classicCMD=%classicCMD% FAT32-NTFS
-if /i "%FORMAT%" EQU "4" set classicCMD=%classicCMD% WBFS
-if /i "%FORMAT%" EQU "5" set classicCMD=%classicCMD% WBFS-FAT32
+if /i "%FORMAT%" EQU "1" set "classicCMD=%classicCMD% FAT32"
+if /i "%FORMAT%" EQU "2" set "classicCMD=%classicCMD% NTFS"
+if /i "%FORMAT%" EQU "3" set "classicCMD=%classicCMD% FAT32-NTFS"
+if /i "%FORMAT%" EQU "4" set "classicCMD=%classicCMD% WBFS"
+if /i "%FORMAT%" EQU "5" set "classicCMD=%classicCMD% WBFS-FAT32"
 
-if /i "%LOADER%" EQU "GX" set classicCMD=%classicCMD% GX
-if /i "%LOADER%" EQU "CFG" set classicCMD=%classicCMD% CFG
-if /i "%LOADER%" EQU "FLOW" set classicCMD=%classicCMD% FLOW
-if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW-GX
+if /i "%LOADER%" EQU "GX" set "classicCMD=%classicCMD% GX"
+if /i "%LOADER%" EQU "CFG" set "classicCMD=%classicCMD% CFG"
+if /i "%LOADER%" EQU "FLOW" set "classicCMD=%classicCMD% FLOW"
+if /i "%LOADER%" EQU "ALL" set "classicCMD=%classicCMD% CFG-FLOW-GX"
 
-if /i "%USBCONFIG%" EQU "USB" set classicCMD=%classicCMD% USBConfig
-if /i "%USBCONFIG%" EQU "SD" set classicCMD=%classicCMD% SDConfig
+if /i "%USBCONFIG%" EQU "USB" set "classicCMD=%classicCMD% USBConfig"
+if /i "%USBCONFIG%" EQU "SD" set "classicCMD=%classicCMD% SDConfig"
 :nousb
 
 ::---------EXPLOITCHECK-----------
@@ -2859,45 +2961,45 @@ if /i "%FIRMSTART%" EQU "o" goto:exploitcheck
 goto:skipexploitcheck
 
 :exploitcheck
-if /i "%EXPLOIT%" EQU "T" set classicCMD=%classicCMD% Twilight
-if /i "%EXPLOIT%" EQU "S" set classicCMD=%classicCMD% SmashStack
-if /i "%EXPLOIT%" EQU "L" set classicCMD=%classicCMD% IndianaPwns
-if /i "%EXPLOIT%" EQU "LB" set classicCMD=%classicCMD% Bathaxx
-if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
-if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
-if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
-if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-if /i "%EXPLOIT%" EQU "X" set classicCMD=%classicCMD% str2hax
+if /i "%EXPLOIT%" EQU "T" set "classicCMD=%classicCMD% Twilight"
+if /i "%EXPLOIT%" EQU "S" set "classicCMD=%classicCMD% SmashStack"
+if /i "%EXPLOIT%" EQU "L" set "classicCMD=%classicCMD% IndianaPwns"
+if /i "%EXPLOIT%" EQU "LB" set "classicCMD=%classicCMD% Bathaxx"
+if /i "%EXPLOIT%" EQU "LS" set "classicCMD=%classicCMD% ROTJ"
+if /i "%EXPLOIT%" EQU "Y" set "classicCMD=%classicCMD% YuGiOwned"
+if /i "%EXPLOIT%" EQU "TOS" set "classicCMD=%classicCMD% EriHakawai"
+if /i "%EXPLOIT%" EQU "?" set "classicCMD=%classicCMD% AllExploits"
+if /i "%EXPLOIT%" EQU "X" set "classicCMD=%classicCMD% str2hax"
 
 if /i "%EXPLOIT%" NEQ "W" goto:skip
-if /i "%macaddress%" NEQ "S" set classicCMD=%classicCMD% MAC:%macaddress%
-if /i "%macaddress%" EQU "S" set classicCMD=%classicCMD% LetterBomb
+if /i "%macaddress%" NEQ "S" set "classicCMD=%classicCMD% MAC:%macaddress%"
+if /i "%macaddress%" EQU "S" set "classicCMD=%classicCMD% LetterBomb"
 :skip
 
 
 
 if /i "%FIRMSTART%" EQU "4.3" goto:skipexploitcheck
-if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% MAC:%macaddress%
+if /i "%EXPLOIT%" EQU "?" set "classicCMD=%classicCMD% MAC:%macaddress%"
 :skipexploitcheck
 
 
-if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
 
 
 ::Non Virgin Minimal Update
 if /i "%VIRGIN%" EQU "Y" goto:sendCMD
 
-set classicCMD=%classicCMD% Min
+set "classicCMD=%classicCMD% Min"
 
 
-if /i "%HMInstaller%" EQU "Y" set classicCMD=%classicCMD% HBC
-::if /i "%IOS236InstallerQ%" EQU "Y" set classicCMD=%classicCMD% 236
-if /i "%RECCIOS%" EQU "Y" set classicCMD=%classicCMD% REC
-if /i "%PRIQ%" EQU "Y" set classicCMD=%classicCMD% Pri
-::if /i "%yawmQ%" EQU "Y" set classicCMD=%classicCMD% YAWMM
+if /i "%HMInstaller%" EQU "Y" set "classicCMD=%classicCMD% HBC"
+::if /i "%IOS236InstallerQ%" EQU "Y" set "classicCMD=%classicCMD% 236
+if /i "%RECCIOS%" EQU "Y" set "classicCMD=%classicCMD% REC"
+if /i "%PRIQ%" EQU "Y" set "classicCMD=%classicCMD% Pri"
+::if /i "%yawmQ%" EQU "Y" set "classicCMD=%classicCMD% YAWMM"
 
-if /i "%UpdatesIOSQ%" EQU "Y" set classicCMD=%classicCMD% UIOS:E
-if /i "%UpdatesIOSQ%" EQU "N" set classicCMD=%classicCMD% UIOS:D
+if /i "%UpdatesIOSQ%" EQU "Y" set "classicCMD=%classicCMD% UIOS:E"
+if /i "%UpdatesIOSQ%" EQU "N" set "classicCMD=%classicCMD% UIOS:D"
 
 goto:sendCMD
 
@@ -2908,23 +3010,23 @@ goto:sendCMD
 ::---------USB-Loader Setup Guide-------------
 if /i "%MENU1%" NEQ "U" goto:notusb
 
-set classicCMD=U
+set "classicCMD=U"
 
-if /i "%FORMAT%" EQU "1" set classicCMD=%classicCMD% FAT32
-if /i "%FORMAT%" EQU "2" set classicCMD=%classicCMD% NTFS
-if /i "%FORMAT%" EQU "3" set classicCMD=%classicCMD% FAT32-NTFS
-if /i "%FORMAT%" EQU "4" set classicCMD=%classicCMD% WBFS
-if /i "%FORMAT%" EQU "5" set classicCMD=%classicCMD% WBFS-FAT32
+if /i "%FORMAT%" EQU "1" set "classicCMD=%classicCMD% FAT32"
+if /i "%FORMAT%" EQU "2" set "classicCMD=%classicCMD% NTFS"
+if /i "%FORMAT%" EQU "3" set "classicCMD=%classicCMD% FAT32-NTFS"
+if /i "%FORMAT%" EQU "4" set "classicCMD=%classicCMD% WBFS"
+if /i "%FORMAT%" EQU "5" set "classicCMD=%classicCMD% WBFS-FAT32"
 
-if /i "%LOADER%" EQU "GX" set classicCMD=%classicCMD% GX
-if /i "%LOADER%" EQU "CFG" set classicCMD=%classicCMD% CFG
-if /i "%LOADER%" EQU "FLOW" set classicCMD=%classicCMD% FLOW
-if /i "%LOADER%" EQU "ALL" set classicCMD=%classicCMD% CFG-FLOW-GX
+if /i "%LOADER%" EQU "GX" set "classicCMD=%classicCMD% GX"
+if /i "%LOADER%" EQU "CFG" set "classicCMD=%classicCMD% CFG"
+if /i "%LOADER%" EQU "FLOW" set "classicCMD=%classicCMD% FLOW"
+if /i "%LOADER%" EQU "ALL" set "classicCMD=%classicCMD% CFG-FLOW-GX"
 
-if /i "%USBCONFIG%" EQU "USB" set classicCMD=%classicCMD% USBConfig
-if /i "%USBCONFIG%" EQU "SD" set classicCMD=%classicCMD% SDConfig
+if /i "%USBCONFIG%" EQU "USB" set "classicCMD=%classicCMD% USBConfig"
+if /i "%USBCONFIG%" EQU "SD" set "classicCMD=%classicCMD% SDConfig"
 
-if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
 
 goto:sendCMD
 
@@ -2934,7 +3036,7 @@ goto:sendCMD
 ::-----------HackMii Solutions Wizard----------------
 if /i "%MENU1%" NEQ "H" goto:nothackmiisolutions
 
-set classicCMD=HS %FIRMSTART%
+set "classicCMD=HS %FIRMSTART%"
 
 ::---------EXPLOITCHECK-----------
 if /i "%FIRMSTART%" EQU "4.3" goto:exploitcheck
@@ -2942,18 +3044,18 @@ if /i "%FIRMSTART%" EQU "o" goto:exploitcheck
 goto:skipexploitcheck
 
 :exploitcheck
-if /i "%EXPLOIT%" EQU "T" set classicCMD=%classicCMD% Twilight
-if /i "%EXPLOIT%" EQU "S" set classicCMD=%classicCMD% SmashStack
-if /i "%EXPLOIT%" EQU "L" set classicCMD=%classicCMD% IndianaPwns
-if /i "%EXPLOIT%" EQU "LB" set classicCMD=%classicCMD% Bathaxx
-if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
-if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
-if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
-if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-if /i "%EXPLOIT%" EQU "W" set classicCMD=%classicCMD% MAC:%macaddress%
+if /i "%EXPLOIT%" EQU "T" set "classicCMD=%classicCMD% Twilight"
+if /i "%EXPLOIT%" EQU "S" set "classicCMD=%classicCMD% SmashStack"
+if /i "%EXPLOIT%" EQU "L" set "classicCMD=%classicCMD% IndianaPwns"
+if /i "%EXPLOIT%" EQU "LB" set "classicCMD=%classicCMD% Bathaxx"
+if /i "%EXPLOIT%" EQU "LS" set "classicCMD=%classicCMD% ROTJ"
+if /i "%EXPLOIT%" EQU "Y" set "classicCMD=%classicCMD% YuGiOwned"
+if /i "%EXPLOIT%" EQU "TOS" set "classicCMD=%classicCMD% EriHakawai"
+if /i "%EXPLOIT%" EQU "?" set "classicCMD=%classicCMD% AllExploits"
+if /i "%EXPLOIT%" EQU "W" set "classicCMD=%classicCMD% MAC:%macaddress%"
 :skipexploitcheck
 
-if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
 
 goto:sendCMD
 
@@ -2963,15 +3065,15 @@ goto:sendCMD
 ::-----------SNEEK FUNCTIONS----------------
 if /i "%MENU1%" NEQ "S" goto:notS
 
-if /i "%SNEEKSELECT%" EQU "1" (set classicCMD=S %SNEEKTYPE% REV:%CurrentRev%) & (goto:sendCMD)
-if /i "%SNEEKSELECT%" EQU "2" set classicCMD=E %SNEEKTYPE% %SNKVERSION% %SNKREGION% SN:%SNKSERIAL%
-if /i "%SNEEKSELECT%" EQU "3" set classicCMD=SE %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%
+if /i "%SNEEKSELECT%" EQU "1" (set "classicCMD=S %SNEEKTYPE% REV:%CurrentRev%") & (goto:sendCMD)
+if /i "%SNEEKSELECT%" EQU "2" set "classicCMD=E %SNEEKTYPE% %SNKVERSION% %SNKREGION% SN:%SNKSERIAL%"
+if /i "%SNEEKSELECT%" EQU "3" set "classicCMD=SE %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%"
 
 
 ::------Abstinence only stuff------
 if /i "%AbstinenceWiz%" NEQ "Y" goto:notAW
 
-set classicCMD=AW %FIRMSTART% %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%
+set "classicCMD=AW %FIRMSTART% %SNEEKTYPE% %SNKVERSION% %SNKREGION% REV:%CurrentRev% SN:%SNKSERIAL%"
 
 
 ::---------EXPLOITCHECK-----------
@@ -2980,18 +3082,18 @@ if /i "%FIRMSTART%" EQU "o" goto:exploitcheck
 goto:skipexploitcheck
 
 :exploitcheck
-if /i "%EXPLOIT%" EQU "T" set classicCMD=%classicCMD% Twilight
-if /i "%EXPLOIT%" EQU "S" set classicCMD=%classicCMD% SmashStack
-if /i "%EXPLOIT%" EQU "L" set classicCMD=%classicCMD% IndianaPwns
-if /i "%EXPLOIT%" EQU "LB" set classicCMD=%classicCMD% Bathaxx
-if /i "%EXPLOIT%" EQU "LS" set classicCMD=%classicCMD% ROTJ
-if /i "%EXPLOIT%" EQU "Y" set classicCMD=%classicCMD% YuGiOwned
-if /i "%EXPLOIT%" EQU "TOS" set classicCMD=%classicCMD% EriHakawai
-if /i "%EXPLOIT%" EQU "?" set classicCMD=%classicCMD% AllExploits
-if /i "%EXPLOIT%" EQU "W" set classicCMD=%classicCMD% MAC:%macaddress%
+if /i "%EXPLOIT%" EQU "T" set "classicCMD=%classicCMD% Twilight"
+if /i "%EXPLOIT%" EQU "S" set "classicCMD=%classicCMD% SmashStack"
+if /i "%EXPLOIT%" EQU "L" set "classicCMD=%classicCMD% IndianaPwns"
+if /i "%EXPLOIT%" EQU "LB" set "classicCMD=%classicCMD% Bathaxx"
+if /i "%EXPLOIT%" EQU "LS" set "classicCMD=%classicCMD% ROTJ"
+if /i "%EXPLOIT%" EQU "Y" set "classicCMD=%classicCMD% YuGiOwned"
+if /i "%EXPLOIT%" EQU "TOS" set "classicCMD=%classicCMD% EriHakawai"
+if /i "%EXPLOIT%" EQU "?" set "classicCMD=%classicCMD% AllExploits"
+if /i "%EXPLOIT%" EQU "W" set "classicCMD=%classicCMD% MAC:%macaddress%"
 :skipexploitcheck
 
-if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
 
 ::goto:sendCMD
 
@@ -3000,28 +3102,28 @@ if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
 ::common for abstinence and emunand builder
 
 ::THEMES
-if /i "%ThemeSelection%" EQU "R" set classicCMD=%classicCMD% Red
-if /i "%ThemeSelection%" EQU "G" set classicCMD=%classicCMD% Green
-if /i "%ThemeSelection%" EQU "BL" set classicCMD=%classicCMD% Blue
-if /i "%ThemeSelection%" EQU "O" set classicCMD=%classicCMD% Orange
+if /i "%ThemeSelection%" EQU "R" set "classicCMD=%classicCMD% Red"
+if /i "%ThemeSelection%" EQU "G" set "classicCMD=%classicCMD% Green"
+if /i "%ThemeSelection%" EQU "BL" set "classicCMD=%classicCMD% Blue"
+if /i "%ThemeSelection%" EQU "O" set "classicCMD=%classicCMD% Orange"
 
 ::Wii CHANNELS
-if /i "%PIC%" EQU "Y" set classicCMD=%classicCMD% PHOTO
-if /i "%MIIQ%" EQU "Y" set classicCMD=%classicCMD% MII
-if /i "%Shop%" EQU "Y" set classicCMD=%classicCMD% SHOP
-if /i "%NET%" EQU "Y" set classicCMD=%classicCMD% NET
-if /i "%Weather%" EQU "Y" set classicCMD=%classicCMD% WEATHER
-if /i "%NEWS%" EQU "Y" set classicCMD=%classicCMD% NEWS
-if /i "%Speak%" EQU "Y" set classicCMD=%classicCMD% SPEAK
+if /i "%PIC%" EQU "Y" set "classicCMD=%classicCMD% PHOTO"
+if /i "%MIIQ%" EQU "Y" set "classicCMD=%classicCMD% MII"
+if /i "%Shop%" EQU "Y" set "classicCMD=%classicCMD% SHOP"
+if /i "%NET%" EQU "Y" set "classicCMD=%classicCMD% NET"
+if /i "%Weather%" EQU "Y" set "classicCMD=%classicCMD% WEATHER"
+if /i "%NEWS%" EQU "Y" set "classicCMD=%classicCMD% NEWS"
+if /i "%Speak%" EQU "Y" set "classicCMD=%classicCMD% SPEAK"
 
 if not "%addwadfolder%"=="" set classicCMD=%classicCMD% WADdir:%addwadfolder%?
 
-if /i "%SNKPLC%" EQU "Y" set classicCMD=%classicCMD% PLC
-if /i "%SNKCIOS%" EQU "Y" set classicCMD=%classicCMD% 249
-if /i "%SNKPRI%" EQU "Y" set classicCMD=%classicCMD% Pri
-if /i "%SNKFLOW%" EQU "Y" set classicCMD=%classicCMD% FLOW
-if /i "%SNKcBC%" EQU "NMM" set classicCMD=%classicCMD% NMM
-if /i "%SNKcBC%" EQU "DML" set classicCMD=%classicCMD% DML
+if /i "%SNKPLC%" EQU "Y" set "classicCMD=%classicCMD% PLC"
+if /i "%SNKCIOS%" EQU "Y" set "classicCMD=%classicCMD% 249"
+if /i "%SNKPRI%" EQU "Y" set "classicCMD=%classicCMD% Pri"
+if /i "%SNKFLOW%" EQU "Y" set "classicCMD=%classicCMD% FLOW"
+if /i "%SNKcBC%" EQU "NMM" set "classicCMD=%classicCMD% NMM"
+if /i "%SNKcBC%" EQU "DML" set "classicCMD=%classicCMD% DML"
 
 goto:sendCMD
 
@@ -3031,15 +3133,15 @@ goto:sendCMD
 ::-----------Region Change Wizard----------------
 if /i "%MENU1%" NEQ "RC" goto:notregionchange
 
-set classicCMD=RC %FIRMSTART%%REGION%
+set "classicCMD=RC %FIRMSTART%%REGION%"
 
 ::THEMES
-if /i "%ThemeSelection%" EQU "R" set classicCMD=%classicCMD% Red
-if /i "%ThemeSelection%" EQU "G" set classicCMD=%classicCMD% Green
-if /i "%ThemeSelection%" EQU "BL" set classicCMD=%classicCMD% Blue
-if /i "%ThemeSelection%" EQU "O" set classicCMD=%classicCMD% Orange
+if /i "%ThemeSelection%" EQU "R" set "classicCMD=%classicCMD% Red"
+if /i "%ThemeSelection%" EQU "G" set "classicCMD=%classicCMD% Green"
+if /i "%ThemeSelection%" EQU "BL" set "classicCMD=%classicCMD% Blue"
+if /i "%ThemeSelection%" EQU "O" set "classicCMD=%classicCMD% Orange"
 
-if /i "%GUIDEONLY%" EQU "on" set classicCMD=%classicCMD% Guide
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
 
 
 
@@ -3069,7 +3171,9 @@ if exist temp\ModMii_CMD_LINE_NEEK_Errors.txt del temp\ModMii_CMD_LINE_NEEK_Erro
 ::goto:FINISH
 :::skipforcewait
 
-ModMii.exe %classicCMD:&=^&% Skin:E
+echo ModMii.exe %classicCMD% Skin:E
+
+ModMii.exe %classicCMD% Skin:E
 start support\wizapp PB CLOSE
 goto:FINISH
 

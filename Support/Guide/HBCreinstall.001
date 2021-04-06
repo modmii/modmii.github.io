@@ -14,19 +14,3 @@
 	</ul>
 </ul>
 <br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/tup8Mwqa8QQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/ReinstallHBC.gif" border="0"/></a><br>
-
-
-<ul style=align="left" type="disc">
-<br>
-<li>Launch the HackMii Installer via the HBC.
-<li>Use the Hackmii Installer to fix/re-install the HBC following the same procedure as you did the first time.
-
-
-	<ul style=align="left" type="square">
-	<li>This time the HackMii Installer should use IOS58 since it's preferred and we just installed it.
-	</ul>
-
-<li>Once you've successfully reinstalled the HBC, you can move onto the next step of the guide.
-</ul>
-<br>

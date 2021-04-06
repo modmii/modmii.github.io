@@ -1,7 +1,11 @@
 @echo off
 setlocal
 
+chdir /d "%~dp0"
 if not exist support cd..
+
+set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp
+chcp 437>nul
 
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
 
@@ -14,6 +18,13 @@ call Support\d2x-beta\d2x-beta.bat
 if exist Support\settings.bat support\sfk filter -spat Support\settings.bat -!"\x26" -write -yes>nul
 if exist Support\settings.bat call Support\settings.bat
 if "%Drive%"=="" set Drive=COPY_TO_SD
+
+::check if drive folder exists--if second char is ":" check if drive exists
+if /i "%DRIVE%" EQU "%cd%\COPY_TO_SD" set DRIVE=COPY_TO_SD
+if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
+if exist "%DRIVE:~0,2%" (goto:skipcheck) else (set DRIVE=COPY_TO_SD)
+:skipcheck
+
 
 if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
 
