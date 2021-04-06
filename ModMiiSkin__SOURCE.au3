@@ -2,6 +2,7 @@
 #AutoIt3Wrapper_icon=D:\ModMii\Support\icon.ico
 #AutoIt3Wrapper_outfile=ModMiiSkin.exe
 #AutoIt3Wrapper_UseX64=N
+#AutoIt3Wrapper_UseUpx=Y
 #AutoIt3Wrapper_Res_Description=ModMii Skin Launcher
 #AutoIt3Wrapper_Res_Fileversion=1.0.0.0
 #AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak, Launcher by person66
@@ -10,19 +11,19 @@
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
 #cs ----------------------------------------------------------------------------
 
- AutoIt Version: 3.3.8.1
+ AutoIt Version: 3.3.14.5
  Author:         person66
 
  Script Function:
 	Move the ModMii skin window.
 
- Script Version: 1.8
+ Script Version: 2.2
 
 #ce ----------------------------------------------------------------------------
 
-;REMEMBER TO COMPILE WITH AUTOIT3WRAPPER.EXE
-;(http://www.autoitscript.com/autoit3/scite/download/AutoIt3Wrapper.exe)
-;AND CHANGE THE LINES BELOW TO MEET YOUR NEEDS
+;REMEMBER TO COMPILE WITH AUTOIT3WRAPPER
+;https://www.autoitscript.com/site/autoit-script-editor/downloads/
+
 
 #AutoIt3Wrapper_Autoit3Dir="C:\Program Files (x86)\AutoIt3"
 
@@ -65,7 +66,7 @@ if $AlreadyOpen = 0 then
 endif
 
 ;Main part
-ShellExecute(@ComSpec, '/c call "' & @ScriptDir & '\Support\ModMiiSkin.bat"', "", "", @SW_HIDE)
+Run("Support\ModMiiSkin.bat", @ScriptDir, @SW_HIDE)
 
 $run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
 if $run = 0 then 
@@ -89,11 +90,13 @@ while 1
 		endif
 		sleep(10)
 	wend
-	$run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
-	if $run = 0 then 
-		exit
-	else
-		WinMove($run, "", $WinPos[0], $WinPos[1])
-		WinActivate($run)
-	endif
+    $run = WinWait("ModMii Skin", "by XFlak", $WaitTime)
+    if $run = 0 then
+        exit
+    else
+        if $WinPos <> 0 then
+            WinMove($run, "", $WinPos[0], $WinPos[1])
+        endif
+        WinActivate($run)
+    endif
 wend

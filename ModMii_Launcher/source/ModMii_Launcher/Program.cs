@@ -54,8 +54,8 @@ namespace ModMii_Launcher
         {
             Console.Title = "ModMii";
             Process p = new Process();
-            p.StartInfo.FileName = Environment.GetEnvironmentVariable("COMSPEC");
-            p.StartInfo.Arguments = " /c call " + "\"" + Application.StartupPath + "/Support/ModMii.bat\" " + string.Join(" ", args);
+            p.StartInfo.FileName = Application.StartupPath + "/Support/ModMii.bat";
+            p.StartInfo.Arguments = string.Join(" ", args);
             p.StartInfo.WorkingDirectory = Application.StartupPath + "/Support/";
             p.StartInfo.UseShellExecute = false;
             p.Start();
