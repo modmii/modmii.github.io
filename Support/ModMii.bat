@@ -10,7 +10,7 @@ if not exist support cd..
 
 
 
-set currentversion=6.6.2
+set currentversion=6.6.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2604,7 +2604,6 @@ set MP=
 set MII=
 set P=
 set P0=
-set PK=
 set S=
 set SK=
 set IU=
@@ -8547,7 +8546,9 @@ goto:SKIPSM
 if /i "%SNKVERSION%" EQU "4.3" set SMAPP=0000009e
 if /i "%SNKVERSION%" EQU "4.2" set SMAPP=0000008e
 if /i "%SNKVERSION%" EQU "4.1" set SMAPP=00000082
-if /i "%PIC%" EQU "Y" (set PK=*) & (set P0=*)
+if /i "%PIC%" EQU "Y" set P0=*
+::quick and dirty disabling of the Korean Shop channel installation from emunand as it throws errors with SMW and doesn't install anyway
+set SHOP=N
 if /i "%SHOP%" EQU "Y" set SK=*
 
 
@@ -9528,7 +9529,7 @@ echo                               %IOS36v3608% 36 = IOS36v3608         %IOS30P6
 support\sfk echo -spat \x20 \x20 \x20 \x20 [Red] Channels[def]\x20 \x20 \x20 \x20 \x20 \x20 \x20 %IOS37% 37 = IOS37v5663 \x20 \x20 \x20 \x20%IOS30P% 30P = IOS30-Patched
 echo    %P0% P0 = Photo (U/E/J/K)      %IOS38% 38 = IOS38v4124         %IOS40P60% 40 = IOS40(IOS60P)
 echo     %P% P = Photo 1.1(U/E/J)     %IOS41% 41 = IOS41v3607         %IOS50P% 50 = IOS50(IOS60P)
-echo    %PK% PK = Photo 1.1 (KOR)      %IOS43% 43 = IOS43v3607         %IOS52P% 52 = IOS52(IOS60P)
+echo   %MII% Mii = Mii (RF)             %IOS43% 43 = IOS43v3607         %IOS52P% 52 = IOS52(IOS60P)
 echo    %S% SH = Shopping (U/E/J)     %IOS45% 45 = IOS45v3607         %IOS60P% 60 = IOS60-Patched
 echo    %SK% SK = Shopping (KOR)       %IOS46% 46 = IOS46v3607        %IOS70K% 70K = IOS70(IOS60P)
 echo    %IU% IU = Internet (USA)       %IOS48v4124% 48 = IOS48v4124         %IOS70P% 70 = IOS70-Patched
@@ -9545,7 +9546,7 @@ echo    %NJ% NJ = News (JAP)           %IOS62% 62 = IOS62v6430      %A0e_70% 0e_
 echo   %WSU% WSU = WiiSpeak(USA)      %IOS70% 70NP = IOS70v6687      %A0e_60% 0e_60 = 0e.app IOS60v6174
 echo   %WSE% WSE = WiiSpeak(EUR)      %IOS80% 80NP = IOS80v6944         %A01% 01 = 01.app IOS80v6943
 echo   %WSJ% WSJ = WiiSpeak(JAP)       %M10% M10 = MIOSv10         %A01_70% 01_70 = 01.app IOS70v6687
-echo   %MII% Mii = Mii (RF)                                   %A01_60% 01_60 = 01.app IOS60v6174
+echo                                                     %A01_60% 01_60 = 01.app IOS60v6174
 echo                                                        %A0c% 0c = 0c.app MIOSv10
 echo.
 set /p LIST=     Enter Selection Here: 
@@ -9592,7 +9593,6 @@ if /i "%LIST%" EQU "4.1K" goto:Switch4.1K
 if /i "%LIST%" EQU "4.2K" goto:Switch4.2K
 if /i "%LIST%" EQU "MII" goto:SwitchMII
 if /i "%LIST%" EQU "P" goto:SwitchP
-if /i "%LIST%" EQU "PK" goto:SwitchPK
 if /i "%LIST%" EQU "P0" goto:SwitchP0
 if /i "%LIST%" EQU "SH" goto:SwitchS
 if /i "%LIST%" EQU "SK" goto:SwitchSK
@@ -9749,10 +9749,6 @@ goto:LIST
 
 :SwitchP
 if /i "%P%" EQU "*" (set P=) else (set P=*)
-goto:LIST
-
-:SwitchPK
-if /i "%PK%" EQU "*" (set PK=) else (set PK=*)
 goto:LIST
 
 :SwitchP0
@@ -10148,7 +10144,6 @@ if /i "%LIST%" EQU "J" goto:list
 :KALL
 set MII=*
 set P0=*
-set PK=*
 set SK=*
 ::set IOS70K=*
 set IOS80K=*
@@ -15217,6 +15212,8 @@ findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermesrodries-v5.1" "%sysCheck
 IF NOT ERRORLEVEL 1 set cIOS202[60]-v5.1R=
 findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermesrodries-5.1" "%sysCheckCopy%" >nul
 IF NOT ERRORLEVEL 1 set cIOS202[60]-v5.1R=
+findStr /I /R /C:"IOS202\[60\] (rev [0-9]*, Info: hermes-v5.1" "%sysCheckCopy%" >nul
+IF NOT ERRORLEVEL 1 set cIOS202[60]-v5.1R=
 
 findStr /I /R /C:"IOS222\[38\] (rev [0-9]*, Info: hermes-v4" "%sysCheckCopy%" >nul
 IF ERRORLEVEL 1 (set cIOS222[38]-v4=*) else (set cIOS222[38]-v4=)
@@ -15230,6 +15227,8 @@ IF ERRORLEVEL 1 (set cIOS224[57]-v5.1R=*) else (set cIOS224[57]-v5.1R=)
 findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermesrodries-v5.1" "%sysCheckCopy%" >nul
 IF NOT ERRORLEVEL 1 set cIOS224[57]-v5.1R=
 findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermesrodries-5.1" "%sysCheckCopy%" >nul
+IF NOT ERRORLEVEL 1 set cIOS224[57]-v5.1R=
+findStr /I /R /C:"IOS224\[57\] (rev [0-9]*, Info: hermes-v5.1" "%sysCheckCopy%" >nul
 IF NOT ERRORLEVEL 1 set cIOS224[57]-v5.1R=
 :skipHERMEScheck
 
@@ -16017,7 +16016,7 @@ if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1K=*
 
 :SKIPSM
 
-if /i "%PIC%" EQU "Y" set PK=*
+if /i "%PIC%" EQU "Y" set P0=*
 if /i "%SHOP%" EQU "Y" set SK=*
 
 
@@ -16739,7 +16738,7 @@ if /i "%IJ%" EQU "*" (echo "JAP Internet Channel">>temp\DLnames.txt) & (echo "NE
 if /i "%NJ%" EQU "*" (echo "JAP NEWS Channel">>temp\DLnames.txt) & (echo "NEWS_J">>temp\DLgotos.txt)
 if /i "%WJ%" EQU "*" (echo "JAP Weather Channel">>temp\DLnames.txt) & (echo "WEATHER_J">>temp\DLgotos.txt)
 if /i "%WSJ%" EQU "*" (echo "JAP Wii Speak Channel">>temp\DLnames.txt) & (echo "SPEAK_J">>temp\DLgotos.txt)
-if /i "%PK%" EQU "*" (echo "KOREAN Photo Channel 1.1">>temp\DLnames.txt) & (echo "PHOTO_K">>temp\DLgotos.txt)
+::if /i "%PK%" EQU "*" (echo "KOREAN Photo Channel 1.1">>temp\DLnames.txt) & (echo "PHOTO_K">>temp\DLgotos.txt)
 if /i "%SK%" EQU "*" (echo "KOREAN Shopping Channel">>temp\DLnames.txt) & (echo "SHOP_K">>temp\DLgotos.txt)
 if /i "%KK%" EQU "*" (echo "KoreanKii">>temp\DLnames.txt) & (echo "KK">>temp\DLgotos.txt)
 if /i "%locked%" EQU "*" (echo "Locked Apps Folder for HBC (PASS=UDLRAB)">>temp\DLnames.txt) & (echo "locked">>temp\DLgotos.txt)
@@ -17376,7 +17375,7 @@ if /i "%HAX%" EQU "*" echo SET HAX=%HAX%>> "temp\DownloadQueues\%DLQUEUENAME%.ba
 if /i "%MII%" EQU "*" echo SET MII=%MII%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%P0%" EQU "*" echo SET P0=%P0%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%P%" EQU "*" echo SET P=%P%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
-if /i "%PK%" EQU "*" echo SET PK=%PK%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+::if /i "%PK%" EQU "*" echo SET PK=%PK%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%S%" EQU "*" echo SET S=%S%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%SK%" EQU "*" echo SET SK=%SK%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%IU%" EQU "*" echo SET IU=%IU%>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -20386,7 +20385,7 @@ goto:DOWNLOADSTART2
 support\sfk echo [Green]This file already exists and has been verified, Skipping download
 echo.
 if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.bat
-goto:NEXT
+goto:rootMMMcheck
 :nocheckexisting
 
 if /i "%code1%" EQU "MYMAPP" goto:DownloadApp2
@@ -20463,6 +20462,22 @@ support\sfk echo [Green]Download Successful
 echo.
 set "DRIVE=%DRIVErestore%"
 if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.bat
+
+
+::save MMM's elf to root when applicable
+:rootMMMcheck
+if /i "%wadname%" NEQ "Multi-Mod-Manager_v13.4.zip" goto:next
+
+if /i "%MENU1%" EQU "H" goto:rootMMM
+if /i "%virgin%" EQU "N" goto:next
+If /i "%FIRMSTART%" EQU "4.3" goto:next
+if /i "%REGION%" EQU "K" goto:rootMMM
+goto:next
+
+::-----Bannerbomb MMM instead of HackMii installer------
+:rootMMM
+if exist "%Drive%"\apps\MMM\MMMv13.4boot.elf copy /Y "%Drive%"\apps\MMM\MMMv13.4boot.elf "%Drive%"\boot.elf >nul
+copy /Y "Support\ExploitAppSelector.bat" "%Drive%\ExploitAppSelector.bat" >nul
 goto:NEXT
 
 
@@ -21207,6 +21222,7 @@ if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.ba
 :alreadyhavehackmii
 if /i "%MENU1%" EQU "H" goto:RenameBootToHackMii
 if /i "%virgin%" EQU "N" goto:next
+If /i "%FIRMSTART%" EQU "4.3" goto:next
 if /i "%REGION%" EQU "K" goto:RenameBootToHackMii
 goto:next
 
@@ -29370,7 +29386,7 @@ if /i "%IE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk ech
 if /i "%IJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%IU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3\x3c/li\x3e>>"%Drive%"\%guidename%)
-if /i "%PK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
+::if /i "%PK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%RSE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%RSJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%RSK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
