@@ -50,6 +50,13 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <ul style=align="left" type="disc">
 
 
+<h1>6.6.3 Changelog - 2021:04-23:</h1>
+<li>Fixed bug where the MMM's boot.elf was not being saved to SD root when appropriate (i.e. for HackMii Solutions Wizard, and for modding virgin Korean Wii's running system menu 4.2 or lower). This only occurred if MMM was not already saved to the SD card before downloading the HackMii Installer, and ModMii would fix itself if downloads were repeated. This bug was introduced when downloads were alphabetized and MMM became queued after the Hackmii Installer instead of before.
+<li>Syscheck Updater now also accepts "hermes-v5.1" as a valid info tag for cIOS 202 & 224 (in addition to hermesrodries-v5.1, hermesrodries-v6 & hermesrodries-5.1). These are all the same cIOS but the info signature differs based on the installer used.
+<li>Korean consoles now use v1.0 of the Photo Channel, since it has been reported that v1.1 does not work properly on Korean consoles.
+<li>Other minor changes.
+<br>
+
 <h1>6.6.2 Changelog - 2021:04-06:</h1>
 
 <li>Added multi-language support for analyzing syscheck.csv logs (English, German, French, Spanish & Italian).
