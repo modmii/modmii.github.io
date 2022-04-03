@@ -43,7 +43,18 @@ if /i "%patchresult%" EQU "pass" (support\sfk echo [Green]Patching successful!) 
 echo.
 
 ::pop up for both skin and classic
-if /i "%patchresult%" EQU "pass" (set watext=ModMii auto-patched itself to fix some NUS download issues) & (start /w support\wizapp MB INFORMATION)
+
+set watitle=ModMii Auto-Patcher
+set waico=support\icon.ico
+set wabmp=support\bmp\default.bmp
+if "%wasig%"=="" set wasig=Brought to you by XFlak
+
+set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.~~~~~~6.6.4 is coming...~it's BIG...~and so's my to do list...~and the 6.6.3 anniversary is fast approaching...
+
+if /i "%patchresult%" EQU "pass" start /w support\wizapp NOBACK TB
+
+set watitle=ModMii Skin
+
 if /i "%patchresult%" NEQ "pass" (set watext=ModMii tried and failed to patch itself to fix some NUS download issues) & (start /w support\wizapp MB STOP)
 
 :skip
