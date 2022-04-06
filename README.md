@@ -2,6 +2,10 @@
 
 ModMii is completely free to use, ad free and open source. Any support help me afford to treat my kids more often or enroll them in more fun activities like swimming lessons and other sports!
 
+It's now easier than ever to donate to ModMii using my [my GitHub Sponsors page](https://github.com/sponsors/xflak)!
+
+[![modmii](https://gbatemp.net/attachments/1649253633962-png.305101/?hash=c47984210b2a8a13eec491f3050338c3)](https://github.com/sponsors/xflak)
+
 ### **Credits**
 [ModMii](https://modmii.github.io/) was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.
 
