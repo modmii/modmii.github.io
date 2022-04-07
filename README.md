@@ -12,7 +12,7 @@ It's now easier than ever to donate to ModMii using my [my GitHub Sponsors page]
 
 The video below describes some of ModMii's many features:
 
-[![modmii](https://user-images.githubusercontent.com/11338309/162267740-6d691678-edd9-42ab-b5af-5a5514e56cf9.png)](https://modmii.github.io/)
+[![modmii](https://user-images.githubusercontent.com/11338309/162269303-40905c68-70b9-4d09-a51c-7ca6a3cdca46.png)](https://youtu.be/GMz_R18Z5oQ)
 
 
 # What can ModMii do?
