@@ -4,7 +4,35 @@ ModMii is completely free to use, ad free and open source. Any support will help
 
 It's now easier than ever to donate to ModMii using my [my GitHub Sponsors page](https://github.com/sponsors/xflak)!
 
-[![modmii](https://gbatemp.net/attachments/1649253633962-png.305101/?hash=c47984210b2a8a13eec491f3050338c3)](https://github.com/sponsors/xflak)
+# Introduction: What is ModMii?
+
+- ModMii is able to download all the files needed to modify ANY Wii; it can generate custom guides based on your Wii's specifications, and save the files in their appropriate locations for easy offline softmodding. Sample guides for illustrative purposes only are available HERE.
+- It is also capable of performing many other wii hacking functions like setting up a usb-loader and creating an emulated NAND. ModMii was also the very first official installer for the widely adopted d2x cIOS.
+- Even if your Wii's SD Card reader is broken or you just don't have an SD Card, you can use a Hard Drive formatted as FAT32 in place of an SD Card to complete the majority of ModMii's functions (SD Card notably required for Bootmii and making a NAND backup).
+
+The video below describes some of ModMii's many features:
+
+[![modmii](https://user-images.githubusercontent.com/11338309/162267740-6d691678-edd9-42ab-b5af-5a5514e56cf9.png)](https://modmii.github.io/)
+
+
+# What can ModMii do?
+- It can download all the files necessary to Modify, Upgrade & Downgrade your Wii System Menu
+- Update only your outdated softmods based on a sysCheck log from your Wii
+- Able to build a custom easy to follow guide to setting up a USB-Loader (including how to format/partition your external hard drive)
+- Install SNEEK, build emulated NANDs, and Batch Extract Wii/Gamecube Games for use with SNEEK+DI or UNEEK+DI
+- Load NEEK on a Wii without softmodding it using the Abstinence Wizard
+- Region Change Your Wii
+- Download individual IOS/cIOS files, Official Wii Channels, System Menus, Wii Apps, DML, etc.
+- Install patched IOSs without a wifi connection on your Wii
+- Customize Bootmii, Wad Manager and MMM start-up settings using ModMii Configurators to create a custom config files
+- This is also capable of building many different System Menu Themes (csm's and themed SM Wads)
+- Provides a solution for the upside-down homebrew channel and the HackMii installer No Vulnerable IOS problems
+- Advanced Custom Downloads Feature will allow you to easily patch and change the slot/version of IOSs/cIOSs. It can also build 3 different types of forwarder dol's and iso's (only use this feature if you know what you are doing!!)
+- Save\Load custom Download Queues
+- and much much more!
+
+# Support
+- Find links to usage, discord and support forums at https://modmii.github.io
 
 ### **Credits**
 [ModMii](https://modmii.github.io/) was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.
