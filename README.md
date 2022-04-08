@@ -6,7 +6,7 @@ It's now easier than ever to donate to ModMii using my [my GitHub Sponsors page]
 
 # Introduction: What is ModMii?
 
-- ModMii is able to download all the files needed to modify ANY Wii; it can generate custom guides based on your Wii's specifications, and save the files in their appropriate locations for easy offline softmodding. Sample guides for illustrative purposes only are available HERE.
+- ModMii is able to download all the files needed to modify ANY Wii; it can generate custom guides based on your Wii's specifications, and save the files in their appropriate locations for easy offline softmodding. Sample guides for illustrative purposes only are available [HERE](https://modmii.github.io/sampleguides).
 - It is also capable of performing many other wii hacking functions like setting up a usb-loader and creating an emulated NAND. ModMii was also the very first official installer for the widely adopted d2x cIOS.
 - Even if your Wii's SD Card reader is broken or you just don't have an SD Card, you can use a Hard Drive formatted as FAT32 in place of an SD Card to complete the majority of ModMii's functions (SD Card notably required for Bootmii and making a NAND backup).
 
