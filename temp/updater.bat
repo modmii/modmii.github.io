@@ -16,7 +16,17 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
 if %currentversion% GEQ 6.6.4 goto:skip
 
-::if "support\nusd.exe" modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
+::force redownload of old cached ARCME.zip
+if not exist "temp\ARCME.zip" goto:skiparcme
+::hash is for old zip, if hashes match, then rename it
+support\sfk md5 -quiet -verify 4eff09f8a16ab6157edcb339bd909ed3 "temp\ARCME.zip"
+if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
+:skiparcme
+
+
+
+
+::if "support\nusd.exe" is missing modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
 if not exist "support\nusd.exe" goto:skip
 ::if hashes match, then skip patching
 support\sfk md5 -quiet -verify ab70e9288c5a1da685c7174ff53763d5 "support\nusd.exe"
