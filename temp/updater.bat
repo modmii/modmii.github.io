@@ -26,23 +26,23 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 
 
 
-::if "support\nusd.exe" is missing modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
-if not exist "support\nusd.exe" goto:skip
+::if "support\NusFileGrabber.exe" is missing modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
+if not exist "support\NusFileGrabber.exe" goto:skip
 ::if hashes match, then skip patching
-support\sfk md5 -quiet -verify ab70e9288c5a1da685c7174ff53763d5 "support\nusd.exe"
+support\sfk md5 -quiet -verify 97e91117b6750b03e0980f54f9db8c38 "Support\NusFileGrabber.exe"
 if not errorlevel 1 goto:skip
 
 echo.
 echo Auto-patching ModMii to fix some NUS download issues
-echo Downloading patch files...
+echo Downloading 2022-07-29 patch files...
 ::when updating make sure to catch all instances of ModMii.6.6.3.patch.zip
 if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
 start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii.6.6.3.patch.zip" -O temp\ModMii.6.6.3.patch.zip
-if exist temp\ModMii.6.6.3.patch.zip support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"Support" -r
+if exist temp\ModMii.6.6.3.patch.zip support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"%cd%" -r
 if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
 
 ::check if hashes match now
-support\sfk md5 -quiet -verify ab70e9288c5a1da685c7174ff53763d5 "support\nusd.exe"
+support\sfk md5 -quiet -verify 97e91117b6750b03e0980f54f9db8c38 "Support\NusFileGrabber.exe"
 if not errorlevel 1 (set patchresult=pass) else (set patchresult=fail)
 
 if /i "%AudioOption%" NEQ "on" goto:nosound
@@ -60,7 +60,7 @@ set waico=support\icon.ico
 set wabmp=support\bmp\default.bmp
 if "%wasig%"=="" set wasig=Brought to you by XFlak
 
-set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.~~~~~~6.6.4 is coming...~it's BIG...~and so's my to do list...~and the 6.6.3 anniversary is fast approaching...
+set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.~~~~~~6.6.4 is coming...~it's BIG...~and so's my to do list...
 
 if /i "%patchresult%" EQU "pass" start /w support\wizapp NOBACK TB
 
