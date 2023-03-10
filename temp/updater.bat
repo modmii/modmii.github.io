@@ -104,14 +104,14 @@ echo.
 echo                                     Please Wait...
 echo.
 
-if exist "%UPDATENAME%%newversion%.zip" del "%UPDATENAME%%newversion%.zip">nul
+if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
 start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
-if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
+if not exist "%UPDATENAME%.zip" goto:updatefail
 
 if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
 if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
-support\7za2 x %UPDATENAME%%newversion%.zip -aoa
-del %UPDATENAME%%newversion%.zip>nul
+support\7za2 x %UPDATENAME%.zip -aoa
+del %UPDATENAME%.zip>nul
 del support\7za2.exe>nul
 
 ::patch now too instead of later
@@ -178,18 +178,18 @@ taskkill /im ModMiiSkin.exe /f >nul
 
 
 
-if exist "%UPDATENAME%%newversion%.zip" del "%UPDATENAME%%newversion%.zip">nul
+if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
 start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
-if not exist "%UPDATENAME%%newversion%.zip" goto:updatefailskin
+if not exist "%UPDATENAME%.zip" goto:updatefailskin
 
 
 start support\wizapp2.exe PB UPDATE 50
 
 if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
 if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
-support\7za2 x %UPDATENAME%%newversion%.zip -aoa
+support\7za2 x %UPDATENAME%.zip -aoa
 start support\wizapp2.exe PB UPDATE 80
-del %UPDATENAME%%newversion%.zip>nul
+del %UPDATENAME%.zip>nul
 
 
 ::patch now too instead of later
