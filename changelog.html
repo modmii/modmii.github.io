@@ -47,24 +47,588 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <center>
 
 
-<br><b>It's now easier than ever to donate to ModMii using GitHub Sponsors!</b><br>
+<b>It's now easier than ever to donate to ModMii using Patreon or GitHub Sponsors!</b><br>
 <br>
-<iframe src="https://github.com/sponsors/xflak/button" title="Sponsor xflak" height="35" width="116" style="border: 0;"></iframe><br><br>
-
+<a href="https://www.patreon.com/join/10186747/checkout" class="BUTTON_Patron"><font color="black">&#10084;&#160;Patron</font></a>
+<a href="https://github.com/sponsors/xflak" class="BUTTON_Patron"><font color="black">&#10084;&#160;Sponsor</font></a>
+<br>
+<br>
 
 <div class="justify" align="left" style="width:800px;">
 <!-- Start of the changelog -->
 <ul style=align="left" type="disc">
 
 
-<h1>6.6.3 Changelog - 2021:04-23:</h1>
+
+
+
+
+
+<h2 id="7.0.0"><a href="#7.0.0">7.0.0 Changelog - 2023:03-10:</a></h2>
+<h3>Summary:</h3>
+<ul>
+<li>Many new Drag and Drop supported file types, features and functions
+(e.g. nand.bin check/clone/defragment, WAD modify/unpack/trasmit, mym
+&amp; csm theme creation, dol &amp; elf app launcher, zip HBC transfer
+tool, etc.).</li>
+<li>New default cIOS (d2x-v11-beta1) and recommended cIOS configuration
+(248[38], 249[56], 250[57], 251[58]).</li>
+<li>YAWM ModMii Edition replaced MMM and Some YAWMM Mod in all
+wizards/guides. Now all functions support Wii motion+ remotes and/or do
+not require manually changing SD:/boot.elf/dol in between guide
+steps.</li>
+<li>Guide optimizations, improvements and additions (e.g. GPT to MBR
+conversion, added 2 new HDD format options WBFS &amp; FAT32+WBFS,
+new/improved Youtube videos, re-ordered/combined/streamlined steps,
+etc.).</li>
+<li>Added optional step to SysCheck Updater guides to carefully stub or
+erase unnecessary IOS slots that should be empty using stub IOS
+WADs.</li>
+<li>UI changes: changes to icons, new default ModMii Skin theme, new
+ModMii Skin theme selector, optional Launchpad Toolbar, optional Context
+Menu (right-click) access to ModMii.</li>
+<li>Complete GUI redesign of ModMii Classic Download Pages (excluding
+Advanced Downloads Page).</li>
+<li>(Re)introduced auto-updating and semi-auto-updating downloads.</li>
+<li>Many new/updated downloads. Notably a dozen new PC Programs were
+added.</li>
+<li>A custom uninstaller is now bundled with ModMii allowing you to
+uninstall some or all of ModMii’s components.</li>
+<li>App Updater: new feature added to File Cleanup function on main
+menu. Users now prompted if they want to check for updates to
+auto-updating apps detected on the device (excluding Dolphin and OSC),
+or to delete unnecessary files, or both.</li>
+<li>Updated bundled version of NUS Downloader Command Line from v0.2 to
+v0.6. The old NUSD did not perfectly create TMDs. Imperfect TMDs were
+not generally problematic and have been used without issues for many
+years. However, the new YAWM ModMii Edition will prevent installation of
+any WAD that is not perfect for security reasons. As a result, many of
+the WADs in ModMii’s temp folder from older versions will be deemed
+invalid going forward and will be automatically re-downloaded. To
+correct the files in your temp folder all at once, download the items
+from the bundled “NUS_2023_Changes” download queue.</li>
+<li>Other changes and bugfixes.</li>
+</ul>
+<h3>Drag and Drop:</h3>
+<ul>
+<li>If you can’t drag and drop it onto ModMii then it probably isn’t Wii
+related, because ModMii drops it like it’s hot!</li>
+<li>Added support for dragging and dropping multiple items at once.</li>
+<li>Added a new option to ModMii Classic’s main menu to open a File or
+Folder with ModMii, behaves same as drag and drop except it does not
+support opening multiple items at once.
+<ul>
+<li>Includes ModMii Launchpad Toolbar Installer/Uninstaller to add or
+remove a quicklaunch-like toolbar to your taskbar giving you easy access
+to drag and drop functions.</li>
+<li>Includes Context Menu Installer/Uninstaller to add or remove “Open
+with ModMii” to your right-click context menu (or
+Shift-right-click).</li>
+</ul></li>
+<li>Added Drag and Drop support for many new file types and features,
+including:</li>
+</ul>
+<ol type="1">
+<li>nand.bin tools (nand.bin); Extract, Check, Clone or Defragment a Wii
+nand.bin file
+<ul>
+<li>Extract a nand.bin into folder format structure to use as an
+emulated nand</li>
+<li>Check a nand.bin using nandBinCheck to confirm it is safe to install
+on a Wii</li>
+<li>Clone a nand.bin from one Wii to install to a different Wii using
+Punetwiin; output is also automatically checked by nandBinCheck</li>
+<li>Defragment a nand.bin for modest speed improvement and/or to
+compensate for new bad blocks in old nand backups</li>
+<li>Examples: nand.bin, anything.bin</li>
+</ul></li>
+<li>HBC Transfer Tool (zip, 7z, rar)[def]; wirelessly transfer apps to
+the device selected in the Homebrew Channnel (e.g. SD, USB)
+<ul>
+<li>ModMii supports transferring archives (zip, 7z, rar) both with and
+without an /apps/ folder (e.g. usbloader_gx or apps/usbloader_gx). Only
+one app per archive can be transferred at a time, and because the HBC’s
+managing access is limited to the /apps/ folder any files outside of the
+apps folder will be skipped (e.g. roms, games, resources, etc.).
+Archives must include a boot.dol or boot.elf file in the app folder (but
+not both); other files and subfolders like meta/icon/etc. will get
+copied as well.</li>
+<li>Examples: usbloader_gx.7z, yawmME.zip, anything.rar</li>
+</ul></li>
+<li>App Launcher (dol, elf); launch apps from your PC to your Wii via
+WiFi, no SD/USB required
+<ul>
+<li>Loads arguments from meta.xml and also allows users to add/remove
+arguments</li>
+<li>Examples: boot.dol, boot.elf, anything.dol, anything.elf</li>
+</ul></li>
+<li>WAD Sender (WAD, folder of WADs); install WADs &lt;8MB from your PC
+to your Wii via WiFi, no SD/USB required
+<ul>
+<li>Examples: anything.wad, or any folder containing WADs</li>
+<li>Sharpii (and WadInstaller.dll) by person66 is now bundled with
+ModMii to enable this feature</li>
+</ul></li>
+<li>WAD Modifier (WAD); Modify Channel attributes (Title, Title ID, IOS,
+DOL, Fakesign) or IOSs attributes (Patches, Slot, Version)
+<ul>
+<li>Examples: anything.wad</li>
+</ul></li>
+<li>WAD Unpacker (WAD, folder of WADs); unpack WADs
+<ul>
+<li>Examples: anything.wad, or any folder containing WADs</li>
+</ul></li>
+<li>WAD Packer (unpacked WAD folder or component file - app, cert,
+footer, tik, tmd); repack WAD
+<ul>
+<li>Examples: Any_Unpacked_WAD_Folder, or any file inside an unpacked
+WAD folder (e.g. 00000000.app, cert, footer, tik, tmd)</li>
+</ul></li>
+<li>CSM Theme Builder (mym, csm, folder of myms, folder of csms); Create
+csm files to install Wii themes using MyMenuifyMod
+<ul>
+<li>Examples: DarkWii_Purple.mym, Random_Theme_4.1U.csm, MYM_Folder,
+CSM_Folder</li>
+</ul></li>
+<li>SysCheck Updater (sysCheck.csv); update only your outdated softmods
+<ul>
+<li>Old/existing feature listed for completeness</li>
+<li>Examples: sysCheck.csv, or any csv that was created by SysCheck and
+renamed</li>
+</ul></li>
+<li>App Updater &amp; File Cleanup (SD/USB Drives or Folders); Update
+Apps and/or remove un-needed files
+<ul>
+<li>App Updater is a new feature, described later in changelog</li>
+<li>File Cleanup is an old/existing feature listed for completeness</li>
+<li>Examples: W:, X:, COPY_TO_SD, COPY_TO_USB</li>
+</ul></li>
+<li>Emulated Nand Modifer (EmuNand Folder); Edit an Emulated NAND
+<ul>
+<li>Old/existing feature listed for completeness</li>
+<li>Examples: pl_us, or any folder containing an Emulated NAND System
+Menu; i.e. /title/00000001/00000002/content/title.tmd</li>
+</ul></li>
+<li>Load Download Queue (ModMii_Download_Queue.bat); Load a ModMii
+Download Queue
+<ul>
+<li>Old/existing feature listed for completeness</li>
+<li>Examples: ModMii_Download_Queue.bat, or any download queue that was
+created by ModMii</li>
+</ul></li>
+<li>Load Wizard Settings (Wizard_Settings.bat); Load Saved ModMii Wizard
+Settings from previous session
+<ul>
+<li>Examples: Wizard_Settings.bat, or any Wizard_Settings.bat that was
+created by ModMii and renamed</li>
+</ul></li>
+<li>Calculate Hashes (everything else); Calculate file hashes using
+HashMyFiles
+<ul>
+<li>Examples: anything.doc, <em>.</em>, New_Folder, any file or folder
+not mentioned above</li>
+</ul></li>
+</ol>
+<h3>Wizards &amp; Guides:</h3>
+<ul>
+<li>New recommended cIOS configuration. Changes have been agreed and
+coordinated with wii.guide. A brief rationale for each recommended cIOS
+provided below:
+<ul>
+<li>Slot 248 base 38: only bases 38 &amp; 58 can play SpongeBob’s
+Boating Bash, and only 38 has USB keyboard support for Animal
+Crossing</li>
+<li>Slot 249 base 56: plays majority of games and a few that base 57
+cannot; preferred for slot 249 to avoid unnecessary IOS reloads under
+USB Loader GX’s Auto IOS setting</li>
+<li>Slot 250 base 57: plays majority of games and a few that base 56
+cannot</li>
+<li>Slot 251 base 58: only bases 38 &amp; 58 can play SpongeBob’s
+Boating Bash, and only 58 supports the LAN adapter</li>
+</ul></li>
+<li>All wizards now use YAWM ModMii Edition (yawmME) instead of MMM and
+Some YAWMM Mod. Now all functions support Wii motion+ remotes and/or do
+not require manually changing SD:/boot.elf/dol in between guide
+steps.</li>
+<li>Guides will have users install Priiloader before installing WADs
+even if a new System Menu is being installed since yawmME is able to
+retain Priiloader installations. The only exception is in SysCheck
+Updater guides where a custom system menu version is detected or the HBC
+IOS (IOS58) is missing/patched, as the Priiloader Installer will refuse
+to run without a clean HBC IOS and system menu version.</li>
+<li>Removed step to reinstall the HBC with the HackMii Installer to use
+IOS58 (where it was included). This step is no longer necessary as the
+HBC is now updated as part of the Install WADs step.</li>
+<li>Relevant guides now include a section on checking the Hard drive
+partition style and converting from GPT to MBR if applicable.</li>
+<li>Wizards no longer ask users to select a USB format type (e.g. FAT32,
+NTFS, etc.). Instead, applicable guides include all format options in
+spoilers along with pros and cons for each.
+<ul>
+<li>In addition to FAT32 (default/recommended), NTFS and FAT32+NTFS,
+directions for two new format types have been added: WBFS and
+FAT32+WBFS.</li>
+</ul></li>
+<li>Partition style and format type information is included in guides
+for devices that were connected when the guide was generated.</li>
+<li>Nkit Processing App, GameCube Backup Manager and CleanRip are now
+also downloaded when setting up a USB-Loader and referenced in
+applicable guides.</li>
+<li>System Menu 4.3 is now recommended instead of 4.1 if &lt;=4.0. If
+starting on 4.1, 4.2 or 4.3 the recommendation is still not change
+System Menu versions. There is no benefit to 4.3 over 4.1, but some
+users feel strongly about seeing the latest number and their message has
+been heard.</li>
+<li>Added IOS59 to active IOS download list for Japanese console only as
+it is a JPN exclusive IOS. ModMii Wizards will only direct Japanese
+consoles to install it.</li>
+<li>All Youtube videos were either re-recorded or upscaled and a number
+of new videos were created to support guide changes (e.g. YAWM ModMii
+Edition).</li>
+<li>Enhanced exploit descriptions to list supported firmwares and other
+requirements.</li>
+<li>Updated DNS servers for str2hax exploit directions.</li>
+<li>Wii Channels no longer supported by Nintendo (e.g. News, Wii Speak,
+etc.) have been removed from wizards (still available via ModMii’s
+Download Pages). These channels can be brought back to life using the
+RiiConnect24 Patcher (now also available via ModMii’s Download
+Pages).</li>
+</ul>
+<h3>SysCheck Updater:</h3>
+<ul>
+<li>SysCheck Updater will direct users to install a base 56 cIOS in slot
+249 and base 57 in slot 250; previously both this and the reverse were
+considered acceptable. Base 56 is slightly preferred over base 57 for
+slot 249 to avoid unnecessary IOS reloads under USB Loader GX’s Auto IOS
+setting. This change has also been coordinated with wii.guide.</li>
+<li>d2x v10 beta 52 and v8-final are still considered equal to one
+another; however, both are considered inferior to v11 beta 1 by ModMii’s
+SysCheck Updater even though the improvements can be argued as
+relatively minor.</li>
+<li>Added optional step to carefully stub or erase unnecessary IOS slots
+that should be empty using stub IOS WADs. Stub IOS WADs are never built
+for critical or commonly used IOS slots (e.g. 80, 202, 222-224, 236,
+240-256, etc).</li>
+<li>Any version of the HBC equal to or greater than 1.1.2 is considered
+to be up to date.</li>
+<li>Custom system menu versions (e.g. v65535) are now detected and users
+directed to install stock system menu versions. Custom system menu
+versions do not play nicely with Priiloader and/or system menu
+hacks.</li>
+<li>Region mismatches are now detected (i.e. due to an incomplete region
+change) and users are advised to complete the Region Change Wizard to
+correct it before proceeding with the SysCheck Updater.</li>
+<li>SysCheck Updater guides will now hide the last four digits of the
+console ID.</li>
+</ul>
+<h3>User Interface:</h3>
+<ul>
+<li>Slight changes to icons used by ModMii and the ModMii Installer.
+ModMii Skin icon is now a different colour.</li>
+<li>Added new option to ModMii Skin to change its theme. Anyone at any
+time can create a new theme and submit it to XFlak to share with all
+users.</li>
+<li>Default ModMii Skin theme changed to AuroraNemoia’s Nebula theme.
+Original theme still available via ModMii Skin’s theme selector
+option.</li>
+<li>Added ModMii Launchpad Toolbar and ModMii Context Menu (Right-click)
+options; see Drag and Drop changes for more info.</li>
+<li>Adjustments to main menu order and wording to be more clear and user
+friendly.</li>
+</ul>
+<h3>Downloads / App Updates:</h3>
+<ul>
+<li><p>Complete GUI redesign of ModMii Classic Download Pages (excluding
+Advanced Downloads Page).</p>
+<ul>
+<li>GUI interface with helpful tool tips displayed when hovering your
+mouse over items.</li>
+</ul></li>
+<li><p>(Re)introduced auto-updating and semi-auto-updating downloads to
+many Wii Apps and PC Programs that still frequently receive updates.</p>
+<ul>
+<li>Added an option for Auto-Updating downloads to skip update check if
+previously downloaded and cached; disabled by default.</li>
+<li>Downloads that are not auto-updating can now be refreshed during
+update checks without requiring a full ModMii update. Database (DB)
+version/date information is listed in guides as well as ModMii Classic’s
+main menu.</li>
+</ul></li>
+<li><p>Added support to create custom v14 SD/USB Forwarder dols; v12
+still available just in case.</p>
+<ul>
+<li>ModMii’s USBLoader Forwarder channel was updated from v12 to v14.
+Also it now includes a forwarder dol to more easily autoboot this
+channel directly from Priiloader. ModMii guides provide general
+direction on how to install and autoboot files in Priiloader.</li>
+</ul></li>
+<li><p>PC Program Start Menu shortcuts (optional) are now all organized
+in a ModMii Start Menu folder instead of a separate folder for each
+program.</p></li>
+<li><p>If PC Programs are installed portably they will now be saved to
+Device:/Program Files/AppName instead of Device:/AppName.</p></li>
+<li><p>Adjusted naming convention for advanced user defined downloads to
+support some Wii apps not directly used by ModMii (e.g. cIOS installers)
+that expect this naming format to work without WiFi
+(e.g. IOS56-64-v5661.wad instead of IOS56v5661.wad).</p></li>
+<li><p>Bundled new download queue “d2x_installer_bases_38_56_57_58” that
+will save d2x base IOSs in the right locations for the d2x cIOS
+installer (Wii app) to be able to work offline. The d2x cIOS Installer
+is not used by ModMii as it’s redundant, but should users prefer it, it
+is downloadable via the OSC or HBB.</p></li>
+<li><p>Removed old/outdated Priiloader hacks.ini download, Dop-Mii, and
+WiiMod.</p></li>
+<li><p>New Downloads:</p>
+<ul>
+<li>PC Programs:
+<ul>
+<li>Open Shop Channel: auto-updating from oscwii.org</li>
+<li>Dolphin (Wii Emulator): semi-auto-updated periodically but the app
+is able update itself</li>
+<li>Nkit Processing App</li>
+<li>GameCube Backup Manager: auto-updating from developer github</li>
+<li>Ohneschwanzenegger (aka NUS NANDBuilder)</li>
+<li>RiiConnect24 Patcher: auto-updating from developer github</li>
+<li>ThemeMii Mod (Wii Theme Builder)</li>
+<li>FileZilla (FTP Client): semi-auto-updated periodically but the app
+is able update itself</li>
+<li>HxD Hex Editor: semi-auto-updated periodically but the app is able
+update itself</li>
+<li>Diskitude (Disk Usage Analyzer): auto-updating from developer
+website</li>
+<li>H2testw (SD Card and USB test tool)</li>
+<li>HashMyFiles: auto-updating from developer github</li>
+</ul></li>
+<li>Wii Apps:
+<ul>
+<li>ftpii (FTP Server for the Wii)</li>
+<li>Not64 (N64 Emulator): auto-updating from oscwii.org</li>
+<li>Homebrew Channel WAD (Open HBC v1.1.5 LULZ)</li>
+<li>CleanRip</li>
+</ul></li>
+<li>Exploit:
+<ul>
+<li>Twilight Hack Version 0.1beta2 [3.4 U/E/J]
+<ul>
+<li>Added for completeness in addition to Version 0.1beta1 [&lt;3.4
+U/E/J], not used in any guides/wizards</li>
+</ul></li>
+</ul></li>
+<li>IOS:
+<ul>
+<li>IOS59 v9429</li>
+</ul></li>
+</ul></li>
+<li><p>Updated Downloads:</p>
+<ul>
+<li>YAWM ModMii Edition (aka: yawmME, Yet Another WAD Manager ModMii
+Edition) replaced Some YAWMM Mod on ModMii’s Download Page 2. yawmME has
+many improvements over its predecessor, including the ability to retain
+Priiloader when installing a new System Menu, to launch apps, to
+temporarily disable region checks/protection to permit region changing,
+and more. Find the complete yawmME changelog on github for the complete
+list of changes.</li>
+<li>SysCheck ModMii Edition (aka: SysCheck ME) replaced SysCheck HDE on
+ModMii’s Download Page 2. Notably, with this update SysCheck.csv logs
+can also be saved to USB Hard Drives in addition to SD Cards.</li>
+<li>d2x cIOS default updated to v11 beta 1
+<ul>
+<li>More d2x cIOS versions have been added to the options
+(e.g. v11-beta1-fakemote0.5.0 for DualShock3/4 USB controller support);
+new additions were released prior to this update.</li>
+</ul></li>
+<li>WiiFlow: auto-updating from oscwii.org</li>
+<li>USB Loader GX: auto-updating from oscwii.org</li>
+<li>Nintendont: auto-updating from oscwii.org</li>
+<li>Priiloader: still v0.9.1 but will be semi-auto-updated periodically
+when deemed appropriate by XFlak
+<ul>
+<li>Updated Priiloader hacks_hash.ini with additional system menu hacks
+such as: Remove Deflicker, Block Disc Autoboot, Allow TitleID
+RAAE/408x/410x, Remove IOS16 Disc Error, and Mark Network Con as Tested.
+Notably the Remove Deflicker system menu hack disables the blurring
+filter on 480i and 480p originally meant to prevent “flickering” on CRTs
+in interlaced modes. Download was refreshed silently before this ModMii
+update.</li>
+</ul></li>
+<li>Homebrew Browser: auto-updating from oscwii.org</li>
+<li>WiiMC changed to SuperrSonic Edition: auto-updating from
+oscwii.org</li>
+<li>FCEUGX (NES Emulator): auto-updating from oscwii.org</li>
+<li>SNEX9xGX (SNES Emulator): auto-updating from oscwii.org</li>
+<li>Visual Boy Advance GX (GBA/Game Boy Color/Game Boy Emulator):
+auto-updating from oscwii.org</li>
+<li>Wii64 (N64 Emulator): auto-updating from oscwii.org
+<ul>
+<li>Updated to WiiFlow Compatibility MOD by saulfabreg which has the
+ability to autolaunch ROMs via arguments, via meta.xml or WiiFlow</li>
+</ul></li>
+<li>WiiSX changed to WiiSXRX (PS1 Emulator): auto-updating from
+oscwii.org</li>
+<li>SaveGame Manager GX: auto-updating from oscwii.org</li>
+<li>WiiXplorer: auto-updating from oscwii.org</li>
+<li>Cheat Codes (auto-updating) now downloaded in a single archive
+instead of individually and is much faster. The archive is updated
+periodically with new cheats from both codes.rc24.xyz and
+gamehacking.org.
+<ul>
+<li>Old/slower Cheat Codes downloader is still accessible via ModMii’s
+bundled download queue “CheatCodes_For_AccioHacks”. Use this only if you
+require cheat codes to be named in AccioHacks compatible format. The old
+downloader is faster than it was in v6.6.3 but still time
+consuming.</li>
+</ul></li>
+<li>Any Region Changer ModMii Edition (ARCME) updated to v1.0.6.
+Download was refreshed silently before this ModMii update.</li>
+<li>MyMenuifyMod updated to v2.0.</li>
+<li>NeoGamma updated to R9 beta 56 MOD r4</li>
+<li>ShowMiiWads updated to v1.5.2 mod</li>
+<li>postLoader updated to v4.7.96</li>
+<li>Updated graphics for the following channels/WADs: postLoader, neek2o
+(nswitch), WiiFlow and switch2uneek.</li>
+<li>Simple IOS Patcher and IOS236 Installer were updated with a new NUS
+endpoint; from http://nus.cdn.shop.wii.com/ccs/download to
+http://ccs.cdn.sho.rc24.xyz/ccs/download</li>
+<li>Slight change to patched system menu IOSs based on IOS60. TMD was
+updated at offset 0x3E2 from 0x0001 to 0x8001 to indicate shared content
+in order to save nand space when multiple IOSs with same content are
+installed. No functional difference other than saving nand space.</li>
+<li>All CSM themes from ModMii’s Download Page 3 are now signed to avoid
+unnecessary warning prompts when being installed by MyMenuifyMod after
+its 2023 update.</li>
+</ul></li>
+</ul>
+<h3>Other:</h3>
+<ul>
+<li>A custom uninstaller is now bundled with ModMii allowing you to
+uninstall some or all of ModMii’s components (e.g. you can uninstall Wii
+Backup Manager while retaining ModMii, or vice versa, etc.).</li>
+<li>App Updater: new feature added to File Cleanup function on main
+menu. Users now prompted if they want to check for updates to
+auto-updating apps detected on the device (excluding Dolphin and OSC),
+or to delete unnecessary files, or both. Latest versions will be
+retrieved even if the option to skip update check for Auto-Updating
+downloads is enabled. All actions continue to be listed onscreen for
+users to confirm before proceeding with changes.</li>
+<li>File Cleanup function updated to check for a few more apps to remove
+(e.g. HBB) and if a bootmii folder is detected it will be renamed to
+bootmii_off to prevent it from being accessed.</li>
+<li>Updated bundled version of NUS Downloader Command Line from v0.2 to
+v0.6. The old NUSD did not perfectly create TMDs. Imperfect TMDs were
+not generally problematic and have been used without issues for many
+years. However, the new YAWM ModMii Edition will prevent installation of
+any WAD that is not perfect for security reasons. As a result, many of
+the WADs in ModMii’s temp folder from older versions will be deemed
+invalid going forward and will be automatically re-downloaded. To
+correct the files in your temp folder all at once, download the items
+from the bundled “NUS_2023_Changes” download queue.</li>
+<li>When loading a download queue via ModMii Classic a saved queue can
+now be deleted by entering a minus sign in front of the number
+(e.g. entering -1 will delete queue # 1). Previously queues could only
+be deleted by manually removing them from the temp/DownloadQueues
+folders.</li>
+<li>The Open Homebrew Channel can be installed to emulated NANDs using
+ModMii’s Emulated NAND Builder or Modifier.</li>
+<li>Removed option to keep a patched IOS36.</li>
+<li>Added red font.bin option for SNEEK/UNEEK in addition to black
+(default) and white. Also clarified font.bin descriptions: White text on
+Black background (formerly black), Black text on White background
+(formerly white) and Red text on Black background.</li>
+<li>ModMii verbose option adjusted; now only impacts ModMii Skin and
+nandBinCheck but not wget (i.e. wget will always start minimized).
+Option can now also be toggled within ModMii Skin.</li>
+<li>Minor changes to the ModMii Installer. ModMii Classic will be
+launched instead of ModMii Skin after installation. Added Start Menu
+shortcuts to website and ModMii installation directory. Updated graphics
+to match the new default ModMii Skin theme.</li>
+<li>Updated .NET Framework 3.5 installer for newer versions of Windows;
+only downloaded if detected as missing.</li>
+<li>Improved support for custom paths with special characters like &amp;
+and ^.</li>
+<li>ModMii will now work even if run from a network location without an
+assigned drive letter. The location will be temporarily mapped to a new
+drive letter which will get removed when ModMii is cleanly exited. Note
+that if ModMii is forcefully closed the new mapped drive will not get
+removed automatically, and if done repeatedly it could result in
+duplicate mapped drive letters. Habitually running ModMii from a network
+location is not advised.</li>
+<li>Added some more Easter Eggs to ModMii Classic. Happy hunting!</li>
+<li>Other minor changes.</li>
+</ul>
+<h3>Bugfix:</h3>
+<ul>
+<li>Fixed bug in ModMii Skin where downloads would fail if the download
+path was set to the root of a drive. ModMii Classic never had this
+issue.</li>
+<li>Updated supporting apps (nusd v0.2, nusfilegrabber and libwiisharp)
+with new NUS endpoint used by 3ds and WiiU so they could continue to
+retrieve Wii files when NUS was offline from 2022/3/16 to 2022/7/6.
+Autopatcher previously released to hotfix this for older versions of
+ModMii.</li>
+<li>Fixed bug where ModMii Skin would fail if entering S to skip
+entering a Mac Address for Wilbrand (i.e. to use Letterbomb).</li>
+<li>Fixed issue where ModMii Skin was sending a blank “MAC:” argument
+command to ModMii Classic when a &lt;2.2 system menu version was
+selected. MAC only required if using the Wilbrand exploit on 4.3.</li>
+<li>If an invalid neek “Rev:#” command line argument is sent to ModMii
+it will now build the latest version instead of exiting.</li>
+<li>Fixed detection of nswitch channel on emulated nands when running
+ModMii’s EmuNAND modifier.</li>
+<li>Updated various dead links, including link for hypatia. Previously
+users without hypatia (hy.exe) cached to their temp folder would be
+warned about lack of free space when using ModMii’s Game Bulk Extractor.
+ModMii allowed users to continue anyway but now free space estimates are
+working again.</li>
+<li>font.bin now also included when building non +di variants of neek2o
+in order to access the overlay menu. Previously only included for +di
+variants.</li>
+<li>Fixed bug when dragging and dropping a HDD or SD device onto ModMii
+to quickly access its File Cleanup feature.</li>
+<li>Fixed bug in v12 forwarder dol builder that limited path length to
+204 characters instead of 255.</li>
+<li>Fixed issue where SysCheck guides did not include a copy of the
+supplied SysCheck if the download location was set as an absolute path
+and not a relative path.</li>
+<li>Fixed bug in ModMii’s d2x option where users could choose from just
+10 d2x versions instead of full list of alternate d2x versions.</li>
+<li>Fixed a bug where the Wii might self-destruct in 2023 according to
+<a
+href="https://hard-drive.net/nintendo-announces-all-still-functioning-wiis-will-self-destruct-in-2023/" target="_blank">some
+news outlets</a>.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 id="6.6.3"><a href="#6.6.3">6.6.3 Changelog - 2021:04-23:</a></h2>
 <li>Fixed bug where the MMM's boot.elf was not being saved to SD root when appropriate (i.e. for HackMii Solutions Wizard, and for modding virgin Korean Wii's running system menu 4.2 or lower). This only occurred if MMM was not already saved to the SD card before downloading the HackMii Installer, and ModMii would fix itself if downloads were repeated. This bug was introduced when downloads were alphabetized and MMM became queued after the Hackmii Installer instead of before.
 <li>Syscheck Updater now also accepts "hermes-v5.1" as a valid info tag for cIOS 202 & 224 (in addition to hermesrodries-v5.1, hermesrodries-v6 & hermesrodries-5.1). These are all the same cIOS but the info signature differs based on the installer used.
 <li>Korean consoles now use v1.0 of the Photo Channel, since it has been reported that v1.1 does not work properly on Korean consoles.
 <li>Other minor changes.
 <br>
 
-<h1>6.6.2 Changelog - 2021:04-06:</h1>
+<h2 id="6.6.2"><a href="#6.6.2">6.6.2 Changelog - 2021:04-06:</a></h2>
 
 <li>Added multi-language support for analyzing syscheck.csv logs (English, German, French, Spanish & Italian).
 <li>NAND backups are now included in syscheck updater guides when updating the HBC or Bootmii.
@@ -100,18 +664,18 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 
 
-<h1>6.6.1 Changelog - 2021:02-28:</h1>
+<h2 id="6.6.1"><a href="#6.6.1">6.6.1 Changelog - 2021:02-28:</a></h2>
 <li>Quick bugfix.
 <br>
 
 
-<h1>6.6.0 Changelog - 2021:02-28:</h1>
+<h2 id="6.6.0"><a href="#6.6.0">6.6.0 Changelog - 2021:02-28:</a></h2>
 
-<h1>Summary (6.6.0)</h1>
+<h3>Summary</h3>
 <li>New\updated website, exploits, recommended cIOSs, System Menu IOSs, apps, modding steps, videos, discord server and donations page.
 <li>Major improvements to ModMii's custom generated guides, updates to many of ModMii's downloads, and fixed a handful of broken links.
 <br>
-<h1>General (6.6.0)</h1>
+<h3>General</h3>
 <li>Updated links to ModMii's new site; modmii.github.io and migrated the project from sourceforge to github.
 <li>Added str2hax exploit to ModMii, enabling you to softmod using a FAT32 HDD in place of an SD Card to do most things. This is always included as an exploit option in all of ModMii's guides.
 <li>Rewrote ModMii's updater to be able to adapt to potential website changes. Updates should work even if github goes down or ModMii moves to a different home for some other reason.
@@ -124,7 +688,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Donations now accepted (again) at modmii.github.io/donations.html. No easter eggs or perks given in exchange for donations. Support is given freely and equally.
 <br>
 
-<h1>CIOS (6.6.0)</h1>
+<h3>CIOS</h3>
 <li>Updated default version of d2x from v8-final to v10-beta52 and rev number maxxed out to 65535.
 <li>ModMii and wii.guide have coordinated updating our recommended cIOSs to install d2x cIOS with base 38 to slot 251. Previously ModMii didn't install anything to this slot, and wii.guide recommended base 58 to this slot. There are 2 games that are supported by d2x base 38 that do not fully work with the standard d2x base 57 & 56 setup in slots 249 & 250. Wii.guide previously recommended installing d2x base 58 to slot 251, but this only worked for 1 of these games. Similarly ModMii previously recommended Hermes cIOSs by default which worked in these cases. Today I am proud to say that these two great Wii modding resources are fully aligned in their recommended cIOS setup. More info here: https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List
 <li>Made three new changes to the patched IOS60v6174 that ModMii installs to System Menu IOS slots; 1) tagged 00000000.app for better sysCheck IOS detection; 2) changed version number from 16174 to 65535 since it is no longer needed for sysCheck IOS detection; and 3) replaced Nintendo's RSA Public key with RC24's enabling it to support RiiConnect24, including Wii Mail. With this System Menu IOS you can use RiiConnect24 without having to be on SM4.3. Note that for full RiiConnect24 functionality you will still need to use the RiiConnect24 patcher, but you can skip updating to 4.3 and installing RC24's IOS80 (which carries some small 003 brick potential). ModMii's sysCheck updater will accept both the current and previous versions as being up to date since these changes are non-vital improvements.
@@ -133,7 +697,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>Wizards/Guides (6.6.0)</h1>
+<h3>Wizards/Guides</h3>
 <li>Removed IOS236 installation from main modding procedure; instead Priiloader and WADs are installed using ahbprot access. IOS236 WAD, IOS236 installer and Simple IOS Patcher still available in Download Pages.
 <li>Replaced MMM with Some YAWMM Mod for ModMii's main wizard and sysCheck Updater wizard as it has support for Motion+ controllers. WiiMod Lite is not supported because of reasons identified here: http://tiny.cc/0ihotz
 <li>MMM is still used in some guides where it's launched directly from an exploit to install WADs then use it's App Launcher to load the next app without having to rename files and repeat an exploit. Notes added to these guides on how to proceed you only have Motion+ remotes.
@@ -150,7 +714,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>App Updates (6.6.0)</h1>
+<h3>App Updates</h3>
 <li>Priiloader updated to v0.9 with lots of new features; ModMii bundles it with the Priiloader Launcher app and a modified hacks_hash with the "Lock System Menu with Black Screen" hack removed. Added some important info and warnings to meta.xml; e.g. how to access Priiloader, how it can be removed when updating or (un)installing a new System Menu, name changed to "Priiloader Installer", etc.
 <li>Reordered paths for USB-Loader Forwarder Channel to prioritize USBLoaderGX first, WiiFlow second, and CFG third. Also the removed splash screen to speed up load time.
 <li>Updated Any Region Changer (ARC) to ARC ModMii Edition (ARCME) by scooby74029; if ARCME detects a region mismatch, you only have to select the "Auto Fix Settings" to correct it. Older versions of ARC required you to set a Region, save, then change the video mode back to it's previous setting, and save again. ARCME's "Auto Fix Settings" takes care of all that (i.e. it does not change the video mode but changes everything else to align with the installed System Menu region). It's a minor improvement over the original but don't forget it also supports Motion+ remotes so ARCME FTW!
@@ -169,7 +733,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>SysCheck Updater (6.6.0)</h1>
+<h3>SysCheck Updater</h3>
 <li>d2x v8-final and v10-beta52 are considered equivalent by ModMii's sysCheck updater.
 <li>SysCheck updater will now consider cIOSs valid regardless of their installed version number (i.e. d2x v10 will be considered valid if it's v65535, v21010 or some other number).
 <li>Added check for RiiConnect24's IOS31 to ModMii's sysCheck Updater, if detected users will be prompted whether they want to keep or overwrite RiiConnect24.
@@ -177,13 +741,13 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>SNEEK (6.6.0)</h1>
+<h3>SNEEK</h3>
 <li>Added checks for SNEEK when building UNEEK, and vice versa. Users are prompted if there's a conflict to choose whether to skip or overwrite SD files for one with the other. This is especially helpful for users trying to set up a SNEEK and UNEEK dual-boot configuration. Users are instructed how to have both SNEEK and UNEEK (with or without DI) set up simultaneously to allow quickly switching between them using USBLoaderGX.
 <li>Added many more SNEEK notes to help users get started, and notes are now also displayed if using ModMii Skin.
 <br>
 
 
-<h1>Videos (6.6.0)</h1>
+<h3>Videos</h3>
 <li>9 new or updated videos added to ModMii guides (although the KoreanKii videos are so short they almost don't count)
 <li>str2hax and Priiloader v0.9 videos by Foxlet and directed by XFlak.
 <li>Some YAWMM Mod, ARCME, KoreanKii removal videos recorded by Clutz450, edited by alexander1970 and directed by XFlak.
@@ -193,7 +757,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>Fixed dead links (6.6.0)</h1>
+<h3>Fixed dead links</h3>
 <li>Updated ModMii's cheat code downloader to use codes.rc24.xyz since geckocodes.org has shut down.
 <li>Updated broken links for Accio Hacks, FAT32 GUI Formatter and UnRAR (UnRAR required for SNEEK installations). Broken links were only problematic if the files had not been previously downloaded and saved to ModMii's temp folder.
 <li>If you happen to type "scam" after typing "skip" and accidentally press enter at the scam warning screen, ModMii will no longer prompt you with the aforementioned screen until the next software update. Yes I know this isn't a dead link, but if you made it this far into the changelog and are still paying attention you earned an egg!
@@ -201,26 +765,23 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>Other (6.6.0)</h1>
+<h3>Other</h3>
 <li>Other minor changes.
 <li>So this is the final FINAL update... again... see you for the next one!
 <br>
-<br>
-<br>
-<br>
 
-<h1>6.5.1 Changelog - 2019-03-24:</h1>
+<h2 id="6.5.1"><a href="#6.5.1">6.5.1 Changelog - 2019-03-24:</a></h2>
 <li>Updated the ModMii Installer. It does a better job of avoiding false-positive antivirus alerts. It also now includes an Uninstaller.
 <li>Updated download links in response to pending filetrip shutdown.
 <li>Other minor changes.
 <br>
 
-<h1>6.5.0 Changelog:</h1>
+<h2 id="6.5.0"><a href="#6.5.0">6.5.0 Changelog:</a></h2>
 <li>Updated MD5 for latest USBLoader GX released in Dec 2018. Also changed download link to always download r1271 as opposed to most recent release to avoid potential unstable releases.
 <li>Updated YAWMM to the modified rev5e version from the Complete Softmod Guide that supports Motion+ remotes, AHBPROT and WiiU (vWii). 
 <br>
 
-<h1>6.4.9 Changelog:</h1>
+<h2 id="6.4.9"><a href="#6.4.9">6.4.9 Changelog:</a></h2>
 <li>Added <font color="yellow">warning</font> to main menu suggesting <font color="yellow">users should download files from NUS before Nintendo Wii servers shut down in 2019.</font></li>
 <li>Bundled prepared download queues for users to easily grab files from NUS for future use.
 <li>Changed recommended cIOS249 to base 57 from 56, and cIOS250 to base 56 from 57. Syscheck updater will consider both configurations as up to date.</li>
@@ -232,42 +793,42 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes.</li>
 
 <br>
-<h1>6.4.8 Changelog:</h1>
+<h2 id="6.4.8"><a href="#6.4.8">6.4.8 Changelog:</a></h2>
 <li>Fixed twilight princess, any region changer and wii backup manager downloads.</li>
 <br>
-<h1>6.4.5 Changelog:</h1>
+<h2 id="6.4.5"><a href="#6.4.5">6.4.5 Changelog:</a></h2>
 <li>Updated bundled version of wget to v1.19.4 and some minor tweaks to keep things up and running.</li>
 <br>
-<h1>6.4.4 Changelog:</h1>
+<h2 id="6.4.4"><a href="#6.4.4">6.4.4 Changelog:</a></h2>
 <li>Updated postloader link.</li>
 <br>
-<h1>6.4.3 Changelog:</h1>
+<h2 id="6.4.3"><a href="#6.4.3">6.4.3 Changelog:</a></h2>
 <li>Fixed UnRAR links and parsing of neek2o versions available online.</li>
 <br>
-<h1>6.4.2 Changelog:</h1>
+<h2 id="6.4.2"><a href="#6.4.2">6.4.2 Changelog:</a></h2>
 <li>Fixed bannerbomb download links and modmii website links.</li>
 <br>
-<h1>6.4.1 Changelog:</h1>
+<h2 id="6.4.1"><a href="#6.4.1">6.4.1 Changelog:</a></h2>
 <li>Fixed nswitch download link.</li>
 <br>
-<h1>6.4.0 Changelog:</h1>
-<li>Update all dead or dying links (e.g. google drive).</li>
+<h2 id="6.4.0"><a href="#6.4.0">6.4.0 Changelog:</a></h2>
+<li>Updated all dead or dying links (e.g. google drive).</li>
 <br>
 
-<h1>6.3.9 Changelog:</h1>
+<h2 id="6.3.9"><a href="#6.3.9">6.3.9 Changelog:</a></h2>
 <li>Update to fix an issue preventing the hackmii installer from downloading.</li>
 <br>
 
-<h1>6.3.8 Changelog:</h1>
+<h2 id="6.3.8"><a href="#6.3.8">6.3.8 Changelog:</a></h2>
 <li>Updated download links for gif's.</li>
 <br>
 
-<h1>6.3.7 Changelog:</h1>
+<h2 id="6.3.7"><a href="#6.3.7">6.3.7 Changelog:</a></h2>
 <li>Minor fixes to save files to copy_to_usb instead of copy_to_sd where applicable.</li>
 <br>
 
 
-<h1>6.3.6 Changelog:</h1>
+<h2 id="6.3.6"><a href="#6.3.6">6.3.6 Changelog:</a></h2>
 
 <li>Housekeeping to migrate ModMii to sourceforge from googlecode before it shuts down. Multiple updates were required to retain continuous updates of old versions, one to update the existing auto update code on googlecode, and another update from sourceforge.</li>
 <li>Changed website from modmii.zzl.org to modmii.comuf.com. Didn't change the name in the website graphic because missing artwork, but mostly just cuz... lazy.</li>
@@ -279,7 +840,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li><b>Check out my new projects! ~search for my "xflak40" wordpress webpage</b></li>
 <br>
 
-<h1>6.3.1 Changelog:</h1>
+<h2 id="6.3.1"><a href="#6.3.1">6.3.1 Changelog:</a></h2>
 
 <li>Updated autoit download link.</li>
 <li>Updated md5 of fat32 gui formatter.</li>
@@ -287,7 +848,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 <br>
 
-<h1>6.3.0 Changelog:</h1>
+<h2 id="6.3.0"><a href="#6.3.0">6.3.0 Changelog:</a></h2>
 
 <li>Replaced broken dropbox links with person66's googledrive links. Thanks person66!</li>
 <li>Replaced broken dropbox gif links with nusad google code links.</li>
@@ -295,7 +856,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 <br>
 
-<h1>6.2.7 Changelog:</h1>
+<h2 id="6.2.7"><a href="#6.2.7">6.2.7 Changelog:</a></h2>
 
 <li>Fixed issue where ModmiiSkin (i.e. ModMii Classic CMD Line Mode) always saved usb-loader files to the SD card even when USB hard drive was chosen.</li>
 <li>WiiFlow downloads now identified as updated successfully.</li>
@@ -304,37 +865,37 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 <br>
 
-<h1>6.2.6 Changelog:</h1>
+<h2 id="6.2.6"><a href="#6.2.6">6.2.6 Changelog:</a></h2>
 <li>Fixed bugs introduced in 6.2.5 where Abstinence Wizard did not download an exploit and Casper.</li>
 <br>
 
-<h1>6.2.5 Changelog:</h1>
+<h2 id="6.2.5"><a href="#6.2.5">6.2.5 Changelog:</a></h2>
 <li>Fixed bug where BC wasn't being installed to emunands when using ModMii Classic.</li>
 <li>Abstinence Wizard now queues WiiFlow for download if selected.</li>
 <li>Updated MD5 for nswitch.</li>
 <li>Other minor changes.</li>
 <br>
 
-<h1>6.2.4 Changelog:</h1>
+<h2 id="6.2.4"><a href="#6.2.4">6.2.4 Changelog:</a></h2>
 <li>SysCheck download updated to v2.1.0.b19 (detects latest HBC).</li>
 <li>Fixed recently introduced WiiFlow Download Bug.</li>
 <li>Minor changes to ModMiiSkin.exe launcher by person66.</li>
 <br>
 
-<h1>6.2.3 Changelog:</h1>
+<h2 id="6.2.3"><a href="#6.2.3">6.2.3 Changelog:</a></h2>
 <li>ModMii now instructs users to install Bootmii as IOS because v1.2 of the HackMii installer no longer automatically\silently installs it at startup.</li>
 <li>ModMii's d2x cIOS beta selector will omit WiiU\vWii cIOSs going forward.</li>
 <br>
 
 
-<h1>6.2.2 Changelog:</h1>
+<h2 id="6.2.2"><a href="#6.2.2">6.2.2 Changelog:</a></h2>
 
 <li>ModMii now grabs v1.2 of the HackMii Installer and the LULZ 236 Mod of Priiloader.</li>
 
 <br>
 
 
-<h1>6.2.1 Changelog:</h1>
+<h2 id="6.2.1"><a href="#6.2.1">6.2.1 Changelog:</a></h2>
 
 <li>Bugfix for WiiFlow download.</li>
 
@@ -343,7 +904,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.2.0 Changelog:</h1>
+<h2 id="6.2.0"><a href="#6.2.0">6.2.0 Changelog:</a></h2>
 
 <li>Added IOS62 to Active IOS downloads.</li>
 
@@ -368,7 +929,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.1.5 Changelog:</h1>
+<h2 id="6.1.5"><a href="#6.1.5">6.1.5 Changelog:</a></h2>
 
 <li>Fixed very rare bug that caused System Menu theme downloads to fail. Bug only affected users running ModMii portably (i.e. not installed to C:) on a PC that had previously run an older version of ModMii (v6.0.2 or older) to also build a System Menu theme. Thanks to Etheboss for reporting the bug.</li>
 
@@ -379,28 +940,30 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Easter egg hunt is over because Chuck Norris demands it.</li>
 <br>
 
-<h1>6.1.4 Changelog:</h1>
+<h2 id="6.1.4"><a href="#6.1.4">6.1.4 Changelog:</a></h2>
 <li>Minor changes and typo corrections.</li>
 <br>
 
-<h1>6.1.3 Changelog:</h1>
+<h2 id="6.1.3"><a href="#6.1.3">6.1.3 Changelog:</a></h2>
 <li>Updated versions of DML from its newest google code page are now supported by ModMii.</li>
 <li>Other minor changes.</li>
 <br>
 
-<h1>6.1.2 Changelog:</h1>
+<h2 id="6.1.2"><a href="#6.1.2">6.1.2 Changelog:</a></h2>
 <li>Minor changes.</li>
 <br>
 
-<h1>6.1.1 Changelog:</h1>
+<h2 id="6.1.0"><a href="#6.1.0">6.1.1 Changelog:</a></h2>
 <li>Wilbrand exploit is now built properly even for those with Windows date settings not in mm/dd/yyyy format.</li>
 <br>
 
 
-<h1>6.1.0 Changelog:</h1><li>Letterbomb was replaced by Wilbrand. Wilbrand was created by giantpune and he has given ModMii the unique privilege of being the first to use and share Wilbrand. Wilbrand, named after the inventor of TNT, is a discless Wii Message Board exploit, or "bomb" if you will. ModMii users will no longer need to be instructed to manually download the Letterbomb exploit; instead ModMii will prompt users for their Wii's unique MAC address and build the exploit on the fly. Unlike Letterbomb, ModMii will only require a wifi connection the first time it constructs the Wilbrand exploit. ModMii will only build the Wilbrand exploit for 4.3 system menu's; however, Wilbrand is supported on all system menu's from 3.0 to 4.3. The reason ModMii does not offer Wilbrand exploits for system menu's 3.0 - 4.2 is because bannerbomb, another discless exploit, can be used instead and it does not require knowing your Wii's MAC Address. Wilbrand is available on ModMii's Download Page 2 as well as other wizard\guide functions. A big thank you goes out to giantpune for creating Wilbrand and allowing ModMii to share it with the world.</li><li>ModMii's forwarder dol builder and all of ModMii's supported forwarder channels were updated from v11c to v12 and now support 3TB+ hard drives. Thanks for this goes out to FIX94 and the WiiXplorer team.</li><li>Fixed bug that sometimes occurred when building an "Advanced cIOS" from ModMii's Advanced Downloads page. If a new IOS slot was not identified then version number patches were not applied. Thanks to JoostinOnline for spotting and reporting this bug.</li><li>Fixed rare bug where the wrong guide was generated if installing a custom theme without also using MMM to install at least one WAD.</li><li>sysCheck updated from 2.1.0.b17 to 2.1.0.b18 on ModMii's download page 2.</li><li>WiiFlow-Mod was renamed back to WiiFlow at the request of the WiiFlow team.</li><li>Other minor changes.</li><br>
-<center>ModMii versions 7.0.0 and 7.0.1 were all part of an elaborate <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/page-329#post-4167035">April Fools Joke.</a></center>
-<del><h1>7.0.1 Changelog:</h1>
+<h2 id="6.1.0"><a href="#6.1.0">6.1.0 Changelog:</a></h2><li>Letterbomb was replaced by Wilbrand. Wilbrand was created by giantpune and he has given ModMii the unique privilege of being the first to use and share Wilbrand. Wilbrand, named after the inventor of TNT, is a discless Wii Message Board exploit, or "bomb" if you will. ModMii users will no longer need to be instructed to manually download the Letterbomb exploit; instead ModMii will prompt users for their Wii's unique MAC address and build the exploit on the fly. Unlike Letterbomb, ModMii will only require a wifi connection the first time it constructs the Wilbrand exploit. ModMii will only build the Wilbrand exploit for 4.3 system menu's; however, Wilbrand is supported on all system menu's from 3.0 to 4.3. The reason ModMii does not offer Wilbrand exploits for system menu's 3.0 - 4.2 is because bannerbomb, another discless exploit, can be used instead and it does not require knowing your Wii's MAC Address. Wilbrand is available on ModMii's Download Page 2 as well as other wizard\guide functions. A big thank you goes out to giantpune for creating Wilbrand and allowing ModMii to share it with the world.</li><li>ModMii's forwarder dol builder and all of ModMii's supported forwarder channels were updated from v11c to v12 and now support 3TB+ hard drives. Thanks for this goes out to FIX94 and the WiiXplorer team.</li><li>Fixed bug that sometimes occurred when building an "Advanced cIOS" from ModMii's Advanced Downloads page. If a new IOS slot was not identified then version number patches were not applied. Thanks to JoostinOnline for spotting and reporting this bug.</li><li>Fixed rare bug where the wrong guide was generated if installing a custom theme without also using MMM to install at least one WAD.</li><li>sysCheck updated from 2.1.0.b17 to 2.1.0.b18 on ModMii's download page 2.</li><li>WiiFlow-Mod was renamed back to WiiFlow at the request of the WiiFlow team.</li><li>Other minor changes.</li><br>
 
+<del><h2 id="aprilfools"><a href="#aprilfools">7.0.1 Changelog:</a></h2></del>
+
+<center>ModMii versions 7.0.0 and 7.0.1 from 2012 were all part of an elaborate <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/page-329#post-4167035">April Fools Joke.</a><br>Later in 2023, v7.0.0 was released for real with a very different changelog.</center><br>
+<del>
 <li>Corrected an issue that some users were having when updating to ModMii v7.0.0.</li>
 
 <li>Hey Vegeta, what does the internet say about ModMii's download count?</li>
@@ -410,7 +973,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>7.0.0 Changelog:</h1>
+<h2>7.0.0 Changelog:</h2>
 
 <li>The ModMii user interface was totally rewritten in this update and now not only works on Windows but also on Macs and Linux. Note that when ModMii is being run on a Mac or linux System Menu themes are not supported. Big thanks goes out to DeadlyFoez who played a major role in this update.</li>
 
@@ -421,7 +984,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.0.7 Changelog:</h1>
+<h2 id="6.0.7"><a href="#6.0.7">6.0.7 Changelog:</a></h2>
 
 <li>ModMii now uses TMDedit by person66 to patch TMDs for future d2x beta cIOSs. This will allow davebaol to add or remove modules in future cIOSs without requiring further changes made to ModMii in order to support it.</li>
 
@@ -438,7 +1001,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes.</li>
 <br>
 
-<h1>6.0.6 Changelog:</h1>
+<h2 id="6.0.6"><a href="#6.0.6">6.0.6 Changelog:</a></h2>
 
 <li>Changed how ModMii builds d2x cIOSs. It now parses ciosmaps.xml and direcly applies all the patches listed within it. This gives davebaol more flexibility to change the patches made to the existing base IOS modules. This change was necessary to support future d2x v9+ betas.</li>
 
@@ -449,7 +1012,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other Minor Changes.</li>
 <br>
 
-<h1>6.0.5 Changelog:</h1>
+<h2 id="6.0.5"><a href="#6.0.5">6.0.5 Changelog:</a></h2>
 
 <li>d2x v8-final is now bundled with ModMii instead of v7-final.</li>
 
@@ -467,7 +1030,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.0.4 Changelog:</h1>
+<h2 id="6.0.4"><a href="#6.0.4">6.0.4 Changelog:</a></h2>
 
 <li>Updated md5 hash and sysCheck Updater recognition for v1.0 of the HackMii Installer. A big thanks goes out to Team Twiizers for this unexpected update.</li>
 
@@ -483,7 +1046,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.0.3 Changelog:</h1>
+<h2 id="6.0.3"><a href="#6.0.3">6.0.3 Changelog:</a></h2>
 
 <li>DML support fixed. Thanks to the DML team for the major progress they've recently made. If there is anything ModMii can do to support you better please don't hesitate to message me about it.</li>
 
@@ -499,7 +1062,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>6.0.2 Changelog:</h1>
+<h2 id="6.0.2"><a href="#6.0.2">6.0.2 Changelog:</a></h2>
 
 <li>Updated syscheck to v2.1.0.b17 and removed the beta syscheck download as the latest version should work for everyone. Some minor changes were made to ModMii's sysCheck Updater feature to better analyze the latest syscheck logs.</li>
 
@@ -512,24 +1075,24 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other Minor Changes.</li>
 <br>
 
-<h1>6.0.1 Changelog:</h1>
+<h2 id="6.0.1"><a href="#6.0.1">6.0.1 Changelog:</a></h2>
 <li>Fixed bug where ModMii's Emulated NAND Builder would fail to function properly.</li>
 <li>Fixed bug where ModMii Skin and the ModMii Installer would fail to collect user selections properly if there was an "&" symbol in your Windows username.</li>
 <li>Fixed bug where ModMii would behave unexpectedly if there was an "&" symbol in the Path where ModMii was saved.</li>
 <li>Other minor changes.</li>
 <br>
 
-<h1>6.0.0 Changelog:</h1><li>ModMii now comes bundled with ModMii Skin, a GUI wrapper that uses\requires "ModMii Classic". Not all features of ModMii Classic are supported in ModMii Skin. ModMii Skin supports the following functions: ModMii Wizard, Abstinence Wizard, USB-Loader Setup, HackMii Solutions, Region Change, Load a Download Queue, SNEEK Installation and NAND builder and Options (including updates).</li><li>Hot Keys are also supported in ModMii Skin for that "ModMii Classic" feel. For example, you can switch between ModMii Skin and ModMii Classic by typing "M" at either Main Menu then hitting Enter.</li><li>ModMii Installer updated to v6.0. It is able to install ModMii v6.0.0 and above. It too has a "Skin" and gives you the option of making shortcuts to ModMii or ModMii Skin on the Desktop and\or the Start Menu. Older versions of the installer will install ModMii v5.5.2, then it will automatically run ModMii after installation and prompt you to update to the most recent version.</li><li>wizapp.exe is now bundled with ModMii and the ModMii Installer in order to support Skin Mode.</li><li>Added play sound at finish option and it's enabled by default. If enabled, it will play a success sound when downloads are successful and an error sound if there are errors. Thanks to my cuz Violator for making these unique short tracks for me on such short notice.</li><li>Updated WiiFlow on ModMii's Download Page 2. It is now an autoupdating download that will grab the most recent release of WiiFlow.</li><li>Updated how the latest hosted version of postloader is detected to support recent changes that were made to the googlecode webpage.</li><li>Updated md5 of postloader channel forwarder so the updated version isn't considered "invalid".</li><li>You may have noticed reading this changelog somewhere new. ModMii has a new official website, modmii.zzl.org. Some highlights include a support page with links to the official ModMii forum as well as the new official ModMii IRC channel. Thanks goes out to DeadlyFoez who pretty much put the whole thing together by himself. Also thanks to RobGee789 for graphics and CaseyOmah for helping DeadlyFoez out with some html code.</li><li>Big thanks to person66 for updating his script to launch ModMii and ModMii Skin with an icon, arguments and other useful functions. I also want to thank RobGee789 and M3RK for the awesome graphics they made for ModMii Skin.</li><li>No animals were harmed in the making of this skin.</li><li>Other minor changes.</li><br>
+<h2 id="6.0.0"><a href="#6.0.0">6.0.0 Changelog:</a></h2><li>ModMii now comes bundled with ModMii Skin, a GUI wrapper that uses\requires "ModMii Classic". Not all features of ModMii Classic are supported in ModMii Skin. ModMii Skin supports the following functions: ModMii Wizard, Abstinence Wizard, USB-Loader Setup, HackMii Solutions, Region Change, Load a Download Queue, SNEEK Installation and NAND builder and Options (including updates).</li><li>Hot Keys are also supported in ModMii Skin for that "ModMii Classic" feel. For example, you can switch between ModMii Skin and ModMii Classic by typing "M" at either Main Menu then hitting Enter.</li><li>ModMii Installer updated to v6.0. It is able to install ModMii v6.0.0 and above. It too has a "Skin" and gives you the option of making shortcuts to ModMii or ModMii Skin on the Desktop and\or the Start Menu. Older versions of the installer will install ModMii v5.5.2, then it will automatically run ModMii after installation and prompt you to update to the most recent version.</li><li>wizapp.exe is now bundled with ModMii and the ModMii Installer in order to support Skin Mode.</li><li>Added play sound at finish option and it's enabled by default. If enabled, it will play a success sound when downloads are successful and an error sound if there are errors. Thanks to my cuz Violator for making these unique short tracks for me on such short notice.</li><li>Updated WiiFlow on ModMii's Download Page 2. It is now an autoupdating download that will grab the most recent release of WiiFlow.</li><li>Updated how the latest hosted version of postloader is detected to support recent changes that were made to the googlecode webpage.</li><li>Updated md5 of postloader channel forwarder so the updated version isn't considered "invalid".</li><li>You may have noticed reading this changelog somewhere new. ModMii has a new official website, modmii.zzl.org. Some highlights include a support page with links to the official ModMii forum as well as the new official ModMii IRC channel. Thanks goes out to DeadlyFoez who pretty much put the whole thing together by himself. Also thanks to RobGee789 for graphics and CaseyOmah for helping DeadlyFoez out with some html code.</li><li>Big thanks to person66 for updating his script to launch ModMii and ModMii Skin with an icon, arguments and other useful functions. I also want to thank RobGee789 and M3RK for the awesome graphics they made for ModMii Skin.</li><li>No animals were harmed in the making of this skin.</li><li>Other minor changes.</li><br>
 
-<h1>5.5.2 Changelog:</h1><li>Made changes to how ModMii checks for and performs updates. ModMii v5.5.2 performs exactly the same as ModMii v5.5.1 except that it will be able to install future updates. Going forward, all versions of ModMii older than v5.5.2 will be updated to v5.5.2 before being able to update further (ie. v5.6.X when released).</li><br>
+<h2 id="5.5.2"><a href="#5.5.2">5.5.2 Changelog:</a></h2><li>Made changes to how ModMii checks for and performs updates. ModMii v5.5.2 performs exactly the same as ModMii v5.5.1 except that it will be able to install future updates. Going forward, all versions of ModMii older than v5.5.2 will be updated to v5.5.2 before being able to update further (ie. v5.6.X when released).</li><br>
 
-<h1>5.5.1 Changelog:</h1>
+<h2 id="5.5.1"><a href="#5.5.1">5.5.1 Changelog:</a></h2>
 <li>Fixed bug where ModMii would crash when using the ModMii Wizard if downloading WiiFlow.</li>
 <li>Fixed bug where you could not go return to the page prior to inputting your serial number when building an emulated nand for uneek2o or uneek2o+di (bug did not effect Abstinence Wizard).</li>
 <li>Reverted WiiFlow on ModMii's Download Page 2 back to r304 at FIX94's request. When his mod if WiiFlow is more stable it will be added back to ModMii as an autoupdating download.</li>
 <br>
 
-<h1>5.5.0 Changelog:</h1>
+<h2 id="5.5.0"><a href="#5.5.0">5.5.0 Changelog:</a></h2>
 <li>Abstinence Wizard added to ModMii's main menu. You can use this Wizard to prepare the necessary files to load NEEK on any Wii even if it has not been modifed. In short, to avoid voiding your warranty (or for other reasons) if you choose to abstain from softmodding your Wii, you can still play your games off a USB HDD by using the Abstinence Wizard. The recent release of giantpune's 'Casper' (available on ModMii's Download Page 2) is what made this wizard possible. Thanks giantpune!</li>
 <li>Updated WiiFlow on ModMii's Download Page 2. It is now an autoupdating download that will grab the most recent release of FIX94's feature rich and very stable and Mod of WiiFlow.</li>
 <li>Other minor changes.</li>
@@ -538,11 +1101,11 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 
 
-<h1>5.2.1 Changelog:</h1>
+<h2 id="5.2.1"><a href="#5.2.1">5.2.1 Changelog:</a></h2>
 <li>Fixed bug where DML was not downloaded when building an emulated NAND.</li>
 <br>
 
-<h1>5.2.0 Changelog:</h1>
+<h2 id="5.2.0"><a href="#5.2.0">5.2.0 Changelog:</a></h2>
 <li>Added a DML rev selector and updated DML build process to support DML rev12+. DML was also moved from Download Page 1 to Download Page 4. I want to extend a big thank you to crediar for continuing to work on DML and addressing the issues that DML was facing when running from bootmii IOS. Your solution to install DML on the real NAND to slot 257 solved a lot of problems and the scene thanks you. I also want to recognize WiiPower who has become increasingly involved in the DML project.</li>
 <li>Added an option to build DML with debug\logging mode enabled.</li>
 <li>Updated NeoGamma on ModMii's Download Page 2 from R9 beta50 to R9 beta56. This version of NeoGamma is able to use DML to play gamecube game backups from an SD Card without requiring NEEK or an emulated NAND.</li>
@@ -554,12 +1117,12 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <br>
 
 
-<h1>5.1.1 Changelog:</h1>
+<h2 id="5.1.1"><a href="#5.1.1">5.1.1 Changelog:</a></h2>
 <li>Fixed bug where ModMii's Emulated NAND Modifier would crash if the neek2o option was disabled.</li>
 <li>Bugfix: Forgot to include changelog joke in the last update.</li>
 <br>
 
-<h1>5.1.0 Changelog:</h1>
+<h2 id="5.1.0"><a href="#5.1.0">5.1.0 Changelog:</a></h2>
 <li>Added a Region Change Wizard complete with custom guides to the Main Menu. Any Region Changer v1.1b Mod06 Offline was also added to Download Page 2. </li>
 <li>Added neek\neek2o rev selector, now users can choose from a list of available versions hosted on googlecode. ModMii's neek installion now use v0.7a of the Sneek Installer when installing versions of neek greater than 185. Older versions of neek and neek2o will continue to use v0.6c of the Sneek Installer for now. </li>
 <li>The ModMii Wizard Guides for already modifed Wii's now always asks users if they want to install active IOSs and patched System Menu IOSs. This means that users only wanting to update one thing (eg. Shopping Channel) can build custom guides that ONLY update that one thing. </li>
@@ -572,7 +1135,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes.</li>
 <br>
 
-<h1>5.0.0 Changelog:</h1>
+<h2 id="5.0.0"><a href="#5.0.0">5.0.0 Changelog:</a></h2>
 <li>ModMii's generated guides are no longer text files; instead they are custom html files viewable in your internet browser. Although none of the softmodding steps actually changed, the guides were rebuilt from the ground up. They now include images, videos, credits, a print button and more. DeadlyFoez played a key role in this update not only by helping come up with the idea but also creating the template for ModMii's custom guides and recording almost all of the videos and images they use. Within 1.5 weeks since our initial conversation we were able to collaborate and bring the idea to life in time to release it for Christmas. Working together on this was a truly rewarding and fun experience for both of us and we hope it brings a little "Team Your Mom" XMAS cheer to you this year.</li>
 <li>When accessing the credits from the main menu using "CR" it will open a new browser tab instead of displaying the credits in the main ModMii Window. </li>
 <li>ModMii Wizard Guides for already modified Wii's to update the HBC or Bootmii no longer include exploits. Instead, if users cannot load the hackmii installer from the HBC, BootMii or a forwarder channel they are instructed to use ModMii's HackMii Solutions Guide instead. </li>
@@ -587,12 +1150,12 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes.</li>
 <br>
 
-<h1>4.8.2 Changelog:</h1>
+<h2 id="4.8.2"><a href="#4.8.2">4.8.2 Changelog:</a></h2>
 <li>Synced ModMii's internal version of d2x v7-final with the revised v7-final on the google code page. No major changes, just "Tagged as d2x-v7".</li>
 <li>I think he is a she, and she is changelog. </li>
 <br>
 
-<h1>4.8.1 Changelog:</h1>
+<h2 id="4.8.1"><a href="#4.8.1">4.8.1 Changelog:</a></h2>
 <li>Added a lot more info to NAND\nandinfo.txt when building\modifying emulated NANDs. Also, now after building\modifying emulated NANDs ModMii will open nandinfo.txt using notepad.</li>
 <li>Updated nswitch channel to v1.0 - old versions will be detected and updated by ModMii's Emulated NAND Modifier. With this version of the channel installed it is possible to launch UNEEK and UNEEK+DI without an SD Card.</li>
 <li>Updated Priiloader v0.4 to v0.7 neek2o mod in ModMii's emulated NAND builder\Modifier. This version of Priiloader will not freeze when installed to emulated NANDs.</li>
@@ -613,7 +1176,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes </li>
 <br>
 
-<h1>4.8.0 Changelog:</h1>
+<h2 id="4.8.0"><a href="#4.8.0">4.8.0 Changelog:</a></h2>
 <li>New Feature: Emulated NAND Modifer (See ModMii's SNEEK Menu) You can now use ModMii to modify your existing Emulated NANDs. Add your choice of the following to your Emulated NANDs:     Homebrew Filter Channel, cIOS249v14, DML, NMM, Priiloader,     JoyFlow, Themes, Wii Channels and a custom folder of WADs. The Emulated NAND Modifer is also able to detect and uninstall Priiloader, DML and NMM. It's also able to restore the original Wii Theme to Emulated NANDs. If the neek2o option is disabled you can choose to install switch2uneek to Emulated NANDs. When switch2uneek is not selected ModMii will install the nswitch channel if it's missing from the Emulated NAND. Currently there is not cmd-line mode support for this feature.</li>
 <li>SD access option now available for neek2o as well as for the original s\uneek.</li>
 <li>nswitch channel installed to all emulated nands except when building the original s\uneek and users have also opted to install switch2uneek.</li>
@@ -630,7 +1193,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes</li>
 <br>
 
-<h1>4.7.6 Changelog:</h1>
+<h2 id="4.7.6"><a href="#4.7.6">4.7.6 Changelog:</a></h2>
 <li>Added ONEEK support. ONEEK is a mod of S\UNEEK by OverjoY and his team with many added features including support for wbfs games, multiple emulated nands and more. By default ModMii will build ONEEK but it continues to support the original S\UNEEK and can be activated in ModMii's Options. Note that Switch2Uneek is not an option when building ONEEK as the two apps are not compatible.</li>
 <li>Updated Wii Backup Manager to v0.3.8 build 69 and also updated MyMenuifyMod to v1.4.</li>
 <li>Fixed harmless bug where a System Menu was not downloaded under uncommon scenarios.</li>
@@ -638,13 +1201,13 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>No more stupid changelog jokes... the keyword being "stupid".</li>
 <br>
 
-<h1>4.7.5 Changelog:</h1>
+<h2 id="4.7.5"><a href="#4.7.5">4.7.5 Changelog:</a></h2>
 <li>Updated wit.exe to support converting gamecube games to s\uneek format.</li>
 <li>Fixed bug when loading download queues.</li>
 <li>No more stupid changelog jokes.</li>
 <br>
 
-<h1>4.7.4 Changelog:</h1>
+<h2 id="4.7.4"><a href="#4.7.4">4.7.4 Changelog:</a></h2>
 <li>Fixed bug where advanced download IOS patches were not applied.</li>
 <li>Enhanced syscheck updater to be compatible with sysCheck v2.1.0b14.</li>
 <li>Updated Advanced Forwarder builder to build v11b instead of v11 forwarders.</li>
@@ -652,7 +1215,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>ModMii is running out of changelog jokes. Submit your joke to xflak40@hotmail.com and if your joke is selected you will receive ModMii's easter egg. Only tasteful jokes please, see other recent changelog's for examples.</li>
 <br>
 
-<h1>4.7.3 Changelog:</h1>
+<h2 id="4.7.3"><a href="#4.7.3">4.7.3 Changelog:</a></h2>
 <li>Added a sysCheck Updater feature. You can supply ModMii with your unique sysCheck.csv log and ModMii will analyze it then notify you which specific softmods you're missing. It will download only the files required to update your softmod as well as build a custom guide for you to follow.</li>
 <li>Replaced sysCheckGX on Download Page 2 with sysCheck v2.1.0 b13.</li>
 <li>Added dip patch the IOS60's patches. The patched IOS60 is now installed to all system menu slots to protect against 003 bricks. As a result, the ModMii Wizard no longer needs to ask if the Wii has been region changed.</li>
@@ -665,7 +1228,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes.</li>
 <br>
 
-<h1>4.7.2 Changelog:</h1>
+<h2 id="4.7.2"><a href="#4.7.2">4.7.2 Changelog:</a></h2>
 <li>Added Command Line Support to ModMii. Now you can send arguments to ModMii via a cmd window (or batch file) to perform a wide variety of functions. For information on using ModMii via cmd line, open a command window where ModMii is saved and type "ModMii Help"; alternatively, you can save that text in a new text document where ModMii is saved (rename it from .txt to .bat) then run it.</li>
 <li>When building an emulated NAND if a file is missing or invalid it will now be reported on the final summary page. </li>
 <li>Entering nothing on the Download Log page no longer sends non-donators to the credits page again. </li>
@@ -678,7 +1241,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.7.1 Changelog:</h1>
+<h2 id="4.7.1"><a href="#4.7.1">4.7.1 Changelog:</a></h2>
 <li>Stopped converting ModMii.bat into an executable; this should prevent false-positive virus detections.</li>
 <li>Changed ModMii's folder structure; everything is now organized in a "Support" folder. Additionally, ModMii's NAND builder now loads wads from "temp\wad" instead of "temp\install2sneek".</li>
 <li>Added an option to build SNEEK and SNEEK+DI with SD access enabled. The default setting is disabled.</li>
@@ -694,7 +1257,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>ModMii, now popping more cherries than Hugh Hefner.</li>
 <br>
 
-<h1>4.7.0 Changelog:</h1>
+<h2 id="4.7.0"><a href="#4.7.0">4.7.0 Changelog:</a></h2>
 <li>Added Letterbomb support.</li>
 <li>Changed how System Menu themes are constructed. It now uses scooby74029's cmd line version of Leathl's Theme Mii. This allows themes to be created more quickly and without having to download as much. Also added an option to change the "Channel Effect" of themes; you can choose from No-Spin, Spin and Fast-Spin.</li>
 <li>Updated MyMenuify to MyMenuifyMod v1.3 (by IceFire and scooby74029) and System Menu themes are now saved to "ModThemes" instead of "MyMenuify_Themes".</li>
@@ -723,13 +1286,13 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Now pleasing your Wii more than you ever could.</li>
 <br>
 
-<h1>4.6.1 Changelog:</h1>
+<h2 id="4.6.1"><a href="#4.6.1">4.6.1 Changelog:</a></h2>
 <li>Fixed bug where under specific circumstances non-d2x cIOSs were sometimes
 signed with d2x-beta details. </li>
 <li>Warning: May result in tears of joy. </li>
 <br>
 
-<h1>4.6.0 Changelog:</h1>
+<h2 id="4.6.0"><a href="#4.6.0">4.6.0 Changelog:</a></h2>
 <li>ModMii and the ModMii Installer have new icons by WiiShizzza. Thanks to
 everyone who submitted a ModMii icon\logo candidate. </li>
 <li>d2x cIOSs updated to d2x v6 - "IOS Reload Block: The Ultimate Solution".
@@ -790,12 +1353,12 @@ game and the ModMii guides have been updated accordingly. Thanks giantpune!
 <li>ModMii is now compatible with the WiiU. </li>
 <br>
 
-<h1>4.5.7 Changelog:</h1>
+<h2 id="4.5.7"><a href="#4.5.7">4.5.7 Changelog:</a></h2>
 <li>Autoit is no longer bundled with ModMii, instead it will downloaded and
 saved to the temp folder in order to build s/uneek. </li>
 <br>
 
-<h1>4.5.6 Changelog:</h1>
+<h2 id="4.5.6"><a href="#4.5.6">4.5.6 Changelog:</a></h2>
 <li>All d2x cIOSs (even beta cIOSs) are now signed with descriptive info so
 loaders can more efficiently detect what cIOSs are installed. </li>
 <li>ModMii now builds s/uneek using the latest compiled modules on the
@@ -806,7 +1369,7 @@ the Explorer: Dora Saves the Snow Princess. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.5.5 Changelog:</h1>
+<h2 id="4.5.5"><a href="#4.5.5">4.5.5 Changelog:</a></h2>
 <li>Updated d2x cIOSs from v3 to v4. Warning: WiiFlow currently needs to be
 updated in order to use v4 d2x cIOSs to download covers. However, the v4 d2x
 cIOSs are already perfectly compatible with Configurable USB-Loader. </li>
@@ -819,7 +1382,7 @@ additional apps, wads, or other files. </li>
 <li>Laughing gas available upon special request. </li>
 <br>
 
-<h1>4.5.4 Changelog:</h1>
+<h2 id="4.5.4"><a href="#4.5.4">4.5.4 Changelog:</a></h2>
 <li>ModMii's NAND builder can now install cIOS rev 14 to emulated NANDs. This is
 the only cIOS confirmed working on s/uneek with SaveGameManagerGX. cIOS
 rev14 was also added to Download Page 4. </li>
@@ -840,7 +1403,7 @@ requiring a full ModMii update. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.5.3 Changelog:</h1>
+<h2 id="4.5.3"><a href="#4.5.3">4.5.3 Changelog:</a></h2>
 <li>Added switch2uneek and multiple emulated Nand support when building emulated
 Nands for uneek/uneek+di. </li>
 <li>switch2uneek r7 (by Conanac) updated to r7 Mod1 (Mod by XFlak). It now
@@ -863,7 +1426,7 @@ drive has been removed then default drive settings are loaded instead. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.5.2 Changelog:</h1>
+<h2 id="4.5.2"><a href="#4.5.2">4.5.2 Changelog:</a></h2>
 <li>ModMii's emulated NAND builder now gives users the option to install
 Priiloader (and hacks.ini) to the emulated NAND. </li>
 <li>In order to support JoyFlow naming conventions, ModMii's Sneek Game Bulk
@@ -894,7 +1457,7 @@ play Wii. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.5.1 Changelog:</h1>
+<h2 id="4.5.1"><a href="#4.5.1">4.5.1 Changelog:</a></h2>
 <li>Added Dark Wii Green System Menu Themes for 4.1/4.2/4.3 firmwares of all
 regions (available in wad and csm forms). </li>
 <li>Completely changed how ModMii constructs s/uneek. It now uses the
@@ -914,7 +1477,7 @@ Update). </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.5.0 Changelog:</h1>
+<h2 id="4.5.0"><a href="#4.5.0">4.5.0 Changelog:</a></h2>
 <li>Added Smash Stack exploit for PAL and Korean Wii's. Thanks to everyone who
 contributed to this exploit, especially giantpune. </li>
 <li>JAP users can now also choose to use the Return of the JODI exploit as
@@ -930,12 +1493,12 @@ without requiring an entirely new version of ModMii to be released. </li>
 <li>Simple IOS Patcher updated to v1.12 and other minor changes. </li>
 <br>
 
-<h1>4.4.9 Changelog:</h1>
+<h2 id="4.4.9"><a href="#4.4.9">4.4.9 Changelog:</a></h2>
 <li>Fixed bug causing ModMii to crash when building guides including the Return
 of the JODI exploit. </li>
 <br>
 
-<h1>4.4.8 Changelog:</h1>
+<h2 id="4.4.8"><a href="#4.4.8">4.4.8 Changelog:</a></h2>
 <li>Updated d2x cIOSs to v2. </li>
 <li>Added Return of the JODI exploit for USA and EURO Wii's. Exploit for JAP
 Wii's is included in the download but in it's current form it doesn't work.
@@ -944,7 +1507,7 @@ Wii's is included in the download but in it's current form it doesn't work.
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.4.7 Changelog:</h1>
+<h2 id="4.4.7"><a href="#4.4.7">4.4.7 Changelog:</a></h2>
 <li>Added cIOS249[XX]-v21d2x for IOSs with bases 37/38/56/57. cIOS249[56]-v21d2x
 and cIOS250[57]-v21d2x are the new ModMii recommended cIOS 249 and 250.
 Thanks to davebaol and xabby666 for working with me to create these cIOSs.
@@ -957,7 +1520,7 @@ Indiana PWNS as an exploit to hack 4.3 Wiis. </li>
 constructed. </li>
 <br>
 
-<h1>4.4.5 Changelog:</h1>
+<h2 id="4.4.5"><a href="#4.4.5">4.4.5 Changelog:</a></h2>
 <li>The ModMii Wizard now includes the USB-Loader setup guide so users don't
 need to run ModMii twice. Users can choose  not to set up a USB-Loader via
 the Wizard and instead do so at a  later time using the USB-Loader setup
@@ -982,19 +1545,19 @@ download extra apps. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.4.4 Changelog:</h1>
+<h2 id="4.4.4"><a href="#4.4.4">4.4.4 Changelog:</a></h2>
 <li>Fixed bug causing ModMii to sometimes freeze after successfully patching
 IOSs. </li>
 <li>IOS60 is no longer downloaded repeatedly when getting Extra Brick
 Protection IOSs. </li>
 <br>
 
-<h1>4.4.3 Changelog:</h1>
+<h2 id="4.4.3"><a href="#4.4.3">4.4.3 Changelog:</a></h2>
 <li>Fixed bug causing ModMii to crash after successfully downloading NeoGamma.
 </li>
 <br>
 
-<h1>4.4.2 Changelog:</h1>
+<h2 id="4.4.2"><a href="#4.4.2">4.4.2 Changelog:</a></h2>
 <li>Priiloader is now launched using a forwarder to automatically reload IOS236
 as opposed to having to use MMM to launch using IOS236 </li>
 <li>IOS236 updated to v5 MOD to install IOS236 quicker and without prompts
@@ -1011,7 +1574,7 @@ being installed to the emulated nand. </li>
 fail if a "temp" folder did not already exist. </li>
 <br>
 
-<h1>4.4.1 Changelog:</h1>
+<h2 id="4.4.1"><a href="#4.4.1">4.4.1 Changelog:</a></h2>
 <li>Fixed bug where *.app files for MyMenuify were not being copied to
 SD:\MyMenuify_themes </li>
 <li>Fixed bug where NANDs built without the Dark Wii Red Theme did not
@@ -1021,7 +1584,7 @@ extracted properly. This error resulted from a change to the configurator
 update file hosted by the configurable team. </li>
 <br>
 
-<h1>4.4.0 Changelog:</h1>
+<h2 id="4.4.0"><a href="#4.4.0">4.4.0 Changelog:</a></h2>
 <li>ModMii is able to create Custom System Menu Themes (*.csm files) which can
 be installed using MyMenuify. Alternatively, ModMii can bundle themes into
 System Menu WADs for easy installation using a WAD Manager.  The Dark Wii
@@ -1056,22 +1619,22 @@ WiiBackupManager (WBM) updated to 0.3.6 beta 1 Removed FAT32 GUI Formatter
 since WBM can format drives as FAT32/NTFS and WBFS </li>
 <br>
 
-<h1>4.3.5 Changelog:</h1>
+<h2 id="4.3.5"><a href="#4.3.5">4.3.5 Changelog:</a></h2>
 <li>Further fixed bug in SNEEK Game Bulk Extractor only effecting some users
 with non-English language settings causing ModMii to ALWAYS tell you that
-you don`t have enough free space to continue. </li>
+you don't have enough free space to continue.</li>
 <li>Updated the USB Loader Forwarder Channel to v2, which offers much faster
 loading times (requires IOS58). </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.3.4 Changelog:</h1>
+<h2 id="4.3.4"><a href="#4.3.4">4.3.4 Changelog:</a></h2>
 <li>Fixed bug in SNEEK Game Bulk Extractor only effecting users with non-English
 language settings causing ModMii to ALWAYS tell you that you don`t have
 enough free space to continue. </li>
 <br>
 
-<h1>4.3.3 Changelog:</h1>
+<h2 id="4.3.3"><a href="#4.3.3">4.3.3 Changelog:</a></h2>
 <li>Fixed bug in SNEEK Game Bulk Extractor causing ModMii to crash when the
 target directory had a space in it. </li>
 <li>Fixed bug introduced in v4.3.2 where the Download Wizard did not
@@ -1093,11 +1656,11 @@ ModMii's French translation. </li>
 </li>
 <br>
 
-<h1>4.3.2 Changelog:</h1>
+<h2 id="4.3.2"><a href="#4.3.2">4.3.2 Changelog:</a></h2>
 <li>Fixed bug in SNEEK Game Bulk Extractor causing ModMii to crash. </li>
 <br>
 
-<h1>4.3.1 Changelog:</h1>
+<h2 id="4.3.1"><a href="#4.3.1">4.3.1 Changelog:</a></h2>
 <li>Fixed bug in HackMii Solutions feature where the Hackmii Installer's
 boot.elf was being saved to the root of the SD Card instead of MMM's
 boot.elf. </li>
@@ -1108,7 +1671,7 @@ WiiXplorer to save user settings. </li>
 <li>Other minor Changes. </li>
 <br>
 
-<h1>4.3.0 Changelog:</h1>
+<h2 id="4.3.0"><a href="#4.3.0">4.3.0 Changelog:</a></h2>
 <li>Can now build wads for Wanin's cIOS rev20 with IOS56 and IOS38 bases.
 Recommended cIOS249/250 changed from cIOS249[57]-v19 and cIOS250[37]-v19 to
 cIOS249[56]-v20 and cIOS250[38]-v20. </li>
@@ -1122,7 +1685,7 @@ counterparts from the advanced download page and changing their slots to
 <li>Other minor Changes. </li>
 <br>
 
-<h1>4.2.9 Changelog:</h1>
+<h2 id="4.2.9"><a href="#4.2.9">4.2.9 Changelog:</a></h2>
 <li>SNEEK Game Bulk Extractor was rewritten to use WIT instead of discex. Now
 supports ISO, CISO and WBFS files instead of only ISO files. Also reports
 detailed info on games such as title, size and progress indicator. Instead
@@ -1137,7 +1700,7 @@ AHBPROT/no_ios_reload is disabled in the meta.xml by default. </li>
 <li>Other minor Changes. </li>
 <br>
 
-<h1>4.2.8 Changelog:</h1>
+<h2 id="4.2.8"><a href="#4.2.8">4.2.8 Changelog:</a></h2>
 <li>The ModMii Wizard Guides will now install Priiloader as early as possible.
 If a system menu is NOT being installed, the "Priiloader Installation" step
 occurs before the "Install Wads" step as opposed to directly after it. </li>
@@ -1158,7 +1721,7 @@ This will help sys check reports make more sense in the future. </li>
 <li>Other minor Changes. </li>
 <br>
 
-<h1>4.2.7 Changelog:</h1>
+<h2 id="4.2.7"><a href="#4.2.7">4.2.7 Changelog:</a></h2>
 <li>Support for Nintendo's new alternate versions of the same IOS. </li>
 <li>Improved verbose output of 'error reduction technology'. </li>
 <li>Added YU-GI-OWNED PAL exploit (by ichfly). </li>
@@ -1166,21 +1729,21 @@ This will help sys check reports make more sense in the future. </li>
 <li>Other minor Changes to ModMii and to its guides. </li>
 <br>
 
-<h1>4.2.6 Changelog:</h1>
+<h2 id="4.2.6"><a href="#4.2.6">4.2.6 Changelog:</a></h2>
 <li>Updated Active IOSs to their "4.3B" versions. </li>
 <li>Shopping channel v20 is now downloaded with IOS56 instead of IOS61.
 </li>
 <li>Other Minor Changes. </li>
 <br>
 
-<h1>4.2.5 Changelog:</h1>
+<h2 id="4.2.5"><a href="#4.2.5">4.2.5 Changelog:</a></h2>
 <li>Updated IOS236 Installer from v3 to v4 (and slightly modified guide
 accordingly) </li>
 <li>Restored Priiloader to v0.4 from v0.5 (as v0.5 had a bug) </li>
 <li>Other Minor Changes. </li>
 <br>
 
-<h1>4.2.4 Changelog:</h1>
+<h2 id="4.2.4"><a href="#4.2.4">4.2.4 Changelog:</a></h2>
 <li>Updated IOS236 Installer from v1 to v3 (and slightly modified guide
 accordingly) </li>
 <li>Updated Priiloader from v0.4 to v0.5 (and slightly modified guide
@@ -1192,7 +1755,7 @@ will prevent accidentally entering some invalid entries. </li>
 </li>
 <br>
 
-<h1>4.2.3 Changelog:</h1>
+<h2 id="4.2.3"><a href="#4.2.3">4.2.3 Changelog:</a></h2>
 <li>Name Change from NUS Auto Downloader to ModMii </li>
 <li>Added YU-GI-VAH Exploits for USA and JAP Wii's, Allowing even virgin 4.3
 JAP Wii's to be softmodded (by WiiCrazy and ichfly) </li>
@@ -1213,7 +1776,7 @@ Installer (this replaced Trucha Bug Restorer v1.13)  -  Removed Waninkoko's
 cIOS249rev17 Installer (v17b Wad install is better) </li>
 <br>
 
-<h1>4.2.2 Changelog:</h1>
+<h2 id="4.2.2"><a href="#4.2.2">4.2.2 Changelog:</a></h2>
 <li>Cheat Code Downloader now gets cheats for ALL consoles (not only Wii games)
 In NUSAD's options you can select which consoles to download cheats for. You
 can also choose where to save cheats: 1) to txtcodes folder, 2) to location
@@ -1232,7 +1795,7 @@ Removed Ocarina App (NeoGamma is better) </li>
 <li>Minor changes to guide. </li>
 <br>
 
-<h1>4.2.1 Changelog:</h1>
+<h2 id="4.2.1"><a href="#4.2.1">4.2.1 Changelog:</a></h2>
 <li>Updated hash for the new HackMii Installer (v0.8) to avoid false 'Invalid'
 errors Altered the Download Wizard and HackMii Solutions to install the HBC
 to IOS58. </li>
@@ -1246,7 +1809,7 @@ CFG Loader to create GCT cheat files)  -  Dop-Mii Updated from v12 to v13
 </li>
 <br>
 
-<h1>4.2.0 Changelog:</h1>
+<h2 id="4.2.0"><a href="#4.2.0">4.2.0 Changelog:</a></h2>
 <li>Added SNEEK Installer and SNEEK NAND Builder for all 4 forms of SNEEK. Added
 option to build SNEEK with verbose output and choose alternate font.bin.
 </li>
@@ -1273,7 +1836,7 @@ DarkCorp. </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.1.9 Changelog:</h1>
+<h2 id="4.1.9"><a href="#4.1.9">4.1.9 Changelog:</a></h2>
 <li>Download Wizard now supports upgrading to 4.3 (but still not recommended).
 </li>
 <li>Download Wizard now supports non-virgin Jap and Korean 4.3 Wii's (Virgin
@@ -1317,17 +1880,17 @@ Wii's). </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.1.8 Changelog:</h1>
+<h2 id="4.1.8"><a href="#4.1.8">4.1.8 Changelog:</a></h2>
 <li>fixed bug where IOS15v1031 was saved only to the wad folder instead of the
 wad folder AND the root of the SD Card </li>
 <br>
 
-<h1>4.1.7 Changelog:</h1>
+<h2 id="4.1.7"><a href="#4.1.7">4.1.7 Changelog:</a></h2>
 <li>fixed bug where IOS15v527 was downloaded instead of v1031 when modding a
 virgin 4.3 Wii </li>
 <br>
 
-<h1>4.1.6 Changelog:</h1>
+<h2 id="4.1.6"><a href="#4.1.6">4.1.6 Changelog:</a></h2>
 <li>Added Support to Modify Virgin 4.3U and 4.3E Wii's (Virgin 4.3J/K Wii's
 cannot yet be modified) </li>
 <li>Added "Advanced Custom Downloads" feature (and moved User-Defined Custom
@@ -1358,7 +1921,7 @@ Priiloader hacks in it for all System Menu's </li>
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.1.5 Changelog:</h1>
+<h2 id="4.1.5"><a href="#4.1.5">4.1.5 Changelog:</a></h2>
 <li>Added "USB-Loader Setup" Feature, which will generate a custom guide and
 download all the files needed to set-up your hard-drive, customize your
 usb-loader (configurable USB-Loader) and manage games (using Wii Backup
@@ -1411,7 +1974,7 @@ available for download)  - STUB IOS254 updated from version 260 to version
 <li>Other minor changes. </li>
 <br>
 
-<h1>4.1.4 Changelog:</h1>
+<h2 id="4.1.4"><a href="#4.1.4">4.1.4 Changelog:</a></h2>
 <li>Added an optional "Extra Brick Protection" feature which will protect Wii's
 from accidentally changing to a system menu without having the IOS for that
 system menu already installed. NUSAD can grab many non-stubbed SM IOSs for
@@ -1440,7 +2003,7 @@ installing the HBC). </li>
 <li>Some other minor changes. </li>
 <br>
 
-<h1>4.1.3 Changelog:</h1>
+<h2 id="4.1.3"><a href="#4.1.3">4.1.3 Changelog:</a></h2>
 <li>Replaced fvc with %folder%sfk to support 32bit systems again (hash checks in
 v4.1.2 only worked on 64 bit systems). Also, now if you get errors, the text
 will be in red </li>
@@ -1449,7 +2012,7 @@ will be in red </li>
 required since fvc.exe was removed) </li>
 <br>
 
-<h1>4.1.2 Changelog:</h1>
+<h2 id="4.1.2"><a href="#4.1.2">4.1.2 Changelog:</a></h2>
 <li>Replaced FSUM with fvc in order to comply with GPL (edit: this broke hash
 check support in 32bit systems) </li>
 <li>Renamed "Support Folder" to "modules" (modules folder required for
@@ -1460,7 +2023,7 @@ bundle </li>
 </li>
 <br>
 
-<h1>4.1.1 Changelog:</h1>
+<h2 id="4.1.1"><a href="#4.1.1">4.1.1 Changelog:</a></h2>
 <li>Fixed Hash Check bug causing the check to fail when the USA Weather Channel
 was downloaded </li>
 <li>Uses a newer version of WadMii (cwstjdenobs' 2nd WadMiiIsh mod), it
@@ -1468,7 +2031,7 @@ works exactly the same at the last one, but with some code cleaned up and no
 verbose output </li>
 <br>
 
-<h1>4.1.0 Changelog:</h1>
+<h2 id="4.1.0"><a href="#4.1.0">4.1.0 Changelog:</a></h2>
 <li>Added the ability to create cIOSs and cMIOSs in wad form for easy batch
 installation via a wad manager. </li>
 Note: that this is done legally, any copyrighted nintendo files are
@@ -1522,7 +2085,7 @@ Eggs. Don't ask me what they are. </li>
 <li>other minor changes </li>
 <br>
 
-<h1>4.0.1 Changelog:</h1>
+<h2 id="4.0.1"><a href="#4.0.1">4.0.1 Changelog:</a></h2>
 <li>Added an auto-update feature (this can be disabled in the options menu, if
 you disable it, I strongly recommend regularly checking for updates manually
 on the options page, or this webpage [tinyurl.com/nusauto]). Note that I
@@ -1538,7 +2101,7 @@ virgin)</li>
 <li>Some other minor changes</li>
 <br>
 
-<h1>4.0 (aka 3.3beta) Changelog:</h1>
+<h2 id="4.0"><a href="#4.0">4.0 (aka 3.3beta) Changelog:</a></h2>
 <li>added Download wizard with custom guide generator. It can now download apps,
 including the hackmii installer using wget. Zip files are extracted using a
 command line version of 7zip (7za)</li>
@@ -1567,7 +2130,7 @@ when gameking66 suggested loading download cue's from the download log)</li>
 <li>A lot of other minor changes (I think I covered everything major)</li>
 <br>
 
-<h1>3.2 Changelog:</h1>
+<h2 id="3.2"><a href="#3.2">3.2 Changelog:</a></h2>
 <li>system menu IOSs are patched on the fly, this can be disabled in the options
 (having a patched system menu IOS has many uses/benefits)</li>
 <li>includes a modified version of Leathl's libwiisharp.dll that does not
@@ -1578,14 +2141,14 @@ loading previously saved settings if the filename has been changed (from
 "NUS Auto Downloader.exe")</li>
 <li>added a functional Easter egg (don't ask me what it is!)</li>
 
-<h1>3.1 Changelog:</h1>
+<h2 id="3.1"><a href="#3.1">3.1 Changelog:</a></h2>
 <li>fixed bug in batch mode ("S" was the command to mark the Shopping Channel
 for install and it was also the command to Start downloading, now the
 command for the shopping channel is "SH")</li>
 <li>French translation of v3.1 by Corenting is now available</li>
 <br>
 
-<h1>3.0 Changelog:</h1>
+<h2 id="3.0"><a href="#3.0">3.0 Changelog:</a></h2>
 <li>I basically rewrote the whole thing in v3, the source code is finally
 organized, so it will be easy for me to update when/if new files become
 available in the future.</li>

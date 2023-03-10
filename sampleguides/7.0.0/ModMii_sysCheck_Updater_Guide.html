@@ -1,0 +1,548 @@
+<html>
+<head>
+<title>ModMii SysCheck Updater Guide</title>
+<link rel="icon" type="image/ico" href="https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/icon.ico"></link>
+<style type="text/css">
+body:before{
+  content: 'SAMPLE!';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  
+  color: #0d745e;
+  font-size: 130px;
+  font-weight: 500px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  opacity: 0.2;
+  transform: rotate(-45deg);
+}
+body { font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif; }
+ol > li::marker {font-weight: bold;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body style="margin:5px 5px 5px 35px;">
+ModMii SysCheck Updater Guide<span style="float:right;">v7.0.0 DB:23.03.10 Generated on Fri 03/10/2023 - 0:50</span><br><br>
+<!----------Custom Printing CSS that doesn't print images--------------->
+<style type="text/css" media="print">
+.printbutton {
+  visibility: hidden;
+  display: none;
+}
+@media print {
+  img {
+    display: none !important;
+  }
+  * {
+    background-image: none !important;
+  }
+}
+</style>
+<!----------Print button disabled--------
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print without images'/>");
+</script>
+---------Custom Print button above------->
+
+
+<!--------------Title, pic and scam warning below------------------>
+<p style="text-align:center">
+<font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
+<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0"/></a><br>
+This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
+
+<b>THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.<br>
+NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!<br>
+USE THIS AT YOUR OWN RISK!</b>
+</p>
+<br><br>
+<!--------------Title, pic and scam warning above------------------>
+
+
+<ol type="I">         <!------------This start the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+
+
+<!-------------------------Chosen options chapter below--------------------->
+<font size="6"><li>Your chosen options</li></font><br>
+This guide was generated using the following parameters:<br>
+<ul style=align="left" type="disc">
+<li>Install recommended cIOSs</li>
+<li>Update active IOSs (can be disabled in options)</li>
+<li>Do not install a cMIOS (can be enabled in options)</li>
+<li>Do not install Hermes cIOSs (can be enabled in options)</li>
+<li>Install a USB-Loader Forwarder Channel (can be disabled in options)</li>
+<li>Install Extra Brick Protection (patched IOS60 in unused system menu IOS slots) (can be disabled in options)</li>
+<li>Guide generated based on ModMii's analysis of the syscheck report contained in the spoiler below</li>
+</ul><br>
+<div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Supplied SysCheck Report  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Supplied SysCheck Report   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Supplied SysCheck Report  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<ul style=align="left" type="disc">
+<li>SysCheck HDE v2.4.0 HacksDen Edition by JoostinOnline, Double_A, R2-D2199, and Nano
+<li>...runs on IOS58 (rev 6176).
+<li>Region: NTSC-U
+<li>System Menu 4.3U (v513)
+<li>Priiloader installed
+<li>Drive date: 12.18.2008
+<li>Homebrew Channel 1.1.2 running on IOS58
+<li>Console ID: 12345****
+<li>Console Type: Wii
+<li>Shop Channel Country: United States (49)
+<li>Boot2 v4
+<li>Found 128 titles.
+<li>Found 50 IOS on this console. 13 of them are stubs.
+<li>IOS3 (rev 65280): Stub
+<li>IOS4 (rev 65280): Stub
+<li>IOS9 (rev 1034): No Patches
+<li>IOS10 (rev 768): Stub
+<li>IOS11 (rev 256): Stub
+<li>IOS12 (rev 526): No Patches
+<li>IOS13 (rev 1032): No Patches
+<li>IOS14 (rev 1032): No Patches
+<li>IOS15 (rev 1032): No Patches
+<li>IOS16 (rev 512): Stub
+<li>IOS17 (rev 1032): No Patches
+<li>IOS20 (rev 256): Stub
+<li>IOS21 (rev 1039): No Patches
+<li>IOS22 (rev 1294): No Patches
+<li>IOS28 (rev 1807): No Patches
+<li>IOS30 (rev 2816): Stub
+<li>IOS31 (rev 3608): No Patches
+<li>IOS33 (rev 3608): No Patches
+<li>IOS34 (rev 3608): No Patches
+<li>IOS35 (rev 3608): No Patches
+<li>IOS36 (rev 3608, Info: rev 3351): Trucha Bug
+<li>IOS37 (rev 5663): No Patches
+<li>IOS38 (rev 4124): No Patches
+<li>IOS40 (rev 3072): Stub
+<li>IOS41 (rev 3607): No Patches
+<li>IOS43 (rev 3607): No Patches
+<li>IOS45 (rev 3607): No Patches
+<li>IOS46 (rev 3607): No Patches
+<li>IOS48 (rev 4124): No Patches
+<li>IOS50 (rev 5120): Stub
+<li>IOS51 (rev 4864): Stub
+<li>IOS52 (rev 5888): Stub
+<li>IOS53 (rev 5663): No Patches
+<li>IOS55 (rev 5663): No Patches
+<li>IOS56 (rev 5662): Trucha Bug, NAND Access
+<li>IOS57 (rev 5919): No Patches
+<li>IOS58 (rev 6176): USB 2.0
+<li>IOS60 (rev 6400): Stub
+<li>IOS61 (rev 5662): No Patches
+<li>IOS62 (rev 6430): No Patches
+<li>IOS70 (rev 6912): Stub
+<li>IOS80 (rev 6944): No Patches
+<li>IOS222[38] (rev 4, Info: hermes-v4): Trucha Bug, ES Identify, NAND Access, USB 2.0
+<li>IOS223[38+37] (rev 4, Info: hermes-v4): Trucha Bug, ES Identify, NAND Access, USB 2.0
+<li>IOS224[57] (rev 65535, Info: hermesrodries-v5.1): Trucha Bug, NAND Access, USB 2.0
+<li>IOS249[57] (rev 65535, Info: d2x-v10beta53-alt): Trucha Bug, NAND Access, USB 2.0
+<li>IOS250[57] (rev 65535, Info: d2x-v10beta53): Trucha Bug, NAND Access, USB 2.0
+<li>IOS251[58] (rev 65535, Info: d2x-v10beta52): Trucha Bug, NAND Access, USB 2.0
+<li>IOS254 (rev 65281): BootMii
+<li>BC v6
+<li>MIOS v10
+<li>Report generated on 01/19/2021.
+</ul></div></div></div><br>
+<font size="6"><li><a name="Notes">Important Notes</a></li></font><br><ul style=align="left" type="disc">
+<li>This guide does not require a WiFi connection on your Wii.</li>
+<li>Make sure the files ModMii downloaded are on your SD Card, and your SD Card is inserted in the Wii.</li>
+<ul style=align="left" type="square">
+<li>If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup).</li>
+<ul style=align="left" type="square">
+<li>Use ModMii's USB-Loader Setup feature if you need help formatting your HDD as FAT32.</li>
+<li>Make sure to always plug your hard drive into usb port0 - the one nearest the edge of the Wii.</li>
+</ul>
+<li>If you don't have an SD Card or Hard Drive, you can launch apps and install WADs over WiFi to your Wii from your PC. Just open apps (boot.dol\elf files) or WADs with ModMii.</li>
+<ul style=align="left" type="square">
+<li>Note that some apps may not work properly or support all features if they require an SD or HDD.</li>
+</ul>
+</ul>
+<!---------------------------------SOFTMOD NOTES BELOW----------------------------------->
+<li>An SD Card is recommended, but not necessary, to <u>fully</u> softmod your console.
+<li>Check if your SD Card has a lock switch and make sure it's disabled.</li>
+<li>If you get errors during any of the steps try reformatting your SD Card (or HDD) as FAT32.</li>
+<li>If your Wii ever freezes, hold the power button on the Wii for 5 seconds to power it off then try again.</li>
+<li>Never uninstall a System Menu or IOS.</li>
+<li>When updating your softmod you should always overwrite old mods by installing new ones, do <u>not</u> try to "Delete everything" or "Start from scratch".</li>
+<ul style=align="left" type="square">
+	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only what's outdated using ModMii's Syscheck Updater Wizard and reduce the number of steps!</li>
+</ul>
+<li>If you accept an official Nintendo update after modding the Wii, you may lose some of your modifications and have to reinstall them.</li>
+<li>Do not install untested WADs/themes without Priiloader, Bootmii and a nand backup.</li>
+<li>It's probably unnecessary, but you should disconnect all peripherals from the Wii during the modding procedure unless instructed otherwise. This includes gamecube memory cards, gamecube controllers, Wii Speak, etc.</li>
+<!---------------------------------SOFTMOD NOTES ABOVE----------------------------------->
+<li>Detailed guides covering a broader range of Wii topics available at the <a href="http://www.sites.google.com/site/completesg/" target="_blank">Complete Softmod Guide</a> and <a href="http://wii.guide" target="_blank">wii.guide</a></li> 
+<li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
+<li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
+<font size="6"><li><a name="Hacking">Updating your Wii Hacks</a></li></font><br><ol>
+<!-------------------------Installing WADs section below--------------------------->
+<font size="5"><li>Install WADs</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/eTODLzI_Hsk?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/yawmME.gif" border="0"/></a><br>
+<i>YAWM ModMii Edition stands for Yet Another Wad Manager ModMii Edition (aka yawmME). A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<br>
+
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, YAWM ModMii Edition, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click here to learn what IOSs and cIOSs are! " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Fact   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click here to learn what IOSs and cIOSs are!  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<p style="border:3px; border-style:solid; padding: 1em;">
+
+<i>Fun Fact! I mentioned IOSs and cIOSs before, "the Wii console uses the 'IOS' system to communicate with the hardware, it's like a driver (compared to Windows). It contains information and communication tools (like how to access the Disc drive, how to access USB, read the savegames data stored on internal memory, etc.)" ~Cyan. If you're curious to learn more about IOSs or cIOSs, a thorough explanation can be found in <a href="https://gbatemp.net/threads/d2xl-cios-a-fork-of-davebaols-d2x-cios.558581/#post-8968173" target="_blank">Cyan's IOS Explanation post</a>.</i><br>
+</p>
+</div></div></div>
+
+
+
+<ol type="A">
+<li><b>On your Wii, load "YAWM ModMii Edition" from the HomeBrew Channel</b>.
+<li>Choose your source device using left and right, most likely "Wii SD Slot", and <b>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd></b>.
+<li><b>Install your custom list of <u>15 WADs</u> found in the spoiler below</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
+	</ul>
+<li><b>Hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> for 2 seconds</b> to select all the WADs in the folder.
+
+	<ul style=align="left" type="disc">
+	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd><br>
+	</ul>
+
+<li>After you've marked all the WADs listed below, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> on any marked WAD to install them all</b>.
+<li>Confirm the total number selected for installation is 15, then <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> again to install</b>.<br>
+
+	<ul style=align="left" type="disc">
+	<li>If any WADs fail to install properly please retry installing them.<br>
+	<!--<li>When asked whether to retain or remove Priiloader, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to retain Priiloader</b>.<br>-->
+	</ul>
+
+<li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Home</kbd> button on your Wiimote to exit YAWM ModMii Edition.</b>
+<!--<li><b>After successfully installing all the WADs, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch Priiloader and re-enable your preferred System Menu Hacks before proceeding to the next step. It's also safe to re-enable them at a later time.</b><br>-->
+</ol>
+
+<br>
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click to See Your Unique List of 15 WADs to Install  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide your list of WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to See Your Unique List of 15 WADs to Install  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+
+<b>Here's your unique list of 15 WADs to install:</b>
+<ol>
+<li>cIOS248[38]-d2x-v11-beta1</li>
+<li>cIOS249[56]-d2x-v11-beta1</li>
+<li>cIOS250[57]-d2x-v11-beta1</li>
+<li>cIOS251[58]-d2x-v11-beta1</li>
+<li>IOS11v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS20v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS30v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS36-64-v3608</li>
+<li>IOS40v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS50v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS52v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS56-64-v5662</li>
+<li>IOS60v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS70v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+<li>IOS80v65535(IOS60v6174[FS-ES-NP-VP-DIP-RC24])</li>
+</ol><br>
+<div style><div class="spoilerfont" style="text-align:left;"><input value="  Optional 5 Stub IOS WADs  " style="margin: 0px; padding: 0px; font-size: large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Optional Stub IOS WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Optional 5 Stub IOS WADs  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+You have some extra IOSs installed on your Wii that are unnecessary. Optionally recover some space by navigating to the WAD/STUBS folder and repeating the steps above to install the 5 stub IOS WADs below.<br><br>
+<ol>
+<li>STUB-IOS3-64-v404</li>
+<li>STUB-IOS4-64-v404</li>
+<li>STUB-IOS10-64-v404</li>
+<li>STUB-IOS16-64-v404</li>
+<li>STUB-IOS51-64-v404</li>
+<br>Note: You can recover a bit more space by following the steps above except pressing <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">-</kbd> instead of <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> to uninstall the 5 stub IOS WADs. Do NOT uninstall any other WADs unless you know what you are doing; see warning about uninstalling WADs above.<br><br>
+</ol></div></div></div>
+</div></div></div>
+<br>
+</ol><br>
+<font size="6"><li><a name="Done">After modding your Wii</a></li></font><br><ul style=align="left" type="disc">
+<li>To play Wii (and Gamecube) games off a USB hard drive, run the USB-Loader Setup wizard from ModMii's Main Menu.
+
+<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
+
+<li>Consider making another NAND backup so that if you ever need restore it you won't need to repeat the entire softmod process.
+
+<li>At any point you can run SysCheck on your Wii to get a sysCheck.csv log of your installed softmods; in the future you can check if any of your mods are outdated by opening your log with the latest version of ModMii.
+
+<li>Periodically check for updates to the apps on your SD card or USB Hard drive by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for ModMii's auto-updating apps and offer to check for updates.
+
+<li>Download the latest Homebrew apps to your SD Card or FAT32 USB Hard Drive so they can be launched via the HBC or forwarder channels.
+
+	<ul style=align="left" type="square">
+	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Page 2.
+	<li>Grab the <a href="https://wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your Wii or PC!</li>
+	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
+	
+		<ul style=align="left" type="disc">	
+		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.
+		<li>For the HBC to read your SD/USB correctly, your card must be structured SD:/apps/application name/boot.dol\elf
+		<li>Some apps require a meta.xml be saved in the same place as the boot.dol\elf to work properly (icon.png is always optional).
+		<li>If you have a dol or elf file not named "boot", rename it boot.dol\elf, otherwise it will not be recognized by the HBC (not required if using Priiloader to install a file).
+		</ul>
+	</ul>
+<li>Check out some of my custom <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Forwarder Channels</a> to launch your favourite homebrew straight from the System Menu.
+<li>Get a new <a href="https://wii.guide/themes.html" target="_blank">theme for your Wii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using MyMenuify Mod. ThemeMii Mod and MyMenuify Mod are both available on ModMii Classic's Download Page 2.
+<li>"Expand" your Wii's 500MB internal memory for more WiiWare and Virtual Console games by having it load the System Menu from external storage instead. Use ModMii's SNEEK installer and Emulated NAND builder to get started.
+	<ul style=align="left" type="square">
+	<li>You can also use your Wii's nand.bin backup as an Emulated NAND instead of having ModMii build one from scratch. To extract the files from a nand.bin backup to use as an Emulated NAND, simply open the nand.bin file using ModMii.
+	</ul>
+<li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your Wii starts up (SD Card required).
+
+<li>Bring back WiiConnect24 to your Wii! The RiiConnect24 Patcher restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more! You can get this tool from from ModMii Classic's Download Page 2.
+
+	<ul style=align="left" type="square">
+	<li>Note: if you used ModMii 6.6.0 or higher to install your System Menu IOS, you can use all of RiiConnect24's features without having to be on System Menu version 4.3 or (re)install a different IOS80. ModMii's RC24 compatible System Menu IOSs can be identified by their "ModMii" tag in SysCheck reports.
+	</ul>
+</ul>
+<br>
+<!----------------------------After Modding section above----------------------------->
+<!---------------------------------------Credits, apps, and sources are below---------------------------------------------->
+<font size="6"><li><a name="Credits">Credits, Supporting Apps, and Sources</a></li></font><br>
+ModMii was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.<br>
+<br>
+I have tried my best to recognize everyone's contribution to ModMii regardless of how big or small it is. If I've forgotten someone, please notify me and I'll add them to the credits as quickly as possible.<br><br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Credits, Supporting Apps and Sources  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '  Click to hide Credits, Supporting Apps and Sources  '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Credits, Supporting Apps and Sources  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+<ul style=align="left" type="disc">
+<li><font size="4"><b>Team Twiizers</b></font><br>
+Thanks to Team Twiizers for creating the revolutionary HackMii Installer. Without their hard work, the Wii might never have been unlocked. Many Team Twiizer Members went on to join Team Fail Overflow; a team that played a vital role in unlocking the PS3.<br><br>
+
+I especially want to thank Bushing (may he rest in peace), who before his untimely passing gave ModMii his blessing to download and use the HackMii Installer.</li><br>
+
+<li><b><font size="4">Giantpune</font></b><br>
+Giantpune is a legend in the Wii Scene and I consider him to be a good friend of mine. He created many exploits, including the Smash Stack exploit for PAL and KOR Wii's (which is maybe still the only method to fix 003 bricked Wii's), the Channel Forwarder dol, USB Loader GX, and many other computer programs to repair or virginize Wii's.<br><br>
+
+He's contributed code to more projects than I even know about, so its impossible for me to truly convey his impact on the scene. He even took the time to explain a few things to me about cIOSs when ModMii was in its early stages and still known as NUS Auto Downloader.</li><br>
+
+<li><b><font size="4">DeadlyFoez</font></b><br>
+DeadlyFoez is legendary for his Wii Repairs and infectus tutorial. Anyone who's broken their Wii can email <a href="mailto:deadlyfoez@yahoo.com ">deadlyfoez@yahoo.com </a> to have it fixed.<br><br>
+
+DeadlyFoez played a key role in the ModMii v5.0.0 update not only by helping come up with the idea for using html guides but also creating the template for ModMii's custom html guides and recording almost all of the videos and images they use. Within 1.5 weeks since our initial conversation we were able to collaborate and bring the idea to life in time to release it for Christmas. Working with him on this was a truly rewarding and fun experience. DeadlyFoez also single-handedly built the first official ModMii website.<br><br>
+
+What can I say about THE "DeadlyFoez" on a personal level. He's always getting me into trouble but his friendship is worth every fiasco! It's unreal how he became one of my best friends. Just goes to show you not everyone you meet online is totally crazy; in his case... just a little crazy. But seriously, thanks to DeadlyFoez for always being there for me to bounce ModMii ideas off of, for hosting our Team Your Mom meetings and for introducing me to his awesome family and friends. There's no one else I'd rather geek out with and I'll always have your back.</li><br>
+
+<li><b><font size="4">Violator</font></b><br>
+He's my bro, my cuz, my best man and the reason I ever bought or modded a Wii. "XFlak" would have died many years ago if not for him. Thanks Violator, for getting me interested in this stuff, and for all the awesome music you recorded for ModMii and my <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>.</li><br>
+
+<li><b><font size="4">JoostinOnline</font></b><br>
+Thanks for his work developing KoreanKii (with tueidj), Syscheck HD Edition, sharing his webhosting space with me, and for all his jokes; I'll never get tired of our endless patriotic "debates".</li><br>
+
+<li><b><font size="4">Crediar, Daco Taco and Phpgeek</font></b><br>
+The above people all had a hand in creating Priiloader. This was another revolutionary tool mainly because it was the first to offer some level of protection to newer Wii's that were unable to install Bootmii at boot2. Crediar developed the original preloader as well as s/uneek, Nintendont, NMM, DML, etc. Special thanks to Daco Taco for being the last man standing in terms of actively improving/maintaining Priiloader.</li><br>
+
+<li><b><font size="4">Comex</font></b><br>
+In addition to being a member of Team Twiizers and contributing to the HackMii Installer, Comex created the heavily utilized bannerbomb exploit. This exploit is what allows Wii's on firmwares 3.0-4.2 to be softmodded with only an SD Card instead of needing one of a few specific Wii Games.</li><br>
+
+
+<li><b><font size="4">Waninkoko</font></b><br>
+Waninkoko was the first to publicly release a cIOS and other excellent apps like WAD manager, Save Game Manager, USB loader, etc. I also want to thank him for giving ModMii permission to recreate his cIOSs in WAD form.<br><br>
+
+<li><b><font size="4">Hermes</font></b><br>
+Hermes is well known for his cIOS 222/223/224 and for his usbloader "uloader". For a time his cIOSs were the only ones to work with RockBand type games and they are still highly utilized today.</li><br>
+
+<li><b><font size="4">davebaol and XFlak</font></b><br>
+These developers worked together to modify Waninkoko's rev21 cIOS and created a new "d2x" cIOS. This cIOS is currently considered the ultimate cIOS because it corrected many bugs and added features that were previously thought to be impossible (ie. Support for IOS Reloading Games). WiiPower was also heavily influential in achieving IOS Reload Support.</li><br>
+
+<li><b><font size="4">Fullmetal5</font></b><br>
+Thanks for his work developing the str2hax and bluebomb exploits. Fullmetal5 may have arrived a bit late to the Wii scene, but he's probably one of the most talented developers still active in the scene today. I can't wait to see what he comes out with next!</li><br>
+
+<li><b><font size="4">Rodries</font></b><br>
+Thanks to Rodries for improving upon Hermes v5.1 cIOSs.</li><br>
+
+<li><b><font size="4">WiiGator</font></b><br>
+WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans owe a big thank you to WiiGator for his work.</li><br>
+
+<li><b><font size="4">cwstjdenobs</font></b><br>
+cwstjdenobs is one of the few people I've encountered in the Wii scene that I would love to treat to a beer. He was always very supportive of me and encouraged me to ask him as many questions as I'd like. He is probably most well known for YAWMM (Yet Another Wad Manager Mod) which was the first Wad Manager to add brick protection by restricting users from making silly mistakes like uninstalling or stubbing a crucial file. He's also made and modified apps specifically for ModMii. For example, he modified WadMii so it doesn't timestamp WADs and he also made a setting.txt builder for ModMii's NAND builder.</li><br>
+
+<li><b><font size="4">Leathl</font></b><br>
+Leathl is another awesome developer who supported me before I became well known by expanding upon his apps to further support ModMii. Leathl has created many Wii apps including ShowMiiWads, CustomizeMii, libWiiSharp, patchios, nusfilegrabber, etc. Despite his recent inactivity, his apps are still highly used today... just goes to show you that quality work never gets old. I also want to thank RetroHead for him Mod of ShowMiiWads which ModMii uses to build emulated nands without requiring any input from the user. libWiiSharp.dll is based on wii.py, the wii.py devs are Megazig, Omega, Xuzz, SquidMan, Matt_P and The Lemon Man. Also thanks to Daeken for writing Struct.py and marcan for his LZ77 code.</li><br>
+
+<li><b><font size="4">scooby74029</font></b><br>
+scooby74029's most well known for sneeky compiler, which is able to build multiple different versions of s\uneek. ModMii will always construct the latest version of s\uneek available on his sneeky compiler google code webpage. This means he has total control over what version of s\uneek ModMii will construct. He also created modifications of Leathl's libWiiSharp.dll and patchios.exe to further support ModMii. Additionally, he's modified other apps like Any Region Changer ModMii Edition, JoyFlow, JoyLoader GX, JoyLoader CFG, etc. On top of all that, he's an all around awesome person and I'm proud to be on his friends list.</li><br>
+
+<li><b><font size="4">person66</font></b><br>
+person66 has had a hand in many projects, but most noteworthy are his sharpii cmd line tool and his Universal Forwarder Creator. He also wrote an autoit script that is used to launch ModMii with an icon, arguments and other useful functions.<br><br>
+Thanks for trading little bits of batch coding knowledge with me. It's great having a fellow batch coder for a friend; we are a dying breed, so keep up the great work with Universal Forwarder Creator and all your other projects.</li><br>
+
+<li><b><font size="4">WiiPower</font></b><br>
+WiiPower created Neogamma, hands down the best backup disc loader for the Wii. He also modified WiiGators cMIOS and created what is today considered the ultimate cMIOS. Furthermore he's contributed code to many other popular usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs.</li><br>
+
+<li><b><font size="4">OverjoY and obcd</font></b><br>
+OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek. He then teamed up with obcd to accomplish some seriously amazing things, like building their mod of s\uneek, NEEK2O, that allows it to load games in wbfs format and select from multiple emulated NANDs.</li><br>
+
+<li><b><font size="4">Arikado and the Dop-Mii Team</font></b><br>
+They created Dop-Mii; a lot of apps borrow code from Dop-Mii, so even if you have never used Dop-Mii but used MMM or WiiMod then you owe a thank you to these people.</li><br>
+
+<li><b><font size="4">WiiWu</font></b><br>
+He made Multi-Mod Manager (MMM) which has the functions of many different Wii modding tools all in one user friendly app.</li><br>
+
+<li><b><font size="4">WB3000 and WiiNinja</font></b><br>
+Thanks to WB3000 for creating NUS Downloader and to WiiNinja for making a cmd line version of NUS Downloader. NUS Downloader is one of ModMii's vital supporting apps.</li><br>
+
+<li><b><font size="4">TheShadowEevee</font></b><br>
+TheShadowEevee helped update many tools with a new NUS endpoint. He also helped implement some fixes and improvements to Any Region Changer ModMii Edition.</li><br>
+
+<li><b><font size="4">WiiCrazy</font></b><br>
+WiiCrazy is most famous for "Wii Game Shortcut Creator" (formerly known as "Crap"), Crazy Intro and Crazy Intro Video. He also contributed to usb-loaders by bypassing some game specific security. WiiCrazy is another person who's always been willing to do everything in his power to help me, or anyone else for that matter.</li><br>
+
+<li><b><font size="4">oggzee, usptactical, gannon and Dr.Clipper</font></b><br>
+Together the above people compose the Configurable USB Loader Team. Back in the day, this usb-loader was always the first to add new features and in my opinion it's one of the top three best usb-loader out there.</li><br>
+
+<li><b><font size="4">Cyan, dimok, blackb0x and the USBLoaderGX team</font></b><br>
+Thanks for their work on USBLoaderGX. It is one of the most feature-rich usb-loaders and has quickly become a favourite among the community. I also want to thank Cyan specifically for his excellent support of users on gbatemp for many years; he has probably explained what an IOS is more times than I can count!</li><br>
+
+<li><b><font size="4">OverjoY, blackb0x, Peter0x44 and scooby74029</font></b><br>
+This dream team of developers brought my vision to life when they created YAWM ModMii Edition.</li><br>
+
+<li><b><font size="4">Hibernatus, Fledge68 and the WiiFlow team</font></b><br>
+Thanks for their work on WiiFlow. It was always beautiful, but now it's got all sorts of bells and whistles, you should check it out.</li><br>
+
+<li><b><font size="4">Wiimm</font></b><br>
+For Wiimmfi Thanks to Wiimm for creating Wiimmfi and Wiimms ISO Tools, including wit.exe which ModMii uses to convert Wii Games to s/uneek format as well as build forwarder ISOs.</li><br>
+
+<li><b><font size="4">Leseratte</font></b><br>
+For his work on Wiimmfi, as well as d2xl and other amazing projects.</li><br>
+
+<li><b><font size="4">diddy81 and symular syn of the Wii Theme Team</font></b><br>
+The Wii Theme Team has created some of the best Wii Themes ever made! All of the alternative themes available in ModMii were created by them. I want to thank diddy81 in particular for working with me to ensure that all his themes worked perfectly for all regions.</li><br>
+
+<li><b><font size="4">FIX94, Narolez and the WiiXplorer Team</font></b><br>
+Thanks to all these people for their contributions in making the best SD/USB forwarder. I want to thank FIX94 in particular who not only worked on Nintendont, Some YAWMM Mod, WiiFlow and literally every other big Wii application, but he also spent a lot of time testing ModMii's Forwarder Builder.</li><br>
+
+<li><b><font size="4">jskyboo</font></b><br>
+Thanks to jskyboo for creating WiiMod. His app can do a lot of different things, and it was the first ahbprot enabled WAD Manager to incorporate davebaol's ahbprot bugfix.</li><br>
+
+
+<li><b><font size="4">ModMii's Translators</font></b><br>
+Tranlating ModMii is an enormous amount of work. It's very challenging to get special characters to display correctly in a cmd window, not to mention keeping everything formatted properly. But probably the most difficult part of translating ModMii is keeping up with the updates. If you use a translated version of ModMii, I encourage you to thank your translator because it truly is a LOT of work to do.<br><br>
+
+French Translators: <b>mamule, xav91 and ketufe</b><br>
+Dutch Translator: <b>Hielkenator</b><br>
+Italian Translators: <b>Wasabi, Step and Robilyn</b><br>
+Spanish Translators: <b>ledebene and Burton</b></li><br>
+
+<li><b><font size="4">Fig2k4</font></b><br>
+Thanks Fig2k4 for WiiBackupManager. It was a pleasure beta testing it for you and sharing my ideas with you. I hope to see you around the forums again and that you continue working on your amazing program.</li><br>
+
+<li><b><font size="4">Gabubu, sthetix, Foxlet, Alexander1970 and Vila</font></b><br>
+Thanks for recording, editing or upscaling many of the Youtube videos used by ModMii. Special thanks to Gabubu who single-handedly created all the new\updated videos in the 7.0.0 update, and also updated GFX for a bunch of ModMii's Wii channels.</li><br>
+
+<li><b><font size="4">WiiShizzza, pepxl, RobGee789, M3RK and AuroraNemoia</font></b><br>
+Thanks to WiiShizzza for creating ModMii's new icon and to pepxl for creating ModMii's original icon. I want to thank everyone who created a ModMii icon and submitted it into ModMii's new icon competition. <a href="https://gbatemp.net/threads/new-modmii-icon-logo-candidates.296772/" target="_blank">https://gbatemp.net/threads/new-modmii-icon-logo-candidates.296772/</a><br><br>
+
+RobGee789 and M3RK made ModMii Skin's original graphics. AuroraNemoia made ModMii Skin's new (2022) default\Nebula theme. It was a pleasure working with them, they were all very open to feedback and willing to "go back to the drawing board", so to speak, as many times as it took to get it perfect. Thanks guys!</li><br>
+
+<li><b><font size="4">dhtdht020</font></b><br>
+Thanks for maintaining oscwii.org and for refreshing the ModMii icons in 2022; now I have a rainbow of icons to choose from should the need arise.</li><br>
+
+<li><b><font size="4">My Fellow Guide Writers</font></b><br>
+Thanks to tj_cool, xzxero, burritoboy9984, ChokeD and mauifrog for their awesome guides. I especially want to thank tj_cool and xzxero for inviting me to join "The Crew" at the Complete Softmod Guide. I'll never forget how great it felt to be relatively new to the scene and to be invited to join you all as equals.</li><br>
+
+<li><b><font size="4">RiiConnect24 and Wii.Guide team</font></b><br>
+Thanks in particular go out to Peter0x44, Larsenv and KcrPL. Brainstorming and collaborating with you guys made the 2020 lockdowns feel somewhat bearable. Special thanks to Peter0x44 for helping me set up the ModMii discord server to a much higher standard than I could have ever hoped to do on my own.</li><br>
+
+<li><b><font size="4">DaMysteryMan</font></b><br>
+Thanks for helping me understand the structure of a cIOS so I could better recreate it in WAD form. For those of you who don't know him, DaMysteryMan is most well known for his ever controversial app - DarkCorp (formerly known as cIOSCorp).</li><br>
+
+<li><b><font size="4">Gannon</font></b><br>
+Thanks to Gannon for bootopera, which I was able to mod to create the URL loader base dol.</li><br>
+
+<li><b><font size="4">Devnol</font></b><br>
+Thanks to Devnol for properly modifying the Open HBC to use the same title ID as the official HBC (LULZ).</li><br>
+
+<li><b><font size="4">ca032769</font></b><br>
+ca032769 is best known for his tutorial on how to use a larger than 2TB Hard Drive on a Wii as a Single FAT32 Partition, thanks!</li><br>
+
+<li><b><font size="4">All My Beta Testers!</font></b><br>
+It's because of you guys that ModMii is as stable as it is. Considering that ModMii is developed entirely in notepad without any kind of debugger or developer tools; it's pretty remarkable that ModMii has always been bug-free (albeit with a couple minor exceptions). Thanks for your never-ending devotion to quality control!<br>
+
+Here's a list of some of ModMii's beta testers (in no particular order): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog, FIX94, wolf, Larsenv, Peter0x44, Alexander1970, Cyan, Damaj301damaj, Function, forseenink, jeannotte, saulfabreg, Vila, ca032769, godreborn, KleinesSinchen, RunningSnakes, Scooty and last but certainly not least, Clutz450. @Clutz450, you're the man, I really enjoyed your ModMii tutorial videos and hearing your ideas on the little ways ModMii could be made even better.</li><br>
+
+<li><b><font size="4">You!</font></b><br>
+Without you, there would be no reason for ModMii to exist. Thanks for using ModMii for all your Wii softmodding needs!</li>
+</ul>
+<br>
+
+<font size="5"><u>Supporting Apps and Sources</u></font><br>
+<br>
+Below is a list of the supporting apps bundled with ModMii and their sources. If a link is missing or broken, you can still get it from <a href="https://mega.nz/folder/YsphyYBQ#UOe3xmXPwldtKo6WF-sfXA" target="_blank">ModMii's Supporting Files Archive</a>.<br>
+
+Source code for ModMii itself is available is available at <a href="https://github.com/modmii/modmii.github.io" target="_blank">github</a>, but you can just open the bat files from it's support folder in notepad or similar text editor.<br>
+<br>
+
+
+<ul style=align="left" type="disc">
+<li>NusFileGrabber.exe by Leathl, Mod by XFlak and TheShadowEevee - requires libWiiSharp.dll</li>
+<li>patchIOS.exe by Leathl, Mod by scooby74029 - requires libWiiSharp.dll</li>
+<li><a href="http://www.mediafire.com/?bogjind5oe3" target="_blank">WadMii.exe (aka WadMiiIsh)</a> by cwstjdenobs - requires libWiiSharp.dll</li>
+<li>TMDedit.exe by person66 - requires libWiiSharp.dll
+<li><a href="http://code.google.com/p/libWiiSharp/source/browse/" target="_blank">libWiiSharp.dll</a> by Leathl, Mod by scooby74029 and TheShadowEevee</li>
+<li><a href="https://github.com/wiiNinja/NUS.downloader.command.line/tree/dotnet3.5" target="_blank">nusd.exe</a> by WiiNinja (original GUI code by WB3000)</li>
+<li><a href="http://wit.wiimm.de/" target="_blank">wit.exe</a> by Wiimm</li>
+<li>ShowMiiWads_Sneek_Mod.exe by Leathl, Mod by RetroHead</li>
+<li>settings.exe v1.0 by cwstjdenobs and v1.1 mod by obcd</li>
+<li> <a href="http://ftp.gnu.org/gnu/wget/" target="_blank">wget.exe</a> (freeware)</li>
+<li><a href="http://sourceforge.net/projects/sevenzip/" target="_blank">7za.exe</a> (freeware)</li>
+<li><a href="http://www.nirsoft.net/utils/nircmd.html" target="_blank">nircmd.exe</a> (freeware)</li>
+<li><a href="http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">sfk.exe</a> (freeware)</li>
+<li><a href="http://sourceforge.net/projects/jojodiff/" target="_blank">jptch.exe</a> (freeware)</li>
+<li><a href="http://github.com/waninkoko" target="_blank">Waninkoko's cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar" target="_blank">Hermes v4 cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar" target="_blank">Hermes v5 cIOS</a></li>
+<li><a href="https://github.com/davebaol/d2x-cios/releases" target="_blank">d2x cIOS</a>, <a href="https://github.com/wiidev/d2x-cios" target="_blank">v11+ source</a></li>
+<li><a href="https://gbatemp.net/threads/homebrew-forwarder-isos.181011/" target="_blank">ISO template</a> (by spayrosam)</li>
+<li><a href="http://www.thedubber.altervista.org/other/batch_prog/index.html" target="_blank">Ascii2All.bat</a> (freeware)</li>
+<li><a href="http://wizapp.sourceforge.net/" target="_blank">WizApp.exe</a> by Dion Nicolaas</li>
+<li><a href="https://github.com/mogzol/sharpii" target="_blank">Sharpii.exe</a> by person66</li>
+<li><a href="http://www.rarlab.com/rar_add.htm" target="_blank">UnRAR.exe</a> (freeware): No Longer Bundled with ModMii since v4.7.0</li>
+<li><a href="http://www.autoitscript.com/site/autoit/" target="_blank">AutoIt3.exe</a> (freeware): No Longer Bundled With ModMii since v4.5.7</li>
+<li><a href="http://www.dunyazad-library.net/software/hypatia/index.htm" target="_blank">hy.exe</a> (freeware): No Longer Bundled with ModMii since v4.7.0</li>
+<li><a href="http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">fvc.exe</a> (freeware): Not used since v7.0.0</li>
+</ul>
+
+</div></div></div>
+<br>
+
+
+<!-------------------------------------Support ModMii / XFlak is below------------------------------------------->
+<font size="6"><li><a name="Support">Support ModMii</a></li></font><br>
+
+ModMii started out as a small side-project back in 2010 as a simple NUS Auto Downloader script, and now the changelog is taller than me! I started this project in my 20s in my spare time and since then I've gotten married and had not 1, not 2, not 3, but FOUR boys, all ~2 years apart. I love being able to share my love for gaming and for the Wii with them, and with all of you! This is a passion project that has easily taken over 8000-9000 hours of just my time alone, and that's not counting all the hours spent from the legions of devs and testers who've supported ModMii over the years.<br>
+<br>
+Not knowing that much about computers other than some excel tricks, I slowly built more advanced features on top of my original less efficient code that I'd love to rewrite if it wasn't such a daunting task. Throughout the journey I learned a lot from not just those in the credits list, but the incredibly supportive Wii community as a whole. I've gone from just being a "numbers guy" to my family's go to "tech guy", and I have this project, community and followers to thank for it.<br>
+<br>
+ModMii is entirely free to use and ad free. Donations can optionally be made to the author using the button below, or pick your favourite contributor from the credits and check if they have a donations page.<br>
+
+<p style="text-align:center">
+<a href="https://modmii.github.io/donations.html" target="_blank"><img src="https://modmii.github.io/Images/donate.png" height="95" width="109" border="0"></a></p>
+
+If you're like me and it's difficult to show support with donations, consider taking a minute to vote or share your feedback at the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126" target="_blank">official ModMii page on gbatemp</a>. I always enjoy hearing feedback about your ModMii experience.<br>
+<br>
+
+<img src="https://modmii.github.io/Images/FN2187.gif" alt="XFlak" height="95" width="94"><br>
+- XFlak
+
+</ol>          <!------------This ends the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+</body> 
+</html>
+
