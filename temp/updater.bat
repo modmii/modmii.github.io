@@ -105,7 +105,7 @@ echo                                     Please Wait...
 echo.
 
 if exist "%UPDATENAME%%newversion%.zip" del "%UPDATENAME%%newversion%.zip">nul
-start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%%newversion%.zip
+start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefail
 
 if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
@@ -179,7 +179,7 @@ taskkill /im ModMiiSkin.exe /f >nul
 
 
 if exist "%UPDATENAME%%newversion%.zip" del "%UPDATENAME%%newversion%.zip">nul
-start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%%newversion%.zip
+start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
 if not exist "%UPDATENAME%%newversion%.zip" goto:updatefailskin
 
 
