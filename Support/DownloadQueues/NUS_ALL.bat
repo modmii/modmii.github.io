@@ -1,4 +1,4 @@
-::ModMii v6.4.9 - Download Queue - 16/11/2018 - 22:21:40.25
+::ModMii v6.6.4 - Download Queue - Tue 02/21/2023 -  9:03:16.78
 set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
@@ -37,7 +37,6 @@ SET MyM=*
 SET MII=*
 SET P0=*
 SET P=*
-SET PK=*
 SET S=*
 SET SK=*
 SET IU=*
@@ -80,14 +79,15 @@ SET IOS55=*
 SET IOS56=*
 SET IOS57=*
 SET IOS58=*
+SET IOS59=*
 SET IOS61=*
 SET IOS62=*
 SET A0e=*
 SET A01=*
 SET A0e_70=*
 SET A01_60=*
-SET A01_70=*
 SET A0e_60=*
+SET A01_70=*
 SET A0c=*
 SET A40=*
 SET A42=*
@@ -131,16 +131,16 @@ SET cIOS249[55]-v21=*
 SET cIOS249[56]-v21=*
 SET cIOS249[57]-v21=*
 SET cIOS249[58]-v21=*
-SET cIOS249[37]-d2x-v8-final=*
-SET cIOS249[38]-d2x-v8-final=*
-SET cIOS249[56]-d2x-v8-final=*
-SET cIOS249[53]-d2x-v8-final=*
-SET cIOS249[55]-d2x-v8-final=*
-SET cIOS249[57]-d2x-v8-final=*
-SET cIOS249[58]-d2x-v8-final=*
-SET cIOS249[60]-d2x-v8-final=*
-SET cIOS249[70]-d2x-v8-final=*
-SET cIOS249[80]-d2x-v8-final=*
+SET cIOS249[37]-d2x-v10-beta52=*
+SET cIOS249[38]-d2x-v10-beta52=*
+SET cIOS249[56]-d2x-v10-beta52=*
+SET cIOS249[53]-d2x-v10-beta52=*
+SET cIOS249[55]-d2x-v10-beta52=*
+SET cIOS249[57]-d2x-v10-beta52=*
+SET cIOS249[58]-d2x-v10-beta52=*
+SET cIOS249[60]-d2x-v10-beta52=*
+SET cIOS249[70]-d2x-v10-beta52=*
+SET cIOS249[80]-d2x-v10-beta52=*
 SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 SET RVL-cmios-v4_WiiGator_GCBL_v0.2=*
 SET RVL-cmios-v4_Waninkoko_rev5=*

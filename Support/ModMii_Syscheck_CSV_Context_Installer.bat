@@ -1,7 +1,9 @@
 @echo off
 setlocal
 
-chdir /d "%~dp0"
+::chdir /d "%~dp0"
+pushd "%~dp0"
+cls
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
 chcp 437>nul
 

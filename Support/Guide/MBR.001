@@ -1,0 +1,443 @@
+<!--------------------------------------MBR Stuff BELOW----------------------------------->
+<font size="5"><li>Set External Hard Drive Partition Style to MBR (if applicable)</li></font><br>
+<ul style=align="left" type="disc">
+<li><b>First, plug your hard drive into your PC and check if it's Partition style is already MBR.</b>
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/XyTaMT5yhAY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_Check.gif" border="0"/></a><br>
+	<ol type="A">
+	<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+	<li>In the Disk Management window, right-click the disk you want and select "Properties".
+	<li>In the disk's properties window, select the "Volumes" tab.
+	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
+	</ol>
+<br>
+<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="http://tiny.cc/wiibigdrive" target="_blank">ca032769's guide</a> to complete the rest of this step.</b>
+	<ul style=align="left" type="square">
+	<li>ca032769's guide only supports Western Digital Hard Drives.
+	<li>If your hard drive is >2TB, not MBR, and not made by Western Digital you are currently out of luck.
+	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
+	</ul>
+<br>
+<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using one of the two methods below.</b>
+<br>
+<br>
+<li><b>Method 1: MiniTool Partition Wizard</b>
+	<ul style=align="left" type="square">
+	<li>If you have files on the drive you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
+	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
+	<li>If your drive is not already in the desired format (e.g. FAT32) you will have to format it during the next step anyway so there's no point in using this method.
+	</ul>
+
+<br>
+<ol type="A">
+	<li><a href="http://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
+	</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
+
+	<li>Within the MiniTool window, right-click the GPT disk you want to convert and choose "Convert GPT Disk to MBR Disk".
+	<li>Click the "Apply" button in the toolbar.
+	<li>Click the "Yes" button to confirm conversion.
+	<li>Wait for the conversion to finish then click "OK".
+	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
+</ol>
+
+<br>
+
+<li><b>Method 2: Windows Disk Management</b>
+
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
+
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
+
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+
+<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
+
+
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed later.
+	</ul>
+<li>Set the File System to your desired format and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+</ol>
+<br>
+</ul>
+
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<font size="5"><li>Partition and Format the External Hard Drive (if applicable)</li></font><br>
+Choose a format option using the buttons below. FAT32 is generally recommended but you can click other buttons to see pros and cons of each.<br>
+<br>
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen2" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32')">FAT32</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'NTFS')">NTFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'WBFS')">WBFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32NTFS')">FAT32+NTFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32WBFS')">FAT32+WBFS</button>
+<br><br>
+
+<!--------------------------------------FAT32----------------------------------->
+<div id="FAT32" class="FormatGroup">
+<b><u>FAT32 (Recommended)</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>The Wii can access apps, games, covers, media and other files stored on FAT32 without requiring an SD card.
+<li>Compatible with playing Gamecube games.
+<li>Compatible with SNEEK/Nand Emulation.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>Cannot store files greater than 4GBs. The limit does not apply to Wii games, which can be split into parts. This will likely not affect you unless the drive is also used to store HD videos.
+</ul>
+<br>
+
+<ol type="A">
+<li>First, plug your hard drive into your PC and determine if it needs to be formatted by checking the current Format\File-System of the drive.</li>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
+	<ul style=align="left" type="square">
+	<li>Open "This PC" or "My Computer", right-click the external hard drive you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+	<li>Make note of the Drive Letter of the external hard drive as this will be important later.
+	<li>If the "File-System" is already FAT32, you can skip this step.
+	</ul>
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.
+</li>
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/oLA47xjGPVQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32.gif" border="0"/></a><br>
+
+<li>Carefully select the correct drive letter corresponding to your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</ol>
+</div>
+
+
+<!--------------------------------------NTFS----------------------------------->
+<div id="NTFS" class="FormatGroup">
+<b><u>NTFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>Capable of storing files greater than 4GB.
+<li>Most USB-Loaders can access games, covers and music saved to NTFS.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>The HBC cannot load apps stored on NTFS, so an SD card or modern forwarder channel is required to run USB-Loaders.
+<li>Incompatible with playing Gamecube games.
+<li>Incompatible with SNEEK/Nand Emulation.
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li>First, plug your hard drive into your PC and determine if it needs to be formatted by checking the current Format\File-System of the drive.
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
+	<ul style=align="left" type="square">
+
+	<li>Open "This PC" or "My Computer", right-click the external hard drive you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+		<li>Make note of the Drive Letter of the external hard drive as this will be important later.
+	<li>If the "File-System" is already NTFS, you can skip this step.
+	</ul>
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+
+<li>Right-click "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/s_bT5qRJi98?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NTFS.gif" border="0"/></a><br>
+<li>Right-click the drive you want to format (make sure you select the right drive!), then select "Format..."
+<li>Select "NTFS" as the File system to use and input a name for the Hard-Drive/Volume.
+<li>You may optionally uncheck the "Perform a quick format" box, then click "OK", then click "OK" again.
+</ol>
+</div>
+
+
+
+<!--------------------------------------WBFS----------------------------------->
+<div id="WBFS" class="FormatGroup">
+<b><u>WBFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>Greater compatibility with hard drives, especially small thumb drives. If loading backups using other formats doesn't work you can try WBFS before getting a new hard drive.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>WBFS can ONLY store Wii Games, so an SD card is generally required to run apps.
+<li>Incompatible with playing Gamecube games.
+<li>Incompatible with SNEEK/Nand Emulation.
+<li>Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+	<ul style=align="left" type="square">
+	<li>If you have any Wii files on the drive you should copy them to your SD Card now (e.g. "apps" folder, "usb-loader" folder, etc.)
+	</ul>
+<li>Launch Wii Backup Manager from shortcuts on your Start Menu or Desktop.
+</li>
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/JClxKhiC_18?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/WBFS.gif" border="0"/></a><br>
+
+<li>In the Wii Backup Manager window, click the "Tools" menu and select "Format drives".
+<li>Carefully select the correct drive letter corresponding to your external hard drive.
+<li>Confirm the new file system is "WBFS", then click "Start".
+<li>Click "Yes" when asked if you want to continue, then click "Close".
+</ol>
+<br>
+<ul style=align="left" type="disc">
+<li><b>Warning:</b> Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+
+
+
+
+
+</div>
+
+
+
+
+
+<!--------------------------------------FAT32+NTFS----------------------------------->
+<div id="FAT32NTFS" class="FormatGroup">
+<b><u>FAT32 + NTFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>FAT32 partition can be used to launch apps without requiring an SD card.
+<li>FAT32 partition is compatible with playing Gamecube games.
+<li>FAT32 partition is compatible with SNEEK/Nand Emulation.
+<li>NTFS partition can be used to save files greater than 4GB.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>May not be possible with some low capacity USB flash drives.
+<li>A little more work to setup.
+</ul>
+<br>
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/WgEbG5jH7Fs?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32NTFS.gif" border="0"/></a><br>
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume..."
+<li>Enter the "volume size" you want your FAT32 partition to be, and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed when we use FAT32 GUI Formatter shortly.
+	</ul>
+<li>Set the File System to "FAT32" (if possible) and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>FAT32 will mostly likely not be an option (only listed if volume size is under 32GB).
+	</ul>
+<li>If FAT32 isn't an option, you can choose "Do not format this volume".
+
+	<ul style=align="left" type="disc">
+	<li>It's also okay to format as NTFS or exFAT since we will be changing it to FAT32 later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+<li>In the lower half of the Disk Management menu, locate your drive's remaining unallocated space, right-click it, and select "New Simple Volume...."
+<li>Click "Next" to format all the remaining space on the drive.
+<li>Choose a Drive letter for your NTFS partition, and click "Next".
+<li>Ensure the file system is set to NTFS, then name/label the volume, and optionally uncheck the "Perform a quick format" box.
+<li>Click "Next", then click "Finish".
+</li>
+<br>
+If you were able to format the first partition as FAT32, then you can skip the remainder of this step.<br>
+<br>
+
+
+<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+<li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</ol>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!--------------------------------------FAT32+WBFS----------------------------------->
+<div id="FAT32WBFS" class="FormatGroup">
+<b><u>FAT32 + WBFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>FAT32 partition can be used to launch apps without requiring an SD card.
+<li>FAT32 partition is compatible with playing Gamecube games.
+<li>FAT32 partition is compatible with SNEEK/Nand Emulation.
+<li>WBFS has greater compatibility with hard drives, especially small thumb drives. If loading backups using other formats doesn't work you can try WBFS before getting a new hard drive.
+
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>May not be possible with some low capacity USB flash drives.
+<li>A little more work to setup.
+<li>WBFS partition can ONLY store Wii Games.
+<li>Windows Explorer cannot open WBFS partitions and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to a WBFS partition can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/PfqyvqJIbfc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32WBFS.gif" border="0"/></a><br>
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.		
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume..."
+<li>Enter the "volume size" you want your FAT32 partition to be, and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of the first partition's drive letter, as it will be needed when we use FAT32 GUI Formatter shortly.
+	</ul>
+<li>Set the File System to "FAT32" (if possible) and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>FAT32 will mostly likely not be an option (only listed if volume size is under 32GB).
+	</ul>
+<li>If FAT32 isn't an option, you can choose "Do not format this volume".
+
+	<ul style=align="left" type="disc">
+	<li>It's also okay to format as NTFS or exFAT since we will be changing it to FAT32 later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+<li>In the lower half of the Disk Management menu, locate your drive's remaining unallocated space, right-click it, and select "New Simple Volume...."
+<li>Click "Next" to format all the remaining space on the drive.
+<li>Choose a Drive letter for the WBFS partition, and click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of the second partition's drive letter, as it will be needed when we use Wii Backup Manager shortly.
+	</ul>
+<li>Set the File System to anything (e.g. "NTFS") as we will be changing it to WBFS later, and optionally customize the "Volume label".
+
+<li>Click "Next", then click "Finish".
+</li>
+
+
+<br>
+If you were able to format the first partition as FAT32, then you can skip to formatting the second partition as WBFS.<br>
+<br>
+
+
+<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop.
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+<li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</li>
+
+<br>
+
+<li>To format the second partition as WBFS, launch Wii Backup Manager from shortcuts on your Start Menu or Desktop.
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+</li>
+
+<li>In the Wii Backup Manager window, click the "Tools" menu and select "Format drives".
+<li>Carefully select the correct drive letter corresponding to the second partition on your external hard drive.
+<li>Confirm the new file system is "WBFS", then click "Start".
+<li>Click "Yes" when asked if you want to continue, then click "Close".
+</ol>
+
+<br>
+<ul style=align="left" type="disc">
+<li><b>Warning:</b> Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+</div>
+
+
+</div>
+<br>
+

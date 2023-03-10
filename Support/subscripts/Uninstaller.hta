@@ -1,0 +1,257 @@
+<html>
+<hta:application 
+	id="HI"
+	navigable="yes" 
+	scroll="yes"
+	icon="..\Support\icon.ico"
+	innerborder="no"
+	border="thin"
+	>
+	<meta charset="utf-8">
+<head>
+<title>ModMii Uninstaller</title>
+<!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
+<script Language="VBScript">
+    Sub Window_Onload
+		window.resizeTo 800,600
+		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
+    End Sub
+
+	Function FULLCLOSE()
+		SAVE() 'normally save happens on unload\close
+		window.close()
+	End Function
+
+'Do not save\uninstall if X is clicked
+'    sub Window_onUnload
+'        SAVE()
+'    end sub
+
+	Function SAVE()
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("tempcheck.bat",8,true)
+		
+		objFSO.write vbNewLine & "set ModMii="
+			If ModMii.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ModMiiTemp="
+			If ModMiiTemp.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SDfolder="
+			If SDfolder.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set USBfolder="
+			If USBfolder.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set wbm="
+			If wbm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set f32="
+			If f32.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SMW="
+			If SMW.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set CM="
+			If CM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiGSC="
+			If WiiGSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ohnes="
+			If ohnes.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Dolphin="
+			If Dolphin.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set OSC="
+			If OSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FILEZILLA="
+			If FILEZILLA.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set hxd="
+			If hxd.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Diskitude="
+			If Diskitude.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Nkit="
+			If Nkit.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RC24="
+			If RC24.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SDTEST="
+			If SDTEST.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HashMF="
+			If HashMF.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ThemeMiiMod="
+			If ThemeMiiMod.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set GCBM="
+			If GCBM.checked = True Then objFSO.write "*"
+		
+		objFSO.close
+	End Function
+
+	
+	Function AllButton()
+		If ((ModMii.checked = True) And (ModMiiTemp.checked = True) And (SDfolder.checked = True) And (USBfolder.checked = True) And (wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (RC24.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleAll(checkstatus)
+	End Function
+	
+	Function CancelButton()
+		'checkstatus = False
+		'ToggleAll(checkstatus)
+		'FULLCLOSE()
+		window.close()
+	End Function
+	
+	Function UninstallButton()
+		FULLCLOSE()
+	End Function
+	
+
+	Function ToggleAll(ByVal checkstatus)
+		ModMii.checked = checkstatus
+		ModMiiTemp.checked = checkstatus
+		SDfolder.checked = checkstatus
+		USBfolder.checked = checkstatus
+		wbm.checked = checkstatus
+		f32.checked = checkstatus
+		SMW.checked = checkstatus
+		CM.checked = checkstatus
+		WiiGSC.checked = checkstatus
+		ohnes.checked = checkstatus
+		Dolphin.checked = checkstatus
+		OSC.checked = checkstatus
+		FILEZILLA.checked = checkstatus
+		hxd.checked = checkstatus
+		Diskitude.checked = checkstatus
+		Nkit.checked = checkstatus
+		RC24.checked = checkstatus
+		SDTEST.checked = checkstatus
+		HashMF.checked = checkstatus
+		ThemeMiiMod.checked = checkstatus
+		GCBM.checked = checkstatus
+	End Function
+
+
+
+</script>
+<style type="text/css">
+input.bigcheck {
+height: 30px;
+width: 30px;
+vertical-align: middle;
+}
+table, th {
+  text-align: left;
+  vertical-align: middle;
+}, td {
+  border:1px solid black;
+  text-align: left;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<!--<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0" style="width:80%;height: 100px"/></a><br>-->
+
+
+<!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
+
+<center>
+<font size="4" face="Arial Black italic"><b>ModMii Uninstaller</b></font>
+</center>
+
+
+
+<center>
+<font size="3">Select the components you would like to uninstall</font><br>
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table style="width:75%">
+
+
+<!--Row1-->
+<tr>
+	<!--ModMii--><th title="Uninstall ModMii"><label><input class="bigcheck" type="checkbox" name="ModMii" /> ModMii</label></th>
+
+	<!--SDfolder--><th title="Delete ModMii's COPY_TO_SD folder"><label><input class="bigcheck" type="checkbox" name="SDfolder" /> COPY_TO_SD Folder</label></th>
+</tr>
+<tr>
+	<!--ModMiiTemp--><th title="Delete ModMii's temp folder with cached downloads.&#10;&#10;Keeping this folder will allow ModMii to work even if cached files go offline in the future."><label><input class="bigcheck" type="checkbox" name="ModMiiTemp" /> ModMii 'temp' folder</label></th>
+
+	<!--USBfolder--><th title="Delete ModMii's COPY_TO_USB folder"><label><input class="bigcheck" type="checkbox" name="USBfolder" /> COPY_TO_USB Folder</label></th>
+
+
+</tr>
+<tr>
+	<th></th>
+	<th></th>
+</tr>
+<tr>
+	<th></th>
+	<th></th>
+</tr>
+<tr>
+	<th></th>
+	<th></th>
+</tr>
+
+<tr>
+	<!--OSC--><th title="A tool to download even more homebrew apps using your PC (selection is the same as the Homebrew Browser)"><label><input class="bigcheck" type="checkbox" name="OSC" /> Open Shop Channel</label></th>
+
+	<!--Dolphin--><th title="Wii Emulator for PC"><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin</label></th>
+</tr>
+
+<tr>
+	<!--f32--><th title="A tool that can format large SD cards and hard drives as FAT32"><label><input class="bigcheck" type="checkbox" name="f32" /> FAT32 GUI Formatter</label></th>
+	
+	<!--ohnes--><th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+</tr>
+
+<tr>
+	<!--wbm--><th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
+	
+	<!--RC24--><th title="RiiConnect24 Patcher helps you install RiiConnect24 to bring back WiiConnect24 features to your Wii"><label><input class="bigcheck" type="checkbox" name="RC24" /> RiiConnect24 Patcher</label></th>
+</tr>
+
+<tr>
+	<!--Nkit--><th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images"><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
+	
+	<!--hxd--><th title="Hex Editor"><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor</label></th>
+</tr>
+
+
+
+<tr>
+	<!--GCBM--><th title="Manage and convert Gamecube backup files"><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager</label></th>
+	
+	<!--Diskitude--><th title="Disk Usage Analyzer"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude</label></th>
+</tr>
+
+<tr>
+	<!--SMW--><th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
+	
+	<!--SDTEST--><th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+</tr>
+
+<tr>
+	<!--CM--><th title="A custom channel creator for the Wii"><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
+	
+	<!--HashMF--><th title="Calculate and compare file hashes"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles</label></th>
+</tr>
+
+<tr>
+	<!--WiiGSC--><th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
+	
+	<!--FILEZILLA--><th title="FTP Client; use it with ftpii to manage files on your Wii"><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla</label></th>
+</tr>
+
+<tr>
+	<!--ThemeMiiMod--><th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa."><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
+</tr>
+
+</table>
+<font size="2">Pro tip: keep a fully loaded 'temp' folder to use ModMii even if Nintendo servers shut down!</font><br>
+<br>
+
+<button title="Select/deselect all components" style="width:25%" onClick="vbscript:AllButton()"><font face="Arial Black">Select All</font></button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button title="Uninstall selected components" style="width:25%" onClick="vbscript:UninstallButton()"><font face="Arial Black">Uninstall</font></button>
+&nbsp;&nbsp;&nbsp;&nbsp;
+<button title="Cancel uninstallation" style="width:25%" onClick="vbscript:CancelButton()"><font face="Arial Black">Cancel</font></button>
+
+
+
+</center>
+
+</body>
+</html>

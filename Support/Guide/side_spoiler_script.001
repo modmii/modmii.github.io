@@ -1,10 +1,10 @@
 
 <script>
-    let tabcontent = document.getElementsByClassName("blanktabcontent");
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
     let tablinks = document.getElementsByClassName("tablinks");
 
-    function openTab(evt, tabName) {
-        let element;
+	let element;
 
         for (element of tabcontent) {
             element.style.display = "none";
@@ -17,9 +17,10 @@
         }
 
         document.getElementById(tabName).style.display = "block";
-        evt.currentTarget.className = evt.currentTarget.className.replace("btn--info", "btn--primary");
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
     }
 
     // Get the element with id="defaultOpen" and click on it
+	//document.getElementById("defaultOpen2").click();
     document.getElementById("defaultOpen").click();
 </script>

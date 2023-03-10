@@ -1,0 +1,571 @@
+<html>
+<hta:application 
+	id="HI"
+	navigable="yes" 
+	scroll="yes"
+	icon="..\Support\icon.ico"
+	innerborder="no"
+	border="thin"
+	>
+	<meta charset="utf-8">
+<head>
+<title>ModMii</title>
+<!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
+<script Language="VBScript">
+    Sub Window_Onload
+		window.resizeTo 1200,820
+		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
+    End Sub
+
+	Function FULLCLOSE()
+		'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+    sub Window_onUnload
+        SAVE()
+    end sub
+
+	Function Page(ByVal nextgoto, nextpage)
+	'nextpage is optional
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		objFSO.write vbNewLine & "set nextgoto=" & nextgoto
+		objFSO.write vbNewLine & "set nextpage=" & nextpage
+		objFSO.close
+        'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+
+	Function SAVE()
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		
+		objFSO.write vbNewLine & "set CheatZip="
+			If CheatZip.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ftpii="
+			If ftpii.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set usbfolder="
+			If usbfolder.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set neogamma="
+			If neogamma.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set AccioHacks="
+			If AccioHacks.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set usbgx="
+			If usbgx.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set nintendont="
+			If nintendont.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FLOW="
+			If FLOW.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set USBX="
+			If USBX.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set wbm="
+			If wbm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set f32="
+			If f32.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SMW="
+			If SMW.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set CM="
+			If CM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiGSC="
+			If WiiGSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ohnes="
+			If ohnes.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Dolphin="
+			If Dolphin.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set OSC="
+			If OSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FILEZILLA="
+			If FILEZILLA.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set hxd="
+			If hxd.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Diskitude="
+			If Diskitude.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Nkit="
+			If Nkit.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RC24="
+			If RC24.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SDTEST="
+			If SDTEST.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HashMF="
+			If HashMF.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ThemeMiiMod="
+			If ThemeMiiMod.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set GCBM="
+			If GCBM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set MyM="
+			If MyM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set mmm="
+			If mmm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set CleanRip="
+			If CleanRip.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ARC="
+			If ARC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set KK="
+			If KK.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HM="
+			If HM.checked = True Then objFSO.write "*"
+'		objFSO.write vbNewLine & "set DumpMii="
+'			If DumpMii.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set syscheck="
+			If syscheck.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set yawm="
+			If yawm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Pri="
+			If Pri.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS236Installer="
+			If IOS236Installer.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SIP="
+			If SIP.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set PLC="
+			If PLC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set OHBC="
+			If OHBC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set bootmiisd="
+			If bootmiisd.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set PL="
+			If PL.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Casper="
+			If Casper.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiMC="
+			If WiiMC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set fceugx="
+			If fceugx.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set snes9xgx="
+			If snes9xgx.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set vbagx="
+			If vbagx.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SGM="
+			If SGM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WIIX="
+			If WIIX.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HBB="
+			If HBB.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WII64="
+			If WII64.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Not64="
+			If Not64.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WIISX="
+			If WIISX.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set locked="
+			If locked.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FLOWF="
+			If FLOWF.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set S2U="
+			If S2U.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set nswitch="
+			If nswitch.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set BB1="
+			If BB1.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set BB2="
+			If BB2.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Twi="
+			If Twi.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Twi2="
+			If Twi2.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set YUGI="
+			If YUGI.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Bathaxx="
+			If Bathaxx.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ROTJ="
+			If ROTJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set TOS="
+			If TOS.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set smash="
+			If smash.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set pwns="
+			If pwns.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Wilbrand="
+			If Wilbrand.checked = True Then objFSO.write "*"
+
+
+		
+		objFSO.close
+	End Function
+
+	
+	Function AllButton()
+		If ((CheatZip.checked = True) And (usbfolder.checked = True) And (neogamma.checked = True) And (AccioHacks.checked = True) And (usbgx.checked = True) And (nintendont.checked = True) And (FLOW.checked = True) And (USBX.checked = True) And (wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (RC24.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (FTPii.checked = True) And (MyM.checked = True) And (mmm.checked = True) And (CleanRip.checked = True) And (ARC.checked = True) And (KK.checked = True) And (HM.checked = True) And (syscheck.checked = True) And (yawm.checked = True) And (Pri.checked = True) And (IOS236Installer.checked = True) And (SIP.checked = True) And (PLC.checked = True) And (OHBC.checked = True) And (bootmiisd.checked = True) And (PL.checked = True) And (Casper.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (SGM.checked = True) And (WIIX.checked = True) And (HBB.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (locked.checked = True) And (FLOWF.checked = True) And (S2U.checked = True) And (nswitch.checked = True) And (BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleUSB(checkstatus)
+		TogglePC(checkstatus)
+		ToggleWii(checkstatus)
+		ToggleFun(checkstatus)
+		ToggleExploit(checkstatus)
+	End Function
+	
+	
+	Function USBButton()
+		If ((usbfolder.checked = True) And (usbgx.checked = True) And (nintendont.checked = True) And (FLOW.checked = True) And (USBX.checked = True) And (FLOWF.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleUSB(checkstatus)
+	End Function
+	
+	Function PCButton()
+		If ((wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (RC24.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglePC(checkstatus)
+	End Function
+	
+	
+	
+	Function WiiButton()
+		If ((FTPii.checked = True) And (MyM.checked = True) And (mmm.checked = True) And (CleanRip.checked = True) And (ARC.checked = True) And (KK.checked = True) And (HM.checked = True) And (syscheck.checked = True) And (yawm.checked = True) And (Pri.checked = True) And (IOS236Installer.checked = True) And (SIP.checked = True) And (PLC.checked = True) And (OHBC.checked = True) And (bootmiisd.checked = True) And (PL.checked = True) And (Casper.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleWii(checkstatus)
+	End Function
+	
+	
+	Function FunButton()
+		If ((CheatZip.checked = True) And (neogamma.checked = True) And (AccioHacks.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (SGM.checked = True) And (WIIX.checked = True) And (HBB.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (locked.checked = True) And (S2U.checked = True) And (nswitch.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleFun(checkstatus)
+	End Function
+	
+	
+	Function ExploitButton()
+		If ((BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleExploit(checkstatus)
+	End Function
+	
+	
+	
+	Function AutoUpdateButton()
+		If ((HashMF.checked = True) And (hxd.checked = True) And (FILEZILLA.checked = True) And (Diskitude.checked = True) And (Pri.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (SGM.checked = True) And (WIIX.checked = True) And (HBB.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (usbgx.checked = True) And (nintendont.checked = True) And (FLOW.checked = True) And (RC24.checked = True) And (CheatZip.checked = True) And (GCBM.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleAutoUpdate(checkstatus)
+	End Function
+
+
+	Function ToggleAutoUpdate(ByVal checkstatus)
+		hxd.checked = checkstatus
+		HashMF.checked = checkstatus
+		Diskitude.checked = checkstatus
+		Pri.checked = checkstatus
+		WiiMC.checked = checkstatus
+		fceugx.checked = checkstatus
+		snes9xgx.checked = checkstatus
+		vbagx.checked = checkstatus
+		SGM.checked = checkstatus
+		WIIX.checked = checkstatus
+		HBB.checked = checkstatus
+		WII64.checked = checkstatus
+		Not64.checked = checkstatus
+		WIISX.checked = checkstatus
+		Dolphin.checked = checkstatus
+		OSC.checked = checkstatus
+		usbgx.checked = checkstatus
+		nintendont.checked = checkstatus
+		FLOW.checked = checkstatus
+		RC24.checked = checkstatus
+		CheatZip.checked = checkstatus
+		FILEZILLA.checked = checkstatus
+		GCBM.checked = checkstatus
+	End Function		
+
+
+	Function ToggleUSB(ByVal checkstatus)
+		usbfolder.checked = checkstatus
+		usbgx.checked = checkstatus
+		nintendont.checked = checkstatus
+		FLOW.checked = checkstatus
+		USBX.checked = checkstatus
+		FLOWF.checked = checkstatus
+	End Function
+
+
+	Function TogglePC(ByVal checkstatus)
+		wbm.checked = checkstatus
+		f32.checked = checkstatus
+		SMW.checked = checkstatus
+		CM.checked = checkstatus
+		WiiGSC.checked = checkstatus
+		ohnes.checked = checkstatus
+		Dolphin.checked = checkstatus
+		OSC.checked = checkstatus
+		FILEZILLA.checked = checkstatus
+		hxd.checked = checkstatus
+		Diskitude.checked = checkstatus
+		Nkit.checked = checkstatus
+		RC24.checked = checkstatus
+		SDTEST.checked = checkstatus
+		HashMF.checked = checkstatus
+		ThemeMiiMod.checked = checkstatus
+		GCBM.checked = checkstatus
+	End Function
+
+	Function ToggleWii(ByVal checkstatus)
+		mmm.checked = checkstatus
+		MyM.checked = checkstatus
+		CleanRip.checked = checkstatus
+		ARC.checked = checkstatus
+		KK.checked = checkstatus
+		HM.checked = checkstatus
+'		DumpMii.checked = checkstatus
+		syscheck.checked = checkstatus
+		yawm.checked = checkstatus
+		Pri.checked = checkstatus
+		IOS236Installer.checked = checkstatus
+		SIP.checked = checkstatus
+		PLC.checked = checkstatus
+		OHBC.checked = checkstatus
+		bootmiisd.checked = checkstatus
+		PL.checked = checkstatus
+		Casper.checked = checkstatus
+		ftpii.checked = checkstatus
+	End Function
+
+	Function ToggleFun(ByVal checkstatus)
+		CheatZip.checked = checkstatus
+		WiiMC.checked = checkstatus
+		fceugx.checked = checkstatus
+		snes9xgx.checked = checkstatus
+		vbagx.checked = checkstatus
+		SGM.checked = checkstatus
+		WIIX.checked = checkstatus
+		HBB.checked = checkstatus
+		WII64.checked = checkstatus
+		Not64.checked = checkstatus
+		WIISX.checked = checkstatus
+		locked.checked = checkstatus
+		S2U.checked = checkstatus
+		nswitch.checked = checkstatus
+		neogamma.checked = checkstatus
+		AccioHacks.checked = checkstatus
+	End Function
+
+	Function ToggleExploit(ByVal checkstatus)
+		BB1.checked = checkstatus
+		BB2.checked = checkstatus
+		Twi.checked = checkstatus
+		Twi2.checked = checkstatus
+		YUGI.checked = checkstatus
+		Bathaxx.checked = checkstatus
+		ROTJ.checked = checkstatus
+		TOS.checked = checkstatus
+		smash.checked = checkstatus
+		pwns.checked = checkstatus
+		Wilbrand.checked = checkstatus
+	End Function
+
+</script>
+<style type="text/css">
+input.bigcheck {
+height: 30px;
+width: 30px;
+vertical-align: middle;
+}
+table, th {
+  text-align: left;
+  vertical-align: middle;
+}, td {
+  border:1px solid black;
+  text-align: left;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<!--<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0" style="width:80%;height: 100px"/></a><br>-->
+
+
+<!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
+<button title="Return to Main Menu" style="width:190; position: absolute; left: 15; top: 10;" onClick="vbscript:Page'MENU','DLPAGE2.hta'"><font face="Arial Black">Main Menu</font></button>
+<button title="Download System Menus, IOSs, MIOSs, Channels, etc." style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
+<button disabled title="Download Wii Apps, USB-Loader Files, PC Programs, Exploits, etc." style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
+<button title="Download System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>
+<button title="Download cIOSs and cMIOSs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+
+
+
+<button title="Click to Download Files to:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 10;" onClick="vbscript:FULLCLOSE()"><font face="Arial Black">Download!</font></button>
+<button title="Change Current Download Folder:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 45;" onClick="vbscript:Page'DRIVECHANGE','DLPAGE2.hta'"><font face="Arial Black">Download Folder</font></button>
+
+<font size="2" face="Arial Black italic" style="position: absolute; right: 30; top: 100;" title="Hovering your mouse over various items on this page will display fun facts and helpful tips!" >(Hover over items for Tooltips)</font>
+
+<center>
+<font size="4" face="Arial Black italic"><b>Download Page 2</b></font>
+</center>
+
+
+
+<center>
+<font size="2" color="red">WARNING: some of these files MAY CAUSE BRICK if you do NOT know what you are doing!</font><br>
+<br>
+
+
+
+<button title="Toggle All Downloads" style="width:6%" onClick="vbscript:AllButton()"><font face="Arial Black">ALL</font></button>
+&nbsp;
+<button title="&#x21E7; Auto-Updating Downloads&#10;&#x21EA; Semi-Auto-Updating Downloads&#10;Hover over each download for update details&#10;&#10;All other downloads can be updated from time to time without requiring a ModMii update" onClick="vbscript:AutoUpdateButton()"><font face="Arial Black"><b>&#x21E7;</b> Auto-Updating <b>&#x21EA;</b></font></button>
+
+</center>
+
+<br>
+
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table style="width:100%">
+
+
+<!--Row1-->
+<tr>
+	<th colspan="1" style="text-align:center"><button style="width:99%;" onClick="vbscript:USBButton()"><font face="Arial Black">USB-Loader Files</font></button></th>
+	<th colspan="1" style="text-align:center"><button style="width:99%;" onClick="vbscript:WiiButton()"><font face="Arial Black">Wii Apps</font></button></th>
+	<th colspan="1" title="Toggle Just For Fun Downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:FunButton()"><font face="Arial Black">Just For Fun!</font></button></th>
+	<th colspan="1" style="text-align:center"><button style="width:99%;" onClick="vbscript:PCButton()"><font face="Arial Black">PC Programs</font></button></th>
+</tr>
+
+
+<!--Row2-->
+<tr>
+	<th title="A popular USB-Loader with lots of extra features&#10;&#10;&#x21E7; Auto-Updating from oscwii.org. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="usbgx" /> USB Loader GX &#x21E7;</label></th>
+
+	<th title="Priiloader adds a level of brick protection to your Wii. It loads before the Wii Menu, can enable system menu hacks and be set to autoboot the HBC, BootMii, or whatever homebrew you want!&#10;&#10;&#x21EA; Semi-Auto-Updated periodically when deemed appropriate by XFlak. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Pri" /> Priiloader &#x21EA;</label></th>
+	<th title="Download homebrew apps using your Wii (selection is the same as the Open Shop Channel)&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="HBB" /> Homebrew Browser &#x21E7;</label></th>
+	<th title="A tool to download even more homebrew apps using your PC (selection is the same as the Homebrew Browser)&#10;&#10;&#x21E7; Auto-Updating from oscwii.org. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="OSC" /> Open Shop Channel &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="A popular USB-Loader known for attractive visual effects&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="FLOW" /> WiiFlow Lite &#x21E7;</label></th>
+	<th title="Used to install the Homebrew Channel and BootMii"><label><input class="bigcheck" type="checkbox" name="HM" /> HackMii Installer</label></th>
+	<th title="Wii Media Center SuperrSonic Edition&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WiiMC" /> WiiMC-SS &#x21E7;</label></th>
+	<th title="A tool that can format large SD cards and hard drives as FAT32"><label><input class="bigcheck" type="checkbox" name="f32" /> FAT32 GUI Formatter</label></th>
+</tr>
+
+<tr>
+	<th title="A popular USB-Loader that is highly customizable but no longer maintained"><label><input class="bigcheck" type="checkbox" name="usbfolder" /> CFG USB Loader</label></th>
+	<th title="Open HBC v1.1.5 LULZ"><label><input class="bigcheck" type="checkbox" name="OHBC" /> Homebrew Channel WAD</label></th>
+	<th title="NES Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="fceugx" /> FCEUGX &#x21E7;</label></th>
+	<th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
+</tr>
+
+<tr>
+	<th title="Gamecube backup loader; Also works as a Gamecube plugin with other USB-Loaders&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="nintendont" /> Nintendont &#x21E7; </label></th>
+	<th title="A bootmii folder that when saved to SD can be used to launch Bootmii; a newer version of Bootmii can be retrieved from the HackMii Installer."><label><input class="bigcheck" type="checkbox" name="bootmiisd" /> Bootmii SD Files</label></th>
+	<th title="Super Nintendo Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="snes9xgx" /> SNES9xGX &#x21E7;</label></th>
+	<th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images.&#10;&#10;If you have an NKit ISO use the NKit Processing App to convert to regular ISO, then use Wii Backup Manager to convert to WBFS."><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
+</tr>
+
+
+
+<tr>
+	<th title="Multi Forwarder Channel WAD; forwards to GX, WiiFlow, CFG, and more! The bundled dol file can be installed to Priiloader to autoboot the channel."><label><input class="bigcheck" type="checkbox" name="USBX" /> USB-Loader Channel/dol</label></th>
+	<th title="SysCheck ModMii Edition retrieves information about what is installed on your Wii.&#10;&#10;After running this tool on your Wii, the output sysCheck.csv can be loaded by ModMii to check if any updates are recommended."><label><input class="bigcheck" type="checkbox" name="syscheck" /> SysCheck ModMii Edition</label></th>
+	<th title="GBA/Game Boy Color/Game Boy Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="vbagx" /> Visual Boy Advance GX &#x21E7;</label></th>
+	<th title="Manage and convert Gamecube backup files; requires 64-bit Windows (users with 32-bit Windows can google for 'Gamecube ISO Tool').&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="WiiFlow forwarder channel which can be installed using a WAD Manager. The bundled dol file can be installed to Priiloader to autoboot the channel."><label><input class="bigcheck" type="checkbox" name="FLOWF" /> WiiFlow Channel/dol</label></th>
+	<th title="Yet Another WAD Manager ModMii Edition allows you to (un)install WADs and launch apps. It has built in protection to prevent actions that would cause brick, the ability to install a new System Menu without losing Priiloader, and more!"><label><input class="bigcheck" type="checkbox" name="yawm" /> YAWM ModMii Edition</label></th>
+	<th title="N64 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WII64" /> Wii64 &#x21E7;</label></th>
+	<th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
+</tr>
+
+<tr>
+	<th colspan="1" title="Exploits are vulnerabilities or 'backdoors' in Wii software allowing execution of unsigned code&#10;&#10;The values in brackets indicate the System Menu version(s) supported by each exploit." style="text-align:center"><button style="width:99%;" onClick="vbscript:ExploitButton()"><font face="Arial Black">Exploits</font></button></th>
+	<th title="MMM is a multi-purpose tool that can install WADs, launch apps, etc, but does not support motion+ wiimotes"><label><input class="bigcheck" type="checkbox" name="mmm" /> Multi-Mod Manager</label></th>
+	<th title="N64 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="Not64" /> Not64 &#x21E7;</label></th>
+	<th title="A custom channel creator for the Wii.&#10;&#10;ModMii's forwarder dols from the Advanced Downloads Page are better and easier to construct than Customize Mii's; simply build a forwarder dol using ModMii then add the new dol to your channel using Customize Mii's Options tab.&#10;&#10;If ahbprot is needed for your channel make sure to use a base WAD that has it already enabled (e.g. ModMii's USB-Loader Channel)."><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
+</tr>
+
+<tr>
+	<th title="SD Card required; SDHC and SDXC also work if on System Menu 4.0 or 4.1; can launch both dols and elfs"><label><input class="bigcheck" type="checkbox" name="BB1" /> Bannerbomb v1 [3.0-4.1]</label></th>
+	<th title="Installs System Menu themes from CSM files created by ModMii, ThemeMii or MyMenu. Also supports APP files to restore original themes. Drag a mym file onto ModMii to convert it to csm.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!"><label><input class="bigcheck" type="checkbox" name="MyM" /> MyMenuifyMod</label></th>
+	<th title="PS1 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WIISX" /> WiiSXRX &#x21E7;</label></th>
+	<th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
+</tr>
+
+<tr>
+	<th title="SD Card required; SDHC and SDXC also work; can launch both dols and elfs"><label><input class="bigcheck" type="checkbox" name="BB2" /> Bannerbomb v2 [4.2]</label></th>
+	<th title="Any Region Changer (ARC) ModMii Edition is a mod of ARC. If it detects a region mismatch, you only have to select the 'Auto Fix Settings' to correct it. It is one of many tools used to complete a region change."><label><input class="bigcheck" type="checkbox" name="ARC" /> ARC ModMii Edition</label></th>
+	<th title="Extract/install SaveGames and Miis from/to your Wii&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="SGM" /> SaveGame Manager GX &#x21E7;</label></th>
+	<th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa. Install themes using MyMenuifyMod.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!"><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
+</tr>
+
+<tr>
+	<th title="MailBox Bomb similar to Letterbomb; technically also works on lower firmwares but ModMii uses Bannerbomb for that.&#10;&#10;SD Card required; SDHC and SDXC also work if on System Menu 4.0 or higher but first or only partition must be <32GB. Can launch both dols and elfs."><label><input class="bigcheck" type="checkbox" name="Wilbrand" /> Wilbrand [4.3 U\E\J\K]</label></th>
+	<th title="Can add or remove the Korean key from the SEEPROM. Used when region changing to\from Korean System Menu Versions.&#10;&#10;WARNING: You will 003 brick if you install the Korean Key UNLESS you are on a Korean System Menu version and\or have IOS60 installed as your System Menu IOS."><label><input class="bigcheck" type="checkbox" name="KK" /> KoreanKii</label></th>
+	<th title="File explorer for the Wii with several other features&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WIIX" /> WiiXplorer &#x21E7;</label></th>
+	<th title="Wii Emulator; requires 64-bit Windows 10 or newer (older versions of Dolphin from their website support other operating systems).&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin &#x21EA;</label></th>
+</tr>
+
+<tr>
+	<th title="Requires Super Smash Brothers Brawl disc and an SD card (SDHC and SDXC do not work); can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="smash" /> Smash Stack [U\E\J\K]</label></th>
+	<th title="FTP Server for the Wii; use it with FileZilla to manage files on your Wii using your PC"><label><input class="bigcheck" type="checkbox" name="ftpii" /> ftpii</label></th>
+	<th title="A password protected apps_locked folder you can move homebrew apps to restrict access to them&#10;&#10;Default Password: UDLRAB"><label><input class="bigcheck" type="checkbox" name="locked" /> Locked HBC Folder</label></th>
+	<th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+</tr>
+
+<tr>
+	<th title="Requires LEGO Batman disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="Bathaxx" /> Bathaxx [U\E\J]</label></th>
+	<th title="All in one alternative to the System Menu, HBC and/or USB-Loaders. Can launch Wii games, GameCube games, VC/Wiiware titles from real or emulated NAND, and can also boot fceugx, vbagx, snes9xgx, and genplusgx games."><label><input class="bigcheck" type="checkbox" name="PL" /> postLoader</label></th>
+	<th title="A tool to switch to and from UNEEK and back"><label><input class="bigcheck" type="checkbox" name="S2U" /> Switch2Uneek</label></th>
+	<th title="RiiConnect24 Patcher helps you install RiiConnect24 to bring back WiiConnect24 features to your Wii.&#10;&#10;If you used ModMii to softmod your Wii you should keep ModMii's IOS80 and skip installing RC24's. Also note that consoles modded by ModMii can use RC24 on any System Menu version, not just 4.3.&#10;&#10;&#x21E7; Auto-Updating from RiiConnect24 github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="RC24" /> RiiConnect24 Patcher &#x21E7;</label></th>
+</tr>
+<tr>
+	<th title="Requires Tales of Symphonia: Dawn of the New World disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="TOS" /> Eri HaKawai [U\E\J]</label></th>
+	<th title="postLoader forwarder channel which can be installed using a WAD Manager"><label><input class="bigcheck" type="checkbox" name="PLC" /> postLoader Channel</label></th>
+	<th title="Simple neek/realnand switcher app embedded in a channel (neek2o_NK2O_1.wad)"><label><input class="bigcheck" type="checkbox" name="nswitch" /> nSwitch Channel</label></th>
+	<th title="&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor &#x21EA;</label></th>
+</tr>
+
+
+<tr>
+	<th title="Requires LEGO Indiana Jones disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="pwns" /> Indiana Pwns [U\E\J]</label></th>
+	<th title="A tool to run MINI apps like Bootmii or SNEEK on your Wii without having to make permanent mods to it."><label><input class="bigcheck" type="checkbox" name="Casper" /> Casper</label></th>
+	<th title="Backup Disc Loader also able to load from SD and USB"><label><input class="bigcheck" type="checkbox" name="neogamma" /> Neogamma</label></th>
+	<th title="Disk Usage Analyzer&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude &#x21E7;</label></th>
+</tr>
+<tr>
+	<th title="Requires LEGO Star Wars disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="ROTJ" /> Return of the Jodi [U\E\J]</label></th>
+	<th title="Installs a patched IOS36 in IOS slot 236. Requires HBC version 1.0.7 or higher."><label><input class="bigcheck" type="checkbox" name="IOS236Installer" /> IOS236 Installer</label></th>
+	<th title="Cheat Code Manager; to get cheat codes in an AccioHacks compatible format load the ModMii Download Queue called CheatCodes_For_AccioHacks"><label><input class="bigcheck" type="checkbox" name="AccioHacks" /> AccioHacks</label></th>
+	<th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+</tr>
+<tr>
+	<th title="Requires Yu-Gi-Oh! 5D's disc, an SD card (SDHC and SDXC do not work) and a nunchuck or classic controller; can launch elfs but not dols"><label><input class="bigcheck" type="checkbox" name="YUGI" /> YU-GI-OWNED [U\E\J]</label></th>
+	<th title="Can install patched IOS36, 60, 70 and 80 to various slots. Requires HBC version 1.0.7 or higher."><label><input class="bigcheck" type="checkbox" name="SIP" /> Simple IOS Patcher</label></th>
+	<th title="txtcodes folder filled with cheat codes&#10;&#x21E7; Auto-Updated daily from codes.rc24.xyz"><label><input class="bigcheck" type="checkbox" name="CheatZip" /> Cheat Codes &#x21E7;</label></th>
+	<th title="Calculate and compare file hashes, can also be launched from Windows Explorer context menu.&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles &#x21E7;</label></th>
+</tr>
+
+
+<tr>
+	<th title="Version 0.1beta1 is compatible with System Menus up to 3.3, 0.1beta2 is compatible with System Menu 3.4.&#10;&#10;Requires The Legend of Zelda: Twilight Princess disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch both dols and elfs"><label><input class="bigcheck" type="checkbox" name="Twi" /> Twilight Hack 1 [<3.4 U\E\J]</label></th>
+	<th title="A tool to backup your Gamecube/Wii Discs via IOS58. Create 1:1 backups of your GC/Wii discs for archival purposes without any requirements for custom IOS (cIOS). Supports USB 2.0 / NTFS / FAT32 & Front SD. Devices formatted as WBFS is not supported.&#10;&#10;Warning: ripping games to NTFS is unstable, it is highly recommended to rip games to a FAT32 formatted HDD, then transfer them to your NTFS drive using a computer."><label><input class="bigcheck" type="checkbox" name="CleanRip" /> CleanRip</label></th>
+	<th></th>
+	<th title="FTP Client; use it with ftpii to manage files on your Wii&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla &#x21EA;</label></th>
+</tr>
+<tr>
+	<th title="Version 0.1beta1 is compatible with System Menus up to 3.3, 0.1beta2 is compatible with System Menu 3.4.&#10;&#10;Requires The Legend of Zelda: Twilight Princess disc, an SD card (SDHC and SDXC do not work) and a nunchuck; can launch both dols and elfs"><label><input class="bigcheck" type="checkbox" name="Twi2" /> Twilight Hack 2 [3.4 U\E\J]</label></th>
+	<!--<th title="This will create a Bootmii compatible nand.bin and keys.bin"><label><input class="bigcheck" type="checkbox" name="DumpMii" /> Dump Mii NAND</label></th>-->
+</tr>
+
+
+</table>
+
+
+</body>
+</html>

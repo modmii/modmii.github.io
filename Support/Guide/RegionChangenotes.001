@@ -4,5 +4,4 @@
 <li>If you use the Wii Shopping Channel, you must start the channel and delete your account <u>before</u> starting this guide. If you don't the Wii Shop Channel will error.</li>
 <li>Do NOT restart the Wii or exit the Homebrew Channel until you have completed this guide.</li>
 <li>This guide assumes your Wii has already been softmodded and SD Card (or USB) properly formatted by following the ModMii Wizard or SysCheck Updater Wizard. If this is not the case please do so before going any further with this Region Change guide.</li>
-<li>One of the tools in this guide, MMM, is not compatible with motion+ remotes, try using an older wiimote without motion+ built in or a gamecube controller. If you don't have either, google for WiiMod Lite and use it in place of MMM to install the WADs listed below. Be careful with WiiMod Lite, after you finish installing your WADs be sure to press the Home button to return to the HBC immediately otherwise if you press B to return to the main menu it may crash.</li>
 <!---------------------------------REGION CHANGE NOTES ABOVE----------------------------------->

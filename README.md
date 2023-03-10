@@ -2,7 +2,7 @@
 
 ModMii is completely free to use, ad free and open source. Any support will help me afford to treat my kids more often or enroll them in more fun activities like swimming lessons and other sports!
 
-It's now easier than ever to donate to ModMii using my [my GitHub Sponsors page](https://github.com/sponsors/xflak)!
+It's now easier than ever to donate to ModMii using [GitHub Sponsors](https://github.com/sponsors/xflak) or [Patreon](https://www.patreon.com/join/10186747/checkout)!
 
 # Introduction: What is ModMii?
 

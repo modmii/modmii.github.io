@@ -1,21 +1,23 @@
 <br>
-This will launch Multi-Mod Manager.<br>
+This will launch YAWM ModMii Edition unless you are using str2hax without an SD Card (str2hax will launch the HackMii Installer if SD:\boot.elf is not found).<br>
 <br>
-<font size="5"><li>Install IOS58 using Multi-Mod Manager (MMM)</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/0pul-57v1yE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IOS58MMM.gif" border="0"/></a><br>
+If you don't have an SD Card, the HBC or a Forwarder Channel then either perform an official update to 4.3 and repeat the ModMii Wizard, or get an SD Card, or try your luck and see if the HackMii Installer will run on your Wii as is without first installing IOS58. If you are able to skip installing IOS58 and manage to install the HBC and Bootmii, be sure to also install IOS58 when you get to the Install WADs step later.<br>
 
-<i>Note: MMM, is not compatible with Wii Motion+ remotes, try using an older wiimote without motion+ built in or a gamecube controller. If you don't have a compatible controller, double-click SD:\ExploitAppSelector.bat and select "..\YAWMM\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of YAWMM's boot.elf to the SD root (ie. SD:\boot.elf). Then repeat the exploit described above to launch Some YAWMM Mod instead of MMM to install IOS58.</i><br>
 <br>
+<font size="5"><li>Install IOS58 using YAWM ModMii Edition</li></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/HesGMJllPdM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IOS58.gif" border="0"/></a><br>
+
+<i>YAWM ModMii Edition stands for Yet Another Wad Manager ModMii Edition (aka yawmME). A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<br>
+
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, YAWM ModMii Edition, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
+<br>
+
 
 <ol type="A">
-<li><b>On your Wii, in Multi-Mod Manager's main menu, go down to select "WAD Manager"</b>.
+<li><b>From YAWM ModMii Edition's main menu choose your source device using left and right, most likely "Wii SD Slot", and Press <kbd>A</kbd></b>.
 
-	<ul style=align="left" type="disc">
-	<li>If you cannot load your SD card, select "Load another IOS", then select IOS36.</b>
-	<li>If the Wii was previously softmodded, you can also try loading IOS250 (or others like 251, 222, etc.)</b>
-	</ul>
-
-<li><b>Install IOS58-64-v6176</b>.
+<li><b>Install IOS58-64-v6176</b>.<br>
 
 	<ul style=align="left" type="disc">
 	<li>Navigate to the WAD and press the <kbd>A</kbd> button twice to install the IOS individually.
@@ -25,16 +27,12 @@ This will launch Multi-Mod Manager.<br>
 
 <li>After successfully installing IOS58, <b>press any button to continue.</b>
 
-
-<li>Then <b>press the <kbd>B</kbd> button</b> to go back to MMM's main menu.
-<li><b>Choose "App Manager"</b> then press <kbd>A</kbd>.
-<li><b>Launch "HackMii_Installer"</b> by navigating to it and pressing the <kbd>A</kbd> button.
+<li>Then <b>press the "B" button</b> to go back to the root of your device.
+<li><b>Choose "apps"</b> then press <kbd>A</kbd>.
+<li>Navigate to "HackMii_Installer" and press <kbd>A</kbd>.
+<li>Scroll to "boot.elf" and press <kbd>A</kbd> again.
+<li>Press <kbd>A</kbd> to <b>launch the HackMii Installer's boot.elf</b>.
 </ol>
-
-
 <br>
-<i>If you used YAWMM instead of MMM because of lack of Wii Motion+ controller support, double-click SD:\ExploitAppSelector.bat and select "..\HackMii_Installer\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of the HackMii Installer's boot.elf to the SD root (ie. SD:\boot.elf). Then repeat the exploit described above to launch the HackMii Installer.
 
-</i>
-<br>
 <!-------------------KOREAN ONLY STEPS ABOVE!!!!!!!!!!!!!!--------------------------->

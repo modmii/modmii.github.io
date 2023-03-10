@@ -22,11 +22,14 @@ LetterBomb is sourced from please.hackmii.com, if you don't see an area to type 
 
 <br>
 <font size="5"><b>Launch LetterBomb on your Wii</b></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/qZ6fUzeNXng?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/LetterBomb.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/BPZFd9QJtQU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/LetterBomb.gif" border="0"/></a><br>
 <br>
 <ol type="1">
 <li>On your Wii, return to the Wii Menu and then open the "Message Board" and navigate to Yesterday.
 <li>Click on the envelope with the pink bomb icon to launch the boot.elf/dol file saved on the root of your SD Card.
+	<ul style=align="left" type="disc">
+	<li>If you cannot find the letterbomb under "Yesterday" check that your Wii's date setting is correct.
+	</ul>
 </ol>
 <br>
 <i>Fun Fact! There are two tools that are able to construct this exploit. LetterBomb is functionally the same as the Mailbox Bomb that ModMii builds using Wilbrand.</i><br>

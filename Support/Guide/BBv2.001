@@ -1,6 +1,6 @@
 <b>Bannerbomb v2</b><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/mH219SL6Lak?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/BannerbombV2.gif" border="0"/></a><br>
-Requirements: an SD or SDHC card<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/z7h_qNAjSiE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/BannerbombV2.gif" border="0"/></a><br>
+Requirements: SD Card, SDHC Card or SDXC Card. Only works on System Menu 4.2. Can launch both dols and elfs.<br>
 <br>
 <ul style=align="left" type="disc">
 <li>Run Bannerbomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf.<br>

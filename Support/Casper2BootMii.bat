@@ -1,7 +1,9 @@
 @echo off
 setlocal
 
-chdir /d "%~dp0"
+::chdir /d "%~dp0"
+pushd "%~dp0"
+cls
 if not exist support cd..
 
 set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp
@@ -54,6 +56,7 @@ exit
 :success
 
 copy /y "%DRIVE%\apps\Casper\boot.elf" "%DRIVE%\boot.elf">nul
+if exist "%Drive%\boot.dol" del "%Drive%\boot.dol"> nul
 copy /y "%DRIVE%\bootmii\armboot.bin" "%DRIVE%\bootmii_ios.bin">nul
 
 echo.

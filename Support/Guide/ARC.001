@@ -1,11 +1,11 @@
 <!---------------------------ANY REGION CHANGER SECTION BELOW------------------------------>
 <font size="5"><li>Use Any Region Changer ModMii Edition</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ZbIszQY8VbM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/ARCME.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/A9BB9WQZDPU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/ARCME.gif" border="0"/></a><br>
 <ol type="A">
 <li>Launch "Any Region Changer ModMii Edition" via the Homebrew Channel
 <li>After reading the warning, press <kbd>A</kbd> to continue.
 <ul style=align="left" type="disc"><li>You will see this error at the top of the screen: "WARNING: AREA/SysMenu MISMATCH!"</ul>
-<li>Press <kbd>↓</kbd> until "Auto Fix Settings" is selected and press <kbd>A</kbd>.
+<li>Press <kbd>A</kbd> to select the "Auto Fix Settings" option.
 <li>Press any key to continue, and the "WARNING: AREA/SysMenu MISMATCH!" error should disappear.
 <li>Now return to the HBC by pressing the <kbd>Home</kbd> button or by navigating to "Exit to the Homebrew Channel" and pressing <kbd>A</kbd>.
 </ol>

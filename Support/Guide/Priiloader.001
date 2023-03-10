@@ -1,11 +1,13 @@
 <!---------------------------Install Priiloader below------------------------------>
 <font size="5"><li>Install and Configure Priiloader</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/3oP_jJbbKQM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
 
-<i>Priiloader loads just before the System Menu and is invisible unless holding down the reset button while powering on the console. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). <a href="http://www.sites.google.com/site/completesg/system-hacks/Priiloader" target="_blank">Click here</a> for directions on installing a "dol" file in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu.</i><br>
+<i>Priiloader loads just before the System Menu and is invisible unless holding down the reset button while powering on the console. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). <a href="https://sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">Click here</a> for directions on "Installing a file" (aka "dol" file) in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu.</i><br>
 <br>
 
+
 <ul style=align="left" type="disc">
+<!--<li>If you already have Priiloader installed by following the ModMii Wizard or SysCheck Updater Wizard you can skip this step. If you are not sure either check if you can load Priiloader or just reinstall it.<br><br>-->
 <li>You can navigate the Priiloader menu using a Wiimote, GameCube controller, USB Keyboard, or the Power/Reset buttons on the front of the console itself similar to Bootmii (if using the front buttons you will not be able to access the system menu hacks, file/dol & password menus).
 </ul>
 
@@ -33,17 +35,28 @@ Be careful not to haphazardly enable just any hack, for example do not enable "L
 	<li>Block Online Updates</li>
 	<li>Region Free EVERYTHING</li>
 	<li>480p graphics fix in system menu</li>
+	<li>Remove Deflicker</li>
+	<li>Wiimmfi Patch v4</li>
+	<li>Remove NoCopy Save File Protection</li>
 	</ul>
 *Your available System Menu hacks may vary.<br>
 <br>
 <li>Scroll down to "save settings" and press <kbd>A</kbd>, then press <kbd>B</kbd> to go back to Priiloader's main menu.
+<li>Optional: Autoboot a USB-Loader Channel instead of the System Menu.
+	<ul style=align="left" type="square">
+	<li>Select to "Load/Install File". Select your forwarder dol (e.g. USBLoader_IDCL_Channel_Forwarder.dol) and press <kbd>A</kbd> to install it. Wait for it to install and return to the main menu.</li>
+		<ul style=align="left" type="square">
+		<li><i>Did you know that custom forwarder dols can be built from ModMii's Advanced Downloads menu?</i></li>
+		</ul>
+	<li>Navigate to "Settings" and change "Autoboot" to "Installed File".</li>
+	</ul>
+	
 <li>Navigate to "Homebrew Channel" and press <kbd>A</kbd> to launch it.<br>
 </ol>
 <br>
-<i>Pro tip! If you update or (re)install any System Menu it <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected.<br>
+<i>Pro tip! If you update or (re)install any System Menu it generally <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected. Only YAWM ModMii Edition allows you to safely retain Priiloader while (re)installing a System Menu.<br>
 <br>
-Another Pro tip! If you keep a hard drive plugged into your Wii at all times you can enable "Ignore standby" in Priiloader's settings so your Wii turns off completely by default. This will stop the hard drive from spinning 24/7 when it's not being used.</i>
-<br>
+Another Pro tip! If you keep a hard drive plugged into your Wii at all times you can enable "Ignore standby" in Priiloader's settings so your Wii turns off completely by default. This will stop the hard drive from spinning 24/7 when it's not being used.</i><br>
 <br>
 
 <div style><div class="spoilerfont" style="text-align:center;">
@@ -82,7 +95,7 @@ Another Pro tip! If you keep a hard drive plugged into your Wii at all times you
 <td>Enables moving the Disc Channel anywhere on the Wii Menu. It's normally stuck in the top left of the first page.</td>
 </tr>
 <tr>
-<td>Wiimmfi Patch v2</td>
+<td>Wiimmfi Patch v4</td>
 <td>Automatically patches all games you run from the Disc Channel for use with Wiimmfi</td>
 </tr>
 <tr>
@@ -149,6 +162,11 @@ Another Pro tip! If you keep a hard drive plugged into your Wii at all times you
 <td>Force Disc Games to run under IOS249</td>
 <td>Make discs use cIOS 249 as the game's IOS. Can be used to enable older model (pre 2010) Wii's outfitted with DVD-R compatible Disc readers to play backup discs from the Disc Channel.</td>
 </tr>
+<tr>
+<td>Remove Deflicker</td>
+<td>Disables the blurring filter on 480i and 480p originally meant to prevent "flickering" on CRTs in interlaced modes.</td>
+</tr>
+
 </tbody>
 </table>
 

@@ -1,30 +1,38 @@
 
-<li>Optionally remove unnecesarry files using ModMii's "File Cleanup" feature to prevent amateurs from using potentially dangerous apps.
+<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
+
+<li>Consider making another NAND backup so that if you ever need restore it you won't need to repeat the entire softmod process.
+
+<li>At any point you can run SysCheck on your Wii to get a sysCheck.csv log of your installed softmods; in the future you can check if any of your mods are outdated by opening your log with the latest version of ModMii.
+
+<li>Periodically check for updates to the apps on your SD card or USB Hard drive by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for ModMii's auto-updating apps and offer to check for updates.
 
 <li>Download the latest Homebrew apps to your SD Card or FAT32 USB Hard Drive so they can be launched via the HBC or forwarder channels.
 
 	<ul style=align="left" type="square">
-	<li>Download some Just for Fun apps like emulators using ModMii Classic's Download Page 2 and entering "J".
-	<li>Grab the <a href="https://wii.guide/hbb" target="_blank">Homebrew Browser</a> from ModMii or using the link to easily download many other popular apps right from your Wii! (requires WiFi on console)</li>
-	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a> and of course <a href="https://gbatemp.net/categories/nintendo-wii-discussions.104" target="_blank">gbatemp</a>.
+	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Page 2.
+	<li>Grab the <a href="https://wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your Wii or PC!</li>
+	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
 	
 		<ul style=align="left" type="disc">	
 		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.
-		<li>For the HBC to read your SD/USB correctly, your card must be structured SD:/apps/application name/boot.dol
-		<li>Some apps require a meta.xml be saved in the same place as the boot.dol to work properly (icon.png is always optional).
-		<li>If you have a dol or elf file not named "boot", rename it boot.dol (or boot.elf), otherwise it will not be recognized by the HBC (not required if using Priiloader to install a file from the root of your device).
+		<li>For the HBC to read your SD/USB correctly, your card must be structured SD:/apps/application name/boot.dol\elf
+		<li>Some apps require a meta.xml be saved in the same place as the boot.dol\elf to work properly (icon.png is always optional).
+		<li>If you have a dol or elf file not named "boot", rename it boot.dol\elf, otherwise it will not be recognized by the HBC (not required if using Priiloader to install a file).
 		</ul>
 	</ul>
 <li>Check out some of my custom <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Forwarder Channels</a> to launch your favourite homebrew straight from the System Menu.
+<li>Get a new <a href="https://wii.guide/themes.html" target="_blank">theme for your Wii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using MyMenuify Mod. ThemeMii Mod and MyMenuify Mod are both available on ModMii Classic's Download Page 2.
 <li>"Expand" your Wii's 500MB internal memory for more WiiWare and Virtual Console games by having it load the System Menu from external storage instead. Use ModMii's SNEEK installer and Emulated NAND builder to get started.
-<li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your Wii starts up.
+	<ul style=align="left" type="square">
+	<li>You can also use your Wii's nand.bin backup as an Emulated NAND instead of having ModMii build one from scratch. To extract the files from a nand.bin backup to use as an Emulated NAND, simply open the nand.bin file using ModMii.
+	</ul>
+<li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your Wii starts up (SD Card required).
 
-<li>Bring back online gaming to your Wii! <a href="https://wii.guide/wiimmfi" target="_blank">Wiimmfi</a> is a replacement service for the now defunct Nintendo Wi-Fi Connection.
-
-<li>Bring back WiiConnect24 to your Wii! <a href="https://rc24.xyz" target="_blank">RiiConnect24</a> restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more!
+<li>Bring back WiiConnect24 to your Wii! The RiiConnect24 Patcher restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more! You can get this tool from from ModMii Classic's Download Page 2.
 
 	<ul style=align="left" type="square">
-	<li>Note: if you used ModMii 6.5.2 or higher to install your System Menu IOS, you can use all of RiiConnect24's features without having to be on System Menu version 4.3 or (re)install a different IOS80. ModMii's RC24 compatible System Menu IOSs can be identified by their "ModMii" tag in syscheck reports.
+	<li>Note: if you used ModMii 6.6.0 or higher to install your System Menu IOS, you can use all of RiiConnect24's features without having to be on System Menu version 4.3 or (re)install a different IOS80. ModMii's RC24 compatible System Menu IOSs can be identified by their "ModMii" tag in SysCheck reports.
 	</ul>
 </ul>
 <br>

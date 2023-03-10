@@ -1,15 +1,15 @@
 <br>
 <!---------------------------ANY REGION CHANGER SECTION BELOW------------------------------>
 <font size="5"><li>Optional: Remove the Korean Key (if applicable)</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/I4XckvuNZxE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/KKremove.gif" border="0"/></a><br>
-<i>With KoreanKii, you can add or remove the Korean key from your SEEPROM. This eliminates the need for patching IOS60 into slots if you have a region changed Korean Wii. This program comes with no warranty. You, and you alone are responsible if this damages your Wii in any way. Nothing, not even Bootmii installed to boot2, will save your Wii if this corrupts your SEEPROM.</i><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KB8TtX394WU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/KKremove.gif" border="0"/></a><br>
+<i>With KoreanKii, you can add or remove the Korean key from your SEEPROM. This eliminates the need for patching IOS60 into system menu IOS slots if you have a region changed Korean Wii. This program comes with no warranty. You, and you alone are responsible if this damages your Wii in any way. Nothing, not even Bootmii installed to boot2, will save your Wii if this corrupts your SEEPROM.</i><br>
 <br>
 If your Wii wasn't originally Korean, you can skip this step since there shouldn't be a Korean Key to remove.<br>
 <br>
-If your Wii was originally Korean, you might be at risk of a 003 brick by not removing the Korean Key. If you have a non-Korean system menu (4.2+) and the Korean Key is detected it will cause a 003 brick unless you have IOS60 patched installed into your System Menu IOS. This step is optional because you should have this exact System Menu IOS installed already if you followed the previous steps. So long as you only use ModMii and follow your guides closely, you will not 003 brick even if you skip this step, but if you venture on your own and manage to install a stock system menu IOS it could result in brick if you do not remove the Korean Key now. The Korean Key is only required to play Korean games from the disc channel and there are some other ways to accomplish the same thing.<br>
+If your Wii was originally Korean, you might be at risk of a 003 brick by not removing the Korean Key. If you have a non-Korean system menu (4.2+) and the Korean Key is detected it will cause a 003 brick unless you have IOS60 installed to your System Menu IOS slot. This step is optional because you should have this exact System Menu IOS installed already if you followed the previous steps. So long as you only use ModMii and follow your guides closely, you will not 003 brick even if you skip this step, but if you venture on your own and manage to install a stock system menu IOS it could result in brick if you do not remove the Korean Key now. The Korean Key is only required to play Korean games from the disc channel and there are some other ways to accomplish the same thing.<br>
 <br>
 <ol type="A">
 <li>Launch "KoreanKii" using the Homebrew Channel.
-<li>Press <kbd>-</kbd> or <kbd>L</kbd> using a GameCube controller remove the Korean Key, then press <kbd>A</kbd> to confirm.
+<li>Press <kbd>-</kbd> or <kbd>L</kbd> using a GameCube controller to remove the Korean Key, then press <kbd>A</kbd> to confirm.
 </ol>
 <br>

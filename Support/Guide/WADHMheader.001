@@ -1,10 +1,10 @@
 <!-------------------------Installing WADs section below--------------------------->
 <font size="5"><li>Install WADs</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/K5ws1Xdqvwc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/HMSolution.gif" border="0"/></a><br>
-<i>MMM has many tools, but we'll mainly be using it as a WAD Manager. A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/eTODLzI_Hsk?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/yawmME.gif" border="0"/></a><br>
+<i>YAWM ModMii Edition stands for Yet Another Wad Manager ModMii Edition (aka yawmME). A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
 <br>
 
-WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. Stick to your ModMii guide and you'll be fine.<br>
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, YAWM ModMii Edition, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
 <br>
 
 
@@ -21,12 +21,7 @@ WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can 
 
 
 <ol type="A">
-<li><b>On your Wii, in Multi-Mod Manager's main menu, go down to select "WAD Manager"</b>.
-
-	<ul style=align="left" type="disc">
-	<li>If you cannot load your SD card, select "Load another IOS", then select IOS36.</b>
-	<li>If the Wii was previously softmodded, you can also try loading IOS250 (or others like 251, 222, etc.)</b>
-	</ul>
+<li><b>From YAWM ModMii Edition's main menu choose your source device using left and right, most likely "Wii SD Slot", and Press <kbd>A</kbd></b>.
 
 <li><b>Install the <u>guidewadcountplaceholder WADs</u> listed below</b>.<br>
 

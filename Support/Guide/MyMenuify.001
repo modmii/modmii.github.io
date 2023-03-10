@@ -1,11 +1,12 @@
 <!---------------------------MyMenuify Section below--------------------------->
-<font size="5"><li>Install a Custom Wii Menu Theme using MyMenuifyMod (optional)</li></font><br>
+<font size="5"><li>Install a Custom System Menu Theme using MyMenuifyMod (optional)</li></font><br>
 
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/GhEmf5TWCuM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MyMenuifyMod.gif" border="0"/></a><br>
-<i>MyMenuifyMod is an application used to install themes on your Wii's System Menu. It uses CSM files created by ModMii, MyMenu or ThemeMii and also supports APP files.</i><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/AOdfuGpKGT0?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MyMenuifyMod2.gif" border="0"/></a><br>
+<i>MyMenuifyMod is an application used to install Custom System Menu (CSM) themes on your Wii. It uses CSM & App files created by ModMii, WiiThemer, MyMenu, ThemeMii, etc.</i><br>
 <br>
 WARNING: Do <u>not</u> install themes without protection (Bootmii, Priiloader and NAND backup) and only install themes for your specific System Menu version and region! Do <u>not</u> try to "uninstall" a System Menu or theme; the proper steps to reinstall the default theme is noted below. <br>
 <br>
 
-<ul style=align="left" type="disc">
+<ol type="A">
 <li>Launch MyMenuifyMod from the HBC.
+<li>Choose your source device using left and right, most likely "sd", and <b>Press <kbd>A</kbd></b>.

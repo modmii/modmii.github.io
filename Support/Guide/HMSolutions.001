@@ -1,18 +1,14 @@
-<font size="5"><li>Launch Multi-Mod Manager</li></font><br>
+<font size="5"><li>Launch YAWM ModMii Edition (yawmME)</li></font><br>
 
 <ul style=align="left" type="disc">
-<li>Start the Homebrew Channel (HBC) and load Multi-Mod Manager (MMM). Once you've loaded MMM, move onto the next step.
+<li>Start the Homebrew Channel (HBC) and load YAWM ModMii Edition (Yet Another Wad Manager ModMii Edition). Once you've loaded it, move onto the next step.
 <br>
-<li>If you are missing the HBC or it is failing to load any apps, you will need to launch MMM using another method.
-
-<li>If you are able to load MMM but the Wiimote doesn't respond, try using an older Wiimote without Motion+ built in as MMM doesn't support these newer contollers; a gamecube controller also works.
-
-	<ul style=align="left" type="square">
-	<li>If you don't have a compatible controller, launch "Some YAWMM Mod" from the HBC and use it instead of MMM to install the WADs listed in the next step. If you don't have the HBC, double-click SD:\ExploitAppSelector.bat and select "..\YAWMM\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit described below; or manually save a copy of YAWMM's boot.elf to the SD root (ie. SD:\boot.elf) and it will load when triggering your exploit.
-	</ul>
+<li>If you are missing the HBC or it is failing to load any apps, you will need to launch yawmME using another method.
 </ul>
 
 <br>
 
-<b>Note:</b> if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch MMM (or YAWM) instead of an exploit. Just save the boot.dol\elf from the app you want to load (ie. SD:\apps\MMM\boot.dol) to the location used by your <u>specific</u> Forwarder Channel (ie. SD:\apps\usbloader_gx\boot.dol). Then start the channel and the app will load.<br>
+<b>Note:</b> if this Wii was previously modified, and it still has a Forwarder Channel installed, you can use that to launch yawmME instead of an exploit. Just save the boot.dol\elf from the app you want to load (ie. SD:\apps\yawmME\boot.dol) to the location used by your <u>specific</u> Forwarder Channel (ie. SD:\apps\usbloader_gx\boot.dol). Then start the channel and the app will load.<br>
+<br>
+If this is truly your first time modding your Wii, please continue with this step to launch an exploit. An exploit is a vulnerability in the Wii's software that gives us access to launch the tools we'll need to complete this guide.<br>
 <br>

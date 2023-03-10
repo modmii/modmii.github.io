@@ -1,0 +1,672 @@
+<html>
+<hta:application 
+	id="HI"
+	navigable="yes" 
+	scroll="yes"
+	icon="..\Support\icon.ico"
+	innerborder="no"
+	border="thin"
+	>
+	<meta charset="utf-8">
+<head>
+<title>ModMii</title>
+<!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
+<script Language="VBScript">
+    Sub Window_Onload
+		window.resizeTo 1200,820
+		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
+    End Sub
+
+	Function FULLCLOSE()
+		'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+    sub Window_onUnload
+        SAVE()
+    end sub
+
+	Function Page(ByVal nextgoto, nextpage)
+	'nextpage is optional
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		objFSO.write vbNewLine & "set nextgoto=" & nextgoto
+		objFSO.write vbNewLine & "set nextpage=" & nextpage
+		objFSO.close
+        'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+
+	Function SAVE()
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+
+
+'v4cIOSs
+		objFSO.write vbNewLine & "set cIOS223[37-38]-v4="
+		If c223_37_38_v4.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS222[38]-v4="
+		If c222_38_v4.checked = True Then objFSO.write "*"
+
+
+'v5cIOSs
+		objFSO.write vbNewLine & "set cIOS222[38]-v5="
+		If c222_38_v5.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS224[57]-v5="
+		If c224_57_v5.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS223[37]-v5="
+		If c223_37_v5.checked = True Then objFSO.write "*"
+
+
+'v5.1cIOSs
+		objFSO.write vbNewLine & "set cIOS202[60]-v5.1R="
+		If c202_60_v51R.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS222[38]-v5.1R="
+		If c222_38_v51R.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS224[57]-v5.1R="
+		If c224_57_v51R.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS223[37]-v5.1R="
+		If c223_37_v51R.checked = True Then objFSO.write "*"
+
+
+'v17bcIOSs
+		objFSO.write vbNewLine & "set cIOS249-v17b="
+		If c249_v17b.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250-v17b="
+		If c250_v17b.checked = True Then objFSO.write "*"
+
+
+'v14cIOSs
+		objFSO.write vbNewLine & "set cIOS249-v14="
+		If c249_v14.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250-v14="
+		If c250_v14.checked = True Then objFSO.write "*"
+
+
+'v19cIOSs
+		objFSO.write vbNewLine & "set cIOS249[37]-v19="
+		If c249_37_v19.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[38]-v19="
+		If c249_38_v19.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[57]-v19="
+		If c249_57_v19.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[37]-v19="
+		If c250_37_v19.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[38]-v19="
+		If c250_38_v19.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[57]-v19="
+		If c250_57_v19.checked = True Then objFSO.write "*"
+
+
+'v20cIOSs
+		objFSO.write vbNewLine & "set cIOS249[56]-v20="
+		If c249_56_v20.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[57]-v20="
+		If c250_57_v20.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[38]-v20="
+		If c249_38_v20.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[38]-v20="
+		If c250_38_v20.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[56]-v20="
+		If c250_56_v20.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[57]-v20="
+		If c249_57_v20.checked = True Then objFSO.write "*"
+
+
+'v21cIOSs
+		objFSO.write vbNewLine & "set cIOS249[37]-v21="
+		If c249_37_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[37]-v21="
+		If c250_37_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[38]-v21="
+		If c249_38_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[38]-v21="
+		If c250_38_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[53]-v21="
+		If c249_53_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[53]-v21="
+		If c250_53_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[55]-v21="
+		If c249_55_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[55]-v21="
+		If c250_55_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[56]-v21="
+		If c249_56_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[56]-v21="
+		If c250_56_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[57]-v21="
+		If c249_57_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[57]-v21="
+		If c250_57_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[58]-v21="
+		If c249_58_v21.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[58]-v21="
+		If c250_58_v21.checked = True Then objFSO.write "*"
+
+
+'d2xcIOSs
+		objFSO.write vbNewLine & "set cIOS251[58]-d2x-v10-beta52="
+		If c251_58_d2x.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set cIOS248[38]-d2x-v10-beta52="
+		If c248_38_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[37]-d2x-v10-beta52="
+		If c249_37_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[38]-d2x-v10-beta52="
+		If c249_38_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[53]-d2x-v10-beta52="
+		If c249_53_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[55]-d2x-v10-beta52="
+		If c249_55_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[56]-d2x-v10-beta52="
+		If c249_56_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[57]-d2x-v10-beta52="
+		If c249_57_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[58]-d2x-v10-beta52="
+		If c249_58_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[60]-d2x-v10-beta52="
+		If c249_60_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[70]-d2x-v10-beta52="
+		If c249_70_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS249[80]-d2x-v10-beta52="
+		If c249_80_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[37]-d2x-v10-beta52="
+		If c250_37_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[38]-d2x-v10-beta52="
+		If c250_38_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[53]-d2x-v10-beta52="
+		If c250_53_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[55]-d2x-v10-beta52="
+		If c250_55_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[56]-d2x-v10-beta52="
+		If c250_56_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[57]-d2x-v10-beta52="
+		If c250_57_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[58]-d2x-v10-beta52="
+		If c250_58_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[60]-d2x-v10-beta52="
+		If c250_60_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[70]-d2x-v10-beta52="
+		If c250_70_d2x.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set cIOS250[80]-d2x-v10-beta52="
+		If c250_80_d2x.checked = True Then objFSO.write "*"
+
+
+'cMIOSs
+		objFSO.write vbNewLine & "set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2="
+		If cMIOS_WiiPower.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set RVL-cmios-v4_WiiGator_GCBL_v0.2="
+		If cmios_WiiGator.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set RVL-cmios-v4_Waninkoko_rev5="
+		If cmios_Wanin.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set DML="
+		If DML.checked = True Then objFSO.write "*"
+
+		
+		objFSO.close
+	End Function
+
+	
+	Function AllButton()
+		If ((c223_37_38_v4.checked = True) And (c222_38_v4.checked = True) And (c222_38_v5.checked = True) And (c224_57_v5.checked = True) And (c223_37_v5.checked = True) And (c202_60_v51R.checked = True) And (c222_38_v51R.checked = True) And (c224_57_v51R.checked = True) And (c223_37_v51R.checked = True) And (c249_v17b.checked = True) And (c250_v17b.checked = True) And (c249_v14.checked = True) And (c250_v14.checked = True) And (c249_37_v19.checked = True) And (c249_38_v19.checked = True) And (c249_57_v19.checked = True) And (c250_37_v19.checked = True) And (c250_38_v19.checked = True) And (c250_57_v19.checked = True) And (c249_56_v20.checked = True) And (c250_57_v20.checked = True) And (c249_38_v20.checked = True) And (c250_38_v20.checked = True) And (c250_56_v20.checked = True) And (c249_57_v20.checked = True) And (c249_37_v21.checked = True) And (c250_37_v21.checked = True) And (c249_38_v21.checked = True) And (c250_38_v21.checked = True) And (c249_53_v21.checked = True) And (c250_53_v21.checked = True) And (c249_55_v21.checked = True) And (c250_55_v21.checked = True) And (c249_56_v21.checked = True) And (c250_56_v21.checked = True) And (c249_57_v21.checked = True) And (c250_57_v21.checked = True) And (c249_58_v21.checked = True) And (c250_58_v21.checked = True) And (c251_58_d2x.checked = True) And (c248_38_d2x.checked = True) And (c249_37_d2x.checked = True) And (c249_38_d2x.checked = True) And (c249_53_d2x.checked = True) And (c249_55_d2x.checked = True) And (c249_56_d2x.checked = True) And (c249_57_d2x.checked = True) And (c249_58_d2x.checked = True) And (c249_60_d2x.checked = True) And (c249_70_d2x.checked = True) And (c249_80_d2x.checked = True) And (c250_37_d2x.checked = True) And (c250_38_d2x.checked = True) And (c250_53_d2x.checked = True) And (c250_55_d2x.checked = True) And (c250_56_d2x.checked = True) And (c250_57_d2x.checked = True) And (c250_58_d2x.checked = True) And (c250_60_d2x.checked = True) And (c250_70_d2x.checked = True) And (c250_80_d2x.checked = True) And (cMIOS_WiiPower.checked = True) And (cmios_WiiGator.checked = True) And (cmios_Wanin.checked = True) And (DML.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleHermes(checkstatus)
+		ToggleWanin(checkstatus)
+		ToggleD2X(checkstatus)
+		ToggleCMIOS(checkstatus)
+	End Function
+
+
+	Function HermesButton()
+		If ((c223_37_38_v4.checked = True) And (c222_38_v4.checked = True) And (c222_38_v5.checked = True) And (c224_57_v5.checked = True) And (c223_37_v5.checked = True) And (c202_60_v51R.checked = True) And (c222_38_v51R.checked = True) And (c224_57_v51R.checked = True) And (c223_37_v51R.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleHermes(checkstatus)
+	End Function
+	
+	Function ToggleHermes(ByVal checkstatus)
+		c223_37_38_v4.checked = checkstatus
+		c222_38_v4.checked = checkstatus
+		c222_38_v5.checked = checkstatus
+		c224_57_v5.checked = checkstatus
+		c223_37_v5.checked = checkstatus
+		c202_60_v51R.checked = checkstatus
+		c222_38_v51R.checked = checkstatus
+		c224_57_v51R.checked = checkstatus
+		c223_37_v51R.checked = checkstatus
+	End Function
+
+
+	Function WaninButton()
+		If ((c249_v17b.checked = True) And (c250_v17b.checked = True) And (c249_v14.checked = True) And (c250_v14.checked = True) And (c249_37_v19.checked = True) And (c249_38_v19.checked = True) And (c249_57_v19.checked = True) And (c250_37_v19.checked = True) And (c250_38_v19.checked = True) And (c250_57_v19.checked = True) And (c249_56_v20.checked = True) And (c250_57_v20.checked = True) And (c249_38_v20.checked = True) And (c250_38_v20.checked = True) And (c250_56_v20.checked = True) And (c249_57_v20.checked = True) And (c249_37_v21.checked = True) And (c250_37_v21.checked = True) And (c249_38_v21.checked = True) And (c250_38_v21.checked = True) And (c249_53_v21.checked = True) And (c250_53_v21.checked = True) And (c249_55_v21.checked = True) And (c250_55_v21.checked = True) And (c249_56_v21.checked = True) And (c250_56_v21.checked = True) And (c249_57_v21.checked = True) And (c250_57_v21.checked = True) And (c249_58_v21.checked = True) And (c250_58_v21.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleWanin(checkstatus)
+	End Function
+	
+	Function ToggleWanin(ByVal checkstatus)
+		c249_v17b.checked = checkstatus
+		c250_v17b.checked = checkstatus
+		c249_v14.checked = checkstatus
+		c250_v14.checked = checkstatus
+		c249_37_v19.checked = checkstatus
+		c249_38_v19.checked = checkstatus
+		c249_57_v19.checked = checkstatus
+		c250_37_v19.checked = checkstatus
+		c250_38_v19.checked = checkstatus
+		c250_57_v19.checked = checkstatus
+		c249_56_v20.checked = checkstatus
+		c250_57_v20.checked = checkstatus
+		c249_38_v20.checked = checkstatus
+		c250_38_v20.checked = checkstatus
+		c250_56_v20.checked = checkstatus
+		c249_57_v20.checked = checkstatus
+		c249_37_v21.checked = checkstatus
+		c250_37_v21.checked = checkstatus
+		c249_38_v21.checked = checkstatus
+		c250_38_v21.checked = checkstatus
+		c249_53_v21.checked = checkstatus
+		c250_53_v21.checked = checkstatus
+		c249_55_v21.checked = checkstatus
+		c250_55_v21.checked = checkstatus
+		c249_56_v21.checked = checkstatus
+		c250_56_v21.checked = checkstatus
+		c249_57_v21.checked = checkstatus
+		c250_57_v21.checked = checkstatus
+		c249_58_v21.checked = checkstatus
+		c250_58_v21.checked = checkstatus
+	End Function
+
+
+	Function D2XButton()
+		If ((c251_58_d2x.checked = True) And (c248_38_d2x.checked = True) And (c249_37_d2x.checked = True) And (c249_38_d2x.checked = True) And (c249_53_d2x.checked = True) And (c249_55_d2x.checked = True) And (c249_56_d2x.checked = True) And (c249_57_d2x.checked = True) And (c249_58_d2x.checked = True) And (c249_60_d2x.checked = True) And (c249_70_d2x.checked = True) And (c249_80_d2x.checked = True) And (c250_37_d2x.checked = True) And (c250_38_d2x.checked = True) And (c250_53_d2x.checked = True) And (c250_55_d2x.checked = True) And (c250_56_d2x.checked = True) And (c250_57_d2x.checked = True) And (c250_58_d2x.checked = True) And (c250_60_d2x.checked = True) And (c250_70_d2x.checked = True) And (c250_80_d2x.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleD2X(checkstatus)
+	End Function
+
+	Function ToggleD2X(ByVal checkstatus)
+		c251_58_d2x.checked = checkstatus
+		c248_38_d2x.checked = checkstatus
+		c249_37_d2x.checked = checkstatus
+		c249_38_d2x.checked = checkstatus
+		c249_53_d2x.checked = checkstatus
+		c249_55_d2x.checked = checkstatus
+		c249_56_d2x.checked = checkstatus
+		c249_57_d2x.checked = checkstatus
+		c249_58_d2x.checked = checkstatus
+		c249_60_d2x.checked = checkstatus
+		c249_70_d2x.checked = checkstatus
+		c249_80_d2x.checked = checkstatus
+		c250_37_d2x.checked = checkstatus
+		c250_38_d2x.checked = checkstatus
+		c250_53_d2x.checked = checkstatus
+		c250_55_d2x.checked = checkstatus
+		c250_56_d2x.checked = checkstatus
+		c250_57_d2x.checked = checkstatus
+		c250_58_d2x.checked = checkstatus
+		c250_60_d2x.checked = checkstatus
+		c250_70_d2x.checked = checkstatus
+		c250_80_d2x.checked = checkstatus
+	End Function
+
+	Function CMIOSButton()
+		If ((cMIOS_WiiPower.checked = True) And (cmios_WiiGator.checked = True) And (cmios_Wanin.checked = True) And (DML.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleCMIOS(checkstatus)
+	End Function
+	
+	Function ToggleCMIOS(ByVal checkstatus)
+		cMIOS_WiiPower.checked = checkstatus
+		cmios_WiiGator.checked = checkstatus
+		cmios_Wanin.checked = checkstatus
+		DML.checked = checkstatus
+	End Function		
+
+	Function RecButton()
+		If ((c202_60_v51R.checked = True) And (c222_38_v4.checked = True) And (c223_37_38_v4.checked = True) And (c224_57_v51R.checked = True) And (c251_58_d2x.checked = True) And (c248_38_d2x.checked = True) And (c249_56_d2x.checked = True) And (c250_57_d2x.checked = True) And (cMIOS_WiiPower.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleRec(checkstatus)
+	End Function
+	
+	Function ToggleRec(ByVal checkstatus)
+		c202_60_v51R.checked = checkstatus
+		c222_38_v4.checked = checkstatus
+		c223_37_38_v4.checked = checkstatus
+		c224_57_v51R.checked = checkstatus
+		c251_58_d2x.checked = checkstatus
+		c248_38_d2x.checked = checkstatus
+		c249_56_d2x.checked = checkstatus
+		c250_57_d2x.checked = checkstatus
+		cMIOS_WiiPower.checked = checkstatus
+	End Function
+
+
+</script>
+<style type="text/css">
+input.bigcheck {
+height: 30px;
+width: 30px;
+vertical-align: middle;
+}
+table, th {
+  text-align: left;
+  vertical-align: middle;
+}, td {
+  border:1px solid black;
+  text-align: left;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<!--<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0" style="width:80%;height: 100px"/></a><br>-->
+
+
+<!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
+<button title="Return to Main Menu" style="width:190; position: absolute; left: 15; top: 10;" onClick="vbscript:Page'MENU','DLPAGE4.hta'"><font face="Arial Black">Main Menu</font></button>
+<button title="Download System Menus, IOSs, MIOSs, Channels, etc." style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
+<button title="Download Wii Apps, USB-Loader Files, PC Programs, Exploits, etc." style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
+<button title="Download System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>
+<button disabled title="Download cIOSs and cMIOSs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+
+
+
+<button title="Click to Download Files to:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 10;" onClick="vbscript:FULLCLOSE()"><font face="Arial Black">Download!</font></button>
+<button title="Change Current Download Folder:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 45;" onClick="vbscript:Page'DRIVECHANGE','DLPAGE4.hta'"><font face="Arial Black">Download Folder</font></button>
+<font size="2" face="Arial Black italic" style="position: absolute; right: 30; top: 100;" title="Hovering your mouse over various items on this page will display fun facts and helpful tips!" >(Hover over items for Tooltips)</font>
+
+<center>
+<font size="4" face="Arial Black italic"><b>Download Page 4</b></font>
+</center>
+
+
+
+<center>
+<font size="2" color="red">Unrecommended cIOSs are intended for compatibility testing or unique situations</font><br>
+<font size="2" color="orange">Note: Only one cIOS can be installed to a slot (e.g. 249)<br>To change a cIOS slot use ModMii's Advanced Downloads Menu or ShowMiiWads</font><br>
+<br>
+
+
+
+<button title="Toggle All Downloads" style="width:6%" onClick="vbscript:AllButton()"><font face="Arial Black">ALL</font></button>
+&nbsp;
+<button title="&#x2665; Recommended cIOSs&#10;&#x2661; Semi-Recommended cIOSs & cMIOS&#10;Hover over each download for details" onClick="vbscript:RecButton()"><font face="Arial Black"> <b>&#x2665;</b> Recommended <b>&#x2661;</b></font></button>
+</center>
+
+<br>
+
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table style="width:100%">
+
+<tr>
+	<th title="Toggle d2x cIOS downloads" colspan="4" style="text-align:center"><button style="width:99%;" onClick="vbscript:D2XButton()"><font face="Arial Black">d2x cIOSs</font></button></th>
+	
+	<th title="Toggle Waninkoko cIOS downloads&#10;Since d2x, Waninkoko cIOSs are outdated" colspan="3" style="text-align:center"><button style="width:99%;" onClick="vbscript:WaninButton()"><font face="Arial Black">Waninkoko cIOSs</font></button></th>
+	
+	<th title="Toggle Hermes cIOS downloads&#10;Since d2x, Hermes cIOSs are generally no longer needed" colspan="1" style="text-align:center"><button style="width:99%;" onClick="vbscript:HermesButton()"><font face="Arial Black">Hermes cIOSs</font></button></th>
+
+</tr>
+<tr>
+	
+	<th>d2x-vd2xversion [37]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_37_d2x" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_37_d2x" /> 250</label></th>
+	<th></th>
+
+	<th title="Outdated">Wanin-v21 [37]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_37_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_37_v21" /> 250</label></th>
+	
+	<th title="&#x2661;Semi-Recommended cIOS. It is the ideal cIOS for slot 202 however it is outdated: cIOS202 was used for older versions of some popular emulators."><label><input class="bigcheck" type="checkbox" name="c202_60_v51R" /> Hermes-v5.1 cIOS202 [60] &#x2661;</label></th>
+
+</tr>
+
+<tr>
+	<th title="&#x2665;Recommended cIOS for slot 248, mainly only used for Spongebob's Boating Bash or keyboard support for Animal Crossing City Folk">d2x-vd2xversion [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_38_d2x" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_38_d2x" /> 250</label></th>
+	<th title="&#x2665;Recommended cIOS for slot 248, mainly only used for Spongebob's Boating Bash or keyboard support for Animal Crossing City Folk"><label><input class="bigcheck" type="checkbox" name="c248_38_d2x" />&#x2665;248</label></th>
+	
+	<th title="Outdated">Wanin-v21 [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_38_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_38_v21" /> 250</label></th>
+	
+	<th title="Since d2x, Hermes cIOSs are generally no longer needed"><label><input class="bigcheck" type="checkbox" name="c222_38_v51R" /> Hermes-v5.1 cIOS222 [38]</label></th>
+	
+</tr>
+
+<tr>
+	<th>d2x-vd2xversion [53]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_53_d2x" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_53_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v21 [53]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_53_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_53_v21" /> 250</label></th>
+	
+	<th title="Since d2x, Hermes cIOSs are generally no longer needed"><label><input class="bigcheck" type="checkbox" name="c223_37_v51R" /> Hermes-v5.1 cIOS223 [37]</label></th>
+</tr>
+
+<tr>
+	<th>d2x-vd2xversion [55]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_55_d2x" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_55_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v21 [55]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_55_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_55_v21" /> 250</label></th>
+	
+	<th title="&#x2661;Semi-Recommended cIOS. It is the ideal cIOS for slot 224 however it is outdated. Since d2x, Hermes cIOSs are generally no longer needed."><label><input class="bigcheck" type="checkbox" name="c224_57_v51R" /> Hermes-v5.1 cIOS224 [57] &#x2661;</label></th>
+	
+</tr>
+
+<tr>
+	<th title="&#x2665;Recommended cIOS for slot 249, d2x base 56 or 57 work with the vast majority of games.">d2x-vd2xversion [56]</th>
+	<th title="&#x2665;Recommended cIOS for slot 249, d2x base 56 or 57 work with the vast majority of games."><label><input class="bigcheck" type="checkbox" name="c249_56_d2x" />&#x2665;249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_56_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v21 [56]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_56_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_56_v21" /> 250</label></th>
+	
+	<th title="Since d2x, Hermes cIOSs are generally no longer needed"><label><input class="bigcheck" type="checkbox" name="c222_38_v5" /> Hermes-v5 cIOS222 [38]</label></th>
+	
+</tr>
+
+<tr>
+	<th>d2x-vd2xversion [57]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_57_d2x" /> 249</label></th>
+	<th title="&#x2665;Recommended cIOS for slot 250, d2x base 56 or 57 work with the vast majority of games."><label><input class="bigcheck" type="checkbox" name="c250_57_d2x" />&#x2665;250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v21 [57]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_57_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_57_v21" /> 250</label></th>
+	
+	<th title="Since d2x, Hermes cIOSs are generally no longer needed"><label><input class="bigcheck" type="checkbox" name="c223_37_v5" /> Hermes-v5 cIOS223 [37]</label></th>
+	
+</tr>
+
+<tr>
+	<th title="&#x2665;Recommended cIOS for slot 251, mainly only used for Spongebob's Boating Bash or LAN Adapter support">d2x-vd2xversion [58]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_58_d2x" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_58_d2x" /> 250</label></th>
+	<th title="&#x2665;Recommended cIOS for slot 251, mainly only used for Spongebob's Boating Bash or LAN Adapter support"><label><input class="bigcheck" type="checkbox" name="c251_58_d2x" />&#x2665;251</label></th>
+	
+	<th title="Outdated">Wanin-v21 [58]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_58_v21" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_58_v21" /> 250</label></th>
+	
+	<th title="Since d2x, Hermes cIOSs are generally no longer needed"><label><input class="bigcheck" type="checkbox" name="c224_57_v5" /> Hermes-v5 cIOS224 [57]</label></th>
+	
+</tr>
+
+<tr>
+	<!--d2xNA--><th>d2x-vd2xversion [60]</th>
+	<!--d2xNA--><th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_60_d2x" /> 249</label></th>
+	<!--d2xNA--><th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_60_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v20 [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_38_v20" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_38_v20" /> 250</label></th>
+	
+	<th title="&#x2661;Semi-Recommended cIOS. It is the ideal cIOS for slot 222 however it is outdated. Since d2x, Hermes cIOSs are generally no longer needed."><label><input class="bigcheck" type="checkbox" name="c222_38_v4" /> Hermes-v4 cIOS222 [38] &#x2661;</label></th>
+</tr>
+
+<tr>
+	<!--d2xNA--><th>d2x-vd2xversion [70]</th>
+	<!--d2xNA--><th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_70_d2x" /> 249</label></th>
+	<!--d2xNA--><th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_70_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v20 [56]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_56_v20" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_56_v20" /> 250</label></th>
+	
+	<th title="&#x2661;Semi-Recommended cIOS. It is the ideal cIOS for slot 223 and was widely used for compatibility with guitar-hero games however it is outdated. Since d2x, Hermes cIOSs are generally no longer needed."><label><input class="bigcheck" type="checkbox" name="c223_37_38_v4" /> Hermes-v4 cIOS223 [37+38] &#x2661;</label></th>
+</tr>
+
+<tr>
+	<!--d2xNA--><th>d2x-vd2xversion [80]</th>
+	<!--d2xNA--><th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_80_d2x" /> 249</label></th>
+	<!--d2xNA--><th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_80_d2x" /> 250</label></th>
+	<th></th>
+	
+	<th title="Outdated">Wanin-v20 [57]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_57_v20" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_57_v20" /> 250</label></th>
+	
+	
+	
+</tr>
+
+
+
+
+<tr>
+	<th colspan="4"></th>
+	
+	<th title="Outdated">Wanin-v19 [37]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_37_v19" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_37_v19" /> 250</label></th>
+	<th title="Toggle Custom MIOSs&#10;You can only have one MIOS or cMIOS installed at a time, it is what is used when launching a Gamecube disc" colspan="1" style="text-align:center"><button style="width:99%;" onClick="vbscript:CMIOSButton()"><font face="Arial Black">cMIOSs</font></button></th>
+	
+</tr>
+
+
+<tr>
+	<th title="Change the d2x cIOS version built by ModMii" colspan="4" style="text-align:center"><button style="width:99%;" onClick="vbscript:Page'betaswitch','DLPAGE4.hta'"><font face="Arial Black">d2x cIOS Version Settings</font></button></th>
+	<th title="Outdated">Wanin-v19 [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_38_v19" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_38_v19" /> 250</label></th>
+	<th title="&#x2661;Semi-Recommended cMIOS. It is the ideal cMIOS however since Nintendont cMIOSs are generally not needed unless loading backup Gamecube discs on older compatible Wiis&#10;&#10;Based on MIOSv10"><label><input class="bigcheck" type="checkbox" name="cMIOS_WiiPower" /> WiiGator\Power cMIOS-v0.2 [10] &#x2661;</label></th>
+	
+</tr>
+
+
+<tr>
+	<th colspan="4" style="text-align:center"><font size="2">Note: The number in brackets indicates</font></th>
+	<th title="Outdated">Wanin-v19 [57]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_57_v19" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_57_v19" /> 250</label></th>
+	<th title="Since Nintendont cMIOSs are generally not needed unless loading backup Gamecube discs on older compatible Wiis&#10;&#10;Based on MIOSv4"><label><input class="bigcheck" type="checkbox" name="cmios_WiiGator" /> WiiGator cMIOS-v0.2 [4]</label></th>
+	
+</tr>
+
+<tr>
+	<th colspan="4" style="text-align:center"><font size="2">the base IOS; e.g. cIOS222 [38] is an IOS</font></th>
+	<th title="Outdated">Wanin-v17b [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_v17b" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_v17b" /> 250</label></th>
+	<th title="Since Nintendont cMIOSs are generally not needed unless loading backup Gamecube discs on older compatible Wiis&#10;&#10;Based on MIOSv4"><label><input class="bigcheck" type="checkbox" name="cmios_Wanin" /> Waninkoko cMIOS-rev5 [4]</label></th>
+	
+</tr>
+
+
+<tr>
+	<th colspan="4" style="text-align:center"><font size="2">installed to slot 222 based on IOS38</font></th>
+	<th title="Outdated: this cIOS only supports WBFS formatted hard drives">Wanin-v14 [38]</th>
+	<th title="get cIOS for slot 249"><label><input class="bigcheck" type="checkbox" name="c249_v14" /> 249</label></th>
+	<th title="get cIOS for slot 250"><label><input class="bigcheck" type="checkbox" name="c250_v14" /> 250</label></th>
+	<th title="Since Nintendont, DML is generally not needed anymore&#10;&#10;DML (Dios Mios Lite) is a tool which allows you to run Gamecube games from an SD Card. Compatability is not 100% and it only works with Neogamma R9 beta 55+ or SNEEK+DI r157+. For best results your SD card should be formatted using 64KB sector sizes.&#10;&#10;Note: for DML to work with SNEEK+DI the WAD must be installed to real NAND and accessed via an emulated NAND.&#10;&#10;Games must be in discex format, use discex or ModMii's Game Bulk Extractor."><label><input class="bigcheck" type="checkbox" name="DML" /> Dios Mios Lite (DML) v1.3</label></th>
+</tr>
+
+
+</table>
+
+
+</body>
+</html>

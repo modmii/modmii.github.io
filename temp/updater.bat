@@ -1,6 +1,6 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=6.6.3
+set newversion=7.0.0
 set changelogURL=https://modmii.github.io/changelog.html
 
 ::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
@@ -23,8 +23,11 @@ support\sfk md5 -quiet -verify 4eff09f8a16ab6157edcb339bd909ed3 "temp\ARCME.zip"
 if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 :skiparcme
 
+::update old str2hax DNS
+support\sfk filter "Support\Guide\str2hax.001" -rep _"173.201.71.14"_"18.188.135.9"_ -rep _"97.74.103.14"_"18.188.135.9"_ -write -yes>nul
 
-
+::Disable NUS Autopatcher since NUS back online
+goto:skip
 
 ::if "support\NusFileGrabber.exe" is missing modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
 if not exist "support\NusFileGrabber.exe" goto:skip
@@ -60,7 +63,7 @@ set waico=support\icon.ico
 set wabmp=support\bmp\default.bmp
 if "%wasig%"=="" set wasig=Brought to you by XFlak
 
-set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.~~~~~~6.6.4 is coming...~it's BIG...~and so's my to do list...
+set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.
 
 if /i "%patchresult%" EQU "pass" start /w support\wizapp NOBACK TB
 
@@ -87,7 +90,7 @@ if /i "%updatermode%" EQU "skin" goto:skin
 
 setlocal
 chcp 437>nul
-mode con cols=85
+::mode con cols=85
 color 1f
 
 cls
@@ -112,6 +115,8 @@ del %UPDATENAME%%newversion%.zip>nul
 del support\7za2.exe>nul
 
 ::patch now too instead of later
+::skip patches...
+goto:SkipPatches
 echo Applying latest ModMii patch updates...
 echo.
 if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
@@ -120,7 +125,7 @@ start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubuse
 if not exist temp\ModMii.6.6.3.patch.zip goto:updateOKpatchFAIL
 support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"Support" -r
 del temp\ModMii.6.6.3.patch.zip>nul
-
+:SkipPatches
 
 if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Success.mp3"
 Start ModMii.exe
@@ -188,6 +193,8 @@ del %UPDATENAME%%newversion%.zip>nul
 
 
 ::patch now too instead of later
+::skip patches...
+goto:SkipPatches
 echo Applying latest ModMii patch updates...
 echo.
 if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
@@ -196,6 +203,8 @@ start support\wizapp PB UPDATE 90
 if not exist temp\ModMii.6.6.3.patch.zip goto:updateOKpatchFAILskin
 support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"Support" -r
 del temp\ModMii.6.6.3.patch.zip>nul
+:SkipPatches
+
 
 start support\wizapp PB UPDATE 100
 

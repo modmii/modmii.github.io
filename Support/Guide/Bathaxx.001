@@ -1,6 +1,6 @@
 <b>Bathaxx</b><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/b9Ez86hUJsQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Bathaxx.gif" border="0"/></a><br>
-Requirements: A copy of "LEGO Batman", a standard SD card (will not work with an SDHC card), and a nunchuck.<br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/Mmj-WzXQ2RA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Bathaxx.gif" border="0"/></a><br>
+Requirements: A copy of "LEGO Batman", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck. Does not work on Korean System Menus. Can launch elfs but not dols.<br>
 <br>
 <ol type="A"><li>Load the LEGO Batman game at least once (otherwise you won't be able to copy over the hack).</li>
 <li>Delete or move\backup your personal "LEGO Batman" save file.</li>
@@ -9,6 +9,6 @@ Requirements: A copy of "LEGO Batman", a standard SD card (will not work with an
 	</ul>
 <li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "LEGO Batman" save that corresponds to your region.</li>
 <li>Start the LEGO Batman game. Load the new save file.</li>
-<li>You are now in the batcave, take the elevator on the right side.</li>
+<li>You are now in the batcave, walk towards the camera and to the right (Batman's left) and take the elevator.</li>
 <li>Then in the trophy room, go to the upper corner and go through the door to the "Wayne Manor". Now you can select a character.</li>
 <li>Choose the last enabled character in the bottom right to launch the exploit and load your homebrew application.</li></ol>

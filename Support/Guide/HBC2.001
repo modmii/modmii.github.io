@@ -2,7 +2,7 @@
 <br>
 <font size="5"><b>Use the HackMii Installer to install the HBC and Bootmii</b></font><br>
 
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/EO62qTzZbuA?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/HackMii.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/gR4zcvFnfbE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/HackMii.gif" border="0"/></a><br>
 <i>The HackMii installer will enable you to install the Homebrew Channel and Bootmii.<br>
 The Homebrew Channel allows you to launch homebrew applications off your SD card or Hard Drive.<br>
 Bootmii is a piece of software that can backup and restore your Wii's NAND storage and provides brick protection.</i><br>
@@ -18,7 +18,9 @@ Bootmii is a piece of software that can backup and restore your Wii's NAND stora
 <ol type="i">
 <li><b>Press <kbd>1</kbd> to continue.</b>
 
+
 <ul style=align="left" type="disc">
+<li>Or if you are using a Gamecube controller, press <kbd>A</kbd> to continue.
 <li>If the "Press 1 to continue" message doesn't appear, or you get a "no vulnerable IOS" error message or experience any other issues with this step, run ModMii again and this time select the "HackMii Solutions" option and follow those new instructions before continuing this guide.
 </ul>
 

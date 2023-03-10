@@ -1,7 +1,0 @@
-<li>Make sure you select the correct drive letter corresponding to your external hard drive.
-<li>You may optionally uncheck the "Quick Format" box, then click "Start".
-	<ul style=align="left" type="square">
-	<li>When completed it should display "Done"
-	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
-	</ul>
-<li>Click the "Close" button.

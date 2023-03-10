@@ -1,4 +1,4 @@
-::ModMii v6.4.9 - Download Queue - 16/11/2018 - 22:22:41.32
+::ModMii v6.6.4 - Download Queue - Tue 02/21/2023 -  9:09:56.21
 set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
@@ -49,6 +49,7 @@ SET IOS55=*
 SET IOS56=*
 SET IOS57=*
 SET IOS58=*
+SET IOS59=*
 SET IOS61=*
 SET IOS62=*
 SET A40=*
@@ -60,7 +61,5 @@ SET cIOS222[38]-v4=*
 SET cIOS223[37-38]-v4=*
 SET cIOS202[60]-v5.1R=*
 SET cIOS224[57]-v5.1R=*
-SET cIOS249[57]-d2x-v8-final=*
-SET cIOS250[56]-d2x-v8-final=*
 SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 :endofqueue

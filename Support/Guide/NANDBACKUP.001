@@ -1,6 +1,6 @@
 <!------------------------------Nand backup section below-------------------------->
 <font size="5"><li>Make a NAND backup</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/J9QyWw9a7u4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>
 <i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.</i><br>
 <br>
 
@@ -43,7 +43,7 @@ At this point, or immediately following the completion of this guide, you should
 
 <i>Fun Fact! If you ever need to restore a NAND backup, you can do so by launching Bootmii with an SD card containing the appropriately named Bootmii folder, nand.bin, and keys.bin, and follow the procedure described above except this time select the option with the red arrow going the other direction.<br>
 <br>
-Another Fun Fact! You can extract the contents of your nand.bin using windows tools like ShowMiiWads (see ModMii Classic's Download Page 2), then save it to a hard drive or SD Card to act as an Emulated NAND (or virtual NAND), allowing you switch between the Wii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the Wii's 500MB. ModMii can help generate brand new Emulated NANDs free of any games saves or other settings if you prefer a fresh start. For more help on this, after completing this guide, check out ModMii's SNEEK Installation Wizard.</i><br>
+Another Fun Fact! You can extract the contents of your nand.bin by opening it with ModMii or other tools like ShowMiiWads (see ModMii Classic's Download Page 2), then save it to a hard drive or SD Card to act as an Emulated NAND (or virtual NAND), allowing you switch between the Wii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the Wii's 500MB. ModMii can help generate brand new Emulated NANDs free of any game saves or other settings if you prefer a fresh start. For more help on this, after completing this guide, check out ModMii's SNEEK Installation and EmuNAND features.</i><br>
 
 </p>
 </div></div></div>

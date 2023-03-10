@@ -1,0 +1,920 @@
+<html>
+<hta:application 
+	id="HI"
+	navigable="yes" 
+	scroll="yes"
+	icon="..\Support\icon.ico"
+	innerborder="no"
+	border="thin"
+	>
+	<meta charset="utf-8">
+<head>
+<title>ModMii</title>
+<!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
+<script Language="VBScript">
+    Sub Window_Onload
+		window.resizeTo 1200,820
+		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
+    End Sub
+
+	Function FULLCLOSE()
+		'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+    sub Window_onUnload
+        SAVE()
+    end sub
+
+	Function Page(ByVal nextgoto, nextpage)
+	'nextpage is optional
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		objFSO.write vbNewLine & "set nextgoto=" & nextgoto
+		objFSO.write vbNewLine & "set nextpage=" & nextpage
+		objFSO.close
+        'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+
+	Function SAVE()
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		
+		objFSO.write vbNewLine & "set SM3.2U="
+		If SM32U.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.1U="
+		If SM41U.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.2U="
+		If SM42U.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.3U="
+		If SM43U.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM3.2E="
+		If SM32E.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.1E="
+		If SM41E.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set SM4.2E="
+		If SM42E.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.3E="
+		If SM43E.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM3.2J="
+		If SM32J.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.1J="
+		If SM41J.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.2J="
+		If SM42J.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.3J="
+		If SM43J.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set SM4.1K="
+		If SM41K.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set SM4.2K="
+		If SM42K.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set SM4.3K="
+		If SM43K.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IOS9="
+		If IOS9.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IOS12="
+		If IOS12.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IOS13="
+		If IOS13.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS14="
+		If IOS14.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS15="
+		If IOS15.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS17="
+		If IOS17.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS21="
+		If IOS21.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS22="
+		If IOS22.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS28="
+		If IOS28.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS30="
+		If IOS30.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS31="
+		If IOS31.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS33="
+		If IOS33.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS34="
+		If IOS34.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS35="
+		If IOS35.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS36="
+		If IOS36.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS36v3608="
+		If IOS36v3608.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS37="
+		If IOS37.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS38="
+		If IOS38.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS41="
+		If IOS41.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS43="
+		If IOS43.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS45="
+		If IOS45.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS46="
+		If IOS46.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS48v4124="
+		If IOS48v4124.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS53="
+		If IOS53.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS55="
+		If IOS55.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS56="
+		If IOS56.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS57="
+		If IOS57.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS58="
+		If IOS58.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IOS59="
+		If IOS59.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IOS60="
+		If IOS60.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS61="
+		If IOS61.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS62="
+		If IOS62.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS70="
+		If IOS70.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IOS80="
+		If IOS80.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set M10="
+		If M10.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set MII="
+		If MII.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set P="
+		If P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set P0="
+		If P0.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set S="
+		If S.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SK="
+		If SK.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set BC="
+		If BC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set cBC="
+		If cBC.checked = True Then objFSO.write "*"
+
+		objFSO.write vbNewLine & "set IE="
+		If IE.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WE="
+		If WE.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set NE="
+		If NE.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WSE="
+		If WSE.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set EULAE="
+		If EULAE.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RSE="
+		If RSE.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IU="
+		If IU.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WU="
+		If WU.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set NU="
+		If NU.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WSU="
+		If WSU.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set EULAU="
+		If EULAU.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RSU="
+		If RSU.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set IJ="
+		If IJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WJ="
+		If WJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set NJ="
+		If NJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WSJ="
+		If WSJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set EULAJ="
+		If EULAJ.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RSJ="
+		If RSJ.checked = True Then objFSO.write "*"
+		
+		
+		objFSO.write vbNewLine & "set EULAK="
+		If EULAK.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set RSK="
+		If RSK.checked = True Then objFSO.write "*"
+		
+		'Fakesigned IOSs
+		objFSO.write vbNewLine & "set IOS11P60="
+		If IOS11P60.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS20P60="
+		If IOS20P60.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS30P60="
+		If IOS30P60.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS30P="
+		If IOS30P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS40P60="
+		If IOS40P60.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS50P="
+		If IOS50P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS52P="
+		If IOS52P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS60P="
+		If IOS60P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS70K="
+		If IOS70K.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS70P="
+		If IOS70P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS80K="
+		If IOS80K.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS80P="
+		If IOS80P.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set IOS236="
+		If IOS236.checked = True Then objFSO.write "*"
+		
+		'sneek files
+		objFSO.write vbNewLine & "set A0e="
+		If A0e.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A0c="
+		If A0c.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A01="
+		If A01.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A0e_70="
+		If A0e_70.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A01_70="
+		If A01_70.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A0e_60="
+		If A0e_60.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set A01_60="
+		If A01_60.checked = True Then objFSO.write "*"
+
+		
+		objFSO.close
+	End Function
+
+	
+	Function AllButton()
+		If ((SM32U.checked = True) And (SM32E.checked = True) And (SM32J.checked = True) And (SM41K.checked = True) And (SM41U.checked = True) And (SM41E.checked = True) And (SM41J.checked = True) And (SM42U.checked = True) And (SM43U.checked = True) And (SM42E.checked = True) And (SM43E.checked = True) And (SM42J.checked = True) And (SM43J.checked = True) And (SM42K.checked = True) And (SM43K.checked = True) And (IOS9.checked = True) And (IOS12.checked = True) And (IOS13.checked = True) And (IOS14.checked = True) And (IOS15.checked = True) And (IOS17.checked = True) And (IOS21.checked = True) And (IOS22.checked = True) And (IOS28.checked = True) And (IOS30.checked = True) And (IOS31.checked = True) And (IOS33.checked = True) And (IOS34.checked = True) And (IOS35.checked = True) And (IOS36.checked = True) And (IOS36v3608.checked = True) And (IOS37.checked = True) And (IOS38.checked = True) And (IOS41.checked = True) And (IOS43.checked = True) And (IOS45.checked = True) And (IOS46.checked = True) And (IOS48v4124.checked = True) And (IOS53.checked = True) And (IOS55.checked = True) And (IOS56.checked = True) And (IOS57.checked = True) And (IOS58.checked = True) And (IOS59.checked = True) And (IOS60.checked = True) And (IOS61.checked = True) And (IOS62.checked = True) And (IOS70.checked = True) And (IOS80.checked = True) And (M10.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+
+		ToggleSM(checkstatus)
+		ToggleNonFakesigned(checkstatus)
+		ToggleFakesigned(checkstatus)
+		ToggleOther(checkstatus)
+		ToggleCHANNELS(checkstatus)
+		ToggleSNEEK(checkstatus)
+
+	End Function
+
+	Function SMButton()
+		If ((SM32U.checked = True) And (SM32E.checked = True) And (SM32J.checked = True) And (SM41K.checked = True) And (SM41U.checked = True) And (SM41E.checked = True) And (SM41J.checked = True) And (SM42U.checked = True) And (SM43U.checked = True) And (SM42E.checked = True) And (SM43E.checked = True) And (SM42J.checked = True) And (SM43J.checked = True) And (SM42K.checked = True) And (SM43K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleSM(checkstatus)
+	End Function
+
+
+	Function ToggleSM(ByVal checkstatus)
+		SM32U.checked = checkstatus
+		SM32E.checked = checkstatus
+		SM32J.checked = checkstatus
+		SM41K.checked = checkstatus
+		SM41U.checked = checkstatus
+		SM41E.checked = checkstatus
+		SM41J.checked = checkstatus
+		SM42U.checked = checkstatus
+		SM43U.checked = checkstatus
+		SM42E.checked = checkstatus
+		SM43E.checked = checkstatus
+		SM42J.checked = checkstatus
+		SM43J.checked = checkstatus
+		SM42K.checked = checkstatus
+		SM43K.checked = checkstatus
+	End Function		
+
+
+	Function NonFakesignedButton()
+		If ((IOS9.checked = True) And (IOS12.checked = True) And (IOS13.checked = True) And (IOS14.checked = True) And (IOS15.checked = True) And (IOS17.checked = True) And (IOS21.checked = True) And (IOS22.checked = True) And (IOS28.checked = True) And (IOS30.checked = True) And (IOS31.checked = True) And (IOS33.checked = True) And (IOS34.checked = True) And (IOS35.checked = True) And (IOS36.checked = True) And (IOS36v3608.checked = True) And (IOS37.checked = True) And (IOS38.checked = True) And (IOS41.checked = True) And (IOS43.checked = True) And (IOS45.checked = True) And (IOS46.checked = True) And (IOS48v4124.checked = True) And (IOS53.checked = True) And (IOS55.checked = True) And (IOS56.checked = True) And (IOS57.checked = True) And (IOS58.checked = True) And (IOS59.checked = True) And (IOS60.checked = True) And (IOS61.checked = True) And (IOS62.checked = True) And (IOS70.checked = True) And (IOS80.checked = True) And (M10.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleNonFakesigned(checkstatus)
+	End Function
+
+	Function ToggleNonFakesigned(ByVal checkstatus)
+		IOS9.checked = checkstatus
+		IOS12.checked = checkstatus
+		IOS13.checked = checkstatus
+		IOS14.checked = checkstatus
+		IOS15.checked = checkstatus
+		IOS17.checked = checkstatus
+		IOS21.checked = checkstatus
+		IOS22.checked = checkstatus
+		IOS28.checked = checkstatus
+		IOS30.checked = checkstatus
+		IOS31.checked = checkstatus
+		IOS33.checked = checkstatus
+		IOS34.checked = checkstatus
+		IOS35.checked = checkstatus
+		IOS36.checked = checkstatus
+		IOS36v3608.checked = checkstatus
+		IOS37.checked = checkstatus
+		IOS38.checked = checkstatus
+		IOS41.checked = checkstatus
+		IOS43.checked = checkstatus
+		IOS45.checked = checkstatus
+		IOS46.checked = checkstatus
+		IOS48v4124.checked = checkstatus
+		IOS53.checked = checkstatus
+		IOS55.checked = checkstatus
+		IOS56.checked = checkstatus
+		IOS57.checked = checkstatus
+		IOS58.checked = checkstatus
+		IOS59.checked = checkstatus
+		IOS60.checked = checkstatus
+		IOS61.checked = checkstatus
+		IOS62.checked = checkstatus
+		IOS70.checked = checkstatus
+		IOS80.checked = checkstatus
+		M10.checked = checkstatus
+	End Function
+
+
+	Function PROTECTIONButton()
+		If ((IOS11P60.checked = True) And (IOS20P60.checked = True) And (IOS30P60.checked = True) And (IOS40P60.checked = True) And (IOS50P.checked = True) And (IOS52P.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglePROTECTION(checkstatus)
+	End Function
+
+	Function TogglePROTECTION(ByVal checkstatus)
+		IOS11P60.checked = checkstatus
+		IOS20P60.checked = checkstatus
+		IOS30P60.checked = checkstatus
+		IOS40P60.checked = checkstatus
+		IOS50P.checked = checkstatus
+		IOS52P.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+	End Function
+
+	Function FakesignedButton()
+		If ((IOS11P60.checked = True) And (IOS20P60.checked = True) And (IOS30P60.checked = True) And (IOS40P60.checked = True) And (IOS50P.checked = True) And (IOS52P.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True) And (IOS30P.checked = True) And (IOS70P.checked = True) And (IOS80P.checked = True) And (IOS236.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleFakesigned(checkstatus)
+	End Function
+
+	Function ToggleFakesigned(ByVal checkstatus)
+		IOS11P60.checked = checkstatus
+		IOS20P60.checked = checkstatus
+		IOS30P60.checked = checkstatus
+		IOS40P60.checked = checkstatus
+		IOS50P.checked = checkstatus
+		IOS52P.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+		IOS30P.checked = checkstatus
+		IOS70P.checked = checkstatus
+		IOS80P.checked = checkstatus
+		IOS236.checked = checkstatus
+	End Function
+	
+	
+	
+	Function USAButton()
+		If ((MII.checked = True) And (P.checked = True) And (P0.checked = True) And (S.checked = True) And (IU.checked = True) And (WU.checked = True) And (NU.checked = True) And (WSU.checked = True) And (SM32U.checked = True) And (SM41U.checked = True) And (SM42U.checked = True) And (SM43U.checked = True) And (EULAU.checked = True) And (RSU.checked = True) And (BC.checked = True) And (IOS30P60.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleUSA(checkstatus)
+	End Function
+
+	Function ToggleUSA(ByVal checkstatus)
+		MII.checked = checkstatus
+		P.checked = checkstatus
+		P0.checked = checkstatus
+		S.checked = checkstatus
+		IU.checked = checkstatus
+		WU.checked = checkstatus
+		NU.checked = checkstatus
+		WSU.checked = checkstatus
+		SM32U.checked = checkstatus
+		SM43U.checked = checkstatus
+		SM42U.checked = checkstatus
+		SM41U.checked = checkstatus
+		EULAU.checked = checkstatus
+		RSU.checked = checkstatus
+		BC.checked = checkstatus
+		IOS30P60.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+	End Function
+	
+	
+	Function EURButton()
+		If ((MII.checked = True) And (P.checked = True) And (P0.checked = True) And (S.checked = True) And (IE.checked = True) And (WE.checked = True) And (NE.checked = True) And (WSE.checked = True) And (SM32E.checked = True) And (SM41E.checked = True) And (SM42E.checked = True) And (SM43E.checked = True) And (EULAE.checked = True) And (RSE.checked = True) And (BC.checked = True) And (IOS30P60.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleEUR(checkstatus)
+	End Function
+
+	Function ToggleEUR(ByVal checkstatus)
+		MII.checked = checkstatus
+		P.checked = checkstatus
+		P0.checked = checkstatus
+		S.checked = checkstatus
+		IE.checked = checkstatus
+		WE.checked = checkstatus
+		NE.checked = checkstatus
+		WSE.checked = checkstatus
+		SM32E.checked = checkstatus
+		SM43E.checked = checkstatus
+		SM42E.checked = checkstatus
+		SM41E.checked = checkstatus
+		EULAE.checked = checkstatus
+		RSE.checked = checkstatus
+		BC.checked = checkstatus
+		IOS30P60.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+	End Function
+	
+
+
+	Function JPNButton()
+		If ((MII.checked = True) And (P.checked = True) And (P0.checked = True) And (S.checked = True) And (IJ.checked = True) And (WJ.checked = True) And (NJ.checked = True) And (WSJ.checked = True) And (SM32J.checked = True) And (SM41J.checked = True) And (SM42J.checked = True) And (SM43J.checked = True) And (EULAJ.checked = True) And (RSJ.checked = True) And (BC.checked = True) And (IOS30P60.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleJPN(checkstatus)
+	End Function
+
+	Function ToggleJPN(ByVal checkstatus)
+		MII.checked = checkstatus
+		P.checked = checkstatus
+		P0.checked = checkstatus
+		S.checked = checkstatus
+		IJ.checked = checkstatus
+		WJ.checked = checkstatus
+		NJ.checked = checkstatus
+		WSJ.checked = checkstatus
+		SM32J.checked = checkstatus
+		SM43J.checked = checkstatus
+		SM42J.checked = checkstatus
+		SM41J.checked = checkstatus
+		EULAJ.checked = checkstatus
+		RSJ.checked = checkstatus
+		BC.checked = checkstatus
+		IOS30P60.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+	End Function
+
+
+
+	Function KORButton()
+		If ((MII.checked = True) And (P0.checked = True) And (SK.checked = True) And (SM41K.checked = True) And (SM42K.checked = True) And (SM43K.checked = True) And (EULAK.checked = True) And (RSK.checked = True) And (BC.checked = True) And (IOS60P.checked = True) And (IOS70K.checked = True) And (IOS80K.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleKOR(checkstatus)
+	End Function
+
+	Function ToggleKOR(ByVal checkstatus)
+		MII.checked = checkstatus
+		P0.checked = checkstatus
+		SK.checked = checkstatus
+		SM43K.checked = checkstatus
+		SM42K.checked = checkstatus
+		SM41K.checked = checkstatus
+		EULAK.checked = checkstatus
+		RSK.checked = checkstatus
+		BC.checked = checkstatus
+		IOS60P.checked = checkstatus
+		IOS70K.checked = checkstatus
+		IOS80K.checked = checkstatus
+	End Function
+
+
+	Function ActiveButton()
+		If ((IOS9.checked = True) And (IOS12.checked = True) And (IOS13.checked = True) And (IOS14.checked = True) And (IOS15.checked = True) And (IOS17.checked = True) And (IOS21.checked = True) And (IOS22.checked = True) And (IOS28.checked = True) And (IOS31.checked = True) And (IOS33.checked = True) And (IOS34.checked = True) And (IOS35.checked = True) And (IOS36v3608.checked = True) And (IOS37.checked = True) And (IOS38.checked = True) And (IOS41.checked = True) And (IOS43.checked = True) And (IOS45.checked = True) And (IOS46.checked = True) And (IOS48v4124.checked = True) And (IOS53.checked = True) And (IOS55.checked = True) And (IOS56.checked = True) And (IOS57.checked = True) And (IOS58.checked = True) And (IOS59.checked = True) And (IOS61.checked = True) And (IOS62.checked = True) And (IOS80K.checked = True) And (M10.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleActive(checkstatus)
+	End Function
+
+	Function ToggleActive(ByVal checkstatus)
+		IOS9.checked = checkstatus
+		IOS12.checked = checkstatus
+		IOS13.checked = checkstatus
+		IOS14.checked = checkstatus
+		IOS15.checked = checkstatus
+		IOS17.checked = checkstatus
+		IOS21.checked = checkstatus
+		IOS22.checked = checkstatus
+		IOS28.checked = checkstatus
+		IOS31.checked = checkstatus
+		IOS33.checked = checkstatus
+		IOS34.checked = checkstatus
+		IOS35.checked = checkstatus
+		IOS36v3608.checked = checkstatus
+		IOS37.checked = checkstatus
+		IOS38.checked = checkstatus
+		IOS41.checked = checkstatus
+		IOS43.checked = checkstatus
+		IOS45.checked = checkstatus
+		IOS46.checked = checkstatus
+		IOS48v4124.checked = checkstatus
+		IOS53.checked = checkstatus
+		IOS55.checked = checkstatus
+		IOS56.checked = checkstatus
+		IOS57.checked = checkstatus
+		IOS58.checked = checkstatus
+		IOS59.checked = checkstatus
+		IOS61.checked = checkstatus
+		IOS62.checked = checkstatus
+		IOS80K.checked = checkstatus
+		M10.checked = checkstatus
+	End Function
+
+
+	Function SNEEKButton()
+		If ((A0e.checked = True) And (A0c.checked = True) And (A01.checked = True) And (A0e_70.checked = True) And (A01_70.checked = True) And (A0e_60.checked = True) And (A01_60.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleSNEEK(checkstatus)
+	End Function
+
+	Function ToggleSNEEK(ByVal checkstatus)
+		A0e.checked = checkstatus
+		A0c.checked = checkstatus
+		A01.checked = checkstatus
+		A0e_70.checked = checkstatus
+		A01_70.checked = checkstatus
+		A0e_60.checked = checkstatus
+		A01_60.checked = checkstatus
+	End Function
+
+
+
+	Function CHANNELSButton()
+		If ((MII.checked = True) And (P.checked = True) And (P0.checked = True) And (S.checked = True) And (IU.checked = True) And (WU.checked = True) And (NU.checked = True) And (WSU.checked = True) And (IE.checked = True) And (WE.checked = True) And (NE.checked = True) And (WSE.checked = True) And (IJ.checked = True) And (WJ.checked = True) And (NJ.checked = True) And (WSJ.checked = True) And (SK.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleCHANNELS(checkstatus)
+	End Function
+
+	Function ToggleCHANNELS(ByVal checkstatus)
+		MII.checked = checkstatus
+		P.checked = checkstatus
+		P0.checked = checkstatus
+		S.checked = checkstatus
+		IU.checked = checkstatus
+		WU.checked = checkstatus
+		NU.checked = checkstatus
+		WSU.checked = checkstatus
+		IE.checked = checkstatus
+		WE.checked = checkstatus
+		NE.checked = checkstatus
+		WSE.checked = checkstatus
+		IJ.checked = checkstatus
+		WJ.checked = checkstatus
+		NJ.checked = checkstatus
+		WSJ.checked = checkstatus
+		SK.checked = checkstatus
+	End Function
+
+
+
+
+
+	Function OtherButton()
+		If ((EULAU.checked = True) And (RSU.checked = True) And (BC.checked = True) And (EULAE.checked = True) And (RSE.checked = True) And (EULAJ.checked = True) And (RSJ.checked = True) And (EULAK.checked = True) And (RSK.checked = True) And (cBC.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleOther(checkstatus)
+	End Function
+
+	Function ToggleOther(ByVal checkstatus)
+		EULAU.checked = checkstatus
+		RSU.checked = checkstatus
+		BC.checked = checkstatus
+		cBC.checked = checkstatus
+		EULAE.checked = checkstatus
+		RSE.checked = checkstatus
+		EULAJ.checked = checkstatus
+		RSJ.checked = checkstatus
+		EULAK.checked = checkstatus
+		RSK.checked = checkstatus
+	End Function
+
+</script>
+<style type="text/css">
+input.bigcheck {
+height: 30px;
+width: 30px;
+vertical-align: middle;
+}
+table, th {
+  text-align: left;
+  vertical-align: middle;
+}, td {
+  border:1px solid black;
+  text-align: left;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<!--<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0" style="width:80%;height: 100px"/></a><br>-->
+
+
+<!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
+<button title="Return to Main Menu" style="width:190; position: absolute; left: 15; top: 10;" onClick="vbscript:Page'MENU','DLPAGE1.hta'"><font face="Arial Black">Main Menu</font></button>
+<button disabled title="Download System Menus, IOSs, MIOSs, Channels, etc." style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
+<button title="Download Wii Apps, USB-Loader Files, PC Programs, Exploits, etc." style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
+<button title="Download System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>
+<button title="Download cIOSs and cMIOSs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+
+
+
+<button title="Click to Download Files to:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 10;" onClick="vbscript:FULLCLOSE()"><font face="Arial Black">Download!</font></button>
+<button title="Change Current Download Folder:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 45;" onClick="vbscript:Page'DRIVECHANGE','DLPAGE1.hta'"><font face="Arial Black">Download Folder</font></button>
+<font size="2" face="Arial Black italic" style="position: absolute; right: 30; top: 100;" title="Hovering your mouse over various items on this page will display fun facts and helpful tips!" >(Hover over items for Tooltips)</font>
+
+<center>
+<font size="4" face="Arial Black italic"><b>Download Page 1</b></font>
+</center>
+
+
+
+<center>
+<font size="2" color="red">WARNING: some of these files MAY CAUSE BRICK if you do NOT know what you are doing!</font><br>
+<br>
+
+
+
+<button title="Toggle All Downloads" style="width:6%" onClick="vbscript:AllButton()"><font face="Arial Black">ALL</font></button>
+&nbsp;
+<button title="Toggle U and Region Free downloads" style="width:6%;" onClick="vbscript:USAButton()"><font face="Arial Black">USA</font></button>
+&nbsp;
+<button title="Toggle E and Region Free downloads" style="width:6%;" onClick="vbscript:EURButton()"><font face="Arial Black">EUR</font></button>
+&nbsp;
+<button title="Toggle J and Region Free downloads" style="width:6%;" onClick="vbscript:JPNButton()"><font face="Arial Black">JPN</font></button>
+&nbsp;
+<button title="Toggle K and Region Free downloads" style="width:6%;" onClick="vbscript:KORButton()"><font face="Arial Black">KOR</font></button>
+
+
+</center>
+
+<br>
+
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table style="width:100%">
+
+<tr>
+	<th colspan="2" style="text-align:center"><button style="width:99%;" onClick="vbscript:SMButton()"><font face="Arial Black">System Menus</font></button></th>
+	<th colspan="4" style="text-align:center"><button style="width:99%;" onClick="vbscript:NonFakesignedButton()"><font face="Arial Black">Non-Fakesigned IOSs\MIOS</font></button></th>
+	<th colspan="2" style="text-align:center"><button title="Toggle Fakesigned IOSs&#10;The number in brackets indicates the base IOS&#10;e.g. IOS236[36] is an IOS installed to slot 236 based on IOS36" style="width:99%;" onClick="vbscript:FakesignedButton()"><font face="Arial Black">Fakesigned IOSs</font></button></th>
+</tr>
+
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM32U" /> 3.2U</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM32J" /> 3.2J</label></th>
+	<th title="IOS9 is used by System Menu 1.0 and early games like Zelda: Twilight Princess, Wii Sports, Wii Play, WarioWare: Smooth Moves."><label><input class="bigcheck" type="checkbox" name="IOS9" /> IOS9 v1034</label></th>
+	<th title="IOS30 is used by System Menu 3.0-3.3. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS30" /> IOS30 v2576</label></th>
+	<th title="IOS41 is a Korea-specific IOS used by preinstalled channels. It is identical to IOS45."><label><input class="bigcheck" type="checkbox" name="IOS41" /> IOS41 v3607</label></th>
+	<th title="IOS58 offers improved USB2 speeds and is preferred by many apps including the Homebrew Channel"><label><input class="bigcheck" type="checkbox" name="IOS58" /> IOS58 v6176</label></th>
+	<th title="IOS11 is used by System Menu 2.0 & 2.1; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS11P60" /> IOS11[60]</label></th>
+	<th title="IOS70 is used by System Menu 4.2; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS70K" /> IOS70[60]</label></th>
+</tr>
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM41U" /> 4.1U</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM41J" /> 4.1J</label></th>
+	<th title="IOS12 is an IOS that was previously thought to be the oldest, used by titles such as Elebits"><label><input class="bigcheck" type="checkbox" name="IOS12" /> IOS12 v526</label></th>
+	<th title="IOS31 is used by New & Weather channels. RC24 uses a patched version of IOS31 so it can download custom News & Weather data"><label><input class="bigcheck" type="checkbox" name="IOS31" /> IOS31 v3608</label></th>
+	<th title="IOS43 is only used by some Korean games"><label><input class="bigcheck" type="checkbox" name="IOS43" /> IOS43 v3607</label></th>
+	<th title="IOS59 is a Japan exclusive IOS. ModMii Wizards will only direct Japanese consoles to install it."><label><input class="bigcheck" type="checkbox" name="IOS59" /> IOS59 v9249</label></th>
+	<th title="IOS20 is used by System Menu 2.2; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS20P60" /> IOS20[60]</label></th>
+	<th title="IOS80 is used by System Menu 4.3; this IOS is based on IOS60 to maximize compatibility and protection."><label><input class="bigcheck" type="checkbox" name="IOS80K" /> IOS80[60]</label></th>
+</tr>
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM42U" /> 4.2U</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM42J" /> 4.2J</label></th>
+	<th title="IOS13 is used by Photo Channel 1.0"><label><input class="bigcheck" type="checkbox" name="IOS13" /> IOS13 v1032</label></th>
+	<th title="IOS33 is an IOS version based on IOS31 and used in games like Super Mario Galaxy."><label><input class="bigcheck" type="checkbox" name="IOS33" /> IOS33 v3608</label></th>
+	<th title="IOS45 is only used by some Korean games. It is identical to IOS41."><label><input class="bigcheck" type="checkbox" name="IOS45" /> IOS45 v3607</label></th>
+	<th title="IOS60 is used by System Menu 4.0 & 4.1. First to support SDHC. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS60" /> IOS60 v6174</label></th>
+	<th title="IOS30 is used by System Menu 3.0-3.3; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS30P60" /> IOS30[60]</label></th>
+	<th title="IOS30 is used by System Menu 3.0-3.3. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS30P" /> IOS30[30]</label></th>
+</tr>
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM43U" /> 4.3U</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM43J" /> 4.3J</label></th>
+	<th title="IOS14 is used by Pokémon Battle Revolution (Japanese version only)"><label><input class="bigcheck" type="checkbox" name="IOS14" /> IOS14 v1032</label></th>
+	<th title="IOS34 is used by Internet Channel v257"><label><input class="bigcheck" type="checkbox" name="IOS34" /> IOS34 v3608</label></th>
+	<th title="IOS46 is an IOS used by some Korean games like Mario Kart Wii and Need for Speed Undercover"><label><input class="bigcheck" type="checkbox" name="IOS46" /> IOS46 v3607</label></th>
+	<th title="IOS61 was used by the Wii Shop Channel from the System Menu 4.0-4.2 updates. Also used by Photo Channel 1.1b. It is identical to IOS56."><label><input class="bigcheck" type="checkbox" name="IOS61" /> IOS61 v5662</label></th>
+	<th title="IOS40 is used by System Menu 3.3 for all Korean consoles; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS40P60" /> IOS40[60]</label></th>
+	<th title="IOS70 is used by System Menu 4.2. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS70P" /> IOS70[70]</label></th>
+
+</tr>
+
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM32E" /> 3.2E</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM41K" /> 4.1K</label></th>
+	<th title="IOS15 was previously used by some official channels; it has not been stubbed because the Internet Channel, which could not be updated through standard updates, previously used it."><label><input class="bigcheck" type="checkbox" name="IOS15" /> IOS15 v1032</label></th>
+	<th title="IOS35 is a copy of IOS31 used by games like Call of Duty, Wii Music, etc."><label><input class="bigcheck" type="checkbox" name="IOS35" /> IOS35 v3608</label></th>
+	<th title="IOS40 is used by Animal Crossing: City Folk (Korean version only)"><label><input class="bigcheck" type="checkbox" name="IOS48v4124" /> IOS48 v4124</label></th>
+	<th title="IOS62 is used by the Wii U Transfer Tool"><label><input class="bigcheck" type="checkbox" name="IOS62" /> IOS62 v6430</label></th>
+	<th title="IOS50 is used by System Menu 3.4; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS50P" /> IOS50[60]</label></th>
+	<th title="IOS80 is used by System Menu 4.3"><label><input class="bigcheck" type="checkbox" name="IOS80P" /> IOS80[80]</label></th>
+</tr>
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM41E" /> 4.1E</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM42K" /> 4.2K</label></th>
+	<th title="IOS17 is used by early titles such as Bust-A-Move Bash and Super Paper Mario"><label><input class="bigcheck" type="checkbox" name="IOS17" /> IOS17 v1032</label></th>
+	<th title="IOS36 v3351 was the first IOS patched to restore the trucha bug, enabling custom IOS installation. Today it is recommended not to patch IOS36."><label><input class="bigcheck" type="checkbox" name="IOS36" /> IOS36 v3351</label></th>
+	<th title="IOS53 is used by titles such as New Super Mario Bros. Wii and Wii Fit Plus"><label><input class="bigcheck" type="checkbox" name="IOS53" /> IOS53 v5663</label></th>
+	<th title="IOS70 is used by System Menu 4.2. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS70" /> IOS70 v6687</label></th>
+	<th title="IOS52 is used by System Menu 3.5 and exclusive to Korea; this IOS is based on IOS60 to maximize compatibility and protection. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS52P" /> IOS52[60]</label></th>
+	<th title="IOS236 is a patched version of IOS36. It is no longer needed."><label><input class="bigcheck" type="checkbox" name="IOS236" /> IOS236[36]</label></th>
+</tr>
+
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM42E" /> 4.2E</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="SM43K" /> 4.3K</label></th>
+	<th title="IOS21 is used by third party games (No More Heroes) and many other games such as Wii Sports were also re-released under this IOS"><label><input class="bigcheck" type="checkbox" name="IOS21" /> IOS21 v1039</label></th>
+	<th title="IOS36 is used by titles such as Super Smash Bros. Brawl and Mario Kart Wii"><label><input class="bigcheck" type="checkbox" name="IOS36v3608" /> IOS36 v3608</label></th>
+	<th title="IOS55 is used by titles such as Wii Sports Resort and The Conduit"><label><input class="bigcheck" type="checkbox" name="IOS55" /> IOS55 v5663</label></th>
+	<th title="IOS80 is used by System Menu 4.3"><label><input class="bigcheck" type="checkbox" name="IOS80" /> IOS80 v6944</label></th>
+	<th title="IOS60 is used by System Menu 4.0 & 4.1. Officially this IOS is stubbed."><label><input class="bigcheck" type="checkbox" name="IOS60P" /> IOS60[60]</label></th>
+</tr>
+
+<tr>
+	<th><label><input class="bigcheck" type="checkbox" name="SM43E" /> 4.3E</label></th>
+	<th></th>
+	<th title="IOS22 is used by a few games like Boogie and High School Musical: Sing It!"><label><input class="bigcheck" type="checkbox" name="IOS22" /> IOS22 v1294</label></th>
+	<th title="IOS37 is used by several WiiWare games and older Guitar Hero/Rock Band games"><label><input class="bigcheck" type="checkbox" name="IOS37" /> IOS37 v5663</label></th>
+	<th title="IOS56 added SDHC support and is identical to IOS61. Used by Wii Speak 2.0 and the latest Shopping Channel."><label><input class="bigcheck" type="checkbox" name="IOS56" /> IOS56 v5662</label></th>
+	<th title="MIOS is a special version of IOS that runs when the Wii enters GameCube mode"><label><input class="bigcheck" type="checkbox" name="M10" /> MIOS v10</label></th>
+<th colspan="2" title="Toggle all active unstubbed IOSs and MIOS; except for IOS80 all are Non-Fakesigned." style="text-align:center"><button style="width:99%;" onClick="vbscript:ActiveButton()"><font face="Arial Black">Active IOSs</font></button></th>
+</tr>
+
+<tr>
+	<th colspan="2" style="text-align:center"><button title="Toggle 0000000x.app files used to construct different versions of SNEEK (or DIOS MIOS)" style="width:99%;" onClick="vbscript:SNEEKButton()"><font face="Arial Black">SNEEK Files</font></button></th>
+	<th title="IOS28 is only used by Metroid Prime 3: Corruption. The first IOS released in modular parts."><label><input class="bigcheck" type="checkbox" name="IOS28" /> IOS28 v1807</label></th>
+	<th title="IOS48 is used by Animal Crossing: City Folk and the Nintendo Wii Speak Channel"><label><input class="bigcheck" type="checkbox" name="IOS38" /> IOS38 v4124</label></th>
+	<th title="IOS57 is used by many of the newer games released near the end of the production of Wii discs in 2020, although it was originally released in 2009."><label><input class="bigcheck" type="checkbox" name="IOS57" /> IOS57 v5919</label></th>
+	<th></th>
+<th colspan="2" title="Toggle ModMii's Extra Brick Protection IOSs&#10;&#10;These IOSs are used by various System Menu versions and are based on IOS60 to avoid potential 003 or downgrade bricks from accidental user error." style="text-align:center"><button style="width:99%;" onClick="vbscript:PROTECTIONButton()"><font face="Arial Black">Extra Protection</font></button></th>
+
+</tr>
+
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A0e" /> 0e.app [80 v6943]</label></th>
+	
+</tr>
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A0e_70" /> 0e.app [70 v6687]</label></th>
+	<th colspan="4" title="Toggle Wii Channels&#10;Note the Weather, News and Wii Speak Channels require RiiConnect24 to work; Wii Speak also requires Wiimmfi. Best to use the RC24 Patcher from Download Page 2 to get these channels." style="text-align:center"><button style="width:99%;" onClick="vbscript:CHANNELSButton()"><font face="Arial Black">Wii Channels</font></button></th>
+	<th colspan="2" style="text-align:center"><button style="width:99%;" onClick="vbscript:OtherButton()"><font face="Arial Black">Other WADs</font></button></th>
+</tr>
+
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A0e_60" /> 0e.app [60 v6174]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="MII" /> Mii [RF]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="IU" /> Internet [U]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="IE" /> Internet [E]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="IJ" /> Internet [J]</label></th>
+	<th title="Region Select [U]"><label><input class="bigcheck" type="checkbox" name="RSU" /> Region [U]</label></th>
+	<th title="End User License Agreement is a hidden channel that is launched by the System Menu when the 'User Agreements' option is selected, as well as by the Wii Shop Channel if the EULA has not been accepted. Because the EULA uses HTTP, a custom page can be shown there, which is exploited by str2hax and RiiConnect24."><label><input class="bigcheck" type="checkbox" name="EULAU" /> EULA [U]</label></th>
+</tr>
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A01" /> 01.app [80 v6943]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="P0" /> Photo [RF]</label></th>
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WU" /> Weather [U]</label></th>
+
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WE" /> Weather [E]</label></th>
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WJ" /> Weather [J]</label></th>
+	<th title="Region Select [E]"><label><input class="bigcheck" type="checkbox" name="RSE" /> Region [E]</label></th>
+	<th title="End User License Agreement is a hidden channel that is launched by the System Menu when the 'User Agreements' option is selected, as well as by the Wii Shop Channel if the EULA has not been accepted. Because the EULA uses HTTP, a custom page can be shown there, which is exploited by str2hax and RiiConnect24."><label><input class="bigcheck" type="checkbox" name="EULAE" /> EULA [E]</label></th>
+</tr>
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A01_70" /> 01.app [70 v6687]</label></th>
+	<th><label><input class="bigcheck" type="checkbox" name="P" /> Photo 1.1 [U/E/J]</label></th>	
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="NU" /> News [U]</label></th>
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="NE" /> News [E]</label></th>
+	<th title="Requires RiiConnect24 to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="NJ" /> News [J]</label></th>
+	<th title="Region Select [J]"><label><input class="bigcheck" type="checkbox" name="RSJ" /> Region [J]</label></th>
+	<th title="End User License Agreement is a hidden channel that is launched by the System Menu when the 'User Agreements' option is selected, as well as by the Wii Shop Channel if the EULA has not been accepted. Because the EULA uses HTTP, a custom page can be shown there, which is exploited by str2hax and RiiConnect24."><label><input class="bigcheck" type="checkbox" name="EULAJ" /> EULA [J]</label></th>
+</tr>
+
+<tr>
+	<th colspan="2"><label><input class="bigcheck" type="checkbox" name="A01_60" /> 01.app [60 v6174]</label></th>
+	<th title="The Wii Shop Channel can only re-download content you have already purchased"><label><input class="bigcheck" type="checkbox" name="S" /> Shopping [U/E/J]</label></th>
+	
+	<th title="Requires RiiConnect24 and Wiimmfi to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WSU" /> Wii Speak [U]</label></th>
+	<th title="Requires RiiConnect24 and Wiimmfi to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WSE" /> Wii Speak [E]</label></th>
+	<th title="Requires RiiConnect24 and Wiimmfi to work, best to use the RC24 Patcher from Download Page 2 to get this channel."><label><input class="bigcheck" type="checkbox" name="WSJ" /> Wii Speak [J]</label></th>
+	<th title="Region Select [K]"><label><input class="bigcheck" type="checkbox" name="RSK" /> Region [K]</label></th>
+	<th title="End User License Agreement is a hidden channel that is launched by the System Menu when the 'User Agreements' option is selected, as well as by the Wii Shop Channel if the EULA has not been accepted. Because the EULA uses HTTP, a custom page can be shown there, which is exploited by str2hax and RiiConnect24."><label><input class="bigcheck" type="checkbox" name="EULAK" /> EULA [K]</label></th>
+</tr>
+
+<tr>
+	<th colspan="2" title="Used to construct DIOS MIOS"><label><input class="bigcheck" type="checkbox" name="A0c" /> 0c.app [MIOS v10]</label></th>
+	<th title="The Wii Shop Channel can only re-download content you have already purchased"><label><input class="bigcheck" type="checkbox" name="SK" /> Shopping [K]</label></th>
+	<th></th>
+	<th></th>
+	<th></th>
+	<th title="BC (short for Backwards Compatibility) is run when a GameCube game is launched from the Disc Channel. It is a bootloader similar to boot1 that is responsible for lowering clock speed, verifying and loading boot2, which detects the lowered clock speed and loads MIOS to run the GC game.&#10;&#10;BC was never meaningfully updated other than to fix some exploits, the BC WAD is useful mainly to construct emulated NANDs."><label><input class="bigcheck" type="checkbox" name="BC" /> BC v6 [RF]</label></th>
+	<th title="NMM (No More Memory-Cards) is a custom BC that redirects all GameCube Memory Card access to the SD card. This allow saving\loading GameCube game saves without a GC Memory Card."><label><input class="bigcheck" type="checkbox" name="cBC" /> NMM [cBC]</label></th>
+</tr>
+
+
+
+</table>
+
+
+</body>
+</html>

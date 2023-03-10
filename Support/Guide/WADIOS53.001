@@ -1,16 +1,17 @@
 <br>
-This will launch Multi-Mod Manager.<br>
+This will launch YAWM ModMii Edition.<br>
 <br>
 
 <!-------------------Install IOS53 Section Below--------------------------->
 
 <font size="5"><li>Install IOS53 then start Casper</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/LA1YVvk0FfE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Casper.gif" border="0"/></a><br>
-<i>MMM has many tools, but we'll mainly be using it as a WAD Manager. A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/yVQNkMGAHJU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IOS53.gif" border="0"/></a><br>
+<i>YAWM ModMii Edition stands for Yet Another Wad Manager ModMii Edition (aka yawmME). A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your Wii. Think of a WAD like a zip file but for the Wii.</i><br>
 <br>
 
-WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. Stick to your ModMii guide and you'll be fine.<br>
+WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, YAWM ModMii Edition, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
 <br>
+
 
 
 <div style><div class="spoilerfont" style="text-align:center;">
@@ -26,14 +27,9 @@ WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can 
 
 
 <ol type="A">
-<li><b>On your Wii, in Multi-Mod Manager's main menu, go down to select "WAD Manager"</b>.
+<li><b>From YAWM ModMii Edition's main menu choose your source device using left and right, most likely "Wii SD Slot", and Press <kbd>A</kbd></b>.
 
-	<ul style=align="left" type="disc">
-	<li>If you cannot load your SD card, select "Load another IOS", then select IOS36.</b>
-	<li>If the Wii was previously softmodded, you can also try loading IOS250 (or others like 251, 222, etc.)</b>
-	</ul>
-
-<li><b>Install IOS53-64-v5663</b>.
+<li><b>Install IOS53-64-v5663</b>.<br>
 
 	<ul style=align="left" type="disc">
 	<li>Navigate to the WAD and press the <kbd>A</kbd> button twice to install the IOS individually.
@@ -43,17 +39,17 @@ WARNING: WADs can also be <u>un</u>installed, and if you're not careful you can 
 
 <li>After successfully installing IOS53, <b>press any button to continue.</b>
 
-
-<li>Then <b>press the <kbd>B</kbd> button</b> to go back to MMM's main menu.
-<li><b>Choose "App Manager"</b> then press <kbd>A</kbd>.
-<li><b>Launch "Casper"</b> by navigating to it and pressing the <kbd>A</kbd> button.
+<li>Then <b>press the "B" button</b> to go back to the root of your device.
+<li><b>Choose "apps"</b> then press <kbd>A</kbd>.
+<li>Navigate to "Casper" and press <kbd>A</kbd>.
+<li>Scroll to "boot.elf" and press <kbd>A</kbd> again.
+<li>Press <kbd>A</kbd> to <b>launch the Casper's boot.elf</b>.
 </ol>
 <br>
 
 <ul style=align="left" type="disc">
 
-<li>If you are able to load MMM but the Wiimote doesn't respond, try using an older Wiimote without Motion+ built in as MMM doesn't support these newer contollers; a gamecube controller also works. If you don't have either, you can update the console via the Wii Settings Menu and repeat the Abstinence Wizard but this time enter 4.3 as your firmware version.
-<li>Note: After installing IOS53 on a Wii once, you can skip installing it the next time you follow this guide and just use MMM's "App Manager" to launch Casper. To configure your SD Card to launch Casper immediately instead of first loading MMM, double-click SD:\ExploitAppSelector.bat and select "..\Casper\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of Casper's boot.elf to SD:\boot.elf (overwriting the boot.elf for MMM).
+<li>Note: After installing IOS53 on a Wii once, you can skip installing it the next time you follow this guide and just use yawmME to launch Casper's boot.elf. To configure your SD Card to launch Casper immediately instead of first loading yawmME, in Windows double-click SD:\ExploitAppSelector.bat and select "..\Casper\boot.elf" to help you quickly switch the boot.dol\elf app that is launched by your exploit; or manually save a copy of Casper's boot.elf to SD:\boot.elf (overwriting the boot.elf for yawmME).
 
 
 </ul>
