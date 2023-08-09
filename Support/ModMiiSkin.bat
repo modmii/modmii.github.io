@@ -43,7 +43,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=7.0.0
+set currentversion=7.0.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -574,7 +574,8 @@ start /min /wait support\wget --no-check-certificate -N "https://github.com/modm
 
 start support\wizapp PB UPDATE 20
 
-support\sfk filter -spat "temp\skins.txt" ++".zip" -!"Default.zip" -rep _".zip*"__ -rep _*\x22__ -write -yes>nul
+support\sfk filter -spat "temp\skins.txt" -rep _\x22path\x22_\x0d\x0a_ -write -yes>nul
+support\sfk filter -spat "temp\skins.txt" ++"Skins/" ++".zip" -!"Default.zip" -rep _"temp/Skins/"__ -rep _".zip*"__ -rep _*\x22__ -write -yes>nul
 
 start support\wizapp PB UPDATE 40
 start support\wizapp PB UPDATE 60

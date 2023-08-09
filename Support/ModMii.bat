@@ -23,7 +23,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=7.0.0
+set currentversion=7.0.1
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -186,7 +186,7 @@ echo.
 
 ::get different framework installer if running windows 7 or lower
 ver>temp\temp.txt
-support\sfk filter -quiet "temp\temp.txt" -rep _*" [Version "__ -rep _"."*__ -rep _"]"__ -write -yes
+support\sfk filter -quiet "temp\temp.txt" -rep _*" "__ -rep _"."*__ -rep _"]"__ -write -yes
 support\sfk filter -quiet "temp\temp.txt" -no-empty-lines -no-blank-lines -write -yes
 set /p winver= <temp\temp.txt
 ::echo %winver%
@@ -14155,6 +14155,7 @@ start /min /wait support\wget --no-check-certificate -N "https://github.com/modm
 if exist not exist temp\list.txt goto:nowifi
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
+support\sfk filter -spat "temp\list.txt" -rep _\x22path\x22_\x0d\x0a_ -write -yes>nul
 support\sfk filter -spat "temp\list.txt" ++".7z" ++"d2x/" -rep _"*temp/d2x/"__ -rep _".7z*"__ -write -yes>nul
 
 copy /y "temp\list.txt" "temp\list2.txt">nul
@@ -16780,7 +16781,7 @@ echo.
 set sysCheckCopy=temp\syscheck_.csv
 copy /y "%sysCheckName%" "%sysCheckCopy%">nul
 
-support\sfk filter "%sysCheckCopy%" -rep _"Chaine Channel"_"Homebrew Channel"_ -rep _"Canale Homebrew"_"Homebrew Channel"_ -rep _"Canal Homebrew"_"Homebrew Channel"_ -rep _"Homebrewkanal"_"Homebrew Channel"_ -write -yes>nul
+support\sfk filter "%sysCheckCopy%" -rep _"Chaine Homebrew"_"Homebrew Channel"_ -rep _"Chaine Channel"_"Homebrew Channel"_ -rep _"Canale Homebrew"_"Homebrew Channel"_ -rep _"Canal Homebrew"_"Homebrew Channel"_ -rep _"Homebrewkanal"_"Homebrew Channel"_ -write -yes>nul
 
 support\sfk filter "%sysCheckCopy%" -rep _"utilise"_"running on"_ -rep _"appoggiato all'"_"running on "_ -rep _"ejecutandose en"_"running on"_ -rep _"benutzt"_"running on"_ -write -yes>nul
 
@@ -16843,6 +16844,7 @@ goto:sysCheckName
 
 
 ::get HBC version (ie. "Homebrew Channel 1.1.2 running on IOS58")
+set HBCversion=0.0.1
 copy /y "%sysCheckCopy%" temp\syscheck.txt>nul
 support\sfk filter -quiet temp\syscheck.txt -ls+"Homebrew Channel " -rep _"Homebrew Channel "__ -rep _" *"__ -write -yes
 set /p HBCversion= <temp\syscheck.txt
@@ -16904,6 +16906,16 @@ support\sfk filter -quiet temp\syscheck.txt -ls+"System Menu " -rep _"*(v"__ -re
 set firmversion=
 set /p firmversion= <temp\syscheck.txt
 del temp\syscheck.txt>nul
+
+
+if /i "%firmversion%" EQU "4609" goto:wiimini
+if /i "%firmversion%" NEQ "4610" goto:skipwiimini
+:wiimini
+echo This SysCheck is for a Wii Mini and is not currently supported, aborting analysis...
+echo.
+@ping 127.0.0.1 -n 5 -w 1000> nul
+goto:sysCheckName
+:skipwiimini
 
 set customSMfix=
 if /i "%firmversion%" LEQ "518" goto:noCSM
@@ -17283,9 +17295,12 @@ IF ERRORLEVEL 1 (set M10=*) else (set M10=)
 ::stubs!
 set STUBS=
 copy /y "%sysCheckCopy%" temp\stubs.txt>nul
+support\sfk filter -quiet temp\stubs.txt -!"(rev 404): Stub" -write -yes
 support\sfk filter -quiet temp\stubs.txt -ls+IOS -rep _IOS_a_ -rep _"["*_z_ -rep _" "*_z_ -write -yes
 ::filter out good stuff, intentionally skipping stubbed SM IOSs, etc.
-support\sfk filter -quiet temp\stubs.txt -!a9z -!a11z -!a12z -!a13z -!a14z -!a15z -!a17z -!a20z -!a21z -!a22z -!a28z -!a30z -!a31z -!a33z -!a34z -!a35z -!a36z -!a37z -!a38z -!a40z -!a41z -!a43z -!a45z -!a46z -!a48z -!a50z -!a52z -!a53z -!a55z -!a56z -!a57z -!a58z -!a60z -!a61z -!a62z -!a70z -!a80z -!a202z -!a222z -!a223z -!a224z -!a236z -!a240z -!a241z -!a242z -!a243z -!a244z -!a245z -!a246z -!a247z -!a248z -!a249z -!a250z -!a251z -!a252z -!a253z -!a254z -!a255z -!a256 -write -yes
+support\sfk filter -quiet temp\stubs.txt -!a9z -!a11z -!a12z -!a13z -!a14z -!a15z -!a17z -!a20z -!a21z -!a22z -!a28z -!a30z -!a31z -!a33z -!a34z -!a35z -!a36z -!a37z -!a38z -!a40z -!a41z -!a43z -!a45z -!a46z -!a48z -!a50z -!a52z -!a53z -!a55z -!a56z -!a57z -!a58z -!a60z -!a61z -!a62z -!a70z -!a80z -!a236z -!a240z -!a241z -!a242z -!a243z -!a244z -!a245z -!a246z -!a247z -!a248z -!a249z -!a250z -!a251z -!a254z -write -yes
+
+if /i "%hermesOPTION%" EQU "on" support\sfk filter -quiet temp\stubs.txt -!a202z -!a222z -!a223z -!a224z -write -yes
 
 ::filter out IOS59 only for J region
 if /i "%REGION%" EQU "J" support\sfk filter -quiet temp\stubs.txt -!a59z -write -yes
@@ -18871,7 +18886,21 @@ goto:skipall
 :skip
 
 
-if /i "%MENU1%" EQU "SU" (echo      According to your SysCheck log the following files are required) & (echo      in order to update your softmod.) & (echo.)
+if /i "%MENU1%" NEQ "SU" goto:skipSU
+if /i "%DLTOTAL%" NEQ "2" goto:skipStubMsg
+if /i "%STUBS%" NEQ "*" goto:skipStubMsg
+
+echo      According to your SysCheck log your mods are up to date.
+echo      However, you have some unnecessary IOSs that can optionally be removed or stubbed
+echo.
+goto:skipSU
+
+:skipStubMsg
+echo      According to your SysCheck log the following files are required
+echo      in order to update your softmod.
+echo.
+
+:skipSU
 
 echo      The following %DLTOTAL% files will be downloaded to "%DRIVE%":
 :skipall
@@ -24369,7 +24398,7 @@ if /i "%sneekverbose%" EQU "on" echo ControlClick ("SNEEK Installer","SNEEK setu
 
 ::support for unicode (only if on windows 10, as it may not work on older versions), restored back to 437 later
 ver>temp\temp.txt
-support\sfk filter -quiet "temp\temp.txt" -rep _*" [Version "__ -rep _"."*__ -rep _"]"__ -write -yes
+support\sfk filter -quiet "temp\temp.txt" -rep _*" "__ -rep _"."*__ -rep _"]"__ -write -yes
 support\sfk filter -quiet "temp\temp.txt" -no-empty-lines -no-blank-lines -write -yes
 set /p winver= <temp\temp.txt
 ::echo %winver%
