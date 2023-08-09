@@ -61,7 +61,16 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 
 
 
-
+<h2 id="7.0.1"><a href="#7.0.1">7.0.1 Changelog - 2023:08-09:</a></h2>
+<li>SysCheck Updater will now also suggest stubbing\removing IOS 252 and higher if detected (except IOS254 Bootmii). This is to ensure the recommended IOS248-251 are selected by USB Loader GX's Auto IOS setting, which prefers higher IOS slots all else being equal. Users wishing to use unique cIOS configurations should install them to slots 240-247 to avoid being nagged, or simply ignore optional recommendations to stub\remove cIOSs that you want to keep.
+<li>SysCheck Updater will now suggest removing Hermes cIOSs (when detected) if the Hermes cIOS option is disabled. If enabled, ModMii will continue to direct users to install Hermes cIOSs if missing.
+<li>To avoid redundant recommendations, ModMii's SysCheck Updater will not recommend removing\stubbing IOSs if already stubbed by ModMii (e.g. stub IOS is rev 404).
+<li>If the only SysCheck Updater recommendation is to stub\remove some IOSs a custom message is displayed indicating this is optional and all other mods are up to date.
+<li>Added check to SysCheck Updater to abort if it detects a Wii Mini System Menu version (v4609 or v4610).
+<li>Fixed bug causing ModMii to crash if analyzing a SysCheck log that is in French and also references an older version of the HBC (1.1.0 and lower).
+<li>Fixed Bug preventing the selection of alternate d2x cIOS versions and ModMii Skin themes that are hosted online.
+<li>Fixed bug causing ModMii to crash if running a Spanish version of Windows and missing NET Framework 3.5 or trying to install neek.
+<br>
 
 
 
