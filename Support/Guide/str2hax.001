@@ -32,4 +32,4 @@ Requirements: a WiFi connection on your Wii, but does not require an SD card to 
 </ol>
 
 <br>
-<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://wii.guide/riiconnect24.html" target="_blank">RiiConnect24's DNS</a>, the choice is yours!</i><br>
+<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://wii.hacks.guide/riiconnect24.html" target="_blank">RiiConnect24's DNS</a>, the choice is yours!</i><br>

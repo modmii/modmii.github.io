@@ -23,7 +23,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=7.0.1
+set currentversion=7.0.2
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2384,7 +2384,7 @@ support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong S
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
 echo.
 echo     Install themes for YOUR System Menu version using MyMenuifyMod from ModMii's Download Page 3.
-echo     More tips on finding themes and using MyMenuifyMod available at https://wii.guide/themes
+echo     More themes available at wiithemer.org and wii.hacks.guide/themes
 echo.
 echo     Note: to check your System Menu version, turn on your wii, click the Wii button in the
 echo           bottom left of the main system menu, click Wii Settings,
@@ -2434,7 +2434,7 @@ support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong S
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
 echo.
 echo     Install themes for YOUR System Menu version using MyMenuifyMod from ModMii's Download Page 3.
-echo     More tips on finding themes and using MyMenuifyMod available at https://wii.guide/themes
+echo     More themes available at wiithemer.org and wii.hacks.guide/themes
 echo.
 
 if not exist temp\TMCL.exe goto:downloadit
@@ -2632,7 +2632,7 @@ support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong S
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
 echo.
 echo     Install themes for YOUR System Menu version using MyMenuifyMod from ModMii's Download Page 3.
-echo     More tips on finding themes and using MyMenuifyMod available at https://wii.guide/themes
+echo     More themes available at wiithemer.org and wii.hacks.guide/themes
 echo.
 
 set multimym=?
@@ -16812,6 +16812,9 @@ if /i "%d2x-beta-rev%" EQU "10-beta52" support\sfk filter "%sysCheckCopy%" -rep 
 if /i "%d2x-beta-rev%" EQU "8-final" support\sfk filter "%sysCheckCopy%" -rep _d2x-v10beta52_d2x-v8final_ -write -yes>nul
 if /i "%d2x-beta-rev%" EQU "8-final" support\sfk filter "%sysCheckCopy%" -rep _d2x-v11beta1_d2x-v8final_ -write -yes>nul
 
+::remove any lines ending in ": Skipped" and assume outdated, this will also prevent stubs from being listed like 249 (even though they won't be constructed)
+support\sfk filter "%sysCheckCopy%" -le!": Skipped" -write -yes>nul
+
 ::if /i "%d2x-beta-rev%" EQU "11-beta1" support\sfk filter "%sysCheckCopy%" -rep _d2x-v8final_d2x-v11beta1_ -write -yes>nul
 ::if /i "%d2x-beta-rev%" EQU "11-beta1" support\sfk filter "%sysCheckCopy%" -rep _d2x-v10beta52_d2x-v11beta1_ -write -yes>nul
 
@@ -17181,6 +17184,9 @@ IF ERRORLEVEL 1 (set IOS61=*) else (set IOS61=)
 findStr /I /B /C:"IOS62 (rev 6430): No Patches" "%sysCheckCopy%" >nul
 IF ERRORLEVEL 1 (set IOS62=*) else (set IOS62=)
 
+findStr /I /B /C:"BC v6" "%sysCheckCopy%" >nul
+IF ERRORLEVEL 1 (set BC=*) else (set BC=)
+
 :skipactivecheck
 
 
@@ -17273,13 +17279,13 @@ IF NOT ERRORLEVEL 1 set IOS52P=
 ::cMIOS
 if /i "%CMIOSOPTION%" EQU "OFF" goto:skipcMIOScheck
 set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=
-findStr /I /B /C:"MIOS v65535" "%sysCheckCopy%" >nul
+findStr /I /B /E /C:"MIOS v65535" "%sysCheckCopy%" >nul
 IF ERRORLEVEL 1 set RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 :skipcMIOScheck
 
 ::MIOSv10
 if /i "%CMIOSOPTION%" EQU "ON" goto:skipMIOScheck
-findStr /I /B /C:"MIOS v10" "%sysCheckCopy%" >nul
+findStr /I /B /E /C:"MIOS v10" "%sysCheckCopy%" >nul
 IF ERRORLEVEL 1 (set M10=*) else (set M10=)
 :skipMIOScheck
 
@@ -17298,7 +17304,11 @@ copy /y "%sysCheckCopy%" temp\stubs.txt>nul
 support\sfk filter -quiet temp\stubs.txt -!"(rev 404): Stub" -write -yes
 support\sfk filter -quiet temp\stubs.txt -ls+IOS -rep _IOS_a_ -rep _"["*_z_ -rep _" "*_z_ -write -yes
 ::filter out good stuff, intentionally skipping stubbed SM IOSs, etc.
-support\sfk filter -quiet temp\stubs.txt -!a9z -!a11z -!a12z -!a13z -!a14z -!a15z -!a17z -!a20z -!a21z -!a22z -!a28z -!a30z -!a31z -!a33z -!a34z -!a35z -!a36z -!a37z -!a38z -!a40z -!a41z -!a43z -!a45z -!a46z -!a48z -!a50z -!a52z -!a53z -!a55z -!a56z -!a57z -!a58z -!a60z -!a61z -!a62z -!a70z -!a80z -!a236z -!a240z -!a241z -!a242z -!a243z -!a244z -!a245z -!a246z -!a247z -!a248z -!a249z -!a250z -!a251z -!a254z -write -yes
+support\sfk filter -quiet temp\stubs.txt -!a9z -!a11z -!a12z -!a13z -!a14z -!a15z -!a17z -!a20z -!a21z -!a22z -!a28z -!a30z -!a31z -!a33z -!a34z -!a35z -!a36z -!a37z -!a38z -!a40z -!a41z -!a43z -!a45z -!a46z -!a48z -!a50z -!a52z -!a53z -!a55z -!a56z -!a57z -!a58z -!a60z -!a61z -!a62z -!a70z -!a80z -!a248z -!a249z -!a250z -!a251z -!a254z -write -yes
+
+::removed the following whitelisted slots from suggesting they optionally be stubbed in the syscheck updater wizard
+::-!a236z -!a240z -!a241z -!a242z -!a243z -!a244z -!a245z -!a246z -!a247z 
+
 
 if /i "%hermesOPTION%" EQU "on" support\sfk filter -quiet temp\stubs.txt -!a202z -!a222z -!a223z -!a224z -write -yes
 
@@ -17328,6 +17338,8 @@ set "STUBSlist=%STUBSlist:~0,-1%"
 :nostubs
 
 
+::disable RiiConnect24 check as it no longer requires a patched IOS31 or system menu IOS
+goto:NoRiiConnect24Check
 
 ::check for RiiConnect24 IOS31 and IOS80
 set RiiConnect24Detected=
@@ -17429,6 +17441,7 @@ if /i "%IOS50P%" EQU "*" set yawm=*
 if /i "%IOS52P%" EQU "*" set yawm=*
 if /i "%OHBC%" EQU "*" set yawm=*
 if /i "%STUBS%" EQU "*" set yawm=*
+if /i "%BC%" EQU "*" set yawm=*
 
 set BACKB4QUEUE=sysCheckName
 goto:DOWNLOADQUEUE
@@ -26194,7 +26207,7 @@ if /i "%MENU1%" EQU "W" support\sfk filter "%Drive%\%guidename%" -!"if you are m
 
 ::common important note, end bullet tag and line break
 
-echo ^<li^>Detailed guides covering a broader range of Wii topics available at the ^<a href^=^"http://www.sites.google.com/site/completesg/^" target^=^"_blank^"^>Complete Softmod Guide^<^/a^> and ^<a href^=^"http://wii.guide^" target^=^"_blank^"^>wii.guide^</a^>^</li^> >>"%Drive%"\%guidename%
+echo ^<li^>Detailed guides covering a broader range of Wii topics available at the ^<a href^=^"http://www.sites.google.com/site/completesg/^" target^=^"_blank^"^>Complete Softmod Guide^<^/a^> and ^<a href^=^"http://wii.hacks.guide^" target^=^"_blank^"^>wii.guide^</a^>^</li^> >>"%Drive%"\%guidename%
 
 echo ^<li^>If you come across a term or abbreviation that you're not familar with you can reference the ^<a href^=^"https://wiibrew.org/wiki/Glossary^" target^=^"_blank^"^>WiiBrew Glossary^<^/a^> or the ^<a href^=^"https://sites.google.com/site/completesg/other-stuff/wii-glossary^" target^=^"_blank^"^>CSG Glossary^</a^>^</li^> >>"%Drive%"\%guidename%
 
@@ -26751,7 +26764,7 @@ for /f %%a in (temp\stubs.txt) do set /a TotalSTUBS+=1
 support\sfk echo -spat "<div style><div class=\x22spoilerfont\x22 style=\x22text-align:left;\x22><input value=\x22  Optional %TotalSTUBS% Stub IOS WADs  \x22 style=\x22margin: 0px; padding: 0px; font-size: large;\x22 onclick=\x22if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Optional Stub IOS WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Optional %TotalSTUBS% Stub IOS WADs  '; }\x22 type=\x22button\x22></div><div class=\x22alt2\x22 style=\x22border: 0px inset ; margin: 0px; padding: 6px;\x22><div style=\x22display: none;\x22>">>"%Drive%"\%guidename%
 
 
-echo You have some extra IOSs installed on your Wii that are unnecessary. Optionally recover some space by navigating to the WAD/STUBS folder and repeating the steps above to install the %TotalSTUBS% stub IOS WADs below.^<br^>^<br^>>>"%Drive%"\%guidename%
+echo You have some extra IOSs installed on your Wii that are unnecessary. Optionally recover some space by navigating to the WAD/STUBS folder and repeating the steps above to install the %TotalSTUBS% stub IOS WADs below. Ignore this for any slots you intentionally installed (e.g. for ^<a href^=^"https^:^/^/gbatemp.net^/threads^/release-fakemote-an-ios-module-that-fakes-wiimotes-from-the-input-of-usb-game-controllers.601771^" target^=^"_blank^"^>Fakemote^<^/a^> support).^<br^>^<br^>>>"%Drive%"\%guidename%
 
 
 ::start ordered list of stubs
@@ -27181,16 +27194,16 @@ echo ^<^/ul^>^<br^>>>"%Drive%"\%guidename%
 copy /y "%Drive%"\%guidename%+Support\Guide\CustomizeLoader.001 "%Drive%"\%guidename%>nul
 
 
-if /i "%LOADER%" EQU "GX" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "FLOW" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "GX" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/web.archive.org^/web^/20231213215727^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "FLOW" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/web.archive.org^/web^/20231213215727^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
 
 if /i "%LOADER%" EQU "FLOW" echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%"\%guidename%
 if /i "%LOADER%" EQU "FLOW" echo ^<li^>WiiFlow Lite emulator plugins allow the loader to also launch games for classic consoles as well. Grab the emulator plugins pack from ^<a href^=^"https^:^/^/gbatemp.net^/threads^/the-great-quest-for-wiiflow-plugins-tm-a-call-for-adventurers.563575" target^=^"_blank^"^>click here^<^/a^>. Note: ignore the v6 download from 2021 and use the newer pack.^<br^>>>"%Drive%"\%guidename%
 if /i "%LOADER%" EQU "FLOW" echo ^<li^>A popular WiiFlow Lite theme is the beautiful 'Rhapsodii Shima' theme. Check it out by clicking ^<a href^=^"https^:^/^/gbatemp.net^/threads^/rhapsodii-shima-5-4.555062^" target^=^"_blank^"^>here^<^/a^>.^<^/ul^>>>"%Drive%"\%guidename%
 
 
-if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
-if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with USB-Loader GX ^<a href^=^"https^:^/^/web.archive.org^/web^/20231213215727^/wii.guide^/usbloadergx^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
+if /i "%LOADER%" EQU "ALL" echo ^<li^>If you have questions about getting started with WiiFlow ^<a href^=^"https^:^/^/web.archive.org^/web^/20231213215727^/wii.guide^/wiiflow^" target^=^"_blank^"^>click here^<^/a^>.^<br^>>>"%Drive%"\%guidename%
 
 if /i "%LOADER%" EQU "ALL" echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%"\%guidename%
 if /i "%LOADER%" EQU "ALL" echo ^<li^>WiiFlow Lite emulator plugins allow the loader to also launch games for classic consoles as well. Grab the emulator plugins pack from ^<a href^=^"https^:^/^/gbatemp.net^/threads^/the-great-quest-for-wiiflow-plugins-tm-a-call-for-adventurers.563575" target^=^"_blank^"^>click here^<^/a^>. Note: ignore the v6 download from 2021 and use the newer pack.^<br^>>>"%Drive%"\%guidename%

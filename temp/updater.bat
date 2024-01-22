@@ -1,6 +1,6 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=7.0.1
+set newversion=7.0.2
 set changelogURL=https://modmii.github.io/changelog.html
 
 ::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
