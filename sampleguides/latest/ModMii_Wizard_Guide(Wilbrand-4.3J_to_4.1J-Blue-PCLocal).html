@@ -27,7 +27,7 @@ ol > li::marker {font-weight: bold;}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 </head>
 <body style="margin:5px 5px 5px 35px;">
-ModMii Wizard Guide<span style="float:right;">v7.0.1 DB:23.03.10 Generated on Wed 08/09/2023 - 15:28</span><br><br>
+ModMii Wizard Guide<span style="float:right;">v7.0.2 DB:23.03.10 Generated on Mon 01/22/2024 - 16:07</span><br><br>
 <!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
@@ -101,7 +101,7 @@ This guide was generated using the following parameters:<br>
 <li>Do not install untested WADs/themes without Priiloader, Bootmii and a nand backup.</li>
 <li>It's probably unnecessary, but you should disconnect all peripherals from the Wii during the modding procedure unless instructed otherwise. This includes gamecube memory cards, gamecube controllers, Wii Speak, etc.</li>
 <!---------------------------------SOFTMOD NOTES ABOVE----------------------------------->
-<li>Detailed guides covering a broader range of Wii topics available at the <a href="http://www.sites.google.com/site/completesg/" target="_blank">Complete Softmod Guide</a> and <a href="http://wii.guide" target="_blank">wii.guide</a></li> 
+<li>Detailed guides covering a broader range of Wii topics available at the <a href="http://www.sites.google.com/site/completesg/" target="_blank">Complete Softmod Guide</a> and <a href="http://wii.hacks.guide" target="_blank">wii.guide</a></li> 
 <li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
 <li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
 <font size="6"><li><a name="Hacking">Hacking your Wii</a></li></font><br><ol>
@@ -111,7 +111,6 @@ Partition style\format information for devices that were connected when this gui
 <pre>
 DeviceID  FileSystem  
 H:        NTFS        
-K:        NTFS        
 X:        NTFS        
 </pre></div></div></div>
 <i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup). Make sure to always plug your hard drive into usb port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive, you can launch apps and install WADs over WiFi to your Wii from your PC. Just open apps (boot.dol\elf files) or WADs with ModMii. Note that some apps may not work properly or support all features if they require an SD or HDD and you should never attempt to change the region of a console via WiFi.</i><br>
@@ -225,7 +224,7 @@ Requirements: a WiFi connection on your Wii, but does not require an SD card to 
 </ol>
 
 <br>
-<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://wii.guide/riiconnect24.html" target="_blank">RiiConnect24's DNS</a>, the choice is yours!</i><br>
+<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://wii.hacks.guide/riiconnect24.html" target="_blank">RiiConnect24's DNS</a>, the choice is yours!</i><br>
 </div>
 <div id="Wilbrand" class="ExploitTab">
 <b>Wilbrand; aka LetterBomb, Mailbox Bomb</b><br>
@@ -773,7 +772,7 @@ Note: Forwarder requires IOS58. SD paths are all checked first, then USB. It's c
 
 	<ul style=align="left" type="square">
 	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Page 2.
-	<li>Grab the <a href="https://wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your Wii or PC!</li>
+	<li>Grab the <a href="https://web.archive.org/web/20231213215727/wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your Wii or PC!</li>
 	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
 	
 		<ul style=align="left" type="disc">	
@@ -784,11 +783,12 @@ Note: Forwarder requires IOS58. SD paths are all checked first, then USB. It's c
 		</ul>
 	</ul>
 <li>Check out some of my custom <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Forwarder Channels</a> to launch your favourite homebrew straight from the System Menu.
-<li>Get a new <a href="https://wii.guide/themes.html" target="_blank">theme for your Wii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using MyMenuify Mod. ThemeMii Mod and MyMenuify Mod are both available on ModMii Classic's Download Page 2.
+<li>Get a new <a href="https://wii.hacks.guide/themes.html" target="_blank">theme for your Wii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using MyMenuify Mod. ThemeMii Mod and MyMenuify Mod are both available on ModMii Classic's Download Page 2.
 <li>"Expand" your Wii's 500MB internal memory for more WiiWare and Virtual Console games by having it load the System Menu from external storage instead. Use ModMii's SNEEK installer and Emulated NAND builder to get started.
 	<ul style=align="left" type="square">
 	<li>You can also use your Wii's nand.bin backup as an Emulated NAND instead of having ModMii build one from scratch. To extract the files from a nand.bin backup to use as an Emulated NAND, simply open the nand.bin file using ModMii.
 	</ul>
+<li>Install <a href="https://gbatemp.net/threads/release-fakemote-an-ios-module-that-fakes-wiimotes-from-the-input-of-usb-game-controllers.601771" target="_blank">Fakemote</a> to an unused IOS slot like 247 to add support for DS3 and DS4 controllers. This can also be done using ModMii Classic's Advanced Downloads Menu by choosing the latest FM (Fakemote) version of d2x in ModMii's options.
 <li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your Wii starts up (SD Card required).
 
 <li>Bring back WiiConnect24 to your Wii! The RiiConnect24 Patcher restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more! You can get this tool from from ModMii Classic's Download Page 2.

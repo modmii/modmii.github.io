@@ -60,6 +60,16 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <ul style=align="left" type="disc">
 
 
+<h2 id="7.0.2"><a href="#7.0.2">7.0.2 Changelog - 2024:01-22:</a></h2>
+
+<li>Removed prompt to retain patched IOS31 if detected in SysChecks as it is no longer required for RiiConnect24.
+<li>SysCheck updater now also checks to make sure BC is v6.
+<li>Removed the following whitelisted slots from suggesting they optionally be stubbed in the SysCheck updater wizard (236,240,241,242,243,244,245,246,247).
+<li>Fix for IOSs that were skipped by SysCheck. Previously if "IOS249: Skipped" (for example) was contained in a SysCheck, ModMii suggested installing both the recommended cIOS249 as well as a stub IOS249, but ModMii appropriately never actually constructed a stub IOS249.
+<li>Fixed SysCheck updater MIOS issue where a stock MIOS v10 was not installed when "MIOS v10 (DIOS MIOS Lite)" was listed in syschecks (and cMIOS option disabled).
+<li>Other minor changes, including references to Fakemote as well as updating wii.guide links to wii.hacks.guide (or archived links where no replacement exists yet).
+<br>
+
 
 <h2 id="7.0.1"><a href="#7.0.1">7.0.1 Changelog - 2023:08-09:</a></h2>
 <li>SysCheck Updater will now also suggest stubbing\removing IOS 252 and higher if detected (except IOS254 Bootmii). This is to ensure the recommended IOS248-251 are selected by USB Loader GX's Auto IOS setting, which prefers higher IOS slots all else being equal. Users wishing to use unique cIOS configurations should install them to slots 240-247 to avoid being nagged, or simply ignore optional recommendations to stub\remove cIOSs that you want to keep.
