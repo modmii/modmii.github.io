@@ -1,4 +1,4 @@
-set DBversion=23.03.10
+set DBversion=24.02.23
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2244,7 +2244,7 @@ goto:DBend
 set name=Bootmii SD Files
 set category=fullextract
 set code1=URL
-set code2="http://static.hackmii.com/bootmii_sd_files.zip"
+set code2="https://web.archive.org/web/20221230171503/http://static.hackmii.com/bootmii_sd_files.zip"
 set version=*
 set dlname="bootmii_sd_files.zip"
 set wadname=bootmii_sd_files.zip
@@ -2413,7 +2413,7 @@ goto:DBend
 :OHBC
 set "name=Open Homebrew Channel WAD (LULZ)"
 set code1=ZIP
-set code2="https://github.com/Devnol/hbc/releases/download/v1.1.5/Open_HBC_1.1.5_LULZ.wad"
+set code2="https://github.com/Wii-Mini-Hacking/hbc/releases/download/v1.1.5/Open_HBC_1.1.5_LULZ.wad"
 set version=*
 set "dlname=Open_HBC_1.1.5_LULZ.wad"
 set "wadname=%dlname%"
@@ -2642,7 +2642,7 @@ goto:DBend
 set name=WiiMC-SS (Media Player)
 set category=auto
 set code1=URL
-set code2="https://hbb1.oscwii.org/hbb/wiimc-ss/wiimc-ss.zip"
+set code2="https://hbb1.oscwii.org/api/v3/contents/WiiMC-SS/WiiMC-SS.zip"
 set version=*
 set dlname=wiimc-ss.zip
 set "wadname=%dlname%"
