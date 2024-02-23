@@ -14,6 +14,16 @@ if "%currentversion%"=="" set currentversion=6.6.3
 if exist temp\currentversionInfo.txt set /p currentversion= <temp\currentversionInfo.txt
 if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
+::remove
+if %currentversion% NEQ 7.0.2 goto:skip
+if /i "%DBversion%" EQU "24.02.23" goto:skip
+echo.
+echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
+echo.
+start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat
+:skip
+
+
 if %currentversion% GEQ 6.6.4 goto:skip
 
 ::force redownload of old cached ARCME.zip
