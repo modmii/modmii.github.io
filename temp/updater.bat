@@ -21,6 +21,7 @@ echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
 echo.
 start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat
+call Support/subscripts/DB.bat
 :skip
 
 
