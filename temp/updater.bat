@@ -35,7 +35,7 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 :skiparcme
 
 ::update old str2hax DNS
-support\sfk filter "Support\Guide\str2hax.001" -rep _"173.201.71.14"_"18.188.135.9"_ -rep _"97.74.103.14"_"18.188.135.9"_ -write -yes>nul
+support\sfk filter "Support\Guide\str2hax.001" -rep _"173.201.71.14"_"3.143.163.250"_ -rep _"97.74.103.14"_"3.143.163.250"_ -rep _"18.188.135.9"_"3.143.163.250"_ -write -yes>nul
 
 ::Disable NUS Autopatcher since NUS back online
 goto:skip
