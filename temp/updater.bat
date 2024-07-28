@@ -25,6 +25,12 @@ call Support/subscripts/DB.bat
 :skip
 
 
+if %currentversion% GEQ 7.0.3 goto:skip
+::update old str2hax DNS's, latest change in mid-2024 during 7.0.2 reign
+support\sfk filter "Support\Guide\str2hax.001" -rep _"18.188.135.9"_"3.143.163.250"_ -rep _"173.201.71.14"_"3.143.163.250"_ -rep _"97.74.103.14"_"3.143.163.250"_ -write -yes>nul
+:skip
+
+
 if %currentversion% GEQ 6.6.4 goto:skip
 
 ::force redownload of old cached ARCME.zip
@@ -34,8 +40,6 @@ support\sfk md5 -quiet -verify 4eff09f8a16ab6157edcb339bd909ed3 "temp\ARCME.zip"
 if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 :skiparcme
 
-::update old str2hax DNS
-support\sfk filter "Support\Guide\str2hax.001" -rep _"173.201.71.14"_"18.188.135.9"_ -rep _"97.74.103.14"_"18.188.135.9"_ -write -yes>nul
 
 ::Disable NUS Autopatcher since NUS back online
 goto:skip
