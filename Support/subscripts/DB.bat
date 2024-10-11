@@ -2250,8 +2250,8 @@ set dlname="bootmii_sd_files.zip"
 set wadname=bootmii_sd_files.zip
 set filename=ppcboot.elf
 ::latest md5 in case users already have the latest version of bootmii on SD
-set md5=4b2ac026e3b08a588a340841244f4e98
-set md5alt=cad3fad8e5d20cc41168dbb04bd5cde1
+set md5=cad3fad8e5d20cc41168dbb04bd5cde1
+set md5alt=4b2ac026e3b08a588a340841244f4e98
 set path1=bootmii\
 goto:DBend
 
