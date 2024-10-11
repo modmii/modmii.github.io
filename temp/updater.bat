@@ -16,7 +16,7 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
 ::remove
 if %currentversion% NEQ 7.0.2 goto:skip
-if /i "%DBversion%" EQU "24.02.23" goto:skip
+if /i "%DBversion%" EQU "24.10.11" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
 echo.
