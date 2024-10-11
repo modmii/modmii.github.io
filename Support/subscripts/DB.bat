@@ -1,4 +1,4 @@
-set DBversion=24.02.23
+set DBversion=24.10.11
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2244,7 +2244,7 @@ goto:DBend
 set name=Bootmii SD Files
 set category=fullextract
 set code1=URL
-set code2="https://web.archive.org/web/20221230171503/http://static.hackmii.com/bootmii_sd_files.zip"
+set code2="https://wii.hacks.guide/assets/files/bootmii_sd_files.zip"
 set version=*
 set dlname="bootmii_sd_files.zip"
 set wadname=bootmii_sd_files.zip
@@ -2552,7 +2552,8 @@ goto:DBend
 set name=Customize Mii
 set category=fullextract
 set code1=URL
-set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/CustomizeMii%203.11.rar"
+::%20=space, for batch changed to %%20 to work
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/CustomizeMii%%203.11.rar"
 set version=*
 set dlname=CustomizeMii 3.11.rar
 set wadname=CustomizeMii 3.11.rar
