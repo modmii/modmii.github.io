@@ -1,4 +1,4 @@
-set DBversion=24.10.11
+set DBversion=24.10.14
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2206,9 +2206,9 @@ goto:DBend
 set category=auto
 set name=USB Loader GX
 set code1=URL
-set code2="https://hbb1.oscwii.org/hbb/usbloader_gx/usbloader_gx.zip"
+set code2="https://github.com/wiidev/usbloadergx/releases/download/v3.0-r1281/usbloadergx_r1281.zip"
 set version=*
-set dlname=usbloader_gx.zip
+set "dlname=usbloadergx_r1281.zip"
 set "wadname=%dlname%"
 set filename=boot.dol
 set path1=apps\usbloader_gx\
