@@ -16,7 +16,7 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
 ::remove
 if %currentversion% NEQ 7.0.2 goto:skip
-if /i "%DBversion%" EQU "24.10.11" goto:skip
+if /i "%DBversion%" EQU "24.10.14" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
 echo.
@@ -128,6 +128,20 @@ if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%cur
 support\7za2 x %UPDATENAME%.zip -aoa
 del %UPDATENAME%.zip>nul
 del support\7za2.exe>nul
+
+
+if %currentversion% GEQ 7.0.4 goto:skip
+::check for legacy d2x-beta.bat's, if "legacy" found no need for further checks
+if not exist support\d2x-beta goto:skip
+findStr "legacy" "support\d2x-beta\d2x-beta.bat" >nul
+IF ERRORLEVEL 1 goto:skip
+rd /s /q support\d2x-beta
+echo.
+echo d2x cIOS version restored to default but you can change it again in Options
+echo.
+@ping 127.0.0.1 -n 2 -w 1000> nul
+:skip
+
 
 ::patch now too instead of later
 ::skip patches...
