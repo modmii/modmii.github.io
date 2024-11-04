@@ -23,7 +23,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=7.0.2
+set currentversion=7.0.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -2484,7 +2484,7 @@ del "temp\%wadname%">nul
 cd /d temp
 echo Downloading %wadname% for constructing %mym2csm% themes ...
 echo.
-..\support\NusFileGrabber.exe %version% http://ccs.cdn.sho.rc24.xyz/ccs/download/
+..\support\NusFileGrabber.exe %version% http://ccs.shop.wii.com/ccs/download
 echo.
 if not exist "%dlname%" (support\sfk.exe echo [%redtext%]Failed to download %wadname%, exiting...) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 move /Y "%dlname%" "%wadname%">nul
@@ -2717,11 +2717,11 @@ goto:csm2csm
 :csmgetfolder
 set "mymfile=%cmdinput:*\=%"
 set "mympath=%cmdinput%"
-:stripmymfile
+:stripmymfile2
 set "mymfile=%mymfile:*\=%"
 echo "%mymfile%">temp\temp.txt
 findStr \\ temp\temp.txt>nul
-IF NOT ERRORLEVEL 1 goto:stripmymfile
+IF NOT ERRORLEVEL 1 goto:stripmymfile2
 
 echo set "mympath=%%mympath:%mymfile%=%%">temp\temp.bat
 call temp\temp.bat
@@ -2731,7 +2731,7 @@ set "mympath=%mympath:~0,-1%"
 set "mymfile=%mympath:*\=%"
 set droptype=folder
 set "cmdinput=%mympath%"
-goto:stripmymfile
+goto:stripmymfile2
 :skip
 
 set "mympath=%cmdinput%"
@@ -4589,8 +4589,8 @@ set watitle=ModMii Skin
 if exist "Support\Skins\%skin%\skin.ico" (set "waico=Support\Skins\%skin%\skin.ico") else (set "waico=Support\Skins\Default\skin.ico")
 if exist "Support\Skins\%skin%\CLASSIC.bmp" (set "wabmp=Support\Skins\%skin%\CLASSIC.bmp") else (set "wabmp=Support\Skins\Default\CLASSIC.bmp")
 
-set temp=temp
-set wabat=%TEMP%\wabat.bat
+::set temp=temp
+set wabat=temp\wabat.bat
 set wasig=ModMii v%currentversion% by XFlak
 set watext=~~~ModMii Classic Working...
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -5182,7 +5182,7 @@ if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neeknam
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+start /min /wait support\wget --no-check-certificate -t 3 "http://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
 
 if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
 
@@ -5304,7 +5304,7 @@ if /i "%SkinMode%" EQU "Y" goto:noRevcmd
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-start /min /wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+start /min /wait support\wget --no-check-certificate -t 3 "http://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
 
 if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
 
@@ -21331,7 +21331,7 @@ goto:mym_download
 if exist temp\%dlname% goto:AlreadyinTemp
 
 
-support\NusFileGrabber.exe %version% http://ccs.cdn.sho.rc24.xyz/ccs/download/
+support\NusFileGrabber.exe %version% http://ccs.shop.wii.com/ccs/download
 if exist 000000%version%.app move /Y 000000%version%.app temp\%dlname%>nul
 
 :AlreadyinTemp
@@ -22451,7 +22451,7 @@ set dlname=%wadname:~0,8%.app
 
 if exist temp\%wadname% goto:AlreadyinTemp
 
-support\NusFileGrabber.exe %version% http://ccs.cdn.sho.rc24.xyz/ccs/download/
+support\NusFileGrabber.exe %version% http://ccs.shop.wii.com/ccs/download
 move /Y "%dlname%" temp\%wadname%>nul
 
 :AlreadyinTemp
@@ -24252,7 +24252,7 @@ if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
 mkdir temp\%wadname:~0,-4%
 
-start /min /wait support\wget --no-check-certificate -t 3 http://ufpr.dl.sourceforge.net/project/sneek-modmii/%wadname%
+start /min /wait support\wget --no-check-certificate -t 3 http://master.dl.sourceforge.net/project/sneek-modmii/%wadname%
 
 if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
 
@@ -24288,7 +24288,7 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 30
 echo Downloading 0000000e.app from IOS80
 if exist temp\0000000e_IOS80.app goto:AlreadyinTemp
 
-support\NusFileGrabber.exe 0e http://ccs.cdn.sho.rc24.xyz/ccs/download/
+support\NusFileGrabber.exe 0e http://ccs.shop.wii.com/ccs/download
 move /Y 0000000e.app temp\0000000e_IOS80.app>nul
 
 :AlreadyinTemp
@@ -24310,7 +24310,7 @@ goto:skipDL01
 :DL01
 echo Downloading 00000001.app from IOS60
 if exist temp\00000001_IOS60.app goto:AlreadyinTemp
-support\NusFileGrabber.exe 01_60 http://ccs.cdn.sho.rc24.xyz/ccs/download/
+support\NusFileGrabber.exe 01_60 http://ccs.shop.wii.com/ccs/download
 move /Y 00000001.app temp\00000001_IOS60.app>nul
 
 :AlreadyinTemp
@@ -24358,7 +24358,7 @@ echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
 
-start /min /wait support\wget --no-check-certificate -t 3 "http://ufpr.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+start /min /wait support\wget --no-check-certificate -t 3 "http://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
 if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
 
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
@@ -24902,7 +24902,7 @@ if /i "%AUSKIP%" EQU "OFF" start /min /wait support\wget --no-check-certificate 
 if /i "%AUSKIP%" EQU "OFF" goto:skip
 
 if not exist temp\EmuPriiloader.zip start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EmuPriiloader.zip"
-::Priiloader-v0.7neek.app is a mirror of: https://sourceforge.net/projects/neek2o/files/priiloader.app/download?use_mirror=master&download=&failedmirror=ufpr.dl.sourceforge.net
+::Priiloader-v0.7neek.app is a mirror of: https://sourceforge.net/projects/neek2o/files/priiloader.app/download?use_mirror=master&download=&failedmirror=master.dl.sourceforge.net
 :skip
 
 if exist EmuPriiloader.zip move /Y EmuPriiloader.zip temp\EmuPriiloader.zip>nul
@@ -26648,6 +26648,7 @@ if /i "%OHBC%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk e
 if /i "%IE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[E]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%IJ%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[J]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%IU%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eOpera-Internet-Channel-NUS[U]\x3c/li\x3e>>"%Drive%"\%guidename%)
+if /i "%P0%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.0-NUS-v2\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%P%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3\x3c/li\x3e>>"%Drive%"\%guidename%)
 ::if /i "%PK%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3ePhoto-Channel-1.1-NUS-v3[K]\x3c/li\x3e>>"%Drive%"\%guidename%)
 if /i "%RSE%" EQU "*" (SET /a guidewadcount=%guidewadcount%+1) & (support\sfk echo -spat \x3cli\x3eRegion-Select-NUS-v2[E]\x3c/li\x3e>>"%Drive%"\%guidename%)

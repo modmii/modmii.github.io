@@ -1,6 +1,6 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=7.0.2
+set newversion=7.0.3
 set changelogURL=https://modmii.github.io/changelog.html
 
 ::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
@@ -14,7 +14,8 @@ if "%currentversion%"=="" set currentversion=6.6.3
 if exist temp\currentversionInfo.txt set /p currentversion= <temp\currentversionInfo.txt
 if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
-::remove
+::disabled since 7.0.3 update fixes this anyway
+goto:skip
 if %currentversion% NEQ 7.0.2 goto:skip
 if /i "%DBversion%" EQU "24.10.14" goto:skip
 echo.
@@ -128,20 +129,6 @@ if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%cur
 support\7za2 x %UPDATENAME%.zip -aoa
 del %UPDATENAME%.zip>nul
 del support\7za2.exe>nul
-
-
-if %currentversion% GEQ 7.0.4 goto:skip
-::check for legacy d2x-beta.bat's, if "legacy" found no need for further checks
-if not exist support\d2x-beta goto:skip
-findStr "legacy" "support\d2x-beta\d2x-beta.bat" >nul
-IF ERRORLEVEL 1 goto:skip
-rd /s /q support\d2x-beta
-echo.
-echo d2x cIOS version restored to default but you can change it again in Options
-echo.
-@ping 127.0.0.1 -n 2 -w 1000> nul
-:skip
-
 
 ::patch now too instead of later
 ::skip patches...

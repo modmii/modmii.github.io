@@ -43,7 +43,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=7.0.2
+set currentversion=7.0.3
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -235,8 +235,8 @@ if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win trans ititle "ModMiiSkin
 
 set watitle=ModMii Skin
 set "waico=%skin.ico%"
-set temp=temp
-set wabat=%TEMP%\wabat.bat
+::set temp=temp
+set wabat=temp\wabat.bat
 set wasig=ModMii v%currentversion% by XFlak
 
 ::side bar - 150x300 pixels

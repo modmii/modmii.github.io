@@ -7,7 +7,7 @@ Requirements: a WiFi connection on your Wii, but does not require an SD card to 
 <li>Go to the "Wii Options" Menu, then select "Wii Settings", then go to Page 2 and select "Internet", select "Connection Settings", then choose your active connection.<br>
 <li>Select "Change settings" and scroll 3 times to the right to select "Auto-Obtain DNS" (Not IP Address)<br>
 <li>Select "No" then select "Advanced Settings".<br>
-<li><b>Change both the Primary DNS and Secondary DNS to <kbd>18.188.135.9</kbd></b><br>
+<li><b>Change both the Primary DNS and Secondary DNS to <kbd>3.143.163.250</kbd></b><br>
 	<ul style=align="left" type="disc">
 	<li>If you later have connection test issues or other problems google str2hax DNS to see if it has recently changed as it does from time to time.
 	</ul>
