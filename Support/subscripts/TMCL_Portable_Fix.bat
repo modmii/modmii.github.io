@@ -1,10 +1,25 @@
-::Portable ModMii Installation fix
-set "ModMiiDir=%cd%"
-if /i "%Homedrive%" EQU "%ModMiiDrive%" goto:skipPortableFix
-if not exist "%homedrive%\ModMii\temp" mkdir "%homedrive%\ModMii\temp"
-copy /y "temp\TMCL.exe" "%homedrive%\ModMii\temp\TMCL.exe">nul
-copy /y "temp\ASH.exe" "%homedrive%\ModMii\temp\ASH.exe">nul
-copy /y "temp\ICSharpCode.SharpZipLib.dll" "%homedrive%\ModMii\temp\ICSharpCode.SharpZipLib.dll">nul
-copy /y "temp\themewii.exe" "%homedrive%\ModMii\temp\themewii.exe">nul
-cd /d "%homedrive%\ModMii"
+@echo off
+setlocal enabledelayedexpansion
+
+:: Portable ModMii Installation fix
+set "ModMiiDir=%~dp0"
+set "ModMiiDrive=%~d0"
+
+if /i "%HOMEDRIVE%" EQU "%ModMiiDrive%" goto :skipPortableFix
+
+set "ModMiiTempDir=%HOMEDRIVE%\ModMii\temp"
+if not exist "%ModMiiTempDir%" mkdir "%ModMiiTempDir%"
+
+set "files=TMCL.exe ASH.exe ICSharpCode.SharpZipLib.dll themewii.exe"
+for %%f in (%files%) do (
+    if exist "%ModMiiDir%\temp\%%f" (
+        copy /y "%ModMiiDir%\temp\%%f" "%ModMiiTempDir%\%%f" >nul
+    ) else (
+        echo Warning: File %%f not found in %ModMiiDir%\temp
+    )
+)
+
+cd /d "%HOMEDRIVE%\ModMii"
+
 :skipPortableFix
+echo ModMii installation fix complete.
