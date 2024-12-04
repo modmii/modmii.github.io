@@ -14,10 +14,9 @@ if "%currentversion%"=="" set currentversion=6.6.3
 if exist temp\currentversionInfo.txt set /p currentversion= <temp\currentversionInfo.txt
 if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
-::disabled since 7.0.3 update fixes this anyway
-goto:skip
-if %currentversion% NEQ 7.0.2 goto:skip
-if /i "%DBversion%" EQU "24.10.14" goto:skip
+
+if %currentversion% NEQ 7.0.3 goto:skip
+if /i "%DBversion%" EQU "24.12.04" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
 echo.
