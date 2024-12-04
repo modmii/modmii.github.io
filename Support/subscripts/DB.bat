@@ -1,4 +1,4 @@
-set DBversion=24.10.14
+set DBversion=24.12.04
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2484,9 +2484,9 @@ goto:DBend
 set name=NKit Processing App
 set category=fullextract
 set code1=PC
-set code2="https://gbatemp.net/download/nkit.36157/version/36607/download"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/NKit_v1.4.zip"
 set version=*
-set dlname=download
+set dlname=NKit_v1.4.zip
 set wadname=NKit_v1.4.zip
 set filename=NKitProcessingApp.exe
 set md5=b4b1ceb6fc02596f8138eee183f50fcb
