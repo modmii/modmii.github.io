@@ -1,37 +1,51 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 
-::chdir /d "%~dp0"
+:: Change to the script's directory
 pushd "%~dp0"
 cls
+
+:: Check if support folder exists, if not, go up one directory
 if not exist support cd..
 
-set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp
-chcp 437>nul
+:: Set PATH
+set "PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%;%homedrive%\ModMii\temp"
+chcp 437 >nul
 
-::remove setting path's with an & symbol and force default
-if exist Support\settings.bat support\sfk filter -spat Support\settings.bat -!"\x26" -write -yes>nul
-if exist Support\settings.bat call Support\settings.bat
-if "%Drive%"=="" set Drive=COPY_TO_SD
+:: Remove settings with '&' symbol and set default
+if exist "Support\settings.bat" (
+    support\sfk filter -spat "Support\settings.bat" -!"\x26" -write -yes >nul
+    call "Support\settings.bat"
+)
 
-::check if drive folder exists--if second char is ":" check if drive exists
-if /i "%DRIVE%" EQU "%cd%\COPY_TO_SD" set DRIVE=COPY_TO_SD
-if /i "%DRIVE:~1,1%" NEQ ":" goto:skipcheck
-if exist "%DRIVE:~0,2%" (goto:skipcheck) else (set DRIVE=COPY_TO_SD)
-:skipcheck
+:: Set default drive if not specified
+if not defined Drive set "Drive=COPY_TO_SD"
 
-if not exist temp\DownloadQueues mkdir temp\DownloadQueues
+:: Check if drive folder exists or if it's a valid drive letter
+if /i "%DRIVE%" equ "%cd%\COPY_TO_SD" (
+    set "DRIVE=COPY_TO_SD"
+) else if /i "%DRIVE:~1,1%" equ ":" (
+    if not exist "%DRIVE:~0,2%" set "DRIVE=COPY_TO_SD"
+)
 
-echo set AdvNumber=0 >temp\DownloadQueues\CasperBootMiiSD.bat
-echo if /i '?GetAdvNumberOnly?' EQU 'Y' goto:endofqueue>>temp\DownloadQueues\CasperBootMiiSD.bat
-echo Set ROOTSAVE=off>>temp\DownloadQueues\CasperBootMiiSD.bat
-echo Set Option1=off>>temp\DownloadQueues\CasperBootMiiSD.bat
-echo Set casper=*>>temp\DownloadQueues\CasperBootMiiSD.bat
-echo Set bootmiisd=*>>temp\DownloadQueues\CasperBootMiiSD.bat
-echo :endofqueue>>temp\DownloadQueues\CasperBootMiiSD.bat
+:: Create DownloadQueues directory if it doesn't exist
+if not exist "temp\DownloadQueues" mkdir "temp\DownloadQueues"
 
-support\sfk filter -spat temp\DownloadQueues\CasperBootMiiSD.bat -rep _\x27_\x22_ -rep _\x3f_\x25_ -rep _"AdvNumber=0 "_"AdvNumber=0"_ -write -yes>nul
+:: Create CasperBootMiiSD.bat file
+(
+    echo set AdvNumber=0
+    echo if /i "%%GetAdvNumberOnly%%" equ "Y" goto:endofqueue
+    echo set ROOTSAVE=off
+    echo set Option1=off
+    echo set casper=*
+    echo set bootmiisd=*
+    echo :endofqueue
+) > "temp\DownloadQueues\CasperBootMiiSD.bat"
 
+:: Filter CasperBootMiiSD.bat file
+support\sfk filter -spat "temp\DownloadQueues\CasperBootMiiSD.bat" -rep _'_"_ -rep _?_%_ -rep _"AdvNumber=0 "_"AdvNumber=0"_ -write -yes >nul
+
+:: Display information
 echo Casper2BootMii
 echo --------------
 echo.
@@ -42,27 +56,26 @@ echo saved to your SD Card. This will allow you to access
 echo BootMii even on non-modified Wiis.
 echo.
 
-
+:: Run ModMii
 ModMii.exe L CasperBootMiiSD
 
-findStr /I /C:"2 file(s) downloaded succcessfully" temp\ModMii_CMD_LINE_Log.txt >nul
-IF not ERRORLEVEL 1 goto:success
-echo.
-echo Downloads Failed, press any key to exit
-pause>nul
-exit
+:: Check if download was successful
+findstr /I /C:"2 file(s) downloaded successfully" "temp\ModMii_CMD_LINE_Log.txt" >nul
+if errorlevel 1 (
+    echo.
+    echo Downloads Failed, press any key to exit
+    pause >nul
+    exit /b 1
+)
 
+:: Copy and rename files
+copy /y "%DRIVE%\apps\Casper\boot.elf" "%DRIVE%\boot.elf" >nul
+if exist "%Drive%\boot.dol" del "%Drive%\boot.dol" >nul
+copy /y "%DRIVE%\bootmii\armboot.bin" "%DRIVE%\bootmii_ios.bin" >nul
 
-:success
-
-copy /y "%DRIVE%\apps\Casper\boot.elf" "%DRIVE%\boot.elf">nul
-if exist "%Drive%\boot.dol" del "%Drive%\boot.dol"> nul
-copy /y "%DRIVE%\bootmii\armboot.bin" "%DRIVE%\bootmii_ios.bin">nul
-
+:: Display success message
 echo.
 echo SUCCESS!
 echo.
-
 echo Press any key to close this window
-pause>nul
-
+pause >nul
