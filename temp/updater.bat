@@ -7,7 +7,6 @@ set changelogURL=https://modmii.github.io/changelog.html
 ::note when ModMii downloads updater.bat it is renamed to Updatetemp.bat for legacy purposes
 if /i "%debug%" EQU "on" copy "Updatetemp.bat" "Updatetemp_backup.bat">nul
 
-::check if patch required for ModMii 6.6.3 and lower
 ::do not change the below from 6.6.3 for the foreseable future, effective 6.6.4 variable will get updated
 
 if "%currentversion%"=="" set currentversion=6.6.3
@@ -31,7 +30,7 @@ support\sfk filter "Support\Guide\str2hax.001" -rep _"18.188.135.9"_"3.143.163.2
 :skip
 
 
-if %currentversion% GEQ 6.6.4 goto:skip
+if %currentversion% GEQ 6.6.4 goto:skiparcme
 
 ::force redownload of old cached ARCME.zip
 if not exist "temp\ARCME.zip" goto:skiparcme
@@ -41,58 +40,19 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 :skiparcme
 
 
-::Disable NUS Autopatcher since NUS back online
-goto:skip
-
-::if "support\NusFileGrabber.exe" is missing modmii will override version to 0.0.0 to force a full update, no need to apply patch if missing
-if not exist "support\NusFileGrabber.exe" goto:skip
-::if hashes match, then skip patching
-support\sfk md5 -quiet -verify 97e91117b6750b03e0980f54f9db8c38 "Support\NusFileGrabber.exe"
-if not errorlevel 1 goto:skip
-
-echo.
-echo Auto-patching ModMii to fix some NUS download issues
-echo Downloading 2022-07-29 patch files...
-::when updating make sure to catch all instances of ModMii.6.6.3.patch.zip
-if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
-start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii.6.6.3.patch.zip" -O temp\ModMii.6.6.3.patch.zip
-if exist temp\ModMii.6.6.3.patch.zip support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"%cd%" -r
-if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
-
-::check if hashes match now
-support\sfk md5 -quiet -verify 97e91117b6750b03e0980f54f9db8c38 "Support\NusFileGrabber.exe"
-if not errorlevel 1 (set patchresult=pass) else (set patchresult=fail)
-
-if /i "%AudioOption%" NEQ "on" goto:nosound
-if /i "%patchresult%" EQU "pass" (start support\nircmd.exe mediaplay 3000 "support\Success.mp3") else (start support\nircmd.exe mediaplay 3000 "support\Fail.mp3")
-:nosound
-
-echo.
-if /i "%patchresult%" EQU "pass" (support\sfk echo [Green]Patching successful!) else (support\sfk echo [Red]Patching failed!)
-echo.
-
-::pop up for both skin and classic
-
-set watitle=ModMii Auto-Patcher
-set waico=support\icon.ico
-set wabmp=support\bmp\default.bmp
-if "%wasig%"=="" set wasig=Brought to you by XFlak
-
-set watext=~ModMii auto-patched itself to fix some NUS download issues.~~~I can't believe it's been over 12 years that I've been developing ModMii, I can barely remember back when it was still called NUS Auto Downloader!~~~Thanks for all your continued support, every little bit helps and it really means a lot.
-
-if /i "%patchresult%" EQU "pass" start /w support\wizapp NOBACK TB
-
-set watitle=ModMii Skin
-
-if /i "%patchresult%" NEQ "pass" (set watext=ModMii tried and failed to patch itself to fix some NUS download issues) & (start /w support\wizapp MB STOP)
-
-:skip
-
-
 
 if not exist temp\currentversion.txt goto:ReturnToCaller
 set /p currentversion= <temp\currentversion.txt
 
+if exist Support\settings.bat call Support\settings.bat
+IF "%AudioOption%"=="" set AudioOption=on
+IF "%skin%"=="" set skin=Default
+if exist "Support\Skins\Default\Fail.mp3" (set "Fail.mp3=Support\Skins\Default\Fail.mp3") else (set "Fail.mp3=Support\Fail.mp3")
+if exist "Support\Skins\%skin%\Fail.mp3" set "Fail.mp3=Support\Skins\%skin%\Fail.mp3"
+if exist "Support\Skins\Default\Success.mp3" (set "Success.mp3=Support\Skins\Default\Success.mp3") else (set "Success.mp3=Support\Success.mp3")
+if exist "Support\Skins\%skin%\Success.mp3" set "Success.mp3=Support\Skins\%skin%\Success.mp3"
+set waico=support\icon.ico
+set wasig=Brought to you by XFlak
 
 title ModMiiUpdater
 set UPDATENAME=ModMii
@@ -123,45 +83,31 @@ if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
 start /min /wait support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
 if not exist "%UPDATENAME%.zip" goto:updatefail
 
-if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
-if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
+::if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
+::if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
 support\7za2 x %UPDATENAME%.zip -aoa
-del %UPDATENAME%.zip>nul
+
+IF %ERRORLEVEL% EQU 0 goto:continue
+::if exist "support\ModMii-v%currentversion%.bat" ren "support\ModMii-v%currentversion%.bat" "ModMii.bat"
+::if exist "support\ModMiiSkin-v%currentversion%.bat" ren "support\ModMiiSkin-v%currentversion%.bat" "ModMiiSkin.bat"
+del support\7za2.exe>nul
+if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
+goto:updatefail
+
+:continue
+if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
 del support\7za2.exe>nul
 
-::patch now too instead of later
-::skip patches...
-goto:SkipPatches
-echo Applying latest ModMii patch updates...
-echo.
-if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
-start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii.6.6.3.patch.zip" -O temp\ModMii.6.6.3.patch.zip
-
-if not exist temp\ModMii.6.6.3.patch.zip goto:updateOKpatchFAIL
-support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"Support" -r
-del temp\ModMii.6.6.3.patch.zip>nul
-:SkipPatches
-
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Success.mp3"
+if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Success.mp3%"
 Start ModMii.exe
 exit
-
-:updateOKpatchFAIL
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Fail.mp3"
-echo   Update succeeded but patching failed.
-echo.
-echo   Press any key to start ModMii v%newversion%
-pause>nul
-Start ModMii.exe
-exit
-
 
 
 
 :updatefail
 
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Fail.mp3"
-echo   Update failed, check your internet connection and firewall settings.
+if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Fail.mp3%"
+echo   Update failed, check your internet connection and antivirus\firewall settings.
 echo.
 echo   Press any key to return to ModMii v%currentversion%
 pause>nul
@@ -172,8 +118,8 @@ exit
 
 :skin
 ::make cmd window transparent and hidden
-support\nircmd.exe win trans ititle "ModMiiUpdater" 0
-support\nircmd.exe win hide ititle "ModMiiUpdater"
+if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win trans ititle "ModMiiUpdater" 0
+if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiUpdater"
 
 copy /y support\wizapp.exe support\wizapp2.exe>nul
 
@@ -181,12 +127,14 @@ setlocal
 chcp 437>nul
 
 
-set wabmp=support\bmp\UPDATING.bmp
+if exist "Support\Skins\Default\UPDATING.bmp" (set "wabmp=Support\Skins\Default\UPDATING.bmp") else (set wabmp=support\bmp\UPDATING.bmp)
+if exist "Support\Skins\%skin%\UPDATING.bmp" set "wabmp=Support\Skins\%skin%\UPDATING.bmp"
+
 
 set watext=~Updating from v%currentversion% to v%newversion%~~Please Wait...
 
-start support\wizapp PB OPEN
-start support\wizapp PB UPDATE 25
+start support\wizapp2.exe PB OPEN
+start support\wizapp2.exe PB UPDATE 25
 
 ::Kill ModMiiSkin.exe process so it can be updated
 taskkill /im ModMiiSkin.exe /f >nul
@@ -200,46 +148,27 @@ if not exist "%UPDATENAME%.zip" goto:updatefailskin
 
 start support\wizapp2.exe PB UPDATE 50
 
-if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
-if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
+::if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
+::if exist "support\ModMiiSkin.bat" ren "support\ModMiiSkin.bat" "ModMiiSkin-v%currentversion%.bat"
 support\7za2 x %UPDATENAME%.zip -aoa
-start support\wizapp2.exe PB UPDATE 80
-del %UPDATENAME%.zip>nul
 
-
-::patch now too instead of later
-::skip patches...
-goto:SkipPatches
-echo Applying latest ModMii patch updates...
-echo.
-if exist temp\ModMii.6.6.3.patch.zip del temp\ModMii.6.6.3.patch.zip>nul
-start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii.6.6.3.patch.zip" -O temp\ModMii.6.6.3.patch.zip
-start support\wizapp PB UPDATE 90
-if not exist temp\ModMii.6.6.3.patch.zip goto:updateOKpatchFAILskin
-support\7za x -aoa "temp\ModMii.6.6.3.patch.zip" -o"Support" -r
-del temp\ModMii.6.6.3.patch.zip>nul
-:SkipPatches
-
-
-start support\wizapp PB UPDATE 100
-
-start support\wizapp2.exe PB CLOSE
+IF %ERRORLEVEL% EQU 0 goto:continue
+::if exist "support\ModMii-v%currentversion%.bat" ren "support\ModMii-v%currentversion%.bat" "ModMii.bat"
+::if exist "support\ModMiiSkin-v%currentversion%.bat" ren "support\ModMiiSkin-v%currentversion%.bat" "ModMiiSkin.bat"
 del support\7za2.exe>nul
 del support\wizapp2.exe>nul
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Success.mp3"
-Start ModMiiSkin.exe
-exit
+if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
+goto:updatefailskin
 
+:continue
+start support\wizapp2.exe PB UPDATE 80
+start support\wizapp2.exe PB UPDATE 100
+start support\wizapp2.exe PB CLOSE
 
-:updateOKpatchFAILskin
-start support\wizapp PB UPDATE 100
-start support\wizapp PB CLOSE
-
-set watext=~~Update succeeded but patching failed..~~Click any button to return to ModMiiSkin v%currentversion%
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Fail.mp3"
-start /w support\wizapp NOBACK TB
-
-::set wabmp=%wabmplast%
+del support\7za2.exe>nul
+del support\wizapp2.exe>nul
+if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
+if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Success.mp3%"
 Start ModMiiSkin.exe
 exit
 
@@ -248,8 +177,8 @@ exit
 start support\wizapp PB UPDATE 100
 start support\wizapp PB CLOSE
 
-set watext=~~Update check has failed, check your internet connection and firewall settings.~~Click any button to return to ModMiiSkin v%currentversion%
-if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "support\Fail.mp3"
+set watext=~~Update check has failed, check your internet connection and antivirus\firewall settings.~~Click any button to return to ModMiiSkin v%currentversion%
+if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Fail.mp3%"
 start /w support\wizapp NOBACK TB
 
 ::set wabmp=%wabmplast%
