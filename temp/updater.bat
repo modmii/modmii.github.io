@@ -17,12 +17,18 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 ::update below with latest recommended d2x
 set CurrentcIOS=d2x-v11-beta2
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-set watitle=ModMii d2x cIOS Warning
-set "watext=Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %CurrentcIOS% is recommended, consider enabling it in ModMii Classic's options"
 
 if not exist support\d2x-beta\d2x-beta.bat goto:continue
+
+set "watitlebak=%watitle%"
+set "watextbak=%watext%"
+set watitle=ModMii d2x cIOS Warning
+set "watext=Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %CurrentcIOS% is recommended, consider enabling it in ModMii Classic's options"
 if /i "%d2x-beta-rev%" NEQ "%CurrentcIOS:~5%" echo %watext%
 if /i "%updatermode%" EQU "skin" if /i "%d2x-beta-rev%" NEQ "%CurrentcIOS:~5%" start support\wizapp MB exclamation
+set "watitle=%watitlebak%"
+set "watext=%watextbak%"
+
 if exist support\d2x-beta\d2x-beta.bat goto:skip
 
 :continue
