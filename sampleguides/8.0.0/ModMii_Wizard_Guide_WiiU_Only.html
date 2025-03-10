@@ -1,0 +1,881 @@
+<html>
+<head>
+<title>ModMii Wizard Guide</title>
+<link rel="icon" type="image/ico" href="https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/icon.ico"></link>
+<style type="text/css">
+body:before{
+  content: 'SAMPLE!';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  
+  color: #0d745e;
+  font-size: 130px;
+  font-weight: 500px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  opacity: 0.2;
+  transform: rotate(-45deg);
+}
+body { font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif; }
+ol > li::marker {font-weight: bold;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body style="margin:5px 5px 5px 35px;">
+ModMii Wizard Guide<span style="float:right;">v8.0.0|25.03.10 Generated on Mon 03/10/2025 - 16:44</span><br><br>
+<!----------Custom Printing CSS that doesn't print images--------------->
+<style type="text/css" media="print">
+.printbutton {
+  visibility: hidden;
+  display: none;
+}
+@media print {
+  img {
+    display: none !important;
+  }
+  * {
+    background-image: none !important;
+  }
+}
+</style>
+<!----------Print button disabled--------
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print without images'/>");
+</script>
+---------Custom Print button above------->
+
+
+<!--------------Title, pic and scam warning below------------------>
+<p style="text-align:center">
+<font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
+<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0"/></a><br>
+This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
+
+<b>THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.<br>
+NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!<br>
+USE THIS AT YOUR OWN RISK!</b>
+</p>
+<br><br>
+<!--------------Title, pic and scam warning above------------------>
+
+
+<ol type="I">         <!------------This start the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+
+
+<!-------------------------Chosen options chapter below--------------------->
+<font size="6"><li>Your chosen options</li></font><br>
+This guide was generated using the following parameters:<br>
+<ul style=align="left" type="disc">
+<li>Install and\or update all recommended WiiU softmods</li>
+</ul><br>
+<font size="6"><li><a name="Notes">Important Notes</a></li></font><br><ul style=align="left" type="disc">
+<li>This guide requires an internet connection on your console and an SD Card.</li>
+<ul style=align="left" type="square"> <li>A USB Hard Drive can later be used to store game backups, Virtual Console injects, etc, but not to store WiiU homebrew applications which are required to set everything up.</li> </ul>
+<!---------------------------------WiiU NOTES BELOW----------------------------------->
+<li>Check if your SD Card has a lock switch and make sure it's disabled.</li>
+<li>If you get errors during any of the steps try reformatting your SD Card as FAT32.</li>
+<li>If your console ever freezes, hold the power button for 5 seconds to power it off then try again.</li>
+<li>During the modding process if you are prompted for your Nintendo Network ID to launch a channel or app you can select the back arrow button then "Start" to start the software anyway.</li>
+<li>If you brick your vWii for any reason you should be able to recover using <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> or <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> so long as the WiiU menu remains operational; however, vWii NAND Restorer currently requires switching from Aroma to a legacy environment like Tiramisu. Some actions to avoid that may cause brick are listed below:</li>
+	<ul style=align="left" type="square">
+	<li>Never uninstall a System Menu or IOS.</li>
+	<li>Installing a custom System Menu for vWii is a brick risk and you should always have a NAND backup before installing one; however, when done right it will not brick the vWii. vWii themes are experimental and not every MYM\theme will work properly.</li>
+	<li>Replacing any IOS (including TED IOSes) or WADs made for the original Wii on your vWii may semi-brick it. WiiWare wads are fine, but some need to be converted to work.</li>
+	</ul>
+<li>When updating your softmod you should always overwrite old mods by installing new ones, do <u>not</u> try to "Delete everything" or "Start from scratch".</li>
+	<ul style=align="left" type="square">
+	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only your outdated WiiU mods using ModMii's File Cleanup and App Updater feature, or update only outdated vWii mods using ModMii's Syscheck Updater Wizard!</li>
+	</ul>
+<li>If you accept an official Nintendo update after modding, you may lose some of your modifications and have to reinstall them.</li>
+<li>It's probably unnecessary, but you should disconnect all peripherals from the console during the modding procedure unless instructed otherwise.</li>
+<li>If connecting a portable hard drive to your WiiU, a Y-cable may be needed for it to draw power from two usb ports.</li>
+<ul style=align="left" type="square">
+	<li>The WiiU and vWii cannot use the same USB hard drive; however a single SD Card can be used for both.</li>
+	<li>A WiiU Formatted USB hard drive is a hard drive that has been formatted by a WiiU console to its proprietary format. A WiiU formatted USB drive cannot be read by any device other than the WiiU that originally formatted it. If you ever want to use it with another WiiU console or any other devices, you will have to reformat it.</li>
+	<li>The vWii cannot use a WiiU Formatted USB hard drive. It is recommended that USB Hard drives intended for use on the vWii be formatted as FAT32.</li>
+	<li>If a non-WiiU Formatted USB hard drive is detected while in the WiiU menu you will be prompted to format\erase it. Careful not to accidentally format your vWii Hard Drive (if applicable). <!------WiiUredundant2-->The After Modding section of this guide will direct you on how to <i>optionally</i> disable the format prompt.</li><!--WiiUredundant2------><!--WiiUredundant2--If the WiiU is softmodded with Aroma this prompt can be disabled.--WiiUredundant2-->
+	<li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.</li>
+	<li>Double check that your hard drive is always plugged into USB port0 - the one on the back furthest from the edge of the WiiU.</li>
+</ul>
+<!---------------------------------WiiU NOTES ABOVE----------------------------------->
+<li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="http://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="http://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
+<li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
+<li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
+
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen3").click();
+	//document.getElementById("defaultOpen2").click();
+    document.getElementById("defaultOpen").click();
+</script>
+
+<font size="6"><li><a name="Hacking">Hacking your WiiU</a></li></font><br><ol>
+<!---------------------------Before Starting LegacyCFW below------------------------------>
+<font size="5"><li>Before Starting</li></font><br>
+
+If you have an existing legacy Custom Firmware (CFW) setup, uninstall it before proceeding. Choose which legacy CFW to uninstall using the buttons below.<br>
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<br>
+<div style>
+
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen3" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Tiramisu')">Tiramisu</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'CBHC')">CBHC (Coldboot Haxchi)</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Haxchi')">Haxchi</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Indexiine')">Mocha CFW (Indexiine)</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'MochaOnline')">Mocha CFW (Online Exploit)</button>
+
+<br><br>
+
+<!--------------------------------------Tiramisu----------------------------------->
+<div id="Tiramisu" class="LegacyGroup">
+For <b>Tiramisu</b> users: While safe to follow this guide, to install Aroma next to Tiramisu (or vice versa) you only need to add it to your SD card and change the default boot setting in the Environment Loader as described below.<br>
+<ol type="A">
+<li>If autobooting into Tiramisu, hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> while the console is booting to launch the Environment Loader.
+	<ul style=align="left" type="disc">
+	<li>If not autobooting into Tiramisu, launch the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Health & Safety Application</kbd> while holding <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> to launch the Environment Loader.
+	</ul>
+<li>Clear Tiramisu as the default environment by pressing <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd>.
+<li>Using the D-Pad, navigate to <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">aroma</kbd> and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default environment, then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch into Aroma.
+	<ul style=align="left" type="disc">
+	<li>If you see a yellow warning that the update folder exists and updates are not being blocked properly, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> to block updates.
+	<li>If you did not see a yellow warning, but the AutobootMenu says "Updates not blocked!", press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">START (+)</kbd> and <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SELECT (-)</kbd> at the same time until it says they are blocked.
+		<ul style=align="left" type="square">
+		<li>Should you wish to unblock updates in the future follow <a href="https://wiiu.hacks.guide/unblock-updates" target="_blank">these steps</a>.</li>
+		</ul>
+	</ul>
+<li>On the Aroma Boot Selector, the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Wii U Menu</kbd> should already be selected, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default autobooting option (or choose your preferred title to autoboot), then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.
+
+<li>Once you boot into the WiiU Menu, if you see apps on your home screen you have successfully switched to Aroma.
+	<ul style=align="left" type="disc">
+	<li>Although Tiramisu is outdated, you don't need to delete it. If you still decide to use Tiramisu in the future, for legacy homebrew purposes, just launch the EnvironmentLoader again to select it.
+	</ul>
+</ol>
+</div>
+
+<!--------------------------------------CBHC----------------------------------->
+<div id="CBHC" class="LegacyGroup">
+For <b>CBHC (Coldboot Haxchi)</b> users:
+<ol type="A">
+<li>Launch the Homebrew Launcher.
+<li>Launch CBHC Installer.
+<li>Select the DS Virtual Console game you want to uninstall CBHC from then press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button.
+<li>Read the warnings then press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> button.
+<li>Check that your WiiU no longer autoboots to CBHC by rebooting the console.
+<li>If no autobooting or menu screen appreared when the console was booting up, you can launch System Settings then go to Data Management and then safely uninstall the application called <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">DON'T TOUCH ME</kbd>.
+	<ul style=align="left" type="square">
+	<li>If you receive a pop-up stating, "A system-memory error has occurred. Turn off the console, and then try again." while deleting the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">DON'T TOUCH ME</kbd> application, restart the system and try to delete the application again. Please make sure you followed all above steps before deleting the application.
+	</ul>
+</ol>
+</div>
+
+<!--------------------------------------Haxchi----------------------------------->
+<div id="Haxchi" class="LegacyGroup">
+For <b>Haxchi</b> users: Uninstall the Haxchi app from Data Management in the System Settings app.<br>
+</div>
+
+<!--------------------------------------Indexiine----------------------------------->
+<div id="Indexiine" class="LegacyGroup">
+For <b>Mocha CFW (Indexiine)</b> users:
+<ol type="A">
+<li>Launch the Homebrew Launcher.
+<li>Launch Indexiine-Installer.
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> button to uninstall Indexiine.
+<li>Check that your WiiU no longer automatically launches the Homebrew Launcher upon entering the Internet browser.
+</ol>
+</div>
+
+<!--------------------------------------MochaOnline----------------------------------->
+<div id="MochaOnline" class="LegacyGroup">
+For <b>Mocha CFW (Online Exploit)</b> users: You do not need to do anything before following this guide.<br>
+</div>
+
+</div>
+
+<br>
+
+<!---------------------------Before Starting LegacyCFW above------------------------------>
+
+
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+	document.getElementById("defaultOpen3").click();
+	//document.getElementById("defaultOpen2").click();
+    document.getElementById("defaultOpen").click();
+</script>
+
+<font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
+Partition style\format information for devices that were connected when this guide was created has been saved to the spoiler below.<br><br>
+<div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<pre>
+DeviceID Filesystem
+F:       FAT32     
+H:       NTFS      
+</pre>Partition Style below should be MBR by default for almost all SD Cards. If for some reason yours is not, convert it to MBR using the directions from ModMii's USB-Loader Setup guide.<br><pre>
+Number Friendly Name                     Serial Number        HealthStatus OperationalStatus Total Size Partition Style
+1       SDHC                                                 Healthy      Online              14.46 GB MBR            
+<br>
+</pre></div></div></div>
+
+<br>
+<ol type="A">
+<li>First, insert your SD Card into your PC and determine if it needs to be formatted by checking the current Format\File-System of the SD Card.</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
+
+
+	<ul style=align="left" type="disc">
+	<li>Open "This PC" or "My Computer", right-click the SD Card you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+	<li>Make note of the Drive Letter of the SD Card as this will be important later.
+	<li>If the "File-System" is already FAT32, you can skip this step.
+	</ul>
+<br>
+<li><b>If you have anything saved to the SD Card, you should back it up now as all the data will be lost once you format it.</b></li>
+<br>
+<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
+</li>
+	<!--formatwarning<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>formatwarning-->
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/oLA47xjGPVQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/fat32sd.gif" border="0"/></a><br>
+<ul style=align="left" type="disc">
+
+
+<li>Carefully select the correct drive letter corresponding to your SD Card.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</ul>
+<br>
+
+<li>Copy the files ModMii downloaded to your SD Card.
+<ul style=align="left" type="disc">
+
+
+<li>The files should be saved here: "C:\ModMii\COPY_TO_SD" <br><br> 
+•  Your folder structure should look <i>similar</i> to this:<br>
+💾 SD Card<br>
+<!--vWii folder structure
+ ┗ 📁apps<br>
+&nbsp; &nbsp; &nbsp; ┣ 📁AppName1<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄boot.dol<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄meta.xml<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┗ 📄icon.png<br>
+&nbsp; &nbsp; &nbsp; ┣ (All other Wii apps should be here too)<br>
+vWii folder structure-->
+ ┗ 📂wiiu<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂apps<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📂AromaUpdater<br>
+&nbsp; &nbsp; &nbsp; ┃ ┃ ┗📜AromaUpdater.wuhb<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📜PayloadLoaderInstaller.wuhb<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ (All other WiiU apps should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂environments<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ 📂aroma<br>
+&nbsp; &nbsp; &nbsp; ┃   ┣ 📂modules<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📂setup<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┣ 📜00_mocha.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┣ 📜10_wums_loader.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┗ 📜99_autoboot.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┗ (All other Aroma modules ending with .wms should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┃   ┣ 📂plugins<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜AromaBasePlugin.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜drc_region_free.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜homebrew_on_menu.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜regionfree.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┗ (All other Aroma plugins ending with .wps should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┃   ┗ 📜root.rpx<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂payloads<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📂default<br>
+&nbsp; &nbsp; &nbsp; ┃ ┃ ┗ 📜payload.elf<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ 📂nanddumper<br>
+&nbsp; &nbsp; &nbsp; ┃   ┗ 📜payload.elf<br>
+&nbsp; &nbsp; &nbsp; ┣ 📜payload.rpx<br>
+&nbsp; &nbsp; &nbsp; ┗ 📜payload.elf<br>
+<br>
+•  Your folder structure should <u>not</u> look like this:<br>
+💾 SD Card<br>
+ ┗ ⛔📁COPY_TO_SD<br>
+<br>
+<li>When the files are finished copying to the SD card, you should safely remove your SD Card from your computer and reinsert it into your console and proceed to the next step.</ul></ol><br> 
+<font size=5><li>Make a NAND backup</li></font><br>
+<b>Browser Exploit to launch nanddumper</b><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>-->
+Requirements: an internet connection on your WiiU and an SD card.<br>
+<br>
+<i>The Browser Exploit is a WiiU entry point which allow further homebrew to be run. All current WiiU exploits load SD:/wiiu/payload.elf which takes over further loading of homebrew. Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever brick your console, restoring a NAND backup is like taking it back in time to before the problem occurred. Restoring a full WiiU NAND Backup requires additional hardware and micro soldering skills. However, making a NAND Backup is always useful, so please do not skip it. NAND backups are console specific, so you cannot restore a backup from a different console. vWii NAND Backups (slccmpt.bin/nand.bin & keys.bin/otp.bin) can be restored without additional hardware using <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> but it currently requires switching from Aroma to a legacy environment like Tiramisu. Generally, vWii NAND Restorer should only be used if <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> fails to repair a brick.</i><br>
+<br>
+<ol type="A">
+<li>Make sure your WiiU has <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1126" target="_blank">internet access</a> for this step.
+<li>Launch the Internet Browser and navigate to this website: <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">wiiuexploit.xyz</kbd>
+<li>Click on <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Run Exploit!</kbd> and hold the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> button until you see a screen that says "Please choose your payload:"
+	<ul style=align="left" type="disc">
+	<li>If your WiiU gets stuck on a white or otherwise frozen screen, wait a few seconds. If nothing happens, reboot the console, <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1507" target="_blank">reset your browser save data</a> and try again.
+	<li>If you see the Environment Loader, you did not hold down B long enough. Try again.
+	<li>If you get any errors like FSOpenfile failed, FSGetMountSorce failed, or SD Mount failed, refer to the <a href="https://wiiu.hacks.guide/common-issues-fixes?id=browser-errors" target="_blank">Common Issues & Fixes</a> section of the WiiU Hacks Guide.
+	</ul>
+<li>Navigate to <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">nanddumper</kbd> using the GamePad and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.
+</ol>
+<br>
+<b>nanddumper Steps</b>
+<ol type="A">
+<li>Use the WiiU GamePad's D-Pad to enter the following configuration:
+	<ul style=align="left" type="disc">
+	<li>Dump SLC: <b>yes</b>
+	<li>Dump SLCCMPT: <b>yes</b>
+	<li>Dump MLC: <b>optional</b>
+	<li>Dump OTP: <b>yes</b>
+	<li>Dump SEEPROM: <b>yes</b>
+		<ul style=align="left" type="square">
+		<li>To create a full NAND backup your SD Card has to be larger than the size of your NAND (either 8GB or 32GB depending on your model). If you do not have a large enough SD Card, you can skip the optional <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">MLC</kbd> section which includes save files and game data and is not needed to recover from most types of bricks.
+		</ul>
+	</ul>
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button to start the dumping process.
+	<ul style=align="left" type="square">
+	<li>Do not power off your console or remove your SD card when making your NAND backup.
+	</ul>
+<li>When the process is finished, or immediately following the completion of this guide, power off your WiiU, take your SD Card out of the console and plug it into your PC. Copy slc.bin, slccmpt.bin, seeprom.bin, otp.bin and, if you chose to go with a full backup, all the mlc.bin.part files to your computer, a hard drive, the cloud or anywhere safe. You might need these in case of emergencies, so don't lose them. Optionally erase them from the SD card after backing them up to free up space. When done, safely remove your SD Card from your computer and reinsert it into your console and proceed to the next step.
+</ol>
+<br>
+<i>Fun Fact! You can extract the contents of your slccmpt.bin by opening it with ModMii, then save it to a hard drive or SD Card to act as a vWii Emulated NAND (or virtual NAND), allowing you switch between the vWii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the vWii's internal memory.</i><br>
+<br>
+<!------------------------------WiiU Nand backup section above-------------------------->
+
+<!---------------------------Payload-Loader Steps below------------------------------>
+
+<font size="5"><li>Install Payload-Loader</li></font><br><i>Installing the Payload-Loader will let you access Aroma just by running the Health and Safety Information app.</i><br><br>
+
+<b>Browser Exploit to launch Environment Loader & Aroma</b><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+Requirements: an internet connection on your WiiU and an SD card.<br>
+<br>
+<i>An environment is a collection of "setup modules", which will be run in a certain order when launched. Examples of WiiU environments are Aroma and Tiramisu. Setup modules are small pieces of homebrew/code that are executed once to set up an environment.</i><br>
+<br>
+<ol type="A">
+<li>If you are already in the Environment Loader menu skip ahead to Step E.
+<li>Make sure your WiiU has <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1126" target="_blank">internet access</a> for this step.
+<li>Launch the Internet Browser and navigate to this website: <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">wiiuexploit.xyz</kbd>
+<li>Click on <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Run Exploit!</kbd> and <i>this time</i> hold the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> button until you see the Environment Loader menu.
+	<ul style=align="left" type="disc">
+	<li>If your WiiU gets stuck on a white or otherwise frozen screen, wait a few seconds. If nothing happens, reboot the console, <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1507" target="_blank">reset the browser's save data</a> and try again.
+	<li>If you do not see the Environment Loader menu, you did not hold down X long enough. Try again.
+	<li>If you get any errors like FSOpenfile failed, FSGetMountSorce failed, or SD Mount failed, refer to the <a href="https://wiiu.hacks.guide/common-issues-fixes?id=browser-errors" target="_blank">Common Issues & Fixes</a> section of the WiiU Hacks Guide.
+	</ul>
+	
+<li>Using the D-Pad, navigate to <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">aroma</kbd> and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default environment, then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch into Aroma.
+	<ul style=align="left" type="disc">
+	<li>If you see a yellow warning that the update folder exists and updates are not being blocked properly, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> to block updates.
+	<li>If you did not see a yellow warning, but the AutobootMenu says "Updates not blocked!", press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">START (+)</kbd> and <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SELECT (-)</kbd> at the same time until it says they are blocked.
+		<ul style=align="left" type="square">
+		<li>Should you wish to unblock updates in the future follow <a href="https://wiiu.hacks.guide/unblock-updates" target="_blank">these steps</a>.</li>
+		</ul>
+	</ul>
+<li>On the Aroma Boot Selector, the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Wii U Menu</kbd> should already be selected, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default autobooting option (or choose your preferred title to autoboot), then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.
+</ol>
+<br>
+
+
+
+
+<b>Payload-Loader Installer Steps</b>
+<ol type="A">
+<li>Launch the newly appeared <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Payload-Loader Installer</kbd> channel from the WiiU Menu.
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button to check if you can install the Payload-Loader.
+	<ul style=align="left" type="disc">
+	<li>It should now tell you that the Payload-Loader can be installed onto the Health and Safety Information app.
+	</ul>
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Install / Update</kbd>.
+<li>You'll be asked if you are sure you want to install the Payload-Loader. Use the D-Pad to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Install</kbd> and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd>.
+<li>After installing has finished, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to shut down the console.
+</ol>
+
+<br>
+<ul style=align="left" type="square">
+<li>Now when the Health and Safety Information app is launched, it will load the Payload-Loader, which loads the Aroma environment, which finally loads the WiiU Menu.
+	<ul style=align="left" type="disc">
+	<li>To open the Environment Loader in the future, you have to hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> while the console is loading the Health and Safety Information app.
+	<li>To open the Aroma Boot Selector in the future, you have to hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">START (+)</kbd> while the console is loading the Health and Safety Information app.
+	</ul>
+</ul>
+
+
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Payload-Loader Uninstallation Steps   " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Payload-Loader Uninstallation Steps   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Payload-Loader Uninstallation Steps  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+<i>A factory reset will <b>not</b> uninstall the injected Payload-Loader. If one day you decide to uninstall it, follow these steps.</i><br>
+<br>
+To complete these steps, first confirm Aroma, Environment Loader and Payload-Loader Installer are still saved to your WiiU's SD Card. If missing, get them from ModMii or from <a href="https://aroma.foryour.cafe/" target="_blank">aroma.foryour.cafe</a> and <a href="https://github.com/wiiu-env/PayloadLoaderInstaller/releases" target="_blank">github</a>.<br>
+<br>
+
+<u><b>Uninstall Payload-Loader</b></u><br>
+<ol type="A">
+<li>If not autobooting into Aroma, launch it via the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Health & Safety Application</kbd>.
+<li>Launch the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Payload-Loader Installer</kbd> from the WiiU Menu.
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Check</kbd>.
+<li>Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Remove</kbd>.
+<li>You will be asked if you really want to remove the Payload-Loader. Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Remove</kbd> again.
+<li>When the process finished, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to shutdown the console.
+</ol>
+
+</div></div></div>
+<br>
+<!---------------------------Payload-Loader Steps above------------------------------>
+<!---------------------------Autobooting Aroma Steps below------------------------------>
+<font size="5"><li>Autoboot Aroma (Optional)</li></font><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+
+<i>Currently, every time you want to launch Aroma you will have to launch the Health and Safety information app.<br>
+If you wish to automatically launch into Aroma on every boot complete this step.<br>
+If you do not want to autoboot Aroma you can skip this step.</i><br>
+<br>
+
+
+<ol type="A">
+<li>Launch the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Payload-Loader Installer</kbd> from the WiiU Menu.
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Check</kbd>.
+<li>Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Boot options</kbd>.
+<li>You will be asked if you want to switch the boot title. Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Switch to Payload-Loader</kbd>.
+<li>When the process is finished, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to shutdown the console.
+</ol>
+
+<br>
+
+<ul style=align="left" type="square">
+<li>The Payload-Loader will now be launched automatically on every boot, which loads the Aroma environment, which loads the WiiU Menu.
+	<ul style=align="left" type="disc">
+	<li>To open the Environment Loader in the future, you have to hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> while the console is booting or loading the Health and Safety Information app.
+	<li>To open the Aroma Boot Selector in the future, you have to hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">START (+)</kbd> while the console is booting or loading the Health and Safety Information app.
+	</ul>
+</ul>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Steps to Change Payload-Loader Autoboot Setting  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to Hide Steps to Change Payload-Loader Autoboot Setting   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Steps to Change Payload-Loader Autoboot Setting  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+To complete these steps, first confirm Aroma, Environment Loader and Payload-Loader Installer are still saved to your WiiU's SD Card. If missing, get them from ModMii or from <a href="https://aroma.foryour.cafe/" target="_blank">aroma.foryour.cafe</a> and <a href="https://github.com/wiiu-env/PayloadLoaderInstaller/releases" target="_blank">github</a>.<br>
+<br>
+<u><b>Change Payload-Loader Autoboot Setting</b></u><br>
+<ol type="A">
+<li>If not autobooting into Aroma, launch it via the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Health & Safety Application</kbd>.
+<li>Launch the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Payload-Loader Installer</kbd> from the WiiU Menu.
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Check</kbd>.
+<li>Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Boot options</kbd>.
+<li>You will be asked if you want to switch the boot title. Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Switch back to Wii U Menu</kbd>.
+<li>When the process is finished, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to shutdown the console.
+</ol>
+<br>
+<ul style=align="left" type="square">
+<li>The console will now boot into the WiiU Menu again. The Payload-Loader can still be accessed by launching the Health & Safety Application.
+</ul>
+
+
+</div></div></div>
+<br>
+<!---------------------------Autobooting Aroma Steps above------------------------------>
+<!---------------------------Pretendo Steps below------------------------------>
+<font size="5"><li>Configure Pretendo (Optional)</li></font><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+
+<i>Pretendo is a replacement service for the Nintendo Network, which brings back online services (including Miiverse) as they have been discontinued by Nintendo.</i><br>
+<br>
+CAUTION: A Pretendo Network ID (PNID) may not use the same username as an account already linked to your WiiU. If you have an account with a Nintendo Network ID (NNID) on your WiiU which shares the username you wish to use, it MUST first be removed or unlinked. Before removing accounts you may want to backup and transfer save data to a new account following the steps in the spoiler below. However, to entirely avoid removing accounts that conflict with Pretendo they can instead be <a href="https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254" target="_blank">unlinked</a> from Network IDs by simply launching <a href="https://github.com/Nightkingale/Wii-U-Account-Swap" target="_blank">Wii U Account Swap</a> from the WiiU Menu to unlink the Network ID, effectively turning it into a local user account capable of being linked to a new PNID.<br>
+<br>
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Steps to Transfer Save Data to a Pretendo account  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to Hide Steps to Transfer Save Data to a Pretendo account   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Steps to Transfer Save Data to a Pretendo account  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+<i>Note: This only works with local save data. Any user data stored on Nintendo's servers cannot be transferred to any other accounts.</i><br>
+<br>
+
+<ol type="A">
+<li>Launch <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SaveMii Mod - WUT Port</kbd> from the WiiU Menu.
+<li>Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Wii U Save Management</kbd>. You should now see a list of installed games. Find and select the game you would like to transfer the save data of.
+<li>Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Backup savedata</kbd>.
+<li>Select a new slot to backup the save data to. If you select a non-empty slot, the backup data in that slot will be overwritten.
+<li>Select the profile to backup the save data from. This should be your <i>Nintendo</i> Network ID.
+<li>Optionally you may also select to backup "common" save data. This save data is shared by all users, and is not required to be backed up.
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button when ready to backup your save data.
+<li>Once the backup has completed, press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> button to return to the games menu. Select <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Restore savedata</kbd>.
+	<ul style=align="left" type="disc">
+	<li>CAUTION: Restoring a save backup will overwrite the existing save data for the game for the selected user(s). Proceed with caution.
+	</ul>
+<li>Select the backup slot you just backed up the save data to.
+<li>Select the profile to restore the save data to. This should be your <i>Pretendo</i> Network ID.
+<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button to transfer your data and <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> again to confirm.
+	<ul style=align="left" type="disc">
+	<li>If you get a message about backing up your data on your Pretendo profile, ignore it.
+	<li>Your screen may briefly flash as the data is copied over.
+	</ul>
+</ol>
+<br>
+Once completed, exit SaveMii and ensure the game you transferred works properly on your Pretendo profile. Repeat this process for any other save data you'd like to transfer to your Pretendo profile.
+</div></div></div>
+
+<br>
+
+<ul style=align="left" type="square">
+<li>Access the Aroma plugin menu by pressing <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">L</kbd> + <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Down</kbd> + <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SELECT (-)</kbd> on the WiiU GamePad.
+<li>Choose the "Inkay" plugin, navigate to "BOSS settings" and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd>, then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> on "Unregister Wara Wara Plaza BOSS tasks" and restart your console.
+</ul>
+
+<br>
+<i>ModMii has already installed Pretendo (i.e. Inkay) to your SD Card; however to use it you still must register a Pretendo Network ID (PNID). There are currently two ways of creating a PNID: Creating an account with the website and linking it, or creating it on your WiiU. You do <u>not</u> need to complete both methods.</i><br>
+
+<br>
+<u><b>PNID Setup Method 1: WiiU</b></u><br>
+<ul style=align="left" type="square">
+<li>Create the Pretendo Network ID as you would a Nintendo Network ID following <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1087/~/how-to-create-a-nintendo-network-id-on-wii-u" target="_blank">these steps</a>.
+</ul>
+
+<br>
+<u><b>PNID Setup Method 2: Website</b></u><br>
+<i>Warning: this method currently will not allow you to choose your region (defaults to US), potentially creating a region mismatch which disables the vWii EULA and breaks <a href="https://wii.hacks.guide/wiiconnect24.html" target="_blank">WC24</a>.</i>
+<ul style=align="left" type="square">
+<li>Register an account from <a href="https://pretendo.network/account" target="_blank">here</a> and click <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Don't have an account?</kbd> to register.
+<li>Once your account is registered, link it to your console as you would a Nintendo Network ID following <a href="https://www.nintendo.com/en-za/Support/Nintendo-Network-ID/About-Nintendo-Network-ID/Tutorial-How-to-register-a-Nintendo-Network-ID-on-Wii-U/Tutorial-How-to-register-a-Nintendo-Network-ID-on-Wii-U-841650.html" target="_blank">these steps</a>.
+</ul>
+
+<br>
+<!---------------------------Pretendo Steps above------------------------------>
+</ol><br>
+<font size="6"><li><a name="Done">After Modding your WiiU</a></li></font><br><ul style=align="left" type="disc">
+<li>ModMii has already saved the WiiU Disc Dumper (wudd) and WUP Installer GX2 apps to your SD Card to support backing up WiiU discs. See <a href="https://wiiu.hacks.guide/dump-games" target="_blank">this page</a> for a tutorial on Dumping and Installing WiiU Discs.
+
+<li>Access the Aroma plugin menu by pressing <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">L</kbd> + <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Down</kbd> + <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SELECT (-)</kbd> on the WiiU GamePad. The plugin menu can be used to configure plugins like Inkay (Pretendo), Bloopair, etc.
+	<ul style=align="left" type="square">
+	<li>Optionally enable the plugin to "Avoid 'Format' dialog on Wii U Menu (UStealth)" to skip the 'Format' prompt when launching the WiiU Menu with a non-WiiU-formatted external drive (e.g. FAT32 formatted drive for vWii).</li>
+	<li>Note the Screenshot Plugin's default setting to take screenshots is the gamepad's TV button.
+	<li>Optionally hide WiiU homebrew from the WiiU Menu by launching the Aroma plugin menu, selecting the "Homebrew On Wii U Menu Plugin" and choosing "Hide all homebrew".</li>
+	</ul>
+
+<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
+<li>Periodically check for updates to your apps by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for available updates to ModMii's auto-updating apps.
+
+<li>Download the latest Homebrew apps and plugins.
+	<ul style=align="left" type="square">
+	<li>Download apps or PC tools from ModMii Classic's Download Pages.
+	<li>Grab the <a href="https://hb-app.store/wiiu/appstore" target="_blank">WiiU Homebrew App Store</a> from ModMii or the provided link to easily download many other popular apps right from your WiiU!</li>
+	</ul>
+<li>Check out <a href="https://github.com/RiiConnect24/UTag" target="_blank">UTag</a>: a customizable and dynamic gamertag to automatically update your Discord status with what you've been playing on your WiiU.
+<!--
+</ul>
+<br>
+-->
+<!----------------------------After WiiU Modding section above----------------------------->
+</ul><br>
+<!---------------------------------------Credits, apps, and sources are below---------------------------------------------->
+<font size="6"><li><a name="Credits">Credits, Supporting Apps, and Sources</a></li></font><br>
+ModMii was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.<br>
+<br>
+I have tried my best to recognize everyone's contribution to ModMii regardless of how big or small it is. If I've forgotten someone, please notify me and I'll add them to the credits as quickly as possible.<br><br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Credits, Supporting Apps and Sources  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '  Click to hide Credits, Supporting Apps and Sources  '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Credits, Supporting Apps and Sources  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+<ul style=align="left" type="disc">
+<li><font size="4"><b>Team Twiizers</b></font><br>
+Thanks to Team Twiizers for creating the revolutionary HackMii Installer. Without their hard work, the Wii might never have been unlocked. Many Team Twiizer Members went on to join Team Fail Overflow; a team that played a vital role in unlocking the PS3.<br><br>
+
+I especially want to thank Bushing (may he rest in peace), who before his untimely passing gave ModMii his blessing to download and use the HackMii Installer.</li><br>
+
+<li><b><font size="4">Giantpune</font></b><br>
+Giantpune is a legend in the Wii Scene and I consider him to be a good friend of mine. He created many exploits, including the Smash Stack exploit for PAL and KOR Wii's (which is maybe still the only method to fix 003 bricked Wii's), the Channel Forwarder dol, USB Loader GX, and many other computer programs to repair or virginize Wii's.<br><br>
+
+He's contributed code to more projects than I even know about, so its impossible for me to truly convey his impact on the scene. He even took the time to explain a few things to me about cIOSs when ModMii was in its early stages and still known as NUS Auto Downloader.</li><br>
+
+<li><b><font size="4">DeadlyFoez</font></b><br>
+DeadlyFoez is legendary for his Wii Repairs and infectus tutorial. He also played a key role in the ModMii v5.0.0 update not only by helping come up with the idea for using html guides but also creating the template for ModMii's custom html guides and recording almost all of the videos and images they use. Within 1.5 weeks since our initial conversation we were able to collaborate and bring the idea to life in time to release it for Christmas. Working with him on this was a truly rewarding and fun experience. DeadlyFoez also single-handedly built the first official ModMii website.<br><br>
+
+What can I say about THE "DeadlyFoez" on a personal level. He's always getting me into trouble but his friendship is worth every fiasco! It's unreal how he became one of my best friends. Just goes to show you not everyone you meet online is totally crazy; in his case... just a little crazy. But seriously, thanks to DeadlyFoez for always being there for me to bounce ModMii ideas off of, for hosting our Team Your Mom meetings and for introducing me to his awesome family and friends. There's no one else I'd rather geek out with and I'll always have your back.</li><br>
+
+<li><b><font size="4">Violator</font></b><br>
+He's my bro, my cuz, my best man and the reason I ever bought or modded a Wii. "XFlak" would have died many years ago if not for him. Thanks Violator, for getting me interested in this stuff, and for all the awesome music you recorded for ModMii and my <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Top Wii Channels</a>.</li><br>
+
+<li><b><font size="4">JoostinOnline</font></b><br>
+Thanks for his work developing KoreanKii (with tueidj), Syscheck HD Edition, sharing his webhosting space with me, and for all his jokes; I'll never get tired of our endless patriotic "debates".</li><br>
+
+<li><b><font size="4">Crediar, Daco Taco and Phpgeek</font></b><br>
+The above people all had a hand in creating Priiloader. This was another revolutionary tool mainly because it was the first to offer some level of protection to newer Wii's that were unable to install Bootmii at boot2. Crediar developed the original preloader as well as s/uneek, Nintendont, NMM, DML, etc. Special thanks to Daco Taco for being the last man standing in terms of actively improving/maintaining Priiloader, not to mention developing OpenDolBoot and just generally being very helpful and knowledgeable.</li><br>
+
+<li><b><font size="4">NinjaCheetah</font></b><br>
+Thanks for his work on libWiiPy, WiiPy, NUSGet and more! It was a pleasure working with him to test his tools and he was always very open to feedback and feature requests.</li><br>
+
+<li><b><font size="4">Comex</font></b><br>
+In addition to being a member of Team Twiizers and contributing to the HackMii Installer, Comex created the heavily utilized bannerbomb exploit. This exploit is what allows Wii's on firmwares 3.0-4.2 to be softmodded with only an SD Card instead of needing one of a few specific Wii Games.</li><br>
+
+<li><b><font size="4">Maschell and GaryOderNichts</font></b><br>
+Thanks for being absolute legends in the WiiU and vWii scene!<br><br>
+
+<li><b><font size="4">Waninkoko</font></b><br>
+Waninkoko was the first to publicly release a cIOS and other excellent apps like WAD manager, Save Game Manager, USB loader, etc. I also want to thank him for giving ModMii permission to recreate his cIOSs in WAD form.<br><br>
+
+<li><b><font size="4">Hermes and Rodries</font></b><br>
+Hermes is well known for his cIOS 222/223/224 and for his usbloader "uloader". For a time his cIOSs were the only ones to work with RockBand type games and they are still highly utilized today. Thanks to Rodries for improving upon Hermes v5.1 cIOSs.</li><br>
+
+<li><b><font size="4">davebaol, blackb0x, XFlak and xabby</font></b><br>
+These developers worked together to modify Waninkoko's rev21 cIOS and created a new "d2x" cIOS. This cIOS is currently considered the ultimate cIOS because it corrected many bugs and added features that were previously thought to be impossible (ie. Support for IOS Reloading Games). WiiPower was also heavily influential in achieving IOS Reload Support.</li><br>
+
+<li><b><font size="4">Fullmetal5</font></b><br>
+Thanks for his work developing the str2hax and bluebomb exploits.</li><br>
+
+<li><b><font size="4">WiiGator</font></b><br>
+WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans owe a big thank you to WiiGator for his work.</li><br>
+
+<li><b><font size="4">cwstjdenobs</font></b><br>
+cwstjdenobs is one of the few people I've encountered in the Wii scene that I would love to treat to a beer. He was always very supportive of me and encouraged me to ask him as many questions as I'd like. He is probably most well known for YAWMM (Yet Another Wad Manager Mod) which was the first Wad Manager to add brick protection by restricting users from making silly mistakes like uninstalling or stubbing a crucial file. He's also made and modified apps specifically for ModMii. For example, he modified WadMii so it doesn't timestamp WADs and he also made a setting.txt builder for ModMii's NAND builder.</li><br>
+
+<li><b><font size="4">Leathl</font></b><br>
+Leathl is another awesome developer who supported me before I became well known by expanding upon his apps to further support ModMii. Leathl has created many Wii apps including ShowMiiWads, CustomizeMii, libWiiSharp, patchios, nusfilegrabber, etc. Despite his recent inactivity, his apps are still highly used today... just goes to show you that quality work never gets old. I also want to thank RetroHead for his Mod of ShowMiiWads which ModMii uses to build emulated nands without requiring any input from the user. libWiiSharp.dll is based on wii.py, the wii.py devs are Megazig, Omega, Xuzz, SquidMan, Matt_P and The Lemon Man. Also thanks to Daeken for writing Struct.py and marcan for his LZ77 code.</li><br>
+
+<li><b><font size="4">scooby74029</font></b><br>
+scooby74029's most well known for sneeky compiler, which is able to build multiple different versions of s\uneek. ModMii will always construct the latest version of s\uneek available on his sneeky compiler google code webpage. This means he has total control over what version of s\uneek ModMii will construct. He also created modifications of Leathl's libWiiSharp.dll and patchios.exe to further support ModMii. Additionally, he's modified other apps like Any Region Changer ModMii Edition, JoyFlow, JoyLoader GX, JoyLoader CFG, etc. On top of all that, he's an all around awesome person and I'm proud to be on his friends list.</li><br>
+
+<li><b><font size="4">person66</font></b><br>
+person66 has had a hand in many projects, but most noteworthy are his sharpii cmd line tool and his Universal Forwarder Creator. He also wrote the intial version of an autoit script that is used to launch ModMii with an icon, arguments and other useful functions.<br><br>
+Thanks for trading little bits of batch coding knowledge with me. It's great having a fellow batch coder for a friend; we are a dying breed, so keep up the great work with Universal Forwarder Creator and all your other projects.</li><br>
+
+<li><b><font size="4">WiiPower and shoutplenty</font></b><br>
+WiiPower created Neogamma which is hands down the best backup disc loader for the Wii. He also contributed code to many other popular usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs. Furthermore he also modified WiiGators cMIOS, which was later further modded by shoutplenty to include Swiss, and is considered the ultimate cMIOS today.</li><br>
+
+<li><b><font size="4">OverjoY and obcd</font></b><br>
+OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek. He then teamed up with obcd to accomplish some seriously amazing things, like building their mod of s\uneek, NEEK2O, that allows it to load games in wbfs format and select from multiple emulated NANDs.</li><br>
+
+<li><b><font size="4">Maeson and NoobletCheese</font></b><br>
+Thanks for researching video filters in such detail to get Deflicker video filter mods working just right!</li><br>
+
+<li><b><font size="4">CrafterPika</font></b><br>
+Thanks for developing and hosting an updated server to save SysCheck report uploads.</li><br>
+
+<li><b><font size="4">Arikado and the Dop-Mii Team</font></b><br>
+They created Dop-Mii; a lot of apps borrow code from Dop-Mii, so even if you have never used Dop-Mii but used MMM or WiiMod then you owe a thank you to these people.</li><br>
+
+<li><b><font size="4">DarkMatterCore</font></b><br>
+For his work on wad2bin, Yet Another BlueDump MOD, ww-43db-patcher and for being a part of ModMii's development and testing discord.</li><br>
+
+<li><b><font size="4">WiiWu</font></b><br>
+He made Multi-Mod Manager (MMM) which has the functions of many different Wii modding tools all in one user friendly app.</li><br>
+
+<li><b><font size="4">WB3000 and WiiNinja</font></b><br>
+Thanks to WB3000 for creating NUS Downloader and to WiiNinja for making a cmd line version of NUS Downloader. NUS Downloader was one of ModMii's vital supporting apps.</li><br>
+
+<li><b><font size="4">TheShadowEevee</font></b><br>
+TheShadowEevee helped update many tools with a new NUS endpoint. He also helped implement some fixes and improvements to Any Region Changer ModMii Edition.</li><br>
+
+<li><b><font size="4">WiiCrazy</font></b><br>
+WiiCrazy is most famous for "Wii Game Shortcut Creator" (formerly known as "Crap"), Crazy Intro and Crazy Intro Video. He also contributed to usb-loaders by bypassing some game specific security. WiiCrazy is another person who's always been willing to do everything in his power to help me, or anyone else for that matter.</li><br>
+
+<li><b><font size="4">oggzee, usptactical, gannon and Dr.Clipper</font></b><br>
+Together the above people compose the Configurable USB Loader Team. Back in the day, this usb-loader was always the first to add new features and in my opinion it's one of the top three best usb-loader out there.</li><br>
+
+<li><b><font size="4">Cyan, dimok, blackb0x and the USBLoaderGX team</font></b><br>
+Thanks for their work on USBLoaderGX. It is one of the most feature-rich usb-loaders and has quickly become a favourite among the community. I also want to thank Cyan specifically for his excellent support of users on gbatemp for many years; he has probably explained what an IOS is more times than I can count!</li><br>
+
+<li><b><font size="4">OverjoY, blackb0x, Peter0x44, scooby74029 and thepikachugamer</font></b><br>
+This dream team of developers brought my vision to life when they created YAWM ModMii Edition.</li><br>
+
+<li><b><font size="4">Hibernatus, Fledge68 and the WiiFlow team</font></b><br>
+Thanks for their work on WiiFlow. It was always beautiful, but now it's got all sorts of bells and whistles, you should check it out.</li><br>
+
+<li><b><font size="4">Wiimm</font></b><br>
+Thanks to Wiimm for creating Wiimmfi and Wiimms ISO Tools, including wit.exe which ModMii uses to convert Wii Games to s/uneek format, build forwarder ISOs and enabled\disable Deflicker video filters.</li><br>
+
+<li><b><font size="4">Leseratte</font></b><br>
+For his work on Wiimmfi, as well as d2xl and other amazing projects.</li><br>
+
+<li><b><font size="4">diddy81 and symular syn of the Wii Theme Team</font></b><br>
+The Wii Theme Team has created some of the best Wii Themes ever made! All of the alternative themes available in ModMii were created by them. I want to thank diddy81 in particular for working with me to ensure that all his themes worked perfectly for all regions.</li><br>
+
+<li><b><font size="4">FIX94, Narolez and the WiiXplorer Team</font></b><br>
+Thanks to all these people for their contributions in making the best SD/USB forwarder. I want to thank FIX94 in particular who not only worked on Nintendont, Some YAWMM Mod, WiiFlow and literally every other big Wii application, but he also spent a lot of time testing ModMii's Forwarder Builder.</li><br>
+
+<li><b><font size="4">jskyboo</font></b><br>
+Thanks to jskyboo for creating WiiMod. His app can do a lot of different things, and it was the first ahbprot enabled WAD Manager to incorporate davebaol's ahbprot bugfix.</li><br>
+
+<li><b><font size="4">ModMii's Translators</font></b><br>
+Tranlating ModMii is an enormous amount of work. It's very challenging to get special characters to display correctly in a cmd window, not to mention keeping everything formatted properly. But probably the most difficult part of translating ModMii is keeping up with the updates. If you use a translated version of ModMii, I encourage you to thank your translator because it truly is a LOT of work to do.<br><br>
+
+French Translators: <b>mamule, xav91 and ketufe</b><br>
+Dutch Translator: <b>Hielkenator</b><br>
+Italian Translators: <b>Wasabi, Step and Robilyn</b><br>
+Spanish Translators: <b>ledebene and Burton</b><br>
+Korean Translator: <b>DDinghoya</b></li><br>
+
+<li><b><font size="4">Fig2k4</font></b><br>
+Thanks Fig2k4 for WiiBackupManager. It was a pleasure beta testing it for you and sharing my ideas with you. I hope to see you around the forums again and that you continue working on your amazing program.</li><br>
+
+<li><b><font size="4">Gabubu, sthetix, Foxlet, Alexander1970, Vila and Aep</font></b><br>
+Thanks for recording, editing or upscaling many of the Youtube videos used by ModMii. Special thanks to Gabubu who single-handedly created all the new\updated videos in the 7.0.0 update, and also updated GFX for a bunch of ModMii's Wii channels.</li><br>
+
+<li><b><font size="4">WiiShizzza, pepxl, RobGee789, M3RK, AuroraNemoia and emilydaemon</font></b><br>
+Thanks to WiiShizzza for creating ModMii's new icon and to pepxl for creating ModMii's original icon. I want to thank everyone who created a ModMii icon and submitted it into <a href="https://gbatemp.net/threads/new-modmii-icon-logo-candidates.296772/" target="_blank">ModMii's new icon competition</a>.<br><br>
+
+RobGee789 and M3RK made ModMii Skin's original graphics. AuroraNemoia made ModMii Skin's new (2022) <a href="https://github.com/modmii/modmii.github.io/tree/master/Support/Skins/Default" target="_blank">default\Nebula theme</a>. It was a pleasure working with them, they were all very open to feedback and willing to "go back to the drawing board", so to speak, as many times as it took to get it perfect. Thanks guys!<br><br>
+
+emilydaemon made <a href="https://raw.githubusercontent.com/modmii/modmii.github.io/refs/heads/master/Support/Skins/Default/splash.png" target="_blank">ModMii's WiiU\Aroma splash screen</a> as well as maintains the <a href="https://wilbrand.donut.eu.org" target="_blank">Wilbrand Web website</a>.</li><br>
+
+<li><b><font size="4">dhtdht020, Gabubu, Artuto and the Open Shop Channel team</font></b><br>
+Thanks for maintaining oscwii.org! Special thanks to dhtdht020 for refreshing the ModMii icons in 2022; now I have a rainbow of icons to choose from should the need arise.</li><br>
+
+<li><b><font size="4">vgmoose, pwsincd, Nightkingale, Gabubu and the Homebrew App Store team</font></b><br>
+Thanks for maintaining hb-app.store and all the other projects you've contributed to!</li><br>
+
+<li><b><font size="4">My Fellow Guide Writers</font></b><br>
+Thanks to tj_cool, xzxero, burritoboy9984, ChokeD, mauifrog, playerjmr, Ingunar and the Wii\WiiU hacks guide team for their awesome guides. I especially want to thank tj_cool and xzxero for inviting me to join "The Crew" at the Complete Softmod Guide. I'll never forget how great it felt to be relatively new to the scene and to be invited to join you all as equals.</li><br>
+
+<li><b><font size="4">Wii.Hacks.Guide and WiiLink\RiiConnect24 teams</font></b><br>
+Thanks in particular go out to Peter0x44, Larsenv and KcrPL. Brainstorming and collaborating with you guys made the 2020 lockdowns feel somewhat bearable. Special thanks to Peter0x44 for helping me set up the ModMii discord server to a much higher standard than I could have ever hoped to do on my own.</li><br>
+
+<li><b><font size="4">DaMysteryMan</font></b><br>
+Thanks for helping me understand the structure of a cIOS so I could better recreate it in WAD form. For those of you who don't know him, DaMysteryMan is most well known for his ever controversial app - DarkCorp (formerly known as cIOSCorp).</li><br>
+
+<li><b><font size="4">Gannon</font></b><br>
+Thanks to Gannon for bootopera, which I was able to mod to create the URL loader base dol.</li><br>
+
+<li><b><font size="4">Devnol</font></b><br>
+Thanks to Devnol for properly modifying the Open HBC to use the same title ID as the official HBC (LULZ).</li><br>
+
+<li><b><font size="4">ca032769 and Al_Touriste</font></b><br>
+Thanks for their tutorials on how to use a larger than 2TB Hard Drive on a Wii as a Single FAT32 Partition.</li><br>
+
+<li><b><font size="4">All My Beta Testers!</font></b><br>
+It's because of you guys that ModMii is as stable as it is. Considering that ModMii is developed entirely in notepad without any kind of debugger or developer tools; it's pretty remarkable that ModMii has always been bug-free (albeit with a couple minor exceptions). Thanks for your never-ending devotion to quality control!<br>
+
+Here's a list of some of ModMii's beta testers (in no particular order): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog, FIX94, wolf, Larsenv, Peter0x44, Alexander1970, Cyan, Damaj301damaj, Function, forseenink, jeannotte, saulfabreg, Vila, ca032769, godreborn, KleinesSinchen, RunningSnakes, Scooty, bibarub, Aep, Isla, beta215, Binsky, CoolMe, forseenink, Maeson, grandosegood, and last but certainly not least, Denver Gamer and Clutz450. @Clutz450 and Denver Gamer, you guys rock, I really enjoyed discussing your ModMii tutorial videos and your ideas on the little ways ModMii could be made even better.</li><br>
+
+<li><b><font size="4">You!</font></b><br>
+Without you, there would be no reason for ModMii to exist. Thanks for using ModMii for all your Wii\WiiU softmodding needs!</li>
+</ul>
+<br>
+
+<font size="5"><u>Supporting Apps and Sources</u></font><br>
+<br>
+Below is a list of the supporting apps bundled with ModMii and their sources. If a link is missing or broken, you can still get it from <a href="https://mega.nz/folder/YsphyYBQ#UOe3xmXPwldtKo6WF-sfXA" target="_blank">ModMii's Supporting Files Archive</a>.<br>
+
+Source code for ModMii itself is available is available at <a href="https://github.com/modmii/modmii.github.io" target="_blank">github</a>, but you can just open the bat files from it's support folder in notepad or similar text editor.<br>
+<br>
+
+
+<ul style=align="left" type="disc">
+<li> <a href="https://github.com/NinjaCheetah/WiiPy" target="_blank">WiiPy</a></li>
+<li> <a href="http://ftp.gnu.org/gnu/wget/" target="_blank">wget</a></li>
+<li><a href="http://sourceforge.net/projects/sevenzip/" target="_blank">7za</a></li>
+<li><a href="http://www.nirsoft.net/utils/nircmd.html" target="_blank">nircmd</a></li>
+<li><a href="http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">sfk</a></li>
+<li><a href="http://sourceforge.net/projects/jojodiff/" target="_blank">jptch</a></li>
+<li><a href="https://web.archive.org/web/20140329080757/http://www.kuwanger.net/misc/hexalter.shtml" target="_blank">hexalter</a></li>
+<li><a href="http://github.com/waninkoko" target="_blank">Waninkoko's cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar" target="_blank">Hermes v4 cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar" target="_blank">Hermes v5 cIOS</a></li>
+<li><a href="https://github.com/davebaol/d2x-cios/releases" target="_blank">d2x cIOS</a>, <a href="https://github.com/wiidev/d2x-cios" target="_blank">v11+ source</a></li>
+<li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788" target="_blank">Swiss cMIOS r1788</a></li>
+<li><a href="https://github.com/modmii/modmii.github.io/blob/master/Support/NandLoaders/ReadMe.txt" target="_blank">NandLoaders</a></li>
+<li><a href="https://gbatemp.net/threads/homebrew-forwarder-isos.181011/" target="_blank">ISO disc-template</a></li>
+<li><a href="http://www.thedubber.altervista.org/other/batch_prog/index.html" target="_blank">Ascii2All.bat</a></li>
+<li><a href="http://wizapp.sourceforge.net/" target="_blank">WizApp</a></li>
+<li><a href="http://wit.wiimm.de/" target="_blank">wit</a>: still used but no longer Bundled with ModMii since v8.0.0</li>
+<li><a href="http://www.rarlab.com/rar_add.htm" target="_blank">UnRAR</a>: Still used but no longer Bundled with ModMii since v4.7.0</li>
+<li><a href="http://www.autoitscript.com/site/autoit/" target="_blank">AutoIt3</a>: Still used but no longer Bundled With ModMii since v4.5.7</li>
+<li>NusFileGrabber by Leathl, Mod by XFlak and TheShadowEevee - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li>patchIOS by Leathl, Mod by scooby74029 - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li><a href="http://www.mediafire.com/?bogjind5oe3" target="_blank">WadMii (aka WadMiiIsh)</a> by cwstjdenobs - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li>TMDedit by person66 - requires libWiiSharp.dll: Not used since v7.0.3
+<li><a href="http://code.google.com/p/libWiiSharp/source/browse/" target="_blank">libWiiSharp.dll</a> by Leathl, Mod by scooby74029 and TheShadowEevee: Not used since v7.0.3</li>
+<li><a href="https://github.com/wiiNinja/NUS.downloader.command.line/tree/dotnet3.5" target="_blank">nusd</a> by WiiNinja (original GUI code by WB3000): Not used since v7.0.3</li>
+<li>SMW-Mod; ShowMiiWads by Leathl, Sneek Mod by RetroHead: Not used since v7.0.3</li>
+<li>settings.exe v1.0 by cwstjdenobs and v1.1 mod by obcd: Not used since v7.0.3</li>
+<li><a href="https://github.com/mogzol/sharpii" target="_blank">Sharpii</a> by person66: Not used since v7.0.3</li>
+<li><a href="http://www.dunyazad-library.net/software/hypatia/index.htm" target="_blank">hy</a>: Not bundled with ModMii since v4.7.0  and no longer used at all since v7.0.3</li>
+<li><a href="http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">fvc</a>: Not used since v7.0.0</li>
+</ul>
+
+</div></div></div>
+<br>
+
+
+<!-------------------------------------Support ModMii / XFlak is below------------------------------------------->
+<font size="6"><li><a name="Support">Support ModMii</a></li></font><br>
+
+ModMii started out as a small side-project back in 2010 as a simple NUS Auto Downloader script, and now the changelog is taller than me! I started this project in my 20s in my spare time and since then I've gotten married and had not 1, not 2, not 3, but FOUR boys, all ~2 years apart. I love being able to share my love for gaming and for the Wii with them, and with all of you! This is a passion project that has easily taken over 9000-10000 hours of just my time alone, and that's not counting all the hours spent from the legions of devs and testers who've supported ModMii over the years.<br>
+<br>
+Not knowing that much about computers other than some excel tricks, I slowly built more advanced features on top of my original less efficient code that I'd love to rewrite if it wasn't such a daunting task. Throughout the journey I learned a lot from not just those in the credits list, but the incredibly supportive Wii community as a whole. I've gone from just being a "numbers guy" to my family's go to "tech guy", and I have this project, community and followers to thank for it.<br>
+<br>
+ModMii is entirely free to use and ad free. Donations can optionally be made to the author using the button below, or pick your favourite contributor from the credits and check if they have a donations page.<br>
+
+<p style="text-align:center">
+<a href="https://modmii.github.io/donations.html" target="_blank"><img src="https://modmii.github.io/Images/donate.png" height="95" width="109" border="0"></a></p>
+
+If you're like me and it's difficult to show support with donations, consider taking a minute to vote or share your feedback at the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126" target="_blank">official ModMii page on gbatemp</a>. I always enjoy hearing feedback about your ModMii experience.<br>
+<br>
+
+<img src="https://modmii.github.io/Images/FN2187.gif" alt="XFlak" height="95" width="94"><br>
+- XFlak
+
+</ol>          <!------------This ends the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+</body> 
+</html>
+

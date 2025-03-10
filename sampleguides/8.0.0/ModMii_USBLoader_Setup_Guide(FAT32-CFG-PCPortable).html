@@ -1,0 +1,955 @@
+<html>
+<head>
+<title>ModMii USB-Loader Setup Guide</title>
+<link rel="icon" type="image/ico" href="https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/icon.ico"></link>
+<style type="text/css">
+body:before{
+  content: 'SAMPLE!';
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: -1;
+  
+  color: #0d745e;
+  font-size: 130px;
+  font-weight: 500px;
+  display: grid;
+  justify-content: center;
+  align-content: center;
+  opacity: 0.2;
+  transform: rotate(-45deg);
+}
+body { font-family: Calibri, Arial, Helvetica, "Century Gothic", sans-serif; }
+ol > li::marker {font-weight: bold;}
+</style>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
+</head>
+<body style="margin:5px 5px 5px 35px;">
+ModMii USB-Loader Setup Guide<span style="float:right;">v8.0.0|25.03.10 Generated on Mon 03/10/2025 - 16:43</span><br><br>
+<!----------Custom Printing CSS that doesn't print images--------------->
+<style type="text/css" media="print">
+.printbutton {
+  visibility: hidden;
+  display: none;
+}
+@media print {
+  img {
+    display: none !important;
+  }
+  * {
+    background-image: none !important;
+  }
+}
+</style>
+<!----------Print button disabled--------
+<script>
+document.write("<input type='button' " +
+"onClick='window.print()' " +
+"class='printbutton' " +
+"value='Print without images'/>");
+</script>
+---------Custom Print button above------->
+
+
+<!--------------Title, pic and scam warning below------------------>
+<p style="text-align:center">
+<font face="Arial Black" size="10">ModMii for Windows</font><br><font size="6">by XFlak</font><br>
+<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0"/></a><br>
+This software is not for sale. If you paid for this software or a "bundle" you have been scammed.<br><br>
+
+<b>THIS PACKAGE COMES WITH ABSOLUTELY NO WARRANTY, NEITHER STATED NOR IMPLIED.<br>
+NO ONE BUT YOURSELF IS TO BE HELD RESPONSIBLE FOR ANY DAMAGE THIS MAY CAUSE TO YOUR NINTENDO WII CONSOLE!<br>
+USE THIS AT YOUR OWN RISK!</b>
+</p>
+<br><br>
+<!--------------Title, pic and scam warning above------------------>
+
+
+<ol type="I">         <!------------This start the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+
+
+<!-------------------------Chosen options chapter below--------------------->
+<font size="6"><li>Your chosen options</li></font><br>
+This guide was generated using the following parameters:<br>
+<ul style=align="left" type="disc">
+<li>Download USB-Loader GX</li>
+<li>USB-Loader Settings and config files saved to USB Hard Drive</li>
+</ul><br>
+<font size="6"><li><a name="Notes">Important Notes</a></li></font><br><ul style=align="left" type="disc">
+<li>This guide does not require an internet connection on your Wii.</li>
+<li>cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii\vWii before setting up your USB-Loader and/or external Hard-Drive. If softmodding a Wii Mini follow <a href=https://wii.hacks.guide target=_blank>wii.hacks.guide</a>.</li>
+<li>After completing this guide, you can launch your USB-Loader via the Homebrew Channel or a USB-Loader forwarder channel.</li>
+<!-------------------------------USB LOADER NOTES BELOW---------------------------------->
+<li>USB-Loaders, contrary to their name, can also be used on the Wii\vWii with an SD Card. If you prefer using an SD Card simply follow this guide utilizing your FAT32 formatted SD Card in place of a Hard Drive.
+<!--WiiOnly--<li>Double check that your hard drive is always plugged into USB port0 - the one nearest the edge of the Wii.--WiiOnly-->
+<!------WiiUredundant-->
+<li>Double check that your hard drive is always plugged into USB port0.
+	<ul style=align="left" type="square">
+	<li>For the Wii this is the port on the back nearest the edge
+	<li>For the WiiU this is the one furthest from the edge.
+		<ul style=align="left" type="disc">
+		<li>If connecting a portable hard drive to your WiiU, a Y-cable may be needed for it to draw power from two usb ports.
+		<li>The vWii cannot use a WiiU Formatted USB hard drive.
+		<li>If a non-WiiU Formatted USB hard drive is detected while in the WiiU menu you will be prompted to format\erase it. Careful not to accidentally format your vWii Hard Drive (if applicable). If the WiiU is softmodded with Aroma this prompt can be disabled.
+		</ul>
+	<li>For the Wii Mini there is only one USB port.
+	</ul>
+<li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.
+<!--WiiUredundant------>
+<li>Not all external hard drive's are compatible with the Wii\vWii\Wii Mini, small USB flash drives or 'thumb drives' in particular often don't work very well. For a list of which USB hard drive's are compatible, check out the <a href="https://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">USB Devices Compatibility List</a></li>
+	<ul style=align="left" type="square">
+	<li>If you are determined to try using a small USB flash drive or 'thumb drive' on a Wii\vWii, you may have more success if running the loader off of an SD Card and formatting the flash drive as WBFS instead of FAT32. This can be done using Wii Backup Manager. However, doing so will not only restrict the drive to storing only Wii games, but it will not be accessible by your PC without a program like Wii Backup Manager. In fact, every time you plug the hard drive into your PC you will be prompted to reformat it.
+	</ul>
+<li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 249, 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a>.</li></li>
+<li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="http://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="http://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
+<li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
+<li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
+<font size="6"><li>USB Loader and Hard Drive setup</li></font><br>
+<ol>
+External hard drive partition style\format information for drives that were connected when this guide was created has been saved to the spoiler below.<br><br>
+<div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<pre>
+Number Friendly Name                     Serial Number        HealthStatus OperationalStatus Total Size Partition Style
+1       SDHC                                                 Healthy      Online              14.46 GB MBR            
+<br>
+DeviceID Filesystem
+F:       FAT32     
+H:       NTFS      
+</pre></div></div></div><br>
+<!--------------------------------------MBR Stuff BELOW----------------------------------->
+<font size="5"><li>Set External Hard Drive Partition Style to MBR (if applicable)</li></font><br>
+<ul style=align="left" type="disc">
+<li><b>First, plug your hard drive into your PC and check if it's Partition style is already MBR.</b>
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/XyTaMT5yhAY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_Check.gif" border="0"/></a><br>
+	<ol type="A">
+	<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+	<li>In the Disk Management window, right-click the disk you want and select "Properties".
+	<li>In the disk's properties window, select the "Volumes" tab.
+	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
+	</ol>
+<br>
+<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="http://tiny.cc/wiibigdrive" target="_blank">ca032769's guide for Western Digital hard drives</a> or <a href="http://tiny.cc/wiibigseagate" target="_blank">Al_Touriste's guide for Seagate hard drives</a> to complete the rest of this step.</b>
+	<ul style=align="left" type="square">
+	<li>If your hard drive is >2TB, not MBR, and not a supported Western Digital or Seagate drive then you are currently out of luck.
+	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
+	</ul>
+<br>
+<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using one of the two methods below.</b>
+<br>
+<br>
+<li><b>Method 1: MiniTool Partition Wizard</b>
+	<ul style=align="left" type="square">
+	<li>If you have files on the drive you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
+	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
+	<li>If your drive is not already in the desired format (e.g. FAT32) you will have to format it during the next step anyway so there's no point in using this method.
+	</ul>
+
+<br>
+<ol type="A">
+	<li><a href="http://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
+	</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
+
+	<li>Within the MiniTool window, right-click the GPT disk you want to convert and choose "Convert GPT Disk to MBR Disk".
+	<li>Click the "Apply" button in the toolbar.
+	<li>Click the "Yes" button to confirm conversion.
+	<li>Wait for the conversion to finish then click "OK".
+	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
+</ol>
+
+<br>
+
+<li><b>Method 2: Windows Disk Management</b>
+
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
+
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
+
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+
+<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
+
+
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed later.
+	</ul>
+<li>Set the File System to your desired format and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+</ol>
+<br>
+</ul>
+
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<font size="5"><li>Partition and Format the External Hard Drive (if applicable)</li></font><br>
+Choose a format option using the buttons below. FAT32 is generally recommended but you can click other buttons to see pros and cons of each.<br>
+<br>
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen2" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32')">FAT32</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'NTFS')">NTFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'WBFS')">WBFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32NTFS')">FAT32+NTFS</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('FormatGroup', 'FAT32WBFS')">FAT32+WBFS</button>
+<br><br>
+
+<!--------------------------------------FAT32----------------------------------->
+<div id="FAT32" class="FormatGroup">
+<b><u>FAT32 (Recommended)</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>The Wii can access apps, games, covers, media and other files stored on FAT32 without requiring an SD card.
+<li>Compatible with playing Gamecube games.
+<li>Compatible with SNEEK/Nand Emulation.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>Cannot store files greater than 4GBs. The limit does not apply to Wii games, which can be split into parts. This will likely not affect you unless the drive is also used to store HD videos.
+</ul>
+<br>
+
+<ol type="A">
+<li>First, plug your hard drive into your PC and determine if it needs to be formatted by checking the current Format\File-System of the drive.</li>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
+	<ul style=align="left" type="square">
+	<li>Open "This PC" or "My Computer", right-click the external hard drive you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+	<li>Make note of the Drive Letter of the external hard drive as this will be important later.
+	<li>If the "File-System" is already FAT32, you can skip this step.
+	</ul>
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
+</li>
+	<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/oLA47xjGPVQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32.gif" border="0"/></a><br>
+
+<li>Carefully select the correct drive letter corresponding to your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</ol>
+</div>
+
+
+<!--------------------------------------NTFS----------------------------------->
+<div id="NTFS" class="FormatGroup">
+<b><u>NTFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>Capable of storing files greater than 4GB.
+<li>Most USB-Loaders can access games, covers and music saved to NTFS.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>The HBC cannot load apps stored on NTFS, so an SD card or modern forwarder channel is required to run USB-Loaders.
+<li>Incompatible with playing Gamecube games.
+<li>Incompatible with SNEEK/Nand Emulation.
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li>First, plug your hard drive into your PC and determine if it needs to be formatted by checking the current Format\File-System of the drive.
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
+	<ul style=align="left" type="square">
+
+	<li>Open "This PC" or "My Computer", right-click the external hard drive you want to use, then select "Properties".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+		<li>Make note of the Drive Letter of the external hard drive as this will be important later.
+	<li>If the "File-System" is already NTFS, you can skip this step.
+	</ul>
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+
+<li>Right-click "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/s_bT5qRJi98?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NTFS.gif" border="0"/></a><br>
+<li>Right-click the drive you want to format (make sure you select the right drive!), then select "Format..."
+<li>Select "NTFS" as the File system to use and input a name for the Hard-Drive/Volume.
+<li>You may optionally uncheck the "Perform a quick format" box, then click "OK", then click "OK" again.
+</ol>
+</div>
+
+
+
+<!--------------------------------------WBFS----------------------------------->
+<div id="WBFS" class="FormatGroup">
+<b><u>WBFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>Greater compatibility with hard drives, especially small thumb drives. If loading backups using other formats doesn't work you can try WBFS before getting a new hard drive.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>WBFS can ONLY store Wii Games, so an SD card is generally required to run apps.
+<li>Incompatible with playing Gamecube games.
+<li>Incompatible with SNEEK/Nand Emulation.
+<li>Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+	<ul style=align="left" type="square">
+	<li>If you have any Wii files on the drive you should copy them to your SD Card now (e.g. "apps" folder, "usb-loader" folder, etc.)
+	</ul>
+<li>Launch Wii Backup Manager from COPY_TO_USB\Program Files
+</li>
+	<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/JClxKhiC_18?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/WBFS.gif" border="0"/></a><br>
+
+<li>In the Wii Backup Manager window, click the "Tools" menu and select "Format drives".
+<li>Carefully select the correct drive letter corresponding to your external hard drive.
+<li>Confirm the new file system is "WBFS", then click "Start".
+<li>Click "Yes" when asked if you want to continue, then click "Close".
+</ol>
+<br>
+<ul style=align="left" type="disc">
+<li><b>Warning:</b> Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+
+
+
+
+
+</div>
+
+
+
+
+
+<!--------------------------------------FAT32+NTFS----------------------------------->
+<div id="FAT32NTFS" class="FormatGroup">
+<b><u>FAT32 + NTFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>FAT32 partition can be used to launch apps without requiring an SD card.
+<li>FAT32 partition is compatible with playing Gamecube games.
+<li>FAT32 partition is compatible with SNEEK/Nand Emulation.
+<li>NTFS partition can be used to save files greater than 4GB.
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>May not be possible with some low capacity USB flash drives.
+<li>A little more work to setup.
+</ul>
+<br>
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/WgEbG5jH7Fs?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32NTFS.gif" border="0"/></a><br>
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume..."
+<li>Enter the "volume size" you want your FAT32 partition to be, and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed when we use FAT32 GUI Formatter shortly.
+	</ul>
+<li>Set the File System to "FAT32" (if possible) and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>FAT32 will mostly likely not be an option (only listed if volume size is under 32GB).
+	</ul>
+<li>If FAT32 isn't an option, you can choose "Do not format this volume".
+
+	<ul style=align="left" type="disc">
+	<li>It's also okay to format as NTFS or exFAT since we will be changing it to FAT32 later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+<li>In the lower half of the Disk Management menu, locate your drive's remaining unallocated space, right-click it, and select "New Simple Volume...."
+<li>Click "Next" to format all the remaining space on the drive.
+<li>Choose a Drive letter for your NTFS partition, and click "Next".
+<li>Ensure the file system is set to NTFS, then name/label the volume, and optionally uncheck the "Perform a quick format" box.
+<li>Click "Next", then click "Finish".
+</li>
+<br>
+If you were able to format the first partition as FAT32, then you can skip the remainder of this step.<br>
+<br>
+
+
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>
+<li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</ol>
+
+</div>
+
+
+
+
+
+
+
+
+
+<!--------------------------------------FAT32+WBFS----------------------------------->
+<div id="FAT32WBFS" class="FormatGroup">
+<b><u>FAT32 + WBFS</u></b><br>
+
+<br>
+Pros:<br>
+<ul style=align="left" type="disc">
+<li>FAT32 partition can be used to launch apps without requiring an SD card.
+<li>FAT32 partition is compatible with playing Gamecube games.
+<li>FAT32 partition is compatible with SNEEK/Nand Emulation.
+<li>WBFS has greater compatibility with hard drives, especially small thumb drives. If loading backups using other formats doesn't work you can try WBFS before getting a new hard drive.
+
+</ul>
+Cons:<br>
+<ul style=align="left" type="disc">
+<li>May not be possible with some low capacity USB flash drives.
+<li>A little more work to setup.
+<li>WBFS partition can ONLY store Wii Games.
+<li>Windows Explorer cannot open WBFS partitions and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to a WBFS partition can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+<br>
+
+
+
+<ol type="A">
+<li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
+<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+</li>
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/PfqyvqJIbfc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32WBFS.gif" border="0"/></a><br>
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.		
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume..."
+<li>Enter the "volume size" you want your FAT32 partition to be, and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of the first partition's drive letter, as it will be needed when we use FAT32 GUI Formatter shortly.
+	</ul>
+<li>Set the File System to "FAT32" (if possible) and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>FAT32 will mostly likely not be an option (only listed if volume size is under 32GB).
+	</ul>
+<li>If FAT32 isn't an option, you can choose "Do not format this volume".
+
+	<ul style=align="left" type="disc">
+	<li>It's also okay to format as NTFS or exFAT since we will be changing it to FAT32 later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+<li>In the lower half of the Disk Management menu, locate your drive's remaining unallocated space, right-click it, and select "New Simple Volume...."
+<li>Click "Next" to format all the remaining space on the drive.
+<li>Choose a Drive letter for the WBFS partition, and click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of the second partition's drive letter, as it will be needed when we use Wii Backup Manager shortly.
+	</ul>
+<li>Set the File System to anything (e.g. "NTFS") as we will be changing it to WBFS later, and optionally customize the "Volume label".
+
+<li>Click "Next", then click "Finish".
+</li>
+
+
+<br>
+If you were able to format the first partition as FAT32, then you can skip to formatting the second partition as WBFS.<br>
+<br>
+
+
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>
+<li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
+<li>You may optionally uncheck the "Quick Format" box, then click "Start".
+	<ul style=align="left" type="square">
+	<li>When completed it should display "Done".
+	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
+	</ul>
+<li>Click the "Close" button.
+</li>
+
+<br>
+
+<li>To format the second partition as WBFS, launch Wii Backup Manager from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
+	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
+	</ul>
+</li>
+
+<li>In the Wii Backup Manager window, click the "Tools" menu and select "Format drives".
+<li>Carefully select the correct drive letter corresponding to the second partition on your external hard drive.
+<li>Confirm the new file system is "WBFS", then click "Start".
+<li>Click "Yes" when asked if you want to continue, then click "Close".
+</ol>
+
+<br>
+<ul style=align="left" type="disc">
+<li><b>Warning:</b> Windows Explorer cannot open WBFS drives and may prompt you to format it, careful not to do so accidentally.
+	<ul style=align="left" type="square">
+	<li>Wii games saved to the drive can still be managed on your PC using Wii Backup Manager or on your Wii using a USB-Loader.
+	</ul>
+</ul>
+</div>
+
+
+</div>
+<br>
+
+
+
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+	//////document.getElementById("defaultOpen3").click();
+	document.getElementById("defaultOpen2").click();
+    document.getElementById("defaultOpen").click();
+</script>
+
+<font size="5"><li>Copy Files to the Hard Drive</li></font><br><ul style=align=left type=disc><li>At this time you should copy the files ModMii downloaded to the root of your hard-drive\partition (or SD Card if your HDD is WBFS).<ul style=align=left type=square><li>The files should be saved here: C:\ModMii\COPY_TO_USB</ul><br>
+•  Your folder structure should look <i>similar</i> to this:<br>
+💾 SD Card or USB Drive<br>
+ ┗ 📁apps<br>
+&nbsp; &nbsp; &nbsp; ┣ 📁AppName1<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄boot.dol<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄meta.xml<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┗ 📄icon.png<br>
+&nbsp; &nbsp; &nbsp; ┣ (All other Wii apps should be here too)<br>
+<br>
+•  Your folder structure should <u>not</u> look like this:<br>
+💾 SD Card or USB Drive<br>
+ ┗ ⛔📁COPY_TO_SD<br>
+ ┗ ⛔📁COPY_TO_USB<br>
+<br>
+</ul>When finished copying, you can proceed with the optional steps below or safely remove the hard drive from your computer and plug it into USB port0 on your console to start playing!<br><br>
+<font size="5"><li>Manage Game backups (optional)</li></font><br>
+<ul style=align="left" type="disc">
+<li>WiiBackupManager.exe is saved here: "COPY_TO_USB\Program Files\WiiBackupManager"
+<li>NKitProcessingApp.exe is saved here: "COPY_TO_USB\Program Files\NKit"
+<li>GCBM.exe is saved here: "COPY_TO_USB\Program Files\GCBM"
+</ul><br>
+
+<font size="5"><b>Wii Backup Manager</b></font><br>
+<i>Wii Backup Manager (WBM) is a Windows program to help transfer Wii games to and from hard drives and SD cards.<br>It can also download game covers, list your games, identify what games are missing between devices, and more.</i><br>
+<br>
+<ul style=align="left" type="disc">
+<li>You can use this program to manage/transfer your backup copies of Wii Games (.WBFS/.ISO/.CISO).
+<li>It is very simple to use, but a detailed tutorial on using Wii Backup Manager can be found <a href="https://wii.hacks.guide/wii-backups#using-wii-backup-manager" target="_blank">here</a>.
+<li>Wii Game Directory Structure:
+	<ul style=align="left" type="square">
+	<li>Below is a single WBFS example, and a split WBFS example. A WBFS file needs to be split if it is over 4GB and your storage device is formatted as FAT32. During transfer operations WBM can automatically split games and set up the directory structure for you.<br>
+	<br>
+	💾 SD Card or USB Drive<br>
+	┗ 📂wbfs<br>
+	&nbsp; &nbsp; &nbsp; ┣ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp; ┃  ┗ 📜<i>GameID</i>.wbfs (for non-split titles)<br>
+	&nbsp; &nbsp; &nbsp; ┗ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┣ 📜<i>GameID</i>.wbfs<br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┗ 📜<i>GameID</i>.wbf1<br>
+	</ul>
+</ul>
+<br>
+
+<font size="5"><b>GameCube Backup Manager</b></font><br>
+<i>GameCube Backup Manager (GCBM) is a Windows program to help transfer GameCube games to and from hard drives and SD cards.<br>The interface is very similar to the popular Wii Backup Manager program making it easy to use.</i><br><br>
+
+<ul style=align="left" type="disc">
+<li>You can use this program to manage/transfer your backup copies of GameCube Games (.ISO/.CISO/.GCM and extracted FST format).
+<li>More detailed usage information on GameCube Backup Manager can be found <a href="https://wii.hacks.guide/gc-backups.html" target="_blank">here</a>.
+<li>Gamecube (Nintendont) Game Directory Structure:
+	<ul style=align="left" type="square">
+	<li>Below is a single disc game example, and 2-disc game example. Subdirectories are optional for 1-disc games in ISO/GCM and CISO format. During transfer operations GCBM can automatically and correctly set up the directory structure for you.<br>
+	<br>
+	💾 SD Card or USB Drive<br>
+	┗ 📂games<br>
+	&nbsp; &nbsp; &nbsp; ┣ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp; ┃  ┗ 📜game.ciso (for single disc games)<br>
+	&nbsp; &nbsp; &nbsp; ┗ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┣ 📜game.iso<br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┗ 📜disc2.iso<br>
+	</ul>
+</ul>
+<br>
+
+<font size="5"><b>NKit Processing App</b></font><br>
+<i>NKit is a Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images.</i><br><br>
+<ul style=align="left" type="disc">
+<li>Practically speaking you will only need this app if you encounter an "NKit.iso" or "NKit.gcz" game backup, which are not supported by WBM or GCBM.
+	<ul style=align="left" type="square">
+	<li>Usually these files have NKit in their names, but if WBM or GCBM cannot handle a backup it may be an unlabelled NKit backup.
+	</ul>
+<br>
+<li><b>How to use the NKit Processing App to convert NKit backups to ISO</b>
+
+	<ol type="A">
+	<li>Drag and drop source file(s) onto the NKit Processing App window.
+	<li>Select "Convert to ISO" Mode.
+	<li>Click "Process".
+	<li>When finished, the converted game will be saved to: ..\NKit\Processed\Wii_MatchFail\
+	</ol>
+	<ul style=align="left" type="square">
+	<li>Click <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/IrzE23XuFJU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank">here</a> for a short video tutorial.
+	</ul>
+<br>
+<li>After converting from NKit to ISO, backups can be handled by WBM and GCBM like normal.
+</ul>
+<br>
+
+<font size="5"><b>How to Backup Original Discs</b></font><br>
+
+<i>Ripping <u>original</u> Wii discs cannot be done on a computer without one of the rare disc drives that are capable of doing so (most are LG branded).</i><br><br>
+<ul style=align="left" type="disc">
+<li>To copy Wii Discs, launch USB-Loader GX and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> to start making a backup.
+<li>To copy GameCube (or Wii) Discs, launch "CleanRip" from the HBC and insert the disc into your Wii, then follow the very simple on-screen instructions. Note that CleanRip does not support devices formatted as WBFS.
+<ul style=align="left" type="square"><li><b>Warning</b>: Using your Wii to rip games to NTFS is <u>very</u> unstable, it is highly recommended to rip games to a FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer. Recall that GameCube games cannot be played when saved to NTFS devices.</ul>
+</ul><br>
+<font size="5"><li>Configure/Customize Your USB-Loader (optional)</li></font><br>
+<ul style=align="left" type="disc">
+<li>Start your preferred USB-Loader from the HBC, or a forwarder channel, or set Priiloader to autoboot it at startup.
+
+	<ul style=align="left" type="square">
+	<li>From there it's pretty intuitive, browse and adjust any settings to your liking, download covers, set Private Server to <a href="https://wii.hacks.guide/wiimmfi.html#automatic-backup-patching-via-usb-loader" target="_blank">Wiimmfi</a> to re-enable online multiplayer, disable the blurry deflicker filter, etc.
+	</ul>
+<br>
+<li>You can customize the look\theme of your USB-Loader or HBC following the steps from <a href="https://wii.hacks.guide/themes#wiiflow-lite-theming" target="_blank">here</a>.<br>
+<br>
+<li>If you have questions about getting started with USB-Loader GX <a href="https://wii.hacks.guide/wii-loaders.html#usb-loader-gx" target="_blank">click here</a>.<br>
+</ol><br>
+<!---------------------------------------Credits, apps, and sources are below---------------------------------------------->
+<font size="6"><li><a name="Credits">Credits, Supporting Apps, and Sources</a></li></font><br>
+ModMii was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.<br>
+<br>
+I have tried my best to recognize everyone's contribution to ModMii regardless of how big or small it is. If I've forgotten someone, please notify me and I'll add them to the credits as quickly as possible.<br><br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Credits, Supporting Apps and Sources  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '  Click to hide Credits, Supporting Apps and Sources  '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Credits, Supporting Apps and Sources  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+
+<ul style=align="left" type="disc">
+<li><font size="4"><b>Team Twiizers</b></font><br>
+Thanks to Team Twiizers for creating the revolutionary HackMii Installer. Without their hard work, the Wii might never have been unlocked. Many Team Twiizer Members went on to join Team Fail Overflow; a team that played a vital role in unlocking the PS3.<br><br>
+
+I especially want to thank Bushing (may he rest in peace), who before his untimely passing gave ModMii his blessing to download and use the HackMii Installer.</li><br>
+
+<li><b><font size="4">Giantpune</font></b><br>
+Giantpune is a legend in the Wii Scene and I consider him to be a good friend of mine. He created many exploits, including the Smash Stack exploit for PAL and KOR Wii's (which is maybe still the only method to fix 003 bricked Wii's), the Channel Forwarder dol, USB Loader GX, and many other computer programs to repair or virginize Wii's.<br><br>
+
+He's contributed code to more projects than I even know about, so its impossible for me to truly convey his impact on the scene. He even took the time to explain a few things to me about cIOSs when ModMii was in its early stages and still known as NUS Auto Downloader.</li><br>
+
+<li><b><font size="4">DeadlyFoez</font></b><br>
+DeadlyFoez is legendary for his Wii Repairs and infectus tutorial. He also played a key role in the ModMii v5.0.0 update not only by helping come up with the idea for using html guides but also creating the template for ModMii's custom html guides and recording almost all of the videos and images they use. Within 1.5 weeks since our initial conversation we were able to collaborate and bring the idea to life in time to release it for Christmas. Working with him on this was a truly rewarding and fun experience. DeadlyFoez also single-handedly built the first official ModMii website.<br><br>
+
+What can I say about THE "DeadlyFoez" on a personal level. He's always getting me into trouble but his friendship is worth every fiasco! It's unreal how he became one of my best friends. Just goes to show you not everyone you meet online is totally crazy; in his case... just a little crazy. But seriously, thanks to DeadlyFoez for always being there for me to bounce ModMii ideas off of, for hosting our Team Your Mom meetings and for introducing me to his awesome family and friends. There's no one else I'd rather geek out with and I'll always have your back.</li><br>
+
+<li><b><font size="4">Violator</font></b><br>
+He's my bro, my cuz, my best man and the reason I ever bought or modded a Wii. "XFlak" would have died many years ago if not for him. Thanks Violator, for getting me interested in this stuff, and for all the awesome music you recorded for ModMii and my <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Top Wii Channels</a>.</li><br>
+
+<li><b><font size="4">JoostinOnline</font></b><br>
+Thanks for his work developing KoreanKii (with tueidj), Syscheck HD Edition, sharing his webhosting space with me, and for all his jokes; I'll never get tired of our endless patriotic "debates".</li><br>
+
+<li><b><font size="4">Crediar, Daco Taco and Phpgeek</font></b><br>
+The above people all had a hand in creating Priiloader. This was another revolutionary tool mainly because it was the first to offer some level of protection to newer Wii's that were unable to install Bootmii at boot2. Crediar developed the original preloader as well as s/uneek, Nintendont, NMM, DML, etc. Special thanks to Daco Taco for being the last man standing in terms of actively improving/maintaining Priiloader, not to mention developing OpenDolBoot and just generally being very helpful and knowledgeable.</li><br>
+
+<li><b><font size="4">NinjaCheetah</font></b><br>
+Thanks for his work on libWiiPy, WiiPy, NUSGet and more! It was a pleasure working with him to test his tools and he was always very open to feedback and feature requests.</li><br>
+
+<li><b><font size="4">Comex</font></b><br>
+In addition to being a member of Team Twiizers and contributing to the HackMii Installer, Comex created the heavily utilized bannerbomb exploit. This exploit is what allows Wii's on firmwares 3.0-4.2 to be softmodded with only an SD Card instead of needing one of a few specific Wii Games.</li><br>
+
+<li><b><font size="4">Maschell and GaryOderNichts</font></b><br>
+Thanks for being absolute legends in the WiiU and vWii scene!<br><br>
+
+<li><b><font size="4">Waninkoko</font></b><br>
+Waninkoko was the first to publicly release a cIOS and other excellent apps like WAD manager, Save Game Manager, USB loader, etc. I also want to thank him for giving ModMii permission to recreate his cIOSs in WAD form.<br><br>
+
+<li><b><font size="4">Hermes and Rodries</font></b><br>
+Hermes is well known for his cIOS 222/223/224 and for his usbloader "uloader". For a time his cIOSs were the only ones to work with RockBand type games and they are still highly utilized today. Thanks to Rodries for improving upon Hermes v5.1 cIOSs.</li><br>
+
+<li><b><font size="4">davebaol, blackb0x, XFlak and xabby</font></b><br>
+These developers worked together to modify Waninkoko's rev21 cIOS and created a new "d2x" cIOS. This cIOS is currently considered the ultimate cIOS because it corrected many bugs and added features that were previously thought to be impossible (ie. Support for IOS Reloading Games). WiiPower was also heavily influential in achieving IOS Reload Support.</li><br>
+
+<li><b><font size="4">Fullmetal5</font></b><br>
+Thanks for his work developing the str2hax and bluebomb exploits.</li><br>
+
+<li><b><font size="4">WiiGator</font></b><br>
+WiiGator created a cMIOS and Gamecube Backup Launcher. Any GameCube fans owe a big thank you to WiiGator for his work.</li><br>
+
+<li><b><font size="4">cwstjdenobs</font></b><br>
+cwstjdenobs is one of the few people I've encountered in the Wii scene that I would love to treat to a beer. He was always very supportive of me and encouraged me to ask him as many questions as I'd like. He is probably most well known for YAWMM (Yet Another Wad Manager Mod) which was the first Wad Manager to add brick protection by restricting users from making silly mistakes like uninstalling or stubbing a crucial file. He's also made and modified apps specifically for ModMii. For example, he modified WadMii so it doesn't timestamp WADs and he also made a setting.txt builder for ModMii's NAND builder.</li><br>
+
+<li><b><font size="4">Leathl</font></b><br>
+Leathl is another awesome developer who supported me before I became well known by expanding upon his apps to further support ModMii. Leathl has created many Wii apps including ShowMiiWads, CustomizeMii, libWiiSharp, patchios, nusfilegrabber, etc. Despite his recent inactivity, his apps are still highly used today... just goes to show you that quality work never gets old. I also want to thank RetroHead for his Mod of ShowMiiWads which ModMii uses to build emulated nands without requiring any input from the user. libWiiSharp.dll is based on wii.py, the wii.py devs are Megazig, Omega, Xuzz, SquidMan, Matt_P and The Lemon Man. Also thanks to Daeken for writing Struct.py and marcan for his LZ77 code.</li><br>
+
+<li><b><font size="4">scooby74029</font></b><br>
+scooby74029's most well known for sneeky compiler, which is able to build multiple different versions of s\uneek. ModMii will always construct the latest version of s\uneek available on his sneeky compiler google code webpage. This means he has total control over what version of s\uneek ModMii will construct. He also created modifications of Leathl's libWiiSharp.dll and patchios.exe to further support ModMii. Additionally, he's modified other apps like Any Region Changer ModMii Edition, JoyFlow, JoyLoader GX, JoyLoader CFG, etc. On top of all that, he's an all around awesome person and I'm proud to be on his friends list.</li><br>
+
+<li><b><font size="4">person66</font></b><br>
+person66 has had a hand in many projects, but most noteworthy are his sharpii cmd line tool and his Universal Forwarder Creator. He also wrote the intial version of an autoit script that is used to launch ModMii with an icon, arguments and other useful functions.<br><br>
+Thanks for trading little bits of batch coding knowledge with me. It's great having a fellow batch coder for a friend; we are a dying breed, so keep up the great work with Universal Forwarder Creator and all your other projects.</li><br>
+
+<li><b><font size="4">WiiPower and shoutplenty</font></b><br>
+WiiPower created Neogamma which is hands down the best backup disc loader for the Wii. He also contributed code to many other popular usb-loaders and had a hand in adding IOS Reloading support to the d2x cIOSs. Furthermore he also modified WiiGators cMIOS, which was later further modded by shoutplenty to include Swiss, and is considered the ultimate cMIOS today.</li><br>
+
+<li><b><font size="4">OverjoY and obcd</font></b><br>
+OverjoY created JoyFlow, a modification of WiiFlow that runs on s\uneek. He then teamed up with obcd to accomplish some seriously amazing things, like building their mod of s\uneek, NEEK2O, that allows it to load games in wbfs format and select from multiple emulated NANDs.</li><br>
+
+<li><b><font size="4">Maeson and NoobletCheese</font></b><br>
+Thanks for researching video filters in such detail to get Deflicker video filter mods working just right!</li><br>
+
+<li><b><font size="4">CrafterPika</font></b><br>
+Thanks for developing and hosting an updated server to save SysCheck report uploads.</li><br>
+
+<li><b><font size="4">Arikado and the Dop-Mii Team</font></b><br>
+They created Dop-Mii; a lot of apps borrow code from Dop-Mii, so even if you have never used Dop-Mii but used MMM or WiiMod then you owe a thank you to these people.</li><br>
+
+<li><b><font size="4">DarkMatterCore</font></b><br>
+For his work on wad2bin, Yet Another BlueDump MOD, ww-43db-patcher and for being a part of ModMii's development and testing discord.</li><br>
+
+<li><b><font size="4">WiiWu</font></b><br>
+He made Multi-Mod Manager (MMM) which has the functions of many different Wii modding tools all in one user friendly app.</li><br>
+
+<li><b><font size="4">WB3000 and WiiNinja</font></b><br>
+Thanks to WB3000 for creating NUS Downloader and to WiiNinja for making a cmd line version of NUS Downloader. NUS Downloader was one of ModMii's vital supporting apps.</li><br>
+
+<li><b><font size="4">TheShadowEevee</font></b><br>
+TheShadowEevee helped update many tools with a new NUS endpoint. He also helped implement some fixes and improvements to Any Region Changer ModMii Edition.</li><br>
+
+<li><b><font size="4">WiiCrazy</font></b><br>
+WiiCrazy is most famous for "Wii Game Shortcut Creator" (formerly known as "Crap"), Crazy Intro and Crazy Intro Video. He also contributed to usb-loaders by bypassing some game specific security. WiiCrazy is another person who's always been willing to do everything in his power to help me, or anyone else for that matter.</li><br>
+
+<li><b><font size="4">oggzee, usptactical, gannon and Dr.Clipper</font></b><br>
+Together the above people compose the Configurable USB Loader Team. Back in the day, this usb-loader was always the first to add new features and in my opinion it's one of the top three best usb-loader out there.</li><br>
+
+<li><b><font size="4">Cyan, dimok, blackb0x and the USBLoaderGX team</font></b><br>
+Thanks for their work on USBLoaderGX. It is one of the most feature-rich usb-loaders and has quickly become a favourite among the community. I also want to thank Cyan specifically for his excellent support of users on gbatemp for many years; he has probably explained what an IOS is more times than I can count!</li><br>
+
+<li><b><font size="4">OverjoY, blackb0x, Peter0x44, scooby74029 and thepikachugamer</font></b><br>
+This dream team of developers brought my vision to life when they created YAWM ModMii Edition.</li><br>
+
+<li><b><font size="4">Hibernatus, Fledge68 and the WiiFlow team</font></b><br>
+Thanks for their work on WiiFlow. It was always beautiful, but now it's got all sorts of bells and whistles, you should check it out.</li><br>
+
+<li><b><font size="4">Wiimm</font></b><br>
+Thanks to Wiimm for creating Wiimmfi and Wiimms ISO Tools, including wit.exe which ModMii uses to convert Wii Games to s/uneek format, build forwarder ISOs and enabled\disable Deflicker video filters.</li><br>
+
+<li><b><font size="4">Leseratte</font></b><br>
+For his work on Wiimmfi, as well as d2xl and other amazing projects.</li><br>
+
+<li><b><font size="4">diddy81 and symular syn of the Wii Theme Team</font></b><br>
+The Wii Theme Team has created some of the best Wii Themes ever made! All of the alternative themes available in ModMii were created by them. I want to thank diddy81 in particular for working with me to ensure that all his themes worked perfectly for all regions.</li><br>
+
+<li><b><font size="4">FIX94, Narolez and the WiiXplorer Team</font></b><br>
+Thanks to all these people for their contributions in making the best SD/USB forwarder. I want to thank FIX94 in particular who not only worked on Nintendont, Some YAWMM Mod, WiiFlow and literally every other big Wii application, but he also spent a lot of time testing ModMii's Forwarder Builder.</li><br>
+
+<li><b><font size="4">jskyboo</font></b><br>
+Thanks to jskyboo for creating WiiMod. His app can do a lot of different things, and it was the first ahbprot enabled WAD Manager to incorporate davebaol's ahbprot bugfix.</li><br>
+
+<li><b><font size="4">ModMii's Translators</font></b><br>
+Tranlating ModMii is an enormous amount of work. It's very challenging to get special characters to display correctly in a cmd window, not to mention keeping everything formatted properly. But probably the most difficult part of translating ModMii is keeping up with the updates. If you use a translated version of ModMii, I encourage you to thank your translator because it truly is a LOT of work to do.<br><br>
+
+French Translators: <b>mamule, xav91 and ketufe</b><br>
+Dutch Translator: <b>Hielkenator</b><br>
+Italian Translators: <b>Wasabi, Step and Robilyn</b><br>
+Spanish Translators: <b>ledebene and Burton</b><br>
+Korean Translator: <b>DDinghoya</b></li><br>
+
+<li><b><font size="4">Fig2k4</font></b><br>
+Thanks Fig2k4 for WiiBackupManager. It was a pleasure beta testing it for you and sharing my ideas with you. I hope to see you around the forums again and that you continue working on your amazing program.</li><br>
+
+<li><b><font size="4">Gabubu, sthetix, Foxlet, Alexander1970, Vila and Aep</font></b><br>
+Thanks for recording, editing or upscaling many of the Youtube videos used by ModMii. Special thanks to Gabubu who single-handedly created all the new\updated videos in the 7.0.0 update, and also updated GFX for a bunch of ModMii's Wii channels.</li><br>
+
+<li><b><font size="4">WiiShizzza, pepxl, RobGee789, M3RK, AuroraNemoia and emilydaemon</font></b><br>
+Thanks to WiiShizzza for creating ModMii's new icon and to pepxl for creating ModMii's original icon. I want to thank everyone who created a ModMii icon and submitted it into <a href="https://gbatemp.net/threads/new-modmii-icon-logo-candidates.296772/" target="_blank">ModMii's new icon competition</a>.<br><br>
+
+RobGee789 and M3RK made ModMii Skin's original graphics. AuroraNemoia made ModMii Skin's new (2022) <a href="https://github.com/modmii/modmii.github.io/tree/master/Support/Skins/Default" target="_blank">default\Nebula theme</a>. It was a pleasure working with them, they were all very open to feedback and willing to "go back to the drawing board", so to speak, as many times as it took to get it perfect. Thanks guys!<br><br>
+
+emilydaemon made <a href="https://raw.githubusercontent.com/modmii/modmii.github.io/refs/heads/master/Support/Skins/Default/splash.png" target="_blank">ModMii's WiiU\Aroma splash screen</a> as well as maintains the <a href="https://wilbrand.donut.eu.org" target="_blank">Wilbrand Web website</a>.</li><br>
+
+<li><b><font size="4">dhtdht020, Gabubu, Artuto and the Open Shop Channel team</font></b><br>
+Thanks for maintaining oscwii.org! Special thanks to dhtdht020 for refreshing the ModMii icons in 2022; now I have a rainbow of icons to choose from should the need arise.</li><br>
+
+<li><b><font size="4">vgmoose, pwsincd, Nightkingale, Gabubu and the Homebrew App Store team</font></b><br>
+Thanks for maintaining hb-app.store and all the other projects you've contributed to!</li><br>
+
+<li><b><font size="4">My Fellow Guide Writers</font></b><br>
+Thanks to tj_cool, xzxero, burritoboy9984, ChokeD, mauifrog, playerjmr, Ingunar and the Wii\WiiU hacks guide team for their awesome guides. I especially want to thank tj_cool and xzxero for inviting me to join "The Crew" at the Complete Softmod Guide. I'll never forget how great it felt to be relatively new to the scene and to be invited to join you all as equals.</li><br>
+
+<li><b><font size="4">Wii.Hacks.Guide and WiiLink\RiiConnect24 teams</font></b><br>
+Thanks in particular go out to Peter0x44, Larsenv and KcrPL. Brainstorming and collaborating with you guys made the 2020 lockdowns feel somewhat bearable. Special thanks to Peter0x44 for helping me set up the ModMii discord server to a much higher standard than I could have ever hoped to do on my own.</li><br>
+
+<li><b><font size="4">DaMysteryMan</font></b><br>
+Thanks for helping me understand the structure of a cIOS so I could better recreate it in WAD form. For those of you who don't know him, DaMysteryMan is most well known for his ever controversial app - DarkCorp (formerly known as cIOSCorp).</li><br>
+
+<li><b><font size="4">Gannon</font></b><br>
+Thanks to Gannon for bootopera, which I was able to mod to create the URL loader base dol.</li><br>
+
+<li><b><font size="4">Devnol</font></b><br>
+Thanks to Devnol for properly modifying the Open HBC to use the same title ID as the official HBC (LULZ).</li><br>
+
+<li><b><font size="4">ca032769 and Al_Touriste</font></b><br>
+Thanks for their tutorials on how to use a larger than 2TB Hard Drive on a Wii as a Single FAT32 Partition.</li><br>
+
+<li><b><font size="4">All My Beta Testers!</font></b><br>
+It's because of you guys that ModMii is as stable as it is. Considering that ModMii is developed entirely in notepad without any kind of debugger or developer tools; it's pretty remarkable that ModMii has always been bug-free (albeit with a couple minor exceptions). Thanks for your never-ending devotion to quality control!<br>
+
+Here's a list of some of ModMii's beta testers (in no particular order): scooby74029, DeadlyFoez, redia, Etheboss, JoostinOnline, person66, brausm08, geovalley, undeadsquirrel, mauifrog, FIX94, wolf, Larsenv, Peter0x44, Alexander1970, Cyan, Damaj301damaj, Function, forseenink, jeannotte, saulfabreg, Vila, ca032769, godreborn, KleinesSinchen, RunningSnakes, Scooty, bibarub, Aep, Isla, beta215, Binsky, CoolMe, forseenink, Maeson, grandosegood, and last but certainly not least, Denver Gamer and Clutz450. @Clutz450 and Denver Gamer, you guys rock, I really enjoyed discussing your ModMii tutorial videos and your ideas on the little ways ModMii could be made even better.</li><br>
+
+<li><b><font size="4">You!</font></b><br>
+Without you, there would be no reason for ModMii to exist. Thanks for using ModMii for all your Wii\WiiU softmodding needs!</li>
+</ul>
+<br>
+
+<font size="5"><u>Supporting Apps and Sources</u></font><br>
+<br>
+Below is a list of the supporting apps bundled with ModMii and their sources. If a link is missing or broken, you can still get it from <a href="https://mega.nz/folder/YsphyYBQ#UOe3xmXPwldtKo6WF-sfXA" target="_blank">ModMii's Supporting Files Archive</a>.<br>
+
+Source code for ModMii itself is available is available at <a href="https://github.com/modmii/modmii.github.io" target="_blank">github</a>, but you can just open the bat files from it's support folder in notepad or similar text editor.<br>
+<br>
+
+
+<ul style=align="left" type="disc">
+<li> <a href="https://github.com/NinjaCheetah/WiiPy" target="_blank">WiiPy</a></li>
+<li> <a href="http://ftp.gnu.org/gnu/wget/" target="_blank">wget</a></li>
+<li><a href="http://sourceforge.net/projects/sevenzip/" target="_blank">7za</a></li>
+<li><a href="http://www.nirsoft.net/utils/nircmd.html" target="_blank">nircmd</a></li>
+<li><a href="http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">sfk</a></li>
+<li><a href="http://sourceforge.net/projects/jojodiff/" target="_blank">jptch</a></li>
+<li><a href="https://web.archive.org/web/20140329080757/http://www.kuwanger.net/misc/hexalter.shtml" target="_blank">hexalter</a></li>
+<li><a href="http://github.com/waninkoko" target="_blank">Waninkoko's cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar" target="_blank">Hermes v4 cIOS</a></li>
+<li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar" target="_blank">Hermes v5 cIOS</a></li>
+<li><a href="https://github.com/davebaol/d2x-cios/releases" target="_blank">d2x cIOS</a>, <a href="https://github.com/wiidev/d2x-cios" target="_blank">v11+ source</a></li>
+<li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788" target="_blank">Swiss cMIOS r1788</a></li>
+<li><a href="https://github.com/modmii/modmii.github.io/blob/master/Support/NandLoaders/ReadMe.txt" target="_blank">NandLoaders</a></li>
+<li><a href="https://gbatemp.net/threads/homebrew-forwarder-isos.181011/" target="_blank">ISO disc-template</a></li>
+<li><a href="http://www.thedubber.altervista.org/other/batch_prog/index.html" target="_blank">Ascii2All.bat</a></li>
+<li><a href="http://wizapp.sourceforge.net/" target="_blank">WizApp</a></li>
+<li><a href="http://wit.wiimm.de/" target="_blank">wit</a>: still used but no longer Bundled with ModMii since v8.0.0</li>
+<li><a href="http://www.rarlab.com/rar_add.htm" target="_blank">UnRAR</a>: Still used but no longer Bundled with ModMii since v4.7.0</li>
+<li><a href="http://www.autoitscript.com/site/autoit/" target="_blank">AutoIt3</a>: Still used but no longer Bundled With ModMii since v4.5.7</li>
+<li>NusFileGrabber by Leathl, Mod by XFlak and TheShadowEevee - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li>patchIOS by Leathl, Mod by scooby74029 - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li><a href="http://www.mediafire.com/?bogjind5oe3" target="_blank">WadMii (aka WadMiiIsh)</a> by cwstjdenobs - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li>TMDedit by person66 - requires libWiiSharp.dll: Not used since v7.0.3
+<li><a href="http://code.google.com/p/libWiiSharp/source/browse/" target="_blank">libWiiSharp.dll</a> by Leathl, Mod by scooby74029 and TheShadowEevee: Not used since v7.0.3</li>
+<li><a href="https://github.com/wiiNinja/NUS.downloader.command.line/tree/dotnet3.5" target="_blank">nusd</a> by WiiNinja (original GUI code by WB3000): Not used since v7.0.3</li>
+<li>SMW-Mod; ShowMiiWads by Leathl, Sneek Mod by RetroHead: Not used since v7.0.3</li>
+<li>settings.exe v1.0 by cwstjdenobs and v1.1 mod by obcd: Not used since v7.0.3</li>
+<li><a href="https://github.com/mogzol/sharpii" target="_blank">Sharpii</a> by person66: Not used since v7.0.3</li>
+<li><a href="http://www.dunyazad-library.net/software/hypatia/index.htm" target="_blank">hy</a>: Not bundled with ModMii since v4.7.0  and no longer used at all since v7.0.3</li>
+<li><a href="http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">fvc</a>: Not used since v7.0.0</li>
+</ul>
+
+</div></div></div>
+<br>
+
+
+<!-------------------------------------Support ModMii / XFlak is below------------------------------------------->
+<font size="6"><li><a name="Support">Support ModMii</a></li></font><br>
+
+ModMii started out as a small side-project back in 2010 as a simple NUS Auto Downloader script, and now the changelog is taller than me! I started this project in my 20s in my spare time and since then I've gotten married and had not 1, not 2, not 3, but FOUR boys, all ~2 years apart. I love being able to share my love for gaming and for the Wii with them, and with all of you! This is a passion project that has easily taken over 9000-10000 hours of just my time alone, and that's not counting all the hours spent from the legions of devs and testers who've supported ModMii over the years.<br>
+<br>
+Not knowing that much about computers other than some excel tricks, I slowly built more advanced features on top of my original less efficient code that I'd love to rewrite if it wasn't such a daunting task. Throughout the journey I learned a lot from not just those in the credits list, but the incredibly supportive Wii community as a whole. I've gone from just being a "numbers guy" to my family's go to "tech guy", and I have this project, community and followers to thank for it.<br>
+<br>
+ModMii is entirely free to use and ad free. Donations can optionally be made to the author using the button below, or pick your favourite contributor from the credits and check if they have a donations page.<br>
+
+<p style="text-align:center">
+<a href="https://modmii.github.io/donations.html" target="_blank"><img src="https://modmii.github.io/Images/donate.png" height="95" width="109" border="0"></a></p>
+
+If you're like me and it's difficult to show support with donations, consider taking a minute to vote or share your feedback at the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126" target="_blank">official ModMii page on gbatemp</a>. I always enjoy hearing feedback about your ModMii experience.<br>
+<br>
+
+<img src="https://modmii.github.io/Images/FN2187.gif" alt="XFlak" height="95" width="94"><br>
+- XFlak
+
+</ol>          <!------------This ends the list of chapters in Roman Numberals, THIS HAS TO BE IN ALL GUIDES-------------->
+
+</body> 
+</html>
+
