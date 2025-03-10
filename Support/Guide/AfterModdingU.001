@@ -1,0 +1,23 @@
+<li>ModMii has already saved the WiiU Disc Dumper (wudd) and WUP Installer GX2 apps to your SD Card to support backing up WiiU discs. See <a href="https://wiiu.hacks.guide/dump-games" target="_blank">this page</a> for a tutorial on Dumping and Installing WiiU Discs.
+
+<li>Access the Aroma plugin menu by pressing <kbd>L</kbd> + <kbd>Down</kbd> + <kbd>SELECT (-)</kbd> on the WiiU GamePad. The plugin menu can be used to configure plugins like Inkay (Pretendo), Bloopair, etc.
+	<ul style=align="left" type="square">
+	<li>Optionally enable the plugin to "Avoid 'Format' dialog on Wii U Menu (UStealth)" to skip the 'Format' prompt when launching the WiiU Menu with a non-WiiU-formatted external drive (e.g. FAT32 formatted drive for vWii).</li>
+	<li>Note the Screenshot Plugin's default setting to take screenshots is the gamepad's TV button.
+	<li>Optionally hide WiiU homebrew from the WiiU Menu by launching the Aroma plugin menu, selecting the "Homebrew On Wii U Menu Plugin" and choosing "Hide all homebrew".</li>
+	</ul>
+
+<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
+<li>Periodically check for updates to your apps by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for available updates to ModMii's auto-updating apps.
+
+<li>Download the latest Homebrew apps and plugins.
+	<ul style=align="left" type="square">
+	<li>Download apps or PC tools from ModMii Classic's Download Pages.
+	<li>Grab the <a href="https://hb-app.store/wiiu/appstore" target="_blank">WiiU Homebrew App Store</a> from ModMii or the provided link to easily download many other popular apps right from your WiiU!</li>
+	</ul>
+<li>Check out <a href="https://github.com/RiiConnect24/UTag" target="_blank">UTag</a>: a customizable and dynamic gamertag to automatically update your Discord status with what you've been playing on your WiiU.
+<!--
+</ul>
+<br>
+-->
+<!----------------------------After WiiU Modding section above----------------------------->

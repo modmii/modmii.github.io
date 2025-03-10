@@ -33,17 +33,22 @@ set "one=%~1"
 if "%one%"=="" (goto:notcmd)
 
 set cmdinput=%*
-set cmdinput=%cmdinput:"=%
+set "cmdinput=%cmdinput:"=%"
 
 ::ModMii.exe %cmdinput%
-start ModMii.exe %cmdinput%
+start ModMii.exe "%cmdinput%"
 Exit
 
 :notcmd
 
 ::----------------------------------------------------------
 
-set currentversion=7.0.3
+set currentversion=8.0.0
+if exist Support\settings.bat call Support\settings.bat
+set d2x-bundled=11-beta2
+set d2x-beta-rev=%d2x-bundled%
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+
 set currentversioncopy=%currentversion%
 set agreedversion=
 
@@ -110,6 +115,10 @@ set PATH=%SystemRoot%\system32;%SystemRoot%\system32\wbem;%SystemRoot%
 
 chcp 437>nul
 
+::in case game dump is left over for interrupted deflicker process, delete it now as it could potentially be pretty large
+if exist "temp\witdump" rd /s /q "temp\witdump">nul
+if exist "temp\__channel" rd /s /q "temp\__channel"> nul
+
 ::if not exist temp mkdir temp
 if not exist temp\DownloadQueues mkdir temp\DownloadQueues
 if exist Support\DownloadQueues\* move /y Support\DownloadQueues\* temp\DownloadQueues>nul
@@ -134,11 +143,6 @@ if not exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\Open ModMii
 
 set UPDATENAME=ModMii
 ::set UPDATENAME=ModMii_IT_
-
-if /i "%debug%" EQU "on" goto:skip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del updatetemp.bat>nul
-:skip
 
 ::------Check for old Windows Versions-------
 ::ver | findstr /i "5\.0\." > nul
@@ -169,7 +173,7 @@ IF "%ROOTSAVE%"=="" set ROOTSAVE=off
 IF "%GUIDEOnly%"=="" set GUIDEOnly=off
 IF "%effect%"=="" set effect=No-Spin
 IF "%PCSAVE%"=="" set PCSAVE=Auto
-IF "%OPTION1%"=="" set OPTION1=off
+::IF "%OPTION1%"=="" set OPTION1=off
 IF "%AudioOption%"=="" set AudioOption=on
 IF "%CMIOSOPTION%"=="" set CMIOSOPTION=off
 IF "%hermesOPTION%"=="" set hermesOPTION=off
@@ -187,7 +191,8 @@ IF "%SSD%"=="" set SSD=off
 ::IF "%discexverify%"=="" set discexverify=off
 IF "%SNKFONT%"=="" set SNKFONT=B
 IF "%skin%"=="" set skin=Default
-
+::IF "%AutoDetectNL%"=="" set AutoDetectNL=
+::IF "%AutoDetectDF%"=="" set AutoDetectDF=
 
 if exist "Support\Skins\%skin%\ABSTINENCE.bmp" (set "ABSTINENCE.bmp=Support\Skins\%skin%\ABSTINENCE.bmp") else (set "ABSTINENCE.bmp=Support\Skins\Default\ABSTINENCE.bmp")
 if exist "Support\Skins\%skin%\CLASSIC.bmp" (set "CLASSIC.bmp=Support\Skins\%skin%\CLASSIC.bmp") else (set "CLASSIC.bmp=Support\Skins\Default\CLASSIC.bmp")
@@ -211,7 +216,7 @@ if exist "Support\Skins\%skin%\WIZARD.bmp" (set "WIZARD.bmp=Support\Skins\%skin%
 if exist "Support\Skins\%skin%\skin.ico" (set "skin.ico=Support\Skins\%skin%\skin.ico") else (set "skin.ico=Support\Skins\Default\skin.ico")
 if exist "Support\Skins\%skin%\Success.mp3" (set "Success.mp3=Support\Skins\%skin%\Success.mp3") else (set "Success.mp3=Support\Skins\Default\Success.mp3")
 if exist "Support\Skins\%skin%\Fail.mp3" (set "Fail.mp3=Support\Skins\%skin%\Fail.mp3") else (set "Fail.mp3=Support\Skins\Default\Fail.mp3")
-
+if exist "Support\Skins\%skin%\splash.png" (set "splash.png=Support\Skins\%skin%\splash.png") else (set "splash.png=Support\Skins\Default\splash.png")
 
 ::convert drive to absolute path if applicable, and if second char is ":" check if drive exists
 if /i "%DRIVE:~1,1%" NEQ ":" set "DRIVE=%cd%\%DRIVE%"
@@ -222,15 +227,14 @@ if not exist "%DRIVEU:~0,2%" set "DRIVEU=%cd%\COPY_TO_USB"
 
 
 
-::Special update
-::if /i "%AGREEDVERSION%" GEQ "6.3.2" goto:nospecialupdate
-:::nospecialupdate
-
 
 if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win trans ititle "ModMiiSkinCMD" 255
 
-
+if /i "%debug%" EQU "on" goto:skip
+if exist Updatetemp.bat attrib -h Updatetemp.bat
+if exist Updatetemp.bat del updatetemp.bat>nul
+:skip
 
 
 set watitle=ModMii Skin
@@ -242,9 +246,8 @@ set wasig=ModMii v%currentversion% by XFlak
 ::side bar - 150x300 pixels
 set "wabmp=%default.bmp%"
 
-if exist support\skipscam.txt (set /p skipversion= <support\skipscam.txt) else (goto:dontskip)
-if /i "%skipversion%" EQU "%currentversion%" goto:skip
-:dontskip
+if exist support\skipscam.txt goto:skip
+if /i "%agreedversion%" EQU "%currentversion%" goto:skip
 
 ::Bushing from Team Twizzers specifically requested ModMii include a scam warning
 
@@ -308,6 +311,163 @@ echo set AGREEDVERSION=%currentversion%>> Support\settings.bat
 
 
 
+::get windows version, only 8.1 and above supported effective ModMii 8.0.0
+if exist "temp\temp.txt" del "temp\temp.txt">nul
+ver>temp\temp.txt
+findStr /I /C:" 8.1" "temp\temp.txt" >nul
+IF NOT ERRORLEVEL 1 (set winver=9) & (goto:continue)
+support\sfk filter -quiet "temp\temp.txt" -rep _*" "__ -rep _"."*__ -write -yes
+support\sfk filter -quiet "temp\temp.txt" -no-empty-lines -no-blank-lines -write -yes
+set /p winver= <temp\temp.txt
+::echo %winver%
+if not exist "%homedrive%\Program Files (x86)" goto:winwarning
+if /i %winver% GEQ 9 goto:continue
+:winwarning
+echo ModMii v8.0.0 and above requires 64-bit Windows 8.1 or higher
+echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)
+echo.
+
+set "wabmp=%default.bmp%"
+set watext=ModMii v8.0.0 and above requires 64-bit Windows 8.1 or higher~~Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)~~Click "Next" to use ModMii anyways.
+start /w support\wizapp NOBACK TB
+if errorlevel 2 EXIT
+::echo Hit any key to use ModMii anyway
+::pause>nul
+
+if exist Support\settings.bat support\sfk filter Support\settings.bat -ls!"Set LegacyCIOS=" -write -yes>nul
+Set LegacyCIOS=Y
+echo Set LegacyCIOS=Y>>Support\settings.bat
+
+if exist "%homedrive%\Program Files (x86)" goto:skip
+if exist ModMii_64bit.exe goto:skip
+
+echo.
+echo Downloading 32bit ModMii Launcher to make things a bit better...
+
+set watext=~Downloading 32bit ModMii Launcher to make things a bit better...
+
+start support\wizapp PB OPEN
+
+if not exist "temp\ModMii_Launcher_2.3_32bit.zip" support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.3_32bit.zip"  -O "temp\ModMii_Launcher_2.3_32bit.zip" -q --show-progress
+if not exist "temp\ModMii_Launcher_2.3_32bit.zip" (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (goto:32bitfail)
+
+start support\wizapp PB UPDATE 50
+support\7za x -aoa "temp\ModMii_Launcher_2.3_32bit.zip" -r ModMii_32bit.exe
+
+if not exist ModMii_32bit.exe (del "temp\ModMii_Launcher_2.3_32bit.zip">nul) & (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (goto:32bitfail)
+
+start support\wizapp PB UPDATE 90
+move /y ModMii.exe ModMii_64bit.exe>nul
+move /y ModMii_32bit.exe ModMii.exe>nul
+
+start support\wizapp PB UPDATE 100
+start support\wizapp PB CLOSE
+goto:skip
+
+:32bitfail
+start support\wizapp PB UPDATE 100
+set watext=~~Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...~~Some ModMii features will not work properly~~Click "Next" to use ModMii anyways.
+
+start support\wizapp PB CLOSE
+start /w support\wizapp NOBACK TB
+if errorlevel 2 EXIT
+goto:skip
+
+:continue
+
+
+::check for "microsoft visual c++ 2015-2022"
+::if exist "%homedrive%\Program Files (x86)" (set dlname=hashmyfiles-x64.zip) else (set dlname=hashmyfiles.zip)
+set MVCattempt=1
+:MVC
+if exist "temp\temp.reg" del "temp\temp.reg">nul
+if exist "temp\temp.txt" del "temp\temp.txt">nul
+if exist "%homedrive%\Program Files (x86)" START /MIN /WAIT REG EXPORT HKLM\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X64 "temp\temp.reg" /Y
+if not exist "%homedrive%\Program Files (x86)" START /MIN /WAIT REG EXPORT HKLM\SOFTWARE\WOW6432Node\Microsoft\VisualStudio\14.0\VC\Runtimes\X86 "temp\temp.reg" /Y
+::if not exist temp\temp.reg (set MVCversion=0) & (goto:skip)
+::cmd /a /c type "temp\temp.reg">"temp\temp.txt"
+::support\sfk filter -spat -quiet "temp\temp.txt" -+"Version\x22=" -rep _"*=\x22v"__ -rep _"\x22"__ -write -yes
+::set /p MVCversion= <temp\temp.txt
+::if exist "temp\temp.txt" del "temp\temp.txt">nul
+
+if exist temp\temp.reg goto:skip
+
+if /i "%MVCattempt%" EQU "2" goto:MVCfail
+
+::missing "microsoft visual c++ 2015-2022"
+::https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170&wt.mc_id=studentamb_203301#latest-microsoft-visual-c-redistributable-version
+if exist "%homedrive%\Program Files (x86)" set "code2=https://aka.ms/vs/17/release/vc_redist.x64.exe" & set "dlname=vc_redist.x64.exe"
+if not exist "%homedrive%\Program Files (x86)" set "code2=https://aka.ms/vs/17/release/vc_redist.x86.exe" & set "dlname=vc_redist.x86.exe"
+
+echo ModMii v8.0.0 and above ^& WiiPy requires Microsoft Visual C++ 2015-2022
+echo Downloading and launching installer...
+echo.
+set "wabmp=%default.bmp%"
+set watext=~ModMii v8.0.0 and above as well as WiiPy requires Microsoft Visual C++ 2015-2022~~ModMii will download and start the installer and continue afterwards.
+
+start support\wizapp PB OPEN
+
+
+
+
+support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%" -q --show-progress
+
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\%dlname%" || del "temp\%dlname%"
+
+if exist "temp\%dlname%" goto:MVCinstall
+
+echo Download Failed, check your connection or install it manually
+echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)
+echo.
+::echo Hit any key to use ModMii anyway
+
+start support\wizapp PB UPDATE 100
+set watext=Microsoft Visual C++ 2015-2022 Failed to download, check your connection or install it manually~~Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)~~Click "Next" to use ModMii anyways.
+
+start support\wizapp PB CLOSE
+start /w support\wizapp NOBACK TB
+if errorlevel 2 EXIT
+::pause>nul
+goto:skip
+
+:MVCfail
+echo Installation Failed, try installing it manually
+echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)
+echo.
+::echo Hit any key to use ModMii anyway
+
+start support\wizapp PB UPDATE 100
+set watext=Microsoft Visual C++ 2015-2022 Failed to install, try installing it manually~~Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)~~Click "Next" to use ModMii anyways.
+
+start support\wizapp PB CLOSE
+start /w support\wizapp NOBACK TB
+if errorlevel 2 EXIT
+
+
+::pause>nul
+goto:skip
+
+:MVCinstall
+start support\wizapp PB UPDATE 50
+echo Launching installer and waiting for installation to finish...
+echo.
+::temp\%dlname% /install /passive /norestart
+start /wait temp\%dlname% /install /passive /norestart
+echo Rechecking...
+echo.
+if exist "temp\%dlname%" del "temp\%dlname%">nul
+SET /a MVCattempt=%MVCattempt%+1
+
+start support\wizapp PB UPDATE 100
+start support\wizapp PB CLOSE
+
+goto:MVC
+
+:skip
+if exist "temp\temp.reg" del "temp\temp.reg">nul
+
+
 
 ::.NET Framework 3.5 check+installation
 if exist "%windir%\Microsoft.NET\Framework\v3.5" goto:skipframeworkinstallation
@@ -339,7 +499,9 @@ SET /a FrameworkAttempt=%FrameworkAttempt%+1
 
 if exist "temp\%dlname%" goto:semiskip
 
-start /min /wait support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%"
+support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%" -q --show-progress
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\%dlname%" || del "temp\%dlname%"
 :semiskip
 
 start support\wizapp PB UPDATE 50
@@ -351,12 +513,12 @@ if /i "%FrameworkAttempt%" EQU "3" goto:GiveUpOnFramework
 goto:NETFRAMEWORK
 
 :GiveUpOnFramework
-set watext=~~.NET Framework 3.5 Installation Failed Multiple Times~~Alternatively, you can try installing .NET Framework 3.5 by performing a Windows Update~~Some ModMii features may not work properly without .NET Framework 3.5 installed~~Click "Next" to use ModMii anyways.
+set watext=~~.NET Framework 3.5 Installation Failed Multiple Times~~Alternatively, you can try installing .NET Framework 3.5 by performing a Windows Update~~Some ModMii features (theme building) may not work properly without .NET Framework 3.5~~Click "Next" to use ModMii anyways.
 
 
 start support\wizapp PB CLOSE
 
-start /w support\wizapp TB
+start /w support\wizapp NOBACK TB
 if errorlevel 2 EXIT
 :skipframeworkinstallation
 
@@ -364,8 +526,6 @@ if errorlevel 2 EXIT
 
 
 if /i "%AUTOUPDATE%" EQU "on" goto:UpdateModMii
-
-
 
 
 ::-----------------------------Main Menu---------------------------------
@@ -403,6 +563,7 @@ set EXPLOIT=
 set REGIONCHANGE=
 set SNEEKSELECT=
 set SNKS2U=
+set SNKnswitch=
 set PRIIFOUND=
 set SNKSERIAL=
 set addwadfolder=
@@ -427,10 +588,10 @@ set SNKcBCMarked=
 set macaddress=
 
 
-set watext=                           Choose an activity:~~~Start with the ModMii Wizard to softmod your Wii or up/downgrade it and much more. All Wizard activities will build a custom guide for you based on your answers to a few simple questions.
+set watext=                           Choose an activity:~~~Start with the ModMii Wizard to softmod your Wii or WiiU. All Wizard activities will build a custom guide for you based on your answers to a few simple questions.
 
 
-set wainput=ModMii ^&Wizard ^<--Start Here to Mod Your Wii!;^&USB-Loader Setup Wizard;^&HackMii Solutions Wizard;^&Abstinence Wizard (Non-permanent Wii Hacks);Region ^&Change Wizard;^&Load Download Queue;^&SNEEK Installation and EmuNAND Builder;^&Options;modmii.github.io for more ^&Info, support or to donate!;^&ModMii Classic Mode for many more activities
+set wainput=ModMii ^&Wizard ^<--Start Here to Mod Your Wii/WiiU;^&USB-Loader Setup Wizard ( Wii / vWii / Wii Mini );^&HackMii Solutions Wizard (Wii);^&Abstinence Wizard (Non-permanent Wii Hacks);Region ^&Change Wizard (Wii);^&Load Download Queue;^&SNEEK Installation and EmuNAND Builder;^&Options;modmii.github.io for more ^&Info, support or to donate!;^&ModMii Classic Mode for many more activities
 
 start /w support\wizapp NOBACK RB
 
@@ -440,7 +601,7 @@ call "%wabat%"
 
 if "%waoutnum%"=="" goto:MENU
 
-if /i "%waoutnum%" EQU "0" (set Menu1=W) & (set "wabmp=%WIZARD.bmp%") & (goto:WPAGE1)
+if /i "%waoutnum%" EQU "0" (set Menu1=W) & (set "wabmp=%WIZARD.bmp%") & (goto:WPAGE0)
 
 if /i "%waoutnum%" EQU "1" (set Menu1=U) & (set "wabmp=%USB.bmp%") & (goto:UPAGE1b)
 if /i "%waoutnum%" EQU "2" (set Menu1=H) & (set "wabmp=%HackMii.bmp%") & (goto:WPAGE2)
@@ -570,12 +731,12 @@ set watext=~~~Checking for themes hosted online...
 start support\wizapp PB OPEN
 
 ::get all list
-start /min /wait support\wget --no-check-certificate -N "https://github.com/modmii/modmii.github.io/tree/master/temp/Skins" -O temp\skins.txt
+support\wget --no-check-certificate -N "https://github.com/modmii/modmii.github.io/tree/master/temp/Skins" -O temp\skins.txt -q --show-progress
 
 start support\wizapp PB UPDATE 20
 
 support\sfk filter -spat "temp\skins.txt" -rep _\x22path\x22_\x0d\x0a_ -write -yes>nul
-support\sfk filter -spat "temp\skins.txt" ++"Skins/" ++".zip" -!"Default.zip" -rep _"temp/Skins/"__ -rep _".zip*"__ -rep _*\x22__ -write -yes>nul
+support\sfk filter -spat "temp\skins.txt" -and+"Skins/" -and+".zip" -!"Default.zip" -rep _"temp/Skins/"__ -rep _".zip*"__ -rep _*\x22__ -write -yes>nul
 
 start support\wizapp PB UPDATE 40
 start support\wizapp PB UPDATE 60
@@ -583,7 +744,7 @@ start support\wizapp PB UPDATE 60
 
 ::get local list
 dir "Support\Skins" >temp\list.txt
-support\sfk filter "temp\list.txt" ++"<DIR>" -le!"." -rep _*" "__ -write -yes>nul
+support\sfk filter "temp\list.txt" -and+"<DIR>" -le!"." -rep _*" "__ -write -yes>nul
 
 copy /y "temp\list.txt"+"temp\skins.txt" "temp\list.txt">nul
 support\sfk filter -spat "temp\list.txt" -lsrep _.__ -write -yes>nul
@@ -605,7 +766,7 @@ Set watext=~~  Select the ModMii Skin Theme you would like to use:~~Learn how to
 start /w support\wizapp LB SINGLE
 
 if errorlevel 2 goto:MENU
-if errorlevel 1 goto:OPTIONS
+if errorlevel 1 (set wafile=) & (goto:OPTIONS)
 
 ::remove featured\hosted tags before retrieving selection
 ::support\sfk filter "%wabat%" -rep _" (hosted online)"__ -rep _" - Featured"__ -write -yes>nul
@@ -628,7 +789,7 @@ start support\wizapp PB UPDATE 20
 if not exist "Support\Skins\%SelectedSkin%" mkdir "Support\Skins\%SelectedSkin%"
 start support\wizapp PB UPDATE 40
 
-start /min /wait support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/%SelectedSkin%.zip" -O temp\%SelectedSkin%.zip
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/%SelectedSkin%.zip" -O temp\%SelectedSkin%.zip -q --show-progress
 start support\wizapp PB UPDATE 60
 
 if exist temp\%SelectedSkin%.zip support\7za e -aoa "temp\%SelectedSkin%.zip" -o"Support\Skins\%SelectedSkin%" -r
@@ -671,11 +832,11 @@ if exist "Support\Skins\%skin%\WIZARD.bmp" (set "WIZARD.bmp=Support\Skins\%skin%
 if exist "Support\Skins\%skin%\skin.ico" (set "skin.ico=Support\Skins\%skin%\skin.ico") else (set "skin.ico=Support\Skins\Default\skin.ico")
 if exist "Support\Skins\%skin%\Success.mp3" (set "Success.mp3=Support\Skins\%skin%\Success.mp3") else (set "Success.mp3=Support\Skins\Default\Success.mp3")
 if exist "Support\Skins\%skin%\Fail.mp3" (set "Fail.mp3=Support\Skins\%skin%\Fail.mp3") else (set "Fail.mp3=Support\Skins\Default\Fail.mp3")
-
+if exist "Support\Skins\%skin%\splash.png" (set "splash.png=Support\Skins\%skin%\splash.png") else (set "splash.png=Support\Skins\Default\splash.png")
 set "wabmp=%OPTIONS.bmp%"
 set "waico=%skin.ico%"
 
-support\sfk filter Support\settings.bat -!"Set skin=" -write -yes>nul
+if exist Support\settings.bat support\sfk filter Support\settings.bat -!"Set skin=" -write -yes>nul
 echo set skin=%skin%>> Support\settings.bat
 goto:OPTIONS
 
@@ -683,10 +844,41 @@ goto:OPTIONS
 
 ::--------------------Restore Default Settings---------------------
 :RestoreSettings
+if exist support\d2x-beta (rd /s /q support\d2x-beta)
+
+
+Set LegacyCIOS=N
+set KeepInvalidOverride=N
+Set AutoDetectNL=
+Set AutoDetectDF=
+Set WiiPyInfo=
+Set ODBinfo=
+
+if not exist Support\settings_skipped_apps.txt goto:notall
+::Loop through the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (Support\settings_skipped_apps.txt) do call :SkipUpdateList4 %%A
+goto:quickskip
+:SkipUpdateList4
+set CurrentApp=%*
+::strip out colons before and after app name
+set CurrentApp=%CurrentApp:~1,-1%
+if exist "%DRIVE%\apps\%CurrentApp%\SkipModMiiUpdates.txt" del "%DRIVE%\apps\%CurrentApp%\SkipModMiiUpdates.txt">nul
+if exist "%DRIVE%\wiiu\apps\%CurrentApp%\SkipModMiiUpdates.txt" del "%DRIVE%\wiiu\apps\%CurrentApp%\SkipModMiiUpdates.txt">nul
+goto:EOF
+:quickskip
+::if exist "Support\settings_skipped_apps.txt" del "Support\settings_skipped_apps.txt">nul
+::copy /y NUL "Support\settings_skipped_apps.txt">nul
+
+::by default legacy apps are disabled (107 at present) less retroarch which should be updated later in 2025 (but will continue to exclude more_ra_arcade & more_ra_cores which are relatively large downloads)
+powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu-cbhc?`n?ftpiiu?`n?ftpiiu_everywhere?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?SuDokuL?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?u-paint?`n?Uclick?`n?UFDiine?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?vWii_decaffeinator?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
+:notall
+
+
+
 set ROOTSAVE=off
 set effect=No-Spin
 set PCSAVE=Auto
-set OPTION1=off
+::set OPTION1=off
 set AudioOption=on
 set CMIOSOPTION=off
 set hermesOPTION=off
@@ -736,6 +928,7 @@ set "WIZARD.bmp=Support\Skins\Default\WIZARD.bmp"
 set "skin.ico=Support\Skins\Default\skin.ico"
 set "Success.mp3=Support\Skins\Default\Success.mp3"
 set "Fail.mp3=Support\Skins\Default\Fail.mp3"
+set "splash.png=Support\Skins\Default\splash.png"
 
 set "wabmp=%OPTIONS.bmp%"
 set "waico=%skin.ico%"
@@ -750,7 +943,7 @@ echo ::ModMiiv%currentversion%>> Support\settings.bat
 echo Set ROOTSAVE=%ROOTSAVE%>> Support\settings.bat
 echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
-echo Set Option1=%Option1%>> Support\settings.bat
+::echo Set Option1=%Option1%>> Support\settings.bat
 echo Set AudioOption=%AudioOption%>> Support\settings.bat
 echo Set hermesOPTION=%hermesOPTION%>> Support\settings.bat
 echo Set CMIOSOPTION=%CMIOSOPTION%>> Support\settings.bat
@@ -766,6 +959,14 @@ echo Set SSD=%SSD%>> Support\settings.bat
 echo Set sneekverbose=%sneekverbose%>> Support\settings.bat
 echo Set neek2o=%neek2o%>> Support\settings.bat
 echo Set SNKFONT=%SNKFONT%>> Support\settings.bat
+if not "%AutoDetectNL%"=="" echo set AutoDetectNL=%AutoDetectNL%>> Support\settings.bat
+if not "%AutoDetectDF%"=="" echo set AutoDetectDF=%AutoDetectDF%>> Support\settings.bat
+if /i "%KeepInvalidOverride%" EQU "Y" echo set KeepInvalidOverride=Y>> Support\settings.bat
+if not "%LegacyCIOS%"=="" echo set LegacyCIOS=%LegacyCIOS%>> Support\settings.bat
+if /i "%WiiPyInfo%" EQU "Y" echo set WiiPyInfo=Y>> Support\settings.bat
+if /i "%ODBinfo%" EQU "Y" echo set ODBinfo=Y>> Support\settings.bat
+if /i "%debug%" EQU "on" echo set debug=on>> Support\settings.bat
+
 echo set AGREEDVERSION=%currentversion%>> Support\settings.bat
 echo set skin=%skin%>> Support\settings.bat
 if /i "%redtext%" NEQ "Red" set "redtext=%redtext%">> Support\settings.bat
@@ -834,24 +1035,28 @@ set waoutput=
 
 set watext=~~~~                   Other Miscellaneous Options
 
-set wainput= ^&Auto-Update ModMii at program start; c^&MIOS included in recommended cIOSs; USB-Loader ^&Forwarder included in Wizard; ^&Update Active IOSs in Wizard/SysCheck-Updater; ^&Verbose for ModMii Skin and nandBinCheck; ^&Hermes cIOSs will also be recommended; ^&Extra Brick Protection in ModMii Wizard Guides; Save 0000000^&1 folder for IOSs\SMs\etc; Save ^&NUS\00000001x folder for IOSs\SMs\etc; ^&Generate Guide Only (only for functions with guides)
+::option1 disabled
+::set wainput= ^&Auto-Update ModMii at program start; c^&MIOS included with recommended Wii cIOSs; USB-Loader ^&Forwarder included in Wizard; ^&Update Active IOSs in Wizard/SysCheck-Updater; ^&Verbose for ModMii Skin and nandBinCheck; ^&Hermes Wii cIOSs will also be recommended; ^&Extra Brick Protection in ModMii Wizard Wii Guides; Save 0000000^&1 folder for IOSs\SMs\etc; Save ^&NUS\00000001x folder for IOSs\SMs\etc; ^&Generate Guide Only (only for functions with guides)
+
+set wainput= ^&Auto-Update ModMii at program start; c^&MIOS included with recommended Wii cIOSs; USB-Loader ^&Forwarder included in Wizard; ^&Update Active IOSs in Wizard/SysCheck-Updater; ^&Verbose for ModMii Skin and nandBinCheck; ^&Hermes Wii cIOSs will also be recommended; ^&Extra Brick Protection in ModMii Wizard Wii Guides; ^&Generate Guide Only (only for functions with guides)
+
 
 
 ::check correct boxes
 set waoutput=
 if /i "%AUTOUPDATE%" EQU "on" set waoutput=%waoutput%; #Auto-Update ModMii at program start
-if /i "%CMIOSOPTION%" EQU "on" set waoutput=%waoutput%; c#MIOS included in recommended cIOSs
+if /i "%CMIOSOPTION%" EQU "on" set waoutput=%waoutput%; c#MIOS included with recommended Wii cIOSs
 if /i "%FWDOPTION%" EQU "on" set waoutput=%waoutput%; USB-Loader #Forwarder included in Wizard
 if /i "%ACTIVEIOS%" EQU "on" set waoutput=%waoutput%; #Update Active IOSs in Wizard\SysCheck-Updater
 if /i "%ModMiiverbose%" EQU "on" set waoutput=%waoutput%; #Verbose for ModMii Skin and nandBinCheck
-if /i "%hermesOPTION%" EQU "on" set waoutput=%waoutput%; #Hermes cIOSs will also be recommended
-if /i "%ExtraProtectionOPTION%" EQU "on" set waoutput=%waoutput%; #Extra Brick Protection in ModMii Wizard Guides
+if /i "%hermesOPTION%" EQU "on" set waoutput=%waoutput%; #Hermes Wii cIOSs will also be recommended
+if /i "%ExtraProtectionOPTION%" EQU "on" set waoutput=%waoutput%; #Extra Brick Protection in ModMii Wizard Wii Guides
 
-if /i "%Option1%" EQU "on" set waoutput=%waoutput%; Save 0000000#1 folder for IOSs\SMs\etc
-if /i "%Option1%" EQU "all" set waoutput=%waoutput%; Save 0000000#1 folder for IOSs\SMs\etc
+::if /i "%Option1%" EQU "on" set waoutput=%waoutput%; Save 0000000#1 folder for IOSs\SMs\etc
+::if /i "%Option1%" EQU "all" set waoutput=%waoutput%; Save 0000000#1 folder for IOSs\SMs\etc
 
-if /i "%Option1%" EQU "nus" set waoutput=%waoutput%; Save #NUS\00000001x folder for IOSs\SMs\etc
-if /i "%Option1%" EQU "all" set waoutput=%waoutput%; Save #NUS\00000001x folder for IOSs\SMs\etc
+::if /i "%Option1%" EQU "nus" set waoutput=%waoutput%; Save #NUS\00000001x folder for IOSs\SMs\etc
+::if /i "%Option1%" EQU "all" set waoutput=%waoutput%; Save #NUS\00000001x folder for IOSs\SMs\etc
 
 if /i "%GuideOnly%" EQU "on" set waoutput=%waoutput%; #Generate Guide Only (only for functions with guides)
 
@@ -914,24 +1119,26 @@ IF not ERRORLEVEL 1 (set hermesOPTION=on) else (set hermesOPTION=off)
 findStr /I /C:"6" "%wabat%" >nul
 IF not ERRORLEVEL 1 (set ExtraProtectionOPTION=on) else (set ExtraProtectionOPTION=off)
 
-findStr /I /C:"9" "%wabat%" >nul
+::option1 disabled (7 and 8 removed, so guide changed from 9 to 7)
+
+findStr /I /C:"7" "%wabat%" >nul
 IF not ERRORLEVEL 1 (set GuideOnly=on) else (set GuideOnly=off)
 
 
-::turn 2 options into 1
-findStr /I /C:"7" "%wabat%" >nul
-IF not ERRORLEVEL 1 (set Option1=on) else (set Option1=off)
+::::turn 2 options into 1
+::findStr /I /C:"7" "%wabat%" >nul
+::IF not ERRORLEVEL 1 (set Option1=on) else (set Option1=off)
 
-findStr /I /C:"8" "%wabat%" >nul
-IF not ERRORLEVEL 1 (set Option1temp=nus) else (set Option1temp=)
+::findStr /I /C:"8" "%wabat%" >nul
+::IF not ERRORLEVEL 1 (set Option1temp=nus) else (set Option1temp=)
 
-if /i "%Option1%" NEQ "on" goto:skip
-if /i "%Option1temp%" EQU "nus" (set Option1=all) else (set Option1=on)
-goto:skipcheck
-:skip
-if /i "%Option1temp%" EQU "nus" (set Option1=nus) else (set Option1=off)
+::if /i "%Option1%" NEQ "on" goto:skip
+::if /i "%Option1temp%" EQU "nus" (set Option1=all) else (set Option1=on)
+::goto:skipcheck
+:::skip
+::if /i "%Option1temp%" EQU "nus" (set Option1=nus) else (set Option1=off)
 
-:skipcheck
+:::skipcheck
 
 goto:Options
 
@@ -999,6 +1206,68 @@ IF not ERRORLEVEL 1 set SNKFONT=R
 goto:Options
 
 
+
+::...................................Wizard Page0 - Console Type...............................
+:WPAGE0
+set FIRMSTART=
+set ctype=
+::same var used for SM version
+
+::recall checked items
+if not "%FIRMSTARTMarked%"=="" set waoutnum=%FIRMSTARTMarked%
+
+set watext=        What console would you like to softmod?~* Wii modding requires an SD card and does not need internet on the Wii; or, if without an SD Card a hard drive can be used in its place for most things but then the Wii will need internet access for the initial modding process.~* WiiU modding needs an SD ^& internet on the console.~* vWii Only mods need an SD Card ^& internet on the WiiU; or if without internet an SD ^& 1 of 6 specific games.
+
+set wainput= ^&Wii; Wii^&U and vWii (virtual Wii on WiiU); WiiU ^&Only (no vWii mods); ^&vWii Only (no WiiU mods)
+
+
+::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
+::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
+start /w support\wizapp RB
+
+if errorlevel 2 goto:MENU
+if errorlevel 1 goto:MENU
+
+call "%wabat%"
+
+set FIRMSTARTMarked=%waoutnum%
+
+if /i "%waoutnum%" EQU "2" goto:skipall
+if /i "%waoutnum%" EQU "0" goto:skipcheck
+
+if exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipcheck
+if not exist "Support\d2x-beta\" goto:skipcheck
+
+::need to switch d2x version
+set watext=~Warning! d2x-v%d2x-beta-rev% is not supported for vWii, click next to revert to default d2x version~~This can be changed back later in ModMii Classic's Options menu
+start /w support\wizapp TB
+if errorlevel 2 goto:MENU
+if errorlevel 1 goto:WPAGE0
+set "d2x-beta-rev=%d2x-bundled%"
+if exist support\d2x-beta rd /s /q support\d2x-beta
+:skipcheck
+
+::check if d2x version is customized and offer to revert to default
+if not exist "Support\d2x-beta\" goto:skipall
+if /i "%d2x-beta-rev%" EQU "%d2x-bundled%" goto:skipall
+set watext=~Caution!~~The version of d2x cIOS selected in ModMii Classic's Options (v%d2x-beta-rev%) is not the recommended\default version (v%d2x-bundled%).~~Click "Next" to revert to the default d2x version now (v%d2x-bundled%), or "Cancel" to continue with v%d2x-beta-rev%
+start /w support\wizapp TB
+if errorlevel 2 goto:skipall
+if errorlevel 1 goto:WPAGE0
+set "d2x-beta-rev=%d2x-bundled%"
+if exist support\d2x-beta rd /s /q support\d2x-beta
+:skipall
+
+if /i "%waoutnum%" EQU "0" (set FIRMSTART=W) & (set ctype=Wii) & (goto:WPAGE1)
+if /i "%waoutnum%" EQU "1" (set FIRMSTART=U2) & (set ctype=WiiU) & (goto:WPAGE20)
+if /i "%waoutnum%" EQU "2" (set FIRMSTART=U) & (set ctype=WiiU) & (set BACKB4WPAGELAST=WPAGE0) & (goto:WPAGELAST)
+if /i "%waoutnum%" EQU "3" (set FIRMSTART=V) & (set ctype=WiiU) & (goto:WPAGE20)
+
+
+if "%FIRMSTART%"=="" goto:WPAGE0
+
+
+
 ::...................................Wizard Page1 - Virgin?...............................
 :WPAGE1
 set waoutnum=
@@ -1025,7 +1294,7 @@ set wainput= ^&Yes; ^&No
 start /w support\wizapp RB
 
 if errorlevel 2 goto:MENU
-if errorlevel 1 goto:MENU
+if errorlevel 1 goto:WPAGE0
 
 
 call "%wabat%"
@@ -1092,10 +1361,8 @@ if /i "%waoutnum%" EQU "6" set FIRMSTART=HELP
 
 if /i "%FIRMSTART%" NEQ "Help" goto:nohelp
 start https://www.youtube.com/embed/1Z2MtFcllTY
-goto:WPAGE2
 :nohelp
-
-if "%FIRMSTART%"=="" goto:WPAGE2
+goto:WPAGE2
 
 
 
@@ -1106,6 +1373,7 @@ if /i "%FIRMSTART%" EQU "4.3" goto:WPAGE3hard
 if /i "%FIRMSTART%" EQU "o" goto:WPAGE3hard
 if /i "%MENU1%" EQU "H" (set BACKB4DRIVE=WPAGE2) & (goto:DRIVECHANGE)
 :WPAGE3hard
+
 
 set REGION=
 set waoutnum=
@@ -1123,7 +1391,7 @@ if /i "%MENU1%" EQU "RC" set watext=~~~~          What Region would you like to 
 
 
 set wainput= ^&U (USA); ^&E (Euro\PAL); ^&J (JPN); ^&K (Korean); ^&Instructional video to check System Menu Region
-
+if /i "%ctype%" EQU "WiiU" set wainput= ^&U (USA); ^&E (Euro\PAL); ^&J (JPN); ^&Instructional video to check System Menu Region
 if /i "%MENU1%" EQU "RC" set wainput= ^&U (USA); ^&E (Euro\PAL); ^&J (JPN); ^&K (Korean)
 
 
@@ -1134,7 +1402,8 @@ start /w support\wizapp RB
 if errorlevel 2 goto:MENU
 
 if not errorlevel 1 goto:notback
-if /i "%MENU1%" EQU "RC" (goto:RCPAGE1) else (goto:WPAGE2)
+if /i "%MENU1%" EQU "RC" goto:RCPAGE1
+if /i "%ctype%" EQU "WiiU" (goto:WPAGE20) else (goto:WPAGE2)
 :notback
 
 call "%wabat%"
@@ -1145,8 +1414,11 @@ if /i "%waoutnum%" EQU "0" set REGION=U
 if /i "%waoutnum%" EQU "1" set REGION=E
 if /i "%waoutnum%" EQU "2" set REGION=J
 if /i "%waoutnum%" EQU "3" set REGION=K
-
 if /i "%waoutnum%" EQU "4" set REGION=HELP
+
+if /i "%ctype%" NEQ "WiiU" goto:skip
+if /i "%waoutnum%" EQU "3" set REGION=HELP
+:skip
 
 if "%REGION%"=="" goto:WPAGE3
 
@@ -1157,16 +1429,73 @@ if /i "%REGION%" EQU "K" goto:WPAGE4
 if /i "%REGION%" EQU "J" goto:WPAGE4
 :notRC
 
+if /i "%FIRMSTART%" EQU "U2" goto:U2
+if /i "%FIRMSTART%" EQU "v" goto:vWii
 
+::Wii
 if /i "%REGION%" EQU "U" goto:WPAGE3C
 if /i "%REGION%" EQU "E" goto:WPAGE3C
 if /i "%REGION%" EQU "K" goto:WPAGE3C
 if /i "%REGION%" EQU "J" goto:WPAGE3C
 
+:U2
+if /i "%REGION%" EQU "U" goto:WPAGE21
+if /i "%REGION%" EQU "E" goto:WPAGE21
+if /i "%REGION%" EQU "J" goto:WPAGE21
+goto:notvWii
+
+
+:vWii
+if /i "%REGION%" EQU "U" goto:WPAGE3Cv
+if /i "%REGION%" EQU "E" goto:WPAGE3Cv
+if /i "%REGION%" EQU "J" goto:WPAGE3Cv
+:notvWii
+
 if /i "%REGION%" NEQ "Help" goto:nohelp
 start https://www.youtube.com/embed/1Z2MtFcllTY
 goto:WPAGE3
 :nohelp
+
+
+
+
+::...................................Wizard Page3C - Exploit...............................
+:WPAGE3Cv
+set waoutnum=
+set waoutput=
+SET EXPLOIT=default
+set exploitselection=yes
+
+::recall checked items, EXPLOIT & EXPLOITMarked shared with :WPAGE3C
+if not "%EXPLOITMarked%"=="" set waoutnum=%EXPLOITMarked%
+
+set watext=~~~~Select the exploit you would like to use to mod your vWii.
+
+set wainput= Browser (no disc needed but needs internet on vWii); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Exploits (decide later)
+
+::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
+::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
+start /w support\wizapp RB
+
+if errorlevel 2 goto:MENU
+
+if errorlevel 1 goto:WPAGE3
+
+call "%wabat%"
+
+set EXPLOITMarked=%waoutnum%
+
+if "%waoutnum%"=="" goto:WPAGE3Cv
+
+if /i "%waoutnum%" EQU "0" set EXPLOIT=BE
+if /i "%waoutnum%" EQU "1" set EXPLOIT=S
+if /i "%waoutnum%" EQU "2" set EXPLOIT=L
+if /i "%waoutnum%" EQU "3" set EXPLOIT=LB
+if /i "%waoutnum%" EQU "4" set EXPLOIT=LS
+if /i "%waoutnum%" EQU "5" set EXPLOIT=Y
+if /i "%waoutnum%" EQU "6" set EXPLOIT=TOS
+if /i "%waoutnum%" EQU "7" set EXPLOIT=?
+goto:WPAGE21
 
 
 
@@ -1201,13 +1530,13 @@ set watext=~~~~Select the exploit you would like to use to mod your Wii.
 set wainput=
 
 if /i "%FIRMSTART%" EQU "4.3" goto:list4.3
-if /i "%REGION%" EQU "K" set wainput= ^&str2hax (no disc or SD needed, requires WiFi on Wii); ^&Twilight Princess: The Legend of Zelda; ^&Super Smash Brothers Brawl; ^&All Above Exploits (decide later)
-if /i "%REGION%" NEQ "K" set wainput= ^&str2hax (no disc or SD needed, requires WiFi on Wii); ^&Twilight Princess: The Legend of Zelda; ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; Tales of Symphonia: ^&Dawn of the New World; ^&All Above Exploits (decide later)
+if /i "%REGION%" EQU "K" set wainput= ^&str2hax (no disc or SD needed, requires internet on Wii); ^&Twilight Princess: The Legend of Zelda; ^&Super Smash Brothers Brawl; ^&All Above Exploits (decide later)
+if /i "%REGION%" NEQ "K" set wainput= ^&str2hax (no disc or SD needed, requires internet on Wii); ^&Twilight Princess: The Legend of Zelda; ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; Tales of Symphonia: ^&Dawn of the New World; ^&All Above Exploits (decide later)
 goto:skip4.3
 
 :list4.3
-if /i "%REGION%" EQU "K" set wainput= ^&str2hax (no disc or SD needed, requires WiFi on Wii); ^&Wilbrand (no disc needed, but requires SD card); ^&Super Smash Brothers Brawl; ^&All Above Exploits (decide later)
-if /i "%REGION%" NEQ "K" set wainput= ^&str2hax (no disc or SD needed, requires WiFi on Wii); ^&Wilbrand (no disc needed, but requires SD card); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Exploits (decide later)
+if /i "%REGION%" EQU "K" set wainput= ^&str2hax (no disc or SD needed, requires internet on Wii); ^&Wilbrand (no disc needed, but requires SD card); ^&Super Smash Brothers Brawl; ^&All Above Exploits (decide later)
+if /i "%REGION%" NEQ "K" set wainput= ^&str2hax (no disc or SD needed, requires internet on Wii); ^&Wilbrand (no disc needed, but requires SD card); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Exploits (decide later)
 :skip4.3
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -1282,7 +1611,7 @@ if /i "%EXPLOIT%" EQU "W" (set beforemacaddy=WPAGE3C) & (goto:macaddress)
 if /i "%EXPLOIT%" EQU "?" (set beforemacaddy=WPAGE3C) & (goto:macaddress)
 :skip
 
-::PICK UP HERE, also check 4.3K
+
 if /i "%MENU1%" EQU "H" (set BACKB4DRIVE=WPAGE3C) & (goto:DRIVECHANGE)
 if /i "%AbstinenceWiz%" EQU "Y" goto:NEEKrevSelect
 goto:WPAGE4
@@ -1404,7 +1733,7 @@ set FIRM=
 set waoutnum=
 set waoutput=
 
-set watext=            Select your desired System Menu.~~* ModMii recommends against unnecessarily changing system menus if already on 4.1 or higher.~* System Menu 4.2 and 4.3 add nothing except failed attempts to prevent homebrew.~* Even RiiConnect24 fully works on lower firmwares using ModMii's System Menu IOSs.
+set watext=            Select your desired System Menu.~~* ModMii recommends against unnecessarily changing system menus if already on 4.1 or higher.~* System Menu 4.2 and 4.3 add nothing except failed attempts to prevent homebrew.
 
 
 set wainput= 4.^&3 (Recommended); 4.^&2; 4.^&1
@@ -1474,20 +1803,20 @@ set waoutput=
 if not "%ChannelsMarked%"=="" set waoutnum=%ChannelsMarked%
 
 
-set watext=               Select which of the following channels~                          you would like to install~~Note: since Nintendo has shut down WiiConnect24 other channels like News, Wii Speak, etc. require RiiConnect24. These can be installed later using the RiiConnect24 Patcher from ModMii Classic's Download Page 2 or https://rc24.xyz
+set watext=               Select which of the following channels~                          you would like to install~~Note: since Nintendo has shut down WiiConnect24 other channels like News, Wii Speak, etc. require WiiLink. These can be installed later using the WiiLink Patcher from ModMii Classic's Download Page 5 or https://wiilink24.com
 
 
 ::set wainput= ^&Photo; ^&Mii; ^&Shop (with IOS56); ^&Internet; ^&Weather^^; ^&News^^; ^&Wii Speak^^^^
-set wainput= ^&Photo; ^&Mii; ^&Shop (with IOS56); ^&Internet
+set wainput= ^&Photo v1.1 (including required HAZA dummy); ^&Mii; ^&Shop (with IOS56); ^&Internet
 
 if /i "%MENU1%" EQU "S" (set REGIONTEMP=%SNKREGION%) else (set REGIONTEMP=%REGION%)
 
-if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo; ^&Mii; ^&Shop (with IOS56)
+if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo v1.1 (including required HAZA dummy); ^&Mii; ^&Shop (with IOS56)
 
 if /i "%MENU1%" NEQ "S" goto:notS
 ::set wainput= ^&Photo; ^&Mii; ^&Shop; ^&Internet; ^&Weather^^; ^&News^^; ^&Wii Speak^^^^
-set wainput= ^&Photo; ^&Mii; ^&Shop; ^&Internet
-if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo; ^&Mii; ^&Shop
+set wainput= ^&Photo v1.1 (including required HAZA dummy); ^&Mii; ^&Shop; ^&Internet
+if /i "%REGIONTEMP%" EQU "K" set wainput= ^&Photo v1.1 (including required HAZA dummy); ^&Mii; ^&Shop
 :notS
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -1570,9 +1899,9 @@ if not "%AdvancedMarked%"=="" set waoutnum=%AdvancedMarked%
 
 set watext=~~~~       Select which of the following to Install or Update
 
-if /i "%CMIOSOPTION%" EQU "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs and cMIOS; ^&Priiloader v0.9.1 (and System Menu hacks); ^&System Menu Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
+if /i "%CMIOSOPTION%" EQU "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs and cMIOS; ^&Priiloader (and System Menu hacks); ^&System Menu Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
 
-if /i "%CMIOSOPTION%" NEQ "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs; ^&Priiloader v0.9.1 (and System Menu hacks); System Menu ^&Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
+if /i "%CMIOSOPTION%" NEQ "on" set wainput= ^&Homebrew Channel and\or Bootmii; ^&Recommended cIOSs; ^&Priiloader (and System Menu hacks); System Menu ^&Theme; ^&USB-Loader; ^&Active IOSs and patched System Menu IOSs
 
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -1634,10 +1963,13 @@ if "%SMTHEMEAPP%"=="" goto:WPAGE5
 ::recall checked items
 if not "%ThemeSelectionMarked%"=="" set waoutnum=%ThemeSelectionMarked%
 
+if /i "%ctype%" NEQ "WiiU" set watext=~~~   Would you like to install a custom Theme on your Wii?~~    Choose from 3 effects: No-Spin, Spin and Fast-Spin
 
-set watext=~~~   Would you like to install a custom Theme on your Wii?~~    Choose from 3 effects: No-Spin, Spin and Fast-Spin
+if /i "%ctype%" EQU "WiiU" set watext=Would you like to install a custom vWii theme or fix* the aspect ratio for EverybodyVotes ^& CheckMiiOut channels?~~*43DB fixes included in all vWii themes built by ModMii, including the boring Default, and any csm's built by user provided *.mym themes~~    Choose from 3 effects: No-Spin, Spin and Fast-Spin
 
-set wainput= View All Available Themes on ^&Youtube; Change Channel ^&Effect - Current Effect: %effect%; DarkWii ^&Red Theme - %effect%; DarkWii ^&Green Theme - %effect%; DarkWii ^&Blue Theme - %effect%; DarkWii ^&Orange Theme - %effect%; ^&No, I want the same old boring, boring System Menu
+set wainput= View All Available Themes on ^&Youtube; Change Channel ^&Effect - Current Effect: %effect%; DarkWii ^&Red Theme - %effect%; DarkWii ^&Green Theme - %effect%; DarkWii ^&Blue Theme - %effect%; DarkWii ^&Orange Theme - %effect%; ^&No, do not change the theme; ^&Default theme, restore original theme
+if /i "%ctype%" EQU "WiiU" set "wainput=%wainput% && apply 43DB fix"
+
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -1649,12 +1981,15 @@ if errorlevel 2 goto:MENU
 if not errorlevel 1 goto:notback
 if /i "%MENU1%" EQU "RC" goto:WPAGE4
 
+
 ::if /i "%SNEEKSELECT%" EQU "5" goto:quickskip
 ::if /i "%MENU1%" EQU "S" goto:SNKPAGE5
 :::quickskip
 ::if /i "%SNEEKSELECT%" EQU "5" goto:SNKPAGE4c
 
 if /i "%MENU1%" EQU "S" goto:WPAGE5
+if /i "%MENU1%" NEQ "W" goto:notback
+if /i "%ctype%" EQU "WiiU" goto:WPAGE0
 if /i "%VIRGIN%" EQU "Y" (goto:WPAGE5) else (goto:WPAGE13)
 :notback
 
@@ -1672,6 +2007,7 @@ if /i "%waoutnum%" EQU "3" set ThemeSelection=G
 if /i "%waoutnum%" EQU "4" set ThemeSelection=BL
 if /i "%waoutnum%" EQU "5" set ThemeSelection=O
 if /i "%waoutnum%" EQU "6" set ThemeSelection=N
+if /i "%waoutnum%" EQU "7" set ThemeSelection=D
 
 if "%ThemeSelection%"=="" goto:WPAGE20
 
@@ -1696,6 +2032,9 @@ if /i "%MENU1%" EQU "RC" (set BACKB4DRIVE=WPAGE20) & (goto:DriveChange)
 if /i "%MENU1%" EQU "S" (set backB4wpageLast=WPAGE20) & (goto:WPAGELAST)
 
 ::Wizard
+
+if /i "%ctype%" EQU "WiiU" goto:WPAGE3
+
 if /i "%VIRGIN%" EQU "Y" goto:WPAGE21
 if /i "%USBGUIDE%" EQU "Y" (goto:UPAGE1b) else (goto:DRIVECHANGE)
 
@@ -1719,7 +2058,11 @@ set wainput= ^&Yes; ^&No
 start /w support\wizapp RB
 
 if errorlevel 2 goto:MENU
-if errorlevel 1 goto:WPAGE20
+if not errorlevel 1 goto:notback
+if /i "%FIRMSTART%" EQU "U2" goto:WPAGE3
+if /i "%FIRMSTART%" EQU "V" goto:WPAGE3Cv
+goto:WPAGE20
+:notback
 
 call "%wabat%"
 
@@ -1827,7 +2170,7 @@ set "DRIVE=%DRIVETEMP%"
 
 
 ::autosave drive setting to settings.bat
-support\sfk filter Support\settings.bat -!"Set*Drive=" -write -yes>nul
+if exist Support\settings.bat support\sfk filter Support\settings.bat -!"Set*Drive=" -write -yes>nul
 echo Set "Drive=%DRIVE%">>Support\settings.bat
 ::support\sfk filter -spat -quiet Support\settings.bat -rep _\x5e\x26_\x26_ -rep _\x26_\x5e\x26_ -write -yes>nul
 ::support\sfk filter -quiet Support\settings.bat -lerep _\__ -lerep _/__ -write -yes>nul
@@ -1951,7 +2294,7 @@ set "DRIVEU=%DRIVEUTEMP%"
 
 
 ::autosave drive setting to settings.bat
-support\sfk filter Support\settings.bat -!"Set*DriveU=" -write -yes>nul
+if exist Support\settings.bat support\sfk filter Support\settings.bat -!"Set*DriveU=" -write -yes>nul
 echo Set "DriveU=%DRIVEU%">>Support\settings.bat
 
 
@@ -1997,22 +2340,30 @@ if /i "%debug%" EQU "on" goto:skip
 ::comment these for local Updatetemp.bat for testing... (updater.bat is renamed to Updatetemp.bat for legacy purposes)
 if exist Updatetemp.bat del Updatetemp.bat>nul
 
-start /min /wait support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat
+support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat -q --show-progress
+::delete if file is empty (if empty)
+>nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
 if not exist Updatetemp.bat goto:altlink
 ::DELETE IF NULL
 for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
 
 
 :altlink
-if not exist "Updatetemp.bat" start /min /wait support\wget --no-check-certificate "http://tiny.cc/modmiiupdater" -O Updatetemp.bat
-
+if not exist "Updatetemp.bat" support\wget --no-check-certificate "http://tiny.cc/modmiiupdater" -O Updatetemp.bat -q --show-progress
+::delete if file is empty (if empty)
+>nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
 if not exist Updatetemp.bat goto:updatefail
 ::DELETE IF NULL
 for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
 :skip
 
 ::Call to get new version info and changelogURL
+echo %currentversion%>temp\skin.txt
 if exist Updatetemp.bat (call Updatetemp.bat) else (goto:updatefail)
+
+::in case new d2x beta downloaded, call it
+if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
+
 if "%newversion%"=="" goto:updatefail
 
 
@@ -2163,6 +2514,7 @@ if /i "%GUIDEONLY%" EQU "on" set wainput=%wainput%~* Generate Guide Only Option 
 
 if /i "%MENU1%" EQU "H" set wainput=%wainput%~* Current System Menu is %FIRMSTART%%REGION%
 
+if /i "%MENU1%" EQU "W" goto:skip
 if /i "%macaddress%" EQU "S" goto:skip
 if /i "%EXPLOIT%" EQU "W" set wainput=%wainput%~* MAC Address: %macaddress%
 if /i "%EXPLOIT%" EQU "?" set wainput=%wainput%~* MAC Address: %macaddress%
@@ -2195,9 +2547,15 @@ if /i "%SSD%" NEQ "on" set wainput=%wainput%~* SD Access Disabled (can be change
 
 if /i "%SNEEKSELECT%" EQU "3" set wainput=%wainput%~
 
-if /i "%SNEEKSELECT%" NEQ "1" set wainput=%wainput%~* Build a %SNKVERSION%%SNKREGION% Emulated NAND
+if /i "%SNEEKSELECT%" EQU "1" goto:tinyskip
+if /i "%SNKVERSION%" NEQ "V" set wainput=%wainput%~* Build a %SNKVERSION%%SNKREGION% Emulated NAND
+if /i "%SNKVERSION%" EQU "V" set wainput=%wainput%~* Build a vWii 4.3%SNKREGION% Emulated NAND
+:tinyskip
 
 if /i "%SNEEKSELECT%" NEQ "1" set wainput=%wainput%~* setting.txt created using serial #: %SNKSERIAL%
+
+if /i "%SNKS2U%" EQU "Y" set wainput=%wainput%~* Install Switch2Uneek
+if /i "%SNKnswitch%" EQU "Y" set wainput=%wainput%~* Install nSwitch (neek2o) Channel
 
 if /i "%SNKOHBC%" EQU "Y" set wainput=%wainput%~* Install Open Homebrew Channel
 
@@ -2239,6 +2597,22 @@ goto:skipusb
 
 if /i "%MENU1%" EQU "U" goto:skipwizstuff
 
+
+if /i "%FIRMSTART%" EQU "U" (set wainput=%wainput%~* Install\update recommended mods for WiiU Only) & (goto:skipusb)
+if /i "%FIRMSTART%" EQU "U2" (set wainput=%wainput%~* Install\update recommended mods for WiiU\vWii) & (goto:moreinfo)
+if /i "%FIRMSTART%" EQU "V" (set wainput=%wainput%~* Install\update recommended mods for vWii Only) & (goto:moreinfo)
+goto:wiiinfo
+:moreinfo
+if not "%REGION%"=="" set wainput=%wainput%~* Console Region is %REGION%
+if /i "%FIRMSTART%" EQU "V" goto:listexploits
+goto:themeconfirm
+:wiiinfo
+
+
+
+
+set wainput=%wainput%~* The console is a Wii
+
 if /i "%VIRGIN%" EQU "Y" set wainput=%wainput%~* Install\Update all recommended softmods~
 
 if /i "%MENU1%" EQU "RC" goto:skipcurrentSM
@@ -2247,6 +2621,23 @@ if /i "%FIRMSTART%" EQU "o" set wainput=%wainput%~* Current System Menu is less 
 :skipcurrentSM
 
 set wainput=%wainput%~* Desired System Menu is %FIRM%%REGION%
+
+
+:listexploits
+if /i "%EXPLOIT%" EQU "BE" set wainput=%wainput%~* Browser Exploit selected
+if /i "%EXPLOIT%" EQU "S" set wainput=%wainput%~* Super Smash Brothers Brawl exploit selected
+if /i "%EXPLOIT%" EQU "L" set wainput=%wainput%~* LEGO Indiana Jones exploit selected
+if /i "%EXPLOIT%" EQU "Y" set wainput=%wainput%~* Yu-Gi-Oh! 5D's exploit selected
+if /i "%EXPLOIT%" EQU "LB" set wainput=%wainput%~* LEGO Batman exploit selected
+if /i "%EXPLOIT%" EQU "LS" set wainput=%wainput%~* LEGO Star Wars exploit selected
+if /i "%EXPLOIT%" EQU "TOS" set wainput=%wainput%~* Tales of Symphonia Dawn of the New World exploit selected
+if /i "%EXPLOIT%" EQU "T" set wainput=%wainput%~* Twilight Princess: The Legend of Zelda exploit selected
+if /i "%EXPLOIT%" EQU "W" set wainput=%wainput%~* Wilbrand\LetterBomb exploit selected
+if /i "%EXPLOIT%" EQU "X" set wainput=%wainput%~* str2hax exploit selected
+if /i "%EXPLOIT%" EQU "?"  set wainput=%wainput%~* Download all available exploits
+if /i "%FIRMSTART%" EQU "V" goto:themeconfirm
+
+
 
 if /i "%macaddress%" EQU "S" goto:skip
 if not "%macaddress%"=="" set wainput=%wainput%~* MAC Address - %macaddress%
@@ -2279,10 +2670,12 @@ if /i "%IOS236InstallerQ%" EQU "Y" set wainput=%wainput%~* Install IOS236
 
 if /i "%PRIQ%" EQU "Y" set wainput=%wainput%~* Install\Update Priiloader
 
+:themeconfirm
 if /i "%ThemeSelection%" EQU "R" set wainput=%wainput%~* Install Dark Wii Red Theme - %effect%
 if /i "%ThemeSelection%" EQU "G" set wainput=%wainput%~* Install Dark Wii Green Theme - %effect%
 if /i "%ThemeSelection%" EQU "BL" set wainput=%wainput%~* Install Dark Wii Blue Theme - %effect%
 if /i "%ThemeSelection%" EQU "O" set wainput=%wainput%~* Install Dark Wii Orange Theme - %effect%
+if /i "%ThemeSelection%" EQU "D" set wainput=%wainput%~* Install Default Wii Theme
 
 if /i "%MENU1%" EQU "RC" goto:skipusb
 ::---------
@@ -2398,7 +2791,7 @@ if /i "%MENU1%" EQU "W" (set BACKB4DRIVE=UPAGE2) & (set BACKB4DRIVEU=DRIVECHANGE
 
 if /i "%USBCONFIG%" EQU "USB" (set BACKB4DRIVEU=UPAGE2) & (goto:DRIVEUCHANGE)
 
-if /i "%USBCONFIG%" EQU "SD" (set BACKB4DRIVE=UPAGE2) & (goto:DRIVECHANGE)
+if /i "%USBCONFIG%" EQU "SD" (call Support\settings.bat) & (set BACKB4DRIVE=UPAGE2) & (goto:DRIVECHANGE)
 
 
 
@@ -2406,6 +2799,7 @@ if /i "%USBCONFIG%" EQU "SD" (set BACKB4DRIVE=UPAGE2) & (goto:DRIVECHANGE)
 :SNKPAGE1
 set SNEEKSELECT=
 set SNKS2U=
+set SNKnswitch=
 set PRIIFOUND=
 if /i "%neek2o%" EQU "on" (set neekURL=tinyurl.com/neeek2o) else (set neekURL=http://code.google.com/p/sneek)
 set waoutnum=
@@ -2416,9 +2810,9 @@ set wafile=
 if not "%SNEEKSELECTMarked%"=="" set waoutnum=%VIRGINMarked%
 
 
-set watext=~~Which of the following SNEEK Actions would you like to perform?~~Note: Emulated NAND Modifer and SNEEK Game Bulk Extractor is currently only available in ModMii Classic
+set watext=~~Which of the following SNEEK Actions would you like to perform?~~Note: Emulated NAND Modifier and SNEEK Game Bulk Extractor is currently only available in ModMii Classic
 
-set wainput= ^&SNEEK Installation; ^&Emulated NAND Builder (for SNEEK); ^&All the above (Recommended for 1st time users)
+set wainput= ^&SNEEK Installation (Wii Only); ^&Emulated NAND Builder (Wii or vWii); ^&All the above (Wii Only: Ideal for 1st time users)
 
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -2462,14 +2856,14 @@ start support\wizapp PB OPEN
 
 
 ::get all list
-start /min /wait support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
+support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar" -q --show-progress
 
 start support\wizapp PB UPDATE 20
 
 if exist index.html@* (move /y index.html@* temp\list.txt>nul) else (goto:nowifi)
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
-support\sfk filter -spat "temp\list.txt" ++"/download\x22" ++"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
+support\sfk filter -spat "temp\list.txt" -and+"/download\x22" -and+"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
 
 support\sfk filter -spat "temp\list.txt" -!"\x22" -!"n" -unique -no-empty-lines -no-blank-lines -write -yes>nul
 
@@ -2497,11 +2891,9 @@ start support\wizapp PB UPDATE 80
 
 start support\wizapp PB UPDATE 100
 
-::count # of folders in advance to set "mode"
-setlocal ENABLEDELAYEDEXPANSION
+::count # of lines
 SET neekTOTAL=0
-if exist temp\list.txt for /f "delims=" %%i in (temp\list.txt) do set /a neekTOTAL=!neekTOTAL!+1
-setlocal DISABLEDELAYEDEXPANSION
+if exist temp\list.txt for /f %%a in (temp\list.txt) do set /a neekTOTAL+=1
 
 start support\wizapp PB CLOSE
 
@@ -2530,7 +2922,7 @@ Set watext=~~~  Select the version of %neekname% you would like to build:
 
 set FeaturedTag=
 
-::Loop through the the following once for EACH line in *.txt
+::Loop through the following once for EACH line in *.txt
 for /F "tokens=*" %%A in (temp\list.txt) do call :processNEEKlist %%A
 goto:quickskip
 :processNEEKlist
@@ -2591,9 +2983,10 @@ set waoutput=
 if not "%SNEEKTYPEMarked%"=="" (set waoutnum=%SNEEKTYPEMarked%) else (set waoutnum=4)
 
 if /i "%SNEEKSELECT%" NEQ "2" set watext=~~       What type of SNEEK would you like to install?
-if /i "%SNEEKSELECT%" EQU "2" set watext=~~What type of SNEEK would you like to build an emulated NAND for?
 
-if /i "%SNEEKSELECT%" NEQ "1" set watext=%watext%~~Note: NANDs built for any type of SNEEK work with any other type of SNEEK and ANY region Wii can use ANY region emulated NAND.
+if /i "%SNEEKSELECT%" EQU "2" set watext=What type of SNEEK would you like to build an emulated NAND for?~~Note: Any type of SNEEK can be selected if the EmuNAND will be used without SNEEK via USB-Loaders directly. Also, EmuNANDs built for any type of SNEEK work with any other type of SNEEK and ANY region Wii\vWii can use ANY region emulated NAND.
+
+if /i "%SNEEKSELECT%" EQU "3" set watext=%watext%~~Note: EmuNANDs built for any type of SNEEK work with any other type of SNEEK and ANY region Wii\vWii can use ANY region emulated NAND.
 
 
 set wainput= UNEEK+^&DI; SNEEK+^&DI; ^&UNEEK; ^&SNEEK; ^&Information on the above types of NEEK
@@ -2654,7 +3047,7 @@ if /i "%SNEEKTYPE%" EQU "UD" goto:DRIVEUCHANGE
 ::------------------neek type info----------------
 :neekinfo
 
-set watext=~UNEEK+DI~* Emulated Wii nand/memory is on FAT32 External HDD~* Load Wii games off your FAT32 External Hard Drive~* You can load apps off an SD Card~* DVD-Drive disabled for games but not for apps~~SNEEK+DI~* Emulated Wii nand/memory is on SD Card~* Load Wii games off your FAT32 External Hard Drive~* Load GameCube games off your SD Card using DML~* You can load apps off a FAT32 USB HDD~* DVD-Drive disabled for games but not for apps~~UNEEK~* Same as UNEEK+DI but DVD-Drive is enabled and~  cannot load games off a FAT32 HDD~~SNEEK~* Same as SNEEK+DI but DVD-Drive is enabled and~  cannot load games off a FAT32 HDD
+set watext=~UNEEK+DI~* Emulated nand/memory is on FAT32 External HDD~* Load Wii games off your FAT32 External Hard Drive~* You can load apps off an SD Card~* DVD-Drive disabled for games but not for apps~~SNEEK+DI~* Emulated nand/memory is on SD Card~* Load Wii games off your FAT32 External Hard Drive~* Load GameCube games off your SD Card using DML~* You can load apps off a FAT32 USB HDD~* DVD-Drive disabled for games but not for apps~~UNEEK~* Same as UNEEK+DI but DVD-Drive is enabled and~  cannot load games off a FAT32 HDD~~SNEEK~* Same as SNEEK+DI but DVD-Drive is enabled and~  cannot load games off a FAT32 HDD
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -2683,7 +3076,7 @@ set waoutput=
 ::recall checked items
 if not "%SNKREGIONMarked%"=="" set waoutnum=%SNKREGIONMarked%
 
-set watext=~What Region would you like to make your Emulated NAND?~~Note: If you want your wiimotes be synced up to your real NAND and your emulated NAND simultaneously, then you must choose the real region of your Wii
+set watext=~What Region would you like to make your Emulated NAND?~~Note: If you want your wiimotes be synced up to your real NAND and your emulated NAND simultaneously, then you must choose the real region of your console
 
 set wainput= ^&U (USA); ^&E (Euro\PAL); ^&J (JPN); ^&K (Korean)
 
@@ -2712,7 +3105,7 @@ if "%SNKREGION%"=="" goto:SNKPAGE3
 if /i "%SNKREGION%" EQU "U" set defaultserial=LU521175683
 if /i "%SNKREGION%" EQU "E" set defaultserial=LEH133789940
 if /i "%SNKREGION%" EQU "J" set defaultserial=LJM101175683
-if /i "%SNKREGION%" EQU "K" set defaultserial=LJM101175683
+if /i "%SNKREGION%" EQU "K" set defaultserial=LKM101175683
 
 goto:SNKPAGE4
 
@@ -2727,8 +3120,12 @@ set waoutput=
 if not "%SNKVERSIONMarked%"=="" set waoutnum=%SNKVERSIONMarked%
 
 set watext=~~~What System Menu Version would you like your emulated NAND to be?
-
 set wainput= 4.^&3; 4.^&2; 4.^&1
+
+if /i "%SNEEKSELECT%" NEQ "2" goto:skip
+if /i "%SNKREGION%" NEQ "K" set wainput= 4.^&3; 4.^&2; 4.^&1; ^&vWii 4.3
+if /i "%SNKREGION%" EQU "K" set watext=%watext%~~Note: to choose vWii select a Region other than Korean
+:skip
 
 
 
@@ -2747,6 +3144,7 @@ set SNKVERSIONMarked=%waoutnum%
 if /i "%waoutnum%" EQU "0" set SNKVERSION=4.3
 if /i "%waoutnum%" EQU "1" set SNKVERSION=4.2
 if /i "%waoutnum%" EQU "2" set SNKVERSION=4.1
+if /i "%waoutnum%" EQU "3" set SNKVERSION=V
 
 if "%SNKVERSION%"=="" goto:SNKPAGE4
 
@@ -2778,7 +3176,7 @@ set watext=~Select which of the following to install to your Emulated NAND?~~Not
 
 ::use question marks instead of ^&, will be replaced later
 
-set wainput= System Menu ?Theme; Post?Loader (App\USB Loader); cIOS?249 rev14 (required for some apps); ?Priiloader (and System Menu Hacks); Custom folder of ?WADs
+set wainput= System Menu ?Theme; Post?Loader (App\Channel); cIOS?249 rev14 (required for some apps); ?Priiloader (and System Menu Hacks); Custom ?Folder of WADs
 
 
 if /i "%AbstinenceWiz%" EQU "Y" goto:noNMMDML
@@ -2791,17 +3189,19 @@ if /i "%SNEEKTYPE%" NEQ "SD" set wainput=%wainput%; No ?More Memory-Cards (NMM)
 ::if /i "%SNEEKTYPE:~0,1%" NEQ "U" goto:notUneek
 set wainput=%wainput%; ?WiiFlow (USB-Loader)
 if /i "%AbstinenceWiz%" EQU "Y" goto:notUneek
-if /i "%neek2o%" EQU "off" set wainput=%wainput%; ?Switch2Uneek (launch different NANDs)
+if /i "%neek2o%" EQU "off" set wainput=%wainput%; ?Switch2Uneek (uneek/real nand switcher)
 :notUneek
 
-set wainput=%wainput%; ?Open Homebrew Channel
-
+set wainput=%wainput%; ?Open Homebrew Channel; n?Switch Channel (neek/real nand switcher)
 
 echo %wainput%>temp\temp.txt
 
 support\sfk filter -spat temp\temp.txt -rep _"\x3f"_"\x5e\x26"_ -write -yes>nul
 set /p wainput= <temp\temp.txt
 set wainput=%wainput%
+
+if /i "%SNKVERSION%" EQU "V" set watext=~~~Select which of the following to install to your Emulated NAND?
+if /i "%SNKVERSION%" EQU "V" set wainput= System Menu ^&Theme; Post^&Loader (App\Channel); Custom ^&Folder of WADs; ^&WiiFlow (USB-Loader); ^&Open Homebrew Channel; n^&Switch Channel (neek/real nand switcher)
 
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
@@ -2845,14 +3245,15 @@ IF not ERRORLEVEL 1 set SNKOHBC=Y
 findStr /I /C:"Switch2Uneek" "%wabat%" >nul
 IF not ERRORLEVEL 1 set SNKS2U=Y
 
-findStr /I /C:"Switch2Uneek" "%wabat%" >nul
-IF not ERRORLEVEL 1 set SNKS2U=Y
+findStr /I /C:"n^&Switch Channel" "%wabat%" >nul
+IF not ERRORLEVEL 1 set SNKnswitch=Y
+
 
 findStr /I /C:"^&Dios Mios Lite -OR- No More Memory-Cards" "%wabat%" >nul
 ::IF not ERRORLEVEL 1 goto:SNKPAGE4a3
 IF not ERRORLEVEL 1 set SNKcBC=choose
 
-findStr /I /C:"Custom folder of ^&WADs" "%wabat%" >nul
+findStr /I /C:"Custom ^&Folder of WADs" "%wabat%" >nul
 IF not ERRORLEVEL 1 (goto:addwadfolder) else (set addwadfolder=)
 
 if /i "%SNKcBC%" EQU "choose" goto:SNKPAGE4a3
@@ -3064,6 +3465,17 @@ start /w support\wizapp TB
 if errorlevel 2 goto:MENU
 if errorlevel 1 goto:MENU
 
+::check if d2x version is customized and offer to revert to default
+if not exist "Support\d2x-beta\" goto:skip
+if /i "%d2x-beta-rev%" EQU "%d2x-bundled%" goto:skip
+set watext=~Caution!~~The version of d2x cIOS selected in ModMii Classic's Options (v%d2x-beta-rev%) is not the recommended\default version (v%d2x-bundled%).~~Click "Next" to revert to the default d2x version now (v%d2x-bundled%), or "Cancel" to continue with v%d2x-beta-rev%
+start /w support\wizapp TB
+if errorlevel 2 goto:skip
+if errorlevel 1 goto:RCPAGE1
+set "d2x-beta-rev=%d2x-bundled%"
+if exist support\d2x-beta rd /s /q support\d2x-beta
+:skip
+
 goto:WPAGE3
 
 
@@ -3084,23 +3496,26 @@ if /i "%MENU1%" EQU "L" goto:sendcmd
 ::---------ModMii Wizard-------------
 if /i "%MENU1%" NEQ "W" goto:notwizard
 
-set "classicCMD=W %FIRMSTART% %REGION% %FIRM%"
+::WiiUOnly
+if /i "%FIRMSTART%" NEQ "U" goto:notWiiUonly
+set "classicCMD=W %FIRMSTART%"
+if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
+goto:sendcmd
+:notWiiUonly
+
+::Wii only
+if /i "%ctype%" EQU "Wii" set "classicCMD=W %FIRMSTART% %REGION% %FIRM%"
+
+::vWii (and WiiU+vWii)
+if /i "%ctype%" EQU "WiiU" set "classicCMD=W %FIRMSTART% %REGION%"
+
 
 ::THEMES
 if /i "%ThemeSelection%" EQU "R" set "classicCMD=%classicCMD% Red"
 if /i "%ThemeSelection%" EQU "G" set "classicCMD=%classicCMD% Green"
 if /i "%ThemeSelection%" EQU "BL" set "classicCMD=%classicCMD% Blue"
 if /i "%ThemeSelection%" EQU "O" set "classicCMD=%classicCMD% Orange"
-
-::Wii CHANNELS
-if /i "%PIC%" EQU "Y" set "classicCMD=%classicCMD% PHOTO"
-if /i "%MIIQ%" EQU "Y" set "classicCMD=%classicCMD% MII"
-if /i "%Shop%" EQU "Y" set "classicCMD=%classicCMD% SHOP"
-if /i "%NET%" EQU "Y" set "classicCMD=%classicCMD% NET"
-if /i "%Weather%" EQU "Y" set "classicCMD=%classicCMD% WEATHER"
-if /i "%NEWS%" EQU "Y" set "classicCMD=%classicCMD% NEWS"
-if /i "%Speak%" EQU "Y" set "classicCMD=%classicCMD% SPEAK"
-
+if /i "%ThemeSelection%" EQU "D" set "classicCMD=%classicCMD% Default"
 
 ::------USB-Loader Check---------
 if /i "%USBGUIDE%" NEQ "Y" goto:nousb
@@ -3119,9 +3534,11 @@ if /i "%USBCONFIG%" EQU "SD" set "classicCMD=%classicCMD% SDConfig"
 ::---------EXPLOITCHECK-----------
 if /i "%FIRMSTART%" EQU "4.3" goto:exploitcheck
 if /i "%FIRMSTART%" EQU "o" goto:exploitcheck
+if /i "%FIRMSTART%" EQU "v" goto:exploitcheck
 goto:skipexploitcheck
 
 :exploitcheck
+if /i "%EXPLOIT%" EQU "BE" set "classicCMD=%classicCMD% Browser"
 if /i "%EXPLOIT%" EQU "T" set "classicCMD=%classicCMD% Twilight"
 if /i "%EXPLOIT%" EQU "S" set "classicCMD=%classicCMD% SmashStack"
 if /i "%EXPLOIT%" EQU "L" set "classicCMD=%classicCMD% IndianaPwns"
@@ -3138,13 +3555,24 @@ if /i "%macaddress%" EQU "S" set "classicCMD=%classicCMD% LetterBomb"
 :skip
 
 
-
 if /i "%FIRMSTART%" NEQ "4.3" goto:skipexploitcheck
 if /i "%EXPLOIT%" EQU "?" set "classicCMD=%classicCMD% MAC:%macaddress%"
 :skipexploitcheck
 
 
 if /i "%GUIDEONLY%" EQU "on" set "classicCMD=%classicCMD% Guide"
+
+::end of the line for vWii
+if /i "%ctype%" NEQ "Wii" goto:sendcmd
+
+::Wii CHANNELS
+if /i "%PIC%" EQU "Y" set "classicCMD=%classicCMD% PHOTO"
+if /i "%MIIQ%" EQU "Y" set "classicCMD=%classicCMD% MII"
+if /i "%Shop%" EQU "Y" set "classicCMD=%classicCMD% SHOP"
+if /i "%NET%" EQU "Y" set "classicCMD=%classicCMD% NET"
+if /i "%Weather%" EQU "Y" set "classicCMD=%classicCMD% WEATHER"
+if /i "%NEWS%" EQU "Y" set "classicCMD=%classicCMD% NEWS"
+if /i "%Speak%" EQU "Y" set "classicCMD=%classicCMD% SPEAK"
 
 
 ::Non Virgin Minimal Update
@@ -3280,6 +3708,8 @@ if /i "%SNKPRI%" EQU "Y" set "classicCMD=%classicCMD% Pri"
 if /i "%SNKFLOW%" EQU "Y" set "classicCMD=%classicCMD% FLOW"
 if /i "%SNKcBC%" EQU "NMM" set "classicCMD=%classicCMD% NMM"
 if /i "%SNKcBC%" EQU "DML" set "classicCMD=%classicCMD% DML"
+if /i "%SNKS2U%" EQU "Y" set "classicCMD=%classicCMD% S2U"
+if /i "%SNKnswitch%" EQU "Y" set "classicCMD=%classicCMD% nswitch"
 
 goto:sendCMD
 
@@ -3394,28 +3824,28 @@ echo   by renaming your BootmiiNeek folder to SD:\Bootmii>>%wafile%
 echo   and launching "Bootmii">>%wafile%
 echo.>>%wafile%
 echo * You can launch uneek (or uneek+DI) without requiring>>%wafile%
-echo   an SD Card using USB-Loader GX. USB-Loader GX also>>%wafile%
+echo   an SD Card using USB-Loader GX or nswitch. GX also>>%wafile%
 echo   has an option to copy a console's SYSCONF into your>>%wafile%
 echo   current emuNAND (channel) path, so if you add new>>%wafile%
 echo   controllers or a balance board to your NAND, use the>>%wafile%
-echo   copy SYSCONF feature to also add it to neek's emuNAND.>>%wafile%
+echo   copy SYSCONF feature to also add it to your EmuNAND.>>%wafile%
 echo.>>%wafile%
 echo * SD:\Bootmii is not required to launch neek from>>%wafile%
-echo   USB-Loader GX. If you use USB-Loader GX's EmuNAND>>%wafile%
-echo   neek feature, you can have both SNEEK and UNEEK>>%wafile%
+echo   USB-Loader GX or nswitch. If you use either of>>%wafile%
+echo   these, you can have both SNEEK and UNEEK>>%wafile%
 echo   at the same time (with or without DI). ModMii will>>%wafile%
 echo   detect SNEEK when installing UNEEK and vice>>%wafile%
 echo   versa and ask if you want to overwrite SD files.>>%wafile%
 echo   For dual boot you will want only SNEEK files on SD>>%wafile%
 echo   and only UNEEK files on USB. The version of NEEK>>%wafile%
-echo   that will be loaded is based on your EmuNAND>>%wafile%
+echo   that will GX will load is based on your EmuNAND>>%wafile%
 echo   location in USB-Loader GX's settings: Sneek if>>%wafile%
 echo   on SD, and Uneek if on USB.>>%wafile%
 echo.>>%wafile%
 
 
-if /i "%SNKS2U%" EQU "Y" goto:quickskip
-echo * Install the neek2o channel using YAWMM then>>%wafile%
+if /i "%SNKnswitch%" NEQ "Y" goto:quickskip
+echo * Install the neek2o (nSwitch) WAD\channel then>>%wafile%
 echo   launch the channel in order to start NEEK. You can>>%wafile%
 echo   also use this channel to return to your real NAND.>>%wafile%
 echo.>>%wafile%
@@ -3424,13 +3854,13 @@ echo.>>%wafile%
 if /i "%SNKS2U%" NEQ "Y" goto:quickskip
 echo * Access UNEEK/UNEEK+DI by launching switch2uneek>>%wafile%
 echo   from the Homebrew Channel. Alternatively, can use>>%wafile%
-echo   YAWMM to install the switch2uneek forwarder channel>>%wafile%
-echo   that ModMii saved to your SD card.>>%wafile%
+echo   yawmME to install the switch2uneek forwarder>>%wafile%
+echo   channel that ModMii saved to your SD card.>>%wafile%
 echo.>>%wafile%
 :quickskip
 
 if /i "%SNKcBC%" NEQ "DML" goto:skipDMLmsg
-echo * Install the DML WAD using YAWMM to your REAL NAND>>%wafile%
+echo * Install the DML WAD using yawmME to your REAL NAND>>%wafile%
 echo   in order for your Emulated NAND to use DML.>>%wafile%
 echo   DML currently requires SNEEK+DI r157 or higher>>%wafile%
 echo   and neek2o has yet to support DML.>>%wafile%
@@ -3470,7 +3900,7 @@ echo.>>%wafile%
 echo * ShowMiiWads can be used to decrypt your real>>%wafile%
 echo   Wii's Bootmii NAND dump (nand.bin) to use as an>>%wafile%
 echo   EmuNAND, and it can add custom channels/WADs>>%wafile%
-echo   to an EmuNAND. See ModMii's Download Page 2.>>%wafile%
+echo   to an EmuNAND. See ModMii's Download Page 5.>>%wafile%
 echo.>>%wafile%
 echo * For more SNEEK info, like formatting a USB Hard>>%wafile%
 echo   Drive for SNEEK, you can visit: tiny.cc/SNEEK-DI>>%wafile%

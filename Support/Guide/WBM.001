@@ -1,6 +1,23 @@
+</ul><br>
+
+<font size="5"><b>Wii Backup Manager</b></font><br>
+<i>Wii Backup Manager (WBM) is a Windows program to help transfer Wii games to and from hard drives and SD cards.<br>It can also download game covers, list your games, identify what games are missing between devices, and more.</i><br>
+<br>
 <ul style=align="left" type="disc">
-<li>You can use this program to manage/transfer your backup copies of Wii Games.
-<li>It is very simple to use, but a detailed tutorial on using Wii Backup Manager can be found <a href="http://www.sites.google.com/site/completesg/backup-launchers/iso/wbfs-managers/wii-backup-manager" target="_blank">here</a>.
+<li>You can use this program to manage/transfer your backup copies of Wii Games (.WBFS/.ISO/.CISO).
+<li>It is very simple to use, but a detailed tutorial on using Wii Backup Manager can be found <a href="https://wii.hacks.guide/wii-backups#using-wii-backup-manager" target="_blank">here</a>.
+<li>Wii Game Directory Structure:
+	<ul style=align="left" type="square">
+	<li>Below is a single WBFS example, and a split WBFS example. A WBFS file needs to be split if it is over 4GB and your storage device is formatted as FAT32. During transfer operations WBM can automatically split games and set up the directory structure for you.<br>
+	<br>
+	💾 SD Card or USB Drive<br>
+	┗ 📂wbfs<br>
+	&nbsp; &nbsp; &nbsp; ┣ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp; ┃  ┗ 📜<i>GameID</i>.wbfs (for non-split titles)<br>
+	&nbsp; &nbsp; &nbsp; ┗ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┣ 📜<i>GameID</i>.wbfs<br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┗ 📜<i>GameID</i>.wbf1<br>
+	</ul>
 </ul>
 <br>
 
@@ -8,8 +25,20 @@
 <i>GameCube Backup Manager (GCBM) is a Windows program to help transfer GameCube games to and from hard drives and SD cards.<br>The interface is very similar to the popular Wii Backup Manager program making it easy to use.</i><br><br>
 
 <ul style=align="left" type="disc">
-<li>You can use this program to manage/transfer your backup copies of GameCube Games.
-<li>More information and support for GameCube Backup Manager can be found <a href="https://gbatemp.net/threads/gamecube-backup-manager-official-post.611247/" target="_blank">here</a>.
+<li>You can use this program to manage/transfer your backup copies of GameCube Games (.ISO/.CISO/.GCM and extracted FST format).
+<li>More detailed usage information on GameCube Backup Manager can be found <a href="https://wii.hacks.guide/gc-backups.html" target="_blank">here</a>.
+<li>Gamecube (Nintendont) Game Directory Structure:
+	<ul style=align="left" type="square">
+	<li>Below is a single disc game example, and 2-disc game example. Subdirectories are optional for 1-disc games in ISO/GCM and CISO format. During transfer operations GCBM can automatically and correctly set up the directory structure for you.<br>
+	<br>
+	💾 SD Card or USB Drive<br>
+	┗ 📂games<br>
+	&nbsp; &nbsp; &nbsp; ┣ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp; ┃  ┗ 📜game.ciso (for single disc games)<br>
+	&nbsp; &nbsp; &nbsp; ┗ 📂<i>GameName [GameID]</i><br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┣ 📜game.iso<br>
+	&nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; ┗ 📜disc2.iso<br>
+	</ul>
 </ul>
 <br>
 

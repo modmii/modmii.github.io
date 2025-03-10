@@ -1,0 +1,14 @@
+•  Your folder structure should look <i>similar</i> to this:<br>
+💾 SD Card or USB Drive<br>
+ ┗ 📁apps<br>
+&nbsp; &nbsp; &nbsp; ┣ 📁AppName1<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄boot.dol<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄meta.xml<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┗ 📄icon.png<br>
+&nbsp; &nbsp; &nbsp; ┣ (All other Wii apps should be here too)<br>
+<br>
+•  Your folder structure should <u>not</u> look like this:<br>
+💾 SD Card or USB Drive<br>
+ ┗ ⛔📁COPY_TO_SD<br>
+ ┗ ⛔📁COPY_TO_USB<br>
+<br>

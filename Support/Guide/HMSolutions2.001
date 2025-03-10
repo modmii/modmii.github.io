@@ -1,21 +1,26 @@
 <li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
 
 	<ul style=align="left" type="disc">
-	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd><br>
+	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd>.<br>
+	<li>Warning: do <u>not</u> use minus (-) as this will mark WADs for <u>un</u>installation.<br>
 	</ul>
 
-<li>After you've marked all the WADs listed below, <b>press <kbd>A</kbd></b>.<li>Double check the total number selected for installation matches your list above, then <b>press <kbd>A</kbd> again to install</b>.<br>
+<li>After you've marked all the WADs listed above, <b>press <kbd>A</kbd></b>.
+<li>Double check the total number selected for installation matches your list above, then <b>press <kbd>A</kbd> again to install</b>.<br>
 
 	<ul style=align="left" type="disc">
-	<li>If any WADs fail to install properly please retry installing them.<br>
+	<li>If some WADs fail to install continue with this guide anyway; but later if <i>both</i> versions of the HackMii Installer don't work return to this step.<br>
 	</ul>
 
 <li><b>After successfully installing all the WADs, press any button to continue.</b>
 
 
-<li>Then <b>press the "B" button</b> to go back to the root of your device.
+<li>Then <b>press the <kbd>B</kbd> button</b> to go back to the root of your device.
 <li><b>Choose "apps"</b> then press <kbd>A</kbd>.
 <li>Navigate to "HackMii_Installer" and press <kbd>A</kbd>.
+	<ul style=align="left" type="disc">
+	<li>If this version fails during the next step, try launching "HackMii_Installer_v1.0" instead.<br>
+	</ul>
 <li>Scroll to "boot.elf" and press <kbd>A</kbd> again.
 <li>Press <kbd>A</kbd> to <b>launch the HackMii Installer's boot.elf</b>.
 </ol>

@@ -1,0 +1,42 @@
+<b>Browser Exploit to launch nanddumper</b><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>-->
+Requirements: an internet connection on your WiiU and an SD card.<br>
+<br>
+<i>The Browser Exploit is a WiiU entry point which allow further homebrew to be run. All current WiiU exploits load SD:/wiiu/payload.elf which takes over further loading of homebrew. Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever brick your console, restoring a NAND backup is like taking it back in time to before the problem occurred. Restoring a full WiiU NAND Backup requires additional hardware and micro soldering skills. However, making a NAND Backup is always useful, so please do not skip it. NAND backups are console specific, so you cannot restore a backup from a different console. vWii NAND Backups (slccmpt.bin/nand.bin & keys.bin/otp.bin) can be restored without additional hardware using <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> but it currently requires switching from Aroma to a legacy environment like Tiramisu. Generally, vWii NAND Restorer should only be used if <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> fails to repair a brick.</i><br>
+<br>
+<ol type="A">
+<li>Make sure your WiiU has <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1126" target="_blank">internet access</a> for this step.
+<li>Launch the Internet Browser and navigate to this website: <kbd>wiiuexploit.xyz</kbd>
+<li>Click on <kbd>Run Exploit!</kbd> and hold the <kbd>B</kbd> button until you see a screen that says "Please choose your payload:"
+	<ul style=align="left" type="disc">
+	<li>If your WiiU gets stuck on a white or otherwise frozen screen, wait a few seconds. If nothing happens, reboot the console, <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1507" target="_blank">reset your browser save data</a> and try again.
+	<li>If you see the Environment Loader, you did not hold down B long enough. Try again.
+	<li>If you get any errors like FSOpenfile failed, FSGetMountSorce failed, or SD Mount failed, refer to the <a href="https://wiiu.hacks.guide/common-issues-fixes?id=browser-errors" target="_blank">Common Issues & Fixes</a> section of the WiiU Hacks Guide.
+	</ul>
+<li>Navigate to <kbd>nanddumper</kbd> using the GamePad and press <kbd>A</kbd> to launch it.
+</ol>
+<br>
+<b>nanddumper Steps</b>
+<ol type="A">
+<li>Use the WiiU GamePad's D-Pad to enter the following configuration:
+	<ul style=align="left" type="disc">
+	<li>Dump SLC: <b>yes</b>
+	<li>Dump SLCCMPT: <b>yes</b>
+	<li>Dump MLC: <b>optional</b>
+	<li>Dump OTP: <b>yes</b>
+	<li>Dump SEEPROM: <b>yes</b>
+		<ul style=align="left" type="square">
+		<li>To create a full NAND backup your SD Card has to be larger than the size of your NAND (either 8GB or 32GB depending on your model). If you do not have a large enough SD Card, you can skip the optional <kbd>MLC</kbd> section which includes save files and game data and is not needed to recover from most types of bricks.
+		</ul>
+	</ul>
+<li>Press the <kbd>A</kbd> button to start the dumping process.
+	<ul style=align="left" type="square">
+	<li>Do not power off your console or remove your SD card when making your NAND backup.
+	</ul>
+<li>When the process is finished, or immediately following the completion of this guide, power off your WiiU, take your SD Card out of the console and plug it into your PC. Copy slc.bin, slccmpt.bin, seeprom.bin, otp.bin and, if you chose to go with a full backup, all the mlc.bin.part files to your computer, a hard drive, the cloud or anywhere safe. You might need these in case of emergencies, so don't lose them. Optionally erase them from the SD card after backing them up to free up space. When done, safely remove your SD Card from your computer and reinsert it into your console and proceed to the next step.
+</ol>
+<br>
+<i>Fun Fact! You can extract the contents of your slccmpt.bin by opening it with ModMii, then save it to a hard drive or SD Card to act as a vWii Emulated NAND (or virtual NAND), allowing you switch between the vWii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the vWii's internal memory.</i><br>
+<br>
+<!------------------------------WiiU Nand backup section above-------------------------->
+

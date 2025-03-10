@@ -13,7 +13,7 @@
 <!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
 <script Language="VBScript">
     Sub Window_Onload
-		window.resizeTo 800,600
+		window.resizeTo 800,675
 		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
     End Sub
 
@@ -64,21 +64,30 @@
 			If Nkit.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set RC24="
 			If RC24.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiLink="
+			If WiiLink.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set NUSGet="
+			If NUSGet.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Cemu="
+			If Cemu.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set SDTEST="
 			If SDTEST.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set HashMF="
 			If HashMF.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set ThemeMiiMod="
 			If ThemeMiiMod.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set UStealth="
+			If UStealth.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set GCBM="
 			If GCBM.checked = True Then objFSO.write "*"
-		
+		objFSO.write vbNewLine & "set UWUVCI="
+			If UWUVCI.checked = True Then objFSO.write "*"
 		objFSO.close
 	End Function
 
 	
 	Function AllButton()
-		If ((ModMii.checked = True) And (ModMiiTemp.checked = True) And (SDfolder.checked = True) And (USBfolder.checked = True) And (wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (RC24.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True)) Then
+		If ((ModMii.checked = True) And (ModMiiTemp.checked = True) And (SDfolder.checked = True) And (USBfolder.checked = True) And (wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (RC24.checked = True) And (WiiLink.checked = True) And (NUSGet.checked = True) And (Cemu.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (UStealth.checked = True) And (GCBM.checked = True) And (UWUVCI.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -116,10 +125,15 @@
 		Diskitude.checked = checkstatus
 		Nkit.checked = checkstatus
 		RC24.checked = checkstatus
+		WiiLink.checked = checkstatus
+		NUSGet.checked = checkstatus
+		Cemu.checked = checkstatus
 		SDTEST.checked = checkstatus
 		HashMF.checked = checkstatus
 		ThemeMiiMod.checked = checkstatus
+		UStealth.checked = checkstatus
 		GCBM.checked = checkstatus
+		UWUVCI.checked = checkstatus
 	End Function
 
 
@@ -156,7 +170,7 @@ table, th {
 <center>
 <font size="3">Select the components you would like to uninstall</font><br>
 <!--<table style="font-size:25px;font-family:Calibri;">-->
-<table style="width:75%">
+<table style="width:85%">
 
 
 <!--Row1-->
@@ -186,58 +200,57 @@ table, th {
 </tr>
 
 <tr>
-	<!--OSC--><th title="A tool to download even more homebrew apps using your PC (selection is the same as the Homebrew Browser)"><label><input class="bigcheck" type="checkbox" name="OSC" /> Open Shop Channel</label></th>
-
-	<!--Dolphin--><th title="Wii Emulator for PC"><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin</label></th>
-</tr>
-
-<tr>
 	<!--f32--><th title="A tool that can format large SD cards and hard drives as FAT32"><label><input class="bigcheck" type="checkbox" name="f32" /> FAT32 GUI Formatter</label></th>
-	
-	<!--ohnes--><th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+	<!--OSC--><th title="A tool to download even more homebrew apps using your PC (selection is the same as the Homebrew Browser)"><label><input class="bigcheck" type="checkbox" name="OSC" /> Open Shop Channel</label></th>
 </tr>
-
 <tr>
 	<!--wbm--><th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
-	
-	<!--RC24--><th title="RiiConnect24 Patcher helps you install RiiConnect24 to bring back WiiConnect24 features to your Wii"><label><input class="bigcheck" type="checkbox" name="RC24" /> RiiConnect24 Patcher</label></th>
+	<!--GCBM--><th title="Manage and convert Gamecube backup files"><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager</label></th>
 </tr>
-
 <tr>
 	<!--Nkit--><th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images"><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
-	
-	<!--hxd--><th title="Hex Editor"><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor</label></th>
+	<!--WiiLink--><th title="WiiLink Patcher helps you install WiiLink to bring back WiiConnect24 features to your Wii\vWii"><label><input class="bigcheck" type="checkbox" name="WiiLink" /> WiiLink Patcher</label></th>
 </tr>
-
-
-
-<tr>
-	<!--GCBM--><th title="Manage and convert Gamecube backup files"><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager</label></th>
-	
-	<!--Diskitude--><th title="Disk Usage Analyzer"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude</label></th>
-</tr>
-
 <tr>
 	<!--SMW--><th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
-	
-	<!--SDTEST--><th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+	<!--NUSGet--><th title="A modern and supercharged NUS downloader that can download content from Nintendo Update Servers."><label><input class="bigcheck" type="checkbox" name="NUSGet" /> NUSGet</label></th>
 </tr>
-
 <tr>
 	<!--CM--><th title="A custom channel creator for the Wii"><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
 	
-	<!--HashMF--><th title="Calculate and compare file hashes"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles</label></th>
+	<!--Dolphin--><th title="Wii / Gamecube Emulator for PC"><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin</label></th>
 </tr>
-
-<tr>
-	<!--WiiGSC--><th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
-	
-	<!--FILEZILLA--><th title="FTP Client; use it with ftpii to manage files on your Wii"><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla</label></th>
-</tr>
-
 <tr>
 	<!--ThemeMiiMod--><th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa."><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
+	<!--Cemu--><th title="WiiU Emulator for PC"><label><input class="bigcheck" type="checkbox" name="Cemu" /> Cemu</label></th>
 </tr>
+<tr>
+	<!--WiiGSC--><th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii\vWii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
+	<!--Diskitude--><th title="Disk Usage Analyzer"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude</label></th>
+</tr>
+<tr>
+	<!--ohnes--><th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+
+	<!--FILEZILLA--><th title="FTP Client; use it with ftpii to manage files on your Wii\vWii"><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla</label></th>
+
+</tr>
+<tr>
+	<!--UStealth--><th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if using Aroma's 'Avoid Format dialog' plugin."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
+	<!--HashMF--><th title="Calculate and compare file hashes"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles</label></th>
+</tr>
+<tr>
+	<!--SDTEST--><th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+	<!--hxd--><th title="Hex Editor"><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor</label></th>
+</tr>
+
+<tr>
+	<!--UWUVCI--><th title="Ultimate Wii U Virtual Console Injectors (UWUVCI) is an all-in-one injector for the WiiU.&#10;&#10;Supported systems: Wii, GCN, DS, GBA, N64, SNES, NES, Turbo Grafx, MSX"><label><input class="bigcheck" type="checkbox" name="UWUVCI" /> UWUVCI</label></th>
+	
+	<!--RC24--><th title="Outdated; replaced by WiiLink Patcher.&#10;&#10;RiiConnect24 Patcher helps you install RiiConnect24 to bring back WiiConnect24 features to your Wii\vWii"><label><input class="bigcheck" type="checkbox" name="RC24" /> RiiConnect24 Patcher</label></th>
+	
+
+</tr>
+
 
 </table>
 <font size="2">Pro tip: keep a fully loaded 'temp' folder to use ModMii even if Nintendo servers shut down!</font><br>

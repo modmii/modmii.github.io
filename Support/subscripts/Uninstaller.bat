@@ -119,6 +119,14 @@ if not exist "Program Files\NKit\" set "replacements=%replacements%-rep _"Nkit--
 
 if not exist "Program Files\RiiConnect24Patcher\" set "replacements=%replacements%-rep _"RC24--\x3e\x3cth"_"RC24--\x3e\x3cth disabled"_ -rep _" And (RC24.checked = True)"__ -rep _"RC24.checked = checkstatus"__ "
 
+if not exist "Program Files\UWUVCI AIO\" set "replacements=%replacements%-rep _"UWUVCI--\x3e\x3cth"_"UWUVCI--\x3e\x3cth disabled"_ -rep _" And (UWUVCI.checked = True)"__ -rep _"UWUVCI.checked = checkstatus"__ "
+
+if not exist "Program Files\WiiLinkPatcher\" set "replacements=%replacements%-rep _"WiiLink--\x3e\x3cth"_"WiiLink--\x3e\x3cth disabled"_ -rep _" And (WiiLink.checked = True)"__ -rep _"WiiLink.checked = checkstatus"__ "
+
+if not exist "Program Files\NUSGet\" set "replacements=%replacements%-rep _"NUSGet--\x3e\x3cth"_"NUSGet--\x3e\x3cth disabled"_ -rep _" And (NUSGet.checked = True)"__ -rep _"NUSGet.checked = checkstatus"__ "
+
+if not exist "Program Files\Cemu\" set "replacements=%replacements%-rep _"Cemu--\x3e\x3cth"_"Cemu--\x3e\x3cth disabled"_ -rep _" And (Cemu.checked = True)"__ -rep _"Cemu.checked = checkstatus"__ "
+
 if not exist "Program Files\h2testw\" set "replacements=%replacements%-rep _"SDTEST--\x3e\x3cth"_"SDTEST--\x3e\x3cth disabled"_ -rep _" And (SDTEST.checked = True)"__ -rep _"SDTEST.checked = checkstatus"__ "
 
 
@@ -127,6 +135,8 @@ if exist "%homedrive%\Program Files (x86)" (set hashfolder=hashmyfiles-x64) else
 if not exist "Program Files\%hashfolder%\" set "replacements=%replacements%-rep _"HashMF--\x3e\x3cth"_"HashMF--\x3e\x3cth disabled"_ -rep _" And (HashMF.checked = True)"__ -rep _"HashMF.checked = checkstatus"__ "
 
 if not exist "Program Files\ThemeMii\" set "replacements=%replacements%-rep _"ThemeMiiMod--\x3e\x3cth"_"ThemeMiiMod--\x3e\x3cth disabled"_ -rep _" And (ThemeMiiMod.checked = True)"__ -rep _"ThemeMiiMod.checked = checkstatus"__ "
+
+if not exist "Program Files\UStealth\" set "replacements=%replacements%-rep _"UStealth--\x3e\x3cth"_"UStealth--\x3e\x3cth disabled"_ -rep _" And (UStealth.checked = True)"__ -rep _"UStealth.checked = checkstatus"__ "
 
 if not exist "Program Files\GCBM\" set "replacements=%replacements%-rep _"GCBM--\x3e\x3cth"_"GCBM--\x3e\x3cth disabled"_ -rep _" And (GCBM.checked = True)"__ -rep _"GCBM.checked = checkstatus"__ "
 
@@ -142,7 +152,7 @@ if exist "%temp%\tempcheck.bat" del /f /q "%temp%\tempcheck.bat"
 
 set "ModMiiDir=%cd%"
 cd /d "%temp%"
-start /wait Uninstaller.hta
+start /wait mshta "%temp%\Uninstaller.hta"
 cd /d "%ModMiiDir%"
 
 if exist "%temp%\tempcheck.bat" goto:skip
@@ -262,6 +272,34 @@ if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\RiiConnect24 Pa
 if exist "%userprofile%\Desktop\RiiConnect24 Patcher.lnk" del "%userprofile%\Desktop\RiiConnect24 Patcher.lnk">nul
 :skip
 
+if /i "%UWUVCI%" NEQ "*" goto:skip
+cd "Program Files\UWUVCI AIO"
+if exist unins000.exe start /wait unins000.exe /VERYSILENT
+cd ..\..
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\UWUVCI AIO.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\UWUVCI AIO.lnk">nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk">nul
+if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" del "%userprofile%\Desktop\UWUVCI AIO.lnk">nul
+if exist "Program Files\UWUVCI AIO\" rd /s /q "Program Files\UWUVCI AIO\"> nul
+:skip
+
+if /i "%WiiLink%" NEQ "*" goto:skip
+if exist "Program Files\WiiLinkPatcher\" rd /s /q "Program Files\WiiLinkPatcher\"> nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\WiiLink Patcher.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\WiiLink Patcher.lnk">nul
+if exist "%userprofile%\Desktop\WiiLink Patcher.lnk" del "%userprofile%\Desktop\WiiLink Patcher.lnk">nul
+:skip
+
+if /i "%NUSGet%" NEQ "*" goto:skip
+if exist "Program Files\NUSGet\" rd /s /q "Program Files\NUSGet\"> nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\NUSGet.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\NUSGet.lnk">nul
+if exist "%userprofile%\Desktop\NUSGet.lnk" del "%userprofile%\Desktop\NUSGet.lnk">nul
+:skip
+
+if /i "%Cemu%" NEQ "*" goto:skip
+if exist "Program Files\Cemu\" rd /s /q "Program Files\Cemu\"> nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\Cemu.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\Cemu.lnk">nul
+if exist "%userprofile%\Desktop\Cemu.lnk" del "%userprofile%\Desktop\Cemu.lnk">nul
+:skip
+
 
 if /i "%SDTEST%" NEQ "*" goto:skip
 if exist "Program Files\h2testw\" rd /s /q "Program Files\h2testw\"> nul
@@ -281,6 +319,12 @@ if /i "%ThemeMiiMod%" NEQ "*" goto:skip
 if exist "Program Files\ThemeMii\" rd /s /q "Program Files\ThemeMii\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ThemeMii Mod.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ThemeMii Mod.lnk">nul
 if exist "%userprofile%\Desktop\ThemeMii Mod.lnk" del "%userprofile%\Desktop\ThemeMii Mod.lnk">nul
+:skip
+
+if /i "%UStealth%" NEQ "*" goto:skip
+if exist "Program Files\UStealth\" rd /s /q "Program Files\UStealth\"> nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\UStealth.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\UStealth.lnk">nul
+if exist "%userprofile%\Desktop\UStealth.lnk" del "%userprofile%\Desktop\UStealth.lnk">nul
 :skip
 
 

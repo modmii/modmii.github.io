@@ -1,7 +1,22 @@
 <!-------------------------------USB LOADER NOTES BELOW---------------------------------->
-<li>Double check that your hard drive is always plugged into usb port0 - the one nearest the edge of the Wii.
-<li>Not all external hard drive's are compatible with the Wii, small USB flash drives or 'thumb drives' in particular often don't work very well. For a list of which USB hard drive's are compatible, check out the <a href="https://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">USB Devices Compatibility List</a></li>
+<li>USB-Loaders, contrary to their name, can also be used on the Wii\vWii with an SD Card. If you prefer using an SD Card simply follow this guide utilizing your FAT32 formatted SD Card in place of a Hard Drive.
+<!--WiiOnly--<li>Double check that your hard drive is always plugged into USB port0 - the one nearest the edge of the Wii.--WiiOnly-->
+<!------WiiUredundant-->
+<li>Double check that your hard drive is always plugged into USB port0.
 	<ul style=align="left" type="square">
-	<li>If you are determined to try using a small USB flash drive or 'thumb drive', you may have more success if running the loader off of an SD Card and formatting the flash drive as WBFS instead of FAT32. This can be done using Wii Backup Manager. However, doing so will not only restrict the drive to storing only Wii games, but will not be accessible by your PC without a program like Wii Backup Manager. In fact, every time you plug the hard drive into your PC you will be prompted to reformat it.
+	<li>For the Wii this is the port on the back nearest the edge
+	<li>For the WiiU this is the one furthest from the edge.
+		<ul style=align="left" type="disc">
+		<li>If connecting a portable hard drive to your WiiU, a Y-cable may be needed for it to draw power from two usb ports.
+		<li>The vWii cannot use a WiiU Formatted USB hard drive.
+		<li>If a non-WiiU Formatted USB hard drive is detected while in the WiiU menu you will be prompted to format\erase it. Careful not to accidentally format your vWii Hard Drive (if applicable). If the WiiU is softmodded with Aroma this prompt can be disabled.
+		</ul>
+	<li>For the Wii Mini there is only one USB port.
 	</ul>
-<li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a></li></li>
+<li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.
+<!--WiiUredundant------>
+<li>Not all external hard drive's are compatible with the Wii\vWii\Wii Mini, small USB flash drives or 'thumb drives' in particular often don't work very well. For a list of which USB hard drive's are compatible, check out the <a href="https://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">USB Devices Compatibility List</a></li>
+	<ul style=align="left" type="square">
+	<li>If you are determined to try using a small USB flash drive or 'thumb drive' on a Wii\vWii, you may have more success if running the loader off of an SD Card and formatting the flash drive as WBFS instead of FAT32. This can be done using Wii Backup Manager. However, doing so will not only restrict the drive to storing only Wii games, but it will not be accessible by your PC without a program like Wii Backup Manager. In fact, every time you plug the hard drive into your PC you will be prompted to reformat it.
+	</ul>
+<li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 249, 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a>.</li></li>

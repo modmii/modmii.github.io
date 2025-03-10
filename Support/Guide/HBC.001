@@ -1,10 +1,10 @@
 <font size="5"><li>Install The Homebrew Channel (HBC) and Bootmii</li></font><br>
-If this Wii was previously modified, and it has either the HBC, Bootmii as boot2, or a Forwarder Channel installed, you can use any of those instead of an exploit in order to update the HBC and Bootmii. If you don't have any of these, or don't know what they are, it's okay, they aren't necessary and you'll have installed all or some of these by the end of this guide.<br>
+If your Wii was previously modified, and it has either the HBC, Bootmii boot2 or a Forwarder Channel installed, you can use one of those instead of an exploit in order to update the HBC and Bootmii. If you don't have these, or don't know what they are, it's okay, they aren't necessary and you'll have installed all or some of these by the end of this guide.<br>
 <br>
 
 
 <div style><div class="spoilerfont" style="text-align:center;">
-<input value="  Click if you have HBC, Bootmii boot2 or a Forwarder Channel  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '          Click to hide          '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click if you have HBC, Bootmii boot2 or a Forwarder Channel  '; }" type="button"></div>
+<input value="  Click if you have HBC, Bootmii boot2, Priiloader or a Forwarder Channel  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '          Click to hide          '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click if you have HBC, Bootmii boot2, Priiloader or a Forwarder Channel  '; }" type="button"></div>
 <div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
 
 
@@ -12,14 +12,16 @@ If this Wii was previously modified, and it has either the HBC, Bootmii as boot2
 
 If you already have the HBC, launch the HackMii Installer via the HBC to reinstall and\or update the HBC or Bootmii.<br>
 <br>
-If your Wii has Bootmii as boot2 installed, you can insert the SD Card with your ModMii files into your Wii and turn it on, and Bootmii will load. From the Bootmii menu, press the power button on the Wii console 2 times to get to the third option (the SD menu), then press the reset button to select it (you can also use a Gamecube controller). Then press the power button repeatedly until bootmini.elf is selected, and then press the reset button to select it. This will load the HackMii Installer allowing you to reinstall and\or update the HBC, and Bootmii.<br>
+If your Wii has Bootmii installed as boot2, you can insert the SD Card with your ModMii files into your Wii and turn it on, and Bootmii will load. From the Bootmii menu, press the power button on the Wii console 2 times to get to the third option (the SD menu), then press the reset button to select it (you can also use a Gamecube controller). Then press the power button repeatedly until bootmini.elf is selected, and then press the reset button to select it. This will load the HackMii Installer allowing you to reinstall and\or update the HBC, and Bootmii.<br>
 <br>
-If you already have a Forwarder Channel from a previous softmod, just save the boot.elf/dol corresponding to the app you want to load (e.g. SD:\apps\hackmii_installer\boot.elf or SD:\apps\yawmME\boot.dol) to the location used by your <u>specific</u> Forwarder Channel (e.g. SD:\apps\usbloader_gx\boot.dol). Then start the channel and the HackMii Installer will load allowing you to reinstall the HBC and Bootmii. Note that if your forwarder channel only loads dol's and not elf's, launch yawmME then use it to launch the HackMii Installer's boot.elf.
+If your Wii has Priiloader installed, you can access it by holding down the Reset button while powering on your Wii until you see the Priiloader menu. Then proceed to "Load/Install File" to load the HackMii Installer (i.e. SD:\apps\hackmii_installer\boot.elf) and use it to reinstall and\or update the HBC, and Bootmii.<br>
+<br>
+If you already have a Forwarder Channel from a previous softmod, just save the boot.elf/dol corresponding to the app you want to load (e.g. SD:\apps\hackmii_installer\boot.elf or SD:\apps\yawmME\boot.dol) to the location used by your <u>specific</u> Forwarder Channel (e.g. SD:\apps\usbloader_gx\boot.dol). Then start the channel and the HackMii Installer will load allowing you to reinstall the HBC or Bootmii. Note that if your forwarder channel only loads dol's and not elf's, launch yawmME then use it to launch the HackMii Installer's boot.elf.
 <br>
 
 </p>
 </div></div></div>
 
 
-If this is truly your first time modding your Wii, please continue with this step to launch an exploit. An exploit is a vulnerability in the Wii's software that gives us access to launch the tools we'll need to complete this guide.<br>
+If this is truly your first time modding your Wii, please continue with this step to launch an exploit. An exploit is a vulnerability in the console's software that gives us access to launch the tools we'll need to complete this guide. Most Wii exploits load SD:/boot.elf or SD:/boot.dol which takes over further loading of homebrew.<br>
 <br>

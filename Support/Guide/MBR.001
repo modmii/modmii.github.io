@@ -14,10 +14,9 @@
 	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
 	</ol>
 <br>
-<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="http://tiny.cc/wiibigdrive" target="_blank">ca032769's guide</a> to complete the rest of this step.</b>
+<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="http://tiny.cc/wiibigdrive" target="_blank">ca032769's guide for Western Digital hard drives</a> or <a href="http://tiny.cc/wiibigseagate" target="_blank">Al_Touriste's guide for Seagate hard drives</a> to complete the rest of this step.</b>
 	<ul style=align="left" type="square">
-	<li>ca032769's guide only supports Western Digital Hard Drives.
-	<li>If your hard drive is >2TB, not MBR, and not made by Western Digital you are currently out of luck.
+	<li>If your hard drive is >2TB, not MBR, and not a supported Western Digital or Seagate drive then you are currently out of luck.
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
 	</ul>
 <br>

@@ -20,7 +20,7 @@ The USBLoader(s) forwarder channel will boot the first app it finds from this li
 <br>
 Note: Forwarder requires IOS58. SD paths are all checked first, then USB. It's capable of launching apps from an SD Card and hard drives formatted as FAT32, NTFS, ext2, ext3 and ext4. It also supports meta.xml arguments and is able to launch apps with direct hardware access.<br>
 <br>
-<i>Want to customize some of your channels? There's an app for that! First make sure you finish this guide and install Priiloader if you haven't already, then get CustomizeMii from ModMii Classic's Download Page 2. You can use this tool to make changes to the audio or visual effects of a channel, and even inject a new "dol" for it to launch. You can build forwarder dol's for custom paths, channels, or website URLs from ModMii Classic's Advanced Downloads Page.</i>
+<i>Want to customize some of your channels? There's an app for that! First make sure you finish this guide and install Priiloader if you haven't already, then get CustomizeMii from ModMii Classic's Download Page 5. You can use this tool to make changes to the audio or visual effects of a channel, and even inject a new "dol" for it to launch. You can build forwarder dol's for custom paths, channels, or website URLs from ModMii Classic's Advanced Downloads Page.</i>
 
 </div></div></div>
 

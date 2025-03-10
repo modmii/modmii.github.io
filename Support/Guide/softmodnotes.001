@@ -11,4 +11,5 @@
 <li>If you accept an official Nintendo update after modding the Wii, you may lose some of your modifications and have to reinstall them.</li>
 <li>Do not install untested WADs/themes without Priiloader, Bootmii and a nand backup.</li>
 <li>It's probably unnecessary, but you should disconnect all peripherals from the Wii during the modding procedure unless instructed otherwise. This includes gamecube memory cards, gamecube controllers, Wii Speak, etc.</li>
+<li>USB hard drives configured to work on a Wii will also work on vWii (virtual Wii on WiiU) and Wii Mini and vice versa.</li>
 <!---------------------------------SOFTMOD NOTES ABOVE----------------------------------->

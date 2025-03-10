@@ -1,15 +1,19 @@
 <b>str2hax</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/U9ZY-oyEoZ0?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/str2hax.gif" border="0"/></a><br>
-Requirements: a WiFi connection on your Wii, but does not require an SD card to launch the HackMii Installer. Will prioritize launching SD:\boot.elf if found. Cannot launch dols.<br>
+Requirements: an internet connection on your Wii, but does not require an SD card to launch the HackMii Installer. Will prioritize launching SD:\boot.elf if found. Cannot launch dols. Works on Wii only.<br>
 <br>
 <ol type="A">
-<li>Connect your Wii to the internet if you have not done so already.<br>
+<li><a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/2679/~/how-to-connect-a-wii-console-to-the-internet" target="_blank">Connect your Wii to the internet</a> if you have not done so already.<br>
+	<ul style=align="left" type="disc">
+	<li>If prompted, choose to not perform an update.
+	<li>If you have connection issues ensure your router is supported by the Wii and configured in line with <a href="https://www.nintendo.com/en-gb/Support/Wii/Setup-amp-Connect/Online-Connection/Choosing-a-Wireless-Router/Choosing-a-Wireless-Router-240422.html" target="_blank">these guidelines</a>.
+	</ul>
 <li>Go to the "Wii Options" Menu, then select "Wii Settings", then go to Page 2 and select "Internet", select "Connection Settings", then choose your active connection.<br>
 <li>Select "Change settings" and scroll 3 times to the right to select "Auto-Obtain DNS" (Not IP Address)<br>
 <li>Select "No" then select "Advanced Settings".<br>
 <li><b>Change both the Primary DNS and Secondary DNS to <kbd>3.143.163.250</kbd></b><br>
 	<ul style=align="left" type="disc">
-	<li>If you later have connection test issues or other problems google str2hax DNS to see if it has recently changed as it does from time to time.
+	<li>If you later have connection test issues or other problems check <a href="https://wii.hacks.guide/str2hax.html" target="_blank">here</a> to confirm whether the str2hax DNS has recently changed as it does from time to time.
 	</ul>
 <li>Select "Confirm", then "Save", and then select "OK" to run a connection test.
 <li>If the connection test was successful, select "No" to skip the Wii System Update.</li>
@@ -32,4 +36,4 @@ Requirements: a WiFi connection on your Wii, but does not require an SD card to 
 </ol>
 
 <br>
-<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://wii.hacks.guide/riiconnect24.html" target="_blank">RiiConnect24's DNS</a>, the choice is yours!</i><br>
+<i>Fun Facts about str2hax! If a boot.elf file is detected on the root of your SD card, str2hax will launch it instead of automatically downloading then launching the HackMii Installer. And did you know when str2hax is finished, it will reset your DNS to Google's 8.8.8.8 and 8.8.4.4? You can leave it this way or re-enable Auto-Obtain DNS, or change it to Cloudflare's 1.1.1.1, or use <a href="https://www.wiilink24.com/guide/install" target="_blank">WiiLink's DNS</a>, the choice is yours!</i><br>

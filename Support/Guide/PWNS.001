@@ -1,11 +1,11 @@
 <b>Indiana Pwns</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/bK-yykzV4Sc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IndianaPwns.gif" border="0"/></a><br>
-Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck. Does not work on Korean System Menus. Can launch elfs but not dols.<br>
+Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck. Does not work on Korean System Menus. Can launch elfs but not dols. Works on Wii and vWii.<br>
 <br>
 <ol type="A"><li>Load the "LEGO Indiana Jones" game at least once (otherwise you won't be able to copy over the hack).</li>
 <li>Delete or move\backup your personal LEGO Indiana Jones save file.</li>
 	<ul style=align="left" type="disc">
-	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the Wii to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your Wii before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
+	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the console to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your console before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
 	</ul>
 <li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Indiana Pwns" save that corresponds to your region.</li>
 <li>Play the Lego Indiana Jones game. Load the new save file.</li>

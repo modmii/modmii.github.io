@@ -1,0 +1,405 @@
+<html>
+<hta:application 
+	id="HI"
+	navigable="yes" 
+	scroll="yes"
+	icon="..\Support\icon.ico"
+	innerborder="no"
+	border="thin"
+	>
+	<meta charset="utf-8">
+<head>
+<title>ModMii</title>
+<!-- VS Script cmd, not used---		CreateObject("WScript.Shell").Run "file.hta"-->
+<script Language="VBScript">
+    Sub Window_Onload
+		window.resizeTo 1200,820
+		window.moveTo (screen.width - document.body.clientwidth)/2, (screen.height - document.body.clientheight)/2
+    End Sub
+
+	Function FULLCLOSE()
+		'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+    sub Window_onUnload
+        SAVE()
+    end sub
+
+	Function Page(ByVal nextgoto, nextpage)
+	'nextpage is optional
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		objFSO.write vbNewLine & "set nextgoto=" & nextgoto
+		objFSO.write vbNewLine & "set nextpage=" & nextpage
+		objFSO.close
+        'SAVE() 'save happens on unload\close
+		window.close()
+	End Function
+
+
+	Function SAVE()
+		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
+		objFSO.write vbNewLine & "set wbm="
+			If wbm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set f32="
+			If f32.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SMW="
+			If SMW.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set CM="
+			If CM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiGSC="
+			If WiiGSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ohnes="
+			If ohnes.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Dolphin="
+			If Dolphin.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set OSC="
+			If OSC.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FILEZILLA="
+			If FILEZILLA.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set hxd="
+			If hxd.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Diskitude="
+			If Diskitude.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Nkit="
+			If Nkit.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiLink="
+			If WiiLink.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SDTEST="
+			If SDTEST.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HashMF="
+			If HashMF.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set ThemeMiiMod="
+			If ThemeMiiMod.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set GCBM="
+			If GCBM.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set UStealth="
+			If UStealth.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set UWUVCI="
+			If UWUVCI.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Cemu="
+			If Cemu.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set NUSGet="
+			If NUSGet.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set HBASlib="
+			If HBASlib.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set appstore="
+			If appstore.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Aroma="
+			If Aroma.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set nanddumper="
+			If nanddumper.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set EnvironmentLoader="
+			If EnvLoad.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set CompatTitleInstaller="
+			If CompatIns.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Bloopair="
+			If Bloopair.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Inkay="
+			If Inkay.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set AccountSwap="
+			If AccountSwap.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set GiveMiiYouTube="
+			If GMYT.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Screenshot_WUPS="
+			If ScrWUPS.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set evWii="
+			If evWii.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiVCLaunch="
+			If WiiVCLaunch.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set SaveMiiModWUTPort="
+			If SaveMii.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set wudd="
+			If wudd.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set wup_installer_gx2_wuhb="
+			If wupgx2.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Tiramisu="
+			If Tiramisu.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set WiiUIdent="
+			If WiiUIdent.checked = True Then objFSO.write "*"
+		objFSO.close
+	End Function
+
+	
+	Function AllButton()
+		If ((wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglePC(checkstatus)
+		ToggleWiiU(checkstatus)
+	End Function
+
+	Function PCButton()
+		If ((wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglePC(checkstatus)
+	End Function
+
+	Function WiiUButton()
+		If ((HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (WiiUIdent.checked = True) And (Tiramisu.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleWiiU(checkstatus)
+	End Function
+	
+	Function AutoUpdateButton()
+		If ((Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (WiiLink.checked = True) And (HashMF.checked = True) And (GCBM.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (WiiUIdent.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (UWUVCI.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		ToggleAutoUpdate(checkstatus)
+	End Function
+
+
+	Function ToggleAutoUpdate(ByVal checkstatus)
+		hxd.checked = checkstatus
+		HashMF.checked = checkstatus
+		Diskitude.checked = checkstatus
+		Dolphin.checked = checkstatus
+		OSC.checked = checkstatus
+		WiiLink.checked = checkstatus
+		FILEZILLA.checked = checkstatus
+		GCBM.checked = checkstatus
+		WiiLink.checked = checkstatus
+		Cemu.checked = checkstatus
+		NUSGet.checked = checkstatus
+		HBASlib.checked = checkstatus
+		appstore.checked = checkstatus
+		Aroma.checked = checkstatus
+		nanddumper.checked = checkstatus
+		EnvLoad.checked = checkstatus
+		CompatIns.checked = checkstatus
+		Bloopair.checked = checkstatus
+		Inkay.checked = checkstatus
+		AccountSwap.checked = checkstatus
+		GMYT.checked = checkstatus
+		ScrWUPS.checked = checkstatus
+		evWii.checked = checkstatus
+		WiiVCLaunch.checked = checkstatus
+		WiiUIdent.checked = checkstatus
+		SaveMii.checked = checkstatus
+		wudd.checked = checkstatus
+		wupgx2.checked = checkstatus
+		UWUVCI.checked = checkstatus
+	End Function
+
+
+	Function TogglePC(ByVal checkstatus)
+		wbm.checked = checkstatus
+		f32.checked = checkstatus
+		SMW.checked = checkstatus
+		CM.checked = checkstatus
+		WiiGSC.checked = checkstatus
+		ohnes.checked = checkstatus
+		Dolphin.checked = checkstatus
+		OSC.checked = checkstatus
+		FILEZILLA.checked = checkstatus
+		hxd.checked = checkstatus
+		Diskitude.checked = checkstatus
+		Nkit.checked = checkstatus
+		WiiLink.checked = checkstatus
+		SDTEST.checked = checkstatus
+		HashMF.checked = checkstatus
+		ThemeMiiMod.checked = checkstatus
+		GCBM.checked = checkstatus
+		Cemu.checked = checkstatus
+		NUSGet.checked = checkstatus
+		UStealth.checked = checkstatus
+		UWUVCI.checked = checkstatus
+	End Function
+
+	Function ToggleWiiU(ByVal checkstatus)
+		HBASlib.checked = checkstatus
+		appstore.checked = checkstatus
+		Aroma.checked = checkstatus
+		nanddumper.checked = checkstatus
+		EnvLoad.checked = checkstatus
+		CompatIns.checked = checkstatus
+		Bloopair.checked = checkstatus
+		Inkay.checked = checkstatus
+		AccountSwap.checked = checkstatus
+		GMYT.checked = checkstatus
+		ScrWUPS.checked = checkstatus
+		evWii.checked = checkstatus
+		WiiVCLaunch.checked = checkstatus
+		SaveMii.checked = checkstatus
+		wudd.checked = checkstatus
+		wupgx2.checked = checkstatus
+		WiiUIdent.checked = checkstatus
+		Tiramisu.checked = checkstatus
+	End Function
+
+</script>
+<style type="text/css">
+input.bigcheck {
+height: 30px;
+width: 30px;
+vertical-align: middle;
+}
+table, th {
+  text-align: left;
+  vertical-align: middle;
+}, td {
+  border:1px solid black;
+  text-align: left;
+  vertical-align: middle;
+}
+</style>
+</head>
+<body>
+<!--<a href="https://modmii.github.io" target="_blank"><img src="https://modmii.github.io/Images/modmiibanner.png" border="0" style="width:80%;height: 100px"/></a><br>-->
+
+
+<!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
+<button title="Return to Main Menu" style="width:190; position: absolute; left: 15; top: 10;" onClick="vbscript:Page'MENU','DLPAGE5.hta'"><font face="Arial Black">Main Menu</font></button>
+<button title="NUS Files" style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
+<button title="Wii & vWii Homebrew & Exploits" style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
+<button title="System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>
+<button title="cIOSs & cMIOSs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+<!--<button disabled title="WiiU Homebrew & PC Programs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE5.hta'"><font face="Arial Black">Page 5</font></button>-->
+
+
+<button title="Click to Download Files to:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 10;" onClick="vbscript:FULLCLOSE()"><font face="Arial Black">Download!</font></button>
+<button title="Change Current Download Folder:&#10;DLFOLDER" style="width:15%;position: absolute; right: 15; top: 45;" onClick="vbscript:Page'DRIVECHANGE','DLPAGE5.hta'"><font face="Arial Black">Download Folder</font></button>
+
+<font size="2" face="Arial Black italic" style="position: absolute; right: 30; top: 100;" title="Hovering your mouse over various items on this page will display fun facts and helpful tips!" >(Hover over items for Tooltips)</font>
+
+<center>
+<font size="4" face="Arial Black italic"><b>Download Page 5: WiiU Homebrew & PC Programs</b></font>
+<br>
+<font size="2" color="red">WARNING: some of these files MAY CAUSE BRICK if you do NOT know what you are doing!</font><br>
+<br>
+
+
+
+<button title="Toggle All Downloads" style="width:6%" onClick="vbscript:AllButton()"><font face="Arial Black">ALL</font></button>
+&nbsp;
+<button title="&#x21E7; Auto-Updating Downloads&#10;&#x21EA; Semi-Auto-Updating Downloads&#10;Hover over each download for update details&#10;&#10;All other downloads can be updated from time to time without requiring a ModMii update" onClick="vbscript:AutoUpdateButton()"><font face="Arial Black"><b>&#x21E7;</b> Auto-Updating <b>&#x21EA;</b></font></button>
+
+</center>
+
+<br>
+<br>
+
+
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table style="width:100%">
+
+
+<!--Row1-->
+<tr>
+	<th colspan="2" title="Toggle WiiU Homebrew Downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:WiiUButton()"><font face="Arial Black">WiiU Homebrew</font></button></th>
+	<th colspan="2" title="Toggle PC Program Downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:PCButton()"><font face="Arial Black">PC Programs</font></button></th>
+</tr>
+
+
+<!--Row2-->
+<tr>
+
+	<th title="Download all 150+ WiiU homebrew available via the Homebrew App Store: https://hb-app.store/wiiu&#10;&#10;Apps can be excluded from this download by configuring ModMii's 'Skipped Apps' Option.&#10;&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="HBASlib" /> HB App Store WiiU Library &#x21E7;</label></th>
+	
+	<th title="Allows connecting controllers from other consoles like native WiiU Pro Controllers on the WiiU.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="Bloopair" /> Bloopair &#x21E7;</label></th>
+
+	<th title="A tool that can format large SD cards and hard drives as FAT32"><label><input class="bigcheck" type="checkbox" name="f32" /> FAT32 GUI Formatter</label></th>
+	<th title="A tool to download even more homebrew apps using your PC (selection is the same as the Homebrew Browser)&#10;&#10;&#x21E7; Auto-Updating from oscwii.org. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="OSC" /> Open Shop Channel &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="Download homebrew apps using your WiiU (selection is the same as hb-app.store).&#10;Compatible with Aroma, Tiramisu and Legacy Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="appstore" /> Homebrew App Store &#x21E7;</label></th>
+	
+	<th title="An Aroma plugin that enables the Pretendo Network; a free and open source replacement for Nintendo's servers for both the 3DS and WiiU, allowing online connectivity even after the original servers have been discontinued.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="Inkay" /> Inkay &#x21E7;</label></th>
+
+	<th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
+	<th title="Manage and convert Gamecube backup files; requires 64-bit Windows (users with 32-bit Windows can google for 'Gamecube ISO Tool').&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager &#x21E7;</label></th>
+</tr>
+
+
+
+<tr>
+	<th title="Aroma is the recommended homebrew environment for the WiiU.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="Aroma" /> Aroma &#x21E7;</label></th>
+
+	<th title="An Aroma plugin that allows the WiiU YouTube app to continue functioning after its discontinuation.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="GMYT" /> GiveMiiYouTube &#x21E7;</label></th>
+
+	<th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images.&#10;&#10;If you have an NKit ISO use the NKit Processing App to convert to regular ISO, then use Wii Backup Manager to convert to WBFS."><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
+	<th title="WiiLink Patcher helps you install WiiLink to bring back WiiConnect24 features to your Wii\vWii&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="WiiLink" /> WiiLink Patcher &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="Create backups of the WiiU's NAND.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="nanddumper" /> NAND Dumper &#x21E7;</label></th>
+
+	<th title="An Aroma plugin that takes screenshots of the TV and GamePad screen.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="ScrWUPS" /> Screenshot &#x21E7;</label></th>
+	<th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
+	<th title="A modern and supercharged NUS downloader that can download content from Nintendo Update Servers.&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="NUSGet" /> NUSGet &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="Environment Loader allows you load environments on your WiiU. Examples of WiiU environments are Aroma and Tiramisu.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="EnvLoad" /> Environment Loader &#x21E7;</label></th>
+
+	<th title="An Aroma plugin to enhance the vWii mode.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="evWii" /> Enhanced vWii &#x21E7;</label></th>
+	
+	<th title="A custom channel creator for the Wii.&#10;&#10;ModMii's forwarder dols from the Advanced Downloads Page are better and easier to construct than Customize Mii's; simply build a forwarder dol using ModMii then add the new dol to your channel using Customize Mii's Options tab.&#10;&#10;If ahbprot is needed for your channel make sure to use a base WAD that has it already enabled (e.g. ModMii's USB-Loader Channel)."><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
+	
+	<th title="Wii / Gamecube Emulator; requires 64-bit Windows 10 or newer (older versions of Dolphin from their website support other operating systems).&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin &#x21EA;</label></th>
+</tr>
+
+<tr>
+	<th title="Installs the Homebrew Channel to the vWii Menu from WiiU Mode.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="CompatIns" /> vWii Compat Installer &#x21E7;</label></th>
+	
+	<th title="An Aroma plugin to enhance launching Wii Virtual Console titles.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="WiiVCLaunch" /> Wii VC Launch &#x21E7;</label></th>
+
+	<th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa. Install themes using MyMenuifyMod.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!"><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
+	<th title="WiiU Emulator; requires 64-bit Windows.&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Cemu" /> Cemu &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th title="Wii U Disc Dumper (WUDD); supports dumping to SD (FAT32) and USB (NTFS only).&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="wudd" /> Wii U Disc Dumper &#x21E7;</label></th>
+	
+	<th title="SaveMii Mod WUT Port; WiiU/vWii Save Manager.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="SaveMii" /> SaveMii Mod &#x21E7;</label></th>
+
+	<th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii\vWii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
+	<th title="Disk Usage Analyzer&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude &#x21E7;</label></th>
+</tr>
+<tr>
+	<th title="WUP Installer GX2 (WUHB); can install public titles such as games, game updates or DLC to your system memory (NAND) or the WiiU formatted USB.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="wupgx2" /> WUP Installer GX2 &#x21E7;</label></th>
+	<th title="WiiUIdent; A WiiU Identification homebrew, which display information about console hardware components, software/hardware versions and much more.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="WiiUIdent" /> WiiUIdent &#x21E7;</label></th>
+	<th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+	<th title="FTP Client; use it with ftpii to manage files on your Wii&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla &#x21EA;</label></th>
+</tr>
+
+
+<tr>
+	<th title="A tool to manage a user's account.dat, particularly for Network IDs.&#10;Compatible with Aroma.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="AccountSwap" /> Wii U Account Swap &#x21E7;</label></th>
+	
+	<th title="Tiramisu is an alternative homebrew environment for the WiiU meant to run Legacy homebrew that was popular before the development of Aroma."><label><input class="bigcheck" type="checkbox" name="Tiramisu" /> Tiramisu</label></th>
+	
+	<th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if using Aroma's 'Avoid Format dialog' plugin."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
+	
+	<th title="Calculate and compare file hashes, can also be launched from Windows Explorer context menu.&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles &#x21E7;</label></th>
+</tr>
+
+<tr>
+	<th></th>
+	<th></th>
+	<th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+	<th title="&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor &#x21EA;</label></th>
+</tr>
+<tr>
+	<th></th>
+	<th></th>
+	<th></th>
+	<th title="Ultimate Wii U Virtual Console Injectors (UWUVCI) is an all-in-one injector for the WiiU.&#10;&#10;Supported systems: Wii, GCN, DS, GBA, N64, SNES, NES, Turbo Grafx, MSX&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="UWUVCI" /> UWUVCI &#x21E7;</label></th>
+</tr>
+
+</table>
+
+
+</body>
+</html>

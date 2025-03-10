@@ -1,14 +1,15 @@
 <!---------------------------Install Priiloader below------------------------------>
 <font size="5"><li>Install and Configure Priiloader</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/4uXUWKme_90?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
 
-<i>Priiloader loads just before the System Menu and is invisible unless holding down the reset button while powering on the console. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). <a href="https://sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">Click here</a> for directions on "Installing a file" (aka "dol" file) in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu.</i><br>
+<i>Priiloader loads just before the Wii System Menu and is invisible unless you hold down the reset button or the ESC key on a USB connected keyboard while powering on the console. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). Click <a href="https://sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">here</a> for directions on "Installing a file" (aka "dol" or "elf" file) in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu. More Priiloader information can be found in its <a href="https://dacotaco.github.io/priiloader/docs/FAQ.html" target="_blank">FAQ</a>.</i><br>
 <br>
 
 
 <ul style=align="left" type="disc">
-<!--<li>If you already have Priiloader installed by following the ModMii Wizard or SysCheck Updater Wizard you can skip this step. If you are not sure either check if you can load Priiloader or just reinstall it.<br><br>-->
-<li>You can navigate the Priiloader menu using a Wiimote, GameCube controller, USB Keyboard, or the Power/Reset buttons on the front of the console itself similar to Bootmii (if using the front buttons you will not be able to access the system menu hacks, file/dol & password menus).
+<!--PriiRC--<li>If you already have Priiloader installed by following the ModMii Wizard or SysCheck Updater Wizard you can skip this step. If you are not sure either check if you can load Priiloader or just reinstall it.<br><br>--PriiRC-->
+<li>You can navigate the Priiloader menu using a Wiimote, GameCube controller, USB Keyboard, or the Power/Reset buttons on the front of the console: <kbd>Power</kbd> to navigate and <kbd>Reset</kbd> to select.
+	<ul style=align="left" type="disc"><li>Note: if using the front console buttons you will not be able to access the system menu hacks, file/dol & password menus.</ul>
 </ul>
 
 <br>
@@ -18,33 +19,58 @@
 <li>After the Priiloader Installer loads, <b>press <kbd>+</kbd></b> to install it.
 	<ul style=align="left" type="disc">
 	<li>When successful the installer should display "Install done!"
+	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, skip ahead to the "Install WADs" step, then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
+	<!--PriiCSMwarning2--<li>If you get a "System Menu Version invalid or not vanilla" error, either use ModMii's SysCheck Updater Wizard or repeat the ModMii Wizard but this time choose a different System Menu version than the one you started with. This will overwrite the invalid\custom System Menu with a vanilla\official one and allow Priiloader to install successfully.--PriiCSMwarning2-->
 	</ul>
 <li><b>Press <kbd>A</kbd></b> to exit back to the Homebrew Channel.
-<li>Access Priiloader by powering off the Wii, then <b>hold down the <kbd>Reset</kbd> button while powering on your Wii</b> until you see the Priiloader menu.
-<br>
-You can also start Priiloader by loading the "Priiloader Launcher" via the HBC, or by holding escape on a USB connected keyboard while turning on your Wii.
 
+<li><b>Launch the "Load Priiloader" app</b> via the HBC to access the Priiloader menu.
+
+	<ul style=align="left" type="disc">
+	<li>You can also access Priiloader by holding down the reset button or the ESC key on a USB connected keyboard while powering on the console<!--PriiVwii--, or by downloading the "<a href="https://github.com/DacoTaco/priiloader/releases/latest/download/PriiloaderWiiUForwarder.zip" target="_blank">Priiloader Wii U Forwarder tool</a>", saving it to your SD Card and running it directly from the WiiU Menu--PriiVwii-->.
+	</ul>
 <li>From the Priiloader menu, <b>select "System Menu Hacks"</b> and enable some system menu hacks.
+	<ul style=align="left" type="disc">
+	<li>Be careful not to haphazardly enable just any hack, for example do not enable "Lock System Menu with Black Screen".<br>
+	<li>Click <a href="https://dacotaco.github.io/priiloader/docs/HACKSLIST.html" target="_blank">here</a> for a description of each Priiloader system menu hack.
+	</ul>
 <br>
-<br>
-Be careful not to haphazardly enable just any hack, for example do not enable "Lock System Menu with Black Screen".<br>
-<br>
-<b>RECOMMENDED HACKS*</b>
+<b>RECOMMENDED HACKS</b>
 	<ul style=align="left" type="square">
+<!------PriiVwii-->
 	<li>Block Disc Updates</li>
 	<li>Block Online Updates</li>
 	<li>Region Free EVERYTHING</li>
 	<li>480p graphics fix in system menu</li>
-	<li>Remove Deflicker</li>
+	<li>Remove Deflicker (only if you are NOT using a CRT display)</li>
 	<li>Wiimmfi Patch v4</li>
 	<li>Remove NoCopy Save File Protection</li>
+<!--PriiVwii------>
+
+<!--PriiVwii--
+	<li>Block Online Updates</li>
+	<li>Region Free EVERYTHING</li>
+	<li>Remove Deflicker (only if you are NOT using a CRT display)</li>
+	<li>Wiimmfi Patch v4</li>
+	<li>Remove NoCopy Save File Protection</li>
+	<li>Wii System Settings via Options Button</li>
+	<li>Create message via Calendar button (only needed if using WC24 services like WiiLink)</li>
+	<li>Permanent vWii System Settings</li>
+		<ul style=align="left" type="disc">
+		<li>Make sure to read about it <a href="https://dacotaco.github.io/priiloader/docs/FAQ.html#how-to-use-permanent-wii-system-settings-on-vwii" target="_blank">here</a> before enabling.</li>
+		</ul>
+	<li>Fix NWC24iSetUniversalTime (only needed if using WC24 services like WiiLink)</li>
+		<ul style=align="left" type="disc">
+		<li>To enable this hack it you must first <a href="https://garyodernichts.github.io/priiloader-patch-gen" target="_blank">generate it</a> and paste it at the end of your \apps\priiloader\hacks_hash.ini file. <i>Remember to generate two hacks if your country observes daylight saving time</i>.</li>
+		</ul>
+--PriiVwii-->
 	</ul>
-*Your available System Menu hacks may vary.<br>
+
 <br>
 <li>Scroll down to "save settings" and press <kbd>A</kbd>, then press <kbd>B</kbd> to go back to Priiloader's main menu.
 <li>Optional: Autoboot a USB-Loader Channel instead of the System Menu.
 	<ul style=align="left" type="square">
-	<li>Select to "Load/Install File". Select your forwarder dol (e.g. USBLoader_IDCL_Channel_Forwarder.dol) and press <kbd>A</kbd> to install it. Wait for it to install and return to the main menu.</li>
+	<li>Select "Load/Install File". Select your forwarder dol (e.g. USBLoader_IDCL_Channel_Forwarder.dol) and press <kbd>A</kbd> to install it. Wait for it to install and return to the main menu.</li>
 		<ul style=align="left" type="square">
 		<li><i>Did you know that custom forwarder dols can be built from ModMii's Advanced Downloads menu?</i></li>
 		</ul>
@@ -54,127 +80,8 @@ Be careful not to haphazardly enable just any hack, for example do not enable "L
 <li>Navigate to "Homebrew Channel" and press <kbd>A</kbd> to launch it.<br>
 </ol>
 <br>
-<i>Pro tip! If you update or (re)install any System Menu it generally <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected. Only YAWM ModMii Edition allows you to safely retain Priiloader while (re)installing a System Menu.<br>
+<i>Pro tip! If you update or (re)install any System Menu it generally <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected. Only YAWM ModMii Edition allows you to safely retain Priiloader while (re)installing a System Menu.</i><br>
 <br>
-Another Pro tip! If you keep a hard drive plugged into your Wii at all times you can enable "Ignore standby" in Priiloader's settings so your Wii turns off completely by default. This will stop the hard drive from spinning 24/7 when it's not being used.</i><br>
-<br>
-
-<div style><div class="spoilerfont" style="text-align:center;">
-<input value="  Click for complete list of Priiloader Hacks  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Priiloader Hacks   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for complete list of Priiloader Hacks  '; }" type="button"></div>
-<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
-
-
-<p style="border:3px; border-style:solid; padding: 1em;">
-
-<table>
-<thead>
-<tr>
-<th>Hack</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Block Disc Updates</td>
-<td>Removes the "Wii System Update" screen that is included on some games forcing you to update them to play the game.</td>
-</tr>
-<tr>
-<td>Block Online Updates</td>
-<td>Disables updating your Wii. Updates will fail with error 32007.</td>
-</tr>
-<tr>
-<td>Auto-Press A at Health Screen</td>
-<td>Automatically presses the A Button to get past the "Health and Safety" screen.</td>
-</tr>
-<tr>
-<td>Replace Health Screen with Backmenu</td>
-<td>Changes the "Health and Safety" screen to the animation played when returning to the Wii menu.</td>
-</tr>
-<tr>
-<td>Move Disc Channel</td>
-<td>Enables moving the Disc Channel anywhere on the Wii Menu. It's normally stuck in the top left of the first page.</td>
-</tr>
-<tr>
-<td>Wiimmfi Patch v4</td>
-<td>Automatically patches all games you run from the Disc Channel for use with Wiimmfi</td>
-</tr>
-<tr>
-<td>480p graphics fix in system menu</td>
-<td>Fixes a small issue with 480p on the Wii Menu.</td>
-</tr>
-<tr>
-<td>Remove NoCopy Save File Protection</td>
-<td>Allows you to copy normally disallowed save files to your SD card from data management</td>
-</tr>
-<tr>
-<td>Region Free EVERYTHING</td>
-<td>Disables region locking for any Wii application, including downloaded ones.</td>
-</tr>
-<tr>
-<td>Region Free GC Games (No VM Patch)</td>
-<td>Disables region locking for GameCube disks.</td>
-</tr>
-<tr>
-<td>Region Free Wii Games</td>
-<td>Disables region locking for Wii disks.</td>
-</tr>
-<tr>
-<td>Region Free Channels</td>
-<td>Disables region locking for installed channels</td>
-</tr>
-<tr>
-<td>No System Menu Sounds AT ALL</td>
-<td>Disables all the Wii Menu sound effects.</td>
-</tr>
-<tr>
-<td>No System Menu Background Music</td>
-<td>Disables the Wii Menu background music.</td>
-</tr>
-<tr>
-<td>Re-Enable Bannerbomb v2</td>
-<td>Enables the "Bannerbomb" exploit on the latest Wii version. Not needed when the Homebrew Channel is already installed.</td>
-</tr>
-<tr>
-<td>OSReport to UsbGecko(slot B)</td>
-<td>Sends Wii Menu logs to a debugging device in memory card slot B.</td>
-</tr>
-<tr>
-<td>OSReport to UsbGecko(GeckoOS,B)</td>
-<td>Sends Wii Menu logs to a debugging device in memory card slot B, if the Wii Menu is launched by Gecko OS.</td>
-</tr>
-<tr>
-<td>Force Standard Recovery Mode</td>
-<td>Automatically launches the console in recovery mode. Used to launch recovery discs, letting users unbrick their Wii systems.</td>
-</tr>
-<tr>
-<td>Remove Diagnostic Disc Check</td>
-<td>Removes a check in the Wii to see if an inserted game is the "Wii Startup Disc".</td>
-</tr>
-<tr>
-<td>Lock System Menu with Black Screen</td>
-<td>Makes your Wii Menu load to a black screen, making you unable to use it. (Do not enable this)</td>
-</tr>
-<tr>
-<td>No-Delete HAXX,JODI,DVDX,DISC,DISK,RZDx</td>
-<td>Re-enable channels with these title IDs (originally blocked in system updates due to them being exploits).</td>
-</tr>
-<tr>
-<td>Force Disc Games to run under IOS249</td>
-<td>Make discs use cIOS 249 as the game's IOS. Can be used to enable older model (pre 2010) Wii's outfitted with DVD-R compatible Disc readers to play backup discs from the Disc Channel.</td>
-</tr>
-<tr>
-<td>Remove Deflicker</td>
-<td>Disables the blurring filter on 480i and 480p originally meant to prevent "flickering" on CRTs in interlaced modes.</td>
-</tr>
-
-</tbody>
-</table>
-
-</p>
-</div></div></div>
-
-
-<br>
-
+<i>Another Pro tip! If you keep a hard drive plugged into your console at all times you can enable "Ignore standby" in Priiloader's settings so the console turns off completely by default. This will stop the hard drive from spinning 24/7 when it's not being used.</i><br><br>
 
 <!---------------------------Install Priiloader above------------------------------>

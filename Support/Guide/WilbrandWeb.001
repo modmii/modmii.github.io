@@ -1,0 +1,55 @@
+<div id="Wilbrand" class="ExploitTab">
+<b>Wilbrand; aka Letterbomb, Mailbox Bomb</b><br>
+Requirements: SD Card; SDHC and SDXC also work if on System Menu 4.0 or higher. Works on System Menus 3.0 to 4.3. Can launch both dols and elfs. Works on Wii only.<br>
+<br>
+
+<font size="5"><b>Download Wilbrand and Save it to your SD Card</b></font><br>
+
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/1TBiyo7evOI?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/DL_Wilbrand.gif" border="0"/></a><br>
+<br>
+Note: Wilbrand is console specific, do not use the MAC Address shown in the video or it will not work for you.<br>
+<br>
+<ol type="A">
+<li>On your Wii, go to Wii Settings, then Internet, then Console Information and make note of your MAC address.
+<li>Click the spoiler button below to download Wilbrand.
+	<ol type="i">
+	<li>Input your Wii's MAC Address and your System Menu Version.
+	<li>Make sure Bundle the HackMii Installer is NOT checked.
+	<li>Complete the CAPTCHA and cut either wire to download your LetterBomb.
+		<ul style=align="left" type="disc">
+		<li>Whichever wire you choose doesn’t matter.
+		</ul>
+	</ol>
+<li>Extract the private folder from the downloaded ZIP to the root of your SD card, then insert it into your Wii.
+</ol>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click to Download Wilbrand  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide wilbrand.donut.eu.org   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to Download Wilbrand  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+<br>
+<iframe style="width:100%;height:80%;border:0;padding-bottom:2px;" src="https://wilbrand.donut.eu.org"></iframe>
+<br>
+Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type in your MAC Address above, please go directly to <a href="https://wilbrand.donut.eu.org" target="_blank">wilbrand.donut.eu.org</a>.<br>
+<br>
+</div></div></div>
+
+<br>
+<font size="5"><b>Launch Wilbrand on your Wii</b></font><br>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/n2CQFbF9jDM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Wilbrand.gif" border="0"/></a><br>
+<br>
+<ol type="1">
+<li>On your Wii, return to the Wii Menu and then open the "Message Board" and navigate to Yesterday.
+<li>Click on the envelope with the pink bomb icon to launch the boot.elf/dol file saved on the root of your SD Card.
+	<ul style=align="left" type="disc">
+	<li>If you cannot find the mailbox bomb under "Yesterday" check that your Wii's date setting is correct.
+	</ul>
+</ol>
+<br>
+<i>Fun Fact! There are two tools that are able to construct this exploit. Wilbrand's Mailbox bomb is functionally the same as "LetterBomb" except letterbomb only works on 4.3 System Menu versions.</i><br>
+<br>
+
+</div>
+

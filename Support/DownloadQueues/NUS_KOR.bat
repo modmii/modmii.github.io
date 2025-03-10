@@ -1,9 +1,8 @@
-::ModMii v6.4.9 - Download Queue - 16/11/2018 - 22:10:20.41
+::ModMii v7.0.3 - Download Queue - Thu 10/10/2024 - 14:38:27.57
 set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
 Set ROOTSAVE=off
-Set Option1=on
 ::Queue
 SET EULAK=*
 SET RSK=*
@@ -12,11 +11,10 @@ SET SM4.1K=*
 SET SM4.2K=*
 SET SM4.3K=*
 SET IOS60P=*
-SET IOS80P=*
-SET IOS80K=*
 SET MII=*
 SET P0=*
-SET PK=*
+SET PHOTOK=*
+SET WSK=*
 SET SK=*
 SET M10=*
 SET IOS9=*
@@ -47,6 +45,7 @@ SET IOS57=*
 SET IOS58=*
 SET IOS61=*
 SET IOS62=*
+SET IOS80=*
 SET A81=*
 SET A8d=*
 SET A9d=*
@@ -54,7 +53,9 @@ SET cIOS222[38]-v4=*
 SET cIOS223[37-38]-v4=*
 SET cIOS202[60]-v5.1R=*
 SET cIOS224[57]-v5.1R=*
-SET cIOS249[57]-d2x-v8-final=*
-SET cIOS250[56]-d2x-v8-final=*
+SET cIOS249[38]-d2x-v10-beta52=*
+SET cIOS249[56]-d2x-v10-beta52=*
+SET cIOS249[57]-d2x-v10-beta52=*
+SET cIOS249[58]-d2x-v10-beta52=*
 SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 :endofqueue

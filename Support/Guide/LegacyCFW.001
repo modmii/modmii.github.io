@@ -1,0 +1,87 @@
+<!---------------------------Before Starting LegacyCFW below------------------------------>
+<font size="5"><li>Before Starting</li></font><br>
+
+If you have an existing legacy Custom Firmware (CFW) setup, uninstall it before proceeding. Choose which legacy CFW to uninstall using the buttons below.<br>
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<br>
+<div style>
+
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen3" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Tiramisu')">Tiramisu</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'CBHC')">CBHC (Coldboot Haxchi)</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Haxchi')">Haxchi</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'Indexiine')">Mocha CFW (Indexiine)</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('LegacyGroup', 'MochaOnline')">Mocha CFW (Online Exploit)</button>
+
+<br><br>
+
+<!--------------------------------------Tiramisu----------------------------------->
+<div id="Tiramisu" class="LegacyGroup">
+For <b>Tiramisu</b> users: While safe to follow this guide, to install Aroma next to Tiramisu (or vice versa) you only need to add it to your SD card and change the default boot setting in the Environment Loader as described below.<br>
+<ol type="A">
+<li>If autobooting into Tiramisu, hold <kbd>X</kbd> while the console is booting to launch the Environment Loader.
+	<ul style=align="left" type="disc">
+	<li>If not autobooting into Tiramisu, launch the <kbd>Health & Safety Application</kbd> while holding <kbd>X</kbd> to launch the Environment Loader.
+	</ul>
+<li>Clear Tiramisu as the default environment by pressing <kbd>X</kbd>.
+<li>Using the D-Pad, navigate to <kbd>aroma</kbd> and press <kbd>Y</kbd> to set this to your default environment, then press <kbd>A</kbd> to launch into Aroma.
+	<ul style=align="left" type="disc">
+	<li>If you see a yellow warning that the update folder exists and updates are not being blocked properly, press <kbd>X</kbd> to block updates.
+	<li>If you did not see a yellow warning, but the AutobootMenu says "Updates not blocked!", press <kbd>START (+)</kbd> and <kbd>SELECT (-)</kbd> at the same time until it says they are blocked.
+		<ul style=align="left" type="square">
+		<li>Should you wish to unblock updates in the future follow <a href="https://wiiu.hacks.guide/unblock-updates" target="_blank">these steps</a>.</li>
+		</ul>
+	</ul>
+<li>On the Aroma Boot Selector, the <kbd>Wii U Menu</kbd> should already be selected, press <kbd>Y</kbd> to set this to your default autobooting option (or choose your preferred title to autoboot), then press <kbd>A</kbd> to launch it.
+
+<li>Once you boot into the WiiU Menu, if you see apps on your home screen you have successfully switched to Aroma.
+	<ul style=align="left" type="disc">
+	<li>Although Tiramisu is outdated, you don't need to delete it. If you still decide to use Tiramisu in the future, for legacy homebrew purposes, just launch the EnvironmentLoader again to select it.
+	</ul>
+</ol>
+</div>
+
+<!--------------------------------------CBHC----------------------------------->
+<div id="CBHC" class="LegacyGroup">
+For <b>CBHC (Coldboot Haxchi)</b> users:
+<ol type="A">
+<li>Launch the Homebrew Launcher.
+<li>Launch CBHC Installer.
+<li>Select the DS Virtual Console game you want to uninstall CBHC from then press the <kbd>A</kbd> button.
+<li>Read the warnings then press the <kbd>B</kbd> button.
+<li>Check that your WiiU no longer autoboots to CBHC by rebooting the console.
+<li>If no autobooting or menu screen appreared when the console was booting up, you can launch System Settings then go to Data Management and then safely uninstall the application called <kbd>DON'T TOUCH ME</kbd>.
+	<ul style=align="left" type="square">
+	<li>If you receive a pop-up stating, "A system-memory error has occurred. Turn off the console, and then try again." while deleting the <kbd>DON'T TOUCH ME</kbd> application, restart the system and try to delete the application again. Please make sure you followed all above steps before deleting the application.
+	</ul>
+</ol>
+</div>
+
+<!--------------------------------------Haxchi----------------------------------->
+<div id="Haxchi" class="LegacyGroup">
+For <b>Haxchi</b> users: Uninstall the Haxchi app from Data Management in the System Settings app.<br>
+</div>
+
+<!--------------------------------------Indexiine----------------------------------->
+<div id="Indexiine" class="LegacyGroup">
+For <b>Mocha CFW (Indexiine)</b> users:
+<ol type="A">
+<li>Launch the Homebrew Launcher.
+<li>Launch Indexiine-Installer.
+<li>Press the <kbd>B</kbd> button to uninstall Indexiine.
+<li>Check that your WiiU no longer automatically launches the Homebrew Launcher upon entering the Internet browser.
+</ol>
+</div>
+
+<!--------------------------------------MochaOnline----------------------------------->
+<div id="MochaOnline" class="LegacyGroup">
+For <b>Mocha CFW (Online Exploit)</b> users: You do not need to do anything before following this guide.<br>
+</div>
+
+</div>
+
+<br>
+
+<!---------------------------Before Starting LegacyCFW above------------------------------>
+

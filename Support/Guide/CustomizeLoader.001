@@ -3,8 +3,8 @@
 <li>Start your preferred USB-Loader from the HBC, or a forwarder channel, or set Priiloader to autoboot it at startup.
 
 	<ul style=align="left" type="square">
-	<li>From there it's pretty intuitive, browse and adjust any settings to your liking, download covers, etc.
+	<li>From there it's pretty intuitive, browse and adjust any settings to your liking, download covers, set Private Server to <a href="https://wii.hacks.guide/wiimmfi.html#automatic-backup-patching-via-usb-loader" target="_blank">Wiimmfi</a> to re-enable online multiplayer, disable the blurry deflicker filter, etc.
 	</ul>
 <br>
-<li>You can customize the look of your USB-Loader from a selection of themes found here: <a href="https://theme.rc24.xyz" target="_blank">https://theme.rc24.xyz</a><br>
+<li>You can customize the look\theme of your USB-Loader or HBC following the steps from <a href="https://wii.hacks.guide/themes#wiiflow-lite-theming" target="_blank">here</a>.<br>
 <br>

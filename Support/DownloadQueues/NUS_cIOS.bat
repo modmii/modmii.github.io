@@ -3,7 +3,6 @@ set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
 Set ROOTSAVE=off
-Set Option1=on
 ::Queue
 SET cIOS222[38]-v4=*
 SET cIOS223[37-38]-v4=*
@@ -42,4 +41,7 @@ SET cIOS249[80]-d2x-v10-beta52=*
 SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 SET RVL-cmios-v4_WiiGator_GCBL_v0.2=*
 SET RVL-cmios-v4_Waninkoko_rev5=*
+SET cIOS249[56]-d2x-vWii=*
+SET cIOS250[57]-d2x-vWii=*
+SET cIOS251[58]-d2x-vWii=*
 :endofqueue

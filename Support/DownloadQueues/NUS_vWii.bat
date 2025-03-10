@@ -1,0 +1,51 @@
+::ModMii v8.0.0 - Download Queue - Thu 12/30/2024
+set AdvNumber=0
+if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
+::Queue Settings
+Set ROOTSAVE=off
+::Queue
+SET vRSU=*
+SET vRSE=*
+SET vRSJ=*
+SET EULAU=*
+SET EULAE=*
+SET EULAJ=*
+SET vSM4.3U=*
+SET vSM4.3E=*
+SET vSM4.3J=*
+SET BCnand=*
+SET BCwfs=*
+SET vIOS9=*
+SET vIOS12=*
+SET vIOS13=*
+SET vIOS14=*
+SET vIOS15=*
+SET vIOS17=*
+SET vIOS21=*
+SET vIOS22=*
+SET vIOS28=*
+SET vIOS31=*
+SET vIOS33=*
+SET vIOS34=*
+SET vIOS35=*
+SET vIOS36=*
+SET vIOS37=*
+SET vIOS38=*
+SET vIOS41=*
+SET vIOS43=*
+SET vIOS45=*
+SET vIOS46=*
+SET vIOS48=*
+SET vIOS53=*
+SET vIOS55=*
+SET vIOS56=*
+SET vIOS57=*
+SET vIOS58=*
+SET vIOS59=*
+SET vIOS61=*
+SET vIOS62=*
+SET vIOS80=*
+SET A1c=*
+SET A1f=*
+SET A22=*
+:endofqueue

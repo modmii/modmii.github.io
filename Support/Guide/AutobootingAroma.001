@@ -1,0 +1,54 @@
+<!---------------------------Autobooting Aroma Steps below------------------------------>
+<font size="5"><li>Autoboot Aroma (Optional)</li></font><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+
+<i>Currently, every time you want to launch Aroma you will have to launch the Health and Safety information app.<br>
+If you wish to automatically launch into Aroma on every boot complete this step.<br>
+If you do not want to autoboot Aroma you can skip this step.</i><br>
+<br>
+
+
+<ol type="A">
+<li>Launch the <kbd>Payload-Loader Installer</kbd> from the WiiU Menu.
+<li>Press <kbd>A</kbd> to select <kbd>Check</kbd>.
+<li>Select <kbd>Boot options</kbd>.
+<li>You will be asked if you want to switch the boot title. Press <kbd>A</kbd> to select <kbd>Switch to Payload-Loader</kbd>.
+<li>When the process is finished, press <kbd>A</kbd> to shutdown the console.
+</ol>
+
+<br>
+
+<ul style=align="left" type="square">
+<li>The Payload-Loader will now be launched automatically on every boot, which loads the Aroma environment, which loads the WiiU Menu.
+	<ul style=align="left" type="disc">
+	<li>To open the Environment Loader in the future, you have to hold <kbd>X</kbd> while the console is booting or loading the Health and Safety Information app.
+	<li>To open the Aroma Boot Selector in the future, you have to hold <kbd>START (+)</kbd> while the console is booting or loading the Health and Safety Information app.
+	</ul>
+</ul>
+<br>
+
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Steps to Change Payload-Loader Autoboot Setting  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to Hide Steps to Change Payload-Loader Autoboot Setting   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Steps to Change Payload-Loader Autoboot Setting  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+To complete these steps, first confirm Aroma, Environment Loader and Payload-Loader Installer are still saved to your WiiU's SD Card. If missing, get them from ModMii or from <a href="https://aroma.foryour.cafe/" target="_blank">aroma.foryour.cafe</a> and <a href="https://github.com/wiiu-env/PayloadLoaderInstaller/releases" target="_blank">github</a>.<br>
+<br>
+<u><b>Change Payload-Loader Autoboot Setting</b></u><br>
+<ol type="A">
+<li>If not autobooting into Aroma, launch it via the <kbd>Health & Safety Application</kbd>.
+<li>Launch the <kbd>Payload-Loader Installer</kbd> from the WiiU Menu.
+<li>Press <kbd>A</kbd> to select <kbd>Check</kbd>.
+<li>Select <kbd>Boot options</kbd>.
+<li>You will be asked if you want to switch the boot title. Press <kbd>A</kbd> to select <kbd>Switch back to Wii U Menu</kbd>.
+<li>When the process is finished, press <kbd>A</kbd> to shutdown the console.
+</ol>
+<br>
+<ul style=align="left" type="square">
+<li>The console will now boot into the WiiU Menu again. The Payload-Loader can still be accessed by launching the Health & Safety Application.
+</ul>
+
+
+</div></div></div>
+<br>
+<!---------------------------Autobooting Aroma Steps above------------------------------>

@@ -1,0 +1,21 @@
+<!---------------------------CompatInstaller Steps below------------------------------>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+<i>The vWii Compat Installer is a WiiU app that installs the Homebrew Channel to vWii. It requires an SD, SDHC or SDXC card.<br>
+The Homebrew Channel allows you to launch Wii\vWii homebrew applications off your SD card or Hard Drive.<br></i><br>
+
+<ol type="A">
+<!--CompatBootAroma--><li>If not autobooting into Aroma, launch it via the <kbd>Health & Safety Application</kbd>.
+<li>Launch the <kbd>vWii Compat Installer</kbd> from the WiiU Menu.
+<li>Press <kbd>A</kbd> to install the HBC and wait until you see <kbd>Install succeeded</kbd>.
+<li>Press the <kbd>HOME</kbd> button to return to the WiiU Menu.
+	<ul style=align="left" type="disc">
+	<li>It is not uncommon to experience a harmless freeze at this time. If this happens simply hold the Power button on the console, restart, and continue with the next step.
+	</ul>
+<li>Launch vWii (the Wii Menu icon) from the WiiU Menu.
+	<ul style=align="left" type="disc">
+	<li>If the installation was successful you should see the HBC in your vWii Menu.
+	</ul>
+<li>Launch the HBC from the vWii Menu.
+</ol>
+<br>
+<!---------------------------CompatInstaller Steps above------------------------------>

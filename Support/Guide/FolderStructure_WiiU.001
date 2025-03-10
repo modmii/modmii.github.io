@@ -1,0 +1,43 @@
+•  Your folder structure should look <i>similar</i> to this:<br>
+💾 SD Card<br>
+<!--vWii folder structure
+ ┗ 📁apps<br>
+&nbsp; &nbsp; &nbsp; ┣ 📁AppName1<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄boot.dol<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄meta.xml<br>
+&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┗ 📄icon.png<br>
+&nbsp; &nbsp; &nbsp; ┣ (All other Wii apps should be here too)<br>
+vWii folder structure-->
+ ┗ 📂wiiu<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂apps<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📂AromaUpdater<br>
+&nbsp; &nbsp; &nbsp; ┃ ┃ ┗📜AromaUpdater.wuhb<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📜PayloadLoaderInstaller.wuhb<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ (All other WiiU apps should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂environments<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ 📂aroma<br>
+&nbsp; &nbsp; &nbsp; ┃   ┣ 📂modules<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📂setup<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┣ 📜00_mocha.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┣ 📜10_wums_loader.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┃ ┗ 📜99_autoboot.rpx<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┗ (All other Aroma modules ending with .wms should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┃   ┣ 📂plugins<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜AromaBasePlugin.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜drc_region_free.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜homebrew_on_menu.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┣ 📜regionfree.wps<br>
+&nbsp; &nbsp; &nbsp; ┃   ┃ ┗ (All other Aroma plugins ending with .wps should be here too)<br>
+&nbsp; &nbsp; &nbsp; ┃   ┗ 📜root.rpx<br>
+&nbsp; &nbsp; &nbsp; ┣ 📂payloads<br>
+&nbsp; &nbsp; &nbsp; ┃ ┣ 📂default<br>
+&nbsp; &nbsp; &nbsp; ┃ ┃ ┗ 📜payload.elf<br>
+&nbsp; &nbsp; &nbsp; ┃ ┗ 📂nanddumper<br>
+&nbsp; &nbsp; &nbsp; ┃   ┗ 📜payload.elf<br>
+&nbsp; &nbsp; &nbsp; ┣ 📜payload.rpx<br>
+&nbsp; &nbsp; &nbsp; ┗ 📜payload.elf<br>
+<br>
+•  Your folder structure should <u>not</u> look like this:<br>
+💾 SD Card<br>
+ ┗ ⛔📁COPY_TO_SD<br>
+<br>

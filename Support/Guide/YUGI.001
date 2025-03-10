@@ -1,11 +1,11 @@
 <b>Yu-Gi Owned</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/C0AR8Esi20Y?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Yu-GiOwned.gif" border="0"/></a><br>
-Requirements: A copy of "Yu-Gi-Oh! 5D's", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck or classic controller. Does not work on Korean System Menus. Can launch elfs but not dols.<br>
+Requirements: A copy of "Yu-Gi-Oh! 5D's", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck or classic controller. Does not work on Korean System Menus. Can launch elfs but not dols. Works on Wii and vWii.<br>
 <br>
 <ol type="A"><li>Load the Yu-Gi-Oh game at least once (otherwise you won't be able to copy over the hack).</li>
 <li>Delete or move\backup your personal "Yu-Gi-Oh! 5D's" save file.</li>
 	<ul style=align="left" type="disc">
-	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the Wii to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your Wii before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
+	<li>If you want to move\copy your save data to the same SD card with your ModMii files, first rename the SD:\private folder containing the exploit to something else. Then copy your save from the console to your SD Card and backup the new private folder with your save. Finally rename the original exploit folder back to SD:\private and reinsert the SD Card into your console before continuing to the next step. At the end of this guide you can restore the backup you made.</li>
 	</ul>
 <li>Go into Wii Options - Data Management - Save Data - Wii - SD Card then copy over the "Yu-Gi-Oh" save that corresponds to your region.</li>
 <li>Start the Yu-Gi-Oh game. Continue past the opening menu to launch the exploit and load your homebrew application.</li></ol><br>

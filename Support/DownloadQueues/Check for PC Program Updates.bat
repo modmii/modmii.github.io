@@ -1,16 +1,18 @@
-::ModMii v6.6.4 - Download Queue - Tue 02/21/2023 -  8:36:53.01
+::ModMii v8.0.0 - Download Queue - Thu 10/10/2024 - 14:27:00.23
 set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
 Set ROOTSAVE=off
-Set Option1=off
 ::Queue
 SET Dolphin=*
 SET FILEZILLA=*
 SET hxd=*
 SET Diskitude=*
-SET RC24=*
 SET HashMF=*
 SET GCBM=*
+SET NUSGet=*
 SET OSC=*
+SET WiiLink=*
+SET Cemu=*
+SET UWUVCI=*
 :endofqueue

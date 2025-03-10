@@ -1,0 +1,66 @@
+<!---------------------------Pretendo Steps below------------------------------>
+<font size="5"><li>Configure Pretendo (Optional)</li></font><br>
+<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
+
+<i>Pretendo is a replacement service for the Nintendo Network, which brings back online services (including Miiverse) as they have been discontinued by Nintendo.</i><br>
+<br>
+CAUTION: A Pretendo Network ID (PNID) may not use the same username as an account already linked to your WiiU. If you have an account with a Nintendo Network ID (NNID) on your WiiU which shares the username you wish to use, it MUST first be removed or unlinked. Before removing accounts you may want to backup and transfer save data to a new account following the steps in the spoiler below. However, to entirely avoid removing accounts that conflict with Pretendo they can instead be <a href="https://github.com/Nightkingale/Wii-U-Account-Swap/issues/3#issuecomment-2075667254" target="_blank">unlinked</a> from Network IDs by simply launching <a href="https://github.com/Nightkingale/Wii-U-Account-Swap" target="_blank">Wii U Account Swap</a> from the WiiU Menu to unlink the Network ID, effectively turning it into a local user account capable of being linked to a new PNID.<br>
+<br>
+
+<div style><div class="spoilerfont" style="text-align:center;">
+<input value="  Click for Steps to Transfer Save Data to a Pretendo account  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to Hide Steps to Transfer Save Data to a Pretendo account   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click for Steps to Transfer Save Data to a Pretendo account  '; }" type="button"></div>
+<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
+<br>
+<i>Note: This only works with local save data. Any user data stored on Nintendo's servers cannot be transferred to any other accounts.</i><br>
+<br>
+
+<ol type="A">
+<li>Launch <kbd>SaveMii Mod - WUT Port</kbd> from the WiiU Menu.
+<li>Select <kbd>Wii U Save Management</kbd>. You should now see a list of installed games. Find and select the game you would like to transfer the save data of.
+<li>Select <kbd>Backup savedata</kbd>.
+<li>Select a new slot to backup the save data to. If you select a non-empty slot, the backup data in that slot will be overwritten.
+<li>Select the profile to backup the save data from. This should be your <i>Nintendo</i> Network ID.
+<li>Optionally you may also select to backup "common" save data. This save data is shared by all users, and is not required to be backed up.
+<li>Press the <kbd>A</kbd> button when ready to backup your save data.
+<li>Once the backup has completed, press the <kbd>B</kbd> button to return to the games menu. Select <kbd>Restore savedata</kbd>.
+	<ul style=align="left" type="disc">
+	<li>CAUTION: Restoring a save backup will overwrite the existing save data for the game for the selected user(s). Proceed with caution.
+	</ul>
+<li>Select the backup slot you just backed up the save data to.
+<li>Select the profile to restore the save data to. This should be your <i>Pretendo</i> Network ID.
+<li>Press the <kbd>A</kbd> button to transfer your data and <kbd>A</kbd> again to confirm.
+	<ul style=align="left" type="disc">
+	<li>If you get a message about backing up your data on your Pretendo profile, ignore it.
+	<li>Your screen may briefly flash as the data is copied over.
+	</ul>
+</ol>
+<br>
+Once completed, exit SaveMii and ensure the game you transferred works properly on your Pretendo profile. Repeat this process for any other save data you'd like to transfer to your Pretendo profile.
+</div></div></div>
+
+<br>
+
+<ul style=align="left" type="square">
+<li>Access the Aroma plugin menu by pressing <kbd>L</kbd> + <kbd>Down</kbd> + <kbd>SELECT (-)</kbd> on the WiiU GamePad.
+<li>Choose the "Inkay" plugin, navigate to "BOSS settings" and press <kbd>A</kbd>, then press <kbd>A</kbd> on "Unregister Wara Wara Plaza BOSS tasks" and restart your console.
+</ul>
+
+<br>
+<i>ModMii has already installed Pretendo (i.e. Inkay) to your SD Card; however to use it you still must register a Pretendo Network ID (PNID). There are currently two ways of creating a PNID: Creating an account with the website and linking it, or creating it on your WiiU. You do <u>not</u> need to complete both methods.</i><br>
+
+<br>
+<u><b>PNID Setup Method 1: WiiU</b></u><br>
+<ul style=align="left" type="square">
+<li>Create the Pretendo Network ID as you would a Nintendo Network ID following <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1087/~/how-to-create-a-nintendo-network-id-on-wii-u" target="_blank">these steps</a>.
+</ul>
+
+<br>
+<u><b>PNID Setup Method 2: Website</b></u><br>
+<i>Warning: this method currently will not allow you to choose your region (defaults to US), potentially creating a region mismatch which disables the vWii EULA and breaks <a href="https://wii.hacks.guide/wiiconnect24.html" target="_blank">WC24</a>.</i>
+<ul style=align="left" type="square">
+<li>Register an account from <a href="https://pretendo.network/account" target="_blank">here</a> and click <kbd>Don't have an account?</kbd> to register.
+<li>Once your account is registered, link it to your console as you would a Nintendo Network ID following <a href="https://www.nintendo.com/en-za/Support/Nintendo-Network-ID/About-Nintendo-Network-ID/Tutorial-How-to-register-a-Nintendo-Network-ID-on-Wii-U/Tutorial-How-to-register-a-Nintendo-Network-ID-on-Wii-U-841650.html" target="_blank">these steps</a>.
+</ul>
+
+<br>
+<!---------------------------Pretendo Steps above------------------------------>

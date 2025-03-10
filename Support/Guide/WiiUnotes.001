@@ -1,0 +1,27 @@
+<!---------------------------------WiiU NOTES BELOW----------------------------------->
+<li>Check if your SD Card has a lock switch and make sure it's disabled.</li>
+<li>If you get errors during any of the steps try reformatting your SD Card as FAT32.</li>
+<li>If your console ever freezes, hold the power button for 5 seconds to power it off then try again.</li>
+<li>During the modding process if you are prompted for your Nintendo Network ID to launch a channel or app you can select the back arrow button then "Start" to start the software anyway.</li>
+<li>If you brick your vWii for any reason you should be able to recover using <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> or <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> so long as the WiiU menu remains operational; however, vWii NAND Restorer currently requires switching from Aroma to a legacy environment like Tiramisu. Some actions to avoid that may cause brick are listed below:</li>
+	<ul style=align="left" type="square">
+	<li>Never uninstall a System Menu or IOS.</li>
+	<li>Installing a custom System Menu for vWii is a brick risk and you should always have a NAND backup before installing one; however, when done right it will not brick the vWii. vWii themes are experimental and not every MYM\theme will work properly.</li>
+	<li>Replacing any IOS (including TED IOSes) or WADs made for the original Wii on your vWii may semi-brick it. WiiWare wads are fine, but some need to be converted to work.</li>
+	</ul>
+<li>When updating your softmod you should always overwrite old mods by installing new ones, do <u>not</u> try to "Delete everything" or "Start from scratch".</li>
+	<ul style=align="left" type="square">
+	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only your outdated WiiU mods using ModMii's File Cleanup and App Updater feature, or update only outdated vWii mods using ModMii's Syscheck Updater Wizard!</li>
+	</ul>
+<li>If you accept an official Nintendo update after modding, you may lose some of your modifications and have to reinstall them.</li>
+<li>It's probably unnecessary, but you should disconnect all peripherals from the console during the modding procedure unless instructed otherwise.</li>
+<li>If connecting a portable hard drive to your WiiU, a Y-cable may be needed for it to draw power from two usb ports.</li>
+<ul style=align="left" type="square">
+	<li>The WiiU and vWii cannot use the same USB hard drive; however a single SD Card can be used for both.</li>
+	<li>A WiiU Formatted USB hard drive is a hard drive that has been formatted by a WiiU console to its proprietary format. A WiiU formatted USB drive cannot be read by any device other than the WiiU that originally formatted it. If you ever want to use it with another WiiU console or any other devices, you will have to reformat it.</li>
+	<li>The vWii cannot use a WiiU Formatted USB hard drive. It is recommended that USB Hard drives intended for use on the vWii be formatted as FAT32.</li>
+	<li>If a non-WiiU Formatted USB hard drive is detected while in the WiiU menu you will be prompted to format\erase it. Careful not to accidentally format your vWii Hard Drive (if applicable). <!------WiiUredundant2-->The After Modding section of this guide will direct you on how to <i>optionally</i> disable the format prompt.</li><!--WiiUredundant2------><!--WiiUredundant2--If the WiiU is softmodded with Aroma this prompt can be disabled.--WiiUredundant2-->
+	<li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.</li>
+	<li>Double check that your hard drive is always plugged into USB port0 - the one on the back furthest from the edge of the WiiU.</li>
+</ul>
+<!---------------------------------WiiU NOTES ABOVE----------------------------------->

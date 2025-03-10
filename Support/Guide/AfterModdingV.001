@@ -1,0 +1,39 @@
+
+<li>At any point you can run SysCheck on your vWii to get a sysCheck.csv log of your installed softmods; in the future you can check if any of your vWii mods are outdated by opening your log with the latest version of ModMii.
+
+<li>Download the latest Wii Homebrew apps to your SD Card or FAT32 USB Hard Drive so they can be launched via the HBC or forwarder channels.
+
+	<ul style=align="left" type="square">
+	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Pages.
+	<li>Grab the <a href="https://web.archive.org/web/20231213215727/wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your vWii or PC!</li>
+	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
+	
+		<ul style=align="left" type="disc">	
+		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.
+		<li>For the HBC to read your SD/USB correctly, your card must be structured SD+USB:/apps/application name/boot.dol\elf
+		<li>Some apps require a meta.xml be saved in the same place as the boot.dol\elf to work properly (icon.png is always optional).
+		<li>If you have a dol or elf file not named "boot", rename it boot.dol\elf, otherwise it will not be recognized by the HBC (not required if using Priiloader to install a file).
+		</ul>
+	</ul>
+<li>Check out some of my custom <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Wii Forwarder Channels</a> to launch your favourite Wii homebrew straight from the vWii System Menu. Note that some channels may not yet be updated for vWii; simply open them using ModMii to edit the NandLoader to make them vWii compatible.
+<li>Install some <a href="https://gbatemp.net/threads/wii-u-to-vwii-forwarder-channels-ac.618060/" target="_blank">WiiU to vWii Forwarder Channels</a> to launch your favourite Wii homebrew straight from the WiiU System Menu.
+
+<li>Get a new <a href="https://wii.hacks.guide/themes.html" target="_blank">theme for your vWii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="https://www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using csm-installer. ThemeMii Mod and csm-installer are both available on ModMii Classic's Download Pages.
+<li>"Expand" your vWii's internal memory for more WiiWare and Virtual Console games by having it load the System Menu from external storage instead. Use ModMii's Emulated NAND builder to get started.
+	<ul style=align="left" type="square">
+	<li>You can also use your vWii's nand.bin or slccmpt.bin backup as an Emulated NAND. To extract the files from a nand.bin or slccmpt.bin to use as an Emulated NAND, simply open the file using ModMii. If ModMii prompts you to share keys to repair the nand provide it with your keys.bin or opt.bin backup.
+	<li>Alternatively, you can dump your vWii's NAND to use as an Emulated NAND using USB Loader GX's features menu.
+	</ul>
+<li>Install <a href="https://gbatemp.net/threads/release-fakemote-an-ios-module-that-fakes-wiimotes-from-the-input-of-usb-game-controllers.601771" target="_blank">Fakemote</a> to an unused IOS slot like 247 to add support for DS3 and DS4 controllers. This can also be done using ModMii Classic's Advanced Downloads Menu by choosing the latest FM (Fakemote) version of d2x in ModMii's options.
+<li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your vWii starts up (SD Card required).
+
+<li>Bring back WiiConnect24 to your vWii! The WiiLink Patcher restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more! You can get this tool from from ModMii Classic's Download Page 5.
+
+<li>Check out <a href="https://wiki.hacks.guide/wiki/RiiTag" target="_blank">RiiTag\LinkTag</a>: a customizable and dynamic gamertag to automatically update your Discord status with what you've been playing on your vWii.
+
+<li><a href="https://github.com/Naim2000/system-channel-restorer" target="_blank">System Channel Restorer</a> from ModMii Classic's Download Page 2 can be used to re-install missing/removed system apps, e.g. Mii Channel, Photo Channel, EULA, etc. However, these three examples in particular will have already been installed as part of this guide.
+<li><a href="https://github.com/Naim2000/csm-installer/releases" target="_blank">csm-installer</a> and <a href="https://github.com/DarkMatterCore/ww-43db-patcher" target="_blank">ww-43db-patcher</a> from ModMii Classic's Download Page 2 can be used to patch the WiiWare 4:3 aspect ratio database (43DB) to enable a 16:9 aspect ratio in Everybody Votes Channel and Check Mii Out Channels. However, if you installed any vWii theme built using ModMii (even the Default theme) this patch has already been applied.
+
+</ul>
+<br>
+<!----------------------------After vWii Modding section above----------------------------->

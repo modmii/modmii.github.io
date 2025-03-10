@@ -3,17 +3,14 @@ set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
 Set ROOTSAVE=off
-Set Option1=on
 ::Queue
 SET EULAE=*
 SET RSE=*
 SET BC=*
-SET SM3.2E=*
 SET SM4.1E=*
 SET SM4.2E=*
 SET SM4.3E=*
 SET IOS60P=*
-SET IOS80P=*
 SET MII=*
 SET P0=*
 SET P=*
@@ -51,8 +48,7 @@ SET IOS57=*
 SET IOS58=*
 SET IOS61=*
 SET IOS62=*
-SET A45=*
-SET A75=*
+SET IOS80=*
 SET A7e=*
 SET A8a=*
 SET A9a=*
@@ -60,7 +56,9 @@ SET cIOS222[38]-v4=*
 SET cIOS223[37-38]-v4=*
 SET cIOS202[60]-v5.1R=*
 SET cIOS224[57]-v5.1R=*
-SET cIOS249[57]-d2x-v8-final=*
-SET cIOS250[56]-d2x-v8-final=*
+SET cIOS249[38]-d2x-v10-beta52=*
+SET cIOS249[56]-d2x-v10-beta52=*
+SET cIOS249[57]-d2x-v10-beta52=*
+SET cIOS249[58]-d2x-v10-beta52=*
 SET RVL-cMIOS-v65535(v10)_WiiGator_WiiPower_v0.2=*
 :endofqueue

@@ -4,7 +4,7 @@
 
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/gR4zcvFnfbE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/HackMii.gif" border="0"/></a><br>
 <i>The HackMii installer will enable you to install the Homebrew Channel and Bootmii.<br>
-The Homebrew Channel allows you to launch homebrew applications off your SD card or Hard Drive.<br>
+The Homebrew Channel allows you to launch Wii homebrew applications off your SD card or Hard Drive.<br>
 Bootmii is a piece of software that can backup and restore your Wii's NAND storage and provides brick protection.</i><br>
 <br>
 
@@ -21,7 +21,7 @@ Bootmii is a piece of software that can backup and restore your Wii's NAND stora
 
 <ul style=align="left" type="disc">
 <li>Or if you are using a Gamecube controller, press <kbd>A</kbd> to continue.
-<li>If the "Press 1 to continue" message doesn't appear, or you get a "no vulnerable IOS" error message or experience any other issues with this step, run ModMii again and this time select the "HackMii Solutions" option and follow those new instructions before continuing this guide.
+<!---RemoveFromHackMiiSolutions---><li>If the "Press 1 to continue" message doesn't appear, or you get a "no vulnerable IOS" error message or experience any other issues with this step, run ModMii again and this time select the "HackMii Solutions" option and follow those new instructions before continuing this guide.
 </ul>
 
 <li>Press <kbd>A</kbd> to continue, then press <kbd>↑</kbd> until "<b>Install the Homebrew Channel</b>" is selected and press <kbd>A</kbd>, then select "Yes, continue" to install it.
@@ -38,6 +38,7 @@ Bootmii is a piece of software that can backup and restore your Wii's NAND stora
 <li>From the Bootmii menu, navigate to "<b>Install Bootmii as IOS</b>" and press <kbd>A</kbd>, then select "Yes, continue" to write runtime files to the SD Card, then "Yes, continue" again to install Bootmii as IOS.
 	<ul style=align="left" type="disc">
 	<li>When completed the installer should display "SUCCESS".
+	<li>If the installer fails, double check the SD Card's lock switch is disabled (if applicable) or try a different card all together. If you're missing a Bootmii compatible SD Card you can skip installing Bootmii and making a nand backup for now until you get a compatible SD Card.
 	</ul>
 
 <li>Press <kbd>A</kbd> to continue to the Bootmii menu.

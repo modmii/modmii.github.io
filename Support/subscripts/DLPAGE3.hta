@@ -376,17 +376,66 @@
 		objFSO.write vbNewLine & "set A9a="
 		If A9a.checked = True Then objFSO.write "*"
 		
-		objFSO.close
+		objFSO.write vbNewLine & "set A1f="
+		If A1f.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set A22="
+		If A22.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set A1c="
+		If A1c.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set csminstaller="
+		If ci.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Red_vWiiU="
+		If R_vU.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Green_vWiiU="
+		If G_vU.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Blue_vWiiU="
+		If B_vU.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set darkwii_orange_vWiiU="
+		If O_vU.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Red_vWiiJ="
+		If R_vJ.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Green_vWiiJ="
+		If G_vJ.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Blue_vWiiJ="
+		If B_vJ.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set darkwii_orange_vWiiJ="
+		If O_vJ.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Red_vWiiE="
+		If R_vE.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Green_vWiiE="
+		If G_vE.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set DarkWii_Blue_vWiiE="
+		If B_vE.checked = True Then objFSO.write "*"
+		
+		objFSO.write vbNewLine & "set darkwii_orange_vWiiE="
+		If O_vE.checked = True Then objFSO.write "*"
+		
+				objFSO.close
 	End Function
 
 
 	Function ALLButton()
-		If ((MyM.checked = True) And (A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked) And (A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked) And (A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked) And (A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked) And (A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked) And (A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked) And (A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked) And (A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked) And (A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked) And (A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked) And (A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked) And (A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked)) Then
+		If ((MyM.checked = True) And (A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked = True) And (A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked = True) And (A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked = True) And (A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked = True) And (A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked = True) And (A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked = True) And (A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked = True) And (A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked = True) And (A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked = True) And (A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked = True) And (A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked = True) And (A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked = True) And (A1c.checked = True) And (A1f.checked = True) And (A22.checked = True) And (R_vJ.checked = True) And (R_vU.checked = True) And (R_vE.checked = True) And (G_vJ.checked = True) And (G_vU.checked = True) And (G_vE.checked = True) And (B_vJ.checked = True) And (B_vU.checked = True) And (B_vE.checked = True) And (O_vJ.checked = True) And (O_vU.checked = True) And (O_vE.checked = True) And (ci.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
 		End If
 		MyM.checked = checkstatus
+		ci.checked = checkstatus
 		Toggle43U(checkstatus)
 		Toggle42U(checkstatus)
 		Toggle41U(checkstatus)
@@ -399,12 +448,15 @@
 		Toggle43K(checkstatus)
 		Toggle42K(checkstatus)
 		Toggle41K(checkstatus)
+		TogglevWiiU(checkstatus)
+		TogglevWiiE(checkstatus)
+		TogglevWiiJ(checkstatus)
 	End Function
 
 
 
 	Function USAButton()
-		If ((A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked) And (A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked) And (A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked)) Then
+		If ((A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked = True) And (A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked = True) And (A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -417,7 +469,7 @@
 
 
 	Function EURButton()
-		If ((A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked) And (A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked) And (A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked)) Then
+		If ((A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked = True) And (A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked = True) And (A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -430,7 +482,7 @@
 
 
 	Function JPNButton()
-		If ((A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked) And (A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked) And (A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked)) Then
+		If ((A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked = True) And (A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked = True) And (A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -443,7 +495,7 @@
 
 
 	Function KORButton()
-		If ((A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked) And (A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked) And (A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked)) Then
+		If ((A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked = True) And (A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked = True) And (A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -452,12 +504,74 @@
 		Toggle42K(checkstatus)
 		Toggle41K(checkstatus)
 	End Function
+	
+	Function vWiiButton()
+		If ((A1c.checked = True) And (A1f.checked = True) And (A22.checked = True) And (R_vJ.checked = True) And (R_vU.checked = True) And (R_vE.checked = True) And (G_vJ.checked = True) And (G_vU.checked = True) And (G_vE.checked = True) And (B_vJ.checked = True) And (B_vU.checked = True) And (B_vE.checked = True) And (O_vJ.checked = True) And (O_vU.checked = True) And (O_vE.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglevWiiU(checkstatus)
+		TogglevWiiE(checkstatus)
+		TogglevWiiJ(checkstatus)
+	End Function
 
 
+	Function ButtonvWiiU()
+		If ((A1f.checked = True) And (R_vU.checked = True) And (G_vU.checked = True) And (B_vU.checked = True) And (O_vU.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglevWiiU(checkstatus)
+	End Function
+
+	Function TogglevWiiU(ByVal checkstatus)
+		A1f.checked = checkstatus
+		R_vU.checked = checkstatus
+		G_vU.checked = checkstatus
+		B_vU.checked = checkstatus
+		O_vU.checked = checkstatus
+	End Function
+	
+	Function ButtonvWiiE()
+		If ((A22.checked = True) And (R_vE.checked = True) And (G_vE.checked = True) And (B_vE.checked = True) And (O_vE.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglevWiiE(checkstatus)
+	End Function
+
+	Function TogglevWiiE(ByVal checkstatus)
+		A22.checked = checkstatus
+		R_vE.checked = checkstatus
+		G_vE.checked = checkstatus
+		B_vE.checked = checkstatus
+		O_vE.checked = checkstatus
+	End Function
+	
+	Function ButtonvWiiJ()
+		If ((A1c.checked = True) And (R_vJ.checked = True) And (G_vJ.checked = True) And (B_vJ.checked = True) And (O_vJ.checked = True)) Then
+			checkstatus = False
+		else
+			checkstatus = True
+		End If
+		TogglevWiiJ(checkstatus)
+	End Function
+
+	Function TogglevWiiJ(ByVal checkstatus)
+		A1c.checked = checkstatus
+		R_vJ.checked = checkstatus
+		G_vJ.checked = checkstatus
+		B_vJ.checked = checkstatus
+		O_vJ.checked = checkstatus
+	End Function
+	
 
 
 	Function Button43U()
-		If ((A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked)) Then
+		If ((A97.checked = True) And (DarkWii_Red_43U.checked = True) And (DarkWii_Green_43U.checked = True) And (DarkWii_Blue_43U.checked = True) And (darkwii_orange_43U.checked = True) And (SM43U_DWR.checked = True) And (SM43U_DWG.checked = True) And (SM43U_DWB.checked = True) And (SM43U_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -479,7 +593,7 @@
 
 
 	Function Button42U()
-		If ((A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked)) Then
+		If ((A87.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Blue_42U.checked = True) And (darkwii_orange_42U.checked = True) And (SM42U_DWR.checked = True) And (SM42U_DWG.checked = True) And (SM42U_DWB.checked = True) And (SM42U_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -500,7 +614,7 @@
 	End Function
 
 	Function Button41U()
-		If ((A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked)) Then
+		If ((A7b.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Blue_41U.checked = True) And (darkwii_orange_41U.checked = True) And (SM41U_DWR.checked = True) And (SM41U_DWG.checked = True) And (SM41U_DWB.checked = True) And (SM41U_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -521,7 +635,7 @@
 	End Function
 	
 	Function Button43E()
-		If ((A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked)) Then
+		If ((A9a.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Blue_43E.checked = True) And (darkwii_orange_43E.checked = True) And (SM43E_DWR.checked = True) And (SM43E_DWG.checked = True) And (SM43E_DWB.checked = True) And (SM43E_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -542,7 +656,7 @@
 	End Function
 	
 	Function Button42E()
-		If ((A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked)) Then
+		If ((A8a.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Blue_42E.checked = True) And (darkwii_orange_42E.checked = True) And (SM42E_DWR.checked = True) And (SM42E_DWG.checked = True) And (SM42E_DWB.checked = True) And (SM42E_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -563,7 +677,7 @@
 	End Function
 
 	Function Button41E()
-		If ((A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked)) Then
+		If ((A7e.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Blue_41E.checked = True) And (darkwii_orange_41E.checked = True) And (SM41E_DWR.checked = True) And (SM41E_DWG.checked = True) And (SM41E_DWB.checked = True) And (SM41E_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -584,7 +698,7 @@
 	End Function
 	
 	Function Button43J()
-		If ((A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked)) Then
+		If ((A94.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Blue_43J.checked = True) And (darkwii_orange_43J.checked = True) And (SM43J_DWR.checked = True) And (SM43J_DWG.checked = True) And (SM43J_DWB.checked = True) And (SM43J_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -605,7 +719,7 @@
 	End Function
 	
 	Function Button42J()
-		If ((A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked)) Then
+		If ((A84.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Blue_42J.checked = True) And (darkwii_orange_42J.checked = True) And (SM42J_DWR.checked = True) And (SM42J_DWG.checked = True) And (SM42J_DWB.checked = True) And (SM42J_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -626,7 +740,7 @@
 	End Function
 	
 	Function Button41J()
-		If ((A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked)) Then
+		If ((A78.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Blue_41J.checked = True) And (darkwii_orange_41J.checked = True) And (SM41J_DWR.checked = True) And (SM41J_DWG.checked = True) And (SM41J_DWB.checked = True) And (SM41J_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -647,7 +761,7 @@
 	End Function
 	
 	Function Button43K()
-		If ((A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked)) Then
+		If ((A9d.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Blue_43K.checked = True) And (darkwii_orange_43K.checked = True) And (SM43K_DWR.checked = True) And (SM43K_DWG.checked = True) And (SM43K_DWB.checked = True) And (SM43K_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -668,7 +782,7 @@
 	End Function
 	
 	Function Button42K()
-		If ((A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked)) Then
+		If ((A8d.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Blue_42K.checked = True) And (darkwii_orange_42K.checked = True) And (SM42K_DWR.checked = True) And (SM42K_DWG.checked = True) And (SM42K_DWB.checked = True) And (SM42K_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -689,7 +803,7 @@
 	End Function
 
 	Function Button41K()
-		If ((A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked)) Then
+		If ((A81.checked = True) And (DarkWii_Red_41K.checked = True) And (DarkWii_Green_41K.checked = True) And (DarkWii_Blue_41K.checked = True) And (darkwii_orange_41K.checked = True) And (SM41K_DWR.checked = True) And (SM41K_DWG.checked = True) And (SM41K_DWB.checked = True) And (SM41K_DWO.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -710,7 +824,7 @@
 	End Function
 
 	Function OriginalButton()
-		If ((A97.checked = True) And (A87.checked = True) And (A7b.checked = True) And (A9a.checked = True) And (A8a.checked = True) And (A7e.checked = True) And (A94.checked = True) And (A84.checked = True) And (A78.checked = True) And (A9d.checked = True) And (A8d.checked = True) And (A81.checked = True)) Then
+		If ((A97.checked = True) And (A87.checked = True) And (A7b.checked = True) And (A9a.checked = True) And (A8a.checked = True) And (A7e.checked = True) And (A94.checked = True) And (A84.checked = True) And (A78.checked = True) And (A9d.checked = True) And (A8d.checked = True) And (A81.checked = True) And (A1f.checked = True) And (A22.checked = True) And (A1c.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -727,10 +841,13 @@
 		A9d.checked = checkstatus
 		A8d.checked = checkstatus
 		A81.checked = checkstatus
+		A1f.checked = checkstatus
+		A22.checked = checkstatus
+		A1c.checked = checkstatus
 	End Function
 
 	Function RedCSMButton()
-		If ((DarkWii_Red_43U.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Red_41K.checked = True)) Then
+		If ((DarkWii_Red_43U.checked = True) And (DarkWii_Red_42U.checked = True) And (DarkWii_Red_41U.checked = True) And (DarkWii_Red_43E.checked = True) And (DarkWii_Red_42E.checked = True) And (DarkWii_Red_41E.checked = True) And (DarkWii_Red_43J.checked = True) And (DarkWii_Red_42J.checked = True) And (DarkWii_Red_41J.checked = True) And (DarkWii_Red_43K.checked = True) And (DarkWii_Red_42K.checked = True) And (DarkWii_Red_41K.checked = True) And (R_vU.checked = True) And (R_vE.checked = True) And (R_vJ.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -747,10 +864,13 @@
 		DarkWii_Red_43K.checked = checkstatus
 		DarkWii_Red_42K.checked = checkstatus
 		DarkWii_Red_41K.checked = checkstatus
+		R_vU.checked = checkstatus
+		R_vE.checked = checkstatus
+		R_vJ.checked = checkstatus
 	End Function
 
 	Function GreenCSMButton()
-		If ((DarkWii_Green_43U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Green_41K.checked = True)) Then
+		If ((DarkWii_Green_43U.checked = True) And (DarkWii_Green_42U.checked = True) And (DarkWii_Green_41U.checked = True) And (DarkWii_Green_43E.checked = True) And (DarkWii_Green_42E.checked = True) And (DarkWii_Green_41E.checked = True) And (DarkWii_Green_43J.checked = True) And (DarkWii_Green_42J.checked = True) And (DarkWii_Green_41J.checked = True) And (DarkWii_Green_43K.checked = True) And (DarkWii_Green_42K.checked = True) And (DarkWii_Green_41K.checked = True) And (G_vU.checked = True) And (G_vE.checked = True) And (G_vJ.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -767,10 +887,13 @@
 		DarkWii_Green_43K.checked = checkstatus
 		DarkWii_Green_42K.checked = checkstatus
 		DarkWii_Green_41K.checked = checkstatus
+		G_vU.checked = checkstatus
+		G_vE.checked = checkstatus
+		G_vJ.checked = checkstatus
 	End Function
 
 	Function BlueCSMButton()
-		If ((DarkWii_Blue_43U.checked = True) And (DarkWii_Blue_42U.checked = True) And (DarkWii_Blue_41U.checked = True) And (DarkWii_Blue_43E.checked = True) And (DarkWii_Blue_42E.checked = True) And (DarkWii_Blue_41E.checked = True) And (DarkWii_Blue_43J.checked = True) And (DarkWii_Blue_42J.checked = True) And (DarkWii_Blue_41J.checked = True) And (DarkWii_Blue_43K.checked = True) And (DarkWii_Blue_42K.checked = True) And (DarkWii_Blue_41K.checked = True)) Then
+		If ((DarkWii_Blue_43U.checked = True) And (DarkWii_Blue_42U.checked = True) And (DarkWii_Blue_41U.checked = True) And (DarkWii_Blue_43E.checked = True) And (DarkWii_Blue_42E.checked = True) And (DarkWii_Blue_41E.checked = True) And (DarkWii_Blue_43J.checked = True) And (DarkWii_Blue_42J.checked = True) And (DarkWii_Blue_41J.checked = True) And (DarkWii_Blue_43K.checked = True) And (DarkWii_Blue_42K.checked = True) And (DarkWii_Blue_41K.checked = True) And (B_vU.checked = True) And (B_vE.checked = True) And (B_vJ.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -787,10 +910,13 @@
 		DarkWii_Blue_43K.checked = checkstatus
 		DarkWii_Blue_42K.checked = checkstatus
 		DarkWii_Blue_41K.checked = checkstatus
+		B_vU.checked = checkstatus
+		B_vE.checked = checkstatus
+		B_vJ.checked = checkstatus
 	End Function
 
 	Function OrangeCSMButton()
-		If ((DarkWii_Orange_43U.checked = True) And (DarkWii_Orange_42U.checked = True) And (DarkWii_Orange_41U.checked = True) And (DarkWii_Orange_43E.checked = True) And (DarkWii_Orange_42E.checked = True) And (DarkWii_Orange_41E.checked = True) And (DarkWii_Orange_43J.checked = True) And (DarkWii_Orange_42J.checked = True) And (DarkWii_Orange_41J.checked = True) And (DarkWii_Orange_43K.checked = True) And (DarkWii_Orange_42K.checked = True) And (DarkWii_Orange_41K.checked = True)) Then
+		If ((DarkWii_Orange_43U.checked = True) And (DarkWii_Orange_42U.checked = True) And (DarkWii_Orange_41U.checked = True) And (DarkWii_Orange_43E.checked = True) And (DarkWii_Orange_42E.checked = True) And (DarkWii_Orange_41E.checked = True) And (DarkWii_Orange_43J.checked = True) And (DarkWii_Orange_42J.checked = True) And (DarkWii_Orange_41J.checked = True) And (DarkWii_Orange_43K.checked = True) And (DarkWii_Orange_42K.checked = True) And (DarkWii_Orange_41K.checked = True) And (O_vU.checked = True) And (O_vE.checked = True) And (O_vJ.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -807,6 +933,9 @@
 		DarkWii_Orange_43K.checked = checkstatus
 		DarkWii_Orange_42K.checked = checkstatus
 		DarkWii_Orange_41K.checked = checkstatus
+		O_vU.checked = checkstatus
+		O_vE.checked = checkstatus
+		O_vJ.checked = checkstatus
 	End Function
 
 	Function OrangeWADButton()
@@ -913,10 +1042,12 @@ table, th {
 
 <!--<button style="width:20%;position: absolute; left: 15;" onClick="vbscript:Page'HTAstuff', 'DLPAGE2.hta'"><font face="Arial Black">Page2</font></button>-->
 <button title="Return to Main Menu" style="width:190; position: absolute; left: 15; top: 10;" onClick="vbscript:Page'MENU','DLPAGE3.hta'"><font face="Arial Black">Main Menu</font></button>
-<button title="Download System Menus, IOSs, MIOSs, Channels, etc." style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
-<button title="Download Wii Apps, USB-Loader Files, PC Programs, Exploits, etc." style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
-<button disabled title="Download System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>
-<button title="Download cIOSs and cMIOSs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+
+<button title="NUS Files" style="width:93; position: absolute; left: 15; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE1.hta'"><font face="Arial Black">Page 1</font></button>
+<button title="Wii & vWii Homebrew & Exploits" style="width:93; position: absolute; left: 112; top: 45;" onClick="vbscript:Page'DLPAGES','DLPAGE2.hta'"><font face="Arial Black">Page 2</font></button>
+<!--<button disabled title="System Menu Themes" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE3.hta'"><font face="Arial Black">Page 3</font></button>-->
+<button title="cIOSs & cMIOSs" style="width:93; position: absolute; left: 15; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE4.hta'"><font face="Arial Black">Page 4</font></button>
+<button title="WiiU Homebrew & PC Programs" style="width:93; position: absolute; left: 112; top: 80;" onClick="vbscript:Page'DLPAGES','DLPAGE5.hta'"><font face="Arial Black">Page 5</font></button>
 
 
 
@@ -925,7 +1056,7 @@ table, th {
 <font size="2" face="Arial Black italic" style="position: absolute; right: 30; top: 100;" title="Hovering your mouse over various items on this page will display fun facts and helpful tips!" >(Hover over items for Tooltips)</font>
 
 <center>
-<font size="4" face="Arial Black italic"><b>Download Page 3</b></font>
+<font size="4" face="Arial Black italic"><b>Download Page 3: System Menu Themes</b></font>
 </center>
 
 
@@ -941,187 +1072,23 @@ table, th {
 
 <button title="Toggle All Downloads" style="width:6%" onClick="vbscript:AllButton()"><font face="Arial Black">ALL</font></button>
 &nbsp;
-<button title="Toggle U Region downloads" style="width:6%;" onClick="vbscript:USAButton()"><font face="Arial Black">USA</font></button>
+<button title="Toggle U Region Wii downloads" style="width:6%;" onClick="vbscript:USAButton()"><font face="Arial Black">USA</font></button>
 &nbsp;
-<button title="Toggle E Region downloads" style="width:6%;" onClick="vbscript:EURButton()"><font face="Arial Black">EUR</font></button>
+<button title="Toggle E Region Wii downloads" style="width:6%;" onClick="vbscript:EURButton()"><font face="Arial Black">EUR</font></button>
 &nbsp;
-<button title="Toggle J Region downloads" style="width:6%;" onClick="vbscript:JPNButton()"><font face="Arial Black">JPN</font></button>
+<button title="Toggle J Region Wii downloads" style="width:6%;" onClick="vbscript:JPNButton()"><font face="Arial Black">JPN</font></button>
 &nbsp;
-<button title="Toggle K Region downloads" style="width:6%;" onClick="vbscript:KORButton()"><font face="Arial Black">KOR</font></button>
+<button title="Toggle K Region Wii downloads" style="width:6%;" onClick="vbscript:KORButton()"><font face="Arial Black">KOR</font></button>
+&nbsp;
+<button title="Toggle vWii downloads&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="width:6%;" onClick="vbscript:vWiiButton()"><font face="Arial Black">vWii</font></button>
 
 <!--<font style="color: blue" size="5" onClick="vbscript:www'https://modmii.github.io/WiiThemes.html'"><u>Preview Themes</u></font>-->
-
-</center>
-
 <br>
-
-<!--<table style="font-size:25px;font-family:Calibri;">-->
-<table border="1" style="table-layout:fixed">
-
-<tr>
-	<th style="text-align:center"><button title="Preview Available Themes on Youtube" style="width:99%;" onClick="vbscript:www'https://modmii.github.io/WiiThemes.html'"><font face="Arial Black">Youtube<br>Preview</font></button></th>
-	<th title="To restore the original Wii theme, install the 000000XX.app file for your System Menu version using MyMenuifyMod" style="text-align:center"><button style="width:99%;" onClick="vbscript:OriginalButton()"><font face="Arial Black">Original<br>APP</font></button></th>
-	<th title="Toggle Red Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:RedCSMButton()"><font face="Arial Black">Red<br>CSM</font></button></th>
-	<th title="Toggle Green Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:GreenCSMButton()"><font face="Arial Black">Green<br>CSM</font></button></th>
-	<th title="Toggle Blue Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:BlueCSMButton()"><font face="Arial Black">Blue<br>CSM</font></button></th>
-	<th title="Toggle Orange Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:OrangeCSMButton()"><font face="Arial Black">Orange<br>CSM</font></button></th>
-	<th title="Toggle Red themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:RedWADButton()"><font face="Arial Black">Red<br>WAD</font></button></th>
-	<th title="Toggle Green themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:GreenWADButton()"><font face="Arial Black">Green<br>WAD</font></button></th>
-	<th title="Toggle Blue themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:BlueWADButton()"><font face="Arial Black">Blue<br>WAD</font></button></th>
-	<th title="Toggle Orange themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:OrangeWADButton()"><font face="Arial Black">Orange<br>WAD</font></button></th>
-</tr>
-
-<tr>
-	<th title="Toggle 4.3U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43U()"><font face="Arial Black">4.3U</font></button></th>
-	<th title="00000097_4.3U.app is used to restore the original Wii theme on 4.3U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A97" /></th>
-	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43U" /></th>
-	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43U" /></th>
-	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43U" /></th>
-	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43U" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.2U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42U()"><font face="Arial Black">4.2U</font></button></th>
-	<th title="00000087_4.2U.app is used to restore the original Wii theme on 4.2U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A87" /></th>
-	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42U" /></th>
-	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42U" /></th>
-	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42U" /></th>
-	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42U" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.1U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41U()"><font face="Arial Black">4.1U</font></button></th>
-	<th title="0000007b_4.1U.app is used to restore the original Wii theme on 4.1U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A7b" /></th>
-	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41U" /></th>
-	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41U" /></th>
-	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41U" /></th>
-	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41U" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.3E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43E()"><font face="Arial Black">4.3E</font></button></th>
-	<th title="0000009a_4.3E.app is used to restore the original Wii theme on 4.3E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A9a" /></th>
-	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43E" /></th>
-	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43E" /></th>
-	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43E" /></th>
-	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43E" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.2E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42E()"><font face="Arial Black">4.2E</font></button></th>
-	<th title="0000008a_4.2E.app is used to restore the original Wii theme on 4.2E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A8a" /></th>
-	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42E" /></th>
-	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42E" /></th>
-	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42E" /></th>
-	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42E" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.1E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41E()"><font face="Arial Black">4.1E</font></button></th>
-	<th title="0000007e_4.1E.app is used to restore the original Wii theme on 4.1E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A7e" /></th>
-	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41E" /></th>
-	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41E" /></th>
-	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41E" /></th>
-	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41E" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.3J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43J()"><font face="Arial Black">4.3J</font></button></th>
-	<th title="00000094_4.3J.app is used to restore the original Wii theme on 4.3J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A94" /></th>
-	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43J" /></th>
-	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43J" /></th>
-	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43J" /></th>
-	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43J" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.2J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42J()"><font face="Arial Black">4.2J</font></button></th>
-	<th title="00000084_4.2J.app is used to restore the original Wii theme on 4.2J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A84" /></th>
-	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42J" /></th>
-	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42J" /></th>
-	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42J" /></th>
-	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42J" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.1J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41J()"><font face="Arial Black">4.1J</font></button></th>
-	<th title="00000078_4.1J.app is used to restore the original Wii theme on 4.1J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A78" /></th>
-	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41J" /></th>
-	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41J" /></th>	
-	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41J" /></th>
-	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41J" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWG" /></th>	
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWB" /></th>	
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.3K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43K()"><font face="Arial Black">4.3K</font></button></th>
-	<th title="0000009d_4.3K.app is used to restore the original Wii theme on 4.3K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A9d" /></th>
-	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43K" /></th>
-	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43K" /></th>
-	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43K" /></th>
-	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43K" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.2K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42K()"><font face="Arial Black">4.2K</font></button></th>
-	<th title="0000008d_4.2K.app is used to restore the original Wii theme on 4.2K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A8d" /></th>
-	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42K" /></th>
-	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42K" /></th>
-	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42K" /></th>
-	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42K" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWO" /></th>
-</tr>
-<tr>
-	<th title="Toggle 4.1K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41K()"><font face="Arial Black">4.1K</font></button></th>
-	<th title="00000081_4.1K.app is used to restore the original Wii theme on 4.1K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="A81" /></th>
-	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41K" /></th>
-	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41K" /></th>
-	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41K" /></th>
-	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41K" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWR" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWG" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWB" /></th>
-	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD, be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWO" /></th>
-</tr>
-
-
-</table>
-<center>
 <br>
+<label title="A Wii\vWii App that installs System Menu themes from CSM files created by ModMii, ThemeMii or MyMenu. Also supports APP files to restore original themes. Drag a mym file onto ModMii to convert it to csm.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!&#10;&#10;&#x21E7; Auto-Updating from oscwii.org"><input class="bigcheck" type="checkbox" name="ci" /> csm-installer &#x21E7;</label>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
-<label title="A Wii App that installs System Menu themes from CSM files created by ModMii, ThemeMii or MyMenu. Also supports APP files to restore original themes. Drag a mym file onto ModMii to convert it to csm.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!"><input class="bigcheck" type="checkbox" name="MyM" /> MyMenuifyMod</label>
+<label title="WARNING: DO NOT USE ON vWII! Use csm-installer instead.&#10;&#10;A Wii App that installs System Menu themes from CSM files created by ModMii, ThemeMii or MyMenu. Also supports APP files to restore original themes. Drag a mym file onto ModMii to convert it to csm.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!&#10;&#10;&#x21E7; Auto-Updating from oscwii.org"><input class="bigcheck" type="checkbox" name="MyM" /> MyMenuifyMod &#x21E7;</label>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <b>Channel Effect:</b>&nbsp;
@@ -1129,6 +1096,201 @@ table, th {
   <label title="When moving the Wii pointer over a channel it's border will display a spinning animation"><input type="radio" id="effect2" name="effect" value="Spin">Spin</label>&nbsp;
   <label title="When moving the Wii pointer over a channel it's border will display a fast-spinning animation"><input type="radio" id="effect3" name="effect" value="Fast-Spin">Fast-Spin</label>
 </center>
+
+
+<!--<table style="font-size:25px;font-family:Calibri;">-->
+<table border="1" style="table-layout:fixed">
+
+<tr>
+	<th style="text-align:center"><button title="Preview Available Themes on Youtube" style="width:99%;" onClick="vbscript:www'https://modmii.github.io/WiiThemes.html'"><font face="Arial Black">Youtube<br>Preview</font></button></th>
+	<th title="To restore the original Wii theme, install the 000000XX.app file for your System Menu version using MyMenuifyMod or csm-installer" style="text-align:center"><button style="width:99%;" onClick="vbscript:OriginalButton()"><font face="Arial Black">Original<br>APP</font></button></th>
+	<th title="Toggle Red Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:RedCSMButton()"><font face="Arial Black">Red<br>CSM</font></button></th>
+	<th title="Toggle Green Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:GreenCSMButton()"><font face="Arial Black">Green<br>CSM</font></button></th>
+	<th title="Toggle Blue Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:BlueCSMButton()"><font face="Arial Black">Blue<br>CSM</font></button></th>
+	<th title="Toggle Orange Custom System Menu (CSM) themes" style="text-align:center"><button style="width:99%;" onClick="vbscript:OrangeCSMButton()"><font face="Arial Black">Orange<br>CSM</font></button></th>
+	<th title="Toggle Red themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:RedWADButton()"><font face="Arial Black">Red<br>WAD</font></button></th>
+	<th title="Toggle Green themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:GreenWADButton()"><font face="Arial Black">Green<br>WAD</font></button></th>
+	<th title="Toggle Blue themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:BlueWADButton()"><font face="Arial Black">Blue<br>WAD</font></button></th>
+	<th title="Toggle Orange themed System Menu WADs&#10;&#10;Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><button style="width:99%;" onClick="vbscript:OrangeWADButton()"><font face="Arial Black">Orange<br>WAD</font></button></th>
+</tr>
+
+<tr>
+	<th title="Toggle 4.3U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43U()"><font face="Arial Black">4.3U</font></button></th>
+	<th title="00000097_4.3U.app is used to restore the original Wii theme on 4.3U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A97" /></th>
+	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43U" /></th>
+	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43U" /></th>
+	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43U" /></th>
+	<th title="This CSM theme should only be installed on 4.3U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43U" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43U_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.2U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42U()"><font face="Arial Black">4.2U</font></button></th>
+	<th title="00000087_4.2U.app is used to restore the original Wii theme on 4.2U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A87" /></th>
+	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42U" /></th>
+	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42U" /></th>
+	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42U" /></th>
+	<th title="This CSM theme should only be installed on 4.2U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42U" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42U_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.1U downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41U()"><font face="Arial Black">4.1U</font></button></th>
+	<th title="0000007b_4.1U.app is used to restore the original Wii theme on 4.1U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A7b" /></th>
+	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41U" /></th>
+	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41U" /></th>
+	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41U" /></th>
+	<th title="This CSM theme should only be installed on 4.1U System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41U" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41U_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.3E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43E()"><font face="Arial Black">4.3E</font></button></th>
+	<th title="0000009a_4.3E.app is used to restore the original Wii theme on 4.3E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A9a" /></th>
+	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43E" /></th>
+	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43E" /></th>
+	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43E" /></th>
+	<th title="This CSM theme should only be installed on 4.3E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43E" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43E_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.2E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42E()"><font face="Arial Black">4.2E</font></button></th>
+	<th title="0000008a_4.2E.app is used to restore the original Wii theme on 4.2E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A8a" /></th>
+	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42E" /></th>
+	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42E" /></th>
+	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42E" /></th>
+	<th title="This CSM theme should only be installed on 4.2E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42E" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42E_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.1E downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41E()"><font face="Arial Black">4.1E</font></button></th>
+	<th title="0000007e_4.1E.app is used to restore the original Wii theme on 4.1E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A7e" /></th>
+	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41E" /></th>
+	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41E" /></th>
+	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41E" /></th>
+	<th title="This CSM theme should only be installed on 4.1E System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41E" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41E_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.3J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43J()"><font face="Arial Black">4.3J</font></button></th>
+	<th title="00000094_4.3J.app is used to restore the original Wii theme on 4.3J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A94" /></th>
+	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43J" /></th>
+	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43J" /></th>
+	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43J" /></th>
+	<th title="This CSM theme should only be installed on 4.3J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43J" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43J_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.2J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42J()"><font face="Arial Black">4.2J</font></button></th>
+	<th title="00000084_4.2J.app is used to restore the original Wii theme on 4.2J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A84" /></th>
+	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42J" /></th>
+	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42J" /></th>
+	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42J" /></th>
+	<th title="This CSM theme should only be installed on 4.2J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42J" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42J_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.1J downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41J()"><font face="Arial Black">4.1J</font></button></th>
+	<th title="00000078_4.1J.app is used to restore the original Wii theme on 4.1J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A78" /></th>
+	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41J" /></th>
+	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41J" /></th>	
+	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41J" /></th>
+	<th title="This CSM theme should only be installed on 4.1J System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41J" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWG" /></th>	
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWB" /></th>	
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41J_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.3K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button43K()"><font face="Arial Black">4.3K</font></button></th>
+	<th title="0000009d_4.3K.app is used to restore the original Wii theme on 4.3K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A9d" /></th>
+	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_43K" /></th>
+	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_43K" /></th>
+	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_43K" /></th>
+	<th title="This CSM theme should only be installed on 4.3K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_43K" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM43K_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.2K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button42K()"><font face="Arial Black">4.2K</font></button></th>
+	<th title="0000008d_4.2K.app is used to restore the original Wii theme on 4.2K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A8d" /></th>
+	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_42K" /></th>
+	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_42K" /></th>
+	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_42K" /></th>
+	<th title="This CSM theme should only be installed on 4.2K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_42K" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM42K_DWO" /></th>
+</tr>
+<tr>
+	<th title="Toggle 4.1K downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:Button41K()"><font face="Arial Black">4.1K</font></button></th>
+	<th title="00000081_4.1K.app is used to restore the original Wii theme on 4.1K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="A81" /></th>
+	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Red_41K" /></th>
+	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Green_41K" /></th>
+	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="DarkWii_Blue_41K" /></th>
+	<th title="This CSM theme should only be installed on 4.1K System Menu versions using MyMenuifyMod or csm-installer" style="text-align:center"><input class="bigcheck" type="checkbox" name="darkwii_orange_41K" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWR" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWG" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWB" /></th>
+	<th title="Warning: It's safer to use CSMs instead of WADs to change themes.&#10;&#10;Priiloader gets REMOVED when installing ANY System Menu WAD (unless you use YAWM ModMii Edition), be sure to reinstall it ASAP!&#10;&#10;Themed System Menu WADs are intended to only be used if changing System Menus anyway." style="text-align:center"><input class="bigcheck" type="checkbox" name="SM41K_DWO" /></th>
+</tr>
+
+
+<tr>
+	<th title="Toggle vWii U downloads&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><button style="width:99%;" onClick="vbscript:ButtonvWiiU()"><font face="Arial Black">vWii U</font></button></th>
+	<th title="0000001f_4.3U_vWii.app is used to restore the original theme on vWii 4.3U System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="A1f" /></th>
+	<th title="This CSM theme should only be installed on 4.3U vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="R_vU" /></th>
+	<th title="This CSM theme should only be installed on 4.3U vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="G_vU" /></th>
+	<th title="This CSM theme should only be installed on 4.3U vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="B_vU" /></th>
+	<th title="This CSM theme should only be installed on 4.3U vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="O_vU" /></th>
+</tr>
+
+
+<tr>
+	<th title="Toggle vWii E downloads&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><button style="width:99%;" onClick="vbscript:ButtonvWiiE()"><font face="Arial Black">vWii E</font></button></th>
+	<th title="00000022_4.3E_vWii.app is used to restore the original theme on vWii 4.3E System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="A22" /></th>
+	<th title="This CSM theme should only be installed on 4.3E vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="R_vE" /></th>
+	<th title="This CSM theme should only be installed on 4.3E vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="G_vE" /></th>
+	<th title="This CSM theme should only be installed on 4.3E vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="B_vE" /></th>
+	<th title="This CSM theme should only be installed on 4.3E vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="O_vE" /></th>
+</tr>
+
+
+<tr>
+	<th title="Toggle vWii J downloads&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><button style="width:99%;" onClick="vbscript:ButtonvWiiJ()"><font face="Arial Black">vWii J</font></button></th>
+	<th title="0000001c_4.3J_vWii.app is used to restore the original theme on vWii 4.3J System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="A1c" /></th>
+	<th title="This CSM theme should only be installed on 4.3J vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="R_vJ" /></th>
+	<th title="This CSM theme should only be installed on 4.3J vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="G_vJ" /></th>
+	<th title="This CSM theme should only be installed on 4.3J vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="B_vJ" /></th>
+	<th title="This CSM theme should only be installed on 4.3J vWii System Menu versions using csm-installer&#10;&#10;All vWii themes built by ModMii include aspect ratio fixes for the Everybody Votes and Check Mii Out channels" style="text-align:center"><input class="bigcheck" type="checkbox" name="O_vJ" /></th>
+</tr>
+
+
+</table>
 
 </body>
 </html>

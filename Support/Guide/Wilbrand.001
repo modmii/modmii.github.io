@@ -1,6 +1,6 @@
 <b>Wilbrand; aka LetterBomb, Mailbox Bomb</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/n2CQFbF9jDM?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Wilbrand.gif" border="0"/></a><br>
-Requirements: SD Card; SDHC and SDXC also work if on System Menu 4.0 or higher but first or only partition must be <32GB. Works on System Menus 3.0 to 4.3; can launch both dols and elfs.<br>
+Requirements: SD Card; SDHC and SDXC also work if on System Menu 4.0 or higher. Works on System Menus 3.0 to 4.3. Can launch both dols and elfs. Works on Wii only.<br>
 <br>
 <ol type="1">
 <li>Go to the "Messageboard" on your Wii and navigate to Yesterday.
@@ -10,6 +10,6 @@ Requirements: SD Card; SDHC and SDXC also work if on System Menu 4.0 or higher b
 	</ul>
 </ol>
 <br>
-<i>Fun Fact! There are two tools that are able to construct this exploit. ModMii uses Wilbrand, which does not require WiFi to construct its "Mailbox Bomb". This is functionally the same as "LetterBomb" that can be constructed and downloaded from please.hackmii.com.</i><br>
+<i>Fun Fact! There are two tools that are able to construct this exploit. ModMii uses Wilbrand, which does not require an internet connection to construct its "Mailbox Bomb". This is functionally the same as "LetterBomb" that can be constructed and downloaded from please.hackmii.com.</i><br>
 <br>
 
