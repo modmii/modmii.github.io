@@ -173,7 +173,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Bulk processing of a folder of WADs to be invisible/hidden or have their NandLoaders updated is also supported, however only supported Channel WAD types will be processed (other types will be skipped). All changes are applied to copies of the original WADs.
 <li>When modifying a Channel WAD warnings given when selecting IOS61 or a specific Title ID that may cause pillarboxing issues on vWii.
 <li>Enhanced information reported on user provided WADs; e.g. if an IOS is for Wii or vWii, installed size in blocks and MBs, Signing Status, cIOS tags and base IOS, cMIOS detection for common cMIOSs, NandLoader (where applicable), Deflicker (where applicable), Content Files, Korean Key, 4x ES module patches (FS:Fakesigning, ES:ES-Identify, NP:Nand-Permission, VP:Version-Patch), etc.
-<li>New “Inspector Wadget” feature (get it?); inspect and display WAD Information on any WAD or folder of WADs. Displays WAD Info like cIOS tags, AHB or DVD Video Access, NandLoader, Deflicker, etc. Additional TMD & TIK info can be displayed by following the onscreen directions (i.e. adding “Set WiiPyInfo=Y” to ModMii/Support/settings.bat). Additional OpenDolBoot info on NandLoader & Main DOL (where supported) can be displayed by following the onscreen directions (i.e. adding “Set ODBInfo=Y” to settings.bat).
+<li>New “Inspector Wadget” feature (get it?); inspect and display WAD Information on any WAD or folder of WADs. Displays WAD Info like cIOS tags, AHB or DVD Video Access, NandLoader, Deflicker, etc. Additional TMD & TIK info can be displayed by following the onscreen directions. Additional OpenDolBoot info on NandLoader & Main DOL (where supported) can be displayed by following the onscreen directions (i.e. adding “Set ODBInfo=Y” to settings.bat).
 <li>Warnings displayed if stubbed IOS or unhidden bannerless channel WADs are inspected.
 <li>IOS WAD Modifier patches are not always successful depending on the IOS. ModMii will now check which patches were successfully applied and rename the file, if applicable, to align with just the successfully enabled patches.
 <li>nand tools: Enhanced to support vWii nand dumps (i.e. slccmpt.bin) in addition to Wii nand.bin’s. Added nand.bin expected size checks. Also added checks for nand.bin’s that are missing appended keys and users are prompted to provide the keys to fix it. Also added ability to detect and repair vWii nand dumps by converting opt.bin to keys.bin using ShowMiiVWiiKeys and appending it to a repaired copy of slccmpt.bin.
@@ -182,7 +182,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>HBC File Transfer Tool is now also accessible via ModMii’s App Launcher when loading a boot.dol/elf or an app folder containing a boot.dol/elf (in addition to zip/7z/rar files). The tool now also displays the contents of archives and prompts for confirmation just before initiating a transfer. Any archives including both a boot.dol and boot.elf are now automatically corrected by renaming boot.dol to bootAlt.dol in a temporary copy of the archive to enable transmission.
 <li>ModMii can now construct themes, not only just for Wii, but also for vWii and Wii Mini system menu versions by opening mym or csm files with ModMii.
 <li>All vWii themes built by ModMii, including the boring Default, have 43DB patches to fix the aspect ratio for the Everybody Votes and Check Mii Out channels.
-<li>Wii Mini theme building requires users provide ModMii with the original theme app file (or the complete Mini System Menu WAD) as these files are not available to download from NUS. ModMii does not support Wii Mini consoles in any other way.
+<li>Wii Mini theme building requires users provide ModMii with the original theme app file (or the complete Mini System Menu WAD) as these files are not available to download from NUS. ModMii does not support Wii Mini consoles in any other way (unless you count the USB-Loader Setup Wizard).
 <li>For any file or folder without a dedicated function, ModMii will now offer to (de)compress files/folders using LZ77Helper instead of only offering to calculate file hashes using HashMyFiles.
 <li>Any file or folder can now also be opened directly from ModMii Classic’s main menu.
 </ul>
@@ -209,7 +209,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 </ul>
 <h3>EmuNAND STUFF</h3>
 <ul>
-<li>Added to option to build vWii EmuNANDs (but NOT neek for vWii). Both Wii and vWii EmuNANDs should work interchangeably in USB Loader GX so vWii EmuNAND support may not have been necessary.
+<li>Added an option to build vWii EmuNANDs (but NOT neek for vWii). Both Wii and vWii EmuNANDs should work interchangeably in USB Loader GX so vWii EmuNAND support may not have been necessary.
 <li>Installing an nSwitch (neek2o) Channel is now optional when building or modifying EmuNANDs instead of always being installed.
 <li>Updated default setting.txt serial number for Korean EmuNANDs to use an “LKM” prefix.
 <li>When building/modifying an EmuNAND using ModMii Classic, users can input any mym or csm to customize the theme (only for SMs 4.1 or higher). Previously only the 4 themes offered by ModMii were supported. This makes quickly changing themes to test in Dolphin or neek super fast and easy!
