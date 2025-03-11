@@ -1,4 +1,4 @@
-set DBversion=25.03.10
+set DBversion=25.03.11
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2765,7 +2765,7 @@ goto:DBend
 
 :usbgx
 set name=USB Loader GX
-set category=
+set category=fullextract
 set code1=URL
 set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/usbloader_gx_r1282_test_version.7z"
 set version=*
