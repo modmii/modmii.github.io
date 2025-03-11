@@ -40,7 +40,7 @@ echo Downloading and enabling latest recommended d2x cIOS: %CurrentcIOS%
 echo.
 echo This can be changed in ModMii Classic's Options
 echo.
-call support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%CurrentcIOS%.7z?raw=true" -q --show-progress
+support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%CurrentcIOS%.7z?raw=true" -q --show-progress
 echo.
 
 ::delete if file is empty
@@ -72,7 +72,7 @@ if %currentversion% NEQ 8.0.0 goto:skip
 if /i "%DBversion%" EQU "25.03.11" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes...
-call support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/d7c5d1bc2415c3a5439daa41807f9ced1af67854/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/d7c5d1bc2415c3a5439daa41807f9ced1af67854/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
 echo.
 call Support/subscripts/DB.bat
 :skip
@@ -82,7 +82,7 @@ if %currentversion% NEQ 7.0.3 goto:skip
 if /i "%DBversion%" EQU "24.12.04" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
-call support\wget --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat
+support\wget --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
 echo.
 call Support/subscripts/DB.bat
 :skip
@@ -219,7 +219,7 @@ echo                                     Please Wait...
 echo.
 
 if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
-call support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
+support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip -q --show-progress
 if not exist "%UPDATENAME%.zip" goto:updatefail
 
 ::if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
@@ -292,7 +292,7 @@ taskkill /im ModMiiSkin.exe /f >nul
 
 
 if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
-call support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip
+support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip -q --show-progress
 if not exist "%UPDATENAME%.zip" goto:updatefailskin
 
 
