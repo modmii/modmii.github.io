@@ -68,6 +68,14 @@ echo.
 :skip
 
 
+if %currentversion% NEQ 8.0.0 goto:skip
+if /i "%DBversion%" EQU "25.03.11" goto:skip
+echo.
+echo Updating File Download Database (DB.bat) with minor changes...
+call support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/d7c5d1bc2415c3a5439daa41807f9ced1af67854/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat
+echo.
+call Support/subscripts/DB.bat
+:skip
 
 
 if %currentversion% NEQ 7.0.3 goto:skip
