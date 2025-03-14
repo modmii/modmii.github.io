@@ -3,6 +3,7 @@
 set newversion=8.0.0
 set changelogURL=https://modmii.github.io/changelog.html
 set "wabmplast=%wabmp%"
+
 ::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
 ::note when ModMii downloads updater.bat it is renamed to Updatetemp.bat for legacy purposes
 if /i "%debug%" EQU "on" copy "Updatetemp.bat" "Updatetemp_backup.bat">nul
@@ -69,6 +70,7 @@ echo Something went wrong, %CurrentcIOS% cIOS not enabled...
 echo.
 :skip
 
+call Support/subscripts/DB.bat
 
 if %currentversion% NEQ 8.0.0 goto:skip
 if /i "%DBversion%" EQU "25.03.11" goto:skip
@@ -84,7 +86,7 @@ if %currentversion% NEQ 7.0.3 goto:skip
 if /i "%DBversion%" EQU "24.12.04" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
-support\wget --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
 echo.
 call Support/subscripts/DB.bat
 :skip
@@ -106,32 +108,6 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 
 
 
-if not exist temp\currentversion.txt goto:ReturnToCaller
-
-
-setlocal
-chcp 437>nul
-
-
-set /p currentversion= <temp\currentversion.txt
-
-if exist Support\settings.bat call Support\settings.bat
-IF "%AudioOption%"=="" set AudioOption=on
-IF "%skin%"=="" set skin=Default
-if exist "Support\Skins\Default\Fail.mp3" (set "Fail.mp3=Support\Skins\Default\Fail.mp3") else (set "Fail.mp3=Support\Fail.mp3")
-if exist "Support\Skins\%skin%\Fail.mp3" set "Fail.mp3=Support\Skins\%skin%\Fail.mp3"
-if exist "Support\Skins\Default\Success.mp3" (set "Success.mp3=Support\Skins\Default\Success.mp3") else (set "Success.mp3=Support\Success.mp3")
-if exist "Support\Skins\%skin%\Success.mp3" set "Success.mp3=Support\Skins\%skin%\Success.mp3"
-set waico=support\icon.ico
-set wasig=Brought to you by XFlak
-set watitle=ModMii Updater
-
-title ModMiiUpdater
-set UPDATENAME=ModMii
-
-if /i "%updatermode%" EQU "classic" color 1f
-
-
 
 ::min requirements check
 
@@ -142,11 +118,16 @@ IF NOT ERRORLEVEL 1 (set winver=9) & (goto:continue)
 support\sfk filter -quiet "temp\temp.txt" -rep _*" "__ -rep _"."*__ -write -yes
 support\sfk filter -quiet "temp\temp.txt" -no-empty-lines -no-blank-lines -write -yes
 set /p winver= <temp\temp.txt
+
 ::echo %winver%
+
 if not exist "%homedrive%\Program Files (x86)" goto:winwarning
 if /i %winver% GEQ 9 goto:continue
 :winwarning
 
+::if exists it means this msg has been seen already and the user is ready to update to 7.0.3
+
+if exist temp\currentversion.txt (set newversion=7.0.3) & (goto:continue)
 if /i "%updatermode%" EQU "skin" goto:skinWarning
 
 
@@ -165,7 +146,11 @@ echo.
 
 if %currentversion% LSS 7.0.3 goto:tinyskip
 echo Press any key to return to ModMii v%currentversion%...
-pause> nul
+pause>nul
+echo.
+echo Ignore any messages indicating your ModMii is up to date...
+echo.
+set "newversion=%currentversion%"
 goto:ReturnToCaller
 :tinyskip
 
@@ -193,8 +178,15 @@ if %currentversion% GEQ 7.0.3 set "watext=%watext%~~Click any button to return t
 
 if %currentversion% LSS 7.0.3 set "watext=%watext%~~Click Cancel to return to ModMiiSkin v%currentversion%, or click Next to update to v7.0.3 which is the last update that does not require 64-bit Windows 8.1 or higher."
 
+set "newversion=%currentversion%"
+
+start support\wizapp PB UPDATE 100
+start support\wizapp PB CLOSE
+
 start /w support\wizapp NOBACK TB
-if errorlevel 2 goto:ReturnToCaller
+if not errorlevel 2 goto:not2
+goto:ReturnToCaller
+:not2
 
 if %currentversion% GEQ 7.0.3 goto:ReturnToCaller
 
@@ -203,6 +195,35 @@ set newversion=7.0.3
 
 
 :continue
+
+
+if not exist temp\currentversion.txt goto:ReturnToCaller
+
+
+
+setlocal
+chcp 437>nul
+
+
+set /p currentversion= <temp\currentversion.txt
+
+if exist Support\settings.bat call Support\settings.bat
+IF "%AudioOption%"=="" set AudioOption=on
+IF "%skin%"=="" set skin=Default
+if exist "Support\Skins\Default\Fail.mp3" (set "Fail.mp3=Support\Skins\Default\Fail.mp3") else (set "Fail.mp3=Support\Fail.mp3")
+if exist "Support\Skins\%skin%\Fail.mp3" set "Fail.mp3=Support\Skins\%skin%\Fail.mp3"
+if exist "Support\Skins\Default\Success.mp3" (set "Success.mp3=Support\Skins\Default\Success.mp3") else (set "Success.mp3=Support\Success.mp3")
+if exist "Support\Skins\%skin%\Success.mp3" set "Success.mp3=Support\Skins\%skin%\Success.mp3"
+set waico=support\icon.ico
+set wasig=Brought to you by XFlak
+set watitle=ModMii Updater
+
+title ModMiiUpdater
+set UPDATENAME=ModMii
+
+if /i "%updatermode%" EQU "classic" color 1f
+
+
 
 copy /y support\7za.exe support\7za2.exe>nul
 if /i "%updatermode%" EQU "skin" goto:skin
@@ -272,7 +293,8 @@ echo   Update failed, check your internet connection and antivirus\firewall sett
 echo.
 echo   Press any key to return to ModMii v%currentversion%
 pause>nul
-goto:ReturnToCaller
+Start ModMii.exe
+exit
 
 
 
@@ -357,10 +379,17 @@ start support\wizapp PB CLOSE
 
 set watext=~~Update check has failed, check your internet connection and antivirus\firewall settings.~~Click any button to return to ModMiiSkin v%currentversion%
 if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Fail.mp3%"
+start support\wizapp PB UPDATE 100
+start support\wizapp PB CLOSE
 start /w support\wizapp NOBACK TB
-::goto:ReturnToCaller
+
+::set wabmp=%wabmplast%
+Start ModMiiSkin.exe
+exit
 
 
 ::ReturnToCaller should be kept at the end
 :ReturnToCaller
 if not "%wabmplast%"=="" set "wabmp=%wabmplast%"
+if exist temp\currentversionInfo.txt del temp\currentversionInfo.txt>nul
+if exist temp\skin.txt del temp\skin.txt>nul
