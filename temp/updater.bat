@@ -2,7 +2,7 @@
 @echo off
 set newversion=8.0.0
 set changelogURL=https://modmii.github.io/changelog.html
-
+set "wabmplast=%wabmp%"
 ::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
 ::note when ModMii downloads updater.bat it is renamed to Updatetemp.bat for legacy purposes
 if /i "%debug%" EQU "on" copy "Updatetemp.bat" "Updatetemp_backup.bat">nul
@@ -16,9 +16,11 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 ::recommended d2x version check
 ::update below with latest recommended d2x
 set CurrentcIOS=d2x-v11-beta2
-if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
-
+::update below with the version of d2x bundled with the latest version of ModMii
+set BundledcIOS=d2x-v11-beta2
 if not exist support\d2x-beta\d2x-beta.bat goto:continue
+call support\d2x-beta\d2x-beta.bat
+
 
 set "watitlebak=%watitle%"
 set "watextbak=%watext%"
@@ -164,8 +166,7 @@ echo.
 if %currentversion% LSS 7.0.3 goto:tinyskip
 echo Press any key to return to ModMii v%currentversion%...
 pause> nul
-Start ModMii.exe
-exit
+goto:ReturnToCaller
 :tinyskip
 
 echo Press any key to update ModMii to v7.0.3 which is the last update
@@ -193,9 +194,9 @@ if %currentversion% GEQ 7.0.3 set "watext=%watext%~~Click any button to return t
 if %currentversion% LSS 7.0.3 set "watext=%watext%~~Click Cancel to return to ModMiiSkin v%currentversion%, or click Next to update to v7.0.3 which is the last update that does not require 64-bit Windows 8.1 or higher."
 
 start /w support\wizapp NOBACK TB
-if errorlevel 2 (Start ModMiiSkin.exe) & (exit)
+if errorlevel 2 goto:ReturnToCaller
 
-if %currentversion% GEQ 7.0.3 (Start ModMiiSkin.exe) & (exit)
+if %currentversion% GEQ 7.0.3 goto:ReturnToCaller
 
 set newversion=7.0.3
 ::goto:continue
@@ -238,9 +239,16 @@ if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
 del support\7za2.exe>nul
 
 
+::check to see if bundled d2x is toggled, if so erase d2x-beta folder (only difference is bundled d2x has version # set to 65535)
+if not exist support\d2x-beta\d2x-beta.bat goto:skip
+call support\d2x-beta\d2x-beta.bat
+if /i "%d2x-beta-rev%" EQU "%BundledcIOS:~5%" rd /s /q support\d2x-beta
+:skip
+
+
 if %currentversion% GEQ 7.0.4 goto:skip
 ::check for legacy d2x-beta.bat's, if "magicword2" found no need for further checks
-if not exist support\d2x-beta goto:skip
+if not exist support\d2x-beta\d2x-beta.bat goto:skip
 findStr "magicword2" "support\d2x-beta\d2x-beta.bat" >nul
 IF ERRORLEVEL 1 goto:skip
 rd /s /q support\d2x-beta
@@ -264,8 +272,7 @@ echo   Update failed, check your internet connection and antivirus\firewall sett
 echo.
 echo   Press any key to return to ModMii v%currentversion%
 pause>nul
-Start ModMii.exe
-exit
+goto:ReturnToCaller
 
 
 
@@ -275,7 +282,6 @@ if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win trans ititle "ModMiiUpda
 if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiUpdater"
 
 copy /y support\wizapp.exe support\wizapp2.exe>nul
-
 
 if exist "Support\Skins\Default\UPDATING.bmp" (set "wabmp=Support\Skins\Default\UPDATING.bmp") else (set wabmp=support\bmp\UPDATING.bmp)
 if exist "Support\Skins\%skin%\UPDATING.bmp" set "wabmp=Support\Skins\%skin%\UPDATING.bmp"
@@ -319,9 +325,16 @@ del support\7za2.exe>nul
 del support\wizapp2.exe>nul
 if exist %UPDATENAME%.zip del %UPDATENAME%.zip>nul
 
+::check to see if bundled d2x is toggled, if so erase d2x-beta folder (only difference is bundled d2x has version # set to 65535)
+if not exist support\d2x-beta\d2x-beta.bat goto:skip
+call support\d2x-beta\d2x-beta.bat
+if /i "%d2x-beta-rev%" EQU "%BundledcIOS:~5%" rd /s /q support\d2x-beta
+:skip
+
+
 if %currentversion% GEQ 7.0.4 goto:skip
 ::check for legacy d2x-beta.bat's, if "magicword2" found no need for further checks
-if not exist support\d2x-beta goto:skip
+if not exist support\d2x-beta\d2x-beta.bat goto:skip
 findStr "magicword2" "support\d2x-beta\d2x-beta.bat" >nul
 IF ERRORLEVEL 1 goto:skip
 rd /s /q support\d2x-beta
@@ -345,11 +358,9 @@ start support\wizapp PB CLOSE
 set watext=~~Update check has failed, check your internet connection and antivirus\firewall settings.~~Click any button to return to ModMiiSkin v%currentversion%
 if /i "%AudioOption%" EQU "on" start support\nircmd.exe mediaplay 3000 "%Fail.mp3%"
 start /w support\wizapp NOBACK TB
-
-::set wabmp=%wabmplast%
-Start ModMiiSkin.exe
-exit
+::goto:ReturnToCaller
 
 
-::ReturnToCaller should be the last line
+::ReturnToCaller should be kept at the end
 :ReturnToCaller
+if not "%wabmplast%"=="" set "wabmp=%wabmplast%"
