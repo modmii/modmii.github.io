@@ -16,7 +16,7 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
 ::recommended d2x version check
 ::update below with latest recommended d2x
-set CurrentcIOS=d2x-v11-beta2
+set RecD2XcIOS=d2x-v11-beta2
 ::update below with the version of d2x bundled with the latest version of ModMii
 set BundledcIOS=d2x-v11-beta2
 if not exist support\d2x-beta\d2x-beta.bat goto:continue
@@ -26,47 +26,51 @@ call support\d2x-beta\d2x-beta.bat
 set "watitlebak=%watitle%"
 set "watextbak=%watext%"
 set watitle=ModMii d2x cIOS Warning
-set "watext=Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %CurrentcIOS% is recommended, consider enabling it in ModMii Classic's options"
-if /i "%d2x-beta-rev%" NEQ "%CurrentcIOS:~5%" echo %watext%
-if /i "%updatermode%" EQU "skin" if /i "%d2x-beta-rev%" NEQ "%CurrentcIOS:~5%" start support\wizapp MB exclamation
+set "watext=Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %RecD2XcIOS% is recommended, consider enabling it in ModMii Classic's options"
+if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" echo %watext%
+if /i "%updatermode%" EQU "skin" if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" start support\wizapp MB exclamation
 set "watitle=%watitlebak%"
 set "watext=%watextbak%"
 
 if exist support\d2x-beta\d2x-beta.bat goto:skip
 
 :continue
-if /i "%d2x-beta-rev%" EQU "%CurrentcIOS:~5%" goto:skip
+if /i "%d2x-beta-rev%" EQU "%RecD2XcIOS:~5%" goto:skip
 ::download and extract recommended d2x beta
 ::note if in skin mode and ModMiiverbose is off then this will happen silently during update checks
 echo.
-echo Downloading and enabling latest recommended d2x cIOS: %CurrentcIOS%
+echo Enabling latest recommended d2x cIOS: %RecD2XcIOS%
 echo.
 echo This can be changed in ModMii Classic's Options
 echo.
-support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%CurrentcIOS%.7z?raw=true" -q --show-progress
+
+if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
+
+support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
 echo.
 
 ::delete if file is empty
->nul findstr "^" "%CurrentcIOS%.zip" || del "%CurrentcIOS%.zip"
+>nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
 
-if not exist "%CurrentcIOS%.zip" goto:badkey
-if not exist "support\More-cIOSs\%CurrentcIOS%" mkdir "support\More-cIOSs\%CurrentcIOS%"
-support\7za e -aoa "%CurrentcIOS%.zip" -o"support\More-cIOSs\%CurrentcIOS%" *.* -r
-del "%CurrentcIOS%.zip">nul
-if not exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%CurrentcIOS%") & (goto:badkey)
+if not exist "%RecD2XcIOS%.zip" goto:badkey
+if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
+support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+del "%RecD2XcIOS%.zip">nul
+if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (goto:badkey)
 
+:pickup
 if exist support\d2x-beta rd /s /q support\d2x-beta
 mkdir support\d2x-beta
-copy /y "support\More-cIOSs\%CurrentcIOS%\*" "support\d2x-beta">nul
+copy /y "support\More-cIOSs\%RecD2XcIOS%\*" "support\d2x-beta">nul
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 echo.
-if /i "%d2x-beta-rev%" EQU "%CurrentcIOS:~5%" (echo %CurrentcIOS% cIOS successfully enabled!) else (goto:badkey)
+if /i "%d2x-beta-rev%" EQU "%RecD2XcIOS:~5%" (echo %RecD2XcIOS% cIOS successfully enabled!) else (goto:badkey)
 echo.
 goto:skip
 
 :badkey
 echo.
-echo Something went wrong, %CurrentcIOS% cIOS not enabled...
+echo Something went wrong, %RecD2XcIOS% cIOS not enabled...
 echo.
 :skip
 
