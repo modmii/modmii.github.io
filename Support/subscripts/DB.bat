@@ -1,4 +1,4 @@
-set DBversion=25.03.23
+set DBversion=25.03.24
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2767,9 +2767,9 @@ goto:DBend
 set name=USB Loader GX
 set category=fullextract
 set code1=URL
-set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/usbloader_gx_r1282_test_version2.7z"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/usbloader_gx_r1282_test_version2.zip"
 set version=*
-set "dlname=usbloader_gx_r1282_test_version2.7z"
+set "dlname=usbloader_gx_r1282_test_version2.zip"
 set "wadname=%dlname%"
 set filename=boot.dol
 set path1=apps\usbloader_gx\
