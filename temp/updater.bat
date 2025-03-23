@@ -16,21 +16,16 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
 ::recommended d2x version check
 ::update below with latest recommended d2x
-set RecD2XcIOS=d2x-v11-beta2
+set RecD2XcIOS=d2x-v11-beta3
 ::update below with the version of d2x bundled with the latest version of ModMii
 set BundledcIOS=d2x-v11-beta2
 if not exist support\d2x-beta\d2x-beta.bat goto:continue
 call support\d2x-beta\d2x-beta.bat
 
 
-set "watitlebak=%watitle%"
-set "watextbak=%watext%"
-set watitle=ModMii d2x cIOS Warning
-set "watext=Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %RecD2XcIOS% is recommended, consider enabling it in ModMii Classic's options"
-if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" echo %watext%
-if /i "%updatermode%" EQU "skin" if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" start support\wizapp MB exclamation
-set "watitle=%watitlebak%"
-set "watext=%watextbak%"
+if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" echo Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %RecD2XcIOS% is recommended, consider enabling it in ModMii Classic's options
+if /i "%updatermode%" EQU "skin" if /i "%d2x-beta-rev%" NEQ "%RecD2XcIOS:~5%" start support\nircmd.exe infobox "Warning: d2x-v%d2x-beta-rev% cIOS is enabled but %RecD2XcIOS% is recommended, consider enabling it in ModMii Classic's options" "d2x Version Warning"
+
 
 if exist support\d2x-beta\d2x-beta.bat goto:skip
 
@@ -77,10 +72,10 @@ echo.
 call Support/subscripts/DB.bat
 
 if %currentversion% NEQ 8.0.0 goto:skip
-if /i "%DBversion%" EQU "25.03.11" goto:skip
+if /i "%DBversion%" EQU "25.03.23" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/d7c5d1bc2415c3a5439daa41807f9ced1af67854/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/b0f3cd5f64760472b318fc779bada72e5f2957ae/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
 echo.
 call Support/subscripts/DB.bat
 :skip
@@ -114,6 +109,7 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 
 
 ::min requirements check
+if %currentversion% GTR 7.0.3 goto:continue
 
 if exist "temp\temp.txt" del "temp\temp.txt">nul
 ver>temp\temp.txt
