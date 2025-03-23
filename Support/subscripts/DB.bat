@@ -1,4 +1,4 @@
-set DBversion=25.03.11
+set DBversion=25.03.23
 if "%CurrentDLNAME%"=="" goto:DBend
 goto:%CurrentDLNAME%
 
@@ -2620,7 +2620,7 @@ goto:DBend
 set category=fullextract
 set name=Indiana Pwns (USA, PAL and JPN)
 set code1=URL
-set code2="http://static.hackmii.com/indiana-pwns.zip"
+set code2="https://static.hackmii.com/indiana-pwns.zip"
 set version=*
 set dlname="indiana-pwns.zip"
 set wadname=indiana-pwns.zip
@@ -2661,7 +2661,7 @@ goto:DBend
 set category=fullextract
 set name=Bathaxx (USA, PAL and JPN)
 set code1=URL
-set code2="http://wien.tomnetworks.com/wii/bathaxx.zip"
+set code2="https://wien.tomnetworks.com/wii/bathaxx.zip"
 set version=*
 set dlname="bathaxx.zip"
 set wadname=bathaxx.zip
@@ -2675,7 +2675,7 @@ goto:DBend
 set category=fullextract
 set name=Return of the Jodi (USA, PAL and JPN)
 set code1=URL
-set code2="http://static.hackmii.com/return-jodi.zip"
+set code2="https://static.hackmii.com/return-jodi.zip"
 set version=*
 set dlname="return-jodi.zip"
 set wadname=return-jodi.zip
@@ -2767,13 +2767,13 @@ goto:DBend
 set name=USB Loader GX
 set category=fullextract
 set code1=URL
-set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/usbloader_gx_r1282_test_version.7z"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/usbloader_gx_r1282_test_version2.7z"
 set version=*
-set "dlname=usbloader_gx_r1282_test_version.7z"
+set "dlname=usbloader_gx_r1282_test_version2.7z"
 set "wadname=%dlname%"
 set filename=boot.dol
 set path1=apps\usbloader_gx\
-set md5=ae10cd4ae46f048e586eebdc5c4a4790
+set md5=df093906134500e6a13eb738fd73420f
 ::--when oscwii updates to r1282 switch to the following:--
 ::set category=OSC
 ::set code1=usbloader_gx
@@ -2914,15 +2914,15 @@ goto:DBend
 :USBX
 set name=USB-Loader Forwarder Channel\dol
 set code1=ZIP
-set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii).zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii)_.zip"
 set version=*
-set dlname=USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii).zip
-set wadname=USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii).zip
-set filename=USBLoader_IDCL_Channel_Forwarder.dol
-set md5=7f7ffa284f60b8d6fd66eb84c7a10399
+set dlname=USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii)_.zip
+set wadname=USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii)_.zip
+set filename=USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii).wad
+set md5=f2f2bdebf7c6e68d4b08c1a26fd167a2
 set md5alt=%md5%
 set category=fullextract
-set path1=\
+set path1=\WAD\
 goto:DBend
 
 
