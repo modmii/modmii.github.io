@@ -72,10 +72,10 @@ echo.
 call Support/subscripts/DB.bat
 
 if %currentversion% NEQ 8.0.0 goto:skip
-if /i "%DBversion%" EQU "25.03.23" goto:skip
+if /i "%DBversion%" EQU "25.03.24" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/b0f3cd5f64760472b318fc779bada72e5f2957ae/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/1d74b8c460d9bd82e5a87f774a3c1954f29d1567/Support/subscripts/DB.bat" -O Support/subscripts/DB.bat -q --show-progress
 echo.
 call Support/subscripts/DB.bat
 :skip
