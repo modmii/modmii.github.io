@@ -120,8 +120,10 @@ echo.
 if /i "%updatermode%" NEQ "skin" color A0
 set "whitetext=0"
 set "backgroundcolor=A"
+set "greentext=Blue"
 echo set "whitetext=0"> temp\settings0401.bat
 echo set "backgroundcolor=A">> temp\settings0401.bat
+echo set "greentext=Blue">> temp\settings0401.bat
 support\sfk filter -spat Support\settings.bat -ls!"if exist temp\settings0401.bat" -write -yes>nul
 echo if exist temp\settings0401.bat call temp\settings0401.bat>> Support\settings.bat
 if exist Support\Skins\aluben\settings.dat goto:skipDL
