@@ -19,6 +19,10 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 set RecD2XcIOS=d2x-v11-beta3
 ::update below with the version of d2x bundled with the latest version of ModMii
 set BundledcIOS=d2x-v11-beta2
+
+if exist "Support\settings.bat" support\sfk filter -spat "Support\settings.bat" -ls!"set \x22RecD2XcIOS=" -write -yes>nul
+echo Set "RecD2XcIOS=%RecD2XcIOS%">> Support\settings.bat
+
 if not exist support\d2x-beta\d2x-beta.bat goto:continue
 call support\d2x-beta\d2x-beta.bat
 
@@ -104,6 +108,31 @@ if not exist "temp\ARCME.zip" goto:skiparcme
 support\sfk md5 -quiet -verify 4eff09f8a16ab6157edcb339bd909ed3 "temp\ARCME.zip"
 if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 :skiparcme
+
+
+::0401
+FOR /F "tokens=*" %%g IN ('support\sfk date') do (SET CurDate=%%g)
+if /i "%CurDate:~-4%" NEQ "0401" if exist temp\settings0401.bat if exist "Support\Skins\aluben\settings0402.bat" call "Support\Skins\aluben\settings0402.bat"
+if /i "%CurDate:~-4%" NEQ "0401" goto:skip0401
+echo.
+support\sfk echo Easter Egg Cheat Code Hint: [%redtext%]MUSIC
+echo.
+if /i "%updatermode%" NEQ "skin" color A0
+set "whitetext=0"
+set "backgroundcolor=A"
+echo set "whitetext=0"> temp\settings0401.bat
+echo set "backgroundcolor=A">> temp\settings0401.bat
+support\sfk filter -spat Support\settings.bat -ls!"if exist temp\settings0401.bat" -write -yes>nul
+echo if exist temp\settings0401.bat call temp\settings0401.bat>> Support\settings.bat
+if exist Support\Skins\aluben\settings.dat goto:skipDL
+support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/aluben.zip" -O temp\aluben.zip -q
+if not exist "Support\Skins\aluben" mkdir "Support\Skins\aluben"
+if exist temp\aluben.zip support\7za e -aoa "temp\aluben.zip" -o"Support\Skins\aluben" *.* -r >nul
+if exist temp\aluben.zip del temp\aluben.zip>nul
+if not exist Support\Skins\aluben\settings.dat rd /s /q Support\Skins\aluben
+:skipDL
+if exist "Support\Skins\aluben\settings0401.bat" (copy /y "Support\Skins\aluben\settings0401.bat" "temp\settings0401.bat" >nul) & (call "Support\Skins\aluben\settings0401.bat")
+:skip0401
 
 
 
