@@ -111,7 +111,13 @@ if not errorlevel 1 move /y "temp\ARCME.zip" "temp\ARCME_1.0.5.zip"> nul
 
 
 ::0401
+if %currentversion% GEQ 8.0.0 goto:skip
+for /f "tokens=2 delims==" %%G in ('wmic os get localdatetime /value') do set datetime=%%G
+set "CurDate=%datetime:~0,4%%datetime:~4,2%%datetime:~6,2%"
+goto:skip2
+:skip
 FOR /F "tokens=*" %%g IN ('support\sfk date') do (SET CurDate=%%g)
+:skip2
 if /i "%CurDate:~-4%" NEQ "0401" if exist temp\settings0401.bat if exist "Support\Skins\aluben\settings0402.bat" call "Support\Skins\aluben\settings0402.bat"
 if /i "%CurDate:~-4%" NEQ "0401" goto:skip0401
 echo.
