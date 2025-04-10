@@ -9,15 +9,7 @@
    h1 { text-decoration: underline;text-align: center;font-weight:bold;font-size:100%;color:white;}
   </style>
   
-<!--
-<SCRIPT LANGUAGE="JavaScript">
-setTimeout ("changePage()", 1000);
-function changePage() {
-if (self.parent.frames.length != 0)
-self.parent.location="http://modmii.zzl.org/changelog.html";
-}
-</SCRIPT>
-// -->
+
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 
@@ -59,6 +51,66 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <!-- Start of the changelog -->
 <ul style=align="left" type="disc">
 
+<h2 id="8.0.1"><a href="#8.0.1">8.0.1 Changelog - 2025:04-10:</a></h2>
+
+<a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.1" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.1/total?label=downloads&logo=github" border="0"></a><br>
+
+<h3>Main Changes</h3>
+<ul>
+<li>Added option to skip files from ModMii's File Cleanup function, so you can pick and choose exactly what gets cleaned\removed. Some additional files were also added to ModMii's File Cleanup list.
+<li>ModMii Classic's Advanced Downloads page has been drastically changed\improved. Users can now construct multiple different versions of d2x cIOSs in the same download queue. Adding advanced cIOS downloads to a queue is much faster with less prompts than before. Added option to Remove Last Advanced Download from queue in case you make a mistake. Advanced cIOS download slots are now limited to a range of 200-253; this means that there is zero risk of bricking from any of ModMii's Advanced Downloads (EXCEPT User-Defined Custom Downloads, which can still be dangerous if you do not know what you are doing).
+<ul>
+<li>Download queues are loaded differently for queues built using modmii 8.0.0 or lower vs 8.0.1+. 8.0.1+ queues will works as you would expect and support multiple versions of d2x in the same queue. Old queues 8.0.0 or lower (built for a single version of d2x) will continue to be adjusted to sync with the version of d2x selected in ModMii's options.
+<li>All IOSs have been removed from the Advanced Downloads page; these can still be retrieved using ModMii's User-Defined Custom Download option.
+</ul>
+<li>When completing a wizard that includes d2x cIOSs ModMii will now prompt users if they want to switch to the latest "recommended" d2x cIOS instead of the "bundled" cIOS. The Recommended version of d2x can now be toggled by entering "R" in the d2x options page. Restoring default settings will also enable the recommended d2x version if it differs from the bundled version and notify the user accordingly.
+<ul>
+<li>ModMii will only check for other d2x versions available online once per session. This makes changing d2x versions multiple times in a single session much faster.
+<li>At startup, but no more than once per day, ModMii will silently check\confirm the latest "recommended" d2x cIOS version.
+</ul>
+<li>ModMii's Advanced Downloads Forwarder Builder can now also create hidden channel forwarder WADs (not applicable for for Channel ID Forwarder types as this would be redundant). Particularly useful for WiiU users booting Wii homebrew or games directly from WUHB forwarders but don't want channels to be visible or take up space in the Wii menu.
+<li>Enhanced ModMii's App Launcher with support for wuhb, rpx and wps files to be able to wiiload these file types from your PC to your WiiU via the internet (requires Wiiload Plugin).
+<li>Added Wiiload & FTPiiU plugins for WiiU\Aroma to Download Page 5 and to App Updater checks.
+<li>Updated bundled version of d2x cIOS to <a href="https://github.com/wiidev/d2x-cios/releases/tag/d2x-v11-beta3" target="_blank">v11 beta3</a>.
+</ul>
+
+<h3>Options</h3>
+<ul>
+<li>All options are now saved automatically when changed and the dedicated save settings option has been removed.
+<li>When setting SD or USB HDD drive letter (or Path) via the options menu ModMii will now ask if you would like to scan it for apps to update or clean (only after a quick cursory check for apps or wiiu folder). The same is done in ModMii Skin but it will notify the user even if nothing is found since this serves as the only File Cleanup & App Updater option in ModMii Skin.
+<li>File Cleanup & App Updater operations will no longer change the saved SD Card Drive\Path setting.
+<li>Added Context Menu & Launchpad Toolbar info and Installer\Uninstaller to ModMii Classic's Options (in addition to the "F = open a File or Folder" menu). See <a href="https://modmii.github.io/changelog.html#7.0.0">7.0.0 changelog</a> for more info.
+</ul>
+
+<h3>Guide</h3>
+<ul>
+<li>Added steps to applicable guides to check\change MBR partition style of SD cards (in addition to USB HDDs) since these days they are not always necessarily sold as MBR by default.
+<li>Enhanced Priiloader steps in guides noting how to handle potential "cIOSPAGHETTI" errors.
+<li>When downloading yawmME ONLY as part of a SysCheck Updater Wizard\guide, ModMii ensures \WAD\wm_config.txt is disabled to make sure no custom config settings cause issues like <a href="https://gbatemp.net/threads/yawm-modmii-edition-v1-0-released.628012/post-10610452" target="_blank">this one</a>.
+</ul>
+
+<h3>Minor Bugfixes and Improvements</h3>
+<ul>
+<li>ModMii now adds a / (forward slash) at the start of v14 forwarder dol paths. Most homebrew does not care about this so it went unnoticed for so long. ModMii's v14 USBLoader(s) forwarder has been similarly updated but there should be no need to update from the older version.
+<li>Fixed bug in vWii SysCheck Updater Wizard where vIOS80 and Priiloader were always thought to need updates.
+<li>Fixed minor bug where ModMii Skin vWii wizard functions allowed users to proceed with custom d2x versions enabled that do not support vWii base IOS38 so long as the other 3 vWii base IOSs were supported. In those cases a vWii cIOS with base 38 would just have been excluded from downloads\guides.
+<li>Fixed bug where loading one download queue then going back and loading a second queue caused the items from the first queue to still be toggled.
+<li>Fixed bug where ModMii would sometimes crash when downloading apps from oscwii.org if either the site was down or the PC was offline. Now if there's no access to oscwii.org ModMii will consider the cached version in its temp folder as the latest available (if applicable), otherwise the download will be reported as Missing.
+<li>Fixed ModMii's App Launcher feature from being unable to correctly retrieve arguments from meta.xml's that improperly included null byte(s), or that included single line comments before any arguments (block comments were fine). Also adjusted meta.xml argument parsing to exclude any args contained within disabled_arguments tags (which was recently introduced by USB Loader GX in r1282).
+<li>Fixed bug when listing options for d2x or skin themes where extra invalid options were displayed; this was harmless because they could not be toggled.
+<li>Fixed harmless "Could Not Find C:\ModMii\temp\DLgotos.txt" error that was sometimes displayed when building emunands. Even if this error was encountered the results would have been correct.
+<li>Fixed minor bug that occurred if ModMii Classic was run as an Administrator and one of the Download Pages was launched, resulting in the ModMii console window staying open instead of getting hidden.
+<li>If ModMii Classic is run as an administrator, the onscreen directions informing users they can drag and drop files onto the console window to avoid typing the path is no longer displayed (as this capability is disabled when run as Administrator). Note there has never been a requirement to run ModMii as an administrator unless you choose to have it install or write to a protected folder.
+<li>Updated shortcut-er launchers (ModMii.exe, ModMiiSkin.exe and ModMii_32bit.exe) to also detect instances of ModMii if run as an Administrator (e.g. "Administrator:  ModMii") in order to better warn users against running multiple instances of ModMii.
+<li>ModMii Skin and ModMii.bat will switch to the 32bit version of ModMii.exe on older unsupported versions of Windows, even if it is a 64bit OS. The 32bit version of ModMii.exe will not magically make ModMii fully work with older versions of Windows, but it will make things a bit better.
+<li>Updated optional "Spin" channel effect when applying themes. The change was just to resize the channel outline as described <a href="https://gbatemp.net/threads/wii-themer-org.628144/post-10614298" target="_blank">here</a>.
+<li>Updated the version of wiiload used by ModMii to v0.5.3-1 and removed App Launcher filesize check (validated on receiver)
+<li>For your protection, ModMii's IOS WAD Modifier now restricts users from changing a stub IOS's slot to one used used by system menus.
+<li>Other minor changes.
+</ul>
+
+<br>
+
 <h2 id="8.0.0"><a href="#8.0.0">8.0.0 Changelog - 2025:03-10:</a></h2>
 
 <a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.0" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.0/total?label=downloads&logo=github" border="0"></a><br>
@@ -71,36 +123,36 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>All .NET Framework 3.5 system requirements have been removed.
 <li>A lot of supporting apps and processes have been improved, removed or replaced by WiiPy.
 <li>ModMii’s File Cleanup & App Updater feature drastically improved. It will now check if updates are available for every single Wii/vWii/WiiU app available on Open Shop Channel and Homebrew App Store libraries (over 400 apps!), plus Aroma, Environment Loader & Nand Dumper.
-<li>New recommended NandLoader for Forwarder Channel WADs (OpenDolBoot’s nboot)! ModMii can now modify the NandLoader of a Channel WAD (or folder of WADs) to work simultaneously for Wii and vWii! Wii Game Shortcut Creator (WiiGSC) has been similarly updated to <a href="https://github.com/modmii/WiiGSC/releases">v1.1 ModMii Edition</a>.
+<li>New recommended NandLoader for Forwarder Channel WADs (OpenDolBoot’s nboot)! ModMii can now modify the NandLoader of a Channel WAD (or folder of WADs) to work simultaneously for Wii and vWii! Wii Game Shortcut Creator (WiiGSC) has been similarly updated to <a href="https://github.com/modmii/WiiGSC/releases" target="_blank">v1.1 ModMii Edition</a>.
 <li>New option when modifying applicable Channel WADs (or folder of WADs) to be able to detect, disable, and re-enable Deflicker video filters. Can also apply/remove N64 Expansion Pak and N64 Dark Filter patches for applicable N64 WADs.
 <li>New “Game Image tools” menu/feature supporting wbfs, iso, ciso filetypes (or folders containing these file types). Options include the ability to Disable Deflicker, Re-enable Deflicker, or Extract game contents of Wii and Gamecube games.
 <li>WAD Modifier: Added ability to detect and modify the following additional Channel WAD Attributes: AHB Access, DVD Video Access, NandLoader, Deflicker, Visibility (with optional minimalist banner to reduce filesize).
 <li>New “Inspector Wadget” feature (get it?); inspect and display WAD Information on any WAD or folder of WADs. Displays WAD Info like cIOS tags, AHB or DVD Video Access, NandLoader, Deflicker, etc.
 <li>When building/modifying an EmuNAND using ModMii Classic, users can now also input ANY mym or csm to customize the theme.
-<li>Updated bundled d2x version to <a href="https://github.com/wiidev/d2x-cios/releases">v11-beta2</a>.
+<li>Updated bundled d2x version to <a href="https://github.com/wiidev/d2x-cios/releases" target="_blank">v11-beta2</a>.
 <li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788">Swiss cMIOS r1788</a> has replaced WiiGator/WiiPower’s cMIOS as ModMii’s recommended cMIOS; however a cMIOS is still excluded from ModMii’s recommended setup by default (adjustable in ModMii’s options). Swiss cMIOS r1788 should behave identically to WiiGator/WiiPower’s cMIOS and official MIOS except if Y is held during any GameCube mode load it will start the built-in Swiss.
 <li>Reorganized Download Pages. Added a number of WiiU Homebrew downloads to a Download Page 5 (new). Moved PC Program downloads from page 2 to 5.
-<li>Thanks to all those that contributed either directly or indirectly to make this update possible; <a href="https://github.com/Maschell">@Maschell</a>, <a href="https://github.com/GaryOderNichts">@GaryOderNichts</a>, <a href="https://github.com/NinjaCheetah">@NinjaCheetah</a>, <a href="https://github.com/DacoTaco">@DacoTaco</a>, <a href="https://github.com/wiidev">@wiidev</a> aka blackb0x, <a href="https://github.com/emilydaemon">@emilydaemon</a>, <a href="https://github.com/pyorot">@pyorot</a> aka shoutplenty, the Wii/WiiU hacks guide team, the WiiLink team, the Open Shop Channel team, the Homebrew App Store team, <a href="https://github.com/vgmoose">@vgmoose</a>, <a href="https://github.com/pwsincd">@pwsincd</a>, <a href="https://github.com/Nightkingale">@Nightkingale</a>, Maeson, NoobletCheese, <a href="https://github.com/CrafterPika">@CrafterPika</a>, <a href="https://github.com/GabubuAvailable">@GabubuAvailable</a> aka Gabubu, <a href="https://github.com/Naim2000">@Naim2000</a> aka thepikachugamer, <a href="https://github.com/playerjmr">@playerjmr</a>, <a href="https://github.com/DarkMatterCore">@DarkMatterCore</a>, <a href="https://github.com/diddy81">@diddy81</a> and of course yours truly <a href="https://github.com/XFlak">@XFlak</a>.
+<li>Thanks to all those that contributed either directly or indirectly to make this update possible; <a href="https://github.com/Maschell" target="_blank">@Maschell</a>, <a href="https://github.com/GaryOderNichts" target="_blank">@GaryOderNichts</a>, <a href="https://github.com/NinjaCheetah" target="_blank">@NinjaCheetah</a>, <a href="https://github.com/DacoTaco" target="_blank">@DacoTaco</a>, <a href="https://github.com/wiidev" target="_blank">@wiidev</a> aka blackb0x, <a href="https://github.com/emilydaemon" target="_blank">@emilydaemon</a>, <a href="https://github.com/pyorot" target="_blank">@pyorot</a> aka shoutplenty, the Wii/WiiU hacks guide team, the WiiLink team, the Open Shop Channel team, the Homebrew App Store team, <a href="https://github.com/vgmoose" target="_blank">@vgmoose</a>, <a href="https://github.com/pwsincd" target="_blank">@pwsincd</a>, <a href="https://github.com/Nightkingale" target="_blank">@Nightkingale</a>, Maeson, NoobletCheese, <a href="https://github.com/CrafterPika" target="_blank">@CrafterPika</a>, <a href="https://github.com/GabubuAvailable" target="_blank">@GabubuAvailable</a> aka Gabubu, <a href="https://github.com/Naim2000" target="_blank">@Naim2000</a> aka thepikachugamer, <a href="https://github.com/playerjmr" target="_blank">@playerjmr</a>, <a href="https://github.com/DarkMatterCore" target="_blank">@DarkMatterCore</a>, <a href="https://github.com/diddy81" target="_blank">@diddy81</a> and of course yours truly <a href="https://github.com/XFlak" target="_blank">@XFlak</a>.
 </ul>
 
 <h3>WiiU & vWii</h3>
 <ul>
-<li>Added support to softmod the WiiU (with Aroma), vWii, or both. All ModMii features now also support WiiU/vWii except HackMii Solutions Wizard (inapplicable), Region Change Wizard and SNEEK Installation. Thanks goes out to all the WiiU/vWii devs that made this possible but especially <a href="https://github.com/Maschell">@Maschell</a> and <a href="https://github.com/GaryOderNichts">@GaryOderNichts</a> who are absolute legends!
+<li>Added support to softmod the WiiU (with Aroma), vWii, or both. All ModMii features now also support WiiU/vWii except HackMii Solutions Wizard (inapplicable), Region Change Wizard and SNEEK Installation. Thanks goes out to all the WiiU/vWii devs that made this possible but especially <a href="https://github.com/Maschell" target="_blank">@Maschell</a> and <a href="https://github.com/GaryOderNichts" target="_blank">@GaryOderNichts</a> who are absolute legends!
 <ul>
 <li>Technical details: ModMii’s WiiU softmod process is generally aligned with wiiu.hacks.guide. Notably ModMii includes some additional Aroma plugins/apps by default, such as Bloopair, evWii, GiveMiiYouTube, Inkay for Pretendo, Screenshot Plugin, WiiU Disc Dumper, WiiVCLaunch, etc.
 <li>Technical details: ModMii’s vWii softmod process includes EULA WAD installation to prevent update loops when enabling Priiloader’s Permanent vWii System Settings (vWii) system menu hack. It also includes an upgraded Photo Channel v1.1 (including HAZA and a custom vWii IOS61; which is a copy of vIOS56), Mii Channel (to enable some features which are missing on vWii, such as connecting a DS or moving Mii’s to Wii remotes), and 43DB patches (to fix the aspect ratio for the Everybody Votes and Check Mii Out channels). Essentially ModMii does much of what System Channel Restorer & ww-43db-patcher can do but in different ways.
 </ul>
-<li>Custom <a href="https://raw.githubusercontent.com/modmii/modmii.github.io/refs/heads/master/Support/Skins/Default/splash.png">splash screen</a> added to WiiU/Aroma boot (thanks <a href="https://github.com/emilydaemon">@emilydaemon</a>!) and can be customized by including splash.png in ModMii Skin themes. Note that ModMii will not overwrite existing splash screens if detected on SD.
+<li>Custom <a href="https://raw.githubusercontent.com/modmii/modmii.github.io/refs/heads/master/Support/Skins/Default/splash.png" target="_blank">splash screen</a> added to WiiU/Aroma boot (thanks <a href="https://github.com/emilydaemon" target="_blank">@emilydaemon</a>!) and can be customized by including splash.png in ModMii Skin themes. Note that ModMii will not overwrite existing splash screens if detected on SD.
 </ul>
 <h3>Downloads</h3>
 <ul>
-<li>Updated bundled d2x version to <a href="https://github.com/wiidev/d2x-cios/releases">v11-beta2</a>, thanks <a href="https://github.com/wiidev">@wiidev</a> aka blackb0x!
+<li>Updated bundled d2x version to <a href="https://github.com/wiidev/d2x-cios/releases" target="_blank">v11-beta2</a>, thanks <a href="https://github.com/wiidev" target="_blank">@wiidev</a> aka blackb0x!
 <li>Building vWii d2x cIOS WADs are supported for all d2x versions newer than v9 (except base 38 which requires v11-beta2 or newer). If an unsupported d2x version is selected in ModMii’s Options, vWii cIOSs are disabled on download pages. If the selected d2x version does not support vWii, it will be restored to default before downloading files for a vWii wizard/guide. If the selected d2x version is not ModMii’s default/bundled version, users will be prompted if they would like to revert to default before Wii or vWii wizard/guide operations.
-<li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788">Swiss cMIOS r1788</a> has replaced WiiGator/WiiPower’s cMIOS as ModMii’s recommended cMIOS (thanks <a href="https://github.com/pyorot">@pyorot</a> aka shoutplenty); however a cMIOS is still excluded from ModMii’s recommended setup by default (adjustable in ModMii’s options). Swiss cMIOS r1788 is a cMIOS with Swiss r1788 built-in. Hold Y during any GameCube mode load to start the built-in Swiss. If Y is not held then it should behave identically to WiiGator/WiiPower’s cMIOS and official MIOS.
+<li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788" target="_blank">Swiss cMIOS r1788</a> has replaced WiiGator/WiiPower’s cMIOS as ModMii’s recommended cMIOS (thanks <a href="https://github.com/pyorot" target="_blank">@pyorot</a> aka shoutplenty); however a cMIOS is still excluded from ModMii’s recommended setup by default (adjustable in ModMii’s options). Swiss cMIOS r1788 is a cMIOS with Swiss r1788 built-in. Hold Y during any GameCube mode load to start the built-in Swiss. If Y is not held then it should behave identically to WiiGator/WiiPower’s cMIOS and official MIOS.
 <li>Added 2 downloads to grab the complete Open Shop Channel (OSC) Wii App Library and the complete Homebrew App Store (HBAS) WiiU Library. Users can configure the Skipped Apps option if they want ModMii to exclude certain apps from the OSC or HBAS complete app library downloads. By default Legacy HBAS apps are skipped as well as extra/large RetroArch cores.
 <ul>
 <li>All OSC and HBAS downloads (both bulk and individual) are auto-updating and able to check if the currently downloaded version is already up-to-date.
-<li>ModMii’s HBAS downloads save download info to SD:/wiiu/apps/appstore/.get/packages/ in a format compatible with the appstore. Big thanks goes out to the HBAS team but especially <a href="https://github.com/vgmoose">@vgmoose</a>, <a href="https://github.com/pwsincd">@pwsincd</a> and <a href="https://github.com/Nightkingale">@Nightkingale</a>.
+<li>ModMii’s HBAS downloads save download info to SD:/wiiu/apps/appstore/.get/packages/ in a format compatible with the appstore. Big thanks goes out to the HBAS team but especially <a href="https://github.com/vgmoose" target="_blank">@vgmoose</a>, <a href="https://github.com/pwsincd" target="_blank">@pwsincd</a> and <a href="https://github.com/Nightkingale" target="_blank">@Nightkingale</a>.
 </ul>
 <li>ModMii’s File Cleanup & App Updater feature drastically improved. It will now check if updates are available for every single Wii/vWii/WiiU app available on OSC and HBAS libraries (over 400 apps!), plus Aroma, Environment Loader & Nand Dumper. Users can add apps to a Skipped Apps list if they do not want ModMii to update it for some reason. The Skipped Apps list is accessible via ModMii’s Options menu as well as the File Cleanup & App Updater menu.
 <ul>
@@ -112,19 +164,19 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>Page 1: 3x vWii System Menus, 29x vWii IOSs, Wii Speak [K], Photo Channel 1.1 [K] (including HAZA; referenced below), vWii IOS61 (for Photo Channel v1.1 support; basically a copy of vWii IOS56), vWii IOS80 (patched), 3x vWii Region Select, 2x vWii BC (BC-NAND & BC-WFS), 0d.app from vIOS80 v7200 to support (manually) building neek for vWii
 <li>Page 2: OSC Wii App Library, HackMii Installer v1.0, System Channel Restorer, Dump Mii NAND, csm-installer, Patched IOS80 Installer for vWii, HBC v1.1.3 WAD [OHBC], HBC v1.1.4-1 WAD [OHBC], ww-43db-patcher
 <li>Page 3: 4x themes for vWiiU vWiiE and vWiiJ (plus base app/theme files)
-<li>Page 4: vWii d2x cIOS248[38], vWii d2x cIOS249[56], vWii d2x cIOS250[57], vWii d2x cIOS251[58], <a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788">Swiss cMIOS r1788</a>, DIOS MIOS v2.11
+<li>Page 4: vWii d2x cIOS248[38], vWii d2x cIOS249[56], vWii d2x cIOS250[57], vWii d2x cIOS251[58], <a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788" target="_blank">Swiss cMIOS r1788</a>, DIOS MIOS v2.11
 <li>Page 5: HB App Store WiiU Library, Homebrew App Store, Aroma, Nand Dumper, Environment Loader, vWii Compat Installer, Wii U Disc Dumper (WUDD), WUP Installer GX2 (WUHB), Bloopair, Inkay for Pretendo, GiveMiiYouTube, Screenshot (WUPS), Enhanced vWii (evWii), SaveMii Mod (WUT Port), WiiVCLaunch, WiiUIdent, Tiramisu, Wii U Account Swap, 5x PC Programs which were also added to the Uninstaller [UStealth, WiiLink Patcher, NUSGet, Cemu, UWUVCI (Ultimate Wii U Virtual Console Injectors)].
 <li>Advanced Downloads Page: vWii d2x cIOS248[38], vWii d2x cIOS249[56], vWii d2x cIOS250[57], vWii d2x cIOS251[58]
 </ul>
 <li>Updated Downloads:
 <ul>
-<li>WiiGSC updated to v1.1 ModMii Edition; which notably supports building Wii game shortcut channels that work on both Wii and vWii using DacoTaco’s OpenDolBoot nboot NandLoader. More information on WiiGSC’s other changes can be found under its own <a href="https://github.com/modmii/WiiGSC/releases">release announcement</a>.
+<li>WiiGSC updated to v1.1 ModMii Edition; which notably supports building Wii game shortcut channels that work on both Wii and vWii using DacoTaco’s OpenDolBoot nboot NandLoader. More information on WiiGSC’s other changes can be found under its own <a href="https://github.com/modmii/WiiGSC/releases" target="_blank">release announcement</a>.
 <li>Photo-Channel-1.1-dummy-HAZA.wad is now created/downloaded along with Photo Channel 1.1 in order for v1.1 to work properly
 <li>3x Channels updated to work on vWii in addition to Wii (USB-Loader, postLoader and WiiFlow)
 <li>nSwitch channel updated to embed v4.2 and was also modified to have AHB and DVD Video access enabled as well as changing its NandLoader to ODB’s nboot to support installations on both Wii and vWii.
 <li>Bootmii SD files updated to v1.5
 <li>Converted the following existing downloads to be autoupdating from OSC: MyMenuifyMod, YAWM ModMii Edition, SysCheck ModMii Edition, Priiloader, Load Priiloader, ARC ModMii Edition, fptii, CleanRip, CFG USB Loader and USB Loader GX (GX will actually switch to OSC later on after its bundled meta.xml has been fixed)
-<li>Updated NTSC/KOR/JAP themes by <a href="https://github.com/diddy81">@diddy81</a> from the Wii Theme Team. KOR/JPN themes had language and country buttons removed to align with their system menus. NTSC themes fixed a non-critical bug where a typo was pointing to an EU function instead of a US function preventing access to Wii Settings’ Country setting. All themes on Download Page 3 were also updated to no longer be signed by ModMii as it complicates things for very little benefit.
+<li>Updated NTSC/KOR/JAP themes by <a href="https://github.com/diddy81" target="_blank">@diddy81</a> from the Wii Theme Team. KOR/JPN themes had language and country buttons removed to align with their system menus. NTSC themes fixed a non-critical bug where a typo was pointing to an EU function instead of a US function preventing access to Wii Settings’ Country setting. All themes on Download Page 3 were also updated to no longer be signed by ModMii as it complicates things for very little benefit.
 <li>Updated DIOS MIOS Lite (DML) from v1.3 to v2.11
 <li>Some WADs previously thought to be fakesigned were updated to truly be fakesigned. ModMii will still consider any Legacy non-fakesigned cIOSs it encounters as valid. Fakesigning is not really necessary anyway unless a vanilla IOS with the original trucha bug is being used/loaded to attempt to install non-fakesigned content.
 <li>Removed the RC24 patch from ModMii’s extra brick protection system menu IOSs since it is no longer required for WiiLink. Also the filename format was changed to IOS##v65535(ModMii-IOS60-v6174).wad.
@@ -141,7 +193,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 </ul>
 <h3>Supporting Apps & System Requirements</h3>
 <ul>
-<li>A lot of supporting apps and processes have been improved, removed or replaced by WiiPy; thanks <a href="https://github.com/NinjaCheetah">@NinjaCheetah</a> for his work on libWiiPy, WiiPy, NUSGet and more!
+<li>A lot of supporting apps and processes have been improved, removed or replaced by WiiPy; thanks <a href="https://github.com/NinjaCheetah" target="_blank">@NinjaCheetah</a> for his work on libWiiPy, WiiPy, NUSGet and more!
 <li>Mostly due to using WiiPy, ModMii v8.0.0+ requires 64-bit Windows 8.1 or higher and Microsoft Visual C++ 2015-2022. ModMii will warn you that some features will not work properly if system requirements are not met.
 <li>All .NET Framework 3.5 system requirements have been removed.
 <li>Added option to ModMii Classic to download various dependencies now instead of when needed (i.e. ShowMiiVWiiKeys, nand-tools, nandBinCheck, Punetwiin, wiiload, UnRAR, Sharpii .Net Core, OpenDolBoot, wwcxtool, wit, LZ77Helper).
@@ -149,7 +201,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>NUS Downloader no longer bundled to grab WADs from NUS; instead WiiPy is bundled/used. This should resolve random errors or freezing users sometimes encountered (which were usually resolved when retrying downloads anyway).
 <li>WadMii/libwiisharp no longer bundled to (un)pack WADs; instead WiiPy is bundled/used.
 <li>SMW-Mod/libwiisharp (ShowMiiWads-Mod) no longer bundled to install content to EmuNANDs; instead WiiPy is bundled/used.
-<li>ThemeMii Cmd Line (TMCL.exe) is no longer downloaded to create themes; instead themewii.exe is downloaded/used which requires .Net Framework 4.5 (instead of 3.5); thanks goes out to <a href="https://github.com/scooby7402976">@scooby7402976</a> (aka scooby74029) and <a href="https://github.com/wiidev">@wiidev</a> (aka blackb0x). Themes are also no longer signed by ModMii as it complicates things for very little benefit.
+<li>ThemeMii Cmd Line (TMCL.exe) is no longer downloaded to create themes; instead themewii.exe is downloaded/used which requires .Net Framework 4.5 (instead of 3.5); thanks goes out to <a href="https://github.com/scooby7402976" target="_blank">@scooby7402976</a> (aka scooby74029) and <a href="https://github.com/wiidev" target="_blank">@wiidev</a> (aka blackb0x). Themes are also no longer signed by ModMii as it complicates things for very little benefit.
 <li>TMDedit is no longer bundled to construct d2x cIOSs newer than v9; instead WiiPy is bundled/used to streamline building all d2x versions. A legacy cIOS build method has been added to ModMii & d2x-beta-md5-updater.bat for backwards compatibility. Users will be prompted to enable the legacy cIOS build method if an outdated d2x-beta version is detected and an update for the same version is not available. Alternate d2x cIOS versions hosted online have been updated accordingly. Legacy cios building mode automatically switches back off when changing d2x versions.
 <li>Sharpii/libwiisharp/patchIOS no longer bundled for WAD editing and info gathering; instead other tools are used (mostly WiiPy).
 <li>Sharpii no longer bundled to send WADs to the HBC via LAN; instead Sharpii .Net Core is downloaded/used only when needed for this function.
@@ -164,7 +216,7 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <ul>
 <li>WAD Modifier: Added ability to detect and modify the following additional Channel WAD Attributes: AHB Access, DVD Video Access, NandLoader, Deflicker, Visibility (with optional minimalist banner to reduce filesize)
 <li>New recommended NandLoader for Forwarder Channel WADs! By leveraging DacoTaco’s OpenDolBoot ModMii can now modify the NandLoader of a Channel WAD (or folder of WADs) to work simultaneously for Wii and vWii! Before now forwarders built for the Wii had to be converted to work on vWii using tools like Convert2vWii or WiiForwarder2vWii to change the NandLoader to “tiny vWii”, and after the change they would no longer work on Wii. Now channels can be converted to work on both consoles without needing two copies of every WAD! Warning: any WADs with modified NandLoaders should always be double checked before assuming it works on both console types. Both OpenDolBoot & OpenHBC NandLoader’s should work on Wii and vWii, but in some tests only one or the other worked. Ultimately the results depend on what app/DOL is being integrated with the NandLoader (and its entrypoint address) or if in the case of forwarders also the app that is being forwarded to.
-<li>New NandLoader option when Modifying a Channel WAD (or folder of WADs) to detect and change NandLoader. This essentially makes the Convert2vWii & WiiForwarder2vWii tools obsolete as ModMii can do all they can do and more. Supported NandLoaders include OpenDolBoot (nboot), comex, marcan, OpenHBC, taiko, tiny vWii and waninkoko. OpenDolBoot’s NandLoader (aka nboot) is recommended and generally supports channel loading on both Wii and vWii (thanks <a href="https://github.com/DacoTaco">@DacoTaco</a>!). NandLoaders can either be integrated/merged with a channel’s main dol/app using OpenDolBoot, or sometimes kept separate/external if the WAD is structured that way to begin with. Additional NandLoaders can be saved to ModMii’s Support/NandLoaders folder and they will automatically be supported; details <a href="https://github.com/modmii/modmii.github.io/blob/master/Support/NandLoaders/ReadMe.txt">here</a>. Wii Game Shortcut Creator (WiiGSC) has been similarly updated to v1.1 ModMii Edition; more information on WiiGSC’s other changes can be found under its own <a href="https://github.com/modmii/WiiGSC/releases">release announcement</a>. Note that ModMii will only update DOLs and NandLoaders in Channel WADs with 2 or 3 content files (including banner). These are the types of channels users generally modify; and anything more complicated can/should be done manually by unpacking, modifying, and repacking the WAD.
+<li>New NandLoader option when Modifying a Channel WAD (or folder of WADs) to detect and change NandLoader. This essentially makes the Convert2vWii & WiiForwarder2vWii tools obsolete as ModMii can do all they can do and more. Supported NandLoaders include OpenDolBoot (nboot), comex, marcan, OpenHBC, taiko, tiny vWii and waninkoko. OpenDolBoot’s NandLoader (aka nboot) is recommended and generally supports channel loading on both Wii and vWii (thanks <a href="https://github.com/DacoTaco" target="_blank">@DacoTaco</a>!). NandLoaders can either be integrated/merged with a channel’s main dol/app using OpenDolBoot, or sometimes kept separate/external if the WAD is structured that way to begin with. Additional NandLoaders can be saved to ModMii’s Support/NandLoaders folder and they will automatically be supported; details <a href="https://github.com/modmii/modmii.github.io/blob/master/Support/NandLoaders/ReadMe.txt" target="_blank">here</a>. Wii Game Shortcut Creator (WiiGSC) has been similarly updated to v1.1 ModMii Edition; more information on WiiGSC’s other changes can be found under its own <a href="https://github.com/modmii/WiiGSC/releases" target="_blank">release announcement</a>. Note that ModMii will only update DOLs and NandLoaders in Channel WADs with 2 or 3 content files (including banner). These are the types of channels users generally modify; and anything more complicated can/should be done manually by unpacking, modifying, and repacking the WAD.
 <li>If a channel WAD is missing a NandLoader, ModMii can repair it when updating its NandLoader or the DOL used by the channel.
 <li>New option when modifying applicable Channel WADs (or folder of WADs) to be able to detect, disable, and re-enable Deflicker video filters. Can also disable/re-enable the dark filter on 10 N64 VC Channels. Disabling the Deflicker video filter is recommended when using 480p display mode to improve video quality. Enabling the Deflicker video filter is recommended when using 480i display mode on a CRT TV. Deflicker patching can be done on-the-fly by USB Loaders so editing WADs for Deflicker will often be unnecessary. Thanks Maeson and NoobletCheese for researching video filters in such detail!
 <li>New “Game Image tools” menu/feature supporting wbfs, iso, ciso filetypes (or folders containing these file types). Options include the ability to Disable Deflicker, Re-enable Deflicker, or Extract game contents of Wii and Gamecube games. Deflicker patching can be done on-the-fly by USB Loaders for most but not all game images; e.g. any games with multiple dols like Metroid Prime Trilogy or The House of the Dead 2 & 3 Return cannot be patched by USB Loaders unless using the alt-dol method to load/patch a specific sub-game/dol at launch. The only known deflicker patch not supported by ModMii is for Gamecube games compiled with gxD.a which is (only?) used in “Sega Soccer Slam”.
@@ -194,16 +246,16 @@ self.parent.location="http://modmii.zzl.org/changelog.html";
 <li>SysCheck Updater now gives the option to analyze sysCheck v2.1.0b logs but with a warning. ModMii also now accepts System Menu IOSs as valid if they are v65535 and have Trucha Bug and NAND Access (in addition to v16174 or a ModMii tagged System Menu IOS) to better support analysis of older SysChecks. Users also linked to SysCheck v2.1.0.b19 in case SysCheck ModMii Edition or HDE do not work in rare cases.
 <li>When analyzing a SysCheck, ModMii will now display settings that impact how it is being analyzed; i.e. Update Active IOSs (for Wii & vWii SysChecks), Extra Brick Protection (Wii only), Hermes cIOS (Wii Only) and cMIOS (Wii Only). These settings will also continue to be summarized in generated guides.
 <li>When generating SysCheck wizard guides, the HBC will now be updated using the hackmii installer instead of yawmME/WAD if the current HBC is older than v1.1.0 (previously v1.0.7). While yawmME’s meta.xml could be modified to use the “no_ios_reload” argument instead of “ahb_access” allowing it to work without cIOS on HBC v1.0.7 & v1.0.8, v1.0.7 is susceptible to network initialization IOS reload bug so the “ahb_access” argument was intentionally retained.
-<li>Added support to ModMii’s SysCheck Updater to download and analyze SysChecks that were uploaded to https://syscheck.crafterpika.cc; thanks <a href="https://github.com/CrafterPika">@CrafterPika</a>!
+<li>Added support to ModMii’s SysCheck Updater to download and analyze SysChecks that were uploaded to https://syscheck.crafterpika.cc; thanks <a href="https://github.com/CrafterPika" target="_blank">@CrafterPika</a>!
 </ul>
 <h3>Guide</h3>
 <ul>
-<li>New guides for installing recommended WiiU softmods, vWii softmods, or both. Outcomes are generally aligned with wii.hacks.guide (procedure may differ; e.g. using WADs to install cIOS instead of the d2x installer). Sample guides can be found <a href="https://modmii.github.io/sampleguides/8.0.0/">here</a>. Thanks wii.hacks.guide team and <a href="https://github.com/Ingunar">@Ingunar</a> in particular!
+<li>New guides for installing recommended WiiU softmods, vWii softmods, or both. Outcomes are generally aligned with wii.hacks.guide (procedure may differ; e.g. using WADs to install cIOS instead of the d2x installer). Sample guides can be found <a href="https://modmii.github.io/sampleguides/8.0.0/" target="_blank">here</a>. Thanks wii.hacks.guide team and <a href="https://github.com/Ingunar" target="_blank">@Ingunar</a> in particular!
 <li>Added a ModMii Wizard option to restore the default theme; which includes 43DB patches for vWii to fix the aspect ratio for the Everybody Votes and Check Mii Out channels. csm-installer is used in both vWii and Wii guides to install themes; previously Wii guides used MyMenuifyMod.
-<li>Added an extra <a href="https://wilbrand.donut.eu.org">Wilbrand Web</a> exploit option for 3.x-4.2 guides; thanks <a href="https://github.com/emilydaemon">@emilydaemon</a>!
+<li>Added an extra <a href="https://wilbrand.donut.eu.org" target="_blank">Wilbrand Web</a> exploit option for 3.x-4.2 guides; thanks <a href="https://github.com/emilydaemon" target="_blank">@emilydaemon</a>!
 <li>HackMii Solutions Wizard now downloads v1.0 of the HackMii Installer in addition to v1.2. HackMii Solutions guides direct users to try v1.0 if v1.2 does not work.
 <li>Added IOS56 to Region Change Wizard in case users do not have it installed and thus prevents installing EULA v3. The EULA WAD is now named differently only when downloaded as part of a Region Change Wizard to come after the IOS56 prerequisite; i.e. changed from EULA-NUS-v3 to NUS-EULA-v3.
-<li>HTML guides will now open with whatever browser Windows is configured to use for http. Users without HTML file associations will no longer be prompted to choose what app to open guides with. This change was inspired after shaking my head at <a href="https://youtu.be/IMAHP-3sm4A?si=S8iQx54pRMAKxxXw&t=442">this youtuber</a> when he closes the prompt to choose what browser to open his guide with and says “all you gotta do is press the escape key on the keyboard”.
+<li>HTML guides will now open with whatever browser Windows is configured to use for http. Users without HTML file associations will no longer be prompted to choose what app to open guides with. This change was inspired after shaking my head at <a href="https://youtu.be/IMAHP-3sm4A?si=S8iQx54pRMAKxxXw&t=442" target="_blank">this youtuber</a> when he closes the prompt to choose what browser to open his guide with and says “all you gotta do is press the escape key on the keyboard”.
 <li>Replaced RiiConnect24 with WiiLink throughout all guide references.
 <li>Other guide enhancements, including references to RiiTag, UTag, Seagate &gt;2TB HDD tutorial (in addition to WD), diagram of proper SD/USB file structure, fixed broken links, etc.
 </ul>
@@ -902,7 +954,7 @@ news outlets</a>.</li>
 
 <h3>Wizards/Guides</h3>
 <li>Removed IOS236 installation from main modding procedure; instead Priiloader and WADs are installed using ahbprot access. IOS236 WAD, IOS236 installer and Simple IOS Patcher still available in Download Pages.
-<li>Replaced MMM with Some YAWMM Mod for ModMii's main wizard and sysCheck Updater wizard as it has support for Motion+ controllers. WiiMod Lite is not supported because of reasons identified here: http://tiny.cc/0ihotz
+<li>Replaced MMM with Some YAWMM Mod for ModMii's main wizard and sysCheck Updater wizard as it has support for Motion+ controllers. WiiMod Lite is not supported because of reasons identified here: https://tiny.cc/0ihotz
 <li>MMM is still used in some guides where it's launched directly from an exploit to install WADs then use it's App Launcher to load the next app without having to rename files and repeat an exploit. Notes added to these guides on how to proceed you only have Motion+ remotes.
 <li>Bundled a new stand-alone script saved to ModMii's Support folder: ExploitAppSelector.bat. It does exactly what it says and works when saved to the root of any SD or COPY_TO_SD folder, or ModMii's main\support folders. ModMii wizards that launch MMM via an exploit also save this script to COPY_TO_SD and reference it in guides to help users change the app launched by exploits.
 <li>Added a new first step to guides to explicitly check the format of your SD card (or HDD) and to format it as FAT32 if necessary. Not applicable to Region Change Guides and sysCheck Updater guides as these users will already have done this. These steps were already present in ModMii's USB-Loader setup guides.
@@ -921,7 +973,7 @@ news outlets</a>.</li>
 <li>Priiloader updated to v0.9 with lots of new features; ModMii bundles it with the Priiloader Launcher app and a modified hacks_hash with the "Lock System Menu with Black Screen" hack removed. Added some important info and warnings to meta.xml; e.g. how to access Priiloader, how it can be removed when updating or (un)installing a new System Menu, name changed to "Priiloader Installer", etc.
 <li>Reordered paths for USB-Loader Forwarder Channel to prioritize USBLoaderGX first, WiiFlow second, and CFG third. Also the removed splash screen to speed up load time.
 <li>Updated Any Region Changer (ARC) to ARC ModMii Edition (ARCME) by scooby74029; if ARCME detects a region mismatch, you only have to select the "Auto Fix Settings" to correct it. Older versions of ARC required you to set a Region, save, then change the video mode back to it's previous setting, and save again. ARCME's "Auto Fix Settings" takes care of all that (i.e. it does not change the video mode but changes everything else to align with the installed System Menu region). It's a minor improvement over the original but don't forget it also supports Motion+ remotes so ARCME FTW!
-<li>Updated USBLoaderGX to blackb0x's r1272 mod v5 released in Feb 2021. It's changelog is quite impressive, you should read it: http://tiny.cc/gxenhanced
+<li>Updated USBLoaderGX to blackb0x's r1272 mod v5 released in Feb 2021. It's changelog is quite impressive, you should read it: https://tiny.cc/gxenhanced
 <li>Updated WiiFlow Lite to Fledge68's v5.4.8
 <li>Updated Nintendont to v6.490.
 <li>Updated Wii64 beta 1.1 to beta 1.2; which was released 3 years ago, sorry for missing it! Please report if you notice something like this!
@@ -930,7 +982,7 @@ news outlets</a>.</li>
 <li>Updated sysCheck to the latest, slightly modified, version of sysCheck HDE. The only change is an updated URL to re-enable uploading of reports; thanks to the RC24 team for maintaining this functionality!
 <li>Two versions of Bootmii SD Files are now considered valid. The older version hosted online by Team Twiizer, and now also the newer version that the latest HackMii Installer creates when preparing an SD card.
 <li>Added custom meta.xml and icon.png to the HackMii Installer. The installer itself is still downloaded from the original source and NOT mirrored.
-<li>Updated Configurable USB Loader MOD Patched to the latest version 70r78.11 by nitro from 2017/01/15 (mighty.dol plugin also updated) http://tiny.cc/r5kqtz
+<li>Updated Configurable USB Loader MOD Patched to the latest version 70r78.11 by nitro from 2017/01/15 (mighty.dol plugin also updated) https://tiny.cc/r5kqtz
 <li>CFG USBLoader downloads will only update\overwrite apps folder, existing usb-loader config files will not be overwritten. Previous behaviour would have renamed the usb-folder if detected; now it just skips any duplicates when copying config files.
 <li>No longer creates a custom CFG USBLoader config.txt to avoid potential user error\overwrite if manually copying files over to SD or USB.
 <br>
@@ -1121,7 +1173,7 @@ news outlets</a>.</li>
 
 <li>Replaced\mirrored nusad google code download links with dropbox links.</li>
 
-<li>Updated WiiFlow download to grab the most recent version hosted here: http://code.google.com/p/wiiflow/downloads/list</li>
+<li>Updated WiiFlow download to grab the most recent version hosted here: https://code.google.com/p/wiiflow/downloads/list</li>
 
 <li>Replaced Joyflow with WiiFlow because WiiFlow can now run via an emulated NAND and JoyFlow is no longer being developed. Also replaced JoyFlow forwarder with WiiFlow v14b forwarder.</li>
 

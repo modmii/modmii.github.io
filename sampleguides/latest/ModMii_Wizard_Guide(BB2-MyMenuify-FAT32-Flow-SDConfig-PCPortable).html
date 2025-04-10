@@ -27,7 +27,7 @@ ol > li::marker {font-weight: bold;}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 </head>
 <body style="margin:5px 5px 5px 35px;">
-ModMii Wizard Guide<span style="float:right;">v8.0.0|25.03.10 Generated on Mon 03/10/2025 - 16:43</span><br><br>
+ModMii Wizard Guide<span style="float:right;">v8.0.1|25.04.10 Generated on Thu 04/10/2025 - 12:34</span><br><br>
 <!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
@@ -127,7 +127,7 @@ This guide was generated using the following parameters:<br>
 	</ul>
 <li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 249, 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a>.</li></li>
 
-<li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="http://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="http://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
+<li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="https://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="https://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
 <li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
 <li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
 
@@ -187,18 +187,87 @@ This guide was generated using the following parameters:<br>
 </script>
 
 <font size="6"><li><a name="Hacking">Hacking your Wii</a></li></font><br><ol>
-<font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
+<font size=5><li>Set SD Card Partition Style to MBR (if applicable)</li></font><br>
 Partition style\format information for devices that were connected when this guide was created has been saved to the spoiler below.<br><br>
 <div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
 <pre>
 DeviceID Filesystem
-F:       FAT32     
 H:       NTFS      
-</pre>Partition Style below should be MBR by default for almost all SD Cards. If for some reason yours is not, convert it to MBR using the directions from ModMii's USB-Loader Setup guide.<br><pre>
-Number Friendly Name                     Serial Number        HealthStatus OperationalStatus Total Size Partition Style
-1       SDHC                                                 Healthy      Online              14.46 GB MBR            
-<br>
 </pre></div></div></div>
+<!--------------------------------------MBRsd Stuff BELOW----------------------------------->
+
+<ul style=align="left" type="disc">
+<li><b>First, plug your SD Card into your PC and check if it's Partition style is already MBR.</b>
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/XyTaMT5yhAY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_Check.gif" border="0"/></a><br>
+	<ol type="A">
+	<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
+		</ul>
+	<li>In the Disk Management window, right-click the disk you want and select "Properties".
+	<li>In the disk's properties window, select the "Volumes" tab.
+	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
+	</ol>
+<br>
+<li><b>If your SD Card is not already MBR you must convert it using one of the two methods below.</b>
+<br>
+<br>
+<li><b>Method 1: MiniTool Partition Wizard</b>
+	<ul style=align="left" type="square">
+	<li>If you have files on the SD Card you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
+	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
+	<li>If your SD Card is not already in the desired format (e.g. FAT32) you will have to format it during the next step anyway so there's no point in using this method.
+	</ul>
+
+<br>
+<ol type="A">
+	<li><a href="https://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
+	</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
+
+	<li>Within the MiniTool window, right-click the GPT disk you want to convert and choose "Convert GPT Disk to MBR Disk".
+	<li>Click the "Apply" button in the toolbar.
+	<li>Click the "Yes" button to confirm conversion.
+	<li>Wait for the conversion to finish then click "OK".
+	<li>Once you have successfully converted your SD Card to MBR you can proceed to the next step of this guide.
+</ol>
+
+<br>
+
+<li><b>Method 2: Windows Disk Management</b>
+
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
+
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
+
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+
+<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
+
+
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed later.
+	</ul>
+<li>Set the File System to your desired format and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+</ol>
+<br>
+</ul>
+<br>
+<!--------------------------------------MBRsd Stuff ABOVE-----------------------------------><font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
 <i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,
 you can launch apps and install WADs over the internet to your Wii from your PC. Just open apps (boot.dol\elf files) or WADs with ModMii. Note that some apps may not work properly or support all features if they require an SD or HDD and you should never attempt to change the region of a console via the internet.</i><br>
 
@@ -343,7 +412,7 @@ Requirements: SD Card, SDHC Card or SDXC Card. Only works on System Menu 4.2. Ca
 <ul style=align="left" type="disc">
 <li>Run Bannerbomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf.<br>
 	<ul style=align="left" type="square">
-	<li>If it doesn't work for you, visit <a href="http://bannerbomb.qoid.us/" target="_blank">http://bannerbomb.qoid.us/</a> for more variations of Bannerbomb v2 (ignore the suggestion to update and use LetterBomb).
+	<li>If it doesn't work for you, visit <a href="https://bannerbomb.qoid.us/" target="_blank">https://bannerbomb.qoid.us/</a> for more variations of Bannerbomb v2 (ignore the suggestion to update and use LetterBomb).
 	<li>In order to use the SD Card Menu normally again after following this guide, you can remove Bannerbomb from your SD card with ModMii's File Cleanup feature, or by manually deleting the "aktn" folder where bannerbomb is saved (SD:\private\wii\title).
 	</ul>
 </ul>
@@ -569,8 +638,9 @@ Another Fun Fact! You can extract the contents of your nand.bin by opening it wi
 <li>After the Priiloader Installer loads, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd></b> to install it.
 	<ul style=align="left" type="disc">
 	<li>When successful the installer should display "Install done!"
-	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, skip ahead to the "Install WADs" step, then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
+	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
 	<li>If you get a "System Menu Version invalid or not vanilla" error, either use ModMii's SysCheck Updater Wizard or repeat the ModMii Wizard but this time choose a different System Menu version than the one you started with. This will overwrite the invalid\custom System Menu with a vanilla\official one and allow Priiloader to install successfully.
+	<li>If you get a "cIOSPAGHETTI" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.
 	</ul>
 <li><b>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd></b> to exit back to the Homebrew Channel.
 
@@ -698,10 +768,10 @@ WARNINGS: Do not unplug the console when installing WADs. WADs can also be <u>un
 
 <b>Here's your unique list of 44 WADs to install:</b>
 <ol>
-<li>cIOS248[38]-d2x-v11-beta2</li>
-<li>cIOS249[56]-d2x-v11-beta2</li>
-<li>cIOS250[57]-d2x-v11-beta2</li>
-<li>cIOS251[58]-d2x-v11-beta2</li>
+<li>cIOS248[38]-d2x-v11-beta3</li>
+<li>cIOS249[56]-d2x-v11-beta3</li>
+<li>cIOS250[57]-d2x-v11-beta3</li>
+<li>cIOS251[58]-d2x-v11-beta3</li>
 <li>IOS11v65535(ModMii-IOS60-v6174)</li>
 <li>IOS12-64-v526</li>
 <li>IOS13-64-v1032</li>
@@ -779,11 +849,7 @@ The rest of the guide is performed on your computer in order to set up your USB-
 External hard drive partition style\format information for drives that were connected when this guide was created has been saved to the spoiler below.<br><br>
 <div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
 <pre>
-Number Friendly Name                     Serial Number        HealthStatus OperationalStatus Total Size Partition Style
-1       SDHC                                                 Healthy      Online              14.46 GB MBR            
-<br>
 DeviceID Filesystem
-F:       FAT32     
 H:       NTFS      
 </pre></div></div></div><br>
 <!--------------------------------------MBR Stuff BELOW----------------------------------->
@@ -802,7 +868,7 @@ H:       NTFS
 	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
 	</ol>
 <br>
-<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="http://tiny.cc/wiibigdrive" target="_blank">ca032769's guide for Western Digital hard drives</a> or <a href="http://tiny.cc/wiibigseagate" target="_blank">Al_Touriste's guide for Seagate hard drives</a> to complete the rest of this step.</b>
+<li><b>If your hard drive is larger than 2TB and not already MBR, you must follow <a href="https://tiny.cc/wiibigdrive" target="_blank">ca032769's guide for Western Digital hard drives</a> or <a href="https://tiny.cc/wiibigseagate" target="_blank">Al_Touriste's guide for Seagate hard drives</a> to complete the rest of this step.</b>
 	<ul style=align="left" type="square">
 	<li>If your hard drive is >2TB, not MBR, and not a supported Western Digital or Seagate drive then you are currently out of luck.
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
@@ -820,7 +886,7 @@ H:       NTFS
 
 <br>
 <ol type="A">
-	<li><a href="http://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
+	<li><a href="https://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
 	</li>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
 
@@ -1368,7 +1434,7 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 	<ul style=align="left" type="square">
 	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Pages.
 	<li>Grab the <a href="https://web.archive.org/web/20231213215727/wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your Wii or PC!</li>
-	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
+	<li>Some other great libraries of Homebrew applications can be found at <a href="https://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
 	
 		<ul style=align="left" type="disc">	
 		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.
@@ -1590,35 +1656,35 @@ Source code for ModMii itself is available is available at <a href="https://gith
 
 <ul style=align="left" type="disc">
 <li> <a href="https://github.com/NinjaCheetah/WiiPy" target="_blank">WiiPy</a></li>
-<li> <a href="http://ftp.gnu.org/gnu/wget/" target="_blank">wget</a></li>
-<li><a href="http://sourceforge.net/projects/sevenzip/" target="_blank">7za</a></li>
-<li><a href="http://www.nirsoft.net/utils/nircmd.html" target="_blank">nircmd</a></li>
-<li><a href="http://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">sfk</a></li>
-<li><a href="http://sourceforge.net/projects/jojodiff/" target="_blank">jptch</a></li>
-<li><a href="https://web.archive.org/web/20140329080757/http://www.kuwanger.net/misc/hexalter.shtml" target="_blank">hexalter</a></li>
-<li><a href="http://github.com/waninkoko" target="_blank">Waninkoko's cIOS</a></li>
+<li> <a href="https://ftp.gnu.org/gnu/wget/" target="_blank">wget</a></li>
+<li><a href="https://sourceforge.net/projects/sevenzip/" target="_blank">7za</a></li>
+<li><a href="https://www.nirsoft.net/utils/nircmd.html" target="_blank">nircmd</a></li>
+<li><a href="https://sourceforge.net/projects/swissfileknife/files/1-swissfileknife/" target="_blank">sfk</a></li>
+<li><a href="https://sourceforge.net/projects/jojodiff/" target="_blank">jptch</a></li>
+<li><a href="https://web.archive.org/web/20140329080757/https://www.kuwanger.net/misc/hexalter.shtml" target="_blank">hexalter</a></li>
+<li><a href="https://github.com/waninkoko" target="_blank">Waninkoko's cIOS</a></li>
 <li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_3.6.rar" target="_blank">Hermes v4 cIOS</a></li>
 <li><a href="http://mods.elotrolado.net/~hermes/wii/cios_mload_source_install_4.0.rar" target="_blank">Hermes v5 cIOS</a></li>
 <li><a href="https://github.com/davebaol/d2x-cios/releases" target="_blank">d2x cIOS</a>, <a href="https://github.com/wiidev/d2x-cios" target="_blank">v11+ source</a></li>
 <li><a href="https://github.com/pyorot/debug-cmios/releases/tag/swiss-cmios-r1788" target="_blank">Swiss cMIOS r1788</a></li>
 <li><a href="https://github.com/modmii/modmii.github.io/blob/master/Support/NandLoaders/ReadMe.txt" target="_blank">NandLoaders</a></li>
 <li><a href="https://gbatemp.net/threads/homebrew-forwarder-isos.181011/" target="_blank">ISO disc-template</a></li>
-<li><a href="http://www.thedubber.altervista.org/other/batch_prog/index.html" target="_blank">Ascii2All.bat</a></li>
-<li><a href="http://wizapp.sourceforge.net/" target="_blank">WizApp</a></li>
-<li><a href="http://wit.wiimm.de/" target="_blank">wit</a>: still used but no longer Bundled with ModMii since v8.0.0</li>
-<li><a href="http://www.rarlab.com/rar_add.htm" target="_blank">UnRAR</a>: Still used but no longer Bundled with ModMii since v4.7.0</li>
-<li><a href="http://www.autoitscript.com/site/autoit/" target="_blank">AutoIt3</a>: Still used but no longer Bundled With ModMii since v4.5.7</li>
+<li><a href="https://www.thedubber.altervista.org/other/batch_prog/index.html" target="_blank">Ascii2All.bat</a></li>
+<li><a href="https://wizapp.sourceforge.net/" target="_blank">WizApp</a></li>
+<li><a href="https://wit.wiimm.de/" target="_blank">wit</a>: still used but no longer Bundled with ModMii since v8.0.0</li>
+<li><a href="https://www.rarlab.com/rar_add.htm" target="_blank">UnRAR</a>: Still used but no longer Bundled with ModMii since v4.7.0</li>
+<li><a href="https://www.autoitscript.com/site/autoit/" target="_blank">AutoIt3</a>: Still used but no longer Bundled With ModMii since v4.5.7</li>
 <li>NusFileGrabber by Leathl, Mod by XFlak and TheShadowEevee - requires libWiiSharp.dll: Not used since v7.0.3</li>
 <li>patchIOS by Leathl, Mod by scooby74029 - requires libWiiSharp.dll: Not used since v7.0.3</li>
-<li><a href="http://www.mediafire.com/?bogjind5oe3" target="_blank">WadMii (aka WadMiiIsh)</a> by cwstjdenobs - requires libWiiSharp.dll: Not used since v7.0.3</li>
+<li><a href="https://www.mediafire.com/?bogjind5oe3" target="_blank">WadMii (aka WadMiiIsh)</a> by cwstjdenobs - requires libWiiSharp.dll: Not used since v7.0.3</li>
 <li>TMDedit by person66 - requires libWiiSharp.dll: Not used since v7.0.3
-<li><a href="http://code.google.com/p/libWiiSharp/source/browse/" target="_blank">libWiiSharp.dll</a> by Leathl, Mod by scooby74029 and TheShadowEevee: Not used since v7.0.3</li>
+<li><a href="https://code.google.com/p/libWiiSharp/source/browse/" target="_blank">libWiiSharp.dll</a> by Leathl, Mod by scooby74029 and TheShadowEevee: Not used since v7.0.3</li>
 <li><a href="https://github.com/wiiNinja/NUS.downloader.command.line/tree/dotnet3.5" target="_blank">nusd</a> by WiiNinja (original GUI code by WB3000): Not used since v7.0.3</li>
 <li>SMW-Mod; ShowMiiWads by Leathl, Sneek Mod by RetroHead: Not used since v7.0.3</li>
 <li>settings.exe v1.0 by cwstjdenobs and v1.1 mod by obcd: Not used since v7.0.3</li>
 <li><a href="https://github.com/mogzol/sharpii" target="_blank">Sharpii</a> by person66: Not used since v7.0.3</li>
-<li><a href="http://www.dunyazad-library.net/software/hypatia/index.htm" target="_blank">hy</a>: Not bundled with ModMii since v4.7.0  and no longer used at all since v7.0.3</li>
-<li><a href="http://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">fvc</a>: Not used since v7.0.0</li>
+<li><a href="https://www.dunyazad-library.net/software/hypatia/index.htm" target="_blank">hy</a>: Not bundled with ModMii since v4.7.0  and no longer used at all since v7.0.3</li>
+<li><a href="https://sourceforge.net/projects/fileverifier/files/fileverifier/0.6.3.5830" target="_blank">fvc</a>: Not used since v7.0.0</li>
 </ul>
 
 </div></div></div>
