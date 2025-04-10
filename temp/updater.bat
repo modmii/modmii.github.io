@@ -1,6 +1,6 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=8.0.0
+set newversion=8.0.1
 set changelogURL=https://modmii.github.io/changelog.html
 set "wabmplast=%wabmp%"
 
@@ -18,7 +18,7 @@ if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 ::update below with latest recommended d2x
 set RecD2XcIOS=d2x-v11-beta3
 ::update below with the version of d2x bundled with the latest version of ModMii
-set BundledcIOS=d2x-v11-beta2
+set BundledcIOS=d2x-v11-beta3
 
 if exist "Support\settings.bat" support\sfk filter -spat "Support\settings.bat" -ls!"set \x22RecD2XcIOS=" -write -yes>nul
 echo Set "RecD2XcIOS=%RecD2XcIOS%">> Support\settings.bat

@@ -6,7 +6,7 @@
 	<ul style=align="left" type="square">
 	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Pages.
 	<li>Grab the <a href="https://web.archive.org/web/20231213215727/wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your vWii or PC!</li>
-	<li>Some other great libraries of Homebrew applications can be found at <a href="http://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
+	<li>Some other great libraries of Homebrew applications can be found at <a href="https://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
 	
 		<ul style=align="left" type="disc">	
 		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.

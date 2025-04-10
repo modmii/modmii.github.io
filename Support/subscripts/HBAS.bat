@@ -113,10 +113,31 @@ if /i "%WiiVCLaunch%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt
 if /i "%WiiUIdent%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fWiiUIdent\x3f" -write -yes
 
 :keepcontents
-::if also doing file cleanup, don't update certain apps from HBASwii
+::if also doing file cleanup, don't update certain apps from HBAS
 if /i "%HBASmode%" NEQ "update" goto:skip
 if /i "%clean%" NEQ "B" goto:skip
-support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fUFDiine-wuhb\x3f" -le!"\x3fUFDiine\x3f" -le!"\x3fwim\x3f" -le!"\x3fWii-U-Account-Swap\x3f" -le!"\x3fCompatTitleInstaller\x3f" -le!"\x3fvwii-compat-installer\x3f" -le!"\x3fwupymod\x3f" -le!"\x3fwup_installer_gx2_mod\x3f" -le!"\x3fwup_installer_gx2_wuhb\x3f" -le!"\x3fwup_installer_gx2\x3f" -le!"\x3fwupinstaller\x3f" -write -yes
+if not exist temp\CleanItems.txt goto:skip
+
+findStr /X /C:"\wiiu\apps\UFDiine" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fUFDiine-wuhb\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wim" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwim\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\Wii-U-Account-Swap" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fWii-U-Account-Swap\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\compat_installer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fCompatTitleInstaller\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\vwii-compat-installer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fvwii-compat-installer\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wupymod" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwupymod\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wup_installer_gx2_mod" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwup_installer_gx2_mod\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wup_installer_gx2" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwup_installer_gx2_wuhb\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wup_installer_gx2" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwup_installer_gx2\x3f" -write -yes
+findStr /X /C:"\wiiu\apps\wupinstaller" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwupinstaller\x3f" -write -yes
 :skip
 
 ::single app download support
@@ -124,6 +145,7 @@ if /i "%code1%" NEQ "all" echo ?%code1%?>temp\HBASname.txt
 set HBAStotal=0
 for /f %%a in (temp\HBASname.txt) do set /a HBAStotal+=1
 
+if /i "%HBAStotal%" EQU "0" (echo "echo %name%: Download Skipped">>temp\ModMii_Log.bat) & (goto:bottom)
 
 ::Loop through the the following once for EACH line in *.txt
 for /F "tokens=*" %%A in (temp\HBASname.txt) do call :processHBASlist %%A
@@ -810,10 +832,12 @@ if /i "%HBAScountFail%" NEQ "0" echo "echo %name%: %HBAScountSuccess% Downloaded
 
 :bottom
 if "%DRIVErestore%"=="" set "DRIVErestore=%Drive%"
-set "DRIVE=%DRIVErestore%"
 
 ::call settings to restore AUSKIP to default setting
 if exist Support\settings.bat call Support\settings.bat
+
+set "DRIVE=%DRIVErestore%"
+
 echo %HBAScountCurrent% >temp\HBAScountCurrent.txt
 echo %HBAScountSkip% >temp\HBAScountSkip.txt
 

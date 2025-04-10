@@ -89,6 +89,10 @@
 			If Aroma.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set nanddumper="
 			If nanddumper.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set Wiiload Plugin="
+			If WiiloadPlugin.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set FTPiiU Plugin="
+			If FTPiiUPlugin.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set EnvironmentLoader="
 			If EnvLoad.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set CompatTitleInstaller="
@@ -141,7 +145,7 @@
 	End Function
 
 	Function WiiUButton()
-		If ((HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (WiiUIdent.checked = True) And (Tiramisu.checked = True)) Then
+		If ((HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (WiiloadPlugin.checked = True) And (FTPiiUPlugin.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (WiiUIdent.checked = True) And (Tiramisu.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -150,7 +154,7 @@
 	End Function
 	
 	Function AutoUpdateButton()
-		If ((Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (WiiLink.checked = True) And (HashMF.checked = True) And (GCBM.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (WiiUIdent.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (UWUVCI.checked = True)) Then
+		If ((Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (WiiLink.checked = True) And (HashMF.checked = True) And (GCBM.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (WiiloadPlugin.checked = True) And (FTPiiUPlugin.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (WiiUIdent.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (UWUVCI.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -175,6 +179,8 @@
 		appstore.checked = checkstatus
 		Aroma.checked = checkstatus
 		nanddumper.checked = checkstatus
+		WiiloadPlugin.checked = checkstatus
+		FTPiiUPlugin.checked = checkstatus
 		EnvLoad.checked = checkstatus
 		CompatIns.checked = checkstatus
 		Bloopair.checked = checkstatus
@@ -221,6 +227,8 @@
 		appstore.checked = checkstatus
 		Aroma.checked = checkstatus
 		nanddumper.checked = checkstatus
+		WiiloadPlugin.checked = checkstatus
+		FTPiiUPlugin.checked = checkstatus
 		EnvLoad.checked = checkstatus
 		CompatIns.checked = checkstatus
 		Bloopair.checked = checkstatus
@@ -371,23 +379,23 @@ table, th {
 	<th title="WUP Installer GX2 (WUHB); can install public titles such as games, game updates or DLC to your system memory (NAND) or the WiiU formatted USB.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="wupgx2" /> WUP Installer GX2 &#x21E7;</label></th>
 	<th title="WiiUIdent; A WiiU Identification homebrew, which display information about console hardware components, software/hardware versions and much more.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="WiiUIdent" /> WiiUIdent &#x21E7;</label></th>
 	<th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
-	<th title="FTP Client; use it with ftpii to manage files on your Wii&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla &#x21EA;</label></th>
+	<th title="FTP Client; use it with ftpii or FTPiiU to manage files on your Wii\vWii or Wii U&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla &#x21EA;</label></th>
 </tr>
 
 
 <tr>
 	<th title="A tool to manage a user's account.dat, particularly for Network IDs.&#10;Compatible with Aroma.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="AccountSwap" /> Wii U Account Swap &#x21E7;</label></th>
 	
-	<th title="Tiramisu is an alternative homebrew environment for the WiiU meant to run Legacy homebrew that was popular before the development of Aroma."><label><input class="bigcheck" type="checkbox" name="Tiramisu" /> Tiramisu</label></th>
+	<th title="An FTP server plugin for Aroma.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="FTPiiUPlugin" /> FTPiiU Plugin &#x21E7;</label></th>
 	
-	<th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if using Aroma's 'Avoid Format dialog' plugin."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
+	<th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if Aroma's 'Avoid Format dialog' is enabled."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
 	
 	<th title="Calculate and compare file hashes, can also be launched from Windows Explorer context menu.&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles &#x21E7;</label></th>
 </tr>
 
 <tr>
-	<th></th>
-	<th></th>
+	<th title="An Aroma plugin intended for developers to load homebrew and plugins via the network.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="WiiloadPlugin" /> Wiiload Plugin &#x21E7;</label></th>
+	<th title="Tiramisu is an alternative homebrew environment for the WiiU meant to run Legacy homebrew that was popular before the development of Aroma."><label><input class="bigcheck" type="checkbox" name="Tiramisu" /> Tiramisu</label></th>
 	<th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
 	<th title="&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor &#x21EA;</label></th>
 </tr>

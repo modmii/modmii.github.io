@@ -19,8 +19,9 @@
 <li>After the Priiloader Installer loads, <b>press <kbd>+</kbd></b> to install it.
 	<ul style=align="left" type="disc">
 	<li>When successful the installer should display "Install done!"
-	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, skip ahead to the "Install WADs" step, then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
+	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
 	<!--PriiCSMwarning2--<li>If you get a "System Menu Version invalid or not vanilla" error, either use ModMii's SysCheck Updater Wizard or repeat the ModMii Wizard but this time choose a different System Menu version than the one you started with. This will overwrite the invalid\custom System Menu with a vanilla\official one and allow Priiloader to install successfully.--PriiCSMwarning2-->
+	<!--PriicIOSPAGHETTI--<li>If you get a "cIOSPAGHETTI" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.--PriicIOSPAGHETTI-->
 	</ul>
 <li><b>Press <kbd>A</kbd></b> to exit back to the Homebrew Channel.
 

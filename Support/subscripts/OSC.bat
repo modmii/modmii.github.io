@@ -75,22 +75,39 @@ if /i "%usbfolder%" EQU "*" del "temp\contents\usb-loader.oscmeta">nul
 ::if also doing file cleanup, don't update certain apps from OSCwii
 if /i "%OSCmode%" NEQ "update" goto:skip
 if /i "%clean%" NEQ "B" goto:skip
-if exist "temp\contents\priiloader.oscmeta" del "temp\contents\priiloader.oscmeta">nul
-if exist "temp\contents\LoadPriiloader.oscmeta" del "temp\contents\LoadPriiloader.oscmeta">nul
-if exist "temp\contents\homebrew_browser.oscmeta" del "temp\contents\homebrew_browser.oscmeta">nul
-if exist "temp\contents\wiixplorer.oscmeta" del "temp\contents\wiixplorer.oscmeta">nul
-if exist "temp\contents\WiiModLite.oscmeta" del "temp\contents\WiiModLite.oscmeta">nul
-if exist "temp\contents\MyMenuifyMod.oscmeta" del "temp\contents\MyMenuifyMod.oscmeta">nul
-if exist "temp\contents\csm-installer.oscmeta" del "temp\contents\csm-installer.oscmeta">nul
-if exist "temp\contents\some-yawmm-mod.oscmeta" del "temp\contents\some-yawmm-mod.oscmeta">nul
-if exist "temp\contents\AnyGlobe_Changer.oscmeta" del "temp\contents\AnyGlobe_Changer.oscmeta">nul
-if exist "temp\contents\AnyTitleDeleterMOD.oscmeta" del "temp\contents\AnyTitleDeleterMOD.oscmeta">nul
-if exist "temp\contents\Wii_Mini_Ethernet_Enable.oscmeta" del "temp\contents\Wii_Mini_Ethernet_Enable.oscmeta">nul
-if exist "temp\contents\ForecastPatcher.oscmeta" del "temp\contents\ForecastPatcher.oscmeta">nul
-if exist "temp\contents\WiiLink-NC-Patcher.oscmeta" del "temp\contents\WiiLink-NC-Patcher.oscmeta">nul
-if exist "temp\contents\wiixplorer-ss.oscmeta" del "temp\contents\wiixplorer-ss.oscmeta">nul
-if exist "temp\contents\ARCME.oscmeta" del "temp\contents\ARCME.oscmeta">nul
-if exist "temp\contents\yawmME.oscmeta" del "temp\contents\yawmME.oscmeta">nul
+if not exist temp\CleanItems.txt goto:skip
+findStr /X /C:"\apps\Priiloader" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\priiloader.oscmeta" del "temp\contents\priiloader.oscmeta">nul
+findStr /X /C:"\apps\LoadPriiloader" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\LoadPriiloader.oscmeta" del "temp\contents\LoadPriiloader.oscmeta">nul
+findStr /X /C:"\apps\homebrew_browser" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\homebrew_browser.oscmeta" del "temp\contents\homebrew_browser.oscmeta">nul
+findStr /X /C:"\apps\WiiXplorer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\wiixplorer.oscmeta" del "temp\contents\wiixplorer.oscmeta">nul
+findStr /X /C:"\apps\WiiModLite" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\WiiModLite.oscmeta" del "temp\contents\WiiModLite.oscmeta">nul
+findStr /X /C:"\apps\MyMenuifyMod" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\MyMenuifyMod.oscmeta" del "temp\contents\MyMenuifyMod.oscmeta">nul
+findStr /X /C:"\apps\csm-installer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\csm-installer.oscmeta" del "temp\contents\csm-installer.oscmeta">nul
+findStr /X /C:"\apps\some-yawmm-mod" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\some-yawmm-mod.oscmeta" del "temp\contents\some-yawmm-mod.oscmeta">nul
+findStr /X /C:"\apps\AnyGlobe_Changer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\AnyGlobe_Changer.oscmeta" del "temp\contents\AnyGlobe_Changer.oscmeta">nul
+findStr /X /C:"\apps\AnyTitleDeleterMOD" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\AnyTitleDeleterMOD.oscmeta" del "temp\contents\AnyTitleDeleterMOD.oscmeta">nul
+findStr /X /C:"\apps\Wii_Mini_Ethernet_Enable" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\Wii_Mini_Ethernet_Enable.oscmeta" del "temp\contents\Wii_Mini_Ethernet_Enable.oscmeta">nul
+findStr /X /C:"\apps\ForecastPatcher" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\ForecastPatcher.oscmeta" del "temp\contents\ForecastPatcher.oscmeta">nul
+findStr /X /C:"\apps\WiiLink-NC-Patcher" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\WiiLink-NC-Patcher.oscmeta" del "temp\contents\WiiLink-NC-Patcher.oscmeta">nul
+findStr /X /C:"\apps\wiixplorer-ss" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\wiixplorer-ss.oscmeta" del "temp\contents\wiixplorer-ss.oscmeta">nul
+findStr /X /C:"\apps\ARCME" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\ARCME.oscmeta" del "temp\contents\ARCME.oscmeta">nul
+findStr /X /C:"\apps\yawmME" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\yawmME.oscmeta" del "temp\contents\yawmME.oscmeta">nul
 :skip
 
 
@@ -100,7 +117,7 @@ if exist "temp\contents\Wii_Mini_Ethernet_Enable.oscmeta" del "temp\contents\Wii
 if exist "temp\contents\RealWnD_Mini.oscmeta" del "temp\contents\RealWnD_Mini.oscmeta">nul
 :skip
 
-
+if not exist "temp\contents\*.oscmeta" (echo "echo %name%: Download Skipped">>temp\ModMii_Log.bat) & (goto:bottom)
 dir "temp\contents\*.oscmeta" /b>temp\list.txt
 
 set OSCtotal=0
@@ -193,7 +210,8 @@ if /i "%AUSKIP%" EQU "ON" goto:downloadOSC
 if exist temp\meta.xml del temp\meta.xml>nul
 
 support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml" -O temp\meta.xml -q
-
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\meta.xml" || del "temp\meta.xml"
 
 ::if cannot find meta online, check if zip cached in temp folder
 if exist temp\meta.xml goto:metafound
@@ -377,7 +395,13 @@ goto:nocached
 
 ::get LatestVersion if not retrieved earlier
 if not "%LatestVersion%"=="" goto:nocached
+
 support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml" -O temp\meta.xml -q
+
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\meta.xml" || del "temp\meta.xml"
+if not exist temp\meta.xml (set "LatestVersion=%CachedVersion%") & (goto:nocached)
+
 ::below fixes meta's that have 00 bytes and may make the OHBC 1.1.4 or ModMii crash upon inspecting the meta
 support\sfk replace "temp\meta.xml" -binary /00// -yes>nul
 support\sfk filter -quiet "temp\meta.xml" -+"/version" -rep _"*<version>"__ -rep _"</version*"__ -rep _"&"__ >temp\version.txt
@@ -388,10 +412,8 @@ if exist temp\meta.xml del temp\meta.xml>nul
 :nocached
 
 set /a OSCcount=%OSCcount%+1
-
 ::download only if not already cached
 if /i "%LatestVersion%" NEQ "%CachedVersion%" support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/api/contents/%CurrentApp%/%CurrentApp%.zip" -O "temp\%CurrentApp%.zip" -q --show-progress
-
 
 if exist "temp\%CurrentApp%.zip" support\7za x -aoa "temp\%CurrentApp%.zip" -o"%Drive%" -x!__MACOSX -x!readme* -x!gcmm_1.5.2 -x!history.txt -x!*license.txt -x!READ.MII -x!manual.html -x!"Homebrew Browser Guide and Help" -x!src -x!gpl.txt -x!LICENSE -x!WiiPhysics_Readme.txt -x!"apps\.DS_Store" -x!"wii7800\wii7800.conf" >temp\7zalog.txt
 
@@ -496,11 +518,43 @@ if /i "%OSCcountFail%" NEQ "0" echo "echo %name%: %OSCcountSuccess% Downloaded\U
 
 
 :bottom
+::only for Syscheck updater, when downloading yawmme, ensure default wm_config is in place
+if /i "%MENU1%" NEQ "SU" goto:bottom2
+if /i "%code1%" NEQ "yawmME" goto:bottom2
+if not exist "%DRIVE%\WAD\wm_config.txt" goto:skip
+
+::check if config only has comments and blank lines, if so skip building a new config
+support\sfk filter -quiet "%DRIVE%\WAD\wm_config.txt" -ls!";">temp\wm_config.txt
+support\sfk filter "temp\wm_config.txt" -no-empty-lines -no-blank-lines -write -yes>nul
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\wm_config.txt" || del "temp\wm_config.txt"
+if not exist "temp\wm_config.txt" goto:bottom2
+
+move /y "%DRIVE%\WAD\wm_config.txt" "%DRIVE%\WAD\wm_config_%random%.txt">nul
+
+:skip
+echo ;Config file format, No spaces precedes the keyword on a line>"%DRIVE%\WAD\wm_config.txt"
+echo ;Password=>>"%DRIVE%\WAD\wm_config.txt"
+echo ;StartupPath=/WAD>>"%DRIVE%\WAD\wm_config.txt"
+echo ;cIOSVersion=249 >>"%DRIVE%\WAD\wm_config.txt"
+echo ; FatDevice: sd usb usb2 gcsda gcsdb>>"%DRIVE%\WAD\wm_config.txt"
+echo ;FatDevice=sd>>"%DRIVE%\WAD\wm_config.txt"
+echo ; NANDDevice: Disable SD USB: Note that WM will prompt for NAND device only if you selected cIOS=249 >>"%DRIVE%\WAD\wm_config.txt"
+echo ;NANDDevice=Disable>>"%DRIVE%\WAD\wm_config.txt"
+echo ; Settings for SMB shares>>"%DRIVE%\WAD\wm_config.txt"
+echo ;SMBUser=>>"%DRIVE%\WAD\wm_config.txt"
+echo ;SMBPassword=>>"%DRIVE%\WAD\wm_config.txt"
+echo ;SMBShare=>>"%DRIVE%\WAD\wm_config.txt"
+echo ;SMBhostIP=>>"%DRIVE%\WAD\wm_config.txt"
+
+:bottom2
 if "%DRIVErestore%"=="" set "DRIVErestore=%Drive%"
-set "DRIVE=%DRIVErestore%"
 
 ::call settings to restore AUSKIP to default setting
 if exist Support\settings.bat call Support\settings.bat
+
+set "DRIVE=%DRIVErestore%"
+
 echo %OSCcountCurrent% >temp\OSCcountCurrent.txt
 echo %OSCcountSkip% >temp\OSCcountSkip.txt
 

@@ -1,0 +1,74 @@
+<!--------------------------------------MBRsd Stuff BELOW----------------------------------->
+
+<ul style=align="left" type="disc">
+<li><b>First, plug your SD Card into your PC and check if it's Partition style is already MBR.</b>
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/XyTaMT5yhAY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_Check.gif" border="0"/></a><br>
+	<ol type="A">
+	<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
+		<ul style=align="left" type="square">
+		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd>⊞ Win</kbd>+<kbd>E</kbd> keyboard combination.
+		</ul>
+	<li>In the Disk Management window, right-click the disk you want and select "Properties".
+	<li>In the disk's properties window, select the "Volumes" tab.
+	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
+	</ol>
+<br>
+<li><b>If your SD Card is not already MBR you must convert it using one of the two methods below.</b>
+<br>
+<br>
+<li><b>Method 1: MiniTool Partition Wizard</b>
+	<ul style=align="left" type="square">
+	<li>If you have files on the SD Card you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
+	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
+	<li>If your SD Card is not already in the desired format (e.g. FAT32) you will have to format it during the next step anyway so there's no point in using this method.
+	</ul>
+
+<br>
+<ol type="A">
+	<li><a href="https://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
+	</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
+
+	<li>Within the MiniTool window, right-click the GPT disk you want to convert and choose "Convert GPT Disk to MBR Disk".
+	<li>Click the "Apply" button in the toolbar.
+	<li>Click the "Yes" button to confirm conversion.
+	<li>Wait for the conversion to finish then click "OK".
+	<li>Once you have successfully converted your SD Card to MBR you can proceed to the next step of this guide.
+</ol>
+
+<br>
+
+<li><b>Method 2: Windows Disk Management</b>
+
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
+
+</li>
+<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
+
+<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
+
+<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
+
+
+<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
+<li>Choose a Drive letter for this partition, then click "Next".
+	<ul style=align="left" type="disc">
+	<li>Make note of this drive letter, as it will be needed later.
+	</ul>
+<li>Set the File System to your desired format and optionally customize the "Volume label".
+	<ul style=align="left" type="disc">
+	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
+	</ul>
+
+<li>Click "Next", then click "Finish".
+	<ul style=align="left" type="disc">
+	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	</ul>
+</ol>
+<br>
+</ul>
+<br>
+<!--------------------------------------MBRsd Stuff ABOVE----------------------------------->

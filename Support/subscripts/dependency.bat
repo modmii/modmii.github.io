@@ -86,13 +86,17 @@ goto:fin
 
 
 if /i "%~1" NEQ "wiiload" goto:skip
-if exist temp\wiiload.exe goto:fin
+if not exist temp\wiiload.exe goto:force
+if exist "%homedrive%\Program Files (x86)" if exist temp\wiiload_x32.exe goto:fin
+if not exist "%homedrive%\Program Files (x86)" if exist temp\wiiload_x64.exe goto:fin
+:force
 echo.
-echo Downloading wiiload.exe (and hackmii_installer_v1.2.zip)...
-if not exist temp\hackmii_installer_v1.2.zip support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject html,tmp --accept-regex ".*hackmii_installer_v1\.2.*" "https://bootmii.org/download/" -q --show-progress
-if not exist temp\hackmii_installer_v1.2.zip move /y "get.php@file=hackmii_installer_v1.2.zip*" temp\hackmii_installer_v1.2.zip>nul
-if exist get.* del /f /q get.*
-support\7za e -aoa temp\hackmii_installer_v1.2.zip -o"temp" wiiload.exe -r >nul
+echo Downloading wiiload v0.5.3-1...
+if not exist temp\wiiload_0.5.3-1.zip support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wiiload_0.5.3-1.zip" -O temp\wiiload_0.5.3-1.zip -q --show-progress
+if exist temp\wiiload_0.5.3-1.zip support\7za e -aoa temp\wiiload_0.5.3-1.zip -o"temp" *.* -r >nul
+if exist temp\wiiload_0.5.3-1.zip del temp\wiiload_0.5.3-1.zip>nul
+if not exist temp\wiiload_x32.exe (set dependency=F) & (goto:fin)
+if not exist "%homedrive%\Program Files (x86)" (move /y temp\wiiload.exe temp\wiiload_x64.exe>nul) & (move /y temp\wiiload_x32.exe temp\wiiload.exe>nul)
 if not exist temp\wiiload.exe set dependency=F
 goto:fin
 :skip
@@ -234,7 +238,7 @@ goto:fin2
 
 if /i "%~1" NEQ "spin" goto:skip
 if not exist temp\optional_non_spinning_outline.mym goto:downloadit
-if not exist temp\optional_spinning_outline.mym goto:downloadit
+if not exist temp\optional_spinning_outline_.mym goto:downloadit
 if exist temp\optional_fast_spinning_outline.mym goto:skip
 :downloadit
 echo.
@@ -244,7 +248,7 @@ if exist temp\mym_spin_effects.zip support\7za x -aoa "temp\mym_spin_effects.zip
 if exist temp\mym_spin_effects.zip del temp\mym_spin_effects.zip>nul
 
 if not exist temp\optional_non_spinning_outline.mym set dependency=F
-if not exist temp\optional_spinning_outline.mym set dependency=F
+if not exist temp\optional_spinning_outline_.mym set dependency=F
 if not exist temp\optional_fast_spinning_outline.mym set dependency=F
 goto:fin
 :skip
