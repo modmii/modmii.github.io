@@ -1,28 +1,19 @@
 #Region ;**** Directives created by AutoIt3Wrapper_GUI ****
-#AutoIt3Wrapper_icon=D:\ModMii\Support\icon.ico
+#AutoIt3Wrapper_icon=C:\ModMii\Support\Skins\Default\skin.ico
 #AutoIt3Wrapper_outfile=ModMiiSkin.exe
 #AutoIt3Wrapper_UseX64=N
 #AutoIt3Wrapper_UseUpx=Y
 #AutoIt3Wrapper_Res_Description=ModMii Skin Launcher
 #AutoIt3Wrapper_Res_Fileversion=1.0.0.0
-#AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak, Launcher by person66
+#AutoIt3Wrapper_Res_LegalCopyright=ModMii by XFlak
 #AutoIt3Wrapper_Res_Field=ProductName|ModMii Skin Launcher
 #AutoIt3Wrapper_Res_Field=ProductVersion|1.0.0.0
 #EndRegion ;**** Directives created by AutoIt3Wrapper_GUI ****
-#cs ----------------------------------------------------------------------------
 
- AutoIt Version: 3.3.14.5
- Author:         person66
+;script version 2.4 (2025-04-08)
+;by XFlak, based on original ModMii Launcher by person66
 
- Script Function:
-	Move the ModMii skin window.
-
- Script Version: 2.2
-
-#ce ----------------------------------------------------------------------------
-
-;REMEMBER TO COMPILE WITH AUTOIT3WRAPPER
-;https://www.autoitscript.com/site/autoit-script-editor/downloads/
+;Compile using Aut2Exe, or for smaller size use autoit3wrapper.au3 (https://www.autoitscript.com/site/autoit-script-editor/downloads/)
 
 
 #AutoIt3Wrapper_Autoit3Dir="C:\Program Files (x86)\AutoIt3"
@@ -47,7 +38,7 @@ if $HasArgs = "True" then
 endif
 
 ;Check if other ModMii windows are open
-if WinExists("[CLASS:WizAppWindow; TITLE:ModMii Skin]", "by XFlak") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii]", "") <> 0 then
+if WinExists("[CLASS:WizAppWindow; TITLE:ModMii Skin]", "by XFlak") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii nand tools]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii Inspector Wadget]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii Game Image tools]", "") <> 0 OR WinExists("[CLASS:HTML Application Host Window Class; TITLE:ModMii]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:ModMii WAD tools]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:Administrator:  ModMii]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:Administrator:  ModMii nand tools]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:Administrator:  ModMii Inspector Wadget]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:Administrator:  ModMii Game Image tools]", "") <> 0 OR WinExists("[CLASS:ConsoleWindowClass; TITLE:Administrator:  ModMii WAD tools]", "") <> 0 then
 	$AlreadyOpen = MsgBox(52, "WARNING", "It appears as if you already have a ModMii Window open." & @CRLF & @CRLF & "Running more than one instance of ModMii at a time is not" & @CRLF & "recommended and may get buggy." & @CRLF & @CRLF & "Are you sure you wish to continue?")
 	if $AlreadyOpen <> 6 then
 		exit
