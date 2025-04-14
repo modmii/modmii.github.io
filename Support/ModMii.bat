@@ -24,7 +24,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=8.0.1
+set currentversion=8.0.2
 set d2x-bundled=11-beta3
 set currentversioncopy=%currentversion%
 set agreedversion=
@@ -9812,6 +9812,7 @@ set DB=N
 ::--followup--
 IF "%Drive%"=="" set Drive=COPY_TO_SD
 IF "%DriveU%"=="" set DriveU=COPY_TO_USB
+set "DRIVErestore=
 
 if /i "%cmdlinemode%" NEQ "Y" set USBCONFIG=
 ::set USBCONFIG=
@@ -30298,22 +30299,17 @@ if exist index.html del index.html>nul
 
 ::if not exist temp\%wadname% support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject "*.html" --reject "index.html.tmp" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2% -q --show-progress
 
-if not exist temp\%wadname% support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject html,tmp --accept-regex ".*hackmii_installer_v1\.%name:~-1%.*" %code2% -q --show-progress
-
-if not exist temp\%wadname% move /y "get.php@file=%wadname%*" temp\%wadname%>nul
-if exist get.* del /f /q get.*
+if not exist temp\%wadname% support\wget --no-check-certificate -t 3 %code2% -O temp\%wadname% -q --show-progress
 if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
-support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% *.txt -r
-support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
+if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% *.txt -r
+if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
 ::disabled extracting outdated wiiload.exe
 ::support\7za e -aoa temp\%wadname% -o"temp" wiiload.exe -r
 
 ::get custom icon and meta.xml
 
 
-if not exist "temp\%zipname%" support\wget --no-check-certificate %code3% -q --show-progress
-
-if exist "%zipname%" move /y "%zipname%" "temp\%zipname%">nul
+if not exist "temp\%zipname%" support\wget --no-check-certificate %code3% -O temp\%zipname% -q --show-progress
 if exist "temp\%zipname%" support\7za e -aoa "temp\%zipname%" -o"%Drive%"\%path1% * -r
 
 if /i "%name%" NEQ "Hackmii Installer v1.0" goto:skip

@@ -1,4 +1,4 @@
-set DBversion=25.04.10
+set DBversion=25.04.14
 if "%CurrentDLNAME%"=="" goto:DBend
 call "Support\subscripts\ClearDB.bat"
 goto:%CurrentDLNAME%
@@ -2531,7 +2531,7 @@ goto:DBend
 :HM
 set name=HackMii Installer v1.2
 set code1=URL
-set code2="https://bootmii.org/download/"
+set code2="https://bootmii.org/hackmii_installer_v1.2.zip"
 set version=elf
 set wadname=hackmii_installer_v1.2.zip
 set filename=boot.elf
@@ -2545,7 +2545,7 @@ goto:DBend
 :HMOld
 set name=HackMii Installer v1.0
 set code1=URL
-set code2="https://bootmii.org/download/"
+set code2="https://bootmii.org/hackmii_installer_v1.0.zip"
 set version=elf
 set wadname=hackmii_installer_v1.0.zip
 set filename=boot.elf
