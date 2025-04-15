@@ -12728,12 +12728,14 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if "%newversion%"=="" goto:updatefail
 
 
-if /i "%MENU1%" EQU "O" goto:skip
+if %currentversion% LSS %newversion% goto:openchangelog
 
 if /i "%debug%" EQU "on" goto:debugskip
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del Updatetemp.bat>nul
 :debugskip
+
+if /i "%MENU1%" EQU "O" goto:skip
 
 if %currentversion% GTR %newversion% (echo                  This version is newer than the latest public release) & (echo.) & (echo                           You got some crazy new beta shit!) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
 if %currentversion% EQU %newversion% (echo                              This version is up to date) & (@ping 127.0.0.1 -n 4 -w 1000> nul) & (goto:menu)
@@ -12747,7 +12749,7 @@ if %currentversion% EQU %newversion% (echo                              This ver
 ::if you made it this far, there's an update!
 
 
-::openchangelog
+:openchangelog
 
 
 
