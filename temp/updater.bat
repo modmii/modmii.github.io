@@ -75,6 +75,11 @@ echo.
 
 call Support/subscripts/DB.bat
 
+::workaround for 8.0.1 & 8.0.2 autoupdate bug
+if /i "%updatermode%" NEQ "skin" if %currentversion% EQU 8.0.1 set debug=on
+if /i "%updatermode%" NEQ "skin" if %currentversion% EQU 8.0.2 set debug=on
+
+
 if %currentversion% NEQ 8.0.0 goto:skip
 if /i "%DBversion%" EQU "25.03.24" goto:skip
 echo.
@@ -236,7 +241,8 @@ set newversion=7.0.3
 
 if not exist temp\currentversion.txt goto:ReturnToCaller
 
-
+::workaround for 8.0.1 & 8.0.2 autoupdate bug (reversal)
+set debug=
 
 setlocal
 chcp 437>nul
