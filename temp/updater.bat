@@ -1,6 +1,6 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=8.0.2
+set newversion=8.0.3
 set changelogURL=https://modmii.github.io/changelog.html
 set "wabmplast=%wabmp%"
 

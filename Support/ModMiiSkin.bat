@@ -43,7 +43,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=8.0.2
+set currentversion=8.0.3
 if exist Support\settings.bat call Support\settings.bat
 set d2x-bundled=11-beta3
 set d2x-beta-rev=%d2x-bundled%

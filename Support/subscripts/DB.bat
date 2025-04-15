@@ -1,4 +1,4 @@
-set DBversion=25.04.14
+set DBversion=25.04.15
 if "%CurrentDLNAME%"=="" goto:DBend
 call "Support\subscripts\ClearDB.bat"
 goto:%CurrentDLNAME%
@@ -2815,8 +2815,8 @@ set code1=yawmME
 set "dlname=%code1%.zip"
 set "wadname=%dlname%"
 ::create wm_config if missing to set startup IOS to IOS36; does not apply if ahbprot enabled
-if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
-if not exist "%Drive%"\WAD\wm_config.txt echo cIOSVersion=36> "%Drive%"\WAD\wm_config.txt
+if /i "%MENU1%" EQU "H" if not exist "%Drive%\WAD" mkdir "%Drive%\WAD"
+if /i "%MENU1%" EQU "H" if not exist "%Drive%"\WAD\wm_config.txt echo cIOSVersion=36> "%Drive%"\WAD\wm_config.txt
 goto:DBend
 
 :usbfolder

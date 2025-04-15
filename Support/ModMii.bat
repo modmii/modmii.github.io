@@ -24,7 +24,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=8.0.2
+set currentversion=8.0.3
 set d2x-bundled=11-beta3
 set currentversioncopy=%currentversion%
 set agreedversion=
@@ -9812,7 +9812,7 @@ set DB=N
 ::--followup--
 IF "%Drive%"=="" set Drive=COPY_TO_SD
 IF "%DriveU%"=="" set DriveU=COPY_TO_USB
-set "DRIVErestore=
+set DRIVErestore=
 
 if /i "%cmdlinemode%" NEQ "Y" set USBCONFIG=
 ::set USBCONFIG=
@@ -26822,11 +26822,20 @@ if /i "%MENU1%" EQU "FC" goto:skipchange
 if not "%REALDRIVE%"=="" set "DRIVE=%REALDRIVE%"
 if /i "%USBCONFIG%" NEQ "USB" goto:skipchange
 if /i "%WADNAME%" EQU "WiiBackupManager.zip" set "DRIVE=%DRIVEU%"
+
+if /i "%name%" EQU "USB Loader GX" set "DRIVE=%DRIVEU%"
+if /i "%name%" EQU "Configurable USB-Loader" set "DRIVE=%DRIVEU%"
+if /i "%name%" EQU "WiiFlow" set "DRIVE=%DRIVEU%"
+if /i "%name%" EQU "CleanRip" set "DRIVE=%DRIVEU%"
+if /i "%name%" EQU "Nintendont" set "DRIVE=%DRIVEU%"
+
 if /i "%PATH1%" EQU "Program Files\FAT32_GUI_Formatter\" set "DRIVE=%DRIVEU%"
 if /i "%PATH1%" EQU "Program Files\NKit\" set "DRIVE=%DRIVEU%"
 if /i "%PATH1%" EQU "Program Files\GCBM\" set "DRIVE=%DRIVEU%"
 
 :skipchange
+
+
 
 if /i "%MENU1%" EQU "S" set DRIVE=temp
 
