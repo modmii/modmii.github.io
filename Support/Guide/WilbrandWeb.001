@@ -45,6 +45,8 @@ Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type
 <li>Click on the envelope with the pink bomb icon to launch the boot.elf/dol file saved on the root of your SD Card.
 	<ul style=align="left" type="disc">
 	<li>If you cannot find the mailbox bomb under "Yesterday" check that your Wii's date setting is correct.
+	<li>If you click the envelope and are returned to the Wii Menu double check that your SD Card's lock switch is disabled and try again.
+	<li>If you have difficulty with this exploit use "str2hax" instead by clicking the str2hax button above, or try reformatting your SD Card, or a different SD Card altogether.
 	</ul>
 </ol>
 <br>

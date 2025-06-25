@@ -1,25 +1,25 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
-set newversion=8.0.3
+if not exist Support\ModMii.bat cd..
+set newversion=8.0.4
 set changelogURL=https://modmii.github.io/changelog.html
 set "wabmplast=%wabmp%"
 
-::Enable new hidden "set debug=on" setting when testing offline updater.bat changes, careful that this file does not accidentally get deleted during development\testing, save a copy of updater.bat the same folder as ModMii.exe and rename it Updatetemp.bat to test
-::note when ModMii downloads updater.bat it is renamed to Updatetemp.bat for legacy purposes
-if /i "%debug%" EQU "on" copy "Updatetemp.bat" "Updatetemp_backup.bat">nul
+::update below with latest recommended d2x
+set RecD2XcIOS=d2x-v11-beta3
+::update below with the version of d2x bundled with the latest version of ModMii
+set BundledcIOS=d2x-v11-beta3
+
+::Enable hidden "set debug=on" setting when testing offline temp\updater.bat changes
+if /i "%debug%" EQU "on" if exist "temp\updater.bat" copy "temp\updater.bat" "temp\updater_backup.bat">nul
+if /i "%debug%" EQU "on" if exist "Updatetemp.bat" copy "Updatetemp.bat" "Updatetemp_backup.bat">nul
 
 ::do not change the below from 6.6.3 for the foreseable future, effective 6.6.4 variable will get updated
 if "%currentversion%"=="" set currentversion=6.6.3
 if exist temp\currentversionInfo.txt set /p currentversion= <temp\currentversionInfo.txt
 if exist temp\skin.txt (set updatermode=skin) else (set updatermode=classic)
 
-
 ::recommended d2x version check
-::update below with latest recommended d2x
-set RecD2XcIOS=d2x-v11-beta3
-::update below with the version of d2x bundled with the latest version of ModMii
-set BundledcIOS=d2x-v11-beta3
-
 if exist "Support\settings.bat" support\sfk filter -spat "Support\settings.bat" -ls!"set \x22RecD2XcIOS=" -write -yes>nul
 echo Set "RecD2XcIOS=%RecD2XcIOS%">> Support\settings.bat
 
@@ -45,8 +45,7 @@ echo.
 
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
 
-if exist support\curl.exe support\curl --ca-native -L -# -o "%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
-if not exist "%RecD2XcIOS%.zip" if exist support\wget.exe support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
 echo.
 
 ::delete if file is empty
@@ -93,7 +92,7 @@ if not errorlevel 1 goto:skip
 echo.
 echo Updating WiiPy to fix emunand title installation issues...
 if exist temp\WiiPy-Windows-bin.zip del temp\WiiPy-Windows-bin.zip>nul
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/xflak/xflak.github.io/main/stuff/WiiPy-Windows-bin_2025-04-19.zip" -O temp\WiiPy-Windows-bin.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\WiiPy-Windows-bin.zip" "https://raw.githubusercontent.com/xflak/xflak.github.io/main/stuff/WiiPy-Windows-bin_2025-04-19.zip"
 echo.
 ::delete if file is empty
 >nul findstr "^" "temp\WiiPy-Windows-bin.zip" || del "temp\WiiPy-Windows-bin.zip"
@@ -109,7 +108,7 @@ if %currentversion% NEQ 8.0.0 goto:skip
 if /i "%DBversion%" EQU "25.03.24" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/1d74b8c460d9bd82e5a87f774a3c1954f29d1567/Support/subscripts/DB.bat" -O Support\subscripts\DB.bat -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "Support\subscripts\DB.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/1d74b8c460d9bd82e5a87f774a3c1954f29d1567/Support/subscripts/DB.bat"
 echo.
 call Support\subscripts\DB.bat
 :skip
@@ -119,7 +118,7 @@ if %currentversion% NEQ 7.0.3 goto:skip
 if /i "%DBversion%" EQU "24.12.04" goto:skip
 echo.
 echo Updating File Download Database (DB.bat) with minor changes to fix broken links...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat" -O Support\subscripts\DB.bat -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "Support\subscripts\DB.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/5a4b38942341d312eeee58b92915d1b1bcba85d8/Support/subscripts/DB.bat"
 echo.
 call Support\subscripts\DB.bat
 :skip
@@ -163,8 +162,7 @@ echo set "greentext=Blue">> temp\settings0401.bat
 support\sfk filter -spat Support\settings.bat -ls!"if exist temp\settings0401.bat" -write -yes>nul
 echo if exist temp\settings0401.bat call temp\settings0401.bat>> Support\settings.bat
 if exist Support\Skins\aluben\settings.dat goto:skipDL
-if exist support\curl.exe support\curl --ca-native -L -s -S -o "temp\aluben.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/aluben.zip"
-if not exist "temp\aluben.zip" if exist support\wget.exe support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/aluben.zip" -O temp\aluben.zip -q
+support\wget --no-check-certificate -q -t 3 -O "temp\aluben.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/aluben.zip"
 if not exist "Support\Skins\aluben" mkdir "Support\Skins\aluben"
 if exist temp\aluben.zip support\7za e -aoa "temp\aluben.zip" -o"Support\Skins\aluben" *.* -r >nul
 if exist temp\aluben.zip del temp\aluben.zip>nul
@@ -177,7 +175,7 @@ if exist "Support\Skins\aluben\settings0401.bat" (copy /y "Support\Skins\aluben\
 
 
 ::min requirements check
-if %currentversion% GTR 7.0.3 goto:continue
+if %currentversion% GEQ %newversion% goto:continue
 
 if exist "temp\temp.txt" del "temp\temp.txt">nul
 ver>temp\temp.txt
@@ -310,8 +308,7 @@ echo                                     Please Wait...
 echo.
 
 if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
-if exist support\curl.exe support\curl --ca-native -L -# -o "%UPDATENAME%.zip" "https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip"
-if not exist "%UPDATENAME%.zip" if exist support\wget.exe support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "%UPDATENAME%.zip" "https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip"
 if not exist "%UPDATENAME%.zip" goto:updatefail
 
 ::if exist "support\ModMii.bat" ren "support\ModMii.bat" "ModMii-v%currentversion%.bat"
@@ -390,8 +387,7 @@ taskkill /im ModMiiSkin.exe /f >nul
 
 
 if exist "%UPDATENAME%.zip" del "%UPDATENAME%.zip">nul
-if exist support\curl.exe support\curl --ca-native -L -# -o "%UPDATENAME%.zip" "https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip"
-if not exist "%UPDATENAME%.zip" if exist support\wget.exe support\wget --no-check-certificate -t 3 https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "%UPDATENAME%.zip" "https://github.com/modmii/modmii.github.io/releases/download/%newversion%/%UPDATENAME%.zip"
 if not exist "%UPDATENAME%.zip" goto:updatefailskin
 
 

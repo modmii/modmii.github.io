@@ -14,6 +14,8 @@
 \apps\ARCME
 \apps\ARCmod06_Offline
 \apps\csm-installer
+\apps\d2x-cios-installer
+\apps\d2x-cios-installer-vwii
 \apps\DOP-Mii
 \apps\ForecastPatcher
 \apps\HackMii_Installer

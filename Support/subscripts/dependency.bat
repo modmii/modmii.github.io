@@ -8,7 +8,7 @@ if exist "%wit%" goto:fin
 echo.
 echo Downloading wit...
 if exist "%homedrive%\Program Files (x86)" (set witver=wit-v3.05a-r8638-cygwin64) else (set witver=wit-v3.05a-r8638-cygwin32)
-support\wget --no-check-certificate -t 3 "https://wit.wiimm.de/download/%witver%.zip" -O temp\%witver%.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%witver%.zip" "https://wit.wiimm.de/download/%witver%.zip"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\%witver%.zip" || del "temp\%witver%.zip"
@@ -32,7 +32,7 @@ if /i "%~1" NEQ "ODB" goto:skip
 if exist temp\OpenDolBoot.exe goto:fin
 echo.
 echo Downloading OpenDolBoot...
-support\wget --no-check-certificate -t 3 "https://wiibrew.org/w/images/3/37/OpenDolBoot.zip" -O temp\OpenDolBoot.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\OpenDolBoot.zip" "https://wiibrew.org/w/images/3/37/OpenDolBoot.zip"
 if exist temp\OpenDolBoot.zip support\7za e -aoa "temp\OpenDolBoot.zip" -o"temp" OpenDolBoot.exe -r >nul
 if exist temp\OpenDolBoot.zip del temp\OpenDolBoot.zip>nul
 if not exist temp\OpenDolBoot.exe set dependency=F
@@ -43,9 +43,10 @@ if /i "%~1" NEQ "Sharpii" goto:skip
 if exist temp\Sharpii.exe goto:fin
 echo.
 echo Downloading Sharpii .Net Core to Send WADs to the HBC...
-support\wget --no-check-certificate -t 3 "https://github.com/TheShadowEevee/Sharpii-NetCore/releases/download/v1.1.10/Sharpii-Net-Core-v1.1.10-Windows.7z" -O Sharpii-Net-Core-v1.1.10-Windows.7z -q --show-progress
-if exist Sharpii-Net-Core-v1.1.10-Windows.7z support\7za e -aoa "Sharpii-Net-Core-v1.1.10-Windows.7z" -o"temp" Sharpii.exe -r >nul
-if exist Sharpii-Net-Core-v1.1.10-Windows.7z del Sharpii-Net-Core-v1.1.10-Windows.7z>nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\Sharpii-Net-Core-v1.1.10-Windows.7z" "https://github.com/TheShadowEevee/Sharpii-NetCore/releases/download/v1.1.10/Sharpii-Net-Core-v1.1.10-Windows.7z"
+
+if exist temp\Sharpii-Net-Core-v1.1.10-Windows.7z support\7za e -aoa "temp\Sharpii-Net-Core-v1.1.10-Windows.7z" -o"temp" Sharpii.exe -r >nul
+if exist temp\Sharpii-Net-Core-v1.1.10-Windows.7z del temp\Sharpii-Net-Core-v1.1.10-Windows.7z>nul
 if not exist temp\Sharpii.exe set dependency=F
 goto:fin
 :skip
@@ -55,7 +56,8 @@ if exist temp\ShowMiiVWiiKeys.exe goto:fin
 echo.
 echo Downloading ShowMiiVWiiKeys...
 ::https://forums.dolphin-emu.org/attachment.php?aid=1383
-support\wget --no-check-certificate -t 3 "https://github.com/CuriousTommy/ShowMiiVWiiKeys/releases/latest/download/ShowMiiVWiiKeys.zip" -O temp\ShowMiiVWiiKeys.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ShowMiiVWiiKeys.zip" "https://github.com/CuriousTommy/ShowMiiVWiiKeys/releases/latest/download/ShowMiiVWiiKeys.zip"
+
 if exist temp\ShowMiiVWiiKeys.zip support\7za e -aoa "temp\ShowMiiVWiiKeys.zip" -o"temp" ShowMiiVWiiKeys.exe -r >nul
 if exist temp\ShowMiiVWiiKeys.zip del temp\ShowMiiVWiiKeys.zip>nul
 if not exist temp\ShowMiiVWiiKeys.exe set dependency=F
@@ -66,7 +68,8 @@ if /i "%~1" NEQ "UnRAR" goto:skip
 if exist temp\UnRAR.exe goto:fin
 echo.
 echo Downloading UnRAR...
-support\wget --no-check-certificate -t 3 "https://sourceforge.net/projects/menuui/files/UnRAR.exe" -O temp\UnRAR.exe -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\UnRAR.exe" "https://netix.dl.sourceforge.net/project/menuui/UnRAR.exe?viasf=1"
+
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\UnRAR.exe" || del "temp\UnRAR.exe"
 if not exist temp\UnRAR.exe set dependency=F
@@ -77,7 +80,7 @@ if /i "%~1" NEQ "wwcxtool" goto:skip
 if exist temp\wwcxtool.exe goto:fin
 echo.
 echo Downloading wwcxtool...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wwpacker184.zip" -O temp\wwpacker184.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\wwpacker184.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wwpacker184.zip"
 if exist temp\wwpacker184.zip support\7za e -aoa "temp\wwpacker184.zip" -o"temp" wwcxtool.exe -r >nul
 if exist temp\wwpacker184.zip del temp\wwpacker184.zip>nul
 if not exist temp\wwcxtool.exe set dependency=F
@@ -92,7 +95,8 @@ if not exist "%homedrive%\Program Files (x86)" if exist temp\wiiload_x64.exe got
 :force
 echo.
 echo Downloading wiiload v0.5.3-1...
-if not exist temp\wiiload_0.5.3-1.zip support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wiiload_0.5.3-1.zip" -O temp\wiiload_0.5.3-1.zip -q --show-progress
+if not exist temp\wiiload_0.5.3-1.zip support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\wiiload_0.5.3-1.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/wiiload_0.5.3-1.zip"
+
 if exist temp\wiiload_0.5.3-1.zip support\7za e -aoa temp\wiiload_0.5.3-1.zip -o"temp" *.* -r >nul
 if exist temp\wiiload_0.5.3-1.zip del temp\wiiload_0.5.3-1.zip>nul
 if not exist temp\wiiload_x32.exe (set dependency=F) & (goto:fin)
@@ -106,7 +110,8 @@ if /i "%~1" NEQ "wilbrand" goto:skip
 if exist temp\Wilbrand.exe goto:fin
 echo.
 echo Downloading Wilbrand.exe...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Wilbrand.exe" -O temp\Wilbrand.exe -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\Wilbrand.exe" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Wilbrand.exe"
+
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\Wilbrand.exe" || del "temp\Wilbrand.exe"
 if not exist temp\Wilbrand.exe set dependency=F
@@ -117,26 +122,26 @@ if /i "%~1" NEQ "nandBinCheck" goto:skip
 if exist temp\nandBinCheck\nandBinCheck.exe goto:fin
 echo.
 echo Downloading nandBinCheck...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/nandBinCheck.zip" -q --show-progress
-if exist nandBinCheck.zip support\7za x -aoa "nandBinCheck.zip" -o"temp\nandBinCheck" -r >nul
-if exist nandBinCheck.zip del nandBinCheck.zip>nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\nandBinCheck.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/nandBinCheck.zip"
+if exist temp\nandBinCheck.zip support\7za x -aoa "temp\nandBinCheck.zip" -o"temp\nandBinCheck" -r >nul
+if exist temp\nandBinCheck.zip del temp\nandBinCheck.zip>nul
 if not exist temp\nandBinCheck\nandBinCheck.exe set dependency=F
 goto:fin
 :skip
 
 
 if /i "%~1" NEQ "nand-tools" goto:skip
-if not exist temp\nand-tools\nand-aes-dump.exe goto:DL
+::if not exist temp\nand-tools\nand-aes-dump.exe goto:DL
 if not exist temp\nand-tools\NAND-bin2raw.exe goto:DL
 if exist temp\nand-tools\zestig.exe goto:fin
 :DL
 echo.
 echo Downloading nand-tools...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/nand-tools.zip" -O temp\nand-tools.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\nand-tools.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/nand-tools.zip"
 if exist temp\nand-tools.zip support\7za x -aoa "temp\nand-tools.zip" -o"temp\nand-tools" -r >nul
 if exist temp\nand-tools.zip del temp\nand-tools.zip>nul
 
-if not exist temp\nand-tools\nand-aes-dump.exe set dependency=F
+::if not exist temp\nand-tools\nand-aes-dump.exe set dependency=F
 if not exist temp\nand-tools\NAND-bin2raw.exe set dependency=F
 if not exist temp\nand-tools\zestig.exe set dependency=F
 
@@ -148,7 +153,7 @@ if /i "%~1" NEQ "Punetwiin" goto:skip
 if exist temp\Punetwiin\punetwiin.exe goto:fin
 echo.
 echo Downloading Punetwiin...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Punetwiin.zip" -O temp\Punetwiin.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\Punetwiin.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Punetwiin.zip"
 if exist temp\Punetwiin.zip support\7za x -aoa "temp\Punetwiin.zip" -o"temp\Punetwiin" -r >nul
 if exist temp\Punetwiin.zip del temp\Punetwiin.zip>nul
 if not exist temp\Punetwiin\punetwiin.exe set dependency=F
@@ -159,7 +164,8 @@ if /i "%~1" NEQ "LZ77Helper" goto:skip
 if exist temp\LZ77Helper\LZ77Helper.bat goto:fin
 echo.
 echo Downloading LZ77Helper...
-support\wget --no-check-certificate -t 3 "https://github.com/xflak/lz77helper/releases/latest/download/lz77helper.zip" -O temp\LZ77Helper.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\LZ77Helper.zip" "https://github.com/xflak/lz77helper/releases/latest/download/lz77helper.zip"
+
 if exist temp\LZ77Helper.zip support\7za x -aoa "temp\LZ77Helper.zip" -o"temp\LZ77Helper" -r >nul
 if exist temp\LZ77Helper.zip del temp\LZ77Helper.zip>nul
 if not exist temp\LZ77Helper\LZ77Helper.bat set dependency=F
@@ -176,13 +182,14 @@ if exist support\patchIOS.exe goto:fin
 :DL
 echo.
 echo Downloading LegacyCIOS tools...
-support\wget --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/releases/download/7.0.2/ModMii.zip" -O temp\ModMii_7.0.2.zip -q --show-progress
-support\7za e -aoa temp\ModMii_7.0.2.zip -o"Support" wadmii.exe TMDedit.exe libWiiSharp.dll patchIOS.exe -r >nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ModMii_7.0.3.zip" "https://github.com/modmii/modmii.github.io/releases/download/7.0.3/ModMii.zip"
+
+support\7za e -aoa temp\ModMii_7.0.3.zip -o"Support" wadmii.exe TMDedit.exe libWiiSharp.dll patchIOS.exe -r >nul
 if not exist Support\wadmii.exe set dependency=F
 if not exist Support\TMDedit.exe set dependency=F
 if not exist Support\libWiiSharp.dll set dependency=F
 if not exist Support\patchIOS.exe set dependency=F
-if exist temp\ModMii_7.0.2.zip del temp\ModMii_7.0.2.zip>nul
+if exist temp\ModMii_7.0.3.zip del temp\ModMii_7.0.3.zip>nul
 
 goto:fin
 :skip
@@ -204,7 +211,8 @@ SET /a FrameworkAttempt=%FrameworkAttempt%+1
 if exist "temp\%dlname%" goto:semiskip
 echo.
 echo Downloading .NET Framework 3.5 Installer
-support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%dlname%" "%code2%"
+
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\%dlname%" || del "temp\%dlname%"
 if exist "temp\%dlname%" goto:semiskip
@@ -243,7 +251,7 @@ if exist temp\optional_fast_spinning_outline.mym goto:skip
 :downloadit
 echo.
 echo Downloading Theme Spin Effects...
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/mym_spin_effects.zip" -O temp\mym_spin_effects.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\mym_spin_effects.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/mym_spin_effects.zip"
 if exist temp\mym_spin_effects.zip support\7za x -aoa "temp\mym_spin_effects.zip" -o"temp" -r
 if exist temp\mym_spin_effects.zip del temp\mym_spin_effects.zip>nul
 
@@ -266,7 +274,7 @@ goto:framework45
 echo.
 echo Downloading themewii.exe (.NET Framework 4.5 version)...
 
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/themewii_dotnet45.zip" -O temp\themewii_dotnet45.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\themewii_dotnet45.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/themewii_dotnet45.zip"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\themewii_dotnet45.zip" || del "temp\themewii_dotnet45.zip"
@@ -305,7 +313,8 @@ SET /a FrameworkAttempt=%FrameworkAttempt%+1
 if exist "temp\dotNetFx45_Full_setup.exe" goto:semiskip
 echo.
 echo Downloading .NET Framework 4.5 Installer
-support\wget --no-check-certificate -t 3 "https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe" -O "temp\dotNetFx45_Full_setup.exe" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\dotNetFx45_Full_setup.exe" "https://download.microsoft.com/download/B/A/4/BA4A7E71-2906-4B2D-A0E1-80CF16844F5F/dotNetFx45_Full_setup.exe"
+
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\dotNetFx45_Full_setup.exe" || del "temp\dotNetFx45_Full_setup.exe"
 if exist "temp\dotNetFx45_Full_setup.exe" goto:semiskip

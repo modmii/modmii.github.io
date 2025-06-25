@@ -9,7 +9,7 @@ findStr /I /C:"%date%" "temp\check_versions.date" >nul
 IF not ERRORLEVEL 1 goto:skipcheck_versions
 
 :nodatecheck
-support\wget --no-check-certificate -t 3 "https://aroma.foryour.cafe/api/check_versions" -O temp\check_versions.txt -q
+support\wget --no-check-certificate -q -t 3 -O "temp\check_versions.txt" "https://aroma.foryour.cafe/api/check_versions"
 ::delete if file is empty
 >nul findstr "^" "temp\check_versions.txt" || del "temp\check_versions.txt"
 if exist "temp\check_versions.txt" (echo %date% >temp\check_versions.date) & (goto:skipcheck_versions)

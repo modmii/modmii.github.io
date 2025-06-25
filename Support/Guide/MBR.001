@@ -20,10 +20,20 @@
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
 	</ul>
 <br>
-<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using one of the two methods below.</b>
+<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using any <u>one</u> of the methods below.</b>
+</ul>
 <br>
-<br>
-<li><b>Method 1: MiniTool Partition Wizard</b>
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen4" style="font-size: x-large;" onclick="openTab('StyleGroup', 'MINITOOL')">1. MiniTool</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroup', 'WDM')">2. Windows Disk Management</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroup', 'DISKPART')">3. DiskPart</button>
+<br><br>
+
+<!--------------------------------------MINITOOL----------------------------------->
+<div id="MINITOOL" class="StyleGroup">
+<b><u>Method 1: MiniTool Partition Wizard</u></b><br>
 	<ul style=align="left" type="square">
 	<li>If you have files on the drive you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
 	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
@@ -42,11 +52,11 @@
 	<li>Wait for the conversion to finish then click "OK".
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
 </ol>
+</div>
 
-<br>
-
-<li><b>Method 2: Windows Disk Management</b>
-
+<!--------------------------------------Windows Disk Management----------------------------------->
+<div id="WDM" class="StyleGroup">
+<b><u>Method 2: Windows Disk Management</u></b><br>
 <ol type="A">
 <li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
 <li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
@@ -57,8 +67,9 @@
 <li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
 
 <li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
-
-
+	<ul style=align="left" type="disc">
+	<li>If "Convert to MBR Disk." is not available please select another MBR conversion method.
+	</ul>
 <li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
 <li>Choose a Drive letter for this partition, then click "Next".
 	<ul style=align="left" type="disc">
@@ -74,8 +85,35 @@
 	<li>If you see a message indicating you need to format the drive, click "Cancel".
 	</ul>
 </ol>
+</div>
+
+
+<!--------------------------------------DISKPART----------------------------------->
+<div id="DISKPART" class="StyleGroup">
+<b><u>Method 3: DiskPart</u></b><br>
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<!--</li><A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>-->
+<li>Press <kbd>⊞ Win</kbd>+<kbd>R</kbd> and enter "cmd" to open Command Prompt.
+<li>Then type the following commands and press "Enter" after each.
+	<ul style=align="left" type="disc">
+	<li><b>diskpart</b>
+	<li><b>list disk</b>
+	<li><b>select disk <i>#</i></b>
+		<ul style=align="left" type="square">
+		<li>Where <i>#</i> is the disk number corresponding to the device you want to convert
+		</ul>
+	<li><b>clean</b>
+	<li><b>convert MBR</b>
+	</ul>
+</ol>
+
+</div>
+
+
+</div>
 <br>
-</ul>
+
 
 
 <!--------------------------------------Side Spoiler Buttons----------------------------------->

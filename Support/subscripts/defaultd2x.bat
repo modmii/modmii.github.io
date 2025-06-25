@@ -4,19 +4,20 @@ if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if not "%RecD2XcIOS%"=="" goto:proceed
 
 if /i "%debug%" EQU "on" goto:debugskip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :debugskip
 
-if /i "%debug%" NEQ "on" support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat -q
-if not exist Updatetemp.bat support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat -q
-::delete if file is empty (if empty)
->nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
-if not exist Updatetemp.bat goto:proceed
+if /i "%debug%" NEQ "on" support\wget --no-check-certificate -q -t 3 -O "temp\updater.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat"
+if not exist temp\updater.bat support\wget --no-check-certificate -q -t 3 -O "temp\updater.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat"
 
-support\sfk filter -quiet "Updatetemp.bat" -ls+"set RecD2XcIOS=">temp\RecD2XcIOS.bat
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\updater.bat" || del "temp\updater.bat"
+if not exist temp\updater.bat goto:proceed
+
+support\sfk filter -quiet "temp\updater.bat" -ls+"set RecD2XcIOS=">temp\RecD2XcIOS.bat
 if exist temp\RecD2XcIOS.bat call temp\RecD2XcIOS.bat
-if /i "%debug%" NEQ "on" del Updatetemp.bat>nul
+if /i "%debug%" NEQ "on" del temp\updater.bat>nul
 :proceed
 
 echo.
@@ -44,16 +45,16 @@ echo.
 echo Enabling %RecD2XcIOS%...
 echo.
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
-support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
 echo.
 
 ::delete if file is empty
->nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
+>nul findstr "^" "temp\%RecD2XcIOS%.zip" || del "temp\%RecD2XcIOS%.zip"
 
-if not exist "%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
+if not exist "temp\%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
-support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
-del "%RecD2XcIOS%.zip">nul
+support\7za e -aoa "temp\%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+del "temp\%RecD2XcIOS%.zip">nul
 if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 
 :pickup

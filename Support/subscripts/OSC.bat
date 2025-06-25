@@ -24,7 +24,7 @@ if exist "temp\contents\" rd /s /q temp\contents
 if /i "%code1%" NEQ "all" set "CurrentApp=%code1%"
 if /i "%code1%" NEQ "all" goto:exists
 
-support\wget --no-check-certificate -t 3 "https://codeload.github.com/OpenShopChannel/Apps/zip/refs/heads/master" -O temp\Apps-master.zip -q
+support\wget --no-check-certificate -q -t 3 -O "temp\Apps-master.zip" "https://codeload.github.com/OpenShopChannel/Apps/zip/refs/heads/master"
 
 if exist temp\Apps-master.zip support\7za e -aoa temp\Apps-master.zip -otemp\contents Apps-master\contents\*.oscmeta -r>nul
 
@@ -66,10 +66,12 @@ if /i "%vWii80Installer%" EQU "*" del "temp\contents\Patched_IOS80_Installer_for
 if /i "%HBB%" EQU "*" del "temp\contents\homebrew_browser.oscmeta">nul
 if /i "%v43DB%" EQU "*" del "temp\contents\ww-43db-patcher.oscmeta">nul
 if /i "%SCR%" EQU "*" del "system-channel-restorer.oscmeta">nul
-
-::also exclude postloader and cfg if toggled as the versions provided by ModMii are better
-if /i "%postLoader%" EQU "*" del "temp\contents\postloader.oscmeta">nul
 if /i "%usbfolder%" EQU "*" del "temp\contents\usb-loader.oscmeta">nul
+if /i "%csminstaller%" EQU "*" del "temp\contents\csm-installer.oscmeta">nul
+if /i "%DumpMii%" EQU "*" del "temp\contents\nanddumper_ios.oscmeta">nul
+
+::also exclude postloader if toggled as the versions provided by ModMii are better
+if /i "%postLoader%" EQU "*" del "temp\contents\postloader.oscmeta">nul
 
 :keepcontents
 ::if also doing file cleanup, don't update certain apps from OSCwii
@@ -108,6 +110,10 @@ findStr /X /C:"\apps\ARCME" "temp\CleanItems.txt" >nul
 IF NOT ERRORLEVEL 1 if exist "temp\contents\ARCME.oscmeta" del "temp\contents\ARCME.oscmeta">nul
 findStr /X /C:"\apps\yawmME" "temp\CleanItems.txt" >nul
 IF NOT ERRORLEVEL 1 if exist "temp\contents\yawmME.oscmeta" del "temp\contents\yawmME.oscmeta">nul
+findStr /X /C:"\apps\d2x-cios-installer" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\d2x-cios-installer.oscmeta" del "temp\contents\d2x-cios-installer.oscmeta">nul
+findStr /X /C:"\apps\d2x-cios-installer-vwii" "temp\CleanItems.txt" >nul
+IF NOT ERRORLEVEL 1 if exist "temp\contents\d2x-cios-installer-vwii.oscmeta" del "temp\contents\d2x-cios-installer-vwii.oscmeta">nul
 :skip
 
 
@@ -191,8 +197,13 @@ set CurrentAppVersion=
 set LatestVersion=
 set CachedVersion=nulll
 
-::if no meta then force update
-if not exist "%DRIVE%\apps\%CurrentApp%\meta.xml" goto:downloadOSC
+::if no meta, boot.dol or boot.elf then force update
+if not exist "%DRIVE%\apps\%CurrentApp%\meta.xml" (echo No meta.xml detected, updating app now...) & (goto:downloadOSC)
+if exist "%DRIVE%\apps\%CurrentApp%\boot.dol" goto:continue
+if exist "%DRIVE%\apps\%CurrentApp%\boot.elf" goto:continue
+echo No boot.dol or boot.elf detected, updating app now...
+goto:downloadOSC
+:continue
 
 ::below fixes meta's that have 00 bytes and may make the OHBC 1.1.4 or ModMii crash upon inspecting the meta
 support\sfk replace "%DRIVE%\apps\%CurrentApp%\meta.xml" -binary /00// -yes>nul
@@ -200,6 +211,17 @@ support\sfk filter -quiet "%DRIVE%\apps\%CurrentApp%\meta.xml" -+"/version" -rep
 set /p CurrentAppVersion= <temp\version.txt
 if /i "%CurrentAppVersion:~0,1%" EQU "v" set "CurrentAppVersion=%CurrentAppVersion:~1%"
 if exist temp\version.txt del temp\version.txt>nul
+
+::WHEN GX r1283 IS RELEASED THE LINES BELOW CAN BE REMOVED (until ":notGX")
+::compensate for GX "v4.0 r1282" (test versions)
+if /i "%CurrentApp%" NEQ "usbloader_gx" goto:notGX
+if exist "%DRIVE%\apps\usbloader_gx\DO NOT REUPLOAD.txt" del "%DRIVE%\apps\usbloader_gx\DO NOT REUPLOAD.txt">nul
+if /i "%CurrentAppVersion%" NEQ "4.0 r1282" goto:notGX
+findStr /I /C:"release_date>202503" "%DRIVE%\apps\usbloader_gx\meta.xml" >nul
+IF NOT ERRORLEVEL 1 set "CurrentAppVersion=v%CurrentAppVersion% test version"
+::added v prefix back to the above to force "v4.0 r1282 test version" to appear older than "4.0 r1282"
+:notGX
+
 if /i "%OSCmode%" NEQ "list" echo Found version: %CurrentAppVersion%
 if /i "%AUSKIP%" EQU "ON" goto:downloadOSC
 
@@ -209,7 +231,7 @@ if /i "%AUSKIP%" EQU "ON" goto:downloadOSC
 ::get latest meta version
 if exist temp\meta.xml del temp\meta.xml>nul
 
-support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml" -O temp\meta.xml -q
+support\wget --no-check-certificate -q -t 3 -O "temp\meta.xml" "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml"
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\meta.xml" || del "temp\meta.xml"
 
@@ -224,6 +246,7 @@ support\sfk replace "temp\meta.xml" -binary /00// -yes>nul
 support\sfk filter -quiet "temp\meta.xml" -+"/version" -rep _"*<version>"__ -rep _"</version*"__ -rep _"&"__ >temp\version.txt
 set /p LatestVersion= <temp\version.txt
 if /i "%LatestVersion:~0,1%" EQU "v" set "LatestVersion=%LatestVersion:~1%"
+
 if exist temp\version.txt del temp\version.txt>nul
 if exist temp\meta.xml del temp\meta.xml>nul
 
@@ -396,7 +419,8 @@ goto:nocached
 ::get LatestVersion if not retrieved earlier
 if not "%LatestVersion%"=="" goto:nocached
 
-support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml" -O temp\meta.xml -q
+support\wget --no-check-certificate -q -t 3 -O "temp\meta.xml" "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml"
+
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\meta.xml" || del "temp\meta.xml"
@@ -413,7 +437,23 @@ if exist temp\meta.xml del temp\meta.xml>nul
 
 set /a OSCcount=%OSCcount%+1
 ::download only if not already cached
-if /i "%LatestVersion%" NEQ "%CachedVersion%" support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/api/contents/%CurrentApp%/%CurrentApp%.zip" -O "temp\%CurrentApp%.zip" -q --show-progress
+::GX won't primarily be downloaded from oscwii.org by special request from its developer
+if /i "%LatestVersion%" EQU "%CachedVersion%" goto:jump
+if /i "%CurrentApp%" NEQ "usbloader_gx" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%CurrentApp%.zip" "https://hbb1.oscwii.org/api/contents/%CurrentApp%/%CurrentApp%.zip"
+if /i "%CurrentApp%" NEQ "usbloader_gx" goto:jump
+
+::parse github api to get actual latest DL link
+if not "%gxURL%"=="" goto:halfjump
+if exist "temp\gx.json" del "temp\gx.json">nul
+support\wget --no-check-certificate -q -t 3 -O "temp\gx.json" "https://api.github.com/repos/wiidev/usbloadergx/releases/latest"
+support\sfk filter "temp\gx.json" -+"browser_download_url" +filter -spat -le+".zip\x22" -rep _*http_http_ -rep _\x22__ > temp\latest2.json
+set /p gxURL= <"temp\latest2.json"
+if "%gxURL%"=="" set "gxURL=https://hbb1.oscwii.org/api/contents/%CurrentApp%/%CurrentApp%.zip"
+if exist "temp\gx.json" del "temp\gx.json">nul
+if exist "temp\latest2.json" del "temp\latest2.json">nul
+:halfjump
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%CurrentApp%.zip" "%gxURL%"
+:jump
 
 if exist "temp\%CurrentApp%.zip" support\7za x -aoa "temp\%CurrentApp%.zip" -o"%Drive%" -x!__MACOSX -x!readme* -x!gcmm_1.5.2 -x!history.txt -x!*license.txt -x!READ.MII -x!manual.html -x!"Homebrew Browser Guide and Help" -x!src -x!gpl.txt -x!LICENSE -x!WiiPhysics_Readme.txt -x!"apps\.DS_Store" -x!"wii7800\wii7800.conf" >temp\7zalog.txt
 
@@ -424,6 +464,11 @@ if not exist "%DRIVE%\apps\%CurrentApp%\meta.xml" goto:fail
 
 
 ::pass
+
+::next 2 lines will count apps that were redownloaded in LIST mode due to missing meta or boot files
+if /i "%OSCmode%" EQU "list" set /a OSCcountCurrent=%OSCcountCurrent%+1
+if /i "%OSCmode%" EQU "list" set /a OSCcount=%OSCcount%+1
+
 if exist temp\7zalog.txt del temp\7zalog.txt>nul
 if "%LatestVersion%"=="" (support\sfk echo [%greentext%]Download Successful) & goto:microskip
 if "%CurrentAppVersion%"=="" support\sfk echo [%greentext%]Downloaded %LatestVersion% Successfully
@@ -557,5 +602,3 @@ set "DRIVE=%DRIVErestore%"
 
 echo %OSCcountCurrent% >temp\OSCcountCurrent.txt
 echo %OSCcountSkip% >temp\OSCcountSkip.txt
-
-if /i "%debug%" EQU "on" pause

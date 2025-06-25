@@ -24,7 +24,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=8.0.3
+set currentversion=8.0.4
 set d2x-bundled=11-beta3
 set currentversioncopy=%currentversion%
 set agreedversion=
@@ -123,6 +123,8 @@ if /i "%cmdinput%" NEQ "%homedrive%\Windows\System32\cmd.exe" goto:skipfix
 set cmdinput=%*
 set "cmdinput=%cmdinput:"=%"
 :skipfix
+
+set "cmdinput=%cmdinput:/=\%"
 
 ::echo cmdinput: "%cmdinput%"
 ::echo      one: "%one%"
@@ -239,7 +241,12 @@ echo ModMii v8.0.0 and above requires 64-bit Windows 8.1 or higher
 echo.
 echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)
 echo.
-if not exist ModMii_64bit.exe echo Should you continue, an alternate ModMii.exe Launcher will be downloaded to make things a bit better.
+
+set GrabModMii32x=
+support\sfk md5 -quiet -verify 0736e14b7ad05a99912e9ba811987335 "ModMii.exe"
+if errorlevel 1 set GrabModMii32x=Y
+
+if /i "%GrabModMii32x%" EQU "Y" echo Should you continue, an alternate ModMii.exe Launcher will be downloaded to make things a bit better.
 echo Hit any key to use ModMii anyway
 pause>nul
 
@@ -248,11 +255,12 @@ Set LegacyCIOS=Y
 echo Set LegacyCIOS=Y>>Support\settings.bat
 
 ::if exist "%homedrive%\Program Files (x86)" goto:skip
-if exist ModMii_64bit.exe goto:skip
+if /i "%GrabModMii32x%" NEQ "Y" goto:skip
 
 echo.
 echo Downloading alternate ModMii.exe Launcher...
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip" -O "temp\ModMii_Launcher_2.4_32bit.zip" -q --show-progress
+if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ModMii_Launcher_2.4_32bit.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip"
+
 if not exist "temp\ModMii_Launcher_2.4_32bit.zip" (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:skip)
 
 support\7za x -aoa "temp\ModMii_Launcher_2.4_32bit.zip" -r ModMii_32bit.exe
@@ -292,7 +300,7 @@ echo ModMii v8.0.0 and above ^& WiiPy requires Microsoft Visual C++ 2015-2022
 echo.
 echo Downloading and launching installer...
 echo.
-support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%dlname%" "%code2%"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\%dlname%" || del "temp\%dlname%"
@@ -368,6 +376,8 @@ set UPDATENAME=ModMii
 if /i "%debug%" EQU "on" goto:skip
 if exist Updatetemp.bat attrib -h Updatetemp.bat
 if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :skip
 
 ::this next line will force d2x online version checks to be done once every time modmii is opened (as opposed to just once per day)
@@ -453,7 +463,7 @@ if not exist temp\d2xClassicCheck.txt echo whatever>temp\d2xClassicCheck.txt
 findStr /I /X /C:"%CurDate% " "temp\d2xClassicCheck.txt" >nul
 IF NOT ERRORLEVEL 1 goto:proceed
 if exist temp\RecD2XcIOS.txt del temp\RecD2XcIOS.txt>nul
-support\wget --no-check-certificate "https://github.com/xflak/stats/releases/latest/download/classic.txt" -O temp\RecD2XcIOS.txt -q
+support\wget --no-check-certificate -q -t 3 -O "temp\RecD2XcIOS.txt" "https://github.com/xflak/stats/releases/latest/download/classic.txt"
 ::delete if file is empty (if empty)
 if exist "temp\RecD2XcIOS.txt" >nul findstr "^" "temp\RecD2XcIOS.txt" || del "temp\RecD2XcIOS.txt"
 if not exist temp\RecD2XcIOS.txt goto:proceed
@@ -508,7 +518,7 @@ support\sfk echo [%redtext%]ModMii v%currentversion% nand tools
 echo.
 support\sfk echo [%bluetext%]"%cmdinput%"
 echo.
-support\sfk echo [%yellowtext%]*This file is not a Wii nand.bin backup! Filesize is %binsize% bytes (553649152 expected)
+support\sfk echo [%yellowtext%]*This file is not a Wii nand.bin backup! Filesize is %binsize% bytes [553649152 expected]
 echo.
 echo You can close this window now, or press any key to calculate the hash of this file...
 pause> nul
@@ -544,6 +554,8 @@ set "nandkeys=%nandkeys:"=%"
 ::echo mympath "%mympath%"
 
 if "%nandkeys%"=="" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:nandfix)
+
+set "nandkeys=%nandkeys:/=\%"
 
 if not exist "%nandkeys%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:nandfix)
 
@@ -707,43 +719,12 @@ if /i "%nand1%" EQU "%nand2%" set "nandfolder1=%nandfolder%"
 if /i "%nand1%" EQU "%nand2%" goto:skipkeys
 :notDefragmii
 
-cd /d "%nandfolder%"
-if /i "%nandfile%" EQU "nand.bin" goto:skip
-if exist nand.bin move /y nand.bin nand.bin.modmii.bak>nul
-if exist nand-key.bin move /y nand-key.bin nand-key.bin.modmii.bak>nul
-move /y "%nandfile%" nand.bin>nul
-:skip
-
-
-echo @echo Off>"%ModMiiDir%\temp\temp.bat"
-echo title nand-aes-dump-cmd>>"%ModMiiDir%\temp\temp.bat"
-echo cd /d "%nandfolder%">>"%ModMiiDir%\temp\temp.bat"
-echo "%ModMiiDir%\temp\nand-tools\nand-aes-dump.exe">>"%ModMiiDir%\temp\temp.bat"
-cd "%ModMiiDir%\temp"
-start /min temp.bat
+if exist "%nandfolder%\nand-key.bin" move /y "%nandfolder%\nand-key.bin" "%nandfolder%\nand-key.bin.modmii.bak">nul
+::the following command replicates how nand-aes-dump.exe gets nand-key.bin, but doesn't require the console ID to start at offset 0x19 of keys.bin (i.e. this way works even with nanddumper@IOS beta3 dumps)
+support\sfk hexdump -nofile -offlen 0x21000158 0x10 "%cmdinput%" +hextobin "%nandfolder%\nand-key.bin">nul
+if not exist "%nandfolder%\nand-key.bin" (echo unable to retrieve nand-key.bin, exiting...) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 cd /d "%nandfolder%"
-
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-if not exist nand-key.bin @ping 127.0.0.1 -n 1 -w 1000> nul
-@ping 127.0.0.1 -n 2 -w 1000> nul
-
-::nand-aes-dump.exe doesn't exit when done!
-if exist nand-key.bin taskkill /F /IM "nand-aes-dump.exe" /T >nul
-if exist nand-key.bin taskkill /F /FI "WindowTitle eq nand-aes-dump-cmd" /T >nul
-if exist nand-key.bin taskkill /F /FI "WindowTitle eq  Administrator:  nand-aes-dump-cmd" /T >nul
-
-move /y nand.bin "%nandfile%">nul
-if exist nand.bin.modmii.bak move /y nand.bin.modmii.bak nand.bin>nul
-if not exist nand-key.bin (echo unable to retrieve nand-key.bin, exiting...) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
 if /i "%binAction%" EQU "D" goto:%afterkeys%
 
@@ -752,7 +733,6 @@ if /i "%binAction%" EQU "D" goto:%afterkeys%
 "%ModMiiDir%\temp\nand-tools\zestig.exe" nand-key.bin "%nandfile:~0,-4%_dec.bin" "%nandfile:~0,-4%"
 
 if exist "%nandfile:~0,-4%_dec.bin" del /f /q "%nandfile:~0,-4%_dec.bin"
-
 if exist "nand-key.bin" del /f /q "nand-key.bin"
 if exist "%nandfolder%\nand-key.bin.modmii.bak" move /y "%nandfolder%\nand-key.bin.modmii.bak" "%nandfolder%\nand-key.bin">nul
 echo.
@@ -853,13 +833,19 @@ goto:Punetwiin
 
 if /i "%nandfolder2%" EQU "B" goto:binDrop
 if /i "%nandfolder2:~-4%" NEQ ".bin" goto:badkey
+set "nandfolder2=%nandfolder2:/=\%"
 if not exist "%nandfolder2%" goto:badkey
 
-goto:PunetwiinConfirm
+
+::Checking files size...
+for %%A in ("%nandfolder2%") do set binsize=%%~zA
+::echo file size: %binsize% bytes
+if /i "%binsize%" EQU "553649152" goto:PunetwiinConfirm
+if /i "%binsize%" EQU "553648128" (echo Incomplete nand detected! To repair it, open it first/directly using ModMii.) else (echo This file is not a Wii nand.bin backup! Filesize is %binsize% bytes [553649152 expected])
 
 :badkey
 echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
+@ping 127.0.0.1 -n 3 -w 1000> nul
 goto:Punetwiin
 
 
@@ -1040,13 +1026,16 @@ if /i "%nandfolder2%" EQU "B" goto:binDrop
 if /i "%nandfolder2:~-4%" NEQ ".bin" goto:badkey
 if not exist "%nandfolder2%" goto:badkey
 
-
-goto:DefragMii2
+::Checking files size...
+for %%A in ("%nandfolder2%") do set binsize=%%~zA
+::echo file size: %binsize% bytes
+if /i "%binsize%" EQU "553649152" goto:DefragMii2
+if /i "%binsize%" EQU "553648128" (echo Incomplete nand detected! To repair it, open it first/directly using ModMii.) else (echo This file is not a Wii nand.bin backup! Filesize is %binsize% bytes [553649152 expected])
 
 :badkey
 echo You Have Entered an Incorrect Key
-@ping 127.0.0.1 -n 2 -w 1000> nul
-goto:Punetwiin
+@ping 127.0.0.1 -n 3 -w 1000> nul
+goto:DefragMii
 
 
 
@@ -2218,7 +2207,7 @@ if "%WADdol%"=="" goto:modifyAHB
 if /i "%WADdol%" EQU "B" goto:modifyIOS
 if /i "%WADdol%" EQU "E" exit
 
-
+set "WADdol=%WADdol:/=\%"
 if not exist "%WADdol%" goto:badkey
 
 ::if newDolNL=Y it means new dol (or dol embedded in wad) has an integrated nand loader, same goes for oldDolNL (i.e. wad that was dragged)
@@ -4828,16 +4817,19 @@ echo.
 
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong System Menu version can cause brick, make sure you have Priiloader ^& a nand backup.
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
-support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod, instead USE csm-installer!
+support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod 2.0 or older, instead USE csm-installer!
 support\sfk -spat echo \x20 \x20 [%yellowtext%]vWii and Mini themes are experimental and not every MYM will work properly with vWii and Mini
 
 echo.
 echo     Install themes for YOUR System Menu version using csm-installer from ModMii's Download Page 3.
 echo     More themes available at wiithemer.org and wii.hacks.guide/themes
 echo.
-echo     Note: to check your System Menu version, turn on your Wii, click the Wii button in the
-echo           bottom left of the main system menu, click Wii Settings, then you should see the
-echo           System Menu version in the top right of the screen (ie. 4.2U, 4.1J, 3.2E, etc.)
+echo     Note: To check your Wii's System Menu version, click the Wii button in the bottom left of the system menu,
+echo           click Wii Settings, the System Menu version will be in the top right (e.g. 4.3U, 4.1J, 3.2E, etc.)
+echo           To check your vWii's region, on your WiiU click the System Settings button from the system menu,
+echo           then you should see the version in the top right of the screen (e.g. 5.2.0U, 5.2.0J, 5.2.0E)
+
+
 echo.
 echo Wii Options:  4.1-4.3 UEJK              vWii Options: vU vE vJ          Wii Mini Options: mU mE
 echo.
@@ -4845,7 +4837,7 @@ echo Wii Examples: 4.3U                     vWii Examples: vU               Wii 
 echo               4.2E                                    vE                                  mE
 echo               4.1K, etc.                              vJ
 echo.
-echo Or enter "Help" for an instructional video on checking your System Menu Version.
+echo Or enter "Help" for an instructional video on checking your Wii's System Menu Version.
 echo.
 set mym2csm="
 set /p mym2csm=Enter Selection Here: 
@@ -4919,6 +4911,7 @@ set "MiniApp=%MiniApp:"=%"
 ::echo MiniApp "%MiniApp%"
 
 if "%MiniApp%"=="" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:checkapp)
+set "MiniApp=%MiniApp:/=\%"
 if not exist "%MiniApp%" (echo You Have Entered an Incorrect Key) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:checkapp)
 
 If /i "%MiniApp:~-4%" NEQ ".wad" goto:skip
@@ -4949,7 +4942,7 @@ support\sfk echo [%redtext%]ModMii v%currentversion% Theme Builder
 echo.
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong System Menu version can cause brick, make sure you have Priiloader ^& a nand backup.
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
-support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod, instead USE csm-installer!
+support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod 2.0 or older, instead USE csm-installer!
 support\sfk -spat echo \x20 \x20 [%yellowtext%]vWii and Mini themes are experimental and not every MYM will work properly with vWii and Mini
 echo.
 echo     Install themes for YOUR System Menu version using csm-installer from ModMii's Download Page 3.
@@ -5160,7 +5153,7 @@ if /i "%adminmode%" EQU "N" support\sfk echo [%bluetext%]To apply an additional 
 if /i "%adminmode%" EQU "Y" support\sfk echo [%bluetext%]To apply an additional mym to the loaded theme(s), enter its path now
 echo.
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Installing themes for the wrong System Menu version can cause brick, make sure you have Priiloader ^& a nand backup.
-support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod, instead USE csm-installer!
+support\sfk -spat echo \x20 \x20 [%yellowtext%]If using vWii (WiiU) DO NOT use MyMenuifyMod 2.0 or older, instead USE csm-installer!
 support\sfk -spat echo \x20 \x20 [%yellowtext%]Use the ModMii Wizard or SysCheck Updater Wizard for brick protection before applying themes!
 echo.
 echo     Install themes for YOUR System Menu version using csm-installer from ModMii's Download Page 3.
@@ -7338,9 +7331,10 @@ if exist "%homedrive%\Program Files (x86)" (set code2=hashmyfiles-x64) else (set
 if exist temp\%code2%\hashmyfiles.exe goto:skipDL
 echo.
 echo Downloading %code2% to check "%cmdinput%"
-support\wget --no-check-certificate -t 3 "https://www.nirsoft.net/utils/%code2%.zip" -q --show-progress
-if exist %code2%.zip support\7za x -aoa "%code2%.zip" -o"temp\%code2%" -r
-if exist %code2%.zip move /y %code2%.zip temp\%code2%.zip>nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%code2%.zip" "https://www.nirsoft.net/utils/%code2%.zip"
+
+if exist temp\%code2%.zip support\7za x -aoa "temp\%code2%.zip" -o"temp\%code2%" -r
+
 :skipDL
 if not exist temp\%code2%\hashmyfiles.exe (echo %code2% failed to download, exiting...) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (exit)
 
@@ -8693,7 +8687,7 @@ if not exist temp\d2xClassicCheck.txt echo whatever>temp\d2xClassicCheck.txt
 findStr /I /X /C:"%CurDate% " "temp\d2xClassicCheck.txt" >nul
 IF NOT ERRORLEVEL 1 goto:proceed
 if exist temp\RecD2XcIOS.txt del temp\RecD2XcIOS.txt>nul
-support\wget --no-check-certificate "https://github.com/xflak/stats/releases/latest/download/classic.txt" -O temp\RecD2XcIOS.txt -q
+support\wget --no-check-certificate -q -t 3 -O "temp\RecD2XcIOS.txt" "https://github.com/xflak/stats/releases/latest/download/classic.txt"
 ::delete if file is empty (if empty)
 if exist "temp\RecD2XcIOS.txt" >nul findstr "^" "temp\RecD2XcIOS.txt" || del "temp\RecD2XcIOS.txt"
 if not exist temp\RecD2XcIOS.txt goto:proceed
@@ -9286,16 +9280,14 @@ support\sfk -spat filter temp\cmdinput.txt -rep _" Rev:%removeme%"__ -write -yes
 if /i "%neek2o%" EQU "ON" (set googlecode=neek2o) & (set neekname=neek2o)
 if /i "%neek2o%" NEQ "ON" (set googlecode=sneeky-compiler-modmii) & (set neekname=neek)
 
-
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 
-echo Downloading %neekname%-rev%CurrentRev%.zip...
-support\wget --no-check-certificate -t 3 "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip" -q --show-progress
-
-if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
-
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
-move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
+
+echo Downloading %neekname%-rev%CurrentRev%.zip...
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
 
 :noRevcmd
 
@@ -9419,13 +9411,11 @@ if /i "%SkinMode%" EQU "Y" goto:noRevcmd
 
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:noRevcmd
 echo Downloading %neekname%-rev%CurrentRev%.zip...
-support\wget --no-check-certificate -t 3 "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip" -q --show-progress
-
-if not exist "%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
-
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
-move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
 
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" (echo "%CurrentRev%" is not a valid input, using latest version instead...) & (echo check this URL for available versions: https://sourceforge.net/projects/%googlecode%/files/?source=navbar) & (@ping 127.0.0.1 -n 5 -w 1000> nul) & (set neekrev=1) & (set CurrentRev=) & (goto:noRevcmd)
 
 :noRevcmd
 
@@ -9697,11 +9687,11 @@ if not exist support\hexalter.exe (echo One or more of ModMii's supporting files
 if not exist support\nircmd.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 if not exist support\sfk.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 if not exist %WiiPy% (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
-if not exist support\wget.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
-if not exist support\7za.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
+::if not exist support\wget.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
+::if not exist support\7za.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 if not exist support\jptch.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
 ::WizApp.exe only needed for skin
-
+::if not exist support\WizApp.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
 
 
 ::recommended d2x version check = "RecD2XcIOS", but check no more than once per day
@@ -9710,7 +9700,8 @@ if not exist temp\d2xClassicCheck.txt echo whatever>temp\d2xClassicCheck.txt
 findStr /I /X /C:"%CurDate% " "temp\d2xClassicCheck.txt" >nul
 IF NOT ERRORLEVEL 1 goto:proceed
 if exist temp\RecD2XcIOS.txt del temp\RecD2XcIOS.txt>nul
-support\wget --no-check-certificate "https://github.com/xflak/stats/releases/latest/download/classic.txt" -O temp\RecD2XcIOS.txt -q
+support\wget --no-check-certificate -q -t 3 -O "temp\RecD2XcIOS.txt" "https://github.com/xflak/stats/releases/latest/download/classic.txt"
+
 ::delete if file is empty (if empty)
 if exist "temp\RecD2XcIOS.txt" >nul findstr "^" "temp\RecD2XcIOS.txt" || del "temp\RecD2XcIOS.txt"
 if not exist temp\RecD2XcIOS.txt goto:proceed
@@ -10660,7 +10651,8 @@ if /i "%MENU1%" NEQ "patchmii" goto:skip
 ::lets fix some bad installations missing files due to false positive AV activities.
 set patchmiinew=
 if exist patchmii.txt (set /p patchmii= <patchmii.txt) & (goto:gotit)
-support\wget --no-check-certificate "https://tiny.cc/2G5jyqRu" -O patchmii.txt -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "patchmii.txt" "https://tiny.cc/2G5jyqRu"
+
 if not exist patchmii.txt goto:skip
 set /p patchmii= <patchmii.txt
 DEL "patchmii.txt">nul
@@ -10669,7 +10661,8 @@ echo.
 echo Downloading patch files, please be patient...
 echo.
 echo "%patchmii%"
-support\wget --no-check-certificate "%patchmii%" -O patchmii.7z -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "patchmii.7z" "%patchmii%"
+
 if exist patchmii.7z (support\7za x -aoa patchmii.7z -o"%cd%" -r -x!"READ ME.txt" -x!7za.exe) & (echo.) & (echo Done! Restarting ModMii...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (Start ModMii.exe) & (exit)
 :skip
 
@@ -10680,7 +10673,8 @@ if /i "%MENU1%" EQU "help" echo Google is your friend
 if /i "%MENU1%" NEQ "music" goto:notmusic
 echo Music Easter Egg Unlocked! Who else remembers this classic cIOS installer music?!
 echo Enter "musicoff" to stop
-if not exist temp\freedom_of_our_time.mp3 support\wget --no-check-certificate "https://raw.githubusercontent.com/xflak/xflak.github.io/main/stuff/freedom_of_our_time.mp3" -O temp\freedom_of_our_time.mp3 -q --show-progress
+if not exist temp\freedom_of_our_time.mp3 support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\freedom_of_our_time.mp3" "https://raw.githubusercontent.com/xflak/xflak.github.io/main/stuff/freedom_of_our_time.mp3"
+
 ::delete if file is empty
 >nul findstr "^" "temp\freedom_of_our_time.mp3" || del "temp\freedom_of_our_time.mp3"
 if exist temp\freedom_of_our_time.mp3 start support\nircmd.exe mediaplay 210000 temp\freedom_of_our_time.mp3
@@ -10694,6 +10688,7 @@ if "%ERRORLEVEL%"=="0" taskkill /F /IM "nircmd.exe" /T >nul
 goto:MENU
 :NotMusicOff
 
+set "MENU1=%MENU1:/=\%"
 if not exist "%MENU1%" goto:badkey
 if exist "%MENU1%\" (set droptype=folder) else (set droptype=file)
 echo.
@@ -11993,6 +11988,7 @@ if /i "%AUTOUPDATE%" EQU "OFF" support\sfk echo -spat \x20 \x20 A = Auto-Update 
 if /i "%AUTOUPDATE%" EQU "ON" support\sfk echo -spat \x20 \x20 A = Auto-Update ModMii at program start [%greentext%](Enabled)
 echo     N = Check for New versions of ModMii right now
 echo    DD = Download Dependencies now instead of when needed (e.g. wiiload, etc.)
+
 echo     C = Context Menu info and Installer\Uninstaller
 echo     L = Launchpad Toolbar info and Installer\Uninstaller
 echo.
@@ -12243,7 +12239,6 @@ echo                                       by XFlak
 echo.
 :savesettingsnow
 echo ::ModMii Settings > Support\settings.bat
-echo ::ModMiiv%currentversion%>> Support\settings.bat
 echo Set ROOTSAVE=%ROOTSAVE%>> Support\settings.bat
 echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
@@ -12298,17 +12293,17 @@ echo This can always be customized in ModMii's d2x Options
 echo.
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
 
-support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
 echo.
 
 ::delete if file is empty
->nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
+>nul findstr "^" "temp\%RecD2XcIOS%.zip" || del "temp\%RecD2XcIOS%.zip"
 
-if not exist "%RecD2XcIOS%.zip" goto:badkey
+if not exist "temp\%RecD2XcIOS%.zip" goto:badkey
 if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
-support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+support\7za e -aoa "temp\%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
 echo.
-del "%RecD2XcIOS%.zip">nul
+del "temp\%RecD2XcIOS%.zip">nul
 if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (goto:badkey)
 
 :pickup
@@ -12354,7 +12349,7 @@ echo                  you are unsure), it may save some time by using default se
 echo.
 echo                * If your Wii's SD Card reader is broken, you can use a Hard Drive
 echo                  formatted as FAT32 in place of an SD Card to complete most things
-echo                  (SD notably required for Bootmii, NAND backup ^& SNEEK).
+echo                  (SD notably required for Bootmii ^& SNEEK).
 echo.
 echo                * If you don't have an SD Card or Hard Drive, you can launch apps ^&
 echo                  install WADs over the internet to your Wii or vWii from your PC.
@@ -12405,6 +12400,7 @@ if /i "%fixslash%" EQU "yes" set "DRIVETEMP=%DRIVETEMP:~0,-1%"
 if /i "%fixslash%" EQU "yes" goto:doublecheck
 :skip
 
+set "DRIVETEMP=%DRIVETEMP:/=\%"
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVETEMP:~1,1%" NEQ ":" goto:skipcheck
@@ -12577,6 +12573,7 @@ if /i "%DRIVEUTEMP:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set "DRIVEUTEMP=%DRIVEUTEMP:~0,-1%"
 if /i "%fixslash%" EQU "yes" goto:doublecheckU
 
+set "DRIVEUTEMP=%DRIVEUTEMP:/=\%"
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVEUTEMP:~1,1%" NEQ ":" goto:skipcheck
@@ -12692,34 +12689,33 @@ echo.
 if exist "temp\currentversion.txt" del "temp\currentversion.txt">nul
 if exist "temp\currentversionInfo.txt" del "temp\currentversionInfo.txt">nul
 
-::comment these for local Updatetemp.bat for testing... (updater.bat is renamed to Updatetemp.bat for legacy purposes)
-
 if /i "%debug%" EQU "on" goto:skip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 
 
-support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat -q
+support\wget --no-check-certificate -q -t 3 -O "temp\updater.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat"
 
 ::delete if file is empty (if empty)
->nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
-if not exist Updatetemp.bat goto:altlink
+>nul findstr "^" "temp\updater.bat" || del "temp\updater.bat"
+if not exist temp\updater.bat goto:altlink
 ::DELETE IF NULL
-::for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+::for %%R in (temp\updater.bat) do if %%~zR lss 1 del "temp\updater.bat">nul
 
 
 :altlink
-if not exist "Updatetemp.bat" support\wget --no-check-certificate "https://tiny.cc/modmiiupdater" -O Updatetemp.bat -q
+
+if not exist "temp\updater.bat" support\wget --no-check-certificate -q -t 3 -O "temp\updater.bat" "https://tiny.cc/modmiiupdater"
 ::delete if file is empty (if empty)
->nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
-if not exist Updatetemp.bat goto:updatefail
+>nul findstr "^" "temp\updater.bat" || del "temp\updater.bat"
+if not exist temp\updater.bat goto:updatefail
 ::DELETE IF NULL
-::for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+::for %%R in (temp\updater.bat) do if %%~zR lss 1 del "temp\updater.bat">nul
 :skip
 
 ::Call to get new version info and changelogURL
 if exist temp\skin.txt del temp\skin.txt>nul
-if exist Updatetemp.bat (call Updatetemp.bat) else (goto:updatefail)
+if exist temp\updater.bat (call temp\updater.bat) else (goto:updatefail)
 
 ::in case new d2x beta downloaded, call it
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
@@ -12731,8 +12727,8 @@ if "%newversion%"=="" goto:updatefail
 if %currentversion% LSS %newversion% goto:openchangelog
 
 if /i "%debug%" EQU "on" goto:debugskip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :debugskip
 
 if /i "%MENU1%" EQU "O" goto:skip
@@ -12790,8 +12786,8 @@ set "updatenow=%updatenow:"=%"
 
 if /i "%updatenow%" NEQ "N" goto:skip
 if /i "%debug%" EQU "on" goto:debugskip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :debugskip
 if /i "%currentversion%" EQU "0.0.0" exit
 if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
@@ -12812,7 +12808,7 @@ goto:updateconfirm
 echo %currentversion%>temp\currentversion.txt
 echo %currentversion%>temp\currentversionInfo.txt
 if exist temp\skin.txt del temp\skin.txt>nul
-start Updatetemp.bat
+start temp\updater.bat
 exit
 
 
@@ -12923,16 +12919,8 @@ set /a OSCupdateitems=0
 if not exist temp\OSCupdateList.txt goto:skiplist
 for /f %%a in (temp\OSCupdateList.txt) do set /a OSCupdateitems+=1
 
-::GX v3.0 r1281 has a broken meta.xml on oscwii.org, until r1282 is released this will override it to download from a dif source, after oscwii.org is updated the next 4 lines can be removed
-findStr /I /B /R /C:"usbloader_gx: .* to 3.0 r1281" "temp\OSCupdateList.txt" >nul
-IF ERRORLEVEL 1 goto:skiplist
-set usbgx=*
-support\sfk filter -quiet "temp\OSCupdateList.txt" -lerep _" to 3.0 r1281"_" to 4.0 r1282"_ -write -yes
 :skiplist
 if /i %OSCupdateitems% GTR 0 (set OSClib=*) & (set OSCmode=update)
-::after oscwii.org is updated the next 2 lines can be removed
-if /i "%usbgx%" EQU "*" if exist "temp\contents\usbloader_gx.oscmeta" del "temp\contents\usbloader_gx.oscmeta">nul
-if /i "%usbgx%" EQU "*" if /i %OSCupdateitems% EQU 1 set OSClib=
 echo.
 
 ::HBAS
@@ -13018,7 +13006,7 @@ findStr /I /C:"%date%" "temp\check_versions.date" >nul
 IF not ERRORLEVEL 1 goto:skipcheck_versions
 
 :nodatecheck
-support\wget --no-check-certificate -t 3 "https://aroma.foryour.cafe/api/check_versions" -O temp\check_versions.txt -q
+support\wget --no-check-certificate -q -t 3 -O "temp\check_versions.txt" "https://aroma.foryour.cafe/api/check_versions"
 ::delete if file is empty
 >nul findstr "^" "temp\check_versions.txt" || del "temp\check_versions.txt"
 if exist "temp\check_versions.txt" (echo %date% >temp\check_versions.date) & (goto:skipcheck_versions)
@@ -13869,7 +13857,7 @@ if /i "%AUSKIP%" EQU "ON" goto:here
 :notcached
 
 ::get latest meta version
-support\wget --no-check-certificate -t 3 "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml" -O temp\meta.xml -q
+support\wget --no-check-certificate -q -t 3 -O "temp\meta.xml" "https://hbb1.oscwii.org/unzipped_apps/%CurrentApp%/apps/%CurrentApp%/meta.xml"
 
 :here
 ::if cannot find meta online, check if zip cached in temp folder
@@ -14222,7 +14210,7 @@ echo.
 
 if exist "temp\contents_\" goto:skip
 if exist "temp\Apps-master.zip" del "temp\Apps-master.zip">nul
-support\wget --no-check-certificate -t 3 "https://codeload.github.com/OpenShopChannel/Apps/zip/refs/heads/master" -O temp\Apps-master.zip -q
+support\wget --no-check-certificate -q -t 3 -O "temp\Apps-master.zip" "https://codeload.github.com/OpenShopChannel/Apps/zip/refs/heads/master"
 
 if exist temp\Apps-master.zip support\7za e -aoa temp\Apps-master.zip -otemp\contents_ Apps-master\contents\*.oscmeta -r>nul
 
@@ -14345,7 +14333,7 @@ echo.
 
 
 if exist "temp\HBASname_.txt" goto:skip
-support\wget --no-check-certificate -t 3 "https://wiiubru.com/appstore/repo.json" -O temp\repo_.json -q
+support\wget --no-check-certificate -q -t 3 -O "temp\repo_.json" "https://wiiubru.com/appstore/repo.json"
 
 ::surround name in ?'s to avoid partial duplicates
 support\sfk filter -spat -quiet "temp\repo_.json" -+"\x22name\x22: \x22" -rep _"*\x22name\x22: \x22"_?_ -rep _"\x22*"_?_ >temp\HBASname_.txt
@@ -14772,11 +14760,7 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo         Is this your first time softmodding your Wii?
-echo                                         --
-echo                                         OR
-echo                                         --
-echo         Would you like to update ALL your existing softmods (aka re-hack your Wii)?
+echo         Would you like to (re)install all recommended softmods on your Wii?
 echo.
 echo.
 echo.
@@ -16334,7 +16318,7 @@ echo         Default, and any csm's built by user provided *.mym themes
 
 echo.
 echo.
-echo         WWW = View All Available Themes on Youtube
+echo         WWW = View Available Themes ^& Channel Effects on Youtube
 echo.
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20CE = Channel Effect* for custom system menu themes: [%cyantext%]%effect%
@@ -16437,6 +16421,7 @@ if /i "%ThemeSelection%" EQU "B" goto:SNKPAGE5
 
 ::support for custom mym and csm files for EmuNAND only
 ::if /i "%SNEEKSELECT%" NEQ "5" goto:quickskip
+set "ThemeSelection=%ThemeSelection:/=\%"
 if not exist "%ThemeSelection%" goto:quickskip
 if /i "%ThemeSelection:~1,1%" NEQ ":" set "ThemeSelection=%cd%\%ThemeSelection%"
 if /i "%ThemeSelection:~-4%" EQU ".csm" goto:WPAGE5
@@ -16589,6 +16574,9 @@ if /i "%EXPLOIT%" EQU "?"  echo           * Download all available exploits and 
 if /i "%FIRMSTART%" EQU "V" goto:themeconfirm
 
 if /i "%macaddress%" EQU "S" goto:skip
+if /i "%macaddress%" EQU "B" goto:skip
+if /i "%FIRMSTART%" NEQ "4.3" goto:skip
+if "%macaddress%"=="" goto:skip
 if not "%macaddress%"=="" (echo.) & (echo           * MAC Address: %macaddress%)
 :skip
 
@@ -16697,16 +16685,17 @@ echo.
 
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
 
-support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
+
 echo.
 
 ::delete if file is empty
->nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
+>nul findstr "^" "temp\%RecD2XcIOS%.zip" || del "temp\%RecD2XcIOS%.zip"
 
-if not exist "%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
+if not exist "temp\%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
-support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
-del "%RecD2XcIOS%.zip">nul
+support\7za e -aoa "temp\%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+del "temp\%RecD2XcIOS%.zip">nul
 if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 
 :pickup
@@ -16924,9 +16913,13 @@ echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 [%redtext%] Cons:[def] *Cannot launch the USB-Loader without SD Card
 echo                  *USB-Loader files and games can take up a relatively large
 echo                   amount of smaller SD Cards
+echo                  *Wii games launched from SD cannot use EmuNANDs saved to SD for
+echo                   gamesaves, Mii's, etc. nor can they access the SD Card in-game
+echo                   for DLC, custom stages, etc.
+echo                  *No USB keyboard support for 'Animal Crossing' if launched from SD
 echo.
-echo.
-echo        Note: USB-Loaders can detect games on SD and USB if you want to use both
+::echo.
+::echo        Note: USB-Loaders can detect games on SD and USB if you want to use both
 echo.
 echo.
 echo         B = Back
@@ -17059,9 +17052,10 @@ if /i "%SkinMode%" EQU "Y" goto:quickskip2
 echo Checking which %neekname% versions are hosted online...
 
 ::get all list
-support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar" -q
+if exist temp\list.txt del temp\list.txt>nul
+support\wget --no-check-certificate -q -t 3 -O "temp\list.txt" "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
 
-if exist index.html@* (move /y index.html@* temp\list.txt>nul) else (goto:nowifi)
+if not exist temp\list.txt goto:nowifi
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
 support\sfk filter -spat "temp\list.txt" -and+"/download\x22" -and+"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul
@@ -18651,6 +18645,7 @@ if /i "%addwadfolder:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set "addwadfolder=%addwadfolder:~0,-1%"
 if /i "%fixslash%" EQU "yes" goto:doublecheckwad
 
+set "addwadfolder=%addwadfolder:/=\%"
 
 if not exist "%addwadfolder%" (echo.) & (echo "%addwadfolder%" doesn't exist, please try again...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:addwadfolder)
 
@@ -19806,8 +19801,7 @@ IF not ERRORLEVEL 1 goto:skip
 echo Updating Wii Game Title Database (titles.txt)
 echo.
 ::if exist Support\titles.txt move /y Support\titles.txt Support\titles_old.txt >nul
-support\wget --no-check-certificate -t 3 www.wiitdb.com/titles.txt -q --show-progress
-if exist titles.txt move /y titles.txt Support\titles.txt>nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "Support\titles.txt" "www.wiitdb.com/titles.txt"
 :skip
 
 ::rename existing games to new standard
@@ -20295,7 +20289,7 @@ goto:nowifi
 echo Checking for other d2x versions hosted online...
 
 ::get d2x list
-support\wget --no-check-certificate -N "https://github.com/modmii/modmii.github.io/tree/master/temp/d2x" -O "temp\list.txt" -q
+support\wget --no-check-certificate -q -t 3 -O "temp\list.txt" "https://github.com/modmii/modmii.github.io/tree/master/temp/d2x"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\list.txt" || del "temp\list.txt"
@@ -20465,11 +20459,12 @@ goto:nodownload
 if not "%DLcIOS%"=="" (echo Outdated local d2x version detected, downloading minor updates to support fakesigning...) & (goto:yesdownload)
 
 ::try downloading from deprecated folder
-support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x-deprecated/%CurrentcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%CurrentcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x-deprecated/%CurrentcIOS%.7z"
+
 echo.
 ::delete if file is empty
->nul findstr "^" "%CurrentcIOS%.zip" || del "%CurrentcIOS%.zip"
-if exist "%CurrentcIOS%.zip" goto:yesdownload2
+>nul findstr "^" "temp\%CurrentcIOS%.zip" || del "temp\%CurrentcIOS%.zip"
+if exist "temp\%CurrentcIOS%.zip" goto:yesdownload2
 
 
 ::legacy local d2x beta's without updates here, enable legacy support
@@ -20525,16 +20520,16 @@ goto:nodownload
 
 :yesdownload
 if "%DLcIOS%"=="" (echo d2x Download Error, no internet?) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:betaswitch2)
-support\wget --output-document %CurrentcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%DLcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%CurrentcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%DLcIOS%.7z"
 
 ::delete if file is empty (if empty)
->nul findstr "^" "%CurrentcIOS%.zip" || del "%CurrentcIOS%.zip"
+>nul findstr "^" "temp\%CurrentcIOS%.zip" || del "temp\%CurrentcIOS%.zip"
 
-if not exist "%CurrentcIOS%.zip" goto:badkey
+if not exist "temp\%CurrentcIOS%.zip" goto:badkey
 :yesdownload2
 if not exist "support\More-cIOSs\%CurrentcIOS%" mkdir "support\More-cIOSs\%CurrentcIOS%"
-support\7za e -aoa "%CurrentcIOS%.zip" -o"support\More-cIOSs\%CurrentcIOS%" *.* -r
-del "%CurrentcIOS%.zip">nul
+support\7za e -aoa "temp\%CurrentcIOS%.zip" -o"support\More-cIOSs\%CurrentcIOS%" *.* -r
+del "temp\%CurrentcIOS%.zip">nul
 if not exist "support\More-cIOSs\%CurrentcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%CurrentcIOS%") & (goto:badkey)
 :nodownload
 
@@ -23029,6 +23024,7 @@ if /i "%sysCheckName%" EQU "M" goto:MENU
 if /i "%sysCheckName%" EQU "B" goto:MENU
 
 if /i "%sysCheckName:~-4%" NEQ ".csv" goto:notcsv
+set "sysCheckName=%sysCheckName:/=\%"
 if not exist "%sysCheckName%" goto:notcsv
 findStr /I /C:"syscheck" "%sysCheckName%" >nul
 IF ERRORLEVEL 1 (echo This is not a valid SysCheck report) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:sysCheckName)
@@ -23041,7 +23037,7 @@ if /i "%sysCheckName:~6,1%" NEQ "" goto:badkey
 if /i "%sysCheckName:~5,1%" EQU "" goto:badkey
 
 ::try to download
-support\wget --no-check-certificate -t 3 "https://syscheck.crafterpika.cc/download_csv?id=%sysCheckName%" -O "temp\SysCheck_%sysCheckName%.csv" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\SysCheck_%sysCheckName%.csv" "https://syscheck.crafterpika.cc/download_csv?id=%sysCheckName%"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\SysCheck_%sysCheckName%.csv" || del "temp\SysCheck_%sysCheckName%.csv"
@@ -24326,12 +24322,7 @@ if /i "%ThemeSelection%" EQU "D" set A1c=*
 
 
 
-::if BE not selected, it will be a secondary option, so always download
-SET Aroma=*
-SET EnvironmentLoader=*
-SET Nanddumper=*
-SET CompatTitleInstaller=*
-::if /i "%EXPLOIT%" EQU "BE" (SET Aroma=*) & (SET EnvironmentLoader=*) & (SET Nanddumper=*) & (SET CompatTitleInstaller=*)
+if /i "%EXPLOIT%" EQU "BE" (SET Aroma=*) & (SET EnvironmentLoader=*) & (SET Nanddumper=*) & (SET CompatTitleInstaller=*)
 
 if /i "%EXPLOIT%" EQU "S" (set SMASH=*) & (set HM=*)
 if /i "%EXPLOIT%" EQU "L" (set PWNS=*) & (set HM=*)
@@ -24344,11 +24335,10 @@ if /i "%EXPLOIT%" EQU "TOS" (set TOS=*) & (set HM=*)
 
 
 if /i "%EXPLOIT%" NEQ "?" goto:notallexploits
-
-::SET Aroma=*
-::SET EnvironmentLoader=*
-::SET Nanddumper=*
-::SET CompatTitleInstaller=*
+SET Aroma=*
+SET EnvironmentLoader=*
+SET Nanddumper=*
+SET CompatTitleInstaller=*
 
 set HM=*
 set SMASH=*
@@ -25519,7 +25509,7 @@ if /i "%Diskitude%" EQU "*" (echo "Diskitude %PCconfig%">>temp\DLnames.txt) & (e
 if /i "%DML%" EQU "*" (echo "DML">>temp\DLnames.txt) & (echo "DML">>temp\DLgotos.txt)
 
 if /i "%Dolphin%" EQU "*" (echo "Dolphin (Wii Emulator) %PCconfig%">>temp\DLnames.txt) & (echo "Dolphin">>temp\DLgotos.txt)
-if /i "%DumpMii%" EQU "*" (echo "Dump Mii NAND">>temp\DLnames.txt) & (echo "DumpMii">>temp\DLgotos.txt)
+if /i "%DumpMii%" EQU "*" (echo "nanddumper@IOS">>temp\DLnames.txt) & (echo "DumpMii">>temp\DLgotos.txt)
 if /i "%EnvironmentLoader%" EQU "*" (echo "EnvironmentLoader">>temp\DLnames.txt) & (echo "EnvironmentLoader">>temp\DLgotos.txt)
 if /i "%TOS%" EQU "*" (echo "Eri HaKawai (USA, PAL and JPN)">>temp\DLnames.txt) & (echo "TOS">>temp\DLgotos.txt)
 if /i "%EULAJ%" EQU "*" (echo "EULA v3 (JPN)">>temp\DLnames.txt) & (echo "EULAJ">>temp\DLgotos.txt)
@@ -27354,16 +27344,13 @@ echo.
 if exist temp\%basewad%.wad (goto:checkexisting) else (goto:nocheckexisting)
 :checkexisting
 set md5basecheck=
-set md5basealtcheck=
 support\sfk md5 -quiet -verify %md5base% temp\%basewad%.wad
-if errorlevel 1 set md5basecheck=fail
-IF "%md5basecheck%"=="" set md5basecheck=pass
+if errorlevel 1 (set md5basecheck=fail) else (set md5basecheck=pass)
 if /i "%md5basecheck%" NEQ "fail" goto:pass
 
 support\sfk md5 -quiet -verify %md5basealt% temp\%basewad%.wad
-if errorlevel 1 set md5basealtcheck=fail
-IF "%md5basealtcheck%"=="" set md5basealtcheck=pass
-if /i "%md5basealtcheck%" NEQ "fail" goto:pass
+if errorlevel 1 (set md5basecheck=fail) else (set md5basecheck=pass)
+if /i "%md5basecheck%" NEQ "fail" goto:pass
 
 :fail
 echo.
@@ -27425,16 +27412,13 @@ goto:downloadbasewad
 
 :checkexisting
 set md5basecheck=
-set md5basealtcheck=
 support\sfk md5 -quiet -verify %md5base% temp\%basewad%.wad
-if errorlevel 1 set md5basecheck=fail
-IF "%md5basecheck%"=="" set md5basecheck=pass
+if errorlevel 1 (set md5basecheck=fail) else (set md5basecheck=pass)
 if /i "%md5basecheck%" NEQ "fail" goto:pass
 
 support\sfk md5 -quiet -verify %md5basealt% temp\%basewad%.wad
-if errorlevel 1 set md5basealtcheck=fail
-IF "%md5basealtcheck%"=="" set md5basealtcheck=pass
-if /i "%md5basealtcheck%" NEQ "fail" goto:pass
+if errorlevel 1 (set md5basecheck=fail) else (set md5basecheck=pass)
+if /i "%md5basecheck%" NEQ "fail" goto:pass
 
 :fail
 if /i "%attempt%" NEQ "1" goto:multiplefail
@@ -27516,26 +27500,29 @@ set "DLcIOS=%d2xFolder:*\=%"
 set "DLcIOS=%DLcIOS:*\=%"
 set "DLcIOS=%DLcIOS:*\=%"
 echo Downloading %DLcIOS%...
-support\wget --output-document %DLcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%DLcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%DLcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%DLcIOS%.7z"
+
 echo.
 ::delete if file is empty
->nul findstr "^" "%DLcIOS%.zip" || del "%DLcIOS%.zip"
-if exist "%DLcIOS%.zip" goto:gotit
+>nul findstr "^" "temp\%DLcIOS%.zip" || del "%DLcIOS%.zip"
+if exist "temp\%DLcIOS%.zip" goto:gotit
 
 ::try downloading from deprecated folder
 echo.
-support\wget --output-document %DLcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x-deprecated/%DLcIOS%.7z?raw=true" -q --show-progress
+
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%DLcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x-deprecated/%DLcIOS%.7z"
+
 echo.
 ::delete if file is empty
->nul findstr "^" "%DLcIOS%.zip" || del "%DLcIOS%.zip"
+>nul findstr "^" "temp\%DLcIOS%.zip" || del "temp\%DLcIOS%.zip"
 
-if not exist "%DLcIOS%.zip" goto:skip
+if not exist "temp\%DLcIOS%.zip" goto:skip
 
 :gotit
 if not exist "support\More-cIOSs\%DLcIOS%" mkdir "support\More-cIOSs\%DLcIOS%"
-support\7za e -aoa "%DLcIOS%.zip" -o"support\More-cIOSs\%DLcIOS%" *.* -r
+support\7za e -aoa "temp\%DLcIOS%.zip" -o"support\More-cIOSs\%DLcIOS%" *.* -r
 echo.
-del "%DLcIOS%.zip">nul
+del "temp\%DLcIOS%.zip">nul
 if not exist "support\More-cIOSs\%DLcIOS%\d2x-beta.bat" rd /s /q "support\More-cIOSs\%DLcIOS%"
 :skip
 
@@ -27561,10 +27548,10 @@ echo.
 echo Unpacking Base Wad: %basewad%
 echo.
 
-if exist %basecios% rd /s /q %basecios%
-mkdir %basecios%
+if exist temp\%basecios% rd /s /q temp\%basecios%
+mkdir temp\%basecios%
 
-%WiiPy% wad unpack --skip-hash "temp\%basewad%.wad" "%basecios%">nul
+%WiiPy% wad unpack --skip-hash "temp\%basewad%.wad" "temp\%basecios%">nul
 
 ::-----------DML Stuff------------
 :DML-stuff
@@ -27580,13 +27567,12 @@ echo.
 
 if exist "temp\DML\%dlname%" goto:getfixelf
 
-if not exist "%dlname%" support\wget --no-check-certificate -t 3 "%URL%" -q --show-progress
-
-
-if not exist "%dlname%" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
-
 if not exist "temp\DML" mkdir "temp\DML"
-move /y "%dlname%" "temp\DML\%dlname%">nul
+
+if not exist "temp\DML\%dlname%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\DML\%dlname%" "%URL%"
+
+
+if not exist "temp\DML\%dlname%" (rd /s /q temp\%basewad%) & (rd /s /q temp\%basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
 
 :getfixelf
@@ -27597,20 +27583,21 @@ echo.
 
 if exist "temp\DML\FixELF.exe" goto:gotfixelf
 
-if not exist "FixELF.zip" support\wget --no-check-certificate -t 3 "https://tiny.cc/fixelfmirror" -q --show-progress
+if not exist "temp\FixELF.zip" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\FixELF.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/FixELF.zip"
 
-if not exist "FixELF.zip" (rd /s /q %basewad%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
-support\7za e -aoa "FixELF.zip" -o"temp\DML" *.* -r>nul
+if not exist "temp\FixELF.zip" (rd /s /q temp\%basewad%) & (rd /s /q temp\%basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
-if not exist "temp\DML\FixELF.exe" (Corrupted archive detected and deleted...) & (del "temp\DML\FixELF.zip">nul) & (goto:NEXT)
+support\7za e -aoa "temp\FixELF.zip" -o"temp\DML" *.* -r>nul
 
-del FixELF.zip>nul
+if not exist "temp\DML\FixELF.exe" (Corrupted archive detected and deleted...) & (del "temp\FixELF.zip">nul) & (goto:NEXT)
+
+del temp\FixELF.zip>nul
 
 :gotfixelf
 
 
-move /y "%basecios%\00000001.app" "temp\DML\MIOS.app">nul
+move /y "temp\%basecios%\00000001.app" "temp\DML\MIOS.app">nul
 
 
 cd "temp\DML"
@@ -27626,7 +27613,7 @@ cd..
 cd..
 
 
-move /y "temp\DML\00000001.app" "%basecios%\00000001.app">nul
+move /y "temp\DML\00000001.app" "temp\%basecios%\00000001.app">nul
 
 goto:repackwad
 :SkipDML-stuff
@@ -27759,18 +27746,18 @@ echo.
 echo Unpacking Base Wad: %basewadb%
 echo.
 
-if exist %basewadb% rd /s /q %basewadb%
-mkdir %basewadb%
-%WiiPy% wad unpack --skip-hash "temp\%basewadb%.wad" "%basewadb%">nul
+if exist temp\%basewadb% rd /s /q temp\%basewadb%
+mkdir temp\%basewadb%
+%WiiPy% wad unpack --skip-hash "temp\%basewadb%.wad" "temp\%basewadb%">nul
 
 
 if /i "%wadname:~0,3%" EQU "cBC" goto:cbc-stuff
 
 ::----specific for cios223v4[37+38]
 ::move modules that are from 38 and to be patched
-move /y %basewadb%\00000001.app %basecios%\00000001.app>nul
-move /y %basewadb%\%lastbasemodule%.app %basecios%\%lastbasemodule%.app>nul
-rd /s /q %basewadb%
+move /y temp\%basewadb%\00000001.app temp\%basecios%\00000001.app>nul
+move /y temp\%basewadb%\%lastbasemodule%.app temp\%basecios%\%lastbasemodule%.app>nul
+rd /s /q temp\%basewadb%
 goto:nobasewadb
 
 
@@ -27784,22 +27771,22 @@ call Support\subscripts\dependency.bat UnRAR
 
 echo.
 echo Downloading %dlname%
-if not exist "%dlname%" support\wget --no-check-certificate -t 3 "%URL%" -q --show-progress
+if not exist "temp\%dlname%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%dlname%" "%URL%"
 echo.
 
-if not exist "%dlname%" (rd /s /q %basewadb%) & (rd /s /q %basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
+if not exist "temp\%dlname%" (rd /s /q temp\%basewadb%) & (rd /s /q temp\%basecios%) & (echo.) & (support\sfk echo [%magentatext%] %dlname% Failed to Download properly, Skipping download.) & (echo "support\sfk echo %wadname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat) & (echo.) & (goto:NEXT)
 
 
 if not exist "temp\%dlname:~0,-4%" mkdir "temp\%dlname:~0,-4%"
-temp\unrar.exe x -y %dlname% "temp\%dlname:~0,-4%">nul
+temp\unrar.exe x -y temp\%dlname% "temp\%dlname:~0,-4%">nul
 
-if exist %dlname% del %dlname%>nul
+if exist temp\%dlname% del temp\%dlname%>nul
 
 :gotit
 if exist "temp\%dlname:~0,-4%\%wadname:~4,3%.elf" move /y "temp\%dlname:~0,-4%\%wadname:~4,3%.elf" "temp\%dlname:~0,-4%\FixElf\%wadname:~4,3%.elf">nul
 
-move /y "%basewadb%\00000001.app" "temp\%dlname:~0,-4%\FixElf\MIOS.app">nul
-rd /s /q %basewadb%
+move /y "temp\%basewadb%\00000001.app" "temp\%dlname:~0,-4%\FixElf\MIOS.app">nul
+rd /s /q temp\%basewadb%
 
 
 cd "temp\%dlname:~0,-4%\FixElf"
@@ -27815,7 +27802,7 @@ cd..
 cd..
 cd..
 
-move /y "temp\%dlname:~0,-4%\FixElf\00000001.app" "%basecios%\00000001.app">nul
+move /y "temp\%dlname:~0,-4%\FixElf\00000001.app" "temp\%basecios%\00000001.app">nul
 
 goto:repackwad
 
@@ -27839,16 +27826,16 @@ if exist "temp\temp.csm" del "temp\temp.csm">nul
 if exist "temp\temp2.csm" del "temp\temp2.csm">nul
 
 cd /d temp\themewii
-themewii.exe "..\%mym1%" "..\..\%basecios%\00000001.app" "..\temp.csm">nul
+themewii.exe "..\%mym1%" "..\%basecios%\00000001.app" "..\temp.csm">nul
 themewii.exe "..\%mym2%" "..\temp.csm" "..\temp2.csm">nul
 cd ..\..
 
-if exist "temp\temp2.csm" move /y "temp\temp2.csm" "%basecios%\00000001.app">nul
+if exist "temp\temp2.csm" move /y "temp\temp2.csm" "temp\%basecios%\00000001.app">nul
 if exist "temp\temp.csm" del "temp\temp.csm">nul
 
 
-::%WiiPy% theme mym "temp\%mym1%" "%basecios%\00000001.app" "%basecios%\00000001.app"
-::%WiiPy% theme mym "temp\%mym2%" "%basecios%\00000001.app" "%basecios%\00000001.app"
+::%WiiPy% theme mym "temp\%mym1%" "temp\%basecios%\00000001.app" "temp\%basecios%\00000001.app"
+::%WiiPy% theme mym "temp\%mym2%" "temp\%basecios%\00000001.app" "temp\%basecios%\00000001.app"
 
 goto:repackwad
 :skip
@@ -27865,8 +27852,8 @@ echo Patching A handful of BaseWad Component Files
 echo.
 
 ::hardcoded 00000001 as "code1" is 00000007 for vWii bases, but not cIOSs
-if /i "%code2%" NEQ "%code2new%" ren %basecios%\00000001%code2%.cert 00000001%code2new%.cert
-if /i "%code2%" NEQ "%code2new%" ren %basecios%\00000001%code2%.footer 00000001%code2new%.footer
+if /i "%code2%" NEQ "%code2new%" ren temp\%basecios%\00000001%code2%.cert 00000001%code2new%.cert
+if /i "%code2%" NEQ "%code2new%" ren temp\%basecios%\00000001%code2%.footer 00000001%code2new%.footer
 
 
 ::skip for non d2x cIOSs
@@ -27889,10 +27876,10 @@ if /i "%usetmdedit%" EQU "Y" (goto:NotRenamedOriginal2) else (goto:NotRenamedOri
 
 
 
-if exist support\Diffs\%diffpath%\%diffpath%_00.diff ren %basecios%\00000000.app 00000000-original.app
-if exist support\Diffs\%diffpath%\%diffpath%_01.diff ren %basecios%\00000001.app 00000001-original.app
-if exist support\Diffs\%diffpath%\%diffpath%_02.diff ren %basecios%\00000002.app 00000002-original.app
-if exist support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff ren %basecios%\%lastbasemodule%.app %lastbasemodule%-original.app
+if exist support\Diffs\%diffpath%\%diffpath%_00.diff ren temp\%basecios%\00000000.app 00000000-original.app
+if exist support\Diffs\%diffpath%\%diffpath%_01.diff ren temp\%basecios%\00000001.app 00000001-original.app
+if exist support\Diffs\%diffpath%\%diffpath%_02.diff ren temp\%basecios%\00000002.app 00000002-original.app
+if exist support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff ren temp\%basecios%\%lastbasemodule%.app %lastbasemodule%-original.app
 
 
 ::rename tik & tmd for cMIOSs
@@ -27900,9 +27887,9 @@ if /i "%code2%" EQU "00000101" goto:rename
 if /i "%category%" EQU "patchios" goto:rename
 goto:notcMIOS
 :rename
-::ren %basecios%\%code1%%code2new%.tik %code1%%code2new%-original.tik
+::ren temp\%basecios%\%code1%%code2new%.tik %code1%%code2new%-original.tik
 
-ren %basecios%\%code1%%code2new%.tmd %code1%%code2new%-original.tmd
+ren temp\%basecios%\%code1%%code2new%.tmd %code1%%code2new%-original.tmd
 
 :notcMIOS
 
@@ -27912,10 +27899,10 @@ ren %basecios%\%code1%%code2new%.tmd %code1%%code2new%-original.tmd
 
 ::-------------diff patch files----------------
 
-if exist support\Diffs\%diffpath%\%diffpath%_00.diff support\jptch  %basecios%\00000000-original.app support\Diffs\%diffpath%\%diffpath%_00.diff %basecios%\00000000.app
-if exist support\Diffs\%diffpath%\%diffpath%_01.diff support\jptch  %basecios%\00000001-original.app support\Diffs\%diffpath%\%diffpath%_01.diff %basecios%\00000001.app
-if exist support\Diffs\%diffpath%\%diffpath%_02.diff support\jptch  %basecios%\00000002-original.app support\Diffs\%diffpath%\%diffpath%_02.diff %basecios%\00000002.app
-if exist support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff support\jptch  %basecios%\%lastbasemodule%-original.app support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff %basecios%\%lastbasemodule%.app
+if exist support\Diffs\%diffpath%\%diffpath%_00.diff support\jptch temp\%basecios%\00000000-original.app support\Diffs\%diffpath%\%diffpath%_00.diff temp\%basecios%\00000000.app
+if exist support\Diffs\%diffpath%\%diffpath%_01.diff support\jptch temp\%basecios%\00000001-original.app support\Diffs\%diffpath%\%diffpath%_01.diff temp\%basecios%\00000001.app
+if exist support\Diffs\%diffpath%\%diffpath%_02.diff support\jptch temp\%basecios%\00000002-original.app support\Diffs\%diffpath%\%diffpath%_02.diff temp\%basecios%\00000002.app
+if exist support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff support\jptch temp\%basecios%\%lastbasemodule%-original.app support\Diffs\%diffpath%\%diffpath%_%lastbasemodule%.diff temp\%basecios%\%lastbasemodule%.app
 
 
 ::patch tmd and tiks when they've been renamed to *-original.tik\tmd (for cMIOSs)
@@ -27923,38 +27910,37 @@ if /i "%code2%" EQU "00000101" goto:RenamedOriginal
 if /i "%category%" EQU "patchios" goto:RenamedOriginal
 goto:NotRenamedOriginal
 :RenamedOriginal
-::if exist support\Diffs\%diffpath%\%diffpath%_tik.diff support\jptch  %basecios%\%code1%%code2%-original.tik support\Diffs\%diffpath%\%diffpath%_tik.diff %basecios%\%code1%%code2new%.tik
+::if exist support\Diffs\%diffpath%\%diffpath%_tik.diff support\jptch temp\%basecios%\%code1%%code2%-original.tik support\Diffs\%diffpath%\%diffpath%_tik.diff temp\%basecios%\%code1%%code2new%.tik
 
-if exist support\Diffs\%diffpath%\%diffpath%_tmd.diff support\jptch  %basecios%\%code1%%code2%-original.tmd support\Diffs\%diffpath%\%diffpath%_tmd.diff %basecios%\%code1%%code2new%.tmd
+if exist support\Diffs\%diffpath%\%diffpath%_tmd.diff support\jptch temp\%basecios%\%code1%%code2%-original.tmd support\Diffs\%diffpath%\%diffpath%_tmd.diff temp\%basecios%\%code1%%code2new%.tmd
 goto:deletefiles
 
 :NotRenamedOriginal
 ::hardcoded 00000001 as "code1" is 00000007 for vWii bases, but not cIOSs
-if exist support\Diffs\%diffpath%\%diffpath%_tmd.diff support\jptch  %basecios%\00000001%code2%.tmd support\Diffs\%diffpath%\%diffpath%_tmd.diff %basecios%\00000001%code2new%.tmd
+if exist support\Diffs\%diffpath%\%diffpath%_tmd.diff support\jptch temp\%basecios%\00000001%code2%.tmd support\Diffs\%diffpath%\%diffpath%_tmd.diff temp\%basecios%\00000001%code2new%.tmd
 
 ::use different tik diff files depending on what base wad downloaded
 
 :NotRenamedOriginal2
 ::hardcoded 00000001 as "code1" is 00000007 for vWii bases, but not cIOSs
 if not exist "support\Diffs\%diffpath%\%diffpath%_tik.diff" goto:notik
-if /i "%md5basecheck%" EQU "pass" support\jptch  %basecios%\00000001%code2%.tik support\Diffs\%diffpath%\%diffpath%_tik.diff %basecios%\00000001%code2new%.tik
+if /i "%md5basecheck%" EQU "pass" support\jptch temp\%basecios%\00000001%code2%.tik support\Diffs\%diffpath%\%diffpath%_tik.diff temp\%basecios%\00000001%code2new%.tik
+
+
 :notik
-if not exist "support\Diffs\%diffpath%\%diffpath%_tik2.diff" goto:notik2
-if /i "%md5basealtcheck%" EQU "pass" support\jptch  %basecios%\%code1%%code2%.tik support\Diffs\%diffpath%\%diffpath%_tik2.diff %basecios%\%code1%%code2new%.tik
-:notik2
 
 
 ::delete un-needed original files that have already been patched
 :deletefiles
 
-if exist %basecios%\00000000-original.app del %basecios%\00000000-original.app>nul
-if exist %basecios%\00000001-original.app del %basecios%\00000001-original.app>nul
-if exist %basecios%\00000002-original.app del %basecios%\00000002-original.app>nul
-if exist %basecios%\%lastbasemodule%-original.app del %basecios%\%lastbasemodule%-original.app>nul
+if exist temp\%basecios%\00000000-original.app del temp\%basecios%\00000000-original.app>nul
+if exist temp\%basecios%\00000001-original.app del temp\%basecios%\00000001-original.app>nul
+if exist temp\%basecios%\00000002-original.app del temp\%basecios%\00000002-original.app>nul
+if exist temp\%basecios%\%lastbasemodule%-original.app del temp\%basecios%\%lastbasemodule%-original.app>nul
 
 ::--for cMIOS's that have tiks and tmds renamed to -original
-if exist %basecios%\%code1%%code2%-original.tik del %basecios%\%code1%%code2%-original.tik>nul
-if exist %basecios%\%code1%%code2%-original.tmd del %basecios%\%code1%%code2%-original.tmd>nul
+if exist temp\%basecios%\%code1%%code2%-original.tik del temp\%basecios%\%code1%%code2%-original.tik>nul
+if exist temp\%basecios%\%code1%%code2%-original.tmd del temp\%basecios%\%code1%%code2%-original.tmd>nul
 
 ::override for IOS60
 if /i "%basecios%" EQU "IOS60v65535(ModMii-IOS60-v6174)" goto:signcios
@@ -27963,10 +27949,10 @@ if /i "%basecios%" EQU "IOS60v65535(ModMii-IOS60-v6174)" goto:signcios
 if /i "%code2%" EQU "00000101" goto:repackwad
 if /i "%category%" EQU "patchios" goto:repackwad
 
-if exist %basecios%\00000001%code2%.tik del %basecios%\00000001%code2%.tik>nul
+if exist temp\%basecios%\00000001%code2%.tik del temp\%basecios%\00000001%code2%.tik>nul
 
 ::don't delete base tmd if usetmdedit=Y
-if /i "%usetmdedit%" NEQ "Y" if exist %basecios%\00000001%code2%.tmd del %basecios%\00000001%code2%.tmd>nul
+if /i "%usetmdedit%" NEQ "Y" if exist temp\%basecios%\00000001%code2%.tmd del temp\%basecios%\00000001%code2%.tmd>nul
 
 
 ::---------------Korean Key Patch---------------
@@ -27985,51 +27971,51 @@ echo Patching %lastbasemodule%.app to support the Korean Common Key
 
 
 ::IOS37-64-v3869
-if /i "%basewad%" EQU "IOS37-64-v3869" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x1FD00=0xE0
-if /i "%basewad%" EQU "IOS37-64-v3869" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x278E0=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS37-64-v3869" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x1FD00=0xE0
+if /i "%basewad%" EQU "IOS37-64-v3869" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x278E0=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS57-64-v5661
-if /i "%basewad%" EQU "IOS57-64-v5661" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21340=0xE0
-if /i "%basewad%" EQU "IOS57-64-v5661" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28F5C=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS57-64-v5661" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21340=0xE0
+if /i "%basewad%" EQU "IOS57-64-v5661" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x28F5C=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 
 ::NEXT GEN BASES
 
 ::IOS37-64-v5662
-if /i "%basewad%" EQU "IOS37-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x1FD88=0xE0
-if /i "%basewad%" EQU "IOS37-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS37-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x1FD88=0xE0
+if /i "%basewad%" EQU "IOS37-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS53-64-v5662
-if /i "%basewad%" EQU "IOS53-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x1FD88=0xE0
-if /i "%basewad%" EQU "IOS53-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS53-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x1FD88=0xE0
+if /i "%basewad%" EQU "IOS53-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS55-64-v5662
-if /i "%basewad%" EQU "IOS55-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x1FD88=0xE0
-if /i "%basewad%" EQU "IOS55-64-v5662" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS55-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x1FD88=0xE0
+if /i "%basewad%" EQU "IOS55-64-v5662" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x27968=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS56-64-v5661
-if /i "%basewad%" EQU "IOS56-64-v5661" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21424=0xE0
-if /i "%basewad%" EQU "IOS56-64-v5661" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS56-64-v5661" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21424=0xE0
+if /i "%basewad%" EQU "IOS56-64-v5661" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS57-64-v5918
-if /i "%basewad%" EQU "IOS57-64-v5918" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21424=0xE0
-if /i "%basewad%" EQU "IOS57-64-v5918" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS57-64-v5918" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21424=0xE0
+if /i "%basewad%" EQU "IOS57-64-v5918" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS58-64-v6175
-if /i "%basewad%" EQU "IOS58-64-v6175" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21424=0xE0
-if /i "%basewad%" EQU "IOS58-64-v6175" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS58-64-v6175" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21424=0xE0
+if /i "%basewad%" EQU "IOS58-64-v6175" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS60-64-v6174
-if /i "%basewad%" EQU "IOS60-64-v6174" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x20678=0xE0
-if /i "%basewad%" EQU "IOS60-64-v6174" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28294=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS60-64-v6174" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x20678=0xE0
+if /i "%basewad%" EQU "IOS60-64-v6174" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x28294=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS70-64-v6687
-if /i "%basewad%" EQU "IOS70-64-v6687" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21340=0xE0
-if /i "%basewad%" EQU "IOS70-64-v6687" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x28f5c=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS70-64-v6687" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21340=0xE0
+if /i "%basewad%" EQU "IOS70-64-v6687" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x28f5c=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 ::IOS80-64-v6943
-if /i "%basewad%" EQU "IOS80-64-v6943" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x21424=0xE0
-if /i "%basewad%" EQU "IOS80-64-v6943" support\hexalter.exe %basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
+if /i "%basewad%" EQU "IOS80-64-v6943" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x21424=0xE0
+if /i "%basewad%" EQU "IOS80-64-v6943" support\hexalter.exe temp\%basecios%\%lastbasemodule%.app 0x29078=0x63,0xB8,0x2B,0xB4,0xF4,0x61,0x4E,0x2E,0x13,0xF2,0xFE,0xFB,0xBA,0x4C,0x9B,0x7E
 
 
 echo.
@@ -28047,93 +28033,93 @@ echo Copying over Custom Modules
 echo.
 
 ::222v4
-if /i "%basecios%" EQU "cIOS222[38]-v4" copy support\Hermes\mloadv3.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS222[38]-v4" copy support\Hermes\mloadv3.app temp\%basecios%\0000000f.app
 
 ::223v4
-if /i "%basecios%" EQU "cIOS223[37-38]-v4" copy support\Hermes\mloadv3.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS223[37-38]-v4" copy support\Hermes\mloadv3.app temp\%basecios%\0000000f.app
 
 ::222v5
-if /i "%basecios%" EQU "cIOS222[38]-v5" copy support\Hermes\mloadv5.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS222[38]-v5" copy support\Hermes\mloadv5.app temp\%basecios%\0000000f.app
 
 ::223v5 base37
-if /i "%basecios%" EQU "cIOS223[37]-v5" copy support\Hermes\mloadv5.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS223[37]-v5" copy support\Hermes\mloadv5.app temp\%basecios%\0000000f.app
 
 ::224v5 base57
-if /i "%basecios%" EQU "cIOS224[57]-v5" copy support\Hermes\mloadv5.app %basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS224[57]-v5" copy support\Hermes\mloadv5.app temp\%basecios%\00000013.app
 
 ::202v5.1R base60
-if /i "%basecios%" EQU "cIOS202[60]-v5.1R" copy support\Hermes\mloadv5.1R.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS202[60]-v5.1R" copy support\Hermes\mloadv5.1R.app temp\%basecios%\0000000f.app
 
 ::222v5.1R base38
-if /i "%basecios%" EQU "cIOS222[38]-v5.1R" copy support\Hermes\mloadv5.1R.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS222[38]-v5.1R" copy support\Hermes\mloadv5.1R.app temp\%basecios%\0000000f.app
 
 ::223v5.1R base37
-if /i "%basecios%" EQU "cIOS223[37]-v5.1R" copy support\Hermes\mloadv5.1R.app %basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS223[37]-v5.1R" copy support\Hermes\mloadv5.1R.app temp\%basecios%\0000000f.app
 
 ::224v5.1R base57
-if /i "%basecios%" EQU "cIOS224[57]-v5.1R" copy support\Hermes\mloadv5.1R.app %basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS224[57]-v5.1R" copy support\Hermes\mloadv5.1R.app temp\%basecios%\00000013.app
 
 
 ::249v19 base37
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\mload.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\EHCI.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\FAT.app %basecios%\00000011.app
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\SDHC.app %basecios%\00000012.app
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\DIPP.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\FFSP.app %basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\mload.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\EHCI.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\FAT.app temp\%basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\SDHC.app temp\%basecios%\00000012.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\DIPP.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[37]-v19" copy support\W19modules\FFSP.app temp\%basecios%\00000014.app
 
 ::249v19 base38
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\mload.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\EHCI.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\FAT.app %basecios%\00000011.app
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\SDHC.app %basecios%\00000012.app
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\DIPP.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\FFSP.app %basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\mload.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\EHCI.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\FAT.app temp\%basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\SDHC.app temp\%basecios%\00000012.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\DIPP.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[38]-v19" copy support\W19modules\FFSP.app temp\%basecios%\00000014.app
 
 ::249v20 base38
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\mload.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\EHCI.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\FAT.app %basecios%\00000011.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\SDHC.app %basecios%\00000012.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\DIPP.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\ES.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\FFSP.app %basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\mload.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\EHCI.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\FAT.app temp\%basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\SDHC.app temp\%basecios%\00000012.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\DIPP.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\ES.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[38]-v20" copy support\W20modules\FFSP.app temp\%basecios%\00000015.app
 
 ::249v20 base56
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\mload.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\EHCI.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\FAT.app %basecios%\00000011.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\SDHC.app %basecios%\00000012.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\DIPP.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\ES.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\FFSP.app %basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\mload.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\EHCI.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\FAT.app temp\%basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\SDHC.app temp\%basecios%\00000012.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\DIPP.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\ES.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[56]-v20" copy support\W20modules\FFSP.app temp\%basecios%\00000015.app
 
 ::249v19 base57
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\mload.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\EHCI.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\FAT.app %basecios%\00000015.app
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\SDHC.app %basecios%\00000016.app
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\DIPP.app %basecios%\00000017.app
-if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\FFSP.app %basecios%\00000018.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\mload.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\EHCI.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\FAT.app temp\%basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\SDHC.app temp\%basecios%\00000016.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\DIPP.app temp\%basecios%\00000017.app
+if /i "%basecios%" EQU "cIOS249[57]-v19" copy support\W19modules\FFSP.app temp\%basecios%\00000018.app
 
 ::249v20 base57
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\mload.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\EHCI.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\FAT.app %basecios%\00000015.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\SDHC.app %basecios%\00000016.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\DIPP.app %basecios%\00000017.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\ES.app %basecios%\00000018.app
-if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\FFSP.app %basecios%\00000019.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\mload.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\EHCI.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\FAT.app temp\%basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\SDHC.app temp\%basecios%\00000016.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\DIPP.app temp\%basecios%\00000017.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\ES.app temp\%basecios%\00000018.app
+if /i "%basecios%" EQU "cIOS249[57]-v20" copy support\W20modules\FFSP.app temp\%basecios%\00000019.app
 
 ::249v17b
-if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\0000000f.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\00000010.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\00000011.app %basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\0000000f.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\00000010.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249-v17b" copy support\W17bmodules\00000011.app temp\%basecios%\00000011.app
 
 ::249v14
-if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\EHCI.app %basecios%\0000000f.app
-if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\SDHC.app %basecios%\00000010.app
-if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\FAT.app %basecios%\00000011.app
+if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\EHCI.app temp\%basecios%\0000000f.app
+if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\SDHC.app temp\%basecios%\00000010.app
+if /i "%basecios%" EQU "cIOS249-v14" copy support\W14modules\FAT.app temp\%basecios%\00000011.app
 
 
 ::249v21 base 37/38/56
@@ -28144,33 +28130,33 @@ if /i "%basecios%" EQU "cIOS249[55]-v21" goto:yes
 if /i "%basecios%" EQU "cIOS249[56]-v21" goto:yes
 goto:skip
 :yes
-copy support\W21modules\mload.app %basecios%\0000000f.app
-copy support\W21modules\FAT.app %basecios%\00000010.app
-copy support\W21modules\SDHC.app %basecios%\00000011.app
-copy support\W21modules\EHCI.app %basecios%\00000012.app
-copy support\W21modules\DIPP.app %basecios%\00000013.app
-copy support\W21modules\ES.app %basecios%\00000014.app
-copy support\W21modules\FFSP.app %basecios%\00000015.app
+copy support\W21modules\mload.app temp\%basecios%\0000000f.app
+copy support\W21modules\FAT.app temp\%basecios%\00000010.app
+copy support\W21modules\SDHC.app temp\%basecios%\00000011.app
+copy support\W21modules\EHCI.app temp\%basecios%\00000012.app
+copy support\W21modules\DIPP.app temp\%basecios%\00000013.app
+copy support\W21modules\ES.app temp\%basecios%\00000014.app
+copy support\W21modules\FFSP.app temp\%basecios%\00000015.app
 :skip
 
 
 ::249v21 base57
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\mload.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\FAT.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\SDHC.app %basecios%\00000015.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\EHCI.app %basecios%\00000016.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\DIPP.app %basecios%\00000017.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\ES.app %basecios%\00000018.app
-if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\FFSP.app %basecios%\00000019.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\mload.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\FAT.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\SDHC.app temp\%basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\EHCI.app temp\%basecios%\00000016.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\DIPP.app temp\%basecios%\00000017.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\ES.app temp\%basecios%\00000018.app
+if /i "%basecios%" EQU "cIOS249[57]-v21" copy support\W21modules\FFSP.app temp\%basecios%\00000019.app
 
 ::249v21 base58
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\mload.app %basecios%\00000013.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FAT.app %basecios%\00000014.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\SDHC.app %basecios%\00000015.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\USBS.app %basecios%\00000016.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\DIPP.app %basecios%\00000017.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\ES.app %basecios%\00000018.app
-if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FFSP.app %basecios%\00000019.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\mload.app temp\%basecios%\00000013.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FAT.app temp\%basecios%\00000014.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\SDHC.app temp\%basecios%\00000015.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\USBS.app temp\%basecios%\00000016.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\DIPP.app temp\%basecios%\00000017.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\ES.app temp\%basecios%\00000018.app
+if /i "%basecios%" EQU "cIOS249[58]-v21" copy support\W21modules\FFSP.app temp\%basecios%\00000019.app
 
 
 
@@ -28262,21 +28248,21 @@ del cIOSsubversion.bat>nul
 
 
 ::copy template .app
-::copy /y "support\00000000-template.app" "%basecios%\00000000.app">nul
+::copy /y "support\00000000-template.app" "temp\%basecios%\00000000.app">nul
 
-if exist "%basecios%\00000000.app" del "%basecios%\00000000.app">nul
+if exist "temp\%basecios%\00000000.app" del "temp\%basecios%\00000000.app">nul
 
 ::silently build modmii banner placeholder for hidden channels (00000000-template.app)
-support\sfk echo 1EE7C105000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 +hextobin "%basecios%\00000000.app">nul
+support\sfk echo 1EE7C105000000010000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 +hextobin "temp\%basecios%\00000000.app">nul
 
 
 
-if not exist "%basecios%\00000000.app" echo failed to build 00000000-template.app...
+if not exist "temp\%basecios%\00000000.app" echo failed to build 00000000-template.app...
 
 
 
 ::hexalter version number and base wad number
-support\hexalter.exe "%basecios%\00000000.app" 0x8=0x%cIOShexNumber:~0,2%,0x%cIOShexNumber:~2,2%,0x%cIOShexNumber:~4,2%,0x%cIOShexNumber:~6,2%,0x%basehexNumber:~0,2%,0x%basehexNumber:~2,2%,0x%basehexNumber:~4,2%,0x%basehexNumber:~6,2%
+support\hexalter.exe "temp\%basecios%\00000000.app" 0x8=0x%cIOShexNumber:~0,2%,0x%cIOShexNumber:~2,2%,0x%cIOShexNumber:~4,2%,0x%cIOShexNumber:~6,2%,0x%basehexNumber:~0,2%,0x%basehexNumber:~2,2%,0x%basehexNumber:~4,2%,0x%basehexNumber:~6,2%
 
 
 ::convert %cIOSFamilyName% to hex then hexalter
@@ -28287,7 +28273,7 @@ support\sfk filter -quiet "temphex.txt" -rep _,_,0x_ -write -yes
 set /p cIOSFamilyNamehex= <temphex.txt
 del /f /q temphex.txt
 set cIOSFamilyNamehex=0x%cIOSFamilyNamehex:~0,-4%
-support\hexalter.exe "%basecios%\00000000.app" 0x10=%cIOSFamilyNamehex%
+support\hexalter.exe "temp\%basecios%\00000000.app" 0x10=%cIOSFamilyNamehex%
 
 
 ::only patch cIOSsubversion if not = nul
@@ -28299,7 +28285,7 @@ support\sfk filter -quiet "temphex.txt" -rep _,_,0x_ -write -yes
 set /p cIOSsubversionhex= <temphex.txt
 del /f /q temphex.txt
 set cIOSsubversionhex=0x%cIOSsubversionhex:~0,-4%
-support\hexalter.exe "%basecios%\00000000.app" 0x20=%cIOSsubversionhex%
+support\hexalter.exe "temp\%basecios%\00000000.app" 0x20=%cIOSsubversionhex%
 :tinyjump
 
 
@@ -28318,7 +28304,7 @@ echo.
 echo Patching the RiiConnect24 RSA public key
 echo.
 
-support\hexalter.exe "%basecios%\00000006.app" 0x%offset%=0xDC,0x60,0x8C,0x0D,0x49,0x3A,0x2B,0x8C,0x5B,0x24,0x3C,0xE6,0xD1,0xB8,0x1D,0x0F,0x63,0xFF,0x66,0x07,0xAC,0x5C,0xFA,0x20,0xB5,0xF3,0xB5,0x5A,0x2F,0x11,0xEE,0xA1,0x1E,0x4C,0x9C,0xEA,0xD7,0xA3,0x38,0x86,0x39,0xBC,0xAF,0x60,0x1C,0x85,0xCD,0xEC,0x0A,0xE5,0xFD,0x73,0xC5,0xC0,0x73,0x98,0x49,0x94,0xF9,0x75,0xC2,0xA5,0x0E,0xE0,0x78,0x69,0x89,0xDE,0x69,0x6E,0x46,0x5F,0x62,0x63,0xBE,0x10,0x1C,0x68,0x23,0x79,0x28,0x93,0xCB,0xFA,0xA4,0x94,0xDE,0xF7,0x4C,0xD8,0x27,0x90,0x5C,0x32,0x16,0x2E,0x3B,0x0B,0x07,0xCD,0x6C,0xC2,0x3F,0x2D,0xC9,0x1A,0x13,0x5A,0x58,0x26,0x0C,0x06,0x2C,0xDA,0xFA,0x12,0x48,0xD0,0x13,0x89,0xF2,0x0F,0xBF,0xE6,0xA0,0x6A,0x0D,0xE5,0x1A,0x9A,0xD7,0x48,0x3C,0x57,0x25,0xF6,0x79,0x92,0x6B,0x75,0xC4,0x19,0xE6,0xB6,0xA0,0x5C,0x67,0x8C,0x42,0x56,0x5E,0x69,0x25,0x34,0x93,0xD3,0x32,0x3A,0xB9,0xC4,0x51,0x79,0x93,0x24,0x55,0x3E,0x8E,0x69,0xC6,0x99,0xE6,0x1A,0x84,0x85,0xEB,0x9E,0x23,0x70,0x25,0xEC,0x89,0x76,0x63,0x33,0xCB,0xBB,0x96,0x42,0x46,0x02,0xE8,0x82,0x84,0x98,0x05,0xF8,0x67,0xB5,0x8E,0xE4,0x57,0x39,0xC8,0x69,0x5C,0xC4,0x89,0x85,0x67,0x87,0x8F,0x3B,0x70,0x14,0x66,0xEC,0x88,0xE6,0x51,0x4D,0x81,0xF4,0xAE,0xBA,0x73,0x02,0x00,0x33,0x4E,0x1A,0x47,0xFE,0xA9,0x8E,0xAE,0x7F,0x82,0xE7,0xF5,0x6B,0x44,0x16,0x59,0x9E,0xE5,0xDA,0x4B,0x53,0x26,0x46,0xDB,0x93,0x5A,0x6F,0xBB,0x03
+support\hexalter.exe "temp\%basecios%\00000006.app" 0x%offset%=0xDC,0x60,0x8C,0x0D,0x49,0x3A,0x2B,0x8C,0x5B,0x24,0x3C,0xE6,0xD1,0xB8,0x1D,0x0F,0x63,0xFF,0x66,0x07,0xAC,0x5C,0xFA,0x20,0xB5,0xF3,0xB5,0x5A,0x2F,0x11,0xEE,0xA1,0x1E,0x4C,0x9C,0xEA,0xD7,0xA3,0x38,0x86,0x39,0xBC,0xAF,0x60,0x1C,0x85,0xCD,0xEC,0x0A,0xE5,0xFD,0x73,0xC5,0xC0,0x73,0x98,0x49,0x94,0xF9,0x75,0xC2,0xA5,0x0E,0xE0,0x78,0x69,0x89,0xDE,0x69,0x6E,0x46,0x5F,0x62,0x63,0xBE,0x10,0x1C,0x68,0x23,0x79,0x28,0x93,0xCB,0xFA,0xA4,0x94,0xDE,0xF7,0x4C,0xD8,0x27,0x90,0x5C,0x32,0x16,0x2E,0x3B,0x0B,0x07,0xCD,0x6C,0xC2,0x3F,0x2D,0xC9,0x1A,0x13,0x5A,0x58,0x26,0x0C,0x06,0x2C,0xDA,0xFA,0x12,0x48,0xD0,0x13,0x89,0xF2,0x0F,0xBF,0xE6,0xA0,0x6A,0x0D,0xE5,0x1A,0x9A,0xD7,0x48,0x3C,0x57,0x25,0xF6,0x79,0x92,0x6B,0x75,0xC4,0x19,0xE6,0xB6,0xA0,0x5C,0x67,0x8C,0x42,0x56,0x5E,0x69,0x25,0x34,0x93,0xD3,0x32,0x3A,0xB9,0xC4,0x51,0x79,0x93,0x24,0x55,0x3E,0x8E,0x69,0xC6,0x99,0xE6,0x1A,0x84,0x85,0xEB,0x9E,0x23,0x70,0x25,0xEC,0x89,0x76,0x63,0x33,0xCB,0xBB,0x96,0x42,0x46,0x02,0xE8,0x82,0x84,0x98,0x05,0xF8,0x67,0xB5,0x8E,0xE4,0x57,0x39,0xC8,0x69,0x5C,0xC4,0x89,0x85,0x67,0x87,0x8F,0x3B,0x70,0x14,0x66,0xEC,0x88,0xE6,0x51,0x4D,0x81,0xF4,0xAE,0xBA,0x73,0x02,0x00,0x33,0x4E,0x1A,0x47,0xFE,0xA9,0x8E,0xAE,0x7F,0x82,0xE7,0xF5,0x6B,0x44,0x16,0x59,0x9E,0xE5,0xDA,0x4B,0x53,0x26,0x46,0xDB,0x93,0x5A,0x6F,0xBB,0x03
 
 :skipRC24key
 
@@ -28473,9 +28459,9 @@ if "%newbytes%"=="" goto:EOF
 if "%patchoffset%"=="" goto:EOF
 
 ::::verbose
-::echo support\hexalter.exe %basecios%\%contentidhex%.app %patchoffset%=%newbytes%
+::echo support\hexalter.exe temp\%basecios%\%contentidhex%.app %patchoffset%=%newbytes%
 
-support\hexalter.exe %basecios%\%contentidhex%.app %patchoffset%=%newbytes%
+support\hexalter.exe temp\%basecios%\%contentidhex%.app %patchoffset%=%newbytes%
 
 set patchoffset=
 set newbytes=
@@ -28510,7 +28496,7 @@ echo %*>temp\temp.txt
 support\sfk -spat filter temp\temp.txt -rep _*" module"__ -rep _" "*__ -write -yes>nul
 set /p module= <temp\temp.txt
 
-if exist "%d2xFolder%\%module%.app" copy "%d2xFolder%\%module%.app" "%basecios%\%contentidhex%.app"
+if exist "%d2xFolder%\%module%.app" copy "%d2xFolder%\%module%.app" "temp\%basecios%\%contentidhex%.app"
 
 
 goto:EOF
@@ -28542,9 +28528,9 @@ set "d2x-beta-rev-tmd=%wadname:~17%"
 
 echo Editing tmd...
 ::hardcoded 00000001 as "code1" is 00000007 for vWii bases, but not cIOSs
-support\TMDedit.exe -b "%basecios%\00000001%code2new%.tmd" -xml %xml% -group d2x-v%d2x-beta-rev-tmd% %tmdversion% -base %basewad:~3,2% %version% -folder "%basecios%" -basefile %basecios%\00000001%code2%.tmd -outIOS %tmdslot%
+support\TMDedit.exe -b "temp\%basecios%\00000001%code2new%.tmd" -xml %xml% -group d2x-v%d2x-beta-rev-tmd% %tmdversion% -base %basewad:~3,2% %version% -folder "temp\%basecios%" -basefile temp\%basecios%\00000001%code2%.tmd -outIOS %tmdslot%
 
-del %basecios%\00000001%code2%.tmd>nul
+del temp\%basecios%\00000001%code2%.tmd>nul
 
 
 ::---------pack files into cIOS wad---------
@@ -28556,11 +28542,11 @@ echo.
 echo Repacking Wad
 echo.
 
-if /i "%LegacyCIOS%" NEQ "Y" %WiiPy% wad pack --fakesign "%basecios%" "%Drive%\WAD\%wadname%.wad">nul
-if /i "%LegacyCIOS%" EQU "Y" support\wadmii -in "%basecios%" -out "%Drive%\WAD\%wadname%.wad"
+if /i "%LegacyCIOS%" NEQ "Y" %WiiPy% wad pack --fakesign "temp\%basecios%" "%Drive%\WAD\%wadname%.wad">nul
+if /i "%LegacyCIOS%" EQU "Y" support\wadmii -in "temp\%basecios%" -out "%Drive%\WAD\%wadname%.wad"
 
 ::delete unpacked files
-rd /s /q %basecios%
+rd /s /q temp\%basecios%
 
 ::Change version number and slot number (using patchios) only if required
 :patchios
@@ -28823,8 +28809,7 @@ echo.
 goto:download_mym2
 :nocheckexisting
 
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/%mym0%" -q --show-progress
-if exist "%mym0%" move /Y "%mym0%" temp>nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%mym0%" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/%mym0%"
 
 
 
@@ -29005,7 +28990,7 @@ if not exist "%DRIVE%"\txtcodes\*.txt (support\sfk echo txtcodes Missing, first 
 
 if not exist temp\wiitdb.xml echo Downloading wiitdb.xml...
 if exist temp\wiitdb.xml echo Updating wiitdb.xml...
-support\wget --no-check-certificate -t 3 "https://www.gametdb.com/wiitdb.zip?LANG=EN&WIIWARE=1&GAMECUBE=1" -O temp\wiitdb.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\wiitdb.zip" "https://www.gametdb.com/wiitdb.zip?LANG=EN&WIIWARE=1&GAMECUBE=1"
 
 
 if exist temp\wiitdb.zip support\7za x -aoa "temp\wiitdb.zip" -o"temp" -r>nul
@@ -29193,8 +29178,8 @@ goto:next
 if /i "%category%" EQU "NusdApp" goto:NusdApp2
 
 :DownloadURL2
-if not exist temp\%wadname% support\wget --no-check-certificate %code2% -q --show-progress
-if exist %dlname% move /y %dlname% temp\%wadname% >nul
+if not exist temp\%wadname% support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%wadname% %code2%
+
 support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% -r
 
 ::save identifier for bannerbombs
@@ -29379,21 +29364,21 @@ if not exist "%Drive%" mkdir "%Drive%"
 ::---------no md5 check for AUTO category------------------
 if /i "%category%" NEQ "auto" goto:notauto
 
-if /i "%attempt%" NEQ "1" support\wget --no-check-certificate %code2% -O "%dlname%" -q --show-progress
+if /i "%attempt%" NEQ "1" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" %code2%
 if /i "%attempt%" NEQ "1" goto:skip
 
-if /i "%AUSKIP%" EQU "OFF" support\wget --no-check-certificate %code2% -O "%dlname%" -q --show-progress
+if /i "%AUSKIP%" EQU "OFF" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" %code2%
 if /i "%AUSKIP%" EQU "OFF" goto:skip
 
 ::Auto-Updating downloads will skip update check if cached on first attempt only
 if exist "temp\%wadname%" goto:fullextract2
-support\wget --no-check-certificate %code2% -O "%dlname%" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" %code2%
 :skip
 
 ::delete if file is empty (if empty)
-if exist "%dlname%" >nul findstr "^" "%dlname%" || del "%dlname%"
+if exist "temp\%wadname%" >nul findstr "^" "temp\%wadname%" || del "temp\%wadname%"
 
-if exist "%dlname%" (move /y "%dlname%" "temp\%wadname%">nul) & (goto:fullextract2)
+if exist "temp\%wadname%" goto:fullextract2
 if /i "%attempt%" EQU "1" goto:missingauto
 if exist "temp\%wadname%" goto:fullextract2
 goto:URLverifyretry
@@ -29449,7 +29434,8 @@ goto:NEXT
 
 :fullextract2
 
-if not exist "temp\%wadname%" support\wget --no-check-certificate %code2% -O "temp\%wadname%" -q --show-progress
+if not exist "temp\%wadname%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" %code2%
+
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\%wadname%" || del "temp\%wadname%"
@@ -29641,10 +29627,11 @@ if /i "%path1%" NEQ "Program Files\UWUVCI AIO\" goto:notUWUVCI
 if exist "%Drive%\%path1%%filename%" (set shortcuts=n) else (set shortcuts=y)
 if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" (set KeepDesk=y) else (set KeepDesk=n)
 
-start /wait temp\%wadname% /DIR="%Drive%\%path1%" /VERYSILENT
 
-::if not exist "%Drive%\%path1%" mkdir "%Drive%\%path1%"
-::support\7za x -aoa "temp\%wadname%" -o"%Drive%\%path1%" -r
+::start /wait temp\%wadname% /DIR="%Drive%\%path1%" /VERYSILENT
+
+if not exist "%Drive%\%path1%" mkdir "%Drive%\%path1%"
+support\7za x -aoa "temp\%wadname%" -o"%Drive%\%path1%" -r
 
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk">nul
 if /i "%KeepDesk%" EQU "n" if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" del "%userprofile%\Desktop\UWUVCI AIO.lnk">nul
@@ -29772,7 +29759,7 @@ set /p fullzipname= <"temp\latest2.json"
 if exist "temp\latest2.json" del "temp\latest2.json">nul
 
 ::latest version always saved to temp\%zipname% for offline caching, 40mb cost
-if not exist "temp\%fullzipname%" (support\wget --no-check-certificate -t 3 "%code3%" -O "temp\%fullzipname%" -q --show-progress) & (if exist "temp\%fullzipname%" copy /y "temp\%fullzipname%" "temp\%zipname%" >nul)
+if not exist "temp\%fullzipname%" (support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%fullzipname%" "%code3%") & (if exist "temp\%fullzipname%" copy /y "temp\%fullzipname%" "temp\%zipname%" >nul)
 
 
 :extractzip
@@ -29851,7 +29838,9 @@ set /p fullfilename= <"temp\latest2.json"
 if exist "temp\latest2.json" del "temp\latest2.json">nul
 
 ::latest version always saved to temp\%filename% for offline caching, 20mb cost
-if not exist "temp\%fullfilename%" (support\wget --no-check-certificate -t 3 "%code3%" -O "temp\%fullfilename%" -q --show-progress) & (if exist "temp\%fullfilename%" copy /y "temp\%fullfilename%" "temp\%filename%" >nul)
+if not exist "temp\%fullfilename%" (support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%fullfilename%" "%code3%") & (if exist "temp\%fullfilename%" copy /y "temp\%fullfilename%" "temp\%filename%" >nul)
+
+
 
 if exist "temp\%fullfilename%" goto:continue
 if not exist "temp\%filename%" goto:skipnormalextraction
@@ -30310,7 +30299,8 @@ if exist index.html del index.html>nul
 
 ::if not exist temp\%wadname% support\wget --no-check-certificate -c -l1 -r -nd --retr-symlinks -t2 -T30 --random-wait --reject "*.html" --reject "index.html.tmp" --reject "%2A" --reject "get.php@file=hackmii_installer_v1.0*" %code2% -q --show-progress
 
-if not exist temp\%wadname% support\wget --no-check-certificate -t 3 %code2% -O temp\%wadname% -q --show-progress
+if not exist temp\%wadname% support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%wadname% %code2%
+
 if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
 if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% *.txt -r
 if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
@@ -30320,7 +30310,8 @@ if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version
 ::get custom icon and meta.xml
 
 
-if not exist "temp\%zipname%" support\wget --no-check-certificate %code3% -O temp\%zipname% -q --show-progress
+if not exist "temp\%zipname%" support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%zipname% %code3%
+
 if exist "temp\%zipname%" support\7za e -aoa "temp\%zipname%" -o"%Drive%"\%path1% * -r
 
 if /i "%name%" NEQ "Hackmii Installer v1.0" goto:skip
@@ -30869,7 +30860,8 @@ if /i "%category%" EQU "userdefined" goto:quickskip
 if /i "%category%" EQU "FORWARDER" goto:quickskip
 if /i "%AdvancedDownload%" EQU "Y" goto:customcopyandpatch
 :quickskip
-support\sfk filter -quiet "temp\DLgotos.txt" -le!"%CurrentDLNAME%" -write -yes
+findStr /V /I /X /C:"%CurrentDLNAME%" "temp\DLgotos.txt" >"temp\DLgotos2.txt"
+move /y "temp\DLgotos2.txt" "temp\DLgotos.txt">nul
 
 goto:DLSETTINGS3
 
@@ -30977,7 +30969,8 @@ if /i "%attempt%" EQU "1" goto:missingretry
 echo.
 support\sfk echo [%magentatext%] This file has failed to download properly multiple times, Skipping download.
 echo.
-support\sfk filter -quiet "temp\DLgotos.txt" -ls!"%CurrentDLNAME%" -write -yes
+findStr /V /I /X /C:"%CurrentDLNAME%" "temp\DLgotos.txt" >"temp\DLgotos2.txt"
+move /y "temp\DLgotos2.txt" "temp\DLgotos.txt">nul
 echo "support\sfk echo %wadnameless%%patchname%%slotname%%versionname%.wad: [%redtext%]Missing">>temp\ModMii_Log.bat
 goto:DLSETTINGS3
 
@@ -30998,7 +30991,8 @@ if /i "%multiplefail%" EQU "Y" (echo "support\sfk echo %wadnameless%%patchname%%
 :miniskip
 
 
-support\sfk filter -quiet "temp\DLgotos.txt" -ls!"%CurrentDLNAME%" -write -yes
+findStr /V /I /X /C:"%CurrentDLNAME%" "temp\DLgotos.txt" >"temp\DLgotos2.txt"
+move /y "temp\DLgotos2.txt" "temp\DLgotos.txt">nul
 goto:DLSETTINGS3
 
 ::---------------------------------------SNEEKINSTALLER----------------------------------
@@ -31222,11 +31216,11 @@ if /i "%md5check%" NEQ "fail" goto:AlreadyinTemp
 if exist temp\%wadname:~0,-4% rd /s /q temp\%wadname:~0,-4%
 mkdir temp\%wadname:~0,-4%
 
-support\wget --no-check-certificate -t 3 https://master.dl.sourceforge.net/project/sneek-modmii/%wadname% -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" "https://master.dl.sourceforge.net/project/sneek-modmii/%wadname%"
 
-if exist %wadname% temp\unrar.exe x -y %wadname% temp\%wadname:~0,-4%
+if exist temp\%wadname% temp\unrar.exe x -y temp\%wadname% temp\%wadname:~0,-4%
 
-if exist %wadname% del %wadname%>nul
+if exist temp\%wadname% del temp\%wadname%>nul
 
 :AlreadyinTemp
 if not exist temp\%wadname:~0,-4%\SNEEKInstaller.exe goto:sneekwarning
@@ -31243,10 +31237,11 @@ if /i "%SkinMode%" EQU "Y" start support\wizapp PB UPDATE 15
 
 echo Downloading Autoit
 if exist temp\autoit3.exe goto:AlreadyinTemp
-if not exist autoit-v3.zip support\wget --content-disposition --no-check-certificate -t 3 https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.16.0.zip -O autoit-v3.zip -q --show-progress
 
-if exist autoit-v3.zip support\7za e -aoa autoit-v3.zip -otemp autoit3.exe -r
-if exist autoit-v3.zip del autoit-v3.zip>nul
+if not exist temp\autoit-v3.zip support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\autoit-v3.zip" "https://www.autoitscript.com/autoit3/files/archive/autoit/autoit-v3.3.16.0.zip"
+
+if exist temp\autoit-v3.zip support\7za e -aoa temp\autoit-v3.zip -otemp autoit3.exe -r
+if exist temp\autoit-v3.zip del temp\autoit-v3.zip>nul
 if not exist temp\autoit3.exe goto:sneekwarning
 :AlreadyinTemp
 echo.
@@ -31341,13 +31336,12 @@ if /i "%SNKFONT%" EQU "B" echo Downloading Black font.bin (this can be changed i
 if /i "%SNKFONT%" EQU "R" echo Downloading Red font.bin (this can be changed in Options)
 if /i "%SNKFONT%" EQU "W" echo Downloading White font.bin (this can be changed in Options)
 
-if /i "%SNKFONT%" EQU "B" set fonturl=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontb.bin
-if /i "%SNKFONT%" EQU "W" set fonturl=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontw.bin
-if /i "%SNKFONT%" EQU "R" set fonturl=raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontr.bin
+if /i "%SNKFONT%" EQU "B" set fonturl=https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontb.bin
+if /i "%SNKFONT%" EQU "W" set fonturl=https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontw.bin
+if /i "%SNKFONT%" EQU "R" set fonturl=https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/fontr.bin
 
-if not exist temp\font%SNKFONT%.bin support\wget --no-check-certificate -t 3 %fonturl% -q --show-progress
+if not exist temp\font%SNKFONT%.bin support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\font%SNKFONT%.bin" %fonturl%
 
-if exist font%SNKFONT%.bin move /Y font%SNKFONT%.bin temp\font%SNKFONT%.bin>nul
 :skip
 
 if /i "%SNEEKTYPE:~0,1%" NEQ "S" goto:skip
@@ -31368,12 +31362,10 @@ echo.
 echo Grabbing Modules for %neekname% Rev%CurrentRev%
 echo.
 if exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:Extract
-
-support\wget --no-check-certificate -t 3 "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip" -q --show-progress
-if not exist "%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
-
 if not exist "temp\%neekname%" mkdir "temp\%neekname%"
-move /y "%neekname%-rev%CurrentRev%.zip" "temp\%neekname%\%neekname%-rev%CurrentRev%.zip">nul
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" "https://master.dl.sourceforge.net/project/%googlecode%/%neekname%-rev%CurrentRev%.zip"
+
+if not exist "temp\%neekname%\%neekname%-rev%CurrentRev%.zip" goto:sneekwarning
 
 if exist "temp\dimodule-sd.elf" del "temp\dimodule-sd.elf">nul
 if exist "temp\dimodule-usb.elf" del "temp\dimodule-usb.elf">nul
@@ -31441,10 +31433,10 @@ set "DRIVEabsolute=%cd%\%DRIVE%"
 if /i "%DRIVE:~1,1%" EQU ":" set "DRIVEabsolute=%DRIVE%"
 
 ::SNEEKreplace "S" skip requires override
-if /i "%SNEEKreplace%" NEQ "S" goto:next
+if /i "%SNEEKreplace%" NEQ "S" goto:next3
 if not exist temp\neektemp mkdir temp\neektemp
 set "DRIVEabsolute=%cd%\temp\neektemp"
-:next
+:next3
 
 echo ControlSetText("SNEEK Installer","","[CLASS:Edit; INSTANCE:1]","%DRIVEabsolute%")>>custom.au3
 
@@ -31887,14 +31879,14 @@ echo.
 echo Downloading Priiloader for Emulated NANDs
 echo.
 
-if /i "%AUSKIP%" EQU "OFF" support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EmuPriiloader.zip" -q --show-progress
+if /i "%AUSKIP%" EQU "OFF" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\EmuPriiloader.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EmuPriiloader.zip"
 if /i "%AUSKIP%" EQU "OFF" goto:skip
 
-if not exist temp\EmuPriiloader.zip support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EmuPriiloader.zip" -q --show-progress
+
+if not exist temp\EmuPriiloader.zip support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\EmuPriiloader.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/EmuPriiloader.zip"
 ::Priiloader-v0.7neek.app is a mirror of: https://sourceforge.net/projects/neek2o/files/priiloader.app/download?use_mirror=master&download=&failedmirror=master.dl.sourceforge.net
 :skip
 
-if exist EmuPriiloader.zip move /Y EmuPriiloader.zip temp\EmuPriiloader.zip>nul
 
 if not exist temp\EmuPriiloader.zip (echo Failed to Install Priiloader >>"%nandpath%\nandinfo.txt") & (goto:skipSNKpri)
 
@@ -32647,6 +32639,9 @@ set AdvancedDownload=
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\DLgotos.txt" || del "temp\DLgotos.txt"
 
+::when queue is done, full pause when debug is on otherwise just a brief delay
+if not exist temp\DLgotos.txt if /i "%debug%" EQU "on" (pause) else (@ping 127.0.0.1 -n 2 -w 1000> nul)
+
 if not exist temp\DLgotos.txt goto:FINISH
 
 ::Loop through the following once for EACH line in *.txt
@@ -32689,8 +32684,8 @@ if /i "%EXPLOIT%" EQU "X" (copy /y "%Drive%\%guidename%"+Support\Guide\str2hax.0
 if /i "%AbstinenceWiz%" EQU "Y" (echo You only need to perform ONE of the these exploits to complete this guide.^<br^>^<br^> >>"%Drive%\%guidename%") & (goto:skipthispart)
 
 ::title for multiple exploits
-
 echo ^<font size^=^"5^"^>^<b^>Launch an Exploit^<^/b^>^<^/font^>^<br^>>>"%Drive%\%guidename%"
+if /i "%FIRMSTART%" EQU "v" if /i "%EXPLOIT%" NEQ "?" goto:copyexploit
 
 
 If /i "%MENU1%" EQU "H" goto:startYawmME
@@ -32704,9 +32699,7 @@ If /i "%FIRMSTART%" NEQ "4.3" goto:startYawmME
 
 echo You only need to perform ONE of the these exploits to complete this guide.^<br^>^<br^>>>"%Drive%\%guidename%"
 
-if /i "%FIRMSTART%" NEQ "v" echo Note that if you're missing an SD Card or your SD Card reader is broken, you can use the str2hax exploit to install the HBC and skip installing Bootmii and making a nand backup for now until you get an SD Card.^<br^>^<br^>>>"%Drive%\%guidename%"
-
-
+if /i "%FIRMSTART%" NEQ "v" echo Note that if you're missing an SD Card or your SD Card reader is broken, you can use the str2hax exploit to install the HBC but skip installing and using Bootmii to make a nand backup until you get an SD Card. For now, save ^<a href^=^"https^:^/^/hbb1.oscwii.org^/api^/contents^/nanddumper_ios^/nanddumper_ios.zip^" target^=^"_blank^"^>nanddumper@IOS^<^/a^> to your USB Hard Drive ^(also available on ModMii Classic's Download Page 2^) and launch it after installing the HBC to create a Bootmii compatible nand backup saved to USB^:^/wii^/backups^/.^<br^>^<br^>>>"%Drive%\%guidename%"
 
 goto:skipthispart
 
@@ -32896,35 +32889,36 @@ if /i "%FIRMSTART%" EQU "4.0" copy /y "%Drive%\%guidename%"+Support\Guide\Wilbra
 if /i "%FIRMSTART%" EQU "3.x" copy /y "%Drive%\%guidename%"+Support\Guide\WilbrandWeb.001 "%Drive%\%guidename%">nul
 
 
+:copyexploit
 
 If /i "%SMASH%" EQU "*" echo ^<div id^=^"Smash Stack^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%SMASH%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\SmashStack.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%SMASH%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%SMASH%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%PWNS%" EQU "*" echo ^<div id^=^"Indiana Pwns^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%PWNS%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\PWNS.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%PWNS%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%PWNS%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%YUGI%" EQU "*" echo ^<div id^=^"Yu-Gi Owned^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%YUGI%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\YUGI.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%YUGI%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%YUGI%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%Bathaxx%" EQU "*" echo ^<div id^=^"Bathaxx^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%Bathaxx%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\Bathaxx.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%Bathaxx%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%Bathaxx%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%ROTJ%" EQU "*" echo ^<div id^=^"Return of the Jodi^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%ROTJ%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\ROTJ.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%ROTJ%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%ROTJ%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%TOS%" EQU "*" echo ^<div id^=^"Eri HaKawai^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
 If /i "%TOS%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\EriHaKawai.001 "%Drive%\%guidename%">nul
-if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
+If /i "%TOS%" EQU "*" if /i "%FIRMSTART%" EQU "v" copy /y "%Drive%\%guidename%"+Support\Guide\HBC2vWii.001 "%Drive%\%guidename%">nul
 If /i "%TOS%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 If /i "%TWI%" EQU "*" echo ^<div id^=^"Twilight Hack^" class^=^"ExploitTab^"^>>>"%Drive%\%guidename%"
@@ -32932,8 +32926,11 @@ If /i "%TWI%" EQU "*" copy /y "%Drive%\%guidename%"+Support\Guide\Twilight.001 "
 If /i "%TWI%" EQU "*" echo ^<^/div^>>>"%Drive%\%guidename%"
 
 
-copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
+if /i "%FIRMSTART%" EQU "v" if /i "%EXPLOIT%" NEQ "?" support\sfk filter "%Drive%\%guidename%" -rep _"<!--vWiiNAND--"__ -rep _"--vWiiNAND-->"__ -write -yes>nul
+if /i "%FIRMSTART%" EQU "v" if /i "%EXPLOIT%" NEQ "?" goto:%afterexploit%
 
+copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen_ -write -yes
 
 goto:%afterexploit%
 
@@ -33324,7 +33321,7 @@ If /i "%MENU1%" EQU "RC" (goto:notes4NoFAT32_SD) else (goto:skip)
 echo ^<li^>Make sure the files ModMii downloaded are on your SD Card, and your SD Card is inserted in the console.^<^/li^>>>"%Drive%\%guidename%"
 
 echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%\%guidename%"
-echo ^<li^>If you don't have an SD Card, you can still accomplish ^<u^>most^<^/u^> Wii softmods using a Hard Drive formatted as FAT32 in place of an SD Card ^(SD is notably required for Bootmii and NAND backup^).^<^/li^>>>"%Drive%\%guidename%"
+echo ^<li^>If you don't have an SD Card, you can still accomplish ^<u^>most^<^/u^> Wii softmods using a Hard Drive formatted as FAT32 in place of an SD Card ^(SD is notably required for Bootmii^).^<^/li^>>>"%Drive%\%guidename%"
 
 echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%\%guidename%"
 echo ^<li^>Use ModMii's USB-Loader Setup feature if you need help formatting your HDD as FAT32.^<^/li^>>>"%Drive%\%guidename%"
@@ -33400,17 +33397,21 @@ if /i "%MENU1%" EQU "U" goto:USBGUIDESTEP1
 ::Start of hacking steps listings ordered list. This must be here for all guides (AW and U done above)
 
 if /i "%MENU1%" NEQ "W" goto:skip
-if /i "%FIRMSTART%" EQU "U2" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your WiiU^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
-if /i "%FIRMSTART%" EQU "U2" copy /y "%Drive%\%guidename%"+Support\Guide\LegacyCFW.001 "%Drive%\%guidename%">nul
+if /i "%FIRMSTART%" NEQ "U2" goto:tinyskip
+echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your WiiU^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
+copy /y "%Drive%\%guidename%"+Support\Guide\LegacyCFW.001 "%Drive%\%guidename%">nul
 copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
-support\sfk filter -quiet "%Drive%\%guidename%" -rep _"////////document.getElementById"_"document.getElementById"_ -write -yes
-if /i "%FIRMSTART%" EQU "U2" goto:skip
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen3_ -write -yes
+goto:skip
+:tinyskip
 
-if /i "%FIRMSTART%" EQU "U" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your WiiU^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
-if /i "%FIRMSTART%" EQU "U" copy /y "%Drive%\%guidename%"+Support\Guide\LegacyCFW.001 "%Drive%\%guidename%">nul
+if /i "%FIRMSTART%" NEQ "U" goto:tinyskip
+echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your WiiU^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
+copy /y "%Drive%\%guidename%"+Support\Guide\LegacyCFW.001 "%Drive%\%guidename%">nul
 copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
-support\sfk filter -quiet "%Drive%\%guidename%" -rep _"////////document.getElementById"_"document.getElementById"_ -write -yes
-if /i "%FIRMSTART%" EQU "U" goto:skip
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen3_ -write -yes
+goto:skip
+:tinyskip
 
 if /i "%FIRMSTART%" EQU "v" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your vWii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
 if /i "%FIRMSTART%" EQU "v" goto:skip
@@ -33522,6 +33523,8 @@ echo ^<^/pre^>^<^/div^>^<^/div^>^<^/div^>>>"%Drive%\%guidename%"
 
 
 copy /y "%Drive%\%guidename%"+Support\Guide\MBRsd.001 "%Drive%\%guidename%">nul
+copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen5_ -write -yes
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
 if /i "%PCSAVE%" NEQ "Auto" goto:skip
@@ -33545,7 +33548,7 @@ if /i "%FIRMSTART%" EQU "U" goto:skip
 if /i "%FIRMSTART%" EQU "v" goto:skip
 
 
-echo ^<i^>Note: If you don't have an SD Card, you can still accomplish ^<u^>most^<^/u^> things using a Hard Drive formatted as FAT32 in place of an SD Card ^(SD is notably required for Bootmii and NAND backup^). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,>>"%Drive%\%guidename%"
+echo ^<i^>Note: If you don't have an SD Card, you can still accomplish ^<u^>most^<^/u^> things using a Hard Drive formatted as FAT32 in place of an SD Card ^(SD is notably required for Bootmii^). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,>>"%Drive%\%guidename%"
 echo you can launch apps and install WADs over the internet to your Wii from your PC. Just open apps (boot.dol^\elf files) or WADs with ModMii. Note that some apps may not work properly or support all features if they require an SD or HDD and you should never attempt to change the region of a console via the internet.^</i^>^<br^>>>"%Drive%\%guidename%"
 :skip
 
@@ -33608,8 +33611,8 @@ goto:PRIIGUIDEvWii
 
 
 :ManyVwiiExploits
-
-support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eInstall The Homebrew Channel (HBC) ^& Make a NAND backup\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
+if /i "%EXPLOIT%" EQU "?" support\sfk echo -spat \x3cfont size=\x225\x22\x3e\x3cli\x3eInstall The Homebrew Channel (HBC) ^& Make a NAND backup\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
+if /i "%EXPLOIT%" NEQ "?" support\sfk echo -spat \x3cfont size="5"\x3e\x3cli\x3eInstall The Homebrew Channel (HBC) for vWii\x3c/li\x3e\x3c/font\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
 
 ::copy /y "%Drive%\%guidename%"+Support\Guide\HBC.001 "%Drive%\%guidename%">nul
 ::support\sfk filter "%Drive%\%guidename%" -rep _" and Bootmii"__ -rep _"If this Wii was previously modified"_"If this vWii was previously modified"_ -rep _", Bootmii boot2"__ -rep _"all or some of these"_"both of these"_ -write -yes>nul
@@ -34591,6 +34594,8 @@ echo ^<^/pre^>^<^/div^>^<^/div^>^<^/div^>^<br^>>>"%Drive%\%guidename%"
 
 
 copy /y "%Drive%\%guidename%"+Support\Guide\MBR.001 "%Drive%\%guidename%">nul
+copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen4_ -write -yes
 
 
 if /i "%PCSAVE%" EQU "Portable" goto:portableF32
@@ -34615,8 +34620,7 @@ support\sfk filter -quiet "%Drive%\%guidename%" -rep _"<!--formatwarning"__ -rep
 
 
 copy /y "%Drive%\%guidename%"+Support\Guide\side_spoiler_script.001 "%Drive%\%guidename%">nul
-support\sfk filter -quiet "%Drive%\%guidename%" -rep _"//document.getElementById"_"document.getElementById"_ -write -yes
-
+support\sfk filter -quiet "%Drive%\%guidename%" -rep _defaultOpenPLACEHOLDER_defaultOpen2_ -write -yes
 
 if /i "%AbstinenceWiz%" NEQ "Y" goto:notAW
 ::for AW remove all buttons that don't use FAT32

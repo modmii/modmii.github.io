@@ -43,7 +43,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=8.0.3
+set currentversion=8.0.4
 if exist Support\settings.bat call Support\settings.bat
 set d2x-bundled=11-beta3
 set d2x-beta-rev=%d2x-bundled%
@@ -216,7 +216,9 @@ if /i "%ModMiiverbose%" EQU "on" support\nircmd.exe win trans ititle "ModMiiSkin
 
 if /i "%debug%" EQU "on" goto:skip
 if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del updatetemp.bat>nul
+if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :skip
 
 
@@ -235,11 +237,10 @@ if not exist support\hexalter.exe (echo One or more of ModMii's supporting files
 if not exist support\nircmd.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
 if not exist support\sfk.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
 if not exist %WiiPy% (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
-if not exist support\wget.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
-if not exist support\7za.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
+::if not exist support\wget.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
+::if not exist support\7za.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
 if not exist support\jptch.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
 if not exist support\WizApp.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (goto:UpdateModMii)
-
 
 
 if exist support\skipscam.txt goto:skip
@@ -324,7 +325,7 @@ echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)
 echo.
 
 set "wabmp=%default.bmp%"
-set watext=ModMii v8.0.0 and above requires 64-bit Windows 8.1 or higher~~Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)~~Click "Next" to use ModMii anyways.
+set watext=ModMii v8.0.0 and above requires 64-bit Windows 8.1 or higher~~Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)~~Click "Next" to use ModMii anyway.
 start /w support\wizapp NOBACK TB
 if errorlevel 2 EXIT
 ::echo Hit any key to use ModMii anyway
@@ -334,17 +335,22 @@ if exist Support\settings.bat support\sfk filter Support\settings.bat -ls!"Set L
 Set LegacyCIOS=Y
 echo Set LegacyCIOS=Y>>Support\settings.bat
 
+set GrabModMii32x=
+support\sfk md5 -quiet -verify 0736e14b7ad05a99912e9ba811987335 "ModMii.exe"
+if errorlevel 1 set GrabModMii32x=Y
+
 ::if exist "%homedrive%\Program Files (x86)" goto:skip
-if exist ModMii_64bit.exe goto:skip
+if /i "%GrabModMii32x%" NEQ "Y" goto:skip
 
 echo.
 echo Downloading alternate ModMii.exe Launcher to make things a bit better...
 
-set watext=~Downloading 32bit ModMii Launcher to make things a bit better...
+set watext=~Downloading alternate ModMii.exe Launcher to make things a bit better...
 
 start support\wizapp PB OPEN
 
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip"  -O "temp\ModMii_Launcher_2.4_32bit.zip" -q --show-progress
+if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ModMii_Launcher_2.4_32bit.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip"
+
 if not exist "temp\ModMii_Launcher_2.4_32bit.zip" (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (goto:32bitfail)
 
 start support\wizapp PB UPDATE 50
@@ -404,9 +410,7 @@ set watext=~ModMii v8.0.0 and above as well as WiiPy requires Microsoft Visual C
 start support\wizapp PB OPEN
 
 
-
-
-support\wget --no-check-certificate -t 3 "%code2%" -O "temp\%dlname%" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%dlname%" "%code2%"
 
 ::delete if file is empty (if empty)
 >nul findstr "^" "temp\%dlname%" || del "temp\%dlname%"
@@ -471,7 +475,8 @@ if not exist temp\d2xSkinCheck.txt echo whatever>temp\d2xSkinCheck.txt
 findStr /I /X /C:"%CurDate% " "temp\d2xSkinCheck.txt" >nul
 IF NOT ERRORLEVEL 1 goto:proceed
 if exist temp\RecD2XcIOS.txt del temp\RecD2XcIOS.txt>nul
-support\wget --no-check-certificate "https://github.com/xflak/stats/releases/latest/download/skin.txt" -O temp\RecD2XcIOS.txt -q
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\RecD2XcIOS.txt" "https://github.com/xflak/stats/releases/latest/download/skin.txt"
+
 ::delete if file is empty (if empty)
 if exist "temp\RecD2XcIOS.txt" >nul findstr "^" "temp\RecD2XcIOS.txt" || del "temp\RecD2XcIOS.txt"
 if not exist temp\RecD2XcIOS.txt goto:proceed
@@ -495,7 +500,7 @@ if exist Support\settings.bat call Support\settings.bat
 call support\subscripts\Skins.bat
 
 set MENU1=
-set waoutnum=
+set waoutnum=0
 set waoutput=
 set "wabmp=%MAIN.bmp%"
 set wafile=
@@ -536,6 +541,7 @@ set SNKMarked=
 set AdvancedMarked=
 set virginMarked=
 set FIRMSTARTMarked=
+set consoleMarked=
 set SNKVERSIONMarked=
 set REGIONMarked=
 set SNKREGIONMarked=
@@ -694,7 +700,7 @@ set watext=~~~Checking for themes hosted online...
 start support\wizapp PB OPEN
 
 ::get all list
-support\wget --no-check-certificate -N "https://github.com/modmii/modmii.github.io/tree/master/temp/Skins" -O temp\skins.txt -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\skins.txt" "https://github.com/modmii/modmii.github.io/tree/master/temp/Skins"
 
 start support\wizapp PB UPDATE 20
 support\sfk filter -spat "temp\skins.txt" -rep _\x22path\x22_\x0d\x0a_ -write -yes>nul
@@ -751,7 +757,7 @@ start support\wizapp PB UPDATE 20
 if not exist "Support\Skins\%SelectedSkin%" mkdir "Support\Skins\%SelectedSkin%"
 start support\wizapp PB UPDATE 40
 
-support\wget --no-check-certificate -t 3 "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/%SelectedSkin%.zip" -O temp\%SelectedSkin%.zip -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%SelectedSkin%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/Skins/%SelectedSkin%.zip"
 start support\wizapp PB UPDATE 60
 
 if exist temp\%SelectedSkin%.zip support\7za e -aoa "temp\%SelectedSkin%.zip" -o"Support\Skins\%SelectedSkin%" *.* -r
@@ -880,7 +886,6 @@ set "waico=%skin.ico%"
 
 
 echo ::ModMii Settings > Support\settings.bat
-echo ::ModMiiv%currentversion%>> Support\settings.bat
 echo Set ROOTSAVE=%ROOTSAVE%>> Support\settings.bat
 echo Set effect=%effect%>> Support\settings.bat
 echo Set PCSAVE=%PCSAVE%>> Support\settings.bat
@@ -943,17 +948,17 @@ echo This can always be customized in ModMii's d2x Options
 echo.
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
 
-support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
 echo.
 
 ::delete if file is empty
->nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
+>nul findstr "^" "temp\%RecD2XcIOS%.zip" || del "temp\%RecD2XcIOS%.zip"
 
-if not exist "%RecD2XcIOS%.zip" goto:badkey
+if not exist "temp\%RecD2XcIOS%.zip" goto:badkey
 if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
-support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+support\7za e -aoa "temp\%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
 echo.
-del "%RecD2XcIOS%.zip">nul
+del "temp\%RecD2XcIOS%.zip">nul
 if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (goto:badkey)
 
 :pickup
@@ -1220,10 +1225,11 @@ goto:Options
 :WPAGE0
 set FIRMSTART=
 set ctype=
+set waoutnum=
 ::same var used for SM version
 
 ::recall checked items
-if not "%FIRMSTARTMarked%"=="" set waoutnum=%FIRMSTARTMarked%
+if not "%consoleMarked%"=="" set waoutnum=%consoleMarked%
 
 set watext=        What console would you like to softmod?~* Wii modding requires an SD card and does not need internet on the Wii; or, if without an SD Card a hard drive can be used in its place for most things but then the Wii will need internet access for the initial modding process.~* WiiU modding needs an SD ^& internet on the console.~* vWii Only mods need an SD Card ^& internet on the WiiU; or if without internet an SD ^& 1 of 6 specific games.
 
@@ -1239,7 +1245,7 @@ if errorlevel 1 goto:MENU
 
 call "%wabat%"
 
-set FIRMSTARTMarked=%waoutnum%
+set consoleMarked=%waoutnum%
 
 if /i "%waoutnum%" EQU "2" goto:skipall
 if /i "%waoutnum%" EQU "0" goto:skipcheck
@@ -1271,14 +1277,15 @@ if /i "%d2x-bundled%" EQU "%RecD2XcIOS:~5%" goto:clearD2X
 ::download and extract recommended d2x beta
 echo Enabling %RecD2XcIOS%...
 if exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" goto:pickup
-support\wget --output-document %RecD2XcIOS%.zip --no-check-certificate -t 3 "https://github.com/modmii/modmii.github.io/blob/master/temp/d2x/%RecD2XcIOS%.7z?raw=true" -q --show-progress
-::delete if file is empty
->nul findstr "^" "%RecD2XcIOS%.zip" || del "%RecD2XcIOS%.zip"
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%RecD2XcIOS%.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/d2x/%RecD2XcIOS%.7z"
 
-if not exist "%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
+::delete if file is empty
+>nul findstr "^" "temp\%RecD2XcIOS%.zip" || del "temp\%RecD2XcIOS%.zip"
+
+if not exist "temp\%RecD2XcIOS%.zip" (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 if not exist "support\More-cIOSs\%RecD2XcIOS%" mkdir "support\More-cIOSs\%RecD2XcIOS%"
-support\7za e -aoa "%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
-del "%RecD2XcIOS%.zip">nul
+support\7za e -aoa "temp\%RecD2XcIOS%.zip" -o"support\More-cIOSs\%RecD2XcIOS%" *.* -r
+del "temp\%RecD2XcIOS%.zip">nul
 if not exist "support\More-cIOSs\%RecD2XcIOS%\d2x-beta.bat" (rd /s /q "support\More-cIOSs\%RecD2XcIOS%") & (echo Failed to download %RecD2XcIOS%, reverting to bundled v%d2x-bundled% instead...) & (goto:clearD2X)
 
 :pickup
@@ -1338,9 +1345,9 @@ set IOS236InstallerQ=
 
 ::recall checked items
 if not "%VIRGINMarked%"=="" set waoutnum=%VIRGINMarked%
+if "%VIRGINMarked%"=="" set waoutnum=0
 
-
-set watext=        Is this your first time softmodding your Wii?~                                       -or-~  Would you like to update ALL your existing softmods~                        (aka re-hack your Wii)?~Note: Only answer No if you know specifically what you want to update. Alternatively, you can check if there are any recommended changes to the mods already on your Wii using ModMii Classic's SysCheck Updater Wizard.
+set watext=Would you like to (re)install all recommended softmods?~~Note: Only answer No if you know specifically what you want to update.~~Alternatively, you can check if there are any recommended changes to the mods already on your Wii using ModMii Classic's SysCheck Updater Wizard.
 
 set wainput= ^&Yes; ^&No
 
@@ -2009,7 +2016,7 @@ goto:DRIVECHANGE
 ::...................................Wizard Page20 - Theme Selection...............................
 :WPAGE20
 set ThemeSelection=
-set waoutnum=
+set waoutnum=6
 set waoutput=
 
 if /i "%SNEEKSELECT%" NEQ "5" goto:nocheck
@@ -2024,7 +2031,7 @@ if /i "%ctype%" NEQ "WiiU" set watext=~~~   Would you like to install a custom T
 
 if /i "%ctype%" EQU "WiiU" set watext=Would you like to install a custom vWii theme or fix* the aspect ratio for EverybodyVotes ^& CheckMiiOut channels?~~*43DB fixes included in all vWii themes built by ModMii, including the boring Default, and any csm's built by user provided *.mym themes~~    Choose from 3 effects: No-Spin, Spin and Fast-Spin
 
-set wainput= View All Available Themes on ^&Youtube; Change Channel ^&Effect - Current Effect: %effect%; DarkWii ^&Red Theme - %effect%; DarkWii ^&Green Theme - %effect%; DarkWii ^&Blue Theme - %effect%; DarkWii ^&Orange Theme - %effect%; ^&No, do not change the theme; ^&Default theme, restore original theme
+set wainput= View Themes and Channel Effects on ^&Youtube; Change Channel ^&Effect - Current Effect: %effect%; DarkWii ^&Red Theme - %effect%; DarkWii ^&Green Theme - %effect%; DarkWii ^&Blue Theme - %effect%; DarkWii ^&Orange Theme - %effect%; ^&No, do not change the theme; ^&Default theme, restore original theme
 if /i "%ctype%" EQU "WiiU" set "wainput=%wainput% && apply 43DB fix"
 
 
@@ -2100,7 +2107,7 @@ if /i "%USBGUIDE%" EQU "Y" (goto:UPAGE1b) else (goto:DRIVECHANGE)
 ::...................................Wizard Page21 - USB Loader Setup Q...............................
 :WPAGE21
 set USBGUIDE=
-set waoutnum=
+set waoutnum=0
 set waoutput=
 
 ::recall checked items
@@ -2189,6 +2196,8 @@ if /i "%DRIVETEMP:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set "DRIVETEMP=%DRIVETEMP:~0,-1%"
 if /i "%fixslash%" EQU "yes" goto:doublecheck
 :skip
+
+set "DRIVETEMP=%DRIVETEMP:/=\%"
 
 ::if second char is ":" check if drive exists
 if /i "%DRIVETEMP:~1,1%" NEQ ":" goto:skipcheck
@@ -2346,6 +2355,8 @@ if /i "%DRIVEUTEMP:~-1%" EQU "/" set fixslash=yes
 if /i "%fixslash%" EQU "yes" set "DRIVEUTEMP=%DRIVEUTEMP:~0,-1%"
 if /i "%fixslash%" EQU "yes" goto:doublecheckU
 
+set "DRIVEUTEMP=%DRIVEUTEMP:/=\%"
+
 ::if second char is ":" check if drive exists
 if /i "%DRIVEUTEMP:~1,1%" NEQ ":" goto:skipcheck
 if exist "%DRIVEUTEMP:~0,2%" (goto:skipcheck) else (echo.)
@@ -2463,30 +2474,29 @@ if exist "temp\currentversionInfo.txt" del "temp\currentversionInfo.txt">nul
 echo %currentversion%>temp\skin.txt
 
 if /i "%debug%" EQU "on" goto:skip
-::comment these for local Updatetemp.bat for testing... (updater.bat is renamed to Updatetemp.bat for legacy purposes)
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 
-support\wget --no-check-certificate "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat" -O Updatetemp.bat -q --show-progress
+support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\updater.bat" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/updater.bat"
 ::delete if file is empty (if empty)
->nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
-if not exist Updatetemp.bat goto:altlink
+>nul findstr "^" "temp\updater.bat" || del "temp\updater.bat"
+if not exist temp\updater.bat goto:altlink
 ::DELETE IF NULL
-::for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+::for %%R in (temp\updater.bat) do if %%~zR lss 1 del "temp\updater.bat">nul
 
 
 :altlink
-if not exist "Updatetemp.bat" support\wget --no-check-certificate "https://tiny.cc/modmiiupdater" -O Updatetemp.bat -q --show-progress
+if not exist "temp\updater.bat" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\updater.bat" "https://tiny.cc/modmiiupdater"
 ::delete if file is empty (if empty)
->nul findstr "^" "Updatetemp.bat" || del "Updatetemp.bat"
-if not exist Updatetemp.bat goto:updatefail
+>nul findstr "^" "temp\updater.bat" || del "temp\updater.bat"
+if not exist temp\updater.bat goto:updatefail
 ::DELETE IF NULL
-::for %%R in (Updatetemp.bat) do if %%~zR lss 1 del "Updatetemp.bat">nul
+::for %%R in (temp\updater.bat) do if %%~zR lss 1 del "temp\updater.bat">nul
 :skip
 
 ::Call to get new version info and changelogURL
 echo %currentversion%>temp\skin.txt
-if exist Updatetemp.bat (call Updatetemp.bat) else (goto:updatefail)
+if exist temp\updater.bat (call temp\updater.bat) else (goto:updatefail)
 
 ::in case new d2x beta downloaded, call it
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
@@ -2503,8 +2513,8 @@ start support\wizapp PB CLOSE
 if %currentversion% LSS %newversion% goto:openchangelog
 
 if /i "%debug%" EQU "on" goto:debugskip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :debugskip
 
 ::----------disable Splash for now------------
@@ -2549,8 +2559,8 @@ if not errorlevel 2 goto:notcancel
 set wabmp=%wabmplast%
 
 if /i "%debug%" EQU "on" goto:debugskip
-if exist Updatetemp.bat attrib -h Updatetemp.bat
-if exist Updatetemp.bat del Updatetemp.bat>nul
+if exist temp\updater.bat attrib -h temp\updater.bat
+if exist temp\updater.bat del temp\updater.bat>nul
 :debugskip
 
 if /i "%currentversion%" EQU "0.0.0" exit
@@ -2566,7 +2576,7 @@ if /i "%MENU1%" EQU "O" (goto:OPTIONS) else (goto:MENU)
 echo %currentversion%>temp\currentversion.txt
 echo %currentversion%>temp\skin.txt
 
-start /min Updatetemp.bat
+start /min temp\updater.bat
 exit
 
 
@@ -2651,9 +2661,12 @@ if /i "%MENU1%" EQU "H" set wainput=%wainput%~* Current System Menu is %FIRMSTAR
 
 if /i "%MENU1%" EQU "W" goto:skip
 if /i "%macaddress%" EQU "S" goto:skip
+if /i "%FIRMSTART%" NEQ "4.3" goto:skip
+if "%macaddress%"=="" goto:skip
 if /i "%EXPLOIT%" EQU "W" set wainput=%wainput%~* MAC Address: %macaddress%
 if /i "%EXPLOIT%" EQU "?" set wainput=%wainput%~* MAC Address: %macaddress%
 :skip
+
 
 if /i "%MENU1%" EQU "H" goto:skipusb
 
@@ -2775,7 +2788,10 @@ if /i "%FIRMSTART%" EQU "V" goto:themeconfirm
 
 
 if /i "%macaddress%" EQU "S" goto:skip
-if not "%macaddress%"=="" set wainput=%wainput%~* MAC Address - %macaddress%
+if /i "%FIRMSTART%" NEQ "4.3" goto:skip
+if "%macaddress%"=="" goto:skip
+if /i "%EXPLOIT%" EQU "W" set wainput=%wainput%~* MAC Address: %macaddress%
+if /i "%EXPLOIT%" EQU "?" set wainput=%wainput%~* MAC Address: %macaddress%
 :skip
 
 
@@ -2989,13 +3005,13 @@ set watext=~~~Checking which %neekname% versions are hosted online...
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
 start support\wizapp PB OPEN
 
-
 ::get all list
-support\wget --no-check-certificate -N "https://sourceforge.net/projects/%googlecode%/files/?source=navbar" -q --show-progress
+if exist temp\list.txt del temp\list.txt>nul
+support\wget --no-check-certificate -q -t 3 -O "temp\list.txt" "https://sourceforge.net/projects/%googlecode%/files/?source=navbar"
 
 start support\wizapp PB UPDATE 20
 
-if exist index.html@* (move /y index.html@* temp\list.txt>nul) else (goto:nowifi)
+if not exist temp\list.txt goto:nowifi
 ::copy /y "temp\list.txt" "temp\list2.txt">nul
 
 support\sfk filter -spat "temp\list.txt" -and+"/download\x22" -and+"%neekname%-rev" -rep _"/download\x22"__ -rep _*"/"__ -rep _".zip*"__ -rep _"*files/"__ -rep _%neekname%-rev__ -rep _\x2528_\x28_ -rep _\x2529_\x29_ -rep _\x2520_\x20_ -rep _\x253B_\x3B_ -rep _\x252C_\x2C_ -write -yes>nul

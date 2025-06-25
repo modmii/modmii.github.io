@@ -35,12 +35,18 @@ IF not ERRORLEVEL 1 goto:skiperror
 if exist "temp\repo.json" del "temp\repo.json">nul
 if exist "temp\repo.summary" del "temp\repo.summary">nul
 if exist "temp\repo.date" del "temp\repo.date">nul
-support\wget --no-check-certificate -t 3 "https://wiiubru.com/appstore/repo.json" -O temp\repo.json -q
-support\wget --no-check-certificate -t 3 "https://wiiubru.com/appstore/repo.summary" -O temp\repo.summary -q
+support\wget --no-check-certificate -q -t 3 -O "temp\repo.json" "https://wiiubru.com/appstore/repo.json"
+support\wget --no-check-certificate -q -t 3 -O "temp\repo.summary" "https://wiiubru.com/appstore/repo.summary"
 
 ::delete if file is empty
 >nul findstr "^" "temp\repo.json" || del "temp\repo.json"
 >nul findstr "^" "temp\repo.summary" || del "temp\repo.summary"
+
+::simple keyword check (in case of ISP blocking)
+if exist "temp\repo.json" findStr /C:"wiiu/apps/" "temp\repo.json" >nul
+IF ERRORLEVEL 1 (echo wiiubru.com blocked or down?) & (del "temp\repo.json")
+if exist "temp\repo.summary" findStr /C:"wiiu/apps/" "temp\repo.summary" >nul
+IF ERRORLEVEL 1 (echo wiiubru.com blocked or down?) & (del "temp\repo.summary")
 
 if not exist "temp\repo.json" goto:error
 if not exist "temp\repo.summary" goto:error
@@ -727,7 +733,7 @@ set /a HBAScount=%HBAScount%+1
 
 ::download only if not already cached
 if not exist temp\HBAS mkdir temp\HBAS
-if /i "%LatestVersion%" NEQ "%CachedVersion%" support\wget --no-check-certificate -t 3 "https://wiiu.cdn.fortheusers.org/zips/%WiiUappName%.zip" -O "temp\HBAS\%WiiUappName%.zip" -q --show-progress
+if /i "%LatestVersion%" NEQ "%CachedVersion%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\HBAS\%WiiUappName%.zip" "https://wiiu.cdn.fortheusers.org/zips/%WiiUappName%.zip"
 
 if exist "temp\HBAS\%WiiUappName%.zip" support\7za x -aoa "temp\HBAS\%WiiUappName%.zip" -o"%Drive%" -x!info.json -x!manifest.install -x!"screen*.png" -r >temp\7zalog.txt
 
@@ -840,5 +846,3 @@ set "DRIVE=%DRIVErestore%"
 
 echo %HBAScountCurrent% >temp\HBAScountCurrent.txt
 echo %HBAScountSkip% >temp\HBAScountSkip.txt
-
-if /i "%debug%" EQU "on" pause

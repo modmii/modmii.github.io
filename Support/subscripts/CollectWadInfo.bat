@@ -37,7 +37,7 @@ set ESpatch=
 set NPpatch=
 set VPpatch=
 
-Support\wiipy\wiipy.exe info "%WadInput%">temp\WADinfo.txt
+%WiiPy% info "%WadInput%">temp\WADinfo.txt
 
 ::check if file is empty, if empty it means WiiPy errored; likely with "This is not a valid WAD file!"
 >nul findstr "^" "temp\WADinfo.txt" || set wadtype=Invalid
@@ -100,7 +100,7 @@ set /p SigningStatus= <temp\WADinfo2.txt
 ::if not "%SigningStatus%"=="" echo Signing Status: %SigningStatus%
 
 If /i "%SigningStatus%" EQU "Fakesigned" (set cIOSChecks=Y) & (goto:skipdeepcheck)
-If /i "%SigningStatus%" EQU "Valid (Unmodified)" (set cIOSChecks=) & (goto:skipdeepcheck)
+If /i "%SigningStatus%" EQU "Legitimate (Unmodified TMD + Ticket)" (set cIOSChecks=) & (goto:skipdeepcheck)
 
 ::conduct cIOSchecks even if poorly fakesigned; i.e. if all 00's in tmd at offset 0x04 (len 256 or 0x100), or offset 0xD04 of wad (offset is 0xD00 or 3328 greater in WAD than tmd)
 if exist temp\hexdump.txt del temp\hexdump.txt>nul
@@ -375,7 +375,7 @@ If /i "%iosslot%" EQU "1" (set wadtype=mios) & (set TitID=)
 If /i "%iosslot%" EQU "01" (set wadtype=mios) & (set TitID=)
 If /i "%wadtype%" NEQ "mios" goto:skipCMIOS
 
-If /i "%SigningStatus%" EQU "Valid (Unmodified)" goto:skipCMIOS
+If /i "%SigningStatus%" EQU "Legitimate (Unmodified TMD + Ticket)" goto:skipCMIOS
 If /i "%WadContents%" NEQ "2" goto:skipCMIOS
 
 if exist "temp\cMIOS1.hash" goto:skip

@@ -21,7 +21,5 @@
     }
 
     // Get the element with id="defaultOpen" and click on it
-	////////document.getElementById("defaultOpen3").click();
-	//document.getElementById("defaultOpen2").click();
-    document.getElementById("defaultOpen").click();
+    document.getElementById("defaultOpenPLACEHOLDER").click();
 </script>

@@ -1,7 +1,9 @@
 <!------------------------------Nand backup section below-------------------------->
 <font size="5"><li>Make a NAND backup</li></font><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>
-<i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.</i><br>
+<i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.<br>
+<br>
+Note that Bootmii requires an SD Card. If you're missing an SD Card or your SD Card reader is broken, skip the Bootmii steps below and instead save <a href="https://hbb1.oscwii.org/api/contents/nanddumper_ios/nanddumper_ios.zip" target="_blank">nanddumper@IOS</a> to your USB Hard Drive (also available on ModMii Classic's Download Page 2) and launch it from the HBC to create a Bootmii compatible nand backup saved to USB:/wii/backups/.</i><br>
 <br>
 
 <ul style=align="left" type="disc">
