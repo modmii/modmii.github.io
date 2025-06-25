@@ -27,7 +27,7 @@ ol > li::marker {font-weight: bold;}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 </head>
 <body style="margin:5px 5px 5px 35px;">
-ModMii HackMii Solutions Guide<span style="float:right;">v8.0.3|25.04.15 Generated on Tue 04/15/2025 - 12:35</span><br><br>
+ModMii HackMii Solutions Guide<span style="float:right;">v8.0.4|25.06.19 Generated on Sun 06/22/2025 - 21:26</span><br><br>
 <!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
@@ -122,10 +122,22 @@ H:       NTFS
 	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
 	</ol>
 <br>
-<li><b>If your SD Card is not already MBR you must convert it using one of the two methods below.</b>
+<li><b>If your SD Card is not already MBR you must convert it using any <u>one</u> of the methods below.</b>
+</ul>
 <br>
-<br>
-<li><b>Method 1: MiniTool Partition Wizard</b>
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen5" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'MINITOOLSD')">1. MiniTool</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'DISKPARTSD')">2. DiskPart</button>
+<br><br>
+
+<!--------------------------------------MINITOOL----------------------------------->
+
+
+<div id="MINITOOLSD" class="StyleGroupSD">
+<b><u>Method 1: MiniTool Partition Wizard</u></b><br>
 	<ul style=align="left" type="square">
 	<li>If you have files on the SD Card you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
 	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
@@ -144,43 +156,63 @@ H:       NTFS
 	<li>Wait for the conversion to finish then click "OK".
 	<li>Once you have successfully converted your SD Card to MBR you can proceed to the next step of this guide.
 </ol>
+</div>
 
-<br>
-
-<li><b>Method 2: Windows Disk Management</b>
+<!--------------------------------------DISKPART----------------------------------->
+<div id="DISKPARTSD" class="StyleGroupSD">
+<b><u>Method 2: DiskPart</u></b><br>
 
 <ol type="A">
 <li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
-<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
-
-</li>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
-
-<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
-
-<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
-
-
-<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
-<li>Choose a Drive letter for this partition, then click "Next".
+<!--</li><A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>-->
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">R</kbd> and enter "cmd" to open Command Prompt.
+<li>Then type the following commands and press "Enter" after each.
 	<ul style=align="left" type="disc">
-	<li>Make note of this drive letter, as it will be needed later.
-	</ul>
-<li>Set the File System to your desired format and optionally customize the "Volume label".
-	<ul style=align="left" type="disc">
-	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
-	</ul>
-
-<li>Click "Next", then click "Finish".
-	<ul style=align="left" type="disc">
-	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	<li><b>diskpart</b>
+	<li><b>list disk</b>
+	<li><b>select disk <i>#</i></b>
+		<ul style=align="left" type="square">
+		<li>Where <i>#</i> is the disk number corresponding to the device you want to convert
+		</ul>
+	<li><b>clean</b>
+	<li><b>convert MBR</b>
 	</ul>
 </ol>
+
+</div>
+
+
+</div>
 <br>
-</ul>
-<br>
-<!--------------------------------------MBRsd Stuff ABOVE-----------------------------------><font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
-<i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,
+<!--------------------------------------MBRsd Stuff ABOVE----------------------------------->
+
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen5").click();
+</script>
+
+<font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
+<i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,
 you can launch apps and install WADs over the internet to your Wii from your PC. Just open apps (boot.dol\elf files) or WADs with ModMii. Note that some apps may not work properly or support all features if they require an SD or HDD and you should never attempt to change the region of a console via the internet.</i><br>
 
 <br>
@@ -361,6 +393,8 @@ Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type
 <li>Click on the envelope with the pink bomb icon to launch the boot.elf/dol file saved on the root of your SD Card.
 	<ul style=align="left" type="disc">
 	<li>If you cannot find the mailbox bomb under "Yesterday" check that your Wii's date setting is correct.
+	<li>If you click the envelope and are returned to the Wii Menu double check that your SD Card's lock switch is disabled and try again.
+	<li>If you have difficulty with this exploit use "str2hax" instead by clicking the str2hax button above, or try reformatting your SD Card, or a different SD Card altogether.
 	</ul>
 </ol>
 <br>
@@ -392,10 +426,9 @@ Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type
     }
 
     // Get the element with id="defaultOpen" and click on it
-	////////document.getElementById("defaultOpen3").click();
-	//document.getElementById("defaultOpen2").click();
     document.getElementById("defaultOpen").click();
 </script>
+
 <br>This will launch YAWM ModMii Edition.<br><br>
 <!-------------------------Installing WADs section below--------------------------->
 <font size="5"><li>Install WADs</li></font><br>

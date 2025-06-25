@@ -1,6 +1,6 @@
 <html>
 <head>
-<title>ModMii Wizard Guide</title>
+<title>ModMii USB-Loader Setup Guide</title>
 <link rel="icon" type="image/ico" href="https://raw.githubusercontent.com/modmii/modmii.github.io/master/Support/icon.ico"></link>
 <style type="text/css">
 body:before{
@@ -27,7 +27,7 @@ ol > li::marker {font-weight: bold;}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 </head>
 <body style="margin:5px 5px 5px 35px;">
-ModMii Wizard Guide<span style="float:right;">v8.0.4|25.06.19 Generated on Sun 06/22/2025 - 21:27</span><br><br>
+ModMii USB-Loader Setup Guide<span style="float:right;">v8.0.4|25.06.19 Generated on Sun 06/22/2025 - 21:25</span><br><br>
 <!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
@@ -75,46 +75,17 @@ USE THIS AT YOUR OWN RISK!</b>
 <font size="6"><li>Your chosen options</li></font><br>
 This guide was generated using the following parameters:<br>
 <ul style=align="left" type="disc">
-<li>Install and\or update all recommended vWii softmods</li>
-<li>System Menu Region is E</li>
-<li>Browser Exploit selected</li>
-<li>Download USB-Loader GX, Configurable USB-Loader and WiiFlow</li>
+<li>Download USB-Loader GX</li>
 <li>USB-Loader Settings and config files saved to USB Hard Drive</li>
 </ul><br>
 <font size="6"><li><a name="Notes">Important Notes</a></li></font><br><ul style=align="left" type="disc">
-<li>This guide requires an internet connection on your console and an SD Card. Note that without internet you can still softmod vWii Only using an SD Card and one of six supported Wii games\discs with exploits.</li>
-<!---------------------------------WiiU NOTES BELOW----------------------------------->
-<li>Check if your SD Card has a lock switch and make sure it's disabled.</li>
-<li>If you get errors during any of the steps try reformatting your SD Card as FAT32.</li>
-<li>If your console ever freezes, hold the power button for 5 seconds to power it off then try again.</li>
-<li>During the modding process if you are prompted for your Nintendo Network ID to launch a channel or app you can select the back arrow button then "Start" to start the software anyway.</li>
-<li>If you brick your vWii for any reason you should be able to recover using <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> or <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> so long as the WiiU menu remains operational; however, vWii NAND Restorer currently requires switching from Aroma to a legacy environment like Tiramisu. Some actions to avoid that may cause brick are listed below:</li>
-	<ul style=align="left" type="square">
-	<li>Never uninstall a System Menu or IOS.</li>
-	<li>Installing a custom System Menu for vWii is a brick risk and you should always have a NAND backup before installing one; however, when done right it will not brick the vWii. vWii themes are experimental and not every MYM\theme will work properly.</li>
-	<li>Replacing any IOS (including TED IOSes) or WADs made for the original Wii on your vWii may semi-brick it. WiiWare wads are fine, but some need to be converted to work.</li>
-	</ul>
-<li>When updating your softmod you should always overwrite old mods by installing new ones, do <u>not</u> try to "Delete everything" or "Start from scratch".</li>
-	<ul style=align="left" type="square">
-	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only your outdated WiiU mods using ModMii's File Cleanup and App Updater feature, or update only outdated vWii mods using ModMii's Syscheck Updater Wizard!</li>
-	</ul>
-<li>If you accept an official Nintendo update after modding, you may lose some of your modifications and have to reinstall them.</li>
-<li>It's probably unnecessary, but you should disconnect all peripherals from the console during the modding procedure unless instructed otherwise.</li>
-<li>If connecting a portable hard drive to your WiiU, a Y-cable may be needed for it to draw power from two usb ports.</li>
-<ul style=align="left" type="square">
-	<li>The WiiU and vWii cannot use the same USB hard drive; however a single SD Card can be used for both.</li>
-	<li>A WiiU Formatted USB hard drive is a hard drive that has been formatted by a WiiU console to its proprietary format. A WiiU formatted USB drive cannot be read by any device other than the WiiU that originally formatted it. If you ever want to use it with another WiiU console or any other devices, you will have to reformat it.</li>
-	<li>The vWii cannot use a WiiU Formatted USB hard drive. It is recommended that USB Hard drives intended for use on the vWii be formatted as FAT32.</li>
-	<li>If a non-WiiU Formatted USB hard drive is detected while in the WiiU menu you will be prompted to format\erase it. Careful not to accidentally format your vWii Hard Drive (if applicable). <!----The After Modding section of this guide will direct you on how to <i>optionally</i> disable the format prompt.</li>---->If the WiiU is softmodded with Aroma this prompt can be disabled.
-	<li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.</li>
-	<li>Double check that your hard drive is always plugged into USB port0 - the one on the back furthest from the edge of the WiiU.</li>
-</ul>
-<!---------------------------------WiiU NOTES ABOVE----------------------------------->
+<li>This guide does not require an internet connection on your Wii.</li>
+<li>cIOS(s) required to use USB-Loaders, if you are missing cIOS(s) run the ModMii Wizard function to softmod your Wii\vWii before setting up your USB-Loader and/or external Hard-Drive. If softmodding a Wii Mini follow <a href=https://wii.hacks.guide target=_blank>wii.hacks.guide</a>.</li>
 <li>After completing this guide, you can launch your USB-Loader via the Homebrew Channel or a USB-Loader forwarder channel.</li>
 <!-------------------------------USB LOADER NOTES BELOW---------------------------------->
 <li>USB-Loaders, contrary to their name, can also be used on the Wii\vWii with an SD Card. If you prefer using an SD Card simply follow this guide utilizing your FAT32 formatted SD Card in place of a Hard Drive.
 <!--WiiOnly--<li>Double check that your hard drive is always plugged into USB port0 - the one nearest the edge of the Wii.--WiiOnly-->
-<!----
+<!------WiiUredundant-->
 <li>Double check that your hard drive is always plugged into USB port0.
 	<ul style=align="left" type="square">
 	<li>For the Wii this is the port on the back nearest the edge
@@ -127,484 +98,16 @@ This guide was generated using the following parameters:<br>
 	<li>For the Wii Mini there is only one USB port.
 	</ul>
 <li>USB hard drives configured to work on a vWii will also work on Wii and Wii Mini and vice versa.
----->
+<!--WiiUredundant------>
 <li>Not all external hard drive's are compatible with the Wii\vWii\Wii Mini, small USB flash drives or 'thumb drives' in particular often don't work very well. For a list of which USB hard drive's are compatible, check out the <a href="https://wiki.gbatemp.net/wiki/USB_Devices_Compatibility_List" target="_blank">USB Devices Compatibility List</a></li>
 	<ul style=align="left" type="square">
 	<li>If you are determined to try using a small USB flash drive or 'thumb drive' on a Wii\vWii, you may have more success if running the loader off of an SD Card and formatting the flash drive as WBFS instead of FAT32. This can be done using Wii Backup Manager. However, doing so will not only restrict the drive to storing only Wii games, but it will not be accessible by your PC without a program like Wii Backup Manager. In fact, every time you plug the hard drive into your PC you will be prompted to reformat it.
 	</ul>
 <li>If a USB Loader fails to load a particular game, try changing it's game specific settings to use a different custom IOS like 249, 250, 251, etc. Your cIOS 249 should play the vast majority of games, for more information see the <a href="https://wiki.gbatemp.net/wiki/Wii_cIOS_base_Compatibility_List" target="_blank">Wii cIOS base Compatibility List</a>.</li></li>
-
 <li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="https://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="https://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
 <li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
 <li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
-<font size="6"><li><a name="Hacking">Hacking your vWii</a></li></font><br><ol>
-<font size=5><li>Set SD Card Partition Style to MBR (if applicable)</li></font><br>
-Partition style\format information for devices that were connected when this guide was created has been saved to the spoiler below.<br><br>
-<div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
-<pre>
-DeviceID Filesystem
-H:       NTFS      
-</pre></div></div></div>
-<!--------------------------------------MBRsd Stuff BELOW----------------------------------->
-
-<ul style=align="left" type="disc">
-<li><b>First, plug your SD Card into your PC and check if it's Partition style is already MBR.</b>
-</li>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/XyTaMT5yhAY?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_Check.gif" border="0"/></a><br>
-	<ol type="A">
-	<li>Right-click "This PC" or "My Computer" and select "Manage", a new window will open, on left panel click "Disk Management".
-		<ul style=align="left" type="square">
-		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
-		</ul>
-	<li>In the Disk Management window, right-click the disk you want and select "Properties".
-	<li>In the disk's properties window, select the "Volumes" tab.
-	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
-	</ol>
-<br>
-<li><b>If your SD Card is not already MBR you must convert it using any <u>one</u> of the methods below.</b>
-</ul>
-<br>
-
-<!--------------------------------------Side Spoiler Buttons----------------------------------->
-
-<div style>
-<button class="tablinks btn btn--large btn--primary" id="defaultOpen5" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'MINITOOLSD')">1. MiniTool</button>
-<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'DISKPARTSD')">2. DiskPart</button>
-<br><br>
-
-<!--------------------------------------MINITOOL----------------------------------->
-
-
-<div id="MINITOOLSD" class="StyleGroupSD">
-<b><u>Method 1: MiniTool Partition Wizard</u></b><br>
-	<ul style=align="left" type="square">
-	<li>If you have files on the SD Card you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
-	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
-	<li>If your SD Card is not already in the desired format (e.g. FAT32) you will have to format it during the next step anyway so there's no point in using this method.
-	</ul>
-
-<br>
-<ol type="A">
-	<li><a href="https://tiny.cc/minitoolfree" target="_blank">Download MiniTool Partition Wizard</a>, install it and start the program.
-	</li>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/_YY-FKA5GaQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MiniTool.gif" border="0"/></a><br>
-
-	<li>Within the MiniTool window, right-click the GPT disk you want to convert and choose "Convert GPT Disk to MBR Disk".
-	<li>Click the "Apply" button in the toolbar.
-	<li>Click the "Yes" button to confirm conversion.
-	<li>Wait for the conversion to finish then click "OK".
-	<li>Once you have successfully converted your SD Card to MBR you can proceed to the next step of this guide.
-</ol>
-</div>
-
-<!--------------------------------------DISKPART----------------------------------->
-<div id="DISKPARTSD" class="StyleGroupSD">
-<b><u>Method 2: DiskPart</u></b><br>
-
-<ol type="A">
-<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
-<!--</li><A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>-->
-<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">R</kbd> and enter "cmd" to open Command Prompt.
-<li>Then type the following commands and press "Enter" after each.
-	<ul style=align="left" type="disc">
-	<li><b>diskpart</b>
-	<li><b>list disk</b>
-	<li><b>select disk <i>#</i></b>
-		<ul style=align="left" type="square">
-		<li>Where <i>#</i> is the disk number corresponding to the device you want to convert
-		</ul>
-	<li><b>clean</b>
-	<li><b>convert MBR</b>
-	</ul>
-</ol>
-
-</div>
-
-
-</div>
-<br>
-<!--------------------------------------MBRsd Stuff ABOVE----------------------------------->
-
-<script>
-    function openTab(tabGroup, tabName) {
-    let tabcontent = document.getElementsByClassName(tabGroup);
-    let tablinks = document.getElementsByClassName("tablinks");
-
-	let element;
-
-        for (element of tabcontent) {
-            element.style.display = "none";
-        }
-
-        for (element of tablinks) {
-            element.className = element.className.replace("btn--primary", "btn--info");
-            if (!element.className.includes('btn--info'))
-                element.className += " btn--info";
-        }
-
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
-    }
-
-    // Get the element with id="defaultOpen" and click on it
-    document.getElementById("defaultOpen5").click();
-</script>
-
-<font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
-
-<br>
-<ol type="A">
-<li>First, insert your SD Card into your PC and determine if it needs to be formatted by checking the current Format\File-System of the SD Card.</li>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/KwoLWwUmswE?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/format.gif" border="0"/></a><br>
-
-
-	<ul style=align="left" type="disc">
-	<li>Open "This PC" or "My Computer", right-click the SD Card you want to use, then select "Properties".
-		<ul style=align="left" type="square">
-		<li>If "This PC" or "My Computer" is not on the desktop it can be accessed using the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">E</kbd> keyboard combination.
-		</ul>
-	<li>Make note of the Drive Letter of the SD Card as this will be important later.
-	<li>If the "File-System" is already FAT32, you can skip this step.
-	</ul>
-<br>
-<li><b>If you have anything saved to the SD Card, you should back it up now as all the data will be lost once you format it.</b></li>
-<br>
-<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
-</li>
-	<!--formatwarning<ul style=align="left" type="square">
-	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
-
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/oLA47xjGPVQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/fat32sd.gif" border="0"/></a><br>
-<ul style=align="left" type="disc">
-
-
-<li>Carefully select the correct drive letter corresponding to your SD Card.
-<li>You may optionally uncheck the "Quick Format" box, then click "Start".
-	<ul style=align="left" type="square">
-	<li>When completed it should display "Done".
-	<li>If you get an error indicating the device is in use, try again after first closing all of your file explorer windows, even the ones that weren't browsing the device.<br>
-	</ul>
-<li>Click the "Close" button.
-</ul>
-<br>
-
-<li>Copy the files ModMii downloaded to your SD Card.
-<ul style=align="left" type="disc">
-
-
-<li>The files should be saved here: "C:\ModMii\COPY_TO_SD" <br><br> 
-•  Your folder structure should look <i>similar</i> to this:<br>
-💾 SD Card or USB Drive<br>
- ┗ 📁apps<br>
-&nbsp; &nbsp; &nbsp; ┣ 📁AppName1<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄boot.dol<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┣ 📄meta.xml<br>
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ┗ 📄icon.png<br>
-&nbsp; &nbsp; &nbsp; ┣ (All other Wii apps should be here too)<br>
-<br>
-•  Your folder structure should <u>not</u> look like this:<br>
-💾 SD Card or USB Drive<br>
- ┗ ⛔📁COPY_TO_SD<br>
- ┗ ⛔📁COPY_TO_USB<br>
-<br>
-<li>When the files are finished copying to the SD card, you should safely remove your SD Card from your computer and reinsert it into your console and proceed to the next step.</ul></ol><br> 
-<font size=5><li>Make a NAND backup</li></font><br>
-<b>Browser Exploit to launch nanddumper</b><br>
-<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>-->
-Requirements: an internet connection on your WiiU and an SD card.<br>
-<br>
-<i>The Browser Exploit is a WiiU entry point which allow further homebrew to be run. All current WiiU exploits load SD:/wiiu/payload.elf which takes over further loading of homebrew. Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever brick your console, restoring a NAND backup is like taking it back in time to before the problem occurred. Restoring a full WiiU NAND Backup requires additional hardware and micro soldering skills. However, making a NAND Backup is always useful, so please do not skip it. NAND backups are console specific, so you cannot restore a backup from a different console. vWii NAND Backups (slccmpt.bin/nand.bin & keys.bin/otp.bin) can be restored without additional hardware using <a href="https://gbatemp.net/threads/release-vwii-nand-restorer.560948/" target="_blank">vWii NAND Restorer</a> but it currently requires switching from Aroma to a legacy environment like Tiramisu. Generally, vWii NAND Restorer should only be used if <a href="https://wiiu.hacks.guide/recover-vwii-ioses-channels" target="_blank">vWii Decaffeinator</a> fails to repair a brick.</i><br>
-<br>
-<ol type="A">
-<li>Make sure your WiiU has <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1126" target="_blank">internet access</a> for this step.
-<li>Launch the Internet Browser and navigate to this website: <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">wiiuexploit.xyz</kbd>
-<li>Click on <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Run Exploit!</kbd> and hold the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> button until you see a screen that says "Please choose your payload:"
-	<ul style=align="left" type="disc">
-	<li>If your WiiU gets stuck on a white or otherwise frozen screen, wait a few seconds. If nothing happens, reboot the console, <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1507" target="_blank">reset your browser save data</a> and try again.
-	<li>If you see the Environment Loader, you did not hold down B long enough. Try again.
-	<li>If you get any errors like FSOpenfile failed, FSGetMountSorce failed, or SD Mount failed, refer to the <a href="https://wiiu.hacks.guide/common-issues-fixes?id=browser-errors" target="_blank">Common Issues & Fixes</a> section of the WiiU Hacks Guide.
-	</ul>
-<li>Navigate to <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">nanddumper</kbd> using the GamePad and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.
-</ol>
-<br>
-<b>nanddumper Steps</b>
-<ol type="A">
-<li>Use the WiiU GamePad's D-Pad to enter the following configuration:
-	<ul style=align="left" type="disc">
-	<li>Dump SLC: <b>yes</b>
-	<li>Dump SLCCMPT: <b>yes</b>
-	<li>Dump MLC: <b>optional</b>
-	<li>Dump OTP: <b>yes</b>
-	<li>Dump SEEPROM: <b>yes</b>
-		<ul style=align="left" type="square">
-		<li>To create a full NAND backup your SD Card has to be larger than the size of your NAND (either 8GB or 32GB depending on your model). If you do not have a large enough SD Card, you can skip the optional <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">MLC</kbd> section which includes save files and game data and is not needed to recover from most types of bricks.
-		</ul>
-	</ul>
-<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> button to start the dumping process.
-	<ul style=align="left" type="square">
-	<li>Do not power off your console or remove your SD card when making your NAND backup.
-	</ul>
-<li>When the process is finished, or immediately following the completion of this guide, power off your WiiU, take your SD Card out of the console and plug it into your PC. Copy slc.bin, slccmpt.bin, seeprom.bin, otp.bin and, if you chose to go with a full backup, all the mlc.bin.part files to your computer, a hard drive, the cloud or anywhere safe. You might need these in case of emergencies, so don't lose them. Optionally erase them from the SD card after backing them up to free up space. When done, safely remove your SD Card from your computer and reinsert it into your console and proceed to the next step.
-</ol>
-<br>
-<i>Fun Fact! You can extract the contents of your slccmpt.bin by opening it with ModMii, then save it to a hard drive or SD Card to act as a vWii Emulated NAND (or virtual NAND), allowing you switch between the vWii's real NAND and one or more Emulated NANDs. Emulated NANDs can provide much more storage space than the vWii's internal memory.</i><br>
-<br>
-<!------------------------------WiiU Nand backup section above-------------------------->
-
-<font size=5><li>Install The Homebrew Channel (HBC) for vWii</li></font><br>
-<!---------------------------Payload-Loader Steps below------------------------------>
-
-
-<b>Browser Exploit to launch Environment Loader & Aroma</b><br>
-<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
-Requirements: an internet connection on your WiiU and an SD card.<br>
-<br>
-<i>An environment is a collection of "setup modules", which will be run in a certain order when launched. Examples of WiiU environments are Aroma and Tiramisu. Setup modules are small pieces of homebrew/code that are executed once to set up an environment.</i><br>
-<br>
-<ol type="A">
-<li>If you are already in the Environment Loader menu skip ahead to Step E.
-<li>Make sure your WiiU has <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1126" target="_blank">internet access</a> for this step.
-<li>Launch the Internet Browser and navigate to this website: <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">wiiuexploit.xyz</kbd>
-<li>Click on <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Run Exploit!</kbd> and <i>this time</i> hold the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> button until you see the Environment Loader menu.
-	<ul style=align="left" type="disc">
-	<li>If your WiiU gets stuck on a white or otherwise frozen screen, wait a few seconds. If nothing happens, reboot the console, <a href="https://en-americas-support.nintendo.com/app/answers/detail/a_id/1507" target="_blank">reset the browser's save data</a> and try again.
-	<li>If you do not see the Environment Loader menu, you did not hold down X long enough. Try again.
-	<li>If you get any errors like FSOpenfile failed, FSGetMountSorce failed, or SD Mount failed, refer to the <a href="https://wiiu.hacks.guide/common-issues-fixes?id=browser-errors" target="_blank">Common Issues & Fixes</a> section of the WiiU Hacks Guide.
-	</ul>
-	
-<li>Using the D-Pad, navigate to <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">aroma</kbd> and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default environment, then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch into Aroma.
-	<ul style=align="left" type="disc">
-	<li>If you see a yellow warning that the update folder exists and updates are not being blocked properly, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">X</kbd> to block updates.
-	<li>If you did not see a yellow warning, but the AutobootMenu says "Updates not blocked!", press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">START (+)</kbd> and <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">SELECT (-)</kbd> at the same time until it says they are blocked.
-		<ul style=align="left" type="square">
-		<li>Should you wish to unblock updates in the future follow <a href="https://wiiu.hacks.guide/unblock-updates" target="_blank">these steps</a>.</li>
-		</ul>
-	</ul>
-<li>On the Aroma Boot Selector, the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Wii U Menu</kbd> should already be selected, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Y</kbd> to set this to your default autobooting option (or choose your preferred title to autoboot), then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.
-</ol>
-<br>
-
-
-
-
-
-<b>vWii Compat Installer to install the HBC</b><br>
-<!---------------------------CompatInstaller Steps below------------------------------>
-<!--<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/ecUTd0Tiim4?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>-->
-<i>The vWii Compat Installer is a WiiU app that installs the Homebrew Channel to vWii. It requires an SD, SDHC or SDXC card.<br>
-The Homebrew Channel allows you to launch Wii\vWii homebrew applications off your SD card or Hard Drive.<br></i><br>
-
-<ol type="A">
-<li>Launch the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">vWii Compat Installer</kbd> from the WiiU Menu.
-<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to install the HBC and wait until you see <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Install succeeded</kbd>.
-<li>Press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">HOME</kbd> button to return to the WiiU Menu.
-	<ul style=align="left" type="disc">
-	<li>It is not uncommon to experience a harmless freeze at this time. If this happens simply hold the Power button on the console, restart, and continue with the next step.
-	</ul>
-<li>Launch vWii (the Wii Menu icon) from the WiiU Menu.
-	<ul style=align="left" type="disc">
-	<li>If the installation was successful you should see the HBC in your vWii Menu.
-	</ul>
-<li>Launch the HBC from the vWii Menu.
-</ol>
-<br>
-<!---------------------------CompatInstaller Steps above------------------------------>
-
-<!---------------------------Install Priiloader below------------------------------>
-<font size="5"><li>Install and Configure Priiloader</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/4uXUWKme_90?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/Priiloader.gif" border="0"/></a><br>
-
-<i>Priiloader loads just before the vWii System Menu and is invisible unless you hold down the ESC key on a USB connected keyboard while launching the vWii system menu. Not only is Priiloader a great form of brick protection, it can be customized to automatically boot straight to the System Menu (default behavior) with patched features (aka "System Menu Hacks"), or directly to the HBC or a user defined homebrew (e.g. a USB-Loader, <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a>, etc). Click <a href="https://sites.google.com/site/completesg/system-hacks/priiloader" target="_blank">here</a> for directions on "Installing a file" (aka "dol" or "elf" file) in Priiloader to launch user defined homebrew. Custom forwarder dols that are compatible with Priiloader can be built from ModMii's Advanced Downloads menu. More Priiloader information can be found in its <a href="https://dacotaco.github.io/priiloader/docs/FAQ.html" target="_blank">FAQ</a>.</i><br>
-<br>
-
-
-<ul style=align="left" type="disc">
-<!--PriiRC--<li>If you already have Priiloader installed by following the ModMii Wizard or SysCheck Updater Wizard you can skip this step. If you are not sure either check if you can load Priiloader or just reinstall it.<br><br>--PriiRC-->
-<li>You can navigate the Priiloader menu using a Wiimote, GameCube controller, or USB Keyboard.
-</ul>
-
-<br>
-
-<ol type="A">
-<li><b>Launch the "Priiloader Installer"</b> from the Homebrew Channel.
-<li>After the Priiloader Installer loads, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd></b> to install it.
-	<ul style=align="left" type="disc">
-	<li>When successful the installer should display "Install done!"
-	<!--PriiCSMwarning1--<li>If you get a "System Menu Version invalid or not vanilla" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.--PriiCSMwarning1-->
-	<!--PriiCSMwarning2--<li>If you get a "System Menu Version invalid or not vanilla" error, either use ModMii's SysCheck Updater Wizard or repeat the ModMii Wizard but this time choose a different System Menu version than the one you started with. This will overwrite the invalid\custom System Menu with a vanilla\official one and allow Priiloader to install successfully.--PriiCSMwarning2-->
-	<!--PriicIOSPAGHETTI--<li>If you get a "cIOSPAGHETTI" error, fully complete the "Install WADs" step then immediately afterwards return to this step and Priiloader should install successfully.--PriicIOSPAGHETTI-->
-	</ul>
-<li><b>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd></b> to exit back to the Homebrew Channel.
-
-<li><b>Launch the "Load Priiloader" app</b> via the HBC to access the Priiloader menu.
-
-	<ul style=align="left" type="disc">
-	<li>You can also access Priiloader by holding down the ESC key on a USB connected keyboard while launching the vWii system menu, or by downloading the "<a href="https://github.com/DacoTaco/priiloader/releases/latest/download/PriiloaderWiiUForwarder.zip" target="_blank">Priiloader Wii U Forwarder tool</a>", saving it to your SD Card and running it directly from the WiiU Menu.
-	</ul>
-<li>From the Priiloader menu, <b>select "System Menu Hacks"</b> and enable some system menu hacks.
-	<ul style=align="left" type="disc">
-	<li>Be careful not to haphazardly enable just any hack, for example do not enable "Lock System Menu with Black Screen".<br>
-	<li>Click <a href="https://dacotaco.github.io/priiloader/docs/HACKSLIST.html" target="_blank">here</a> for a description of each Priiloader system menu hack.
-	</ul>
-<br>
-<b>RECOMMENDED HACKS</b>
-	<ul style=align="left" type="square">
-<!----
-	<li>Block Disc Updates</li>
-	<li>Block Online Updates</li>
-	<li>Region Free EVERYTHING</li>
-	<li>480p graphics fix in system menu</li>
-	<li>Remove Deflicker (only if you are NOT using a CRT display)</li>
-	<li>Wiimmfi Patch v4</li>
-	<li>Remove NoCopy Save File Protection</li>
----->
-
-
-	<li>Block Online Updates</li>
-	<li>Region Free EVERYTHING</li>
-	<li>Remove Deflicker (only if you are NOT using a CRT display)</li>
-	<li>Wiimmfi Patch v4</li>
-	<li>Remove NoCopy Save File Protection</li>
-	<li>Wii System Settings via Options Button</li>
-	<li>Create message via Calendar button (only needed if using WC24 services like WiiLink)</li>
-	<li>Permanent vWii System Settings</li>
-		<ul style=align="left" type="disc">
-		<li>Make sure to read about it <a href="https://dacotaco.github.io/priiloader/docs/FAQ.html#how-to-use-permanent-wii-system-settings-on-vwii" target="_blank">here</a> before enabling.</li>
-		</ul>
-	<li>Fix NWC24iSetUniversalTime (only needed if using WC24 services like WiiLink)</li>
-		<ul style=align="left" type="disc">
-		<li>To enable this hack it you must first <a href="https://garyodernichts.github.io/priiloader-patch-gen" target="_blank">generate it</a> and paste it at the end of your \apps\priiloader\hacks_hash.ini file. <i>Remember to generate two hacks if your country observes daylight saving time</i>.</li>
-		</ul>
-
-	</ul>
-
-<br>
-<li>Scroll down to "save settings" and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd>, then press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">B</kbd> to go back to Priiloader's main menu.
-<li>Optional: Autoboot a USB-Loader Channel instead of the System Menu.
-	<ul style=align="left" type="square">
-	<li>Select "Load/Install File". Select your forwarder dol (e.g. USBLoader_IDCL_Channel_Forwarder.dol) and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to install it. Wait for it to install and return to the main menu.</li>
-		<ul style=align="left" type="square">
-		<li><i>Did you know that custom forwarder dols can be built from ModMii's Advanced Downloads menu?</i></li>
-		</ul>
-	<li>Navigate to "Settings" and change "Autoboot" to "Installed File".</li>
-	</ul>
-	
-<li>Navigate to "Homebrew Channel" and press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch it.<br>
-</ol>
-<br>
-<i>Pro tip! If you update or (re)install any System Menu it generally <u>REMOVES</u> Priiloader and you should reinstall it immediately to stay protected. Only YAWM ModMii Edition allows you to safely retain Priiloader while (re)installing a System Menu.</i><br>
-<br>
-
-<!---------------------------Install Priiloader above------------------------------>
-
-<!-------------------------Installing WADs section below--------------------------->
-<font size="5"><li>Install WADs</li></font><br>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/eTODLzI_Hsk?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/yawmME.gif" border="0"/></a><br>
-<i>YAWM ModMii Edition stands for Yet Another Wad Manager ModMii Edition (aka yawmME). A WAD Manager will allow you to install "WADs" containing things like updates and other content for your console, like IOSs, custom IOSs (or cIOSs), or other downloadable content, which can be all packed into WADs and installed to your console. Think of a WAD like a zip file but for the Wii.</i><br>
-<br>
-
-WARNINGS: Do not unplug the console when installing WADs. WADs can also be <u>un</u>installed, and if you're not careful you can brick your console by uninstalling or even installing the wrong WAD. The WAD Manager you're using, YAWM ModMii Edition, has some extra brick protection built in to restrict someone from doing catastrophic things like uninstalling any System Menu WAD, or required System Menu IOS, or a dozen other things which could potentially result in a brick if you don't know what you're doing. Stick to your ModMii guide and you'll be fine.<br>
-<br>
-
-
-<div style><div class="spoilerfont" style="text-align:center;">
-<input value="  Click here to learn what IOSs and cIOSs are! " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Fun Fact   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click here to learn what IOSs and cIOSs are!  '; }" type="button"></div>
-<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
-
-
-<p style="border:3px; border-style:solid; padding: 1em;">
-
-<i>Fun Fact! I mentioned IOSs and cIOSs before, "the Wii console uses the 'IOS' system to communicate with the hardware, it's like a driver (compared to Windows). It contains information and communication tools (like how to access the Disc drive, how to access USB, read the savegames data stored on internal memory, etc.)" ~Cyan. If you're curious to learn more about IOSs or cIOSs, a thorough explanation can be found in <a href="https://gbatemp.net/threads/d2xl-cios-a-fork-of-davebaols-d2x-cios.558581/#post-8968173" target="_blank">Cyan's IOS Explanation post</a>.</i><br>
-</p>
-</div></div></div>
-
-
-
-<ol type="A">
-<li><b>On your console, load "YAWM ModMii Edition" from the HomeBrew Channel</b>.
-<li>Choose your source device using left and right, most likely "Wii SD Slot", and <b>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd></b>.
-<li><b>Install your custom list of <u>11 WADs</u> found in the spoiler below</b>.<br>
-
-	<ul style=align="left" type="disc">
-	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
-	</ul>
-<li><b>Hold <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> for 2 seconds</b> to select all the WADs in the folder.
-
-	<ul style=align="left" type="disc">
-	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd>.<br>
-	<li>Warning: do <u>not</u> use minus (-) as this will mark WADs for <u>un</u>installation.<br>
-	</ul>
-
-<li>After you've marked all the WADs listed below, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> on any marked WAD to install them all</b>.
-<li>Confirm the total number selected for installation is 11, then <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> again to install</b>.<br>
-
-	<ul style=align="left" type="disc">
-	<li>If any WADs fail to install properly please retry installing them.<br>
-	<!--RetainPrii--<li>If asked whether to retain or remove Priiloader, <b>press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to retain Priiloader</b>.<br>--RetainPrii-->
-	<li>If you get error -1029 when attempting to install Mii-Channel-NUS-v6, carefully uninstall <u>only</u> this WAD using the minus <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">-</kbd> button instead of <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> before trying to install it again. Do NOT uninstall any other WADs unless you know what you are doing; see warning about uninstalling WADs above. Alternatively, you can skip this WAD entirely if you don't care about extra Mii channel features (e.g. saving Mii's to wiimotes, etc.).<br>
-	</ul>
-
-<!--vWiiLULZ--<li>After installing the WADs you will have two copies of the Homebrew Channel. To remove the duplicate follow the steps above except press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">-</kbd> instead of <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> to carefully uninstall <u>only</u> Open_HBC_1.1.5_LULZ; see warning about uninstalling WADs above.<br>--vWiiLULZ-->	
-
-
-<li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">Home</kbd> button on your Wiimote to exit YAWM ModMii Edition.</b>
-<!--RetainPrii--<li><b>After successfully installing all the WADs, press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">A</kbd> to launch Priiloader and re-enable your preferred System Menu Hacks before proceeding to the next step. It's also safe to re-enable them at a later time.</b><br>--RetainPrii-->
-</ol>
-
-<br>
-<div style><div class="spoilerfont" style="text-align:center;">
-<input value="  Click to See Your Unique List of 11 WADs to Install  " style="margin: 0px; padding: 0px; font-size: xx-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide your list of WADs   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to See Your Unique List of 11 WADs to Install  '; }" type="button"></div>
-<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
-
-
-<b>Here's your unique list of 11 WADs to install:</b>
-<ol>
-
-<li>cIOS248[38]-d2x-v11-beta3-vWii</li>
-<li>cIOS249[56]-d2x-v11-beta3-vWii</li>
-<li>cIOS250[57]-d2x-v11-beta3-vWii</li>
-<li>cIOS251[58]-d2x-v11-beta3-vWii</li>
-<li>cIOS61[56]-v5918-vWii</li>
-<li>EULA-NUS-v3[E]</li>
-<li>Mii-Channel-NUS-v6</li>
-<li>Photo-Channel-1.1-dummy-HAZA</li>
-<li>Photo-Channel-1.1-NUS-v3</li>
-<li>USBLoader(s)-ahbprot58-SD-USB-v14-IDCL-(Wii+vWii) (see spoiler for boot info)</li>
-<li>vIOS80v7200[FS-ES-NP-VP]-vWii</li>
-</ol><br>
-
-<div style><div class="spoilerfont" style="text-align:center;">
-<input value="  USBLoader Forwarder Boot Order and Other Info " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Forwarder Info   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  USBLoader Forwarder Boot Order and Other Info  '; }" type="button"></div>
-<div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
-
-
-The USBLoader(s) forwarder channel will boot the first app it finds from this list:<br>
-<ol type="i">
-<li>SD+USB:\apps\usbloader_gx\boot.dol</li>
-<li>SD+USB:\apps\usbloader_gx\boot.elf</li>
-<li>SD+USB:\apps\WiiFlow\boot.dol</li>
-<li>SD+USB:\apps\WiiFlow\boot.elf</li>
-<li>SD+USB:\apps\usbloader_cfg\boot.dol</li>
-<li>SD+USB:\apps\usbloader_cfg\boot.elf</li>
-<li>SD+USB:\apps\usbloader\boot.dol</li>
-<li>SD+USB:\apps\usbloader\boot.elf</li>
-<li>SD+USB:\apps\usb-loader\boot.dol</li>
-<li>SD+USB:\apps\usb-loader\boot.elf</li>
-</ol>
-<br>
-Note: Forwarder requires IOS58. SD paths are all checked first, then USB. It's capable of launching apps from an SD Card and hard drives formatted as FAT32, NTFS, ext2, ext3 and ext4. It also supports meta.xml arguments and is able to launch apps with direct hardware access.<br>
-<br>
-<i>Want to customize some of your channels? There's an app for that! First make sure you finish this guide and install Priiloader if you haven't already, then get CustomizeMii from ModMii Classic's Download Page 5. You can use this tool to make changes to the audio or visual effects of a channel, and even inject a new "dol" for it to launch. You can build forwarder dol's for custom paths, channels, or website URLs from ModMii Classic's Advanced Downloads Page.</i>
-
-</div></div></div>
-
-<!-------------------------Installing WADs section above--------------------------->
-</div></div></div>
-<br>
-</ol><br>
 <font size="6"><li>USB Loader and Hard Drive setup</li></font><br>
-The rest of the guide is performed on your computer in order to set up your USB-Loader for your Wii or vWii. Also note that a FAT32 SD\SDHC\SDXC Card can optionally be used in place of a Hard Drive.<br><br>
 <ol>
 External hard drive partition style\format information for drives that were connected when this guide was created has been saved to the spoiler below.<br><br>
 <div style><div class="spoilerfont" style="text-align:left;"><input value="  Click to see Connected Drive Information  " style="margin: 0px; padding: 0px; font-size: x-large;" onclick="if (this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display != '') { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = ''; this.innerText = ''; this.value = '   Click to hide Connected Drive Information   '; } else { this.parentNode.parentNode.getElementsByTagName('div')[1].getElementsByTagName('div')[0].style.display = 'none'; this.innerText = ''; this.value = '  Click to see Connected Drive Information  '; }" type="button"></div><div class="alt2" style="border: 0px inset ; margin: 0px; padding: 6px;"><div style="display: none;">
@@ -773,11 +276,11 @@ Cons:<br>
 	<li>If the "File-System" is already FAT32, you can skip this step.
 	</ul>
 <li><b>If you have anything saved on the hard drive, you should back it up now as all the data will be lost once you format it.</b>
-<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
 </li>
-	<!--formatwarning<ul style=align="left" type="square">
+	<ul style=align="left" type="square">
 	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
+	</ul>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/oLA47xjGPVQ?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/FAT32.gif" border="0"/></a><br>
 
 <li>Carefully select the correct drive letter corresponding to your external hard drive.
@@ -865,11 +368,11 @@ Cons:<br>
 	<ul style=align="left" type="square">
 	<li>If you have any Wii files on the drive you should copy them to your SD Card now (e.g. "apps" folder, "usb-loader" folder, etc.)
 	</ul>
-<li>Launch Wii Backup Manager from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
+<li>Launch Wii Backup Manager from COPY_TO_USB\Program Files
 </li>
-	<!--formatwarning<ul style=align="left" type="square">
+	<ul style=align="left" type="square">
 	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
+	</ul>
 
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/JClxKhiC_18?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/WBFS.gif" border="0"/></a><br>
 
@@ -955,10 +458,10 @@ If you were able to format the first partition as FAT32, then you can skip the r
 <br>
 
 
-<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
-	<!--formatwarning<ul style=align="left" type="square">
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
 	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
+	</ul>
 <li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
 <li>You may optionally uncheck the "Quick Format" box, then click "Start".
 	<ul style=align="left" type="square">
@@ -1052,10 +555,10 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 <br>
 
 
-<li>Launch FAT32 GUI Formatter from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
-	<!--formatwarning<ul style=align="left" type="square">
+<li>Launch FAT32 GUI Formatter from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
 	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
+	</ul>
 <li>Carefully select the correct drive letter corresponding to the first partition on your external hard drive.
 <li>You may optionally uncheck the "Quick Format" box, then click "Start".
 	<ul style=align="left" type="square">
@@ -1067,10 +570,10 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 
 <br>
 
-<li>To format the second partition as WBFS, launch Wii Backup Manager from shortcuts on your Start Menu or Desktop or directly from C:\ModMii\Program Files
-	<!--formatwarning<ul style=align="left" type="square">
+<li>To format the second partition as WBFS, launch Wii Backup Manager from COPY_TO_USB\Program Files
+	<ul style=align="left" type="square">
 	<li>If you need to format the drive that the application is saved to, copy it to a different drive and launch it from there.
-	</ul>formatwarning-->
+	</ul>
 </li>
 
 <li>In the Wii Backup Manager window, click the "Tools" menu and select "Format drives".
@@ -1162,7 +665,9 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 </ul>When finished copying, you can proceed with the optional steps below or safely remove the hard drive from your computer and plug it into USB port0 on your console to start playing!<br><br>
 <font size="5"><li>Manage Game backups (optional)</li></font><br>
 <ul style=align="left" type="disc">
-<li>Launch the below tools from shortcuts on your Start Menu or Desktop.
+<li>WiiBackupManager.exe is saved here: "COPY_TO_USB\Program Files\WiiBackupManager"
+<li>NKitProcessingApp.exe is saved here: "COPY_TO_USB\Program Files\NKit"
+<li>GCBM.exe is saved here: "COPY_TO_USB\Program Files\GCBM"
 </ul><br>
 
 <font size="5"><b>Wii Backup Manager</b></font><br>
@@ -1235,7 +740,7 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 
 <i>Ripping <u>original</u> Wii discs cannot be done on a computer without one of the rare disc drives that are capable of doing so (most are LG branded).</i><br><br>
 <ul style=align="left" type="disc">
-<li>To copy Wii Discs, launch USB-Loader GX or Configurable USB-Loader and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> to start making a backup.
+<li>To copy Wii Discs, launch USB-Loader GX and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">+</kbd> to start making a backup.
 <li>To copy GameCube (or Wii) Discs, launch "CleanRip" from the HBC and insert the disc into your Wii, then follow the very simple on-screen instructions. Note that CleanRip does not support devices formatted as WBFS.
 <ul style=align="left" type="square"><li><b>Warning</b>: Using your Wii to rip games to NTFS is <u>very</u> unstable, it is highly recommended to rip games to a FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer. Recall that GameCube games cannot be played when saved to NTFS devices.</ul>
 </ul><br>
@@ -1249,55 +754,8 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 <br>
 <li>You can customize the look\theme of your USB-Loader or HBC following the steps from <a href="https://wii.hacks.guide/themes#wiiflow-lite-theming" target="_blank">here</a>.<br>
 <br>
-<li>If you have questions about getting started with USB-Loader GX or WiiFlow <a href="https://wii.hacks.guide/wii-loaders.html" target="_blank">click here</a>.<br>
-<ul style=align="left" type="square">
-<li>WiiFlow Lite emulator plugins allow the loader to also launch games for classic consoles as well. Grab the emulator plugins pack from <a href="https://gbatemp.net/threads/the-great-quest-for-wiiflow-plugins-tm-a-call-for-adventurers.563575" target^=^"_blank">click here</a>.<br>
-<li>A popular WiiFlow Lite theme is the beautiful 'Rhapsodii Shima' theme. Check it out by clicking <a href="https://gbatemp.net/threads/rhapsodii-shima-5-4.555062" target="_blank">here</a>.</ul>
-<li>To customize CFG USB-Loader use the Configurator for Configurable USB-Loader found here: "COPY_TO_USB\usb-loader\CfgLoaderConfigurator.exe"<br>
-<ul style=align="left" type="square">
-<li>For tips and tricks on using the Configurator <a href="http://gwht.wikidot.com/configurable-options" target="_blank">click here</a>.</ul><br>
+<li>If you have questions about getting started with USB-Loader GX <a href="https://wii.hacks.guide/wii-loaders.html#usb-loader-gx" target="_blank">click here</a>.<br>
 </ol><br>
-<font size="6"><li><a name="Done">After Modding your vWii</a></li></font><br><ul style=align="left" type="disc">
-<li>Optionally use <a href="https://www.gamebrew.org/wiki/UStealth_Wii_U" target="_blank">UStealth for Windows</a> (also available on ModMii's Download Page 5) or the homebrew app <a href="https://oscwii.org/library/app/USB_Toggle" target="_blank">USB Toggle 2.0</a> to hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to first make your device visible again using either of the same tools. Of course you should not format it if Windows asks you to!
-
-<li>At any point you can run SysCheck on your vWii to get a sysCheck.csv log of your installed softmods; in the future you can check if any of your vWii mods are outdated by opening your log with the latest version of ModMii.
-
-<li>Download the latest Wii Homebrew apps to your SD Card or FAT32 USB Hard Drive so they can be launched via the HBC or forwarder channels.
-
-	<ul style=align="left" type="square">
-	<li>Download some Wii related PC tools or Just for Fun Wii apps like emulators or cheat codes from ModMii Classic's Download Pages.
-	<li>Grab the <a href="https://web.archive.org/web/20231213215727/wii.guide/hbb" target="_blank">Homebrew Browser</a> or the <a href="https://github.com/dhtdht020/osc-dl/releases/latest" target="_blank">Open Shop Channel for Windows</a> from ModMii or the provided links to easily download many other popular apps right from your vWii or PC!</li>
-	<li>Some other great libraries of Homebrew applications can be found at <a href="https://wiibrew.org/wiki/List_of_all_homebrew" target="_blank">wiibrew.org</a>, <a href="https://translate.google.com/translate?hl=en&sl=en&tl=en&u=https%3A%2F%2Fwiidatabase.de%2Fdownloads%2F" target="_blank">wiidatabase.de</a>, <a href="https://oscwii.org/library" target="_blank">oscwii.org</a> and of course <a href="https://gbatemp.net/forums/nintendo-wii.105/" target="_blank">gbatemp</a>.
-	
-		<ul style=align="left" type="disc">	
-		<li>To manually "install" apps, download your homebrew and you should find a boot.dol (or boot.elf) file and possibly an icon.png and meta.xml.
-		<li>For the HBC to read your SD/USB correctly, your card must be structured SD+USB:/apps/application name/boot.dol\elf
-		<li>Some apps require a meta.xml be saved in the same place as the boot.dol\elf to work properly (icon.png is always optional).
-		<li>If you have a dol or elf file not named "boot", rename it boot.dol\elf, otherwise it will not be recognized by the HBC (not required if using Priiloader to install a file).
-		</ul>
-	</ul>
-<li>Check out some of my custom <a href="https://gbatemp.net/threads/x-flaks-top-wii-channels.205622/" target="_blank">Wii Forwarder Channels</a> to launch your favourite Wii homebrew straight from the vWii System Menu. Note that some channels may not yet be updated for vWii; simply open them using ModMii to edit the NandLoader to make them vWii compatible.
-
-<li>Get a new <a href="https://wii.hacks.guide/themes.html" target="_blank">theme for your vWii Menu</a>! Confirm you have Priiloader installed before installing themes, then open mym themes\files using ModMii or ThemeMii Mod to convert them to csm files for your specific system menu version. Or check out the huge library of themes available at <a href="https://www.wiithemer.org" target="_blank">www.wiithemer.org</a>, a website that also converts MYMs to CSMs for you on the fly. CSM files can then be installed to your Wii using csm-installer. ThemeMii Mod and csm-installer are both available on ModMii Classic's Download Pages.
-<li>"Expand" your vWii's internal memory for more WiiWare and Virtual Console games by having it load the System Menu from external storage instead. Use ModMii's Emulated NAND builder to get started.
-	<ul style=align="left" type="square">
-	<li>You can also use your vWii's nand.bin or slccmpt.bin backup as an Emulated NAND. To extract the files from a nand.bin or slccmpt.bin to use as an Emulated NAND, simply open the file using ModMii. If ModMii prompts you to share keys to repair the nand provide it with your keys.bin or opt.bin backup.
-	<li>Alternatively, you can dump your vWii's NAND to use as an Emulated NAND using USB Loader GX's features menu.
-	</ul>
-<li>Install <a href="https://gbatemp.net/threads/release-fakemote-an-ios-module-that-fakes-wiimotes-from-the-input-of-usb-game-controllers.601771" target="_blank">Fakemote</a> to an unused IOS slot like 247 to add support for DS3 and DS4 controllers. This can also be done using ModMii Classic's Advanced Downloads Menu by choosing the latest FM (Fakemote) version of d2x in ModMii's options.
-<li>Check out some <a href="https://gbatemp.net/threads/x-flaks-crazy-intro-videos.189411" target="_blank">Crazy Intro Videos</a> to customize how your vWii starts up (SD Card required).
-
-<li>Bring back WiiConnect24 to your vWii! The WiiLink Patcher restores functionality to Wii Mail and various Nintendo Channels such as Forecast, News, Everybody Votes, Nintendo, Check Mii Out, and more! You can get this tool from from ModMii Classic's Download Page 5.
-
-<li>Check out <a href="https://wiki.hacks.guide/wiki/RiiTag" target="_blank">RiiTag\LinkTag</a>: a customizable and dynamic gamertag to automatically update your Discord status with what you've been playing on your vWii.
-
-<li><a href="https://github.com/Naim2000/system-channel-restorer" target="_blank">System Channel Restorer</a> from ModMii Classic's Download Page 2 can be used to re-install missing/removed system apps, e.g. Mii Channel, Photo Channel, EULA, etc. However, these three examples in particular will have already been installed as part of this guide.
-<li><a href="https://github.com/Naim2000/csm-installer/releases" target="_blank">csm-installer</a> and <a href="https://github.com/DarkMatterCore/ww-43db-patcher" target="_blank">ww-43db-patcher</a> from ModMii Classic's Download Page 2 can be used to patch the WiiWare 4:3 aspect ratio database (43DB) to enable a 16:9 aspect ratio in Everybody Votes Channel and Check Mii Out Channels. However, if you installed any vWii theme built using ModMii (even the Default theme) this patch has already been applied.
-
-</ul>
-<br>
-<!----------------------------After vWii Modding section above----------------------------->
-
 <!---------------------------------------Credits, apps, and sources are below---------------------------------------------->
 <font size="6"><li><a name="Credits">Credits, Supporting Apps, and Sources</a></li></font><br>
 ModMii was written entirely by yours truly, XFlak. Trust me, no one else is crazy enough to try to maintain a batch file that has grown so large and 'all over the place'. But without the help of many other very talented people ModMii would not exist. Some people have contributed supporting files or programs, others have shared their knowledge, some have provided ideas and others have given their time.<br>

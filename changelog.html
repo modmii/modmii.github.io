@@ -51,6 +51,35 @@
 <!-- Start of the changelog -->
 <ul style=align="left" type="disc">
 
+
+<h2 id="8.0.4"><a href="#8.0.4">8.0.4 Changelog - 2025:06-25:</a></h2>
+<a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.4" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.4/total?label=downloads&logo=github" border="0"></a><br>
+<ul>
+<li>USB Loader GX updated to v4.0 r1282 final! Thanks <a href="https://github.com/wiidev" target="_blank">@wiidev</a> aka blackb0x!
+<li>ModMii's App update checks are now able to distinguish between USB Loader GX v4.0 r1282 test versions versus its final version.
+<li>Adjusted the USB Loader GX download to alway retrieve the latest version from the developer's github instead of oscwii.org; change made at the developer's request.
+<li>During oscwii update checks, Wii apps will get updated immediately if an app's folder exists but is missing boot.dol\elf or meta.xml files.
+<li>Updated UWUVCI on ModMii Classic's Download Page 5 to download and extract its zip instead of the exe installer which can no longer install itself silently.
+<li>Alternate hashes accepted as valid for applicable downloads to align with rustii NUS downloads\implementation.
+<li>Added BlueBomb (info and link only) to ModMii Classic's Download Page 2. Also updated the description of ThemeMii Mod on Page 5 describing how it cannot download base app files but users can retrieve them from ModMii.
+<li>Added d2x-cios-installer-vwii & d2x-cios-installer to ModMii's File Cleanup list.
+<li>Replaced Dump Mii NAND with nanddumper@IOS (thanks thepikachugamer!) on Download Page 2 and in vWii guides. nanddumper@IOS is now also mentioned in Wii guides as an alternative to Bootmii to make NAND backups for those users that have a Hard Drive but not an SD Card.
+<li>If a disc-based exploit is selected in vWii-Only ModMii Wizards the WiiU Browser-Exploit will no longer be included as a secondary exploit option. This is to avoid confusion and the unnecessary downloading of Aroma, EnvironmentLoader, Nanddumper & CompatTitleInstaller.
+<li>Added additional method (DiskPart) in applicable guides to convert Partition Style to MBR for SD Cards and Hard Drives. Also removed the Windows Disk Management method from SD Card MBR conversion options since this method does not work for removeable disks. Added spoiler buttons to toggle between MBR conversion options.
+<li>Updated MyMenuifyMod warnings to clarify only v2.0 or older is dangerous on vWii; ModMii still recommends csm-installer.
+<li>nand-aes-dump.exe is no longer used as part of ModMii's process to extract nand.bin's to use as an EmuNAND. ModMii now uses a slightly faster\simpler method that also supports nands dumped using nanddumper@IOS (nand-aes-dump does not support nands dumped using nanddumper@IOS).
+<li>Filesize sanity checks are now also conducted when inputting a 2nd nand.bin to clone or defragment.
+<li>ModMii now fixes user path inputs if forward slashes "/" were entered instead of back slashes "\". This was only ever an issue if running ModMii as Admin.
+<li>Updated bundled version of WiiPy to fix a bug that would occur if channels were installed to EmuNANDs they would not display when using NEEK. They would show up in dolphin however, which is why this issue was not noticed sooner. Older versions of ModMii already had this fix applied during update checks since April 22, 2025.
+<li>Fixed a rarely encountered bug where some downloads were skipped if included in the same queue (e.g. Region-Select-NUS-v2[E].wad & vWii-Region-Select-NUS-v2[E].wad). It only occurred when downloading certain Wii and vWii items in the same queue.
+<li>Fixed bug when generating a vWii-Only ModMii Wizard guide if just one disc-based exploit was selected.
+<li>Other minor changes and cleanup.
+<li>In loving memory of <a href="https://github.com/pyorot" target="_blank">@pyorot</a>, aka shoutplenty; his light burned too bright and too fast. He will be forever missed and remembered by those he touched. RIP my friend.
+</ul>
+<br>
+
+
+
 <h2 id="8.0.3"><a href="#8.0.3">8.0.3 Changelog - 2025:04-15:</a></h2>
 <a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.3" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.3/total?label=downloads&logo=github" border="0"></a><br>
 <ul>

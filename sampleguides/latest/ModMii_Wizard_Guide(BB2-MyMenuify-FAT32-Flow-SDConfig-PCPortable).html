@@ -27,7 +27,7 @@ ol > li::marker {font-weight: bold;}
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"> 
 </head>
 <body style="margin:5px 5px 5px 35px;">
-ModMii Wizard Guide<span style="float:right;">v8.0.3|25.04.15 Generated on Tue 04/15/2025 - 12:34</span><br><br>
+ModMii Wizard Guide<span style="float:right;">v8.0.4|25.06.19 Generated on Sun 06/22/2025 - 21:25</span><br><br>
 <!----------Custom Printing CSS that doesn't print images--------------->
 <style type="text/css" media="print">
 .printbutton {
@@ -130,62 +130,6 @@ This guide was generated using the following parameters:<br>
 <li>Detailed guides covering a broad range of related topics available at the <a href="https://sites.google.com/site/completesg" target="_blank">Complete Softmod Guide</a>, <a href="https://wii.hacks.guide" target="_blank">wii.hacks.guide</a> and <a href="https://wiiu.hacks.guide" target="_blank">wiiu.hacks.guide</a></li> 
 <li>If you come across a term or abbreviation that you're not familar with you can reference the <a href="https://wiibrew.org/wiki/Glossary" target="_blank">WiiBrew Glossary</a> or the <a href="https://sites.google.com/site/completesg/other-stuff/wii-glossary" target="_blank">CSG Glossary</a></li> 
 <li>If you need help, have questions, or just want to chat visit the <a href="https://gbatemp.net/threads/modmii-for-windows-official-support-topic.207126/" target="_blank">official ModMii page on gbatemp</a> or the <a href="https://discord.gg/cMnBRACQwQ" target="_blank">ModMii Discord Server</a> and ask away!</li></ul><br> 
-
-<script>
-    function openTab(tabGroup, tabName) {
-    let tabcontent = document.getElementsByClassName(tabGroup);
-    let tablinks = document.getElementsByClassName("tablinks");
-
-	let element;
-
-        for (element of tabcontent) {
-            element.style.display = "none";
-        }
-
-        for (element of tablinks) {
-            element.className = element.className.replace("btn--primary", "btn--info");
-            if (!element.className.includes('btn--info'))
-                element.className += " btn--info";
-        }
-
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
-    }
-
-    // Get the element with id="defaultOpen" and click on it
-	document.getElementById("defaultOpen3").click();
-	document.getElementById("defaultOpen2").click();
-    document.getElementById("defaultOpen").click();
-</script>
-
-
-<script>
-    function openTab(tabGroup, tabName) {
-    let tabcontent = document.getElementsByClassName(tabGroup);
-    let tablinks = document.getElementsByClassName("tablinks");
-
-	let element;
-
-        for (element of tabcontent) {
-            element.style.display = "none";
-        }
-
-        for (element of tablinks) {
-            element.className = element.className.replace("btn--primary", "btn--info");
-            if (!element.className.includes('btn--info'))
-                element.className += " btn--info";
-        }
-
-        document.getElementById(tabName).style.display = "block";
-        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
-    }
-
-    // Get the element with id="defaultOpen" and click on it
-	document.getElementById("defaultOpen3").click();
-	document.getElementById("defaultOpen2").click();
-    document.getElementById("defaultOpen").click();
-</script>
-
 <font size="6"><li><a name="Hacking">Hacking your Wii</a></li></font><br><ol>
 <font size=5><li>Set SD Card Partition Style to MBR (if applicable)</li></font><br>
 Partition style\format information for devices that were connected when this guide was created has been saved to the spoiler below.<br><br>
@@ -210,10 +154,22 @@ H:       NTFS
 	<li><b>If the "Partition style" is already Master Boot Record (MBR), you can skip the rest of this step.</b>
 	</ol>
 <br>
-<li><b>If your SD Card is not already MBR you must convert it using one of the two methods below.</b>
+<li><b>If your SD Card is not already MBR you must convert it using any <u>one</u> of the methods below.</b>
+</ul>
 <br>
-<br>
-<li><b>Method 1: MiniTool Partition Wizard</b>
+
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen5" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'MINITOOLSD')">1. MiniTool</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroupSD', 'DISKPARTSD')">2. DiskPart</button>
+<br><br>
+
+<!--------------------------------------MINITOOL----------------------------------->
+
+
+<div id="MINITOOLSD" class="StyleGroupSD">
+<b><u>Method 1: MiniTool Partition Wizard</u></b><br>
 	<ul style=align="left" type="square">
 	<li>If you have files on the SD Card you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
 	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
@@ -232,43 +188,63 @@ H:       NTFS
 	<li>Wait for the conversion to finish then click "OK".
 	<li>Once you have successfully converted your SD Card to MBR you can proceed to the next step of this guide.
 </ol>
+</div>
 
-<br>
-
-<li><b>Method 2: Windows Disk Management</b>
+<!--------------------------------------DISKPART----------------------------------->
+<div id="DISKPARTSD" class="StyleGroupSD">
+<b><u>Method 2: DiskPart</u></b><br>
 
 <ol type="A">
 <li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
-<li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
-
-</li>
-<A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>
-
-<li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
-
-<li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
-
-
-<li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
-<li>Choose a Drive letter for this partition, then click "Next".
+<!--</li><A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>-->
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">R</kbd> and enter "cmd" to open Command Prompt.
+<li>Then type the following commands and press "Enter" after each.
 	<ul style=align="left" type="disc">
-	<li>Make note of this drive letter, as it will be needed later.
-	</ul>
-<li>Set the File System to your desired format and optionally customize the "Volume label".
-	<ul style=align="left" type="disc">
-	<li>If your desired format (e.g. FAT32) isn't an option choose "NTFS" and we can change it later.
-	</ul>
-
-<li>Click "Next", then click "Finish".
-	<ul style=align="left" type="disc">
-	<li>If you see a message indicating you need to format the drive, click "Cancel".
+	<li><b>diskpart</b>
+	<li><b>list disk</b>
+	<li><b>select disk <i>#</i></b>
+		<ul style=align="left" type="square">
+		<li>Where <i>#</i> is the disk number corresponding to the device you want to convert
+		</ul>
+	<li><b>clean</b>
+	<li><b>convert MBR</b>
 	</ul>
 </ol>
+
+</div>
+
+
+</div>
 <br>
-</ul>
-<br>
-<!--------------------------------------MBRsd Stuff ABOVE-----------------------------------><font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
-<i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii and NAND backup). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,
+<!--------------------------------------MBRsd Stuff ABOVE----------------------------------->
+
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen5").click();
+</script>
+
+<font size=5><li>Format the SD Card as FAT32 (if applicable)</li></font><br>
+<i>Note: If you don't have an SD Card, you can still accomplish <u>most</u> things using a Hard Drive formatted as FAT32 in place of an SD Card (SD is notably required for Bootmii). Make sure to always plug your hard drive into USB port0 - the one nearest the edge of the Wii. If you don't have an SD Card or Hard Drive,
 you can launch apps and install WADs over the internet to your Wii from your PC. Just open apps (boot.dol\elf files) or WADs with ModMii. Note that some apps may not work properly or support all features if they require an SD or HDD and you should never attempt to change the region of a console via the internet.</i><br>
 
 <br>
@@ -357,7 +333,7 @@ If this is truly your first time modding your Wii, please continue with this ste
 <br>
 <font size="5"><b>Launch an Exploit</b></font><br>
 You only need to perform ONE of the these exploits to complete this guide.<br><br>
-Note that if you're missing an SD Card or your SD Card reader is broken, you can use the str2hax exploit to install the HBC and skip installing Bootmii and making a nand backup for now until you get an SD Card.<br><br>
+Note that if you're missing an SD Card or your SD Card reader is broken, you can use the str2hax exploit to install the HBC but skip installing and using Bootmii to make a nand backup until you get an SD Card. For now, save <a href="https://hbb1.oscwii.org/api/contents/nanddumper_ios/nanddumper_ios.zip" target="_blank">nanddumper@IOS</a> to your USB Hard Drive (also available on ModMii Classic's Download Page 2) and launch it after installing the HBC to create a Bootmii compatible nand backup saved to USB:/wii/backups/.<br><br>
 <div style>
 <button class="tablinks btn btn--large btn--primary" id="defaultOpen" style="font-size: x-large;" onclick="openTab('ExploitTab', 'Bannerbomb v2')">Bannerbomb v2</button>
 <button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('ExploitTab', 'str2hax')">str2hax</button>
@@ -464,6 +440,8 @@ Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type
 <li>Click on the envelope with the pink bomb icon to launch the boot.elf/dol file saved on the root of your SD Card.
 	<ul style=align="left" type="disc">
 	<li>If you cannot find the mailbox bomb under "Yesterday" check that your Wii's date setting is correct.
+	<li>If you click the envelope and are returned to the Wii Menu double check that your SD Card's lock switch is disabled and try again.
+	<li>If you have difficulty with this exploit use "str2hax" instead by clicking the str2hax button above, or try reformatting your SD Card, or a different SD Card altogether.
 	</ul>
 </ol>
 <br>
@@ -495,10 +473,9 @@ Wilbrand is sourced from wilbrand.donut.eu.org, if you don't see an area to type
     }
 
     // Get the element with id="defaultOpen" and click on it
-	//////document.getElementById("defaultOpen3").click();
-	document.getElementById("defaultOpen2").click();
     document.getElementById("defaultOpen").click();
 </script>
+
 <!-----------------------Hackmii installer below----------------------------------->
 <br>
 <font size="5"><b>Use the HackMii Installer to install the HBC and Bootmii</b></font><br>
@@ -571,7 +548,9 @@ Bootmii is a piece of software that can backup and restore your Wii's NAND stora
 <!------------------------------Nand backup section below-------------------------->
 <font size="5"><li>Make a NAND backup</li></font><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/dRfaFIxTlTU?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/NANDBackup.gif" border="0"/></a><br>
-<i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.</i><br>
+<i>Creating a NAND backup is similar to creating a system restore point in Windows. Should you ever semi-brick your Wii but can still access Bootmii, restoring a NAND backup is like taking your Wii back in time to before the problem occurred. NAND backups are console specific, so you generally cannot restore a backup from a different Wii.<br>
+<br>
+Note that Bootmii requires an SD Card. If you're missing an SD Card or your SD Card reader is broken, skip the Bootmii steps below and instead save <a href="https://hbb1.oscwii.org/api/contents/nanddumper_ios/nanddumper_ios.zip" target="_blank">nanddumper@IOS</a> to your USB Hard Drive (also available on ModMii Classic's Download Page 2) and launch it from the HBC to create a Bootmii compatible nand backup saved to USB:/wii/backups/.</i><br>
 <br>
 
 <ul style=align="left" type="disc">
@@ -874,10 +853,20 @@ H:       NTFS
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
 	</ul>
 <br>
-<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using one of the two methods below.</b>
+<li><b>If your hard drive is 2TB or less and not already MBR you must convert it using any <u>one</u> of the methods below.</b>
+</ul>
 <br>
-<br>
-<li><b>Method 1: MiniTool Partition Wizard</b>
+<!--------------------------------------Side Spoiler Buttons----------------------------------->
+
+<div style>
+<button class="tablinks btn btn--large btn--primary" id="defaultOpen4" style="font-size: x-large;" onclick="openTab('StyleGroup', 'MINITOOL')">1. MiniTool</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroup', 'WDM')">2. Windows Disk Management</button>
+<button class="tablinks btn btn--large btn--info" style="font-size: x-large;" onclick="openTab('StyleGroup', 'DISKPART')">3. DiskPart</button>
+<br><br>
+
+<!--------------------------------------MINITOOL----------------------------------->
+<div id="MINITOOL" class="StyleGroup">
+<b><u>Method 1: MiniTool Partition Wizard</u></b><br>
 	<ul style=align="left" type="square">
 	<li>If you have files on the drive you want to keep, you can convert the Partition style to MBR without losing data using MiniTool Partition Wizard.
 	<li>Even though your data should be preserved, there are no guarantees and you should still back up your files.
@@ -896,11 +885,11 @@ H:       NTFS
 	<li>Wait for the conversion to finish then click "OK".
 	<li>Once you have successfully converted your hard drive to MBR you can proceed to the next step of this guide.
 </ol>
+</div>
 
-<br>
-
-<li><b>Method 2: Windows Disk Management</b>
-
+<!--------------------------------------Windows Disk Management----------------------------------->
+<div id="WDM" class="StyleGroup">
+<b><u>Method 2: Windows Disk Management</u></b><br>
 <ol type="A">
 <li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
 <li>Open Disk Management following the same procedure above and locate the disk drive you want to use.
@@ -911,8 +900,9 @@ H:       NTFS
 <li>Right-click the partition(s) on the drive (make sure you select the right drive!) and select "Delete Volume" or "Delete Partition" to remove them. Repeat this process for each partition on that disk.
 
 <li>Right-click the disk in Disk Management and select "Convert to MBR Disk."
-
-
+	<ul style=align="left" type="disc">
+	<li>If "Convert to MBR Disk." is not available please select another MBR conversion method.
+	</ul>
 <li>On the lower half menu of the window, locate the unallocated space, right-click it, and select "New Simple Volume" and click "Next".
 <li>Choose a Drive letter for this partition, then click "Next".
 	<ul style=align="left" type="disc">
@@ -928,8 +918,35 @@ H:       NTFS
 	<li>If you see a message indicating you need to format the drive, click "Cancel".
 	</ul>
 </ol>
+</div>
+
+
+<!--------------------------------------DISKPART----------------------------------->
+<div id="DISKPART" class="StyleGroup">
+<b><u>Method 3: DiskPart</u></b><br>
+<ol type="A">
+<li><b>Back up any data on the disk before continuing! This will wipe all data on the disk!</b>
+<!--</li><A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/nObWgTrvEMo?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/MBR_WDM.gif" border="0"/></a><br>-->
+<li>Press <kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">⊞ Win</kbd>+<kbd class="keyboard-key nowrap" style="border: 1px solid #aaa; border-radius: 0.2em; box-shadow: 0.1em 0.1em 0.2em rgba(0,0,0,0.1); background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;">R</kbd> and enter "cmd" to open Command Prompt.
+<li>Then type the following commands and press "Enter" after each.
+	<ul style=align="left" type="disc">
+	<li><b>diskpart</b>
+	<li><b>list disk</b>
+	<li><b>select disk <i>#</i></b>
+		<ul style=align="left" type="square">
+		<li>Where <i>#</i> is the disk number corresponding to the device you want to convert
+		</ul>
+	<li><b>clean</b>
+	<li><b>convert MBR</b>
+	</ul>
+</ol>
+
+</div>
+
+
+</div>
 <br>
-</ul>
+
 
 
 <!--------------------------------------Side Spoiler Buttons----------------------------------->
@@ -1295,6 +1312,31 @@ If you were able to format the first partition as FAT32, then you can skip to fo
 <br>
 
 
+<script>
+    function openTab(tabGroup, tabName) {
+    let tabcontent = document.getElementsByClassName(tabGroup);
+    let tablinks = document.getElementsByClassName("tablinks");
+
+	let element;
+
+        for (element of tabcontent) {
+            element.style.display = "none";
+        }
+
+        for (element of tablinks) {
+            element.className = element.className.replace("btn--primary", "btn--info");
+            if (!element.className.includes('btn--info'))
+                element.className += " btn--info";
+        }
+
+        document.getElementById(tabName).style.display = "block";
+        event.currentTarget.className = event.currentTarget.className.replace("btn--info", "btn--primary");
+    }
+
+    // Get the element with id="defaultOpen" and click on it
+    document.getElementById("defaultOpen4").click();
+</script>
+
 
 <script>
     function openTab(tabGroup, tabName) {
@@ -1318,9 +1360,7 @@ If you were able to format the first partition as FAT32, then you can skip to fo
     }
 
     // Get the element with id="defaultOpen" and click on it
-	//////document.getElementById("defaultOpen3").click();
-	document.getElementById("defaultOpen2").click();
-    document.getElementById("defaultOpen").click();
+    document.getElementById("defaultOpen2").click();
 </script>
 
 <font size="5"><li>Manage Game backups (optional)</li></font><br>
