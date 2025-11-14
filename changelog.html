@@ -52,6 +52,31 @@
 <ul style=align="left" type="disc">
 
 
+<h2 id="8.0.5"><a href="#8.0.5">8.0.5 Changelog - 2025:11-14:</a></h2>
+<a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.5" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.5/total?label=downloads&logo=github" border="0"></a><br>
+<ul>
+<li>The most stable version yet (probably); packed with small bug fixes and subtle improvements.
+<li>ModMii's File Cleanup feature has been rebranded as File Checkup (which includes the File Cleanup and App Updater functions).
+<li>cIOS249 is no longer required for the Region Change process. ARCME v1.0.7 also added (basic) GameCube controller support. Thanks thepikachugamer!
+<li>Str2hax steps adjusted to direct users to only change primary DNS. Secondary DNS was just sitting there doing nothing anyway.
+<li>Enhanced checks for supported d2x cIOS base IOSs, now dynamically determined from ciosmaps.xml instead of hardcoded. This anticipates future d2x releases likely dropping bases other than 38, 56, 57, and 58. Thanks blackb0x for the heads up!
+<li>Added TinyWiiBackupManager to Download Page 5 and Uninstaller. Thanks mq1!
+<li>Bundled a new version of WiiPy with EmuNAND-related fixes. It now creates sys\cert.sys if missing when installing content to EmuNANDs. Previously some games wouldn't boot in USB Loaders on freshly created EmuNAND unless they had first been loaded in neek\Dolphin to build the missing files. ModMii\WiiPy can now correct any such EmuNAND automatically by installing any WAD(s) to it. Thanks NinjaCheetah!
+<li>Fixed a harmless bug in the main ModMii Wizard where a new System Menu version sometimes wasn't downloaded. This only occurred if changing Wii System Menu versions and selecting "Default theme". Choosing "No, do not change the theme" worked as expected. Previously, if "Default theme" was selected, a stock theme and csminstaller was also unnecessarily downloaded and referenced in the generated guide.
+<li>Fixed minor issue where Compat Title Installer was not being downloaded when modding WiiU and vWii simultaneously via the ModMii Wizard. This only affected users modding both systems in the same run and worked fine when modding only WiiU or only vWii.
+<li>Fixed WiiLinkPatcher download, which had been inadvertently grabbing the Windows ARM version since v2.1.0.
+<li>Fixed Nintendont update checks — they were too strong with the don’t. ModMii now compensates for Nintendont's hosted meta.xml, which never updates (the app updates it at run-time). ModMii previously kept whatever version it initially downloaded since its "Newer than 4.431" version always matched the latest meta.xml.
+<li>Fixed minor issue with version parsing for apps with more than 3 components (e.g. abuse 0.8.684.2). Only "abuse" was affected and would not update if an older version was detected.
+<li>Fixed minor bug where ModMii Classic would exit if run for the first time AND run as Administrator. Launching without admin rights (or launching ModMii Skin in any mode) avoided the issue. Turns out ModMii couldn’t handle unlimited power.
+<li>Updated ModMii.exe launcher. The previous version worked for almost everyone but now it should work in all cases. Users can still run \Support\ModMii.bat if any issues persist.
+<li>Enhanced HTML guide opening to better support other languages and special characters in destination paths. This previously caused a harmless REG_SV error for French users (and possibly others). ModMii still opens HTML guides using the default web browser in case users have not set HTML file associations. Thanks Julienraptor01 for the assist!
+<li>Fixed a minor bug where ModMii would exit when modifying a WAD with a title ID containing non-printable characters. Also fixed harmless onscreen errors when failing to detect the NandLoader used for rare or unusual WADs.
+<li>So many small things were fixed that ModMii is now 7% more polite and 12% less likely to side with Skynet.
+<li>Other minor changes and enhancements.
+</ul>
+<br>
+
+
 <h2 id="8.0.4"><a href="#8.0.4">8.0.4 Changelog - 2025:06-25:</a></h2>
 <a href="https://github.com/modmii/modmii.github.io/releases/tag/8.0.4" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/8.0.4/total?label=downloads&logo=github" border="0"></a><br>
 <ul>
@@ -390,7 +415,7 @@
 <h3>Summary:</h3>
 <ul>
 <li>Many new Drag and Drop supported file types, features and functions
-(e.g. nand.bin check/clone/defragment, WAD modify/unpack/trasmit, mym
+(e.g. nand.bin check/clone/defragment, WAD modify/unpack/transmit, mym
 &amp; csm theme creation, dol &amp; elf app launcher, zip HBC transfer
 tool, etc.).</li>
 <li>New default cIOS (d2x-v11-beta1) and recommended cIOS configuration
@@ -929,7 +954,7 @@ news outlets</a>.</li>
 <h2 id="6.6.3"><a href="#6.6.3">6.6.3 Changelog - 2021:04-23:</a></h2>
 <a href="https://github.com/modmii/modmii.github.io/releases/tag/6.6.3" target="_blank"><img src="https://img.shields.io/github/downloads/modmii/modmii.github.io/6.6.3/total?label=downloads&logo=github" border="0"></a><br><br>
 <li>Fixed bug where the MMM's boot.elf was not being saved to SD root when appropriate (i.e. for HackMii Solutions Wizard, and for modding virgin Korean Wii's running system menu 4.2 or lower). This only occurred if MMM was not already saved to the SD card before downloading the HackMii Installer, and ModMii would fix itself if downloads were repeated. This bug was introduced when downloads were alphabetized and MMM became queued after the Hackmii Installer instead of before.
-<li>Syscheck Updater now also accepts "hermes-v5.1" as a valid info tag for cIOS 202 & 224 (in addition to hermesrodries-v5.1, hermesrodries-v6 & hermesrodries-5.1). These are all the same cIOS but the info signature differs based on the installer used.
+<li>SysCheck Updater now also accepts "hermes-v5.1" as a valid info tag for cIOS 202 & 224 (in addition to hermesrodries-v5.1, hermesrodries-v6 & hermesrodries-5.1). These are all the same cIOS but the info signature differs based on the installer used.
 <li>Korean consoles now use v1.0 of the Photo Channel, since it has been reported that v1.1 does not work properly on Korean consoles.
 <li>Other minor changes.
 <br>
@@ -1090,7 +1115,7 @@ news outlets</a>.</li>
 <h2 id="6.4.9"><a href="#6.4.9">6.4.9 Changelog:</a></h2>
 <li>Added <font color="yellow">warning</font> to main menu suggesting <font color="yellow">users should download files from NUS before Nintendo Wii servers shut down in 2019.</font></li>
 <li>Bundled prepared download queues for users to easily grab files from NUS for future use.
-<li>Changed recommended cIOS249 to base 57 from 56, and cIOS250 to base 56 from 57. Syscheck updater will consider both configurations as up to date.</li>
+<li>Changed recommended cIOS249 to base 57 from 56, and cIOS250 to base 56 from 57. SysCheck updater will consider both configurations as up to date.</li>
 <li>Added USB-Loader GX and made it the default\recommended USB-Loader.</li>
 <li>Added Nintendont to ModMii Classic's download page 2.</li>
 <li>Updated MyMenuifyMod to v1.6 to support wiimote plus remotes.</li>
@@ -1324,7 +1349,7 @@ news outlets</a>.</li>
 
 <li>Updated ModMii Skin Launcher (by person66). It now includes a 10ms sleep in order to maintain 0 CPU usage even on older computers. This issue was not present for most users, but person66 personally experienced the old ModMiiSkin.exe process using 20%-40% of his CPU.</li>
 
-<li>Updated ModMii's Syscheck Updater to consider homebrew channel installations of v1.0.0 (in addition to v1.1.0) as up to date when running off of IOS58. This change is to compensate for the latest version of syscheck which incorrectly labels HBC v1.1.0 and v1.0.0.</li>
+<li>Updated ModMii's SysCheck Updater to consider homebrew channel installations of v1.0.0 (in addition to v1.1.0) as up to date when running off of IOS58. This change is to compensate for the latest version of syscheck which incorrectly labels HBC v1.1.0 and v1.0.0.</li>
 
 <li>Now when updating ModMii using ModMii Skin the ModMiiSkin process is killed in order to permit updates to ModMiiSkin.exe itself (if applicable).</li>
 
@@ -1476,7 +1501,7 @@ news outlets</a>.</li>
 <li>Reverted back to using MMM, IOS236 Installer and Priiloader v0.7 (236 Mod) instead of WiiMod (with ahbprot) and Priiloader v0.7 (with davebaol's ahbprot bug-fix). This was due to WiiMod harmlessly failing to load in certain uncommon situations. I have prepared an alternate version of ModMii v4.8.1 that still uses WiiMod so anyone interested in helping jskyboo beta test WiiMod please get in touch with jskyboo or myself. WiiMod is still available for download on ModMii's Download Page 2.</li>
 <li>Updated Wii Backup Manager to Wii Backup Manager 0.4.5 build 78.</li>
 <li>Fixed bug where an older version of SaveGame Manager GX was being downloaded instead of the latest version (this was due to a change in how the files were being hosted on its google code page).</li>
-<li>Adjustments made to Syscheck Updater to support additional acceptable SysCheck logs (i.e. MIOS v10, cIOS222 and cIOS223). It will now also check if d2x-beta cIOSs are installed when a d2x beta cIOS is activated (instead of always checking for the d2x version included with ModMii).</li>
+<li>Adjustments made to SysCheck Updater to support additional acceptable SysCheck logs (i.e. MIOS v10, cIOS222 and cIOS223). It will now also check if d2x-beta cIOSs are installed when a d2x beta cIOS is activated (instead of always checking for the d2x version included with ModMii).</li>
 <li>Some optimizations when running ModMii in command line mode. Added a command to install an extra folder of WADs to an emulated nand. I don't think anyone is using this feature anyways so this isn't big news.</li>
 <li>Celebrities may walk on the red carpet, but ModMii walks on toilet paper because it's the SH*T!</li>
 <li>Other minor changes </li>
