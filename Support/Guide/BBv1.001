@@ -1,11 +1,11 @@
 <b>Bannerbomb v1</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/eUvr89U-l9s?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/BannerbombV1.gif" border="0"/></a><br>
-Requirements: SD Card; SDHC and SDXC also work if on System Menu 4.0 or 4.1. Works on System Menus 3.0 to 4.1. Can launch both dols and elfs. Works on Wii only.<br>
+Requirements: <=2GB SD Card; larger SDHC and SDXC also work if on System Menu 4.0 or 4.1. Works on System Menus 3.0 to 4.1. Can launch both dols and elfs. Works on Wii only.<br>
 <br>
 <ul style=align="left" type="disc">
 <li>Run Bannerbomb v1 by going to Wii Options, Data Management, Channels, SD Card and choosing yes to load boot.dol/elf.<br>
 	<ul style=align="left" type="square">
 	<li>Note: If it doesn't work for you, visit <a href="https://bannerbomb.qoid.us/" target="_blank">https://bannerbomb.qoid.us/</a> for more variations of Bannerbomb v1 (ignore the suggestion to update and use LetterBomb).
-	<li>In order to use the SD Card Menu normally again after following this guide, you can remove Bannerbomb from your SD card with ModMii's File Cleanup feature, or by manually deleting the "aktn" folder where bannerbomb is saved (SD:\private\wii\title).
+	<li>In order to use the SD Card Menu normally again after following this guide, you can remove Bannerbomb from your SD card with ModMii's File Checkup feature, or by manually deleting the "aktn" folder where bannerbomb is saved (SD:\private\wii\title).
 	</ul>
 </ul>

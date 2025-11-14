@@ -6,6 +6,6 @@ Requirements: SD Card, SDHC Card or SDXC Card. Only works on System Menu 4.2. Ca
 <li>Run Bannerbomb v2 by selecting the SD Card Button on the main system menu screen and choosing yes to load boot.dol/elf.<br>
 	<ul style=align="left" type="square">
 	<li>If it doesn't work for you, visit <a href="https://bannerbomb.qoid.us/" target="_blank">https://bannerbomb.qoid.us/</a> for more variations of Bannerbomb v2 (ignore the suggestion to update and use LetterBomb).
-	<li>In order to use the SD Card Menu normally again after following this guide, you can remove Bannerbomb from your SD card with ModMii's File Cleanup feature, or by manually deleting the "aktn" folder where bannerbomb is saved (SD:\private\wii\title).
+	<li>In order to use the SD Card Menu normally again after following this guide, you can remove Bannerbomb from your SD card with ModMii's File Checkup feature, or by manually deleting the "aktn" folder where bannerbomb is saved (SD:\private\wii\title).
 	</ul>
 </ul>

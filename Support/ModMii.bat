@@ -1,3 +1,4 @@
+
 @echo off
 setlocal
 
@@ -24,7 +25,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=8.0.4
+set currentversion=8.0.5
 set d2x-bundled=11-beta3
 set currentversioncopy=%currentversion%
 set agreedversion=
@@ -134,7 +135,7 @@ set "cmdinput=%cmdinput:/=\%"
 
 NET SESSION >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (set adminmode=Y) else (set adminmode=N)
-if /i "%adminmode%" EQU "Y" goto:donecheck
+if /i "%adminmode%" EQU "Y" (if not exist "temp\test" mkdir "temp\test") & (goto:donecheck)
 
 ::check for write access
 if exist "temp\test" goto:skip
@@ -242,11 +243,6 @@ echo.
 echo Some ModMii features will not work properly (i.e. NUS downloading, WAD (un)packing, building some non-d2x cIOSs, some EmuNANDs features, theme building, WAD editing, etc.)
 echo.
 
-set GrabModMii32x=
-support\sfk md5 -quiet -verify 0736e14b7ad05a99912e9ba811987335 "ModMii.exe"
-if errorlevel 1 set GrabModMii32x=Y
-
-if /i "%GrabModMii32x%" EQU "Y" echo Should you continue, an alternate ModMii.exe Launcher will be downloaded to make things a bit better.
 echo Hit any key to use ModMii anyway
 pause>nul
 
@@ -254,25 +250,7 @@ if exist Support\settings.bat support\sfk filter Support\settings.bat -ls!"Set L
 Set LegacyCIOS=Y
 echo Set LegacyCIOS=Y>>Support\settings.bat
 
-::if exist "%homedrive%\Program Files (x86)" goto:skip
-if /i "%GrabModMii32x%" NEQ "Y" goto:skip
-
-echo.
-echo Downloading alternate ModMii.exe Launcher...
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ModMii_Launcher_2.4_32bit.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip"
-
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:skip)
-
-support\7za x -aoa "temp\ModMii_Launcher_2.4_32bit.zip" -r ModMii_32bit.exe
-
-if not exist ModMii_32bit.exe (del "temp\ModMii_Launcher_2.4_32bit.zip">nul) & (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:skip)
-
-move /y ModMii.exe ModMii_64bit.exe>nul
-move /y ModMii_32bit.exe ModMii.exe>nul
-
-goto:skip
 :continue
-
 
 ::check for "microsoft visual c++ 2015-2022"
 ::if exist "%homedrive%\Program Files (x86)" (set dlname=hashmyfiles-x64.zip) else (set dlname=hashmyfiles.zip)
@@ -1623,6 +1601,7 @@ if exist temp\WADinfo.txt del temp\WADinfo.txt>nul
 If /i "%wadtype%" EQU "Invalid" (echo.) & (echo This is not a valid WAD file! Press any key to exit...) & (pause>nul) & (exit)
 
 ::Detect NandLoader if %AutoDetectNL% setting is enabled, WADcontents is not GTR than 3 (so channels like Region Select & bomberman aren't attempted), and wadtype is channel or hidden
+if "%AutoDetectNL%"=="" goto:AutoDetectNLpickup
 if %WadContents% LEQ 1 goto:AutoDetectNLpickup
 if %WadContents% GTR 3 goto:AutoDetectNLpickup
 If /i "%wadtype%" EQU "channel" goto:AutoDetectNL
@@ -1931,6 +1910,7 @@ echo           If you would like to change the Title ID, enter a new 4-character
 echo.
 echo           To leave the Title ID unchanged, leave the selection blank and press Enter.
 echo.
+if "%TitID%"=="" goto:skipwarning
 
 ::check for title ID's that cause issues on vWii https://hackmd.io/@Ingunar/43OnlyWii#Structure-and-rules (pillarboxing be resolved using priiloader system menu hack instead)
 ::https://github.com/DacoTaco/priiloader/blob/master/docs/HACKSLIST.md#remove-pillarboxing-completely-vwii
@@ -2699,6 +2679,8 @@ set /p address= <"temp\NandLoader.nfo"
 del "temp\NandLoader.nfo">nul
 ::echo address %address%
 
+if "%address%"=="" goto:%DetectNLpickup%
+
 set entrypoint=00000000
 
 ::xhexfind instead of sfk hexfind to use wildcards i.e. [2 bytes]
@@ -2843,6 +2825,7 @@ set /p address= <"temp\NandLoader.nfo"
 del "temp\NandLoader.nfo">nul
 ::echo address %address%
 
+if "%address%"=="" goto:%DetectNLpickup%
 
 :step3b
 ::3) save a copy of nandloader.bin and edit\replace with nul entrypoint
@@ -3846,6 +3829,7 @@ echo.
 If /i "%droptype%" EQU "folder" goto:NoExpPak
 
 ::confirm N*** title ID
+if "%TitID%"=="" goto:NoExpPak
 If /i "%TitID:~0,1%" NEQ "N" goto:NoExpPak
 if "%TitID:~3%"=="" goto:NoExpPak
 if not "%TitID:~4%"=="" goto:NoExpPak
@@ -3969,6 +3953,7 @@ support\sfk hexfind "%ImageDol%" -binary /%str1%/ >nul
 IF ERRORLEVEL 1 set WADdeflicker=Enabled
 
 ::N64ExpPatch
+if "%TitID%"=="" goto:NoExpPak
 If /i "%TitID:~0,1%" NEQ "N" goto:NoExpPak
 if "%TitID:~3%"=="" goto:NoExpPak
 if not "%TitID:~4%"=="" goto:NoExpPak
@@ -4093,6 +4078,7 @@ IF not ERRORLEVEL 1 (support\sfk echo [%magentatext%]N64 Dark Filter Patching FA
 If /i "%droptype%" EQU "folder" if /i "%ExpPakQ%" EQU "N" goto:NoExpPak
 ::confirm N*** title ID
 If /i "%droptype%" EQU "folder" set N64ExpPatch=
+if "%TitID%"=="" goto:NoExpPak
 If /i "%TitID:~0,1%" NEQ "N" goto:NoExpPak
 if "%TitID:~3%"=="" goto:NoExpPak
 if not "%TitID:~4%"=="" goto:NoExpPak
@@ -8071,7 +8057,7 @@ echo.
 support\sfk echo [%bluetext%]SysCheck Updater [%cyantext%](SysCheck.csv)[def]; update only your outdated softmods
 echo Examples: SysCheck.csv, or any csv that was created by SysCheck and renamed
 echo.
-support\sfk echo [%bluetext%]App Updater ^& File Cleanup [%cyantext%](SD\USB Drives or Folders)[def]; Update Apps and\or remove un-needed files
+support\sfk echo [%bluetext%]File Checkup [%cyantext%](SD\USB Drives or Folders)[def]; Update Apps and\or Cleanup un-needed files
 echo Examples: W:, X:, COPY_TO_SD, COPY_TO_USB
 echo.
 support\sfk echo [%bluetext%]Emulated Nand Modifer [%cyantext%](EmuNand Folder)[def]; Edit an Emulated NAND
@@ -9949,6 +9935,7 @@ set hxd=
 set Diskitude=
 set WiiLink=
 set Cemu=
+set TWBM=
 set Nkit=
 set RC24=
 set SDTEST=
@@ -10430,7 +10417,7 @@ support\sfk echo -spat \x20 \x20 \x20 \x20 \x20[%yellowtext%]files to its temp f
 echo.
 echo      C = Customize Config Files for Bootmii, Wad Manager or Multi-Mod Manager
 echo.
-echo     FC = File Cleanup ^& App Updater: Update Apps and\or remove un-needed files
+echo     FC = File Checkup: Update Apps and\or Cleanup un-needed files
 echo.
 echo      O = Options            CR = Credits            E = Exit
 echo.
@@ -11102,89 +11089,88 @@ if /i "%nextpage%" NEQ "DLPAGE4.hta" goto:notDL4
 set "replacements=%replacements%-rep _"d2xversion"_"%d2x-beta-rev%"_ "
 
 
-::make boxes for d2x bases 60/70/80 disabled IF older than v8 beta 42, as those bases never existed for those older versions
-echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
-support\sfk filter -spat temp\cIOSrev.bat -rep _\x22__ -rep _"-*"__ -write -yes>nul
-call temp\cIOSrev.bat
-del temp\cIOSrev.bat>nul
+if exist Support\d2x-beta\ciosmaps.xml (set xml=Support\d2x-beta\ciosmaps.xml) else (set xml=Support\d2xModules\ciosmaps.xml)
+echo ->temp\null_ciosmaps_vWii.xml
+if exist "Support\d2x-beta\" (set vxml=temp\null_ciosmaps_vWii.xml) else (set vxml=Support\d2xModules\ciosmaps_vWii.xml)
+if exist Support\d2x-beta\ciosmaps_vWii.xml set vxml=Support\d2x-beta\ciosmaps_vWii.xml
 
-if %cIOSversionNum% GEQ 8 goto:skipdisable
-set "replacements=%replacements%-rep _"d2xNA--\x3e\x3cth"_"d2xNA--\x3e\x3cth disabled"_ "
+findStr /I /C:"base ios=\"37\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x37NA--\x3e\x3cth"_"d2x37NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f37\x5fd2x.checked = True)"__ -rep _" And (c250\x5f37\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f37\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f37\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[37]-d2x-v10-beta52=) & (set cIOS250[37]-d2x-v10-beta52=)
 
-set "replacements=%replacements%-rep _" And (c249\x5f60\x5fd2x.checked = True) And (c249\x5f70\x5fd2x.checked = True) And (c249\x5f80\x5fd2x.checked = True)"__ "
+findStr /I /C:"base ios=\"38\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x38NA--\x3e\x3cth"_"d2x38NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f38\x5fd2x.checked = True)"__ -rep _" And (c250\x5f38\x5fd2x.checked = True)"__ -rep _" And (c248\x5f38\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f38\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f38\x5fd2x.checked = checkstatus"__ -rep _"c248\x5f38\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[38]-d2x-v10-beta52=) & (set cIOS250[38]-d2x-v10-beta52=) & (set cIOS248[38]-d2x-v10-beta52=)
 
-set "replacements=%replacements%-rep _" And (c250\x5f60\x5fd2x.checked = True) And (c250\x5f70\x5fd2x.checked = True) And (c250\x5f80\x5fd2x.checked = True)"__ "
+findStr /I /C:"base ios=\"53\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x53NA--\x3e\x3cth"_"d2x53NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f53\x5fd2x.checked = True)"__ -rep _" And (c250\x5f53\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f53\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f53\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[53]-d2x-v10-beta52=) & (set cIOS250[53]-d2x-v10-beta52=)
 
+findStr /I /C:"base ios=\"55\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x55NA--\x3e\x3cth"_"d2x55NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f55\x5fd2x.checked = True)"__ -rep _" And (c250\x5f55\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f55\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f55\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[55]-d2x-v10-beta52=) & (set cIOS250[55]-d2x-v10-beta52=)
 
-set "replacements=%replacements%-rep _"c249\x5f60\x5fd2x.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c249\x5f70\x5fd2x.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c249\x5f80\x5fd2x.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c250\x5f60\x5fd2x.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c250\x5f70\x5fd2x.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c250\x5f80\x5fd2x.checked = checkstatus"__ "
+findStr /I /C:"base ios=\"56\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x56NA--\x3e\x3cth"_"d2x56NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f56\x5fd2x.checked = True)"__ -rep _" And (c250\x5f56\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f56\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f56\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v10-beta52=) & (set cIOS250[56]-d2x-v10-beta52=)
 
-set cIOS249[60]-d2x-v10-beta52=
-set cIOS249[70]-d2x-v10-beta52=
-set cIOS249[80]-d2x-v10-beta52=
-set cIOS250[60]-d2x-v10-beta52=
-set cIOS250[70]-d2x-v10-beta52=
-set cIOS250[80]-d2x-v10-beta52=
-:skipdisable
+findStr /I /C:"base ios=\"57\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x57NA--\x3e\x3cth"_"d2x57NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f57\x5fd2x.checked = True)"__ -rep _" And (c250\x5f57\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f57\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f57\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v10-beta52=) & (set cIOS250[57]-d2x-v10-beta52=)
 
+findStr /I /C:"base ios=\"58\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x58NA--\x3e\x3cth"_"d2x58NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f58\x5fd2x.checked = True)"__ -rep _" And (c250\x5f58\x5fd2x.checked = True)"__ -rep _" And (c251\x5f58\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f58\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f58\x5fd2x.checked = checkstatus"__ -rep _"c251\x5f58\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[58]-d2x-v10-beta52=) & (set cIOS250[58]-d2x-v10-beta52=) & (set cIOS251[58]-d2x-v10-beta52=)
 
+findStr /I /C:"base ios=\"60\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x60NA--\x3e\x3cth"_"d2x60NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f60\x5fd2x.checked = True)"__ -rep _" And (c250\x5f60\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f60\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f60\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[60]-d2x-v10-beta52=) & (set cIOS250[60]-d2x-v10-beta52=)
 
-::make boxes for vWii d2x cIOSs disabled IF older than v10, as they didn't exist
+findStr /I /C:"base ios=\"70\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x70NA--\x3e\x3cth"_"d2x70NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f70\x5fd2x.checked = True)"__ -rep _" And (c250\x5f70\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f70\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f70\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[70]-d2x-v10-beta52=) & (set cIOS250[70]-d2x-v10-beta52=)
 
-::echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
-::support\sfk filter -spat temp\cIOSrev.bat -rep _\x22__ -rep _"-*"__ -write -yes>nul
-::call temp\cIOSrev.bat
-::del temp\cIOSrev.bat>nul
+findStr /I /C:"base ios=\"80\"" "%xml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2x80NA--\x3e\x3cth"_"d2x80NA--\x3e\x3cth disabled"_ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _" And (c249\x5f80\x5fd2x.checked = True)"__ -rep _" And (c250\x5f80\x5fd2x.checked = True)"__ "
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"c249\x5f80\x5fd2x.checked = checkstatus"__ -rep _"c250\x5f80\x5fd2x.checked = checkstatus"__ "
+IF ERRORLEVEL 1 (set cIOS249[80]-d2x-v10-beta52=) & (set cIOS250[80]-d2x-v10-beta52=)
 
+findStr /I /C:"base ios=\"38\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2xvWii38NA--\x3e\x3cth"_"d2xvWii38NA--\x3e\x3cth disabled"_ -rep _" And (c248\x5f38\x5fd2x\x5fvWii.checked = True)"__ -rep _"c248\x5f38\x5fd2x\x5fvWii.checked = checkstatus"__ "
+IF ERRORLEVEL 1 set cIOS248[38]-d2x-vWii=
 
-::disable when d2x-beta-rev=10-b52-Stealth-RC24, not worth the effort even though technically doable
-if exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable
-if exist "Support\d2x-beta\" goto:disable
-::if /i "%d2x-beta-rev%" EQU "10-b52-Stealth-RC24" goto:disable
-::if %cIOSversionNum% GEQ 9 goto:skipdisable
-goto:skipdisable
+findStr /I /C:"base ios=\"56\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2xvWii56NA--\x3e\x3cth"_"d2xvWii56NA--\x3e\x3cth disabled"_ -rep _" And (c249\x5f56\x5fd2x\x5fvWii.checked = True)"__ -rep _"c249\x5f56\x5fd2x\x5fvWii.checked = checkstatus"__ "
+IF ERRORLEVEL 1 set cIOS249[56]-d2x-vWii=
 
-:disable
-set "replacements=%replacements%-rep _"d2xvWiiNA--\x3e\x3cth"_"d2xvWiiNA--\x3e\x3cth disabled"_ -rep _"d2xvWii38NA--\x3e\x3cth"_"d2xvWii38NA--\x3e\x3cth disabled"_ "
+findStr /I /C:"base ios=\"57\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2xvWii57NA--\x3e\x3cth"_"d2xvWii57NA--\x3e\x3cth disabled"_ -rep _" And (c250\x5f57\x5fd2x\x5fvWii.checked = True)"__ -rep _"c250\x5f57\x5fd2x\x5fvWii.checked = checkstatus"__ "
+IF ERRORLEVEL 1 set cIOS250[57]-d2x-vWii=
 
-set "replacements=%replacements%-rep _" And (c248\x5f38\x5fd2x\x5fvWii.checked = True) And (c249\x5f56\x5fd2x\x5fvWii.checked = True) And (c250\x5f57\x5fd2x\x5fvWii.checked = True) And (c251\x5f58\x5fd2x\x5fvWii.checked = True)"__ "
-
-set "replacements=%replacements%-rep _"c248\x5f38\x5fd2x\x5fvWii.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c249\x5f56\x5fd2x\x5fvWii.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c250\x5f57\x5fd2x\x5fvWii.checked = checkstatus"__ "
-set "replacements=%replacements%-rep _"c251\x5f58\x5fd2x\x5fvWii.checked = checkstatus"__ "
-
-set cIOS248[38]-d2x-vWii=
-set cIOS249[56]-d2x-vWii=
-set cIOS250[57]-d2x-vWii=
-set cIOS251[58]-d2x-vWii=
-goto:skipdisable2
-:skipdisable
-
-
-
-
-::disable cIOS248[38]-d2x-vWii if not supported in ciosmaps_vWii.xml
-if not exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable2
-
-::check ciosmaps_vWii.xml for 'base ios="38"'
-findStr /I /C:"base ios=\"38\"" "Support\d2x-beta\ciosmaps_vWii.xml" >nul
-IF NOT ERRORLEVEL 1 goto:skipdisable2
-
-set "replacements=%replacements%-rep _"d2xvWii38NA--\x3e\x3cth"_"d2xvWii38NA--\x3e\x3cth disabled"_ "
-set "replacements=%replacements%-rep _" And (c248\x5f38\x5fd2x\x5fvWii.checked = True)"__ "
-set "replacements=%replacements%-rep _"c248\x5f38\x5fd2x\x5fvWii.checked = checkstatus"__ "
-set cIOS248[38]-d2x-vWii=
-:skipdisable2
-
-
+findStr /I /C:"base ios=\"58\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set "replacements=%replacements%-rep _"d2xvWii58NA--\x3e\x3cth"_"d2xvWii58NA--\x3e\x3cth disabled"_ -rep _" And (c251\x5f58\x5fd2x\x5fvWii.checked = True)"__ -rep _"c251\x5f58\x5fd2x\x5fvWii.checked = checkstatus"__ "
+IF ERRORLEVEL 1 set cIOS251[58]-d2x-vWii=
 
 ::if /i "%DLTOTAL%" EQU "0" goto:HTAstuff
-
 
 if /i "%cIOS223[37-38]-v4%" EQU "*" set "replacements=%replacements%-rep _"\x22c223\x5f37\x5f38\x5fv4\x22"_"\x22c223\x5f37\x5f38\x5fv4\x22 checked=\x22true\x22"_ "
 if /i "%cIOS222[38]-v4%" EQU "*" set "replacements=%replacements%-rep _"\x22c222\x5f38\x5fv4\x22"_"\x22c222\x5f38\x5fv4\x22 checked=\x22true\x22"_ "
@@ -11290,6 +11276,7 @@ if /i "%UStealth%" EQU "*" set "replacements=%replacements%-rep _"\x22UStealth\x
 if /i "%WiiLink%" EQU "*" set "replacements=%replacements%-rep _"\x22WiiLink\x22"_"\x22WiiLink\x22 checked=\x22true\x22"_ "
 if /i "%NUSGet%" EQU "*" set "replacements=%replacements%-rep _"\x22NUSGet\x22"_"\x22NUSGet\x22 checked=\x22true\x22"_ "
 if /i "%Cemu%" EQU "*" set "replacements=%replacements%-rep _"\x22Cemu\x22"_"\x22Cemu\x22 checked=\x22true\x22"_ "
+if /i "%TWBM%" EQU "*" set "replacements=%replacements%-rep _"\x22TWBM\x22"_"\x22TWBM\x22 checked=\x22true\x22"_ "
 if /i "%wbm%" EQU "*" set "replacements=%replacements%-rep _"\x22wbm\x22"_"\x22wbm\x22 checked=\x22true\x22"_ "
 if /i "%f32%" EQU "*" set "replacements=%replacements%-rep _"\x22f32\x22"_"\x22f32\x22 checked=\x22true\x22"_ "
 if /i "%SMW%" EQU "*" set "replacements=%replacements%-rep _"\x22SMW\x22"_"\x22SMW\x22 checked=\x22true\x22"_ "
@@ -11922,8 +11909,8 @@ if /i "%ACTIVEIOS%" EQU "OFF" support\sfk echo -spat \x20 \x20 U = Update IOSs. 
 if /i "%ACTIVEIOS%" EQU "ON" support\sfk echo -spat \x20 \x20 U = Update IOSs. Wizard/SysCheck-Updater to update Active IOSs [%greentext%](Enabled)
 echo.
 
->nul findstr "^" "Support\settings_skipped_apps.txt" || support\sfk echo -spat \x20 \x20SA = Skipped Apps for File Cleanup, App Updater ^& OSC\HBAS Downloads [%cyantext%](None)
->nul findstr "^" "Support\settings_skipped_apps.txt" && support\sfk echo -spat \x20 \x20SA = Skipped Apps for File Cleanup, App Updater, OSC\HBAS Downloads [%yellowtext%](Some)
+>nul findstr "^" "Support\settings_skipped_apps.txt" || support\sfk echo -spat \x20 \x20SA = Skipped Apps for File Checkup ^& OSC\HBAS Downloads [%cyantext%](None)
+>nul findstr "^" "Support\settings_skipped_apps.txt" && support\sfk echo -spat \x20 \x20SA = Skipped Apps for File Checkup ^& OSC\HBAS Downloads [%yellowtext%](Some)
 echo.
 
 
@@ -13086,13 +13073,13 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo                              FILE CLEANUP and APP UPDATER
+echo                                     FILE CHECKUP
 echo.
 echo.
 echo      No Files to Update or to Clean Found in "%DRIVE%"
 echo.
 
-if /i "%CLEANcountSkip%" NEQ "0" support\sfk echo -spat \x20 \x20 [%yellowtext%] %CLEANcountSkip% detected items skipped from Clean Up checks as per Settings
+if /i "%CLEANcountSkip%" NEQ "0" support\sfk echo -spat \x20 \x20 [%yellowtext%] %CLEANcountSkip% detected items skipped from File Cleanup checks as per Settings
 
 if /i "%OSCupdateitems%" EQU "0" goto:skip
 if not exist temp\OSCcountCurrent.txt goto:skip
@@ -13186,12 +13173,12 @@ set clean=
 echo                                        ModMii                                v%currentversion%
 echo                                       by XFlak
 echo.
-echo                              FILE CLEANUP and APP UPDATER 
+echo                                     FILE CHECKUP
 echo.
 echo        Checked files saved to: "%DRIVE%"
 echo.
 
-if /i "%CLEANcountSkip%" NEQ "0" support\sfk echo -spat \x20 \x20 \x20 [%yellowtext%] %CLEANcountSkip% detected items skipped from Clean Up checks as per Settings
+if /i "%CLEANcountSkip%" NEQ "0" support\sfk echo -spat \x20 \x20 \x20 [%yellowtext%] %CLEANcountSkip% detected items skipped from File Cleanup checks as per Settings
 
 if not exist temp\OSCcountCurrent.txt goto:skip
 set /p OSCcountCurrent= <temp\OSCcountCurrent.txt
@@ -13272,7 +13259,7 @@ if /i "%FTPiiU Plugin%" NEQ "*" echo        FTPiiU Plugin was confirmed to alrea
 
 echo.
 if /i "%updateitems%" EQU "0" (echo        No Apps to Update Found) & (echo.) & (goto:noupdates)
-support\sfk echo -spat \x20 \x20 \x20 [%greentext%] Update the following %updateitems% items?
+support\sfk echo -spat \x20 \x20 \x20 [%greentext%] App Updater; update the following %updateitems% items?
 echo.
 
 set updateitems=0
@@ -13360,12 +13347,12 @@ echo.
 if /i "%updateitems%" NEQ "0" support\sfk echo -spat \x20 \x20 \x20 [%greentext%] U = Update; [def]grab latest versions of detected outdated apps
 if /i "%cleanitems%" EQU "0" goto:skip
 support\sfk echo -spat \x20 \x20 \x20 [%redtext%]FC = File Cleanup; [def]Remove un-needed files after Modding
-if /i "%updateitems%" NEQ "0" echo        B = Both; Update Check and File Cleanup
+if /i "%updateitems%" NEQ "0" echo        B = Both; Update and File Cleanup
 :skip
 
 if /i "%listitems%" EQU "0" goto:noItems
-support\sfk echo -spat \x20 \x20 \x20 [%cyantext%] \x23 [def]= Enter an app number to skip checks for it now and in the future
-support\sfk echo -spat \x20 \x20 \x20 [%cyantext%]\x23\x2d [def]= Same as above followed by \x2d to skip checks just this once
+support\sfk echo -spat \x20 \x20 \x20 [%cyantext%] \x23 [def]= Enter an app number to skip it now and in the future
+support\sfk echo -spat \x20 \x20 \x20 [%cyantext%]\x23\x2d [def]= Same as above followed by \x2d to skip it just this once
 :noItems
 
 if exist Support\settings_skipped_apps.txt support\sfk echo -spat \x20 \x20 \x20 [%yellowtext%] S = Settings [def]for apps skipping update checks
@@ -13588,10 +13575,8 @@ echo                                        ModMii                              
 echo                                       by XFlak
 echo.
 echo.
-echo      The following apps will be skipped from ModMii's App Updater functions
+echo      The following apps will be skipped from ModMii's File Checkup functions
 echo      and also from OSC\HBAS Complete App Library Downloads:
-echo.
-echo      Any "Clean Content" items will be skipped from ModMii's File Cleanup functions
 echo.
 set SkipUpdateNum=0
 if not exist Support\settings_skipped_apps.txt goto:quickskip
@@ -14466,15 +14451,33 @@ goto:AddToSkipUpdateSettingsHBAS
 set clean2="
 ::B, both clean and update check
 echo.
-if /i "%clean%" EQU "B" echo          Note: Updates will be done after File Cleanup operations
+if /i "%clean%" EQU "B" echo       Note: Updates will be done after File Cleanup operations
 
 echo.
-support\sfk echo -spat \x20 \x20 \x20 Are you sure you want to [%redtext%]permanently delete %cleanitems% File Cleanup items? (Y^/N)
+support\sfk echo -spat \x20 \x20 \x20 Are you sure you want to [%redtext%]permanently delete the following %cleanitems% items?[def] (Y^/N)
+
+
+set cleanitemsB=0
+
+::Loop through the following once for EACH line in *.txt
+for /F "tokens=*" %%A in (temp\CleanItems.txt) do call :CleanlistB %%A
+goto:quickskip
+:CleanlistB
+set /a cleanitemsB+=1
+support\sfk echo -spat -noline \n\x20 \x20 \x20 [%Redtext%] %cleanitemsB%:\x20
+support\sfk echo -noline %*
+goto:EOF
+:quickskip
+
 echo.
+echo.
+
 set /p clean2=Enter Selection Here: 
 set "clean2=%clean2:"=%"
 if /i "%clean2%" EQU "Y" goto:cleannow3
-if /i "%clean2%" EQU "N" goto:MENU
+if /i "%clean2%" EQU "N" goto:FileCleanup2
+if /i "%clean2%" EQU "B" goto:FileCleanup2
+if /i "%clean2%" EQU "M" goto:MENU
 echo You Have Entered an Incorrect Key
 @ping 127.0.0.1 -n 2 -w 1000> nul
 goto:FileCleanup2
@@ -14566,8 +14569,8 @@ echo         * Region Changing is not necessary to play other region games.
 echo           For example, you can play JPN games on a softmodded US Wii without
 echo           region changing.
 echo.
-echo         * An alternative to region changing is to use SNEEK\UNEEK to emulate a
-echo           different region System Menu.
+echo         * An alternative to region changing is to use an Emulated NAND
+echo           and\or SNEEK\UNEEK to emulate a different region System Menu.
 echo.
 echo.
 echo         If you still want to region change your Wii, read the following
@@ -14607,7 +14610,7 @@ if /i "%REGIONCHANGE%" EQU "N" goto:MENU
 if /i "%REGIONCHANGE%" NEQ "Y" goto:badkey
 
 ::check if d2x version is customized and offer to revert to default
-call support\subscripts\defaultd2x.bat
+::call support\subscripts\defaultd2x.bat
 
 goto:WPAGE3
 
@@ -15041,7 +15044,9 @@ echo.
 echo    Select the Exploit you would like to use on your vWii.
 echo.
 echo.
-echo     BE = Browser Exploit: no disc required, but needs an SD Card ^& internet on vWii
+echo     BE = Browser Exploit: no disc required, but needs SD Card ^& internet^^ on WiiU
+echo          * Choose this if your WiiU is already modded and running Aroma
+echo          ^^ Internet on the WiiU is not needed if it's already running Aroma
 echo.
 echo.
 echo  The exploits below do not need internet, only an SD Card ^& one of these Wii games:
@@ -19973,51 +19978,58 @@ support\sfk echo -spat \x20 v# = Change cIOS Version # (where # is 1-65535): Cur
 support\sfk echo -spat \x20d2x = Change d2x cIOS Version: \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20d2x Current Setting: [%cyantext%]%d2x-beta-rev%
 echo.
 support\sfk echo -spat \x20 \x20 \x20 \x20 \x20 \x20[%redtext%] d2x cIOSs \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 Hermes v4 cIOSs
-echo      37 = d2x cIOS%ADVSLOT2%[37]                    437 = Hermes v4 cIOS%ADVSLOT2%[37-38]
-echo      38 = d2x cIOS%ADVSLOT2%[38]                    438 = Hermes v4 cIOS%ADVSLOT2%[38]
-echo      53 = d2x cIOS%ADVSLOT2%[53]
-support\sfk echo -spat \x20 \x20 \x2055 = d2x cIOS%ADVSLOT2%[55]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [%redtext%]Waninkoko v21 cIOSs
-echo      56 = d2x cIOS%ADVSLOT2%[56]                    W37 = Waninkoko v21 cIOS%ADVSLOT2%[37]
-echo      57 = d2x cIOS%ADVSLOT2%[57]                    W38 = Waninkoko v21 cIOS%ADVSLOT2%[38]
-echo      58 = d2x cIOS%ADVSLOT2%[58]                    W53 = Waninkoko v21 cIOS%ADVSLOT2%[53]
 
-::make boxes for d2x bases 60/70/80 disabled IF older than v8 beta 42, as those bases never existed for those older versions
-echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
-support\sfk filter -spat temp\cIOSrev.bat -rep _\x22__ -rep _"-*"__ -write -yes>nul
-call temp\cIOSrev.bat
-del temp\cIOSrev.bat>nul
+::check ciosmaps for 'base ios="XX"'
 
-if %cIOSversionNum% GEQ 8 goto:skipdisable
-echo      N/A: d2x cIOS%ADVSLOT2%[60]                    W55 = Waninkoko v21 cIOS%ADVSLOT2%[55]
-echo      N/A: d2x cIOS%ADVSLOT2%[70]                    W56 = Waninkoko v21 cIOS%ADVSLOT2%[56]
-echo      N/A: d2x cIOS%ADVSLOT2%[80]                    W57 = Waninkoko v21 cIOS%ADVSLOT2%[57]
-goto:skip
-:skipdisable
-echo      60 = d2x cIOS%ADVSLOT2%[60]                    W55 = Waninkoko v21 cIOS%ADVSLOT2%[55]
-echo      70 = d2x cIOS%ADVSLOT2%[70]                    W56 = Waninkoko v21 cIOS%ADVSLOT2%[56]
-echo      80 = d2x cIOS%ADVSLOT2%[80]                    W57 = Waninkoko v21 cIOS%ADVSLOT2%[57]
-:skip
+if exist Support\d2x-beta\ciosmaps.xml (set xml=Support\d2x-beta\ciosmaps.xml) else (set xml=Support\d2xModules\ciosmaps.xml)
 
-if exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable
-if not exist "Support\d2x-beta\" goto:skipdisable
-echo      N/A: d2x cIOS%ADVSLOT2%[38]-vWii               W58 = Waninkoko v21 cIOS%ADVSLOT2%[58]
-echo      N/A: d2x cIOS%ADVSLOT2%[56]-vWii
-support\sfk echo -spat \x20 \x20 \x20N/A: d2x cIOS%ADVSLOT2%[57]-vWii\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20[%redtext%]Waninkoko v20 cIOSs
-echo      N/A: d2x cIOS%ADVSLOT2%[58]-vWii             W2038 = Waninkoko v20 cIOS%ADVSLOT2%[38]
-goto:skip
-:skipdisable
+echo ->temp\null_ciosmaps_vWii.xml
+if exist "Support\d2x-beta\" (set vxml=temp\null_ciosmaps_vWii.xml) else (set vxml=Support\d2xModules\ciosmaps_vWii.xml)
+if exist Support\d2x-beta\ciosmaps_vWii.xml set vxml=Support\d2x-beta\ciosmaps_vWii.xml
 
-::disable cIOS248[38]-d2x-vWii if not supported in ciosmaps_vWii.xml
-::check ciosmaps_vWii.xml for 'base ios="38"'
-if not exist "Support\d2x-beta\" (echo     38v = d2x cIOS%ADVSLOT2%[38]-vWii               W58 = Waninkoko v21 cIOS%ADVSLOT2%[58]) & (goto:tinyskip)
-findStr /I /C:"base ios=\"38\"" "Support\d2x-beta\ciosmaps_vWii.xml" >nul
+findStr /I /C:"base ios=\"37\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[37]                    437 = Hermes v4 cIOS%ADVSLOT2%[37-38]) else (echo      37 = d2x cIOS%ADVSLOT2%[37]                    437 = Hermes v4 cIOS%ADVSLOT2%[37-38])
+
+findStr /I /C:"base ios=\"38\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[38]                    438 = Hermes v4 cIOS%ADVSLOT2%[38]) else (echo      38 = d2x cIOS%ADVSLOT2%[38]                    438 = Hermes v4 cIOS%ADVSLOT2%[38])
+
+findStr /I /C:"base ios=\"53\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[53]) else (echo      53 = d2x cIOS%ADVSLOT2%[53])
+
+findStr /I /C:"base ios=\"55\"" "%xml%" >nul
+IF ERRORLEVEL 1 (support\sfk echo -spat \x20 \x20 \x20N/A: d2x cIOS%ADVSLOT2%[55]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [%redtext%]Waninkoko v21 cIOSs) else (support\sfk echo -spat \x20 \x20 \x2055 = d2x cIOS%ADVSLOT2%[55]\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 [%redtext%]Waninkoko v21 cIOSs)
+
+findStr /I /C:"base ios=\"56\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[56]                    W37 = Waninkoko v21 cIOS%ADVSLOT2%[37]) else (echo      56 = d2x cIOS%ADVSLOT2%[56]                    W37 = Waninkoko v21 cIOS%ADVSLOT2%[37])
+
+findStr /I /C:"base ios=\"57\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[57]                    W38 = Waninkoko v21 cIOS%ADVSLOT2%[38]) else (echo      57 = d2x cIOS%ADVSLOT2%[57]                    W38 = Waninkoko v21 cIOS%ADVSLOT2%[38])
+
+findStr /I /C:"base ios=\"58\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[58]                    W53 = Waninkoko v21 cIOS%ADVSLOT2%[53]) else (echo      58 = d2x cIOS%ADVSLOT2%[58]                    W53 = Waninkoko v21 cIOS%ADVSLOT2%[53])
+
+findStr /I /C:"base ios=\"60\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[60]                    W55 = Waninkoko v21 cIOS%ADVSLOT2%[55]) else (echo      60 = d2x cIOS%ADVSLOT2%[60]                    W55 = Waninkoko v21 cIOS%ADVSLOT2%[55])
+
+findStr /I /C:"base ios=\"70\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[70]                    W56 = Waninkoko v21 cIOS%ADVSLOT2%[56]) else (echo      70 = d2x cIOS%ADVSLOT2%[70]                    W56 = Waninkoko v21 cIOS%ADVSLOT2%[56])
+
+findStr /I /C:"base ios=\"80\"" "%xml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[80]                    W57 = Waninkoko v21 cIOS%ADVSLOT2%[57]) else (echo      80 = d2x cIOS%ADVSLOT2%[80]                    W57 = Waninkoko v21 cIOS%ADVSLOT2%[57])
+
+
+findStr /I /C:"base ios=\"38\"" "%vxml%" >nul
 IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[38]-vWii               W58 = Waninkoko v21 cIOS%ADVSLOT2%[58]) else (echo     38v = d2x cIOS%ADVSLOT2%[38]-vWii               W58 = Waninkoko v21 cIOS%ADVSLOT2%[58])
-:tinyskip
 
-echo     56v = d2x cIOS%ADVSLOT2%[56]-vWii
-support\sfk echo -spat \x20 \x20 57v = d2x cIOS%ADVSLOT2%[57]-vWii\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20[%redtext%]Waninkoko v20 cIOSs
-echo     58v = d2x cIOS%ADVSLOT2%[58]-vWii             W2038 = Waninkoko v20 cIOS%ADVSLOT2%[38]
-:skip
+findStr /I /C:"base ios=\"56\"" "%vxml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[56]-vWii) else (echo     56v = d2x cIOS%ADVSLOT2%[56]-vWii)
+
+findStr /I /C:"base ios=\"57\"" "%vxml%" >nul
+IF ERRORLEVEL 1 (support\sfk echo -spat \x20 \x20 \x20N/A: d2x cIOS%ADVSLOT2%[57]-vWii\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20[%redtext%]Waninkoko v20 cIOSs) else (support\sfk echo -spat \x20 \x20 57v = d2x cIOS%ADVSLOT2%[57]-vWii\x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20 \x20[%redtext%]Waninkoko v20 cIOSs)
+
+findStr /I /C:"base ios=\"58\"" "%vxml%" >nul
+IF ERRORLEVEL 1 (echo      N/A: d2x cIOS%ADVSLOT2%[58]-vWii             W2038 = Waninkoko v20 cIOS%ADVSLOT2%[38]) else (echo     58v = d2x cIOS%ADVSLOT2%[58]-vWii             W2038 = Waninkoko v20 cIOS%ADVSLOT2%[38])
+
 
 echo                                            W2056 = Waninkoko v20 cIOS%ADVSLOT2%[56]
 support\sfk echo -spat \x20 \x20 \x20[%redtext%] Rodries\Hermes v5.1 cIOSs[def] \x20 \x20 \x20 \x20 \x20 \x20W2057 = Waninkoko v20 cIOS%ADVSLOT2%[57]
@@ -20148,39 +20160,23 @@ if /i "%ADVLIST%" EQU "W53" set CurrentDLNAME=cIOS249[53]-v21
 if /i "%ADVLIST%" EQU "W55" set CurrentDLNAME=cIOS249[55]-v21
 if /i "%ADVLIST%" EQU "W57" set CurrentDLNAME=cIOS249[57]-v21
 if /i "%ADVLIST%" EQU "W58" set CurrentDLNAME=cIOS249[58]-v21
-if /i "%ADVLIST%" EQU "37" set CurrentDLNAME=cIOS249[37]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "38" set CurrentDLNAME=cIOS249[38]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "53" set CurrentDLNAME=cIOS249[53]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "55" set CurrentDLNAME=cIOS249[55]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "56" set CurrentDLNAME=cIOS249[56]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "57" set CurrentDLNAME=cIOS249[57]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "58" set CurrentDLNAME=cIOS249[58]-d2x-v10-beta52
-
-if %cIOSversionNum% LSS 8 goto:skip
-if /i "%ADVLIST%" EQU "60" set CurrentDLNAME=cIOS249[60]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "70" set CurrentDLNAME=cIOS249[70]-d2x-v10-beta52
-if /i "%ADVLIST%" EQU "80" set CurrentDLNAME=cIOS249[80]-d2x-v10-beta52
-:skip
 
 
-if exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable
-if exist "Support\d2x-beta\" goto:skip
-::if %cIOSversionNum% LSS 9 goto:skip
-::if /i "%d2x-beta-rev%" EQU "10-b52-Stealth-RC24" goto:skip
-:skipdisable
+if /i "%ADVLIST%" EQU "37" (findStr /I /C:"base ios=\"37\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[37]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "38" (findStr /I /C:"base ios=\"38\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[38]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "53" (findStr /I /C:"base ios=\"53\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[53]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "55" (findStr /I /C:"base ios=\"55\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[55]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "56" (findStr /I /C:"base ios=\"56\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[56]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "57" (findStr /I /C:"base ios=\"57\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[57]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "58" (findStr /I /C:"base ios=\"58\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[58]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "60" (findStr /I /C:"base ios=\"60\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[60]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "70" (findStr /I /C:"base ios=\"70\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[70]-d2x-v10-beta52)
+if /i "%ADVLIST%" EQU "80" (findStr /I /C:"base ios=\"80\"" "%xml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[80]-d2x-v10-beta52)
 
-if /i "%ADVLIST%" EQU "56v" set CurrentDLNAME=cIOS249[56]-d2x-vWii
-if /i "%ADVLIST%" EQU "57v" set CurrentDLNAME=cIOS250[57]-d2x-vWii
-if /i "%ADVLIST%" EQU "58v" set CurrentDLNAME=cIOS251[58]-d2x-vWii
-
-::disable cIOS248[38]-d2x-vWii if not supported in ciosmaps_vWii.xml
-::check ciosmaps_vWii.xml for 'base ios="38"'
-if not exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable
-findStr /I /C:"base ios=\"38\"" "Support\d2x-beta\ciosmaps_vWii.xml" >nul
-IF ERRORLEVEL 1 goto:skip
-:skipdisable
-if /i "%ADVLIST%" EQU "38v" set CurrentDLNAME=cIOS248[38]-d2x-vWii
-:skip
+if /i "%ADVLIST%" EQU "38v" (findStr /I /C:"base ios=\"38\"" "%vxml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS248[38]-d2x-vWii)
+if /i "%ADVLIST%" EQU "56v" (findStr /I /C:"base ios=\"56\"" "%vxml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS249[56]-d2x-vWii)
+if /i "%ADVLIST%" EQU "57v" (findStr /I /C:"base ios=\"57\"" "%vxml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS250[57]-d2x-vWii)
+if /i "%ADVLIST%" EQU "58v" (findStr /I /C:"base ios=\"58\"" "%vxml%" >nul) & (IF NOT ERRORLEVEL 1 set CurrentDLNAME=cIOS251[58]-d2x-vWii)
 
 
 if not "%CurrentDLNAME%"=="" (set ADVTYPE=CIOS) & (call "Support\subscripts\DB.bat")
@@ -24321,8 +24317,8 @@ if /i "%ThemeSelection%" EQU "D" set A1c=*
 :notJ
 
 
-
 if /i "%EXPLOIT%" EQU "BE" (SET Aroma=*) & (SET EnvironmentLoader=*) & (SET Nanddumper=*) & (SET CompatTitleInstaller=*)
+if /i "%EXPLOIT%" EQU "default" (SET Aroma=*) & (SET EnvironmentLoader=*) & (SET Nanddumper=*) & (SET CompatTitleInstaller=*)
 
 if /i "%EXPLOIT%" EQU "S" (set SMASH=*) & (set HM=*)
 if /i "%EXPLOIT%" EQU "L" (set PWNS=*) & (set HM=*)
@@ -24442,7 +24438,9 @@ if /i "%REGION%" EQU "K" goto:K
 :U
 if /i "%firmwarechange%" EQU "no" goto:nofirmwarechange
 
+if /i "%ThemeSelection%" EQU "D" goto:Dtheme
 if /i "%ThemeSelection%" NEQ "N" goto:skip
+:Dtheme
 if /i "%FIRM%" EQU "4.3" set SM4.3U=*
 if /i "%FIRM%" EQU "4.2" set SM4.2U=*
 if /i "%FIRM%" EQU "4.1" set SM4.1U=*
@@ -24505,7 +24503,7 @@ if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2U=*
 if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1U=*
 :SKIPOrangeSM
 
-
+if /i "%firmwarechange%" EQU "yes" goto:SKIPDefSM
 if /i "%ThemeSelection%" NEQ "D" goto:SKIPDefSM
 set csminstaller=*
 if /i "%FIRM%" EQU "4.3" set A97=*
@@ -24528,7 +24526,9 @@ goto:BUGGEDSMIOS
 :E
 if /i "%firmwarechange%" EQU "no" goto:nofirmwarechange
 
+if /i "%ThemeSelection%" EQU "D" goto:Dtheme
 if /i "%ThemeSelection%" NEQ "N" goto:skip
+:Dtheme
 if /i "%FIRM%" EQU "4.3" set SM4.3E=*
 if /i "%FIRM%" EQU "4.2" set SM4.2E=*
 if /i "%FIRM%" EQU "4.1" set SM4.1E=*
@@ -24591,6 +24591,7 @@ if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2E=*
 if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1E=*
 :SKIPOrangeSM
 
+if /i "%firmwarechange%" EQU "yes" goto:SKIPDefSM
 if /i "%ThemeSelection%" NEQ "D" goto:SKIPDefSM
 set csminstaller=*
 if /i "%FIRM%" EQU "4.3" set A9a=*
@@ -24613,7 +24614,9 @@ goto:BUGGEDSMIOS
 :J
 if /i "%firmwarechange%" EQU "no" goto:nofirmwarechange
 
+if /i "%ThemeSelection%" EQU "D" goto:Dtheme
 if /i "%ThemeSelection%" NEQ "N" goto:skip
+:Dtheme
 if /i "%FIRM%" EQU "4.3" set SM4.3J=*
 if /i "%FIRM%" EQU "4.2" set SM4.2J=*
 if /i "%FIRM%" EQU "4.1" set SM4.1J=*
@@ -24676,6 +24679,7 @@ if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2J=*
 if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1J=*
 :SKIPOrangeSM
 
+if /i "%firmwarechange%" EQU "yes" goto:SKIPDefSM
 if /i "%ThemeSelection%" NEQ "D" goto:SKIPDefSM
 set csminstaller=*
 if /i "%FIRM%" EQU "4.3" set A94=*
@@ -24698,7 +24702,9 @@ goto:BUGGEDSMIOS
 :K
 if /i "%firmwarechange%" EQU "no" goto:nofirmwarechange
 
+if /i "%ThemeSelection%" EQU "D" goto:Dtheme
 if /i "%ThemeSelection%" NEQ "N" goto:skip
+:Dtheme
 if /i "%FIRM%" EQU "4.3" set SM4.3K=*
 if /i "%FIRM%" EQU "4.2" set SM4.2K=*
 if /i "%FIRM%" EQU "4.1" set SM4.1K=*
@@ -24761,6 +24767,7 @@ if /i "%FIRM%" EQU "4.2" set darkwii_orange_4.2K=*
 if /i "%FIRM%" EQU "4.1" set darkwii_orange_4.1K=*
 :SKIPOrangeSM
 
+if /i "%firmwarechange%" EQU "yes" goto:SKIPDefSM
 if /i "%ThemeSelection%" NEQ "D" goto:SKIPDefSM
 set csminstaller=*
 if /i "%FIRM%" EQU "4.3" set A9d=*
@@ -24806,7 +24813,7 @@ if /i "%MENU1%" NEQ "RC" goto:notRC
 set yawm=*
 set ARC=*
 set pri=*
-set cIOS249[56]-d2x-v10-beta52=*
+::set cIOS249[56]-d2x-v10-beta52=*
 set bootmiisd=*
 ::IOS56 needed for v3 EULA
 set IOS56=*
@@ -25167,42 +25174,49 @@ set d2x-beta-rev=%d2x-bundled%
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 
 
-::disable d2x bases 60/70/80 IF older than v8 beta 42, as those bases never existed for those older versions
-echo "set cIOSversionNum=%d2x-beta-rev%">temp\cIOSrev.bat
-support\sfk filter -spat temp\cIOSrev.bat -rep _\x22__ -rep _"-*"__ -write -yes>nul
-call temp\cIOSrev.bat
-del temp\cIOSrev.bat>nul
+::disable d2x bases if applicable
 
-if %cIOSversionNum% GEQ 8 goto:skipdisable
-set cIOS249[60]-d2x-v10-beta52=
-set cIOS249[70]-d2x-v10-beta52=
-set cIOS249[80]-d2x-v10-beta52=
-set cIOS250[60]-d2x-v10-beta52=
-set cIOS250[70]-d2x-v10-beta52=
-set cIOS250[80]-d2x-v10-beta52=
-:skipdisable
+if exist Support\d2x-beta\ciosmaps.xml (set xml=Support\d2x-beta\ciosmaps.xml) else (set xml=Support\d2xModules\ciosmaps.xml)
+echo ->temp\null_ciosmaps_vWii.xml
+if exist "Support\d2x-beta\" (set vxml=temp\null_ciosmaps_vWii.xml) else (set vxml=Support\d2xModules\ciosmaps_vWii.xml)
+if exist Support\d2x-beta\ciosmaps_vWii.xml set vxml=Support\d2x-beta\ciosmaps_vWii.xml
 
-::disable vWii d2x downloads where not supported
-if exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable
-if exist "Support\d2x-beta\" (goto:disable) else (goto:skipdisable)
+findStr /I /C:"base ios=\"37\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[37]-d2x-v10-beta52=) & (set cIOS250[37]-d2x-v10-beta52=)
 
-:disable
-set cIOS248[38]-d2x-vWii=
-set cIOS249[56]-d2x-vWii=
-set cIOS250[57]-d2x-vWii=
-set cIOS251[58]-d2x-vWii=
-goto:skipdisable2
-:skipdisable
+findStr /I /C:"base ios=\"38\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[38]-d2x-v10-beta52=) & (set cIOS250[38]-d2x-v10-beta52=) & (set cIOS248[38]-d2x-v10-beta52=)
 
+findStr /I /C:"base ios=\"53\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[53]-d2x-v10-beta52=) & (set cIOS250[53]-d2x-v10-beta52=)
 
-::disable cIOS248[38]-d2x-vWii if not supported in ciosmaps_vWii.xml
-if not exist "Support\d2x-beta\ciosmaps_vWii.xml" goto:skipdisable2
+findStr /I /C:"base ios=\"55\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[55]-d2x-v10-beta52=) & (set cIOS250[55]-d2x-v10-beta52=)
 
-::check ciosmaps_vWii.xml for 'base ios="38"'
-findStr /I /C:"base ios=\"38\"" "Support\d2x-beta\ciosmaps_vWii.xml" >nul
-IF NOT ERRORLEVEL 1 goto:skipdisable2
-set cIOS248[38]-d2x-vWii=
-:skipdisable2
+findStr /I /C:"base ios=\"56\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[56]-d2x-v10-beta52=) & (set cIOS250[56]-d2x-v10-beta52=)
+
+findStr /I /C:"base ios=\"57\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[57]-d2x-v10-beta52=) & (set cIOS250[57]-d2x-v10-beta52=)
+
+findStr /I /C:"base ios=\"58\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[58]-d2x-v10-beta52=) & (set cIOS250[58]-d2x-v10-beta52=) & (set cIOS251[58]-d2x-v10-beta52=)
+
+findStr /I /C:"base ios=\"60\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[60]-d2x-v10-beta52=) & (set cIOS250[60]-d2x-v10-beta52=)
+findStr /I /C:"base ios=\"70\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[70]-d2x-v10-beta52=) & (set cIOS250[70]-d2x-v10-beta52=)
+findStr /I /C:"base ios=\"80\"" "%xml%" >nul
+IF ERRORLEVEL 1 (set cIOS249[80]-d2x-v10-beta52=) & (set cIOS250[80]-d2x-v10-beta52=)
+
+findStr /I /C:"base ios=\"38\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set cIOS248[38]-d2x-vWii=
+findStr /I /C:"base ios=\"56\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set cIOS249[56]-d2x-vWii=
+findStr /I /C:"base ios=\"57\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set cIOS250[57]-d2x-vWii=
+findStr /I /C:"base ios=\"58\"" "%vxml%" >nul
+IF ERRORLEVEL 1 set cIOS251[58]-d2x-vWii=
 
 
 ::unsupported advanced downloads from older queues (v8.0.0 or older) won't get disabled by the above and will error :(
@@ -25732,6 +25746,7 @@ if /i "%A1f%" EQU "*" (echo "Theme content from vWii System Menu 4.3U (0000001f.
 if /i "%A22%" EQU "*" (echo "Theme content from vWii System Menu 4.3E (00000022.app)">>temp\DLnames.txt) & (echo "A22">>temp\DLgotos.txt)
 
 if /i "%ThemeMiiMod%" EQU "*" (echo "ThemeMii Mod %PCconfig%">>temp\DLnames.txt) & (echo "ThemeMiiMod">>temp\DLgotos.txt)
+if /i "%TWBM%" EQU "*" (echo "TinyWiiBackupManager %PCconfig%">>temp\DLnames.txt) & (echo "TWBM">>temp\DLgotos.txt)
 if /i "%Tiramisu%" EQU "*" (echo "Tiramisu">>temp\DLnames.txt) & (echo "Tiramisu">>temp\DLgotos.txt)
 if /i "%Twi2%" EQU "*" (echo "Twilight Hack v0.1 Beta2 (3.4: USA, PAL and JPN)">>temp\DLnames.txt) & (echo "Twi2">>temp\DLgotos.txt)
 if /i "%Twi%" EQU "*" (echo "Twilight Hack v0.1 Beta1 (under 3.4: USA, PAL and JPN)">>temp\DLnames.txt) & (echo "Twi">>temp\DLgotos.txt)
@@ -26327,6 +26342,7 @@ if /i "%HBASlib%" EQU "*" echo SET HBASlib=*>> "temp\DownloadQueues\%DLQUEUENAME
 if /i "%OSC%" EQU "*" echo SET OSC=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%WiiLink%" EQU "*" echo SET WiiLink=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%Cemu%" EQU "*" echo SET Cemu=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%TWBM%" EQU "*" echo SET TWBM=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
 if /i "%Casper%" EQU "*" echo SET Casper=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 
@@ -29180,7 +29196,7 @@ if /i "%category%" EQU "NusdApp" goto:NusdApp2
 :DownloadURL2
 if not exist temp\%wadname% support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%wadname% %code2%
 
-support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% -r
+support\7za e -aoa temp\%wadname% -o"%Drive%\%path1%" *.%version% -r
 
 ::save identifier for bannerbombs
 if /i "%dlname%" EQU "aad1f_v108.zip" echo Bannerbombv1 >"%Drive%\%path1%Bannerbomb_v1.txt"
@@ -29378,9 +29394,13 @@ support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%wadname%" 
 ::delete if file is empty (if empty)
 if exist "temp\%wadname%" >nul findstr "^" "temp\%wadname%" || del "temp\%wadname%"
 
+if /i "%name%" EQU "Cemu" goto:CemuStuff
+if /i "%wadname%" EQU "latest.json" goto:latestjson
+
 if exist "temp\%wadname%" goto:fullextract2
 if /i "%attempt%" EQU "1" goto:missingauto
 if exist "temp\%wadname%" goto:fullextract2
+
 goto:URLverifyretry
 :notauto
 
@@ -29772,9 +29792,9 @@ move /y "temp\%name%\%name:~0,1%*" "temp\%name%\%name%">nul
 robocopy "temp\%name%\%name%" "%Drive%\%path1:~0,-1%" /E /MOVE>nul
 if exist "temp\%name%" rd /s /q "temp\%name%"
 if not exist "%Drive%\%path1%%filename%" goto:skipnormalextraction
-::goto:latestshortcut
+::goto:latestshortcut2
 
-:latestshortcut
+:latestshortcut2
 
 if /i "%shortcuts%" EQU "n" goto:skip
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
@@ -29815,17 +29835,19 @@ if exist "%Drive%\%path1%%filename%" (set shortcuts=n) else (set shortcuts=y)
 if not exist "%Drive%\%path1%" mkdir "%Drive%\%path1%"
 
 ::delete if file is empty (if empty)
->nul findstr "^" "temp\%wadname%" || del "temp\%wadname%"
+if exist "temp\%wadname%" >nul findstr "^" "temp\%wadname%" || del "temp\%wadname%"
 
 if exist "temp\%wadname%" goto:continue
 ::no wifi? check for cached download
 if not exist "temp\%filename%" goto:skipnormalextraction
 ::sfk copy only if newer, -mirror arg will overwrite even if older
+
 support\sfk copy "temp\%filename%" "%Drive%\%path1%%filename%" -yes
 goto:latestshortcut
 :continue
 
-support\sfk filter "temp\%wadname%" -+"browser_download_url" +filter -spat -le+"%filename:~-4%\x22" -rep _*http_http_ -rep _\x22__ > temp\latest2.json
+support\sfk filter "temp\%wadname%" -+"browser_download_url" -!"ARM64" +filter -spat -le+"%parsename%\x22" -rep _*http_http_ -rep _\x22__ > temp\latest2.json
+
 set /p code3= <"temp\latest2.json"
 ::echo code3:"%code3%"
 
@@ -29837,10 +29859,11 @@ set /p fullfilename= <"temp\latest2.json"
 
 if exist "temp\latest2.json" del "temp\latest2.json">nul
 
-::latest version always saved to temp\%filename% for offline caching, 20mb cost
-if not exist "temp\%fullfilename%" (support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%fullfilename%" "%code3%") & (if exist "temp\%fullfilename%" copy /y "temp\%fullfilename%" "temp\%filename%" >nul)
+::latest version always saved to temp\%filename% for offline caching, 20mb cost for WiiLink & 10MB cost for TWBM
+if not exist "temp\%fullfilename%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%fullfilename%" "%code3%"
 
-
+if exist "temp\%fullfilename%" if /i "%fullfilename:~-4%" EQU ".exe" copy /y "temp\%fullfilename%" "temp\%filename%" >nul
+if exist "temp\%fullfilename%" if /i "%fullfilename:~-4%" EQU ".zip" support\7za e -aoa "temp\%fullfilename%" -otemp *.* -r>nul
 
 if exist "temp\%fullfilename%" goto:continue
 if not exist "temp\%filename%" goto:skipnormalextraction
@@ -29850,10 +29873,17 @@ goto:latestshortcut
 :continue
 
 
-if /i "%Drive%" NEQ "temp" copy /y "temp\%fullfilename%" "%Drive%\%path1%%filename%" >nul
+if /i "%Drive%" EQU "temp" goto:latestshortcut
+
+::copy /y "temp\%fullfilename%" "%Drive%\%path1%%filename%" >nul
+
+if /i "%fullfilename:~-4%" EQU ".exe" copy /y "temp\%fullfilename%" "%Drive%\%path1%%filename%" >nul
+if /i "%fullfilename:~-4%" EQU ".zip" support\7za e -aoa "temp\%fullfilename%" -o"%Drive%\%path1%" *.* -r>nul
+
 ::goto:latestshortcut
 
 :latestshortcut
+if /i "%filename%" NEQ "WiiLinkPatcher.exe" goto:latestshortcut2
 
 if /i "%shortcuts%" EQU "n" goto:skip
 if /i "%PCSAVE%" EQU "Local" goto:createshortcuts
@@ -30290,7 +30320,7 @@ echo.
 COPY /Y "%Drive%\%path1%%filename%" "%Drive%"\boot.elf> nul
 ::erase boot.dol on root if exists as some cases will prioritize it over boot.elf
 if exist "%Drive%\boot.dol" del "%Drive%\boot.dol"> nul
-COPY /Y "%Drive%"\%path1%bootmini.elf "%Drive%"\bootmini.elf> nul
+COPY /Y "%Drive%\%path1%bootmini.elf" "%Drive%\bootmini.elf"> nul
 if /i "%AdvancedDownload%" NEQ "Y" echo "echo %name%: Valid">>temp\ModMii_Log.bat
 goto:alreadyhavehackmii
 :nocheckexisting
@@ -30301,8 +30331,8 @@ if exist index.html del index.html>nul
 
 if not exist temp\%wadname% support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%wadname% %code2%
 
-if not exist "%Drive%"\%path1% mkdir "%Drive%"\%path1%
-if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%"\%path1% *.%version% *.txt -r
+if not exist "%Drive%\%path1%" mkdir "%Drive%\%path1%"
+if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%\%path1%" *.%version% *.txt -r
 if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version% -r
 ::disabled extracting outdated wiiload.exe
 ::support\7za e -aoa temp\%wadname% -o"temp" wiiload.exe -r
@@ -30312,7 +30342,7 @@ if exist temp\%wadname% support\7za e -aoa temp\%wadname% -o"%Drive%" *.%version
 
 if not exist "temp\%zipname%" support\wget --no-check-certificate -q --show-progress -t 3 -O temp\%zipname% %code3%
 
-if exist "temp\%zipname%" support\7za e -aoa "temp\%zipname%" -o"%Drive%"\%path1% * -r
+if exist "temp\%zipname%" support\7za e -aoa "temp\%zipname%" -o"%Drive%\%path1%" * -r
 
 if /i "%name%" NEQ "Hackmii Installer v1.0" goto:skip
 if exist "%Drive%\%path1%meta.xml" support\sfk filter -quiet "%Drive%\%path1%meta.xml" -rep _"1.2"_"1.0"_ -rep _"HackMii Installer"_"HackMii Installer v1.0"_ -rep _"20121208140126"_"20120227000000"_ -write -yes
@@ -33301,8 +33331,20 @@ echo ^<^/ul^>>>"%Drive%\%guidename%"
 goto:smallskip
 :notVsu
 
-If /i "%EXPLOIT%" EQU "BE" support\sfk echo -spat \x3cli\x3eThis guide requires an internet connection on your console and an SD Card. Note that without internet you can still softmod vWii Only using an SD Card and one of six supported Wii games^\discs with exploits.\x3c/li\x3e>>"%Drive%\%guidename%"
-If /i "%EXPLOIT%" NEQ "BE" support\sfk echo -spat \x3cli\x3eThis guide requires an SD Card and either an internet connection on your console or one of six supported Wii games^\discs with exploits.\x3c/li\x3e>>"%Drive%\%guidename%"
+If /i "%EXPLOIT%" NEQ "BE" goto:NotBE
+support\sfk echo -spat \x3cli\x3eThis guide requires an internet connection on your console and an SD Card. Note that without internet you can still softmod vWii Only using an SD Card and one of six supported Wii games^\discs with exploits.\x3c/li\x3e>>"%Drive%\%guidename%"
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%\%guidename%"
+echo ^<li^>Internet on the WiiU is not needed if it's already running Aroma.^<^/li^>>>"%Drive%\%guidename%"
+echo ^<^/ul^>>>"%Drive%\%guidename%"
+goto:smallskip
+:NotBE
+
+support\sfk echo -spat \x3cli\x3eThis guide requires an SD Card and either an internet connection on your console or one of six supported Wii games^\discs with exploits.\x3c/li\x3e>>"%Drive%\%guidename%"
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>>>"%Drive%\%guidename%"
+If /i "%EXPLOIT%" EQU "?" echo ^<li^>Specific games and internet on the WiiU is not needed if it's already running Aroma.^<^/li^>>>"%Drive%\%guidename%"
+If /i "%EXPLOIT%" NEQ "?" echo ^<li^>Specific games and internet on the WiiU is not needed if it's already running Aroma; however, you will first need to repeat the ModMii Wizard and this time choose the Browser Exploit option.^<^/li^>>>"%Drive%\%guidename%"
+echo ^<^/ul^>>>"%Drive%\%guidename%"
+
 :smallskip
 copy /y "%Drive%\%guidename%"+Support\Guide\WiiUnotes.001 "%Drive%\%guidename%">nul
 goto:skipnotes
@@ -33414,7 +33456,10 @@ goto:skip
 :tinyskip
 
 if /i "%FIRMSTART%" EQU "v" echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your vWii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
+if /i "%FIRMSTART%" EQU "v" if /i "%EXPLOIT%" EQU "?" echo ^<b^>If your WiiU is already modded and running Aroma you can skip ahead to the "Install The Homebrew Channel (HBC) for vWii" step.^<^/b^>^<br^>^<br^>>>"%Drive%\%guidename%"
+if /i "%FIRMSTART%" EQU "v" if /i "%EXPLOIT%" EQU "BE" echo ^<b^>If your WiiU is already modded and running Aroma you can skip ahead to the "Install The Homebrew Channel (HBC) for vWii" step.^<^/b^>^<br^>^<br^>>>"%Drive%\%guidename%"
 if /i "%FIRMSTART%" EQU "v" goto:skip
+
 echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Hacking^"^>Hacking your Wii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ol^>>>"%Drive%\%guidename%"
 :skip
 
@@ -33469,7 +33514,7 @@ cd /d "%temp%"
 start /wait Get-Disk.vbs
 cd /d "%ModMiiDir%"
 
-::::if both missing likely an error occured, so skip next time
+::::if both missing likely an error occurred, so skip next time
 ::if exist "%temp%\format2.txt" goto:skip
 ::if not exist "%temp%\Get-Disk.txt" (set SkipGetDisk=Y) & (echo set SkipGetDisk=Y>>Support\settings.bat)
 :::skip
@@ -33889,9 +33934,9 @@ if /i "%FIRMSTART%" EQU "v" goto:wadlist
 if /i "%FIRMSTART%" EQU "U2" goto:wadlist
 
 :makeEdit
-support\sfk filter "%Drive%\%guidename%" -ls!"<li><b>After successfully installing all the WADs" -write -yes>nul
-
 support\sfk filter "%Drive%\%guidename%" -rep _"<!--RetainPrii--"__ -rep _"--RetainPrii-->"__ -write -yes>nul
+if /i "%MENU1%" NEQ "RC" support\sfk filter "%Drive%\%guidename%" -rep _"<!--NotRCRetainPrii--"__ -rep _"--NotRCRetainPrii-->"__ -write -yes>nul
+if /i "%MENU1%" EQU "RC" support\sfk filter "%Drive%\%guidename%" -rep _"<!--RCRetainPrii--"__ -rep _"--RCRetainPrii-->"__ -write -yes>nul
 
 :wadlist
 
@@ -34198,7 +34243,7 @@ if /i "%MENU1%" NEQ "AW" echo ^<^/div^>^<^/div^>^<^/div^>>>"%Drive%\%guidename%"
 
 
 
-if /i "%MENU1%" EQU "RC" support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e YAWMM ModMii Edition will only allow you to install a different region System Menu WAD if you enter the Konami Code.\x3cbr\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
+if /i "%MENU1%" EQU "RC" support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e YAWM ModMii Edition will only allow you to install a different region System Menu WAD if you enter the Konami Code.\x3cbr\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
 
 
 
@@ -34210,7 +34255,7 @@ if /i "%MENU1%" EQU "RC" support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e YAWMM M
 if /i "%customSMfix%" NEQ "yes" goto:skipCSMfix
 if /i "%secondmmmrun%" EQU "yes" goto:skipCSMfix
 
-::support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e YAWMM ModMii Edition will only allow you to install a System Menu WAD by entering the Konami Code because you have a custom System Menu installed.\x3cbr\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
+::support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e YAWM ModMii Edition will only allow you to install a System Menu WAD by entering the Konami Code because you have a custom System Menu installed.\x3cbr\x3e\x3cbr\x3e>>"%Drive%\%guidename%"
 
 ::skip using MMM to just install the SM wad, not needed since using YAWM ModMii Edition
 goto:skipCSMfix
@@ -34236,7 +34281,7 @@ if /i "%customSMfix%" EQU "yes" support\sfk echo -spat \x3cb\x3eWARNING:\x3c/b\x
 ::if /i "%customSMfix%" EQU "yes" support\sfk echo -spat \x3cb\x3eNOTE:\x3c/b\x3e If you are able to load MMM but the Wiimote doesn't respond, try using an older Wiimote without Motion+ built in as MMM doesn't support these newer contollers; a gamecube controller also works. If you don't have either, google for WiiMod Lite and use it in place of MMM to install the System Menu WAD listed above. Be careful with WiiMod Lite, after you finish installing your WAD be sure to press the Home button to return to the HBC immediately otherwise if you press B to return to the main menu it may crash.\x3cbr\x3e>>"%Drive%\%guidename%"
 if /i "%customSMfix%" EQU "yes" goto:tinyskip
 
-if /i "%MENU1%" EQU "RC" echo ^<font color^=^"red^"^>^<b^>WARNING: Do NOT power off your Wii or exit the HBC or you may semi-brick.^<^/b^>^<^/font^> At this critical stage you are halfway through a region change, unless you have Bootmii installed to boot2 or you used yawmME and were prompted and chose to retain Priiloader you will semi-brick ^<u^>if^<^/u^> you exit the HBC before installing Priiloader or fixing your AREA/SysMenu mismatch using Any Region Changer.^<br^>^<br^>>>"%Drive%\%guidename%"
+if /i "%MENU1%" EQU "RC" echo ^<font color^=^"red^"^>^<b^>WARNING: Do NOT power off your Wii or exit the HBC or you may semi-brick.^<^/b^>^<^/font^> At this critical stage you are halfway through a region change and unless you successfully retained Priiloader or have Bootmii installed to boot2 you will semi-brick ^<u^>if^<^/u^> you exit the HBC before fixing your AREA/SysMenu mismatch using Any Region Changer.^<br^>^<br^>>>"%Drive%\%guidename%"
 
 if /i "%FIRMSTART%" EQU "U2" goto:skipwarning
 if /i "%FIRMSTART%" EQU "v" goto:skipwarning
@@ -34382,14 +34427,17 @@ if /i "%USBGUIDE%" EQU "Y" goto:USBGUIDESTEP1
 if /i "%FIRMSTART%" NEQ "U2" goto:notU2
 echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Done^"^>After Modding your WiiU and vWii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ul style^=^align^=^"left^" type^=^"disc^"^>>>"%Drive%\%guidename%"
 copy /y "%Drive%\%guidename%"+Support\Guide\AfterModdingU.001 "%Drive%\%guidename%">nul
-if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
+if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive or SD Card, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
 copy /y "%Drive%\%guidename%"+Support\Guide\AfterModdingV.001 "%Drive%\%guidename%">nul
 goto:supportxflak
 :notU2
 
 if /i "%FIRMSTART%" NEQ "V" goto:notV
 echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Done^"^>After Modding your vWii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ul style^=^align^=^"left^" type^=^"disc^"^>>>"%Drive%\%guidename%"
-if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
+
+echo ^<li^>You're all set! Enjoy your modded console and I'd love it if you'd consider ^<a href="https://modmii.github.io/donations.html" target="_blank"^>buying me a coffee^</a^>!>>"%Drive%\%guidename%"
+
+if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive or SD Card, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
 
 echo ^<li^>Optionally use ^<a href^=^"https^:^/^/www.gamebrew.org^/wiki^/UStealth_Wii_U^" target^=^"_blank^"^>UStealth for Windows^<^/a^> ^(also available on ModMii's Download Page 5^) or the homebrew app ^<a href^=^"https^:^/^/oscwii.org^/library^/app^/USB_Toggle^" target^=^"_blank^"^>USB Toggle 2.0^<^/a^> to hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to first make your device visible again using either of the same tools. Of course you should not format it if Windows asks you to!>>"%Drive%\%guidename%"
 
@@ -34403,12 +34451,13 @@ goto:supportxflak
 
 echo ^<font size^=^"6^"^>^<li^>^<a name^=^"Done^"^>After Modding your Wii^<^/a^>^<^/li^>^<^/font^>^<br^>^<ul style^=^align^=^"left^" type^=^"disc^"^>>>"%Drive%\%guidename%"
 
+echo ^<li^>You're all set! Enjoy your modded console and I'd love it if you'd consider ^<a href="https://modmii.github.io/donations.html" target="_blank"^>buying me a coffee^</a^>!>>"%Drive%\%guidename%"
 
 if /i "%MENU1%" EQU "RC" echo ^<li^>Some of your currently installed Nintendo channels (e.g. News, Internet, etc.) may not work on your new region. To fix this, download and install the channels for your new %Region% Region (see WiiLink note below). Duplicate channels can optionally be removed by googling for Any Title Deleter, but be careful, you can easily brick your Wii with this tool if you delete the wrong thing!>>"%Drive%\%guidename%"
 
 
 if /i "%MENU1%" EQU "U" goto:skip
-if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
+if /i "%USBGUIDE%" NEQ "Y" echo ^<li^>To play Wii ^(and Gamecube^) games off a USB hard drive or SD Card, run the USB-Loader Setup wizard from ModMii's Main Menu.>>"%Drive%\%guidename%"
 :skip
 
 copy /y "%Drive%\%guidename%"+Support\Guide\AfterModding.001 "%Drive%\%guidename%">nul
@@ -34420,7 +34469,6 @@ copy /y "%Drive%\%guidename%"+Support\Guide\AfterModding.001 "%Drive%\%guidename
 copy /y "%Drive%\%guidename%"+Support\Guide\Credits-XFlak-End.001 "%Drive%\%guidename%">nul
 
 
-
 ::guide finish, remove carriage returns and open
 support\sfk filter "%Drive%\%guidename%" -lsrep _.__ -rep _"printbutton {"_".printbutton {"_ -write -yes>nul
 
@@ -34430,37 +34478,44 @@ support\sfk filter -spat "%Drive%\%guidename%" -rep _"<kbd>"_"<kbd class=\x22key
 
 support\sfk filter -spat "%Drive%\%guidename%" -rep _"<kbd2>"_"background-color: #f9f9f9; background-image: linear-gradient(to bottom, #eee, #f9f9f9, #eee); color: #000; padding: 0.1em 0.3em; font-family: inherit; font-size: 0.85em;\x22>"_ -write -yes>nul
 
-
-::Inject Region Change warning into the Priiloader step
-if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%\%guidename%" -rep _"<li>Access Priiloader by powering off the Wii"_"<li><b>If Priiloader failed to install, do NOT power off your Wii or exit the HBC</b>, try the installer again. RCREPLACEME"_ -write -yes>nul
-if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%\%guidename%" -rep _"RCREPLACEME"_"If still unsuccessful, proceed immediately to the Any Region Changer step to fix your AREA/SysMenu mismatch RCREPLACEME"_ -write -yes>nul
-if /i "%MENU1%" EQU "RC" support\sfk filter -spat "%Drive%\%guidename%" -rep _"RCREPLACEME"_"otherwise you will semi-brick once you exit a homebrew environment (unless you have Bootmii boot2).<li>Access Priiloader by powering off the Wii"_ -write -yes>nul
-
-
-if /i "%debug%" EQU "on" goto:skip
-::instead of the below, start whatever browser that is used for http, so users aren't prompted to select what app to use if html file association not set
-::start /D "%Drive%" %guidename%
+::open html guide
 set "htmlfile=%Drive%\%guidename%"
 if /i "%Drive:~1,1%" NEQ ":" set "htmlfile=%cd%\%Drive%\%guidename%"
 
-setlocal EnableDelayedExpansion
-for /F "tokens=3" %%i in ('reg query HKEY_CURRENT_USER\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice /v ProgID') do for /F "tokens=2*" %%j in ('reg query HKEY_LOCAL_MACHINE\Software\Classes\%%i\shell\open\command /ve') do set cmd=%%k
+if /i "%debug%" EQU "on" goto:skip
+
+::instead of `start "" "%htmlfile%"` start whatever browser that is used for http, so users aren't prompted to select what app to use if html file association not set
+powershell -NoProfile -Command ^
+    "$p=(Get-ItemProperty \"Registry::HKLM\Software\Classes\$((Get-ItemProperty 'Registry::HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice').ProgID)\shell\open\command\").'(default)'; Set-Content -Path 'temp\browser.txt' -Value $p"
+set /p cmd=<"temp\browser.txt"
+if exist "temp\browser.txt" del "temp\browser.txt">nul
 
 ::don't start now
 ::start "" !cmd:%%1=file://%htmlfile:\=/%%1!
 
+::non-powershell method below
+::for /F "skip=2 tokens=3*" %%a in ('reg query "HKCU\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice" /v ProgID') do for /F "skip=2 tokens=3*" %%b in ('reg query "HKLM\Software\Classes\%%a\shell\open\command" /ve') do set "cmd=%%b %%c"
+::for French users it may have "REG_SZ" before browser path, corrected using sfk below
+::support\sfk filter -spat -quiet "temp\launchguide.bat" -rep _".html*"_".html"_ -lsrep _"start \x22\x22*%homedrive%"_"start \x22\x22 \x22%homedrive%"_ -write -yes
+
+setlocal EnableDelayedExpansion
+set "cmd=!cmd:%%1=file://%htmlfile:\=/%%1!"
+::escape caret first, then other special chars
+set "cmd=!cmd:^=^^!"
+set "cmd=!cmd:&=^&!"
+set "cmd=!cmd:%%=%%%%!"
+>temp\launchguide.bat echo start "" !cmd!
+setlocal DISABLEDELAYEDEXPANSION
+
 ::when launched via drag and drop or cmd line for some reason there's an extra arg that needs to be removed\cleaned, example below
 ::start "" "C:\Program Files (x86)\Google\Chrome\Application\chrome.exe" --single-argument file://C:/Users/XFlak/Downloads/ModMii/COPY_TO_SD/ModMii_sysCheck_Updater_Guide.htmlC:\Users\XFlak\Downloads\ModMii\syschecks\sysCheck
 
-echo start "" !cmd:%%1=file://%htmlfile:\=/%%1!>temp\launchguide.bat
-setlocal DISABLEDELAYEDEXPANSION
-
-support\sfk filter -quiet "temp\launchguide.bat" -rep _".html*"_".html"_ -write -yes
+>nul findstr /I /C:"\"file://" "temp\launchguide.bat"
+::if no open quote ensure no closing quote (chrome requires no quotes, even if spaces), if open quote ensure closing quote (firefox requires quotes, it can correct a missing ending quote but not a missing opening quote)
+IF ERRORLEVEL 1 (support\sfk filter -quiet "temp\launchguide.bat" -rep _".html*"_".html"_ -write -yes) else (support\sfk filter -spat -quiet "temp\launchguide.bat" -rep _".html*"_".html\x22"_ -write -yes)
 call "temp\launchguide.bat"
 del "temp\launchguide.bat">nul
-
 :skip
-
 
 
 ::---------------CMD LINE MODE-------------
@@ -34537,7 +34592,7 @@ cd /d "%temp%"
 start /wait Get-Disk.vbs
 cd /d "%ModMiiDir%"
 
-::::if both missing likely an error occured, so skip next time
+::::if both missing likely an error occurred, so skip next time
 ::if exist "%temp%\format2.txt" goto:skip
 ::if not exist "%temp%\Get-Disk.txt" (set SkipGetDisk=Y) & (echo set SkipGetDisk=Y>>Support\settings.bat)
 :::skip
@@ -34686,12 +34741,13 @@ if /i "%LOADER%" EQU "ALL" support\sfk echo -spat "\x3cli\x3eTo copy Wii Discs, 
 if /i "%LOADER%" EQU "CFG" support\sfk echo -spat "\x3cli\x3eTo copy Wii Discs, launch Configurable USB-Loader and insert the disc into your Wii, then press <kbd>+</kbd>.">>"%Drive%\%guidename%"
 if /i "%LOADER%" EQU "GX" support\sfk echo -spat "\x3cli\x3eTo copy Wii Discs, launch USB-Loader GX and insert the disc into your Wii, if you're not prompted to copy\install the game you can press <kbd>+</kbd> to start making a backup.">>"%Drive%\%guidename%"
 
-if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat "\x3cli\x3eWiiFlow Lite cannot be used to copy Wii Discs. You will have to use a different USB-Loader or an older version of WiiFlow.">>"%Drive%\%guidename%"
+if /i "%LOADER%" EQU "FLOW" support\sfk echo -spat "\x3cli\x3eWiiFlow Lite cannot be used to copy Wii Discs. You will have to use "CleanRip" or a different USB-Loader or an older version of WiiFlow.">>"%Drive%\%guidename%"
 
-echo ^<li^>To copy GameCube (or Wii) Discs, launch "CleanRip" from the HBC and insert the disc into your Wii, then follow the very simple on-screen instructions. Note that CleanRip does not support devices formatted as WBFS.>>"%Drive%\%guidename%"
+if "%ctype%"=="" echo ^<li^>To copy GameCube (or Wii) Discs, launch "CleanRip" from the HBC and insert the disc into your Wii, then follow the very simple on-screen instructions. Note that CleanRip does not support devices formatted as WBFS. Note that the WiiU is unable to read or copy GameCube Discs.>>"%Drive%\%guidename%"
+if /i "%ctype%" EQU "Wii" echo ^<li^>To copy GameCube (or Wii) Discs, launch "CleanRip" from the HBC and insert the disc into your Wii, then follow the very simple on-screen instructions. Note that CleanRip does not support devices formatted as WBFS.>>"%Drive%\%guidename%"
+if /i "%ctype%" EQU "WiiU" echo ^<li^>The WiiU is unable to read or copy GameCube Discs.>>"%Drive%\%guidename%"
 
-
-echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>^<b^>Warning^<^/b^>^: Using your Wii to rip games to NTFS is ^<u^>very^<^/u^> unstable, it is highly recommended to rip games to a FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer. Recall that GameCube games cannot be played when saved to NTFS devices.^<^/ul^>>>"%Drive%\%guidename%"
+echo ^<ul style^=align^=^"left^" type^=^"square^"^>^<li^>^<b^>Warning^<^/b^>^: Using your console to rip games to NTFS is ^<u^>very^<^/u^> unstable, it is highly recommended to rip games to a FAT32 or WBFS formatted HDD, then transfer them to your NTFS drive using a computer. Recall that GameCube games cannot be played when saved to NTFS devices.^<^/ul^>>>"%Drive%\%guidename%"
 
 
 echo ^<^/ul^>^<br^>>>"%Drive%\%guidename%"

@@ -1,7 +1,7 @@
 ::get info and return to caller UNLESS temp\currentversion.txt is detected, not currentversionInfo.txt
 @echo off
 if not exist Support\ModMii.bat cd..
-set newversion=8.0.4
+set newversion=8.0.5
 set changelogURL=https://modmii.github.io/changelog.html
 set "wabmplast=%wabmp%"
 

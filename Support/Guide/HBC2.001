@@ -38,7 +38,7 @@ Bootmii is a piece of software that can backup and restore your Wii's NAND stora
 <li>From the Bootmii menu, navigate to "<b>Install Bootmii as IOS</b>" and press <kbd>A</kbd>, then select "Yes, continue" to write runtime files to the SD Card, then "Yes, continue" again to install Bootmii as IOS.
 	<ul style=align="left" type="disc">
 	<li>When completed the installer should display "SUCCESS".
-	<li>If the installer fails, double check the SD Card's lock switch is disabled (if applicable) or try a different card all together. If you're missing a Bootmii compatible SD Card you can skip installing Bootmii and making a nand backup for now until you get a compatible SD Card.
+	<li>If the installer fails, double check the SD Card's lock switch is disabled (if applicable) or try a different card all together. If you're missing a Bootmii compatible SD Card you can skip installing Bootmii for now until you get one. In the meantime you can at least make a bootmii compatible NAND Backup by running <a href="https://hbb1.oscwii.org/api/contents/nanddumper_ios/nanddumper_ios.zip" target="_blank">nanddumper@IOS</a> from the HBC which has greater SD Card compatibility and also supports USB Hard Drives.
 	</ul>
 
 <li>Press <kbd>A</kbd> to continue to the Bootmii menu.

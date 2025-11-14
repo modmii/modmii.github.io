@@ -1,11 +1,11 @@
 
-<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
+<li>Optionally remove unnecessary files using ModMii's "File Checkup" feature to prevent amateurs from using potentially dangerous apps.
 
 <li>Consider making another NAND backup so that if you ever need restore it you won't need to repeat the entire softmod process.
 
 <li>At any point you can run SysCheck on your Wii to get a sysCheck.csv log of your installed softmods; in the future you can check if any of your mods are outdated by opening your log with the latest version of ModMii.
 
-<li>Periodically check for updates to the apps on your SD card or USB Hard drive by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for ModMii's auto-updating apps and offer to check for updates.
+<li>Periodically check for updates to the apps on your SD card or USB Hard drive by using ModMii's "File Checkup" feature. It will scan your device for ModMii's auto-updating apps and offer to check for updates.
 
 <li>Download the latest Wii Homebrew apps to your SD Card or FAT32 USB Hard Drive so they can be launched via the HBC or forwarder channels.
 

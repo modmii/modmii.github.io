@@ -33,6 +33,7 @@ if exist temp\Apps-master.zip support\7za e -aoa temp\Apps-master.zip -otemp\con
 if exist "temp\contents" goto:skiperror
 support\sfk echo [%magentatext%] Download Failed
 echo.
+@ping 127.0.0.1 -n 2 -w 1000> nul
 if "%DRIVErestore%"=="" set "DRIVErestore=%Drive%"
 set "DRIVE=%DRIVErestore%"
 echo "support\sfk echo %name%: [%redtext%]Failed">>temp\ModMii_Log.bat
@@ -65,7 +66,7 @@ if /i "%CleanRip%" EQU "*" del "temp\contents\CleanRip.oscmeta">nul
 if /i "%vWii80Installer%" EQU "*" del "temp\contents\Patched_IOS80_Installer_for_vWii.oscmeta">nul
 if /i "%HBB%" EQU "*" del "temp\contents\homebrew_browser.oscmeta">nul
 if /i "%v43DB%" EQU "*" del "temp\contents\ww-43db-patcher.oscmeta">nul
-if /i "%SCR%" EQU "*" del "system-channel-restorer.oscmeta">nul
+if /i "%SCR%" EQU "*" del "temp\contents\system-channel-restorer.oscmeta">nul
 if /i "%usbfolder%" EQU "*" del "temp\contents\usb-loader.oscmeta">nul
 if /i "%csminstaller%" EQU "*" del "temp\contents\csm-installer.oscmeta">nul
 if /i "%DumpMii%" EQU "*" del "temp\contents\nanddumper_ios.oscmeta">nul
@@ -198,12 +199,53 @@ set LatestVersion=
 set CachedVersion=nulll
 
 ::if no meta, boot.dol or boot.elf then force update
-if not exist "%DRIVE%\apps\%CurrentApp%\meta.xml" (echo No meta.xml detected, updating app now...) & (goto:downloadOSC)
+if /i "%OSCmode%" NEQ "download" if not exist "%DRIVE%\apps\%CurrentApp%\meta.xml" (echo No meta.xml detected, updating app now...) & (goto:downloadOSC)
 if exist "%DRIVE%\apps\%CurrentApp%\boot.dol" goto:continue
 if exist "%DRIVE%\apps\%CurrentApp%\boot.elf" goto:continue
-echo No boot.dol or boot.elf detected, updating app now...
+if /i "%OSCmode%" NEQ "download" echo No boot.dol or boot.elf detected, updating app now...
 goto:downloadOSC
 :continue
+
+
+::nintendont meta.xml workaround, since its meta isn't reliable (updated only when app is run)
+if /i "%CurrentApp%" NEQ "Nintendont" goto:NotNintendont
+set md5Nzip=
+set md5Ndol=
+::get nintendont's latest md5 for its boot.dol and zip
+if /i "%AUSKIP%" EQU "ON" if exist "temp\%CurrentApp%.zip" goto:NintendontStep
+support\wget --no-check-certificate -q -t 3 -O "temp\%CurrentApp%.html" "https://oscwii.org/library/app/%CurrentApp%"
+
+::delete if file is empty (if empty)
+>nul findstr "^" "temp\%CurrentApp%.html" || del "temp\%CurrentApp%.html"
+if not exist "temp\%CurrentApp%.html" goto:NintendontStep
+
+for /f "usebackq delims=" %%A in (`support\sfk filter -quiet -spat "temp\%CurrentApp%.html" -nocheck -inc "binary" to "div" -+"MD5 Checksum" -rep _"*\x3ccode\x3e"__ -rep _\x3c\x2fcode*__`) do set "md5Ndol=%%A"
+for /f "usebackq delims=" %%A in (`support\sfk filter -quiet -spat "temp\%CurrentApp%.html" -nocheck -inc "zip file" to "div" -+"MD5 Checksum" -rep _"*\x3ccode\x3e"__ -rep _\x3c\x2fcode*__`) do set "md5Nzip=%%A"
+
+:NintendontStep
+if not exist "temp\%CurrentApp%.zip" goto:skip
+for /f "usebackq delims=" %%A in (`support\sfk md5 "temp\%CurrentApp%.zip"`) do set "CachedVersion=%%A"
+::echo CachedVersion zip: %CachedVersion%
+if not "%md5Nzip%"=="" goto:skip
+set "md5Nzip=%CachedVersion%"
+
+if exist temp\boot.dol del temp\boot.dol>nul
+support\7za e -aoa "temp\%CurrentApp%.zip" -o"temp" boot.dol -r>nul
+if not exist temp\boot.dol (del "temp\%CurrentApp%.zip">nul) & (goto:skip)
+
+for /f "usebackq delims=" %%A in (`support\sfk md5 "temp\boot.dol"`) do set "md5Ndol=%%A"
+
+:skip
+set "LatestVersion=%md5Ndol%"
+if /i "%OSCmode%" NEQ "list" echo Latest version hash: %md5Ndol%
+::echo md5Nzip: %md5Nzip%
+
+for /f "usebackq delims=" %%A in (`support\sfk md5 "%DRIVE%\apps\%CurrentApp%\boot.dol"`) do set "CurrentAppVersion=%%A"
+if /i "%OSCmode%" NEQ "list" echo Found version hash:  %CurrentAppVersion%
+
+if /i "%CurrentAppVersion%" EQU "%LatestVersion%" (goto:UpToDate) else (goto:notnum)
+:NotNintendont
+
 
 ::below fixes meta's that have 00 bytes and may make the OHBC 1.1.4 or ModMii crash upon inspecting the meta
 support\sfk replace "%DRIVE%\apps\%CurrentApp%\meta.xml" -binary /00// -yes>nul
@@ -211,16 +253,6 @@ support\sfk filter -quiet "%DRIVE%\apps\%CurrentApp%\meta.xml" -+"/version" -rep
 set /p CurrentAppVersion= <temp\version.txt
 if /i "%CurrentAppVersion:~0,1%" EQU "v" set "CurrentAppVersion=%CurrentAppVersion:~1%"
 if exist temp\version.txt del temp\version.txt>nul
-
-::WHEN GX r1283 IS RELEASED THE LINES BELOW CAN BE REMOVED (until ":notGX")
-::compensate for GX "v4.0 r1282" (test versions)
-if /i "%CurrentApp%" NEQ "usbloader_gx" goto:notGX
-if exist "%DRIVE%\apps\usbloader_gx\DO NOT REUPLOAD.txt" del "%DRIVE%\apps\usbloader_gx\DO NOT REUPLOAD.txt">nul
-if /i "%CurrentAppVersion%" NEQ "4.0 r1282" goto:notGX
-findStr /I /C:"release_date>202503" "%DRIVE%\apps\usbloader_gx\meta.xml" >nul
-IF NOT ERRORLEVEL 1 set "CurrentAppVersion=v%CurrentAppVersion% test version"
-::added v prefix back to the above to force "v4.0 r1282 test version" to appear older than "4.0 r1282"
-:notGX
 
 if /i "%OSCmode%" NEQ "list" echo Found version: %CurrentAppVersion%
 if /i "%AUSKIP%" EQU "ON" goto:downloadOSC
@@ -328,9 +360,23 @@ goto:EOF
 ::download
 :downloadOSC
 
+
 ::check if cached zip is latest
 if exist temp\meta.xml del temp\meta.xml>nul
 if not exist "temp\%CurrentApp%.zip" goto:nocached
+
+
+::Nintendont unique cached check
+if /i "%CurrentApp%" NEQ "Nintendont" goto:NotNintendont
+set /a OSCcount=%OSCcount%+1
+if /i "%CachedVersion%" NEQ "%md5Nzip%" if exist "temp\%CurrentApp%.zip" for /f "usebackq delims=" %%A in (`support\sfk md5 "temp\%CurrentApp%.zip"`) do set "CachedVersion=%%A"
+::echo CachedVersion zip: %CachedVersion%
+if /i "%CachedVersion%" NEQ "%md5Nzip%" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\%CurrentApp%.zip" "https://hbb1.oscwii.org/api/contents/%CurrentApp%/%CurrentApp%.zip"
+
+goto:jump
+:NotNintendont
+
+
 support\7za e -aoa "temp\%CurrentApp%.zip" -o"temp" meta.xml -r>nul
 ::below fixes meta's that have 00 bytes and may make the OHBC 1.1.4 or ModMii crash upon inspecting the meta
 if not exist temp\meta.xml goto:nocached
@@ -499,7 +545,7 @@ set /a OSCcountFail=%OSCcountFail%+1
 
 if /i "%OSCmode%" EQU "list" goto:miniskip
 if /i "%code1%" EQU "all" goto:miniskip
-echo "support\sfk echo %name%: [%redtext%]Missing">>temp\ModMii_Log.bat
+echo "support\sfk echo %name%: [%redtext%]Failed">>temp\ModMii_Log.bat
 :miniskip
 
 if /i "%code1%" NEQ "all" goto:bottom

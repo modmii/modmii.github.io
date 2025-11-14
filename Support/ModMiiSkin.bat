@@ -1,3 +1,4 @@
+
 @echo off
 setlocal
 
@@ -43,7 +44,7 @@ Exit
 
 ::----------------------------------------------------------
 
-set currentversion=8.0.4
+set currentversion=8.0.5
 if exist Support\settings.bat call Support\settings.bat
 set d2x-bundled=11-beta3
 set d2x-beta-rev=%d2x-bundled%
@@ -62,7 +63,7 @@ echo.
 
 NET SESSION >nul 2>&1
 IF %ERRORLEVEL% EQU 0 (set adminmode=Y) else (set adminmode=N)
-if /i "%adminmode%" EQU "Y" goto:donecheck
+if /i "%adminmode%" EQU "Y" (if not exist "temp\test" mkdir "temp\test") & (goto:donecheck)
 
 ::check for write access
 if exist "temp\test" goto:skip
@@ -335,48 +336,7 @@ if exist Support\settings.bat support\sfk filter Support\settings.bat -ls!"Set L
 Set LegacyCIOS=Y
 echo Set LegacyCIOS=Y>>Support\settings.bat
 
-set GrabModMii32x=
-support\sfk md5 -quiet -verify 0736e14b7ad05a99912e9ba811987335 "ModMii.exe"
-if errorlevel 1 set GrabModMii32x=Y
-
-::if exist "%homedrive%\Program Files (x86)" goto:skip
-if /i "%GrabModMii32x%" NEQ "Y" goto:skip
-
-echo.
-echo Downloading alternate ModMii.exe Launcher to make things a bit better...
-
-set watext=~Downloading alternate ModMii.exe Launcher to make things a bit better...
-
-start support\wizapp PB OPEN
-
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" support\wget --no-check-certificate -q --show-progress -t 3 -O "temp\ModMii_Launcher_2.4_32bit.zip" "https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/ModMii_Launcher_2.4_32bit.zip"
-
-if not exist "temp\ModMii_Launcher_2.4_32bit.zip" (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (goto:32bitfail)
-
-start support\wizapp PB UPDATE 50
-support\7za x -aoa "temp\ModMii_Launcher_2.4_32bit.zip" -r ModMii_32bit.exe
-
-if not exist ModMii_32bit.exe (del "temp\ModMii_Launcher_2.4_32bit.zip">nul) & (echo Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...) & (goto:32bitfail)
-
-start support\wizapp PB UPDATE 90
-move /y ModMii.exe ModMii_64bit.exe>nul
-move /y ModMii_32bit.exe ModMii.exe>nul
-
-start support\wizapp PB UPDATE 100
-start support\wizapp PB CLOSE
-goto:skip
-
-:32bitfail
-start support\wizapp PB UPDATE 100
-set watext=~~Download Failed, use Support\ModMii.bat, ModMii 7.0.3, or upgrade your Windows...~~Some ModMii features will not work properly~~Click "Next" to use ModMii anyways.
-
-start support\wizapp PB CLOSE
-start /w support\wizapp NOBACK TB
-if errorlevel 2 EXIT
-goto:skip
-
 :continue
-
 
 ::check for "microsoft visual c++ 2015-2022"
 ::if exist "%homedrive%\Program Files (x86)" (set dlname=hashmyfiles-x64.zip) else (set dlname=hashmyfiles.zip)
@@ -500,7 +460,7 @@ if exist Support\settings.bat call Support\settings.bat
 call support\subscripts\Skins.bat
 
 set MENU1=
-set waoutnum=0
+if not "%MenuMarked%"=="" (set waoutnum=%MenuMarked%) else (set waoutnum=0)
 set waoutput=
 set "wabmp=%MAIN.bmp%"
 set wafile=
@@ -570,6 +530,8 @@ if errorlevel 2 exit
 call "%wabat%"
 
 if "%waoutnum%"=="" goto:MENU
+
+set MenuMarked=%waoutnum%
 
 if /i "%waoutnum%" EQU "0" (set Menu1=W) & (set "wabmp=%WIZARD.bmp%") & (goto:WPAGE0)
 
@@ -1247,6 +1209,7 @@ call "%wabat%"
 
 set consoleMarked=%waoutnum%
 
+if "%waoutnum%"=="" goto:WPAGE0
 if /i "%waoutnum%" EQU "2" goto:skipall
 if /i "%waoutnum%" EQU "0" goto:skipcheck
 
@@ -1533,9 +1496,9 @@ set exploitselection=yes
 ::recall checked items, EXPLOIT & EXPLOITMarked shared with :WPAGE3C
 if not "%EXPLOITMarked%"=="" set waoutnum=%EXPLOITMarked%
 
-set watext=~~~~Select the exploit you would like to use to mod your vWii.
+set watext=~~Select the exploit you would like to use to mod your vWii.~~Choose "Browser" if your WiiU is already modded and running Aroma. Internet will not be required on the console if it already has Aroma installed.
 
-set wainput= Browser (no disc needed but needs internet on vWii); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Exploits (decide later)
+set wainput= Browser (no disc needed but needs internet on WiiU); ^&Super Smash Brothers Brawl; LEGO ^&Indiana Jones; LEGO ^&Batman; LEGO Star ^&Wars; ^&Yu-Gi-Oh! 5D's; ^&Tales of Symphonia: Dawn of the New World; ^&All Above Exploits (decide later)
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -3606,7 +3569,7 @@ goto:SNKPAGE5
 set REGIONCHANGE=
 
 
-set watext=Are you sure you want to Region Change your Wii?~~Important Notes:~~* Region Changing is not necessary to play other region games. For example, you can play JPN games on a softmodded US Wii without region changing.~* An alternative to region changing is to use NEEK to emulate a different region System Menu.~~Warnings:~~* If you use the Wii Shopping Channel, you must start the channel and delete your account before starting this guide on your Wii. If you don't the Wii Shop Channel will error.~* ModMii's region change guide assumes your Wii has already been softmodded and SD Card properly formatted by following either the ModMii Wizard or SysCheck Updater Wizard. If this is not the case please do so before going any further. Do not attempt to region change your Wii without either an SD card or USB.~~Click "Next" if you decide to continue...
+set watext=Are you sure you want to Region Change your Wii?~~Important Notes:~~* Region Changing is not necessary to play other region games. For example, you can play JPN games on a softmodded US Wii without region changing.~* An alternative to region changing is to use an EmuNAND and\or NEEK to emulate a different region System Menu.~~Warnings:~~* If you use the Wii Shopping Channel, you must start the channel and delete your account before starting this guide on your Wii. If you don't the Wii Shop Channel will error.~* ModMii's region change guide assumes your Wii has already been softmodded and SD Card properly formatted by following either the ModMii Wizard or SysCheck Updater Wizard. If this is not the case please do so before going any further. Do not attempt to region change your Wii without either an SD card or USB.~~Click "Next" if you decide to continue...
 
 ::support\nircmd.exe win activate ititle "ModMiiSkinCMD"
 ::if /i "%ModMiiverbose%" NEQ "on" support\nircmd.exe win hide ititle "ModMiiSkinCMD"
@@ -3617,8 +3580,8 @@ if errorlevel 2 goto:MENU
 if errorlevel 1 goto:MENU
 
 ::check if d2x version is customized and offer to revert to default
-call support\subscripts\defaultd2xSkin.bat
-if /i %errorlevel% EQU 1 goto:RCPAGE1
+::call support\subscripts\defaultd2xSkin.bat
+::if /i %errorlevel% EQU 1 goto:RCPAGE1
 goto:WPAGE3
 
 

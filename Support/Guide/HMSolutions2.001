@@ -1,5 +1,4 @@
-<li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
-
+<li>Press <kbd>↓</kbd> so that the >> cursor is pointing to any WAD in the list, then <b>hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
 	<ul style=align="left" type="disc">
 	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd>.<br>
 	<li>Warning: do <u>not</u> use minus (-) as this will mark WADs for <u>un</u>installation.<br>

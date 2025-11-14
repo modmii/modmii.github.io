@@ -1,6 +1,6 @@
 <b>Indiana Pwns</b><br>
 <A href="" onClick="popup = window.open('https://www.youtube-nocookie.com/embed/bK-yykzV4Sc?rel=0', 'PopupPage', 'height=360,width=480,scrollbars=yes,resizable=yes'); return false" target="_blank"><img src="https://modmii.github.io/Images/gifs/IndianaPwns.gif" border="0"/></a><br>
-Requirements: A copy of "LEGO Indiana Jones", a standard SD card (will not work with an SDHC or SDXC card), and a nunchuck. Does not work on Korean System Menus. Can launch elfs but not dols. Works on Wii and vWii.<br>
+Requirements: A copy of "LEGO Indiana Jones", a standard <=2GB SD card (will not work with SDHC or SDXC cards), and a nunchuck. Does not work on Korean System Menus. Can launch elfs but not dols. Works on Wii and vWii.<br>
 <br>
 <ol type="A"><li>Load the "LEGO Indiana Jones" game at least once (otherwise you won't be able to copy over the hack).</li>
 <li>Delete or move\backup your personal LEGO Indiana Jones save file.</li>

@@ -1,4 +1,4 @@
-::ModMii v8.0.0 - Download Queue - Thu 10/10/2024 - 14:27:00.23
+::ModMii v8.0.5 - Download Queue
 set AdvNumber=0
 if /i "%GetAdvNumberOnly%" EQU "Y" goto:endofqueue
 ::Queue Settings
@@ -15,4 +15,5 @@ SET OSC=*
 SET WiiLink=*
 SET Cemu=*
 SET UWUVCI=*
+SET TWBM=*
 :endofqueue

@@ -789,7 +789,7 @@ set /a HBAScountFail=%HBAScountFail%+1
 
 if /i "%HBASmode%" EQU "list" goto:miniskip
 if /i "%code1%" EQU "all" goto:miniskip
-echo "support\sfk echo %name%: [%redtext%]Missing">>temp\ModMii_Log.bat
+echo "support\sfk echo %name%: [%redtext%]Failed">>temp\ModMii_Log.bat
 :miniskip
 
 if /i "%code1%" NEQ "all" goto:bottom

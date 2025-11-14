@@ -29,8 +29,8 @@ WARNINGS: Do not unplug the console when installing WADs. WADs can also be <u>un
 	<ul style=align="left" type="disc">
 	<li>Be careful not to install any additional WADs that may have been previously saved in this folder (they may be safe, but I cannot say for sure).
 	</ul>
-<li><b>Hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
 
+<li>Press <kbd>↓</kbd> so that the >> cursor is pointing to any WAD in the list, then <b>hold <kbd>+</kbd> for 2 seconds</b> to select all the WADs in the folder.
 	<ul style=align="left" type="disc">
 	<li>Alternatively, you can select or deselect your WADs individually by navigating to each one and hitting <kbd>+</kbd>.<br>
 	<li>Warning: do <u>not</u> use minus (-) as this will mark WADs for <u>un</u>installation.<br>
@@ -47,9 +47,12 @@ WARNINGS: Do not unplug the console when installing WADs. WADs can also be <u>un
 
 <!--vWiiLULZ--<li>After installing the WADs you will have two copies of the Homebrew Channel. To remove the duplicate follow the steps above except press <kbd>-</kbd> instead of <kbd>+</kbd> to carefully uninstall <u>only</u> Open_HBC_1.1.5_LULZ; see warning about uninstalling WADs above.<br>--vWiiLULZ-->	
 
-
-<li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd>Home</kbd> button on your Wiimote to exit YAWM ModMii Edition.</b>
-<!--RetainPrii--<li><b>After successfully installing all the WADs, press <kbd>A</kbd> to launch Priiloader and re-enable your preferred System Menu Hacks before proceeding to the next step. It's also safe to re-enable them at a later time.</b><br>--RetainPrii-->
+<!------RetainPrii--><li><b>After successfully installing all the WADs, press any button to continue, then press the <kbd>Home</kbd> button on your Wiimote to exit YAWM ModMii Edition.</b><!--RetainPrii------>
+<!--NotRCRetainPrii--<li><b>After successfully installing all the WADs, press <kbd>A</kbd> to launch Priiloader and re-enable your preferred System Menu Hacks before proceeding to the next step. It's also safe to re-enable them at a later time.</b><br>--NotRCRetainPrii-->
+<!--RCRetainPrii--<li><b>After successfully installing all the WADs, use the <kbd>Home</kbd> button on your Wiimote to exit YAWM ModMii Edition.</b>
+	<ul style=align="left" type="disc">
+	<li>Alternatively, press <kbd>A</kbd> to launch directly into Priiloader to re-enable your preferred System Menu Hacks before proceeding to the next step. It's also safe to re-enable them at a later time.<br>
+	</ul>--RCRetainPrii-->
 </ol>
 
 <br>

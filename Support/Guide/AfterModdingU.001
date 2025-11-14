@@ -1,3 +1,5 @@
+<li>You're all set! Enjoy your modded console and I'd love it if you'd consider <a href="https://modmii.github.io/donations.html" target="_blank">buying me a coffee</a>!
+
 <li>ModMii has already saved the WiiU Disc Dumper (wudd) and WUP Installer GX2 apps to your SD Card to support backing up WiiU discs. See <a href="https://wiiu.hacks.guide/dump-games" target="_blank">this page</a> for a tutorial on Dumping and Installing WiiU Discs.
 
 <li>Access the Aroma plugin menu by pressing <kbd>L</kbd> + <kbd>Down</kbd> + <kbd>SELECT (-)</kbd> on the WiiU GamePad. The plugin menu can be used to configure plugins like Inkay (Pretendo), Bloopair, etc.
@@ -7,8 +9,8 @@
 	<li>Optionally hide WiiU homebrew from the WiiU Menu by launching the Aroma plugin menu, selecting the "Homebrew On Wii U Menu Plugin" and choosing "Hide all homebrew".</li>
 	</ul>
 
-<li>Optionally remove unnecessary files using ModMii's "File Cleanup & App Updater" feature to prevent amateurs from using potentially dangerous apps.
-<li>Periodically check for updates to your apps by using ModMii's "File Cleanup & App Updater" feature. It will scan your device for available updates to ModMii's auto-updating apps.
+<li>Optionally remove unnecessary files using ModMii's "File Checkup" feature to prevent amateurs from using potentially dangerous apps.
+<li>Periodically check for updates to your apps by using ModMii's "File Checkup" feature. It will scan your device for available updates to ModMii's auto-updating apps.
 
 <li>Download the latest Homebrew apps and plugins.
 	<ul style=align="left" type="square">

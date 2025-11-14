@@ -1,4 +1,4 @@
-set DBversion=25.06.19
+set DBversion=25.11.14
 if "%CurrentDLNAME%"=="" goto:DBend
 call "Support\subscripts\ClearDB.bat"
 goto:%CurrentDLNAME%
@@ -2843,6 +2843,21 @@ set "path1=Program Files\WiiBackupManager\"
 goto:DBend
 
 
+:TWBM
+set name=TinyWiiBackupManager
+set category=auto
+set code1=PC
+::code2 needs to be parsed to get actual latest DL link
+set code2="https://api.github.com/repos/mq1/TinyWiiBackupManager/releases/latest"
+set version=*
+set dlname=latest
+set wadname=latest.json
+set filename=TinyWiiBackupManager.exe
+if exist "%homedrive%\Program Files (x86)" (set parsename=windows-x64-portable.zip) else (set parsename=windows-x86-portable.zip)
+set "path1=Program Files\TinyWiiBackupManager\"
+goto:DBend
+
+
 :USBX
 set name=USB-Loader Forwarder Channel\dol
 set code1=ZIP
@@ -3006,6 +3021,7 @@ set version=*
 set dlname=latest
 set wadname=latest.json
 set filename=WiiLinkPatcher.exe
+set "parsename=.exe"
 set "path1=Program Files\WiiLinkPatcher\"
 goto:DBend
 

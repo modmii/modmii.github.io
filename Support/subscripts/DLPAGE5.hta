@@ -41,6 +41,8 @@
 		set objFSO = CreateObject("Scripting.FileSystemObject").OpenTextFile("temp\tempcheck.bat",8,true)
 		objFSO.write vbNewLine & "set wbm="
 			If wbm.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set TWBM="
+			If TWBM.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set f32="
 			If f32.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set SMW="
@@ -126,7 +128,7 @@
 
 	
 	Function AllButton()
-		If ((wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True)) Then
+		If ((wbm.checked = True) And (TWBM.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (WiiloadPlugin.checked = True) And (FTPiiUPlugin.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (WiiUIdent.checked = True) And (Tiramisu.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -136,7 +138,7 @@
 	End Function
 
 	Function PCButton()
-		If ((wbm.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True)) Then
+		If ((wbm.checked = True) And (TWBM.checked = True) And (f32.checked = True) And (SMW.checked = True) And (CM.checked = True) And (WiiGSC.checked = True) And (ohnes.checked = True) And (Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (Nkit.checked = True) And (WiiLink.checked = True) And (SDTEST.checked = True) And (HashMF.checked = True) And (ThemeMiiMod.checked = True) And (GCBM.checked = True) And (UStealth.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (UWUVCI.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -154,7 +156,7 @@
 	End Function
 	
 	Function AutoUpdateButton()
-		If ((Dolphin.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (WiiLink.checked = True) And (HashMF.checked = True) And (GCBM.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (WiiloadPlugin.checked = True) And (FTPiiUPlugin.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (WiiUIdent.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (UWUVCI.checked = True)) Then
+		If ((Dolphin.checked = True) And (TWBM.checked = True) And (OSC.checked = True) And (FILEZILLA.checked = True) And (hxd.checked = True) And (Diskitude.checked = True) And (WiiLink.checked = True) And (HashMF.checked = True) And (GCBM.checked = True) And (Cemu.checked = True) And (NUSGet.checked = True) And (HBASlib.checked = True) And (appstore.checked = True) And (Aroma.checked = True) And (nanddumper.checked = True) And (WiiloadPlugin.checked = True) And (FTPiiUPlugin.checked = True) And (EnvLoad.checked = True) And (CompatIns.checked = True) And (Bloopair.checked = True) And (Inkay.checked = True) And (AccountSwap.checked = True) And (GMYT.checked = True) And (ScrWUPS.checked = True) And (evWii.checked = True) And (WiiVCLaunch.checked = True) And (WiiUIdent.checked = True) And (SaveMii.checked = True) And (wudd.checked = True) And (wupgx2.checked = True) And (UWUVCI.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -172,6 +174,7 @@
 		WiiLink.checked = checkstatus
 		FILEZILLA.checked = checkstatus
 		GCBM.checked = checkstatus
+		TWBM.checked = checkstatus
 		WiiLink.checked = checkstatus
 		Cemu.checked = checkstatus
 		NUSGet.checked = checkstatus
@@ -199,6 +202,7 @@
 
 
 	Function TogglePC(ByVal checkstatus)
+		TWBM.checked = checkstatus
 		wbm.checked = checkstatus
 		f32.checked = checkstatus
 		SMW.checked = checkstatus
@@ -325,7 +329,7 @@ table, th {
 	
 	<th title="An Aroma plugin that enables the Pretendo Network; a free and open source replacement for Nintendo's servers for both the 3DS and WiiU, allowing online connectivity even after the original servers have been discontinued.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="Inkay" /> Inkay &#x21E7;</label></th>
 
-	<th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
+	<th title="Manage Wii\GameCube games, Wii Homebrew apps, covers and cheats. All major formats supported including wbfs, rvz, iso, etc.&#10;&#10;&#x21E7; Auto-Updating from developer github."><label><input class="bigcheck" type="checkbox" name="TWBM" /> TinyWiiBackupManager &#x21E7;</label></th>
 	<th title="Manage and convert Gamecube backup files; requires 64-bit Windows (users with 32-bit Windows can google for 'Gamecube ISO Tool').&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="GCBM" /> GameCube Backup Manager &#x21E7;</label></th>
 </tr>
 
@@ -336,7 +340,7 @@ table, th {
 
 	<th title="An Aroma plugin that allows the WiiU YouTube app to continue functioning after its discontinuation.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="GMYT" /> GiveMiiYouTube &#x21E7;</label></th>
 
-	<th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images.&#10;&#10;If you have an NKit ISO use the NKit Processing App to convert to regular ISO, then use Wii Backup Manager to convert to WBFS."><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
+	<th title="Manage Wii backups on your SD card or hard drive and more. Use this tool to convert games to WBFS files (does not support Nkit ISOs)."><label><input class="bigcheck" type="checkbox" name="wbm" /> Wii Backup Manager</label></th>
 	<th title="WiiLink Patcher helps you install WiiLink to bring back WiiConnect24 features to your Wii\vWii&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="WiiLink" /> WiiLink Patcher &#x21E7;</label></th>
 </tr>
 
@@ -344,7 +348,7 @@ table, th {
 	<th title="Create backups of the WiiU's NAND.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="nanddumper" /> NAND Dumper &#x21E7;</label></th>
 
 	<th title="An Aroma plugin that takes screenshots of the TV and GamePad screen.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="ScrWUPS" /> Screenshot &#x21E7;</label></th>
-	<th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
+	<th title="A Nintendo ToolKit that can Recover and Preserve Wii and GameCube disc images.&#10;&#10;If you have an NKit ISO use the NKit Processing App to convert to regular ISO, then use Wii Backup Manager to convert to WBFS."><label><input class="bigcheck" type="checkbox" name="Nkit" /> NKit Processing App</label></th>
 	<th title="A modern and supercharged NUS downloader that can download content from Nintendo Update Servers.&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="NUSGet" /> NUSGet &#x21E7;</label></th>
 </tr>
 
@@ -353,7 +357,7 @@ table, th {
 
 	<th title="An Aroma plugin to enhance the vWii mode.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="evWii" /> Enhanced vWii &#x21E7;</label></th>
 	
-	<th title="A custom channel creator for the Wii.&#10;&#10;ModMii's forwarder dols from the Advanced Downloads Page are better and easier to construct than Customize Mii's; simply build a forwarder dol using ModMii then add the new dol to your channel using Customize Mii's Options tab.&#10;&#10;If ahbprot is needed for your channel make sure to use a base WAD that has it already enabled (e.g. ModMii's USB-Loader Channel)."><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
+	<th title="A 'WAD File Manager' for Windows that displays information about WAD files, edit them, install or remove them from Emulated NANDs, and more!"><label><input class="bigcheck" type="checkbox" name="SMW" /> ShowMiiWads</label></th>
 	
 	<th title="Wii / Gamecube Emulator; requires 64-bit Windows 10 or newer (older versions of Dolphin from their website support other operating systems).&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Dolphin" /> Dolphin &#x21EA;</label></th>
 </tr>
@@ -363,7 +367,7 @@ table, th {
 	
 	<th title="An Aroma plugin to enhance launching Wii Virtual Console titles.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="WiiVCLaunch" /> Wii VC Launch &#x21E7;</label></th>
 
-	<th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa. Install themes using csm-installer.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!&#10;&#10;Note: currently this tool cannot download Base App files, these can instead be retrieved from ModMii's Download Page 3."><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
+	<th title="A custom channel creator for the Wii.&#10;&#10;ModMii's forwarder dols from the Advanced Downloads Page are better and easier to construct than Customize Mii's; simply build a forwarder dol using ModMii then add the new dol to your channel using Customize Mii's Options tab.&#10;&#10;If ahbprot is needed for your channel make sure to use a base WAD that has it already enabled (e.g. ModMii's USB-Loader Channel)."><label><input class="bigcheck" type="checkbox" name="CM" /> Customize Mii</label></th>
 	<th title="WiiU Emulator; requires 64-bit Windows.&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="Cemu" /> Cemu &#x21E7;</label></th>
 </tr>
 
@@ -372,13 +376,13 @@ table, th {
 	
 	<th title="SaveMii Mod WUT Port; WiiU/vWii Save Manager.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="SaveMii" /> SaveMii Mod &#x21E7;</label></th>
 
-	<th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii\vWii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
+	<th title="Wii Theme Builder GUI capable of converting csm's to mym's and vice versa. Install themes using csm-installer.&#10;&#10;WARNING: Make sure you have Priiloader, Bootmii and NAND backup before experimenting with themes!&#10;&#10;Note: currently this tool cannot download Base App files, these can instead be retrieved from ModMii's Download Page 3."><label><input class="bigcheck" type="checkbox" name="ThemeMiiMod" /> ThemeMii Mod</label></th>
 	<th title="Disk Usage Analyzer&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="Diskitude" /> Diskitude &#x21E7;</label></th>
 </tr>
 <tr>
 	<th title="WUP Installer GX2 (WUHB); can install public titles such as games, game updates or DLC to your system memory (NAND) or the WiiU formatted USB.&#10;Compatible with Aroma Environment.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="wupgx2" /> WUP Installer GX2 &#x21E7;</label></th>
 	<th title="WiiUIdent; A WiiU Identification homebrew, which display information about console hardware components, software/hardware versions and much more.&#10;Compatible with Aroma and Tiramisu Environments.&#10;&#x21E7; Auto-Updating from hb-app.store"><label><input class="bigcheck" type="checkbox" name="WiiUIdent" /> WiiUIdent &#x21E7;</label></th>
-	<th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
+	<th title="WiiGSC (formerly Crap) creates shortcut channels to specific Wii games so they can be loaded from the Wii\vWii menu instead of a USB loader."><label><input class="bigcheck" type="checkbox" name="WiiGSC" /> Wii Game Shortcut Creator</label></th>
 	<th title="FTP Client; use it with ftpii or FTPiiU to manage files on your Wii\vWii or Wii U&#10;&#10;&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="FILEZILLA" /> FileZilla &#x21EA;</label></th>
 </tr>
 
@@ -388,7 +392,7 @@ table, th {
 	
 	<th title="An FTP server plugin for Aroma.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="FTPiiUPlugin" /> FTPiiU Plugin &#x21E7;</label></th>
 	
-	<th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if Aroma's 'Avoid Format dialog' is enabled."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
+	<th title="aka NUS NANDBuilder; create, format, & write to a nand.bin that can be installed with bootmii or a flash programmer"><label><input class="bigcheck" type="checkbox" name="ohnes" /> Ohneschwanzenegger</label></th>
 	
 	<th title="Calculate and compare file hashes, can also be launched from Windows Explorer context menu.&#10;&#x21E7; Auto-Updating from developer website"><label><input class="bigcheck" type="checkbox" name="HashMF" /> HashMyFiles &#x21E7;</label></th>
 </tr>
@@ -396,13 +400,13 @@ table, th {
 <tr>
 	<th title="An Aroma plugin intended for developers to load homebrew and plugins via the network.&#10;&#x21E7; Auto-Updating from aroma.foryour.cafe"><label><input class="bigcheck" type="checkbox" name="WiiloadPlugin" /> Wiiload Plugin &#x21E7;</label></th>
 	<th title="Tiramisu is an alternative homebrew environment for the WiiU meant to run Legacy homebrew that was popular before the development of Aroma."><label><input class="bigcheck" type="checkbox" name="Tiramisu" /> Tiramisu</label></th>
-	<th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
+	<th title="With UStealth you can hide USB hard drives so that the WiiU no longer asks you to Format them. The disk is then also hidden from Windows. If you want to copy something onto it later you have to make your device visible again using UStealth for Windows or directly on the console using 'USB Toggle 2.0'. Of course you should not format it if Windows asks you to!&#10;&#10;Not needed if Aroma's 'Avoid Format dialog' is enabled."><label><input class="bigcheck" type="checkbox" name="UStealth" /> UStealth</label></th>
 	<th title="&#x21EA; Semi-Auto-Updated periodically whenever XFlak remembers to do it. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="hxd" /> HxD Hex Editor &#x21EA;</label></th>
 </tr>
 <tr>
 	<th></th>
 	<th></th>
-	<th></th>
+	<th title="SD Card and USB Test Tool"><label><input class="bigcheck" type="checkbox" name="SDTEST" /> H2testw</label></th>
 	<th title="Ultimate Wii U Virtual Console Injectors (UWUVCI) is an all-in-one injector for the WiiU.&#10;&#10;Supported systems: Wii, GCN, DS, GBA, N64, SNES, NES, Turbo Grafx, MSX&#10;&#10;&#x21E7; Auto-Updating from developer github. Note this app can also update itself."><label><input class="bigcheck" type="checkbox" name="UWUVCI" /> UWUVCI &#x21E7;</label></th>
 </tr>
 

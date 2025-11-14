@@ -6,7 +6,7 @@
 <li>Never uninstall a System Menu or IOS.</li>
 <li>When updating your softmod you should always overwrite old mods by installing new ones, do <u>not</u> try to "Delete everything" or "Start from scratch".</li>
 <ul style=align="left" type="square">
-	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only what's outdated using ModMii's Syscheck Updater Wizard and reduce the number of steps!</li>
+	<li>To update your mods in the future you can use the ModMii Wizard as if it was your first time, or even better, update only what's outdated using ModMii's SysCheck Updater Wizard and reduce the number of steps!</li>
 </ul>
 <li>If you accept an official Nintendo update after modding the Wii, you may lose some of your modifications and have to reinstall them.</li>
 <li>Do not install untested WADs/themes without Priiloader, Bootmii and a nand backup.</li>

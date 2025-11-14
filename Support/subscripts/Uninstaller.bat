@@ -89,6 +89,8 @@ if not exist "COPY_TO_SD\" set "replacements=%replacements%-rep _"SDfolder--\x3e
 if not exist "COPY_TO_USB\" set "replacements=%replacements%-rep _"USBfolder--\x3e\x3cth"_"USBfolder--\x3e\x3cth disabled"_ -rep _" And (USBfolder.checked = True)"__ -rep _"USBfolder.checked = checkstatus"__ "
 
 
+if not exist "Program Files\TinyWiiBackupManager\" set "replacements=%replacements%-rep _"TWBM--\x3e\x3cth"_"TWBM--\x3e\x3cth disabled"_ -rep _" And (TWBM.checked = True)"__ -rep _"TWBM.checked = checkstatus"__ "
+
 if not exist "Program Files\WiiBackupManager\" set "replacements=%replacements%-rep _"wbm--\x3e\x3cth"_"wbm--\x3e\x3cth disabled"_ -rep _" And (wbm.checked = True)"__ -rep _"wbm.checked = checkstatus"__ "
 
 if not exist "Program Files\FAT32_GUI_Formatter\" set "replacements=%replacements%-rep _"f32--\x3e\x3cth"_"f32--\x3e\x3cth disabled"_ -rep _" And (f32.checked = True)"__ -rep _"f32.checked = checkstatus"__ "
@@ -185,6 +187,11 @@ if /i "%SDfolder%" EQU "*" rd /s /q "COPY_TO_SD"> nul
 if /i "%USBfolder%" EQU "*" rd /s /q "COPY_TO_USB"> nul
 if /i "%ModMiiTemp%" EQU "*" rd /s /q "temp"> nul
 
+if /i "%TWBM%" NEQ "*" goto:skip
+if exist "Program Files\TinyWiiBackupManager\" rd /s /q "Program Files\TinyWiiBackupManager\"> nul
+if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\TinyWiiBackupManager.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\TinyWiiBackupManager.lnk">nul
+if exist "%userprofile%\Desktop\TinyWiiBackupManager.lnk" del "%userprofile%\Desktop\TinyWiiBackupManager.lnk">nul
+:skip
 
 if /i "%wbm%" NEQ "*" goto:skip
 if exist "Program Files\WiiBackupManager\" rd /s /q "Program Files\WiiBackupManager\"> nul
