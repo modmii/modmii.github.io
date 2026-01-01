@@ -146,6 +146,8 @@
 
 		objFSO.write vbNewLine & "set vWii80Installer="
 			If vWii80Installer.checked = True Then objFSO.write "*"
+		objFSO.write vbNewLine & "set BlueMii="
+			If BlueMii.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set v43DB="
 			If v43DB.checked = True Then objFSO.write "*"
 		objFSO.write vbNewLine & "set SCR="
@@ -168,7 +170,7 @@
 
 	
 	Function AllButton()
-		If ((OSClib.checked = True) And (HBB.checked = True) And (HM.checked = True) And (HMold.checked = True) And (OHBC.checked = True) And (Pri.checked = True) And (DumpMii.checked = True) And (syscheck.checked = True) And (yawm.checked = True) And (mmm.checked = True) And (ci.checked = True) And (MyM.checked = True) And (Casper.checked = True) And (WIIX.checked = True) And (SGM.checked = True) And (locked.checked = True) And (CleanRip.checked = True) And (ftpii.checked = True) And (usbgx.checked = True) And (USBX.checked = True) And (FLOW.checked = True) And (FLOWF.checked = True) And (usbfolder.checked = True) And (nintendont.checked = True) And (PL.checked = True) And (PLC.checked = True) And (neogamma.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (CheatZip.checked = True) And (AccioHacks.checked = True) And (bootmiisd.checked = True) And (ARC.checked = True) And (KK.checked = True) And (nswitch.checked = True) And (S2U.checked = True) And (IOS236Installer.checked = True) And (SIP.checked = True) And (vWii80Installer.checked = True) And (v43DB.checked = True) And (SCR.checked = True) And (OHBC113.checked = True) And (OHBC114.checked = True) And (BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True)) Then
+		If ((OSClib.checked = True) And (HBB.checked = True) And (HM.checked = True) And (HMold.checked = True) And (OHBC.checked = True) And (Pri.checked = True) And (DumpMii.checked = True) And (syscheck.checked = True) And (yawm.checked = True) And (mmm.checked = True) And (ci.checked = True) And (MyM.checked = True) And (Casper.checked = True) And (WIIX.checked = True) And (SGM.checked = True) And (locked.checked = True) And (CleanRip.checked = True) And (ftpii.checked = True) And (usbgx.checked = True) And (USBX.checked = True) And (FLOW.checked = True) And (FLOWF.checked = True) And (usbfolder.checked = True) And (nintendont.checked = True) And (PL.checked = True) And (PLC.checked = True) And (neogamma.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (CheatZip.checked = True) And (AccioHacks.checked = True) And (bootmiisd.checked = True) And (ARC.checked = True) And (KK.checked = True) And (nswitch.checked = True) And (S2U.checked = True) And (IOS236Installer.checked = True) And (SIP.checked = True) And (vWii80Installer.checked = True) And (BlueMii.checked = True) And (v43DB.checked = True) And (SCR.checked = True) And (OHBC113.checked = True) And (OHBC114.checked = True) And (BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -220,7 +222,7 @@
 	
 	
 	Function ExploitButton()
-		If ((BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True)) Then
+		If ((BB1.checked = True) And (BB2.checked = True) And (Twi.checked = True) And (Twi2.checked = True) And (YUGI.checked = True) And (Bathaxx.checked = True) And (ROTJ.checked = True) And (TOS.checked = True) And (smash.checked = True) And (pwns.checked = True) And (Wilbrand.checked = True) And (BlueMii.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -231,7 +233,7 @@
 	
 	
 	Function AutoUpdateButton()
-		If ((Pri.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (SGM.checked = True) And (WIIX.checked = True) And (HBB.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (usbgx.checked = True) And (nintendont.checked = True) And (FLOW.checked = True) And (OSClib.checked = True) And (MyM.checked = True)  And (yawm.checked = True)  And (syscheck.checked = True) And (ARC.checked = True) And (FTPii.checked = True) And (CleanRip.checked = True) And (vWii80Installer.checked = True) And (v43DB.checked = True) And (DumpMii.checked = True) And (ci.checked = True) And (usbfolder.checked = True) And (SCR.checked = True)) Then
+		If ((Pri.checked = True) And (WiiMC.checked = True) And (fceugx.checked = True) And (snes9xgx.checked = True) And (vbagx.checked = True) And (SGM.checked = True) And (WIIX.checked = True) And (HBB.checked = True) And (WII64.checked = True) And (Not64.checked = True) And (WIISX.checked = True) And (usbgx.checked = True) And (nintendont.checked = True) And (FLOW.checked = True) And (OSClib.checked = True) And (MyM.checked = True)  And (yawm.checked = True)  And (syscheck.checked = True) And (ARC.checked = True) And (FTPii.checked = True) And (CleanRip.checked = True) And (vWii80Installer.checked = True) And (v43DB.checked = True) And (DumpMii.checked = True) And (ci.checked = True) And (usbfolder.checked = True) And (SCR.checked = True) And (BlueMii.checked = True)) Then
 			checkstatus = False
 		else
 			checkstatus = True
@@ -268,6 +270,7 @@
 		ci.checked = checkstatus
 		usbfolder.checked = checkstatus
 		SCR.checked = checkstatus
+		BlueMii.checked = checkstatus
 	End Function		
 
 	Function ToggleVwii(ByVal checkstatus)
@@ -342,6 +345,7 @@
 		smash.checked = checkstatus
 		pwns.checked = checkstatus
 		Wilbrand.checked = checkstatus
+		BlueMii.checked = checkstatus
 	End Function
 
 </script>
@@ -523,7 +527,7 @@ table, th {
 </tr>
 
 <tr>
-	<th disabled title="Requires Mario Kart Wii disc, a <=2GB SD card (SDHC and SDXC do not work), deleting savegame without being able to back it up; works on Wii only&#10;&#10;Download is not available directly via ModMii due to restrictive requirements."><label><input class="bigcheck" type="checkbox" /> <a href="https://github.com/MikeIsAStar/szsHaxx" target="_blank">szsHaxx [U\E\J\K]</a></th>
+	<th title="An exploit for the Wii or Wii Mini requiring a separate already-hacked Wii / WiiU (vWii) / Wii Mini or a copy of Dolphin with working Bluetooth passthrough.&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="BlueMii" /> BlueMii [U\E\J\K] &#x21E7;</label></th>
 
 	<th title="Patched IOS80 Installer for vWii installs a patched vWii IOS80. Made redundant by the Fakesigned vIOS80[80] WAD from Download page 1.&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="vWii80Installer" /> Patched IOS80 Installer &#x21E7;</label></th>
 	
@@ -533,36 +537,36 @@ table, th {
 </tr>
 
 <tr>
-	<th disabled title="Requires a Bluetooth adapter and a Linux machine (or Raspberry Pi, or Raspberry Pi Pico W 1/2, or ESP32 with BR/EDR [Classic] support) and is therefore not directly supported by ModMii; however, Linux can still be run on a Windows PC using software like VirtualBox or by flashing a Linux Live environment to a USB flash drive.&#10;&#10;Download is not available directly via ModMii."><label><input class="bigcheck" type="checkbox" /> <a href="https://wii.hacks.guide/bluebomb.html" target="_blank">BlueBomb [U\E\J\K]</a></th>
+	<th disabled title="An exploit for the Wii or Wii Mini requiring a bluetooth adapter and a linux machine (or Raspberry Pi, or Raspberry Pi Pico W 1/2, or ESP32 with BR/EDR [Classic] support) and is therefore not directly supported by ModMii; however, Linux can still be run on a Windows PC using software like VirtualBox or by flashing a Linux Live environment to a USB flash drive.&#10;&#10;Download is not available directly via ModMii."><label><input class="bigcheck" type="checkbox" /> <a href="https://wii.hacks.guide/bluebomb.html" target="_blank">BlueBomb [U\E\J\K]</a></th>
 	<th></th>
 	<th title="File explorer for the Wii\vWii with several other features&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WIIX" /> WiiXplorer &#x21E7;</label></th>
 	<th title="GBA/Game Boy Color/Game Boy Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="vbagx" /> Visual Boy Advance GX &#x21E7;</label></th>
 </tr>
 
 <tr>
+	<th disabled title="Requires Mario Kart Wii disc, a <=2GB SD card (SDHC and SDXC do not work), deleting savegame without being able to back it up; works on Wii only&#10;&#10;Download is not available directly via ModMii due to restrictive requirements."><label><input class="bigcheck" type="checkbox" /> <a href="https://github.com/MikeIsAStar/szsHaxx" target="_blank">szsHaxx [U\E\J\K]</a></th>
 	<th colspan="1" title="Toggle Homebrew Channel Downloads" style="text-align:center"><button style="width:99%;" onClick="vbscript:HBCButton()"><font face="Arial Black">Homebrew Channels</font></button></th>
-	<th></th>
 	<th title="Extract/install SaveGames and Miis from/to your Wii/vWii&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="SGM" /> SaveGame Manager GX &#x21E7;</label></th>
 	<th title="N64 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WII64" /> Wii64 &#x21E7;</label></th>
 </tr>
 
 <tr>
-	<th title="Open Homebrew Channel v1.1.3 WAD by fail0verflow with title ID OHBC. This is the same channel intalled by vWii Compat Installer v1.6. Technically it works on both Wii & vWii but is only recommended for vWii."><label><input class="bigcheck" type="checkbox" name="OHBC113" /> HBC v1.1.3 WAD [OHBC]</label></th>
 	<th></th>
+	<th title="Open Homebrew Channel v1.1.3 WAD by fail0verflow with title ID OHBC. This is the same channel intalled by vWii Compat Installer v1.6. Technically it works on both Wii & vWii but is only recommended for vWii."><label><input class="bigcheck" type="checkbox" name="OHBC113" /> HBC v1.1.3 WAD [OHBC]</label></th>
 	<th title="A password protected apps_locked folder you can move Wii\vWii homebrew apps to restrict access to them&#10;&#10;Default Password: UDLRAB"><label><input class="bigcheck" type="checkbox" name="locked" /> Locked HBC Folder</label></th>
 	<th title="N64 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="Not64" /> Not64 &#x21E7;</label></th>
 </tr>
 
 <tr>
-	<th title="Open Homebrew Channel v1.1.4-1 WAD modified by FIX94 with title ID OHBC. Technically it works on both Wii & vWii."><label><input class="bigcheck" type="checkbox" name="OHBC114" /> HBC v1.1.4-1 WAD [OHBC]</label></th>
 	<th></th>
+	<th title="Open Homebrew Channel v1.1.4-1 WAD modified by FIX94 with title ID OHBC. Technically it works on both Wii & vWii."><label><input class="bigcheck" type="checkbox" name="OHBC114" /> HBC v1.1.4-1 WAD [OHBC]</label></th>
 	<th title="A tool to backup your Gamecube/Wii Discs via IOS58. Create 1:1 backups of your GC/Wii discs for archival purposes without any requirements for custom IOS (cIOS). Supports USB 2.0 / NTFS / FAT32 & Front SD. Devices formatted as WBFS is not supported.&#10;&#10;Warning: ripping games to NTFS is unstable, it is highly recommended to rip games to a FAT32 formatted HDD, then transfer them to your NTFS drive using a computer.&#10;&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="CleanRip" /> CleanRip &#x21E7;</label></th>
 	<th title="PS1 Emulator&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="WIISX" /> WiiSXRX &#x21E7;</label></th>
 </tr>
 
 <tr>
-	<th title="Open Homebrew Channel v1.1.5 WAD with title ID LULZ; this is the same as fail0verflow's v1.1.3 but with it's Title ID changed to LULZ. Technically it works on both Wii & vWii but is only recommended for Wii."><label><input class="bigcheck" type="checkbox" name="OHBC" /> HBC v1.1.5 WAD [LULZ]</label></th>
 	<th></th>
+	<th title="Open Homebrew Channel v1.1.5 WAD with title ID LULZ; this is the same as fail0verflow's v1.1.3 but with it's Title ID changed to LULZ. Technically it works on both Wii & vWii but is only recommended for Wii."><label><input class="bigcheck" type="checkbox" name="OHBC" /> HBC v1.1.5 WAD [LULZ]</label></th>
 	<th title="FTP Server for the Wii\vWii; use it with FileZilla to manage files on your Wii\vWii using your PC&#10;&#x21E7; Auto-Updating from oscwii.org"><label><input class="bigcheck" type="checkbox" name="ftpii" /> ftpii &#x21E7;</label></th>
 	<th title="txtcodes folder filled with cheat codes"><label><input class="bigcheck" type="checkbox" name="CheatZip" /> Cheat Codes</label></th>
 </tr>

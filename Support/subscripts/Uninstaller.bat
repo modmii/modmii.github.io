@@ -89,9 +89,9 @@ if not exist "COPY_TO_SD\" set "replacements=%replacements%-rep _"SDfolder--\x3e
 if not exist "COPY_TO_USB\" set "replacements=%replacements%-rep _"USBfolder--\x3e\x3cth"_"USBfolder--\x3e\x3cth disabled"_ -rep _" And (USBfolder.checked = True)"__ -rep _"USBfolder.checked = checkstatus"__ "
 
 
-if not exist "Program Files\TinyWiiBackupManager\" set "replacements=%replacements%-rep _"TWBM--\x3e\x3cth"_"TWBM--\x3e\x3cth disabled"_ -rep _" And (TWBM.checked = True)"__ -rep _"TWBM.checked = checkstatus"__ "
+if not exist "Program Files\TinyWiiBackupManager\" set "replacements=%replacements%-rep _"--TWBM--\x3e\x3cth"_"--TWBM--\x3e\x3cth disabled"_ -rep _" And (TWBM.checked = True)"__ -rep _"TWBM.checked = checkstatus"__ "
 
-if not exist "Program Files\WiiBackupManager\" set "replacements=%replacements%-rep _"wbm--\x3e\x3cth"_"wbm--\x3e\x3cth disabled"_ -rep _" And (wbm.checked = True)"__ -rep _"wbm.checked = checkstatus"__ "
+if not exist "Program Files\WiiBackupManager\" set "replacements=%replacements%-rep _"--wbm--\x3e\x3cth"_"--wbm--\x3e\x3cth disabled"_ -rep _" And (wbm.checked = True)"__ -rep _"wbm.checked = checkstatus"__ "
 
 if not exist "Program Files\FAT32_GUI_Formatter\" set "replacements=%replacements%-rep _"f32--\x3e\x3cth"_"f32--\x3e\x3cth disabled"_ -rep _" And (f32.checked = True)"__ -rep _"f32.checked = checkstatus"__ "
 
@@ -191,6 +191,11 @@ if /i "%TWBM%" NEQ "*" goto:skip
 if exist "Program Files\TinyWiiBackupManager\" rd /s /q "Program Files\TinyWiiBackupManager\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\TinyWiiBackupManager.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\TinyWiiBackupManager.lnk">nul
 if exist "%userprofile%\Desktop\TinyWiiBackupManager.lnk" del "%userprofile%\Desktop\TinyWiiBackupManager.lnk">nul
+if exist "%userprofile%\AppData\Roaming\mq1\TinyWiiBackupManager\" rd /s /q "%userprofile%\AppData\Roaming\mq1\TinyWiiBackupManager\"> nul
+::delete mq1 folder if empty
+if not exist "%userprofile%\AppData\Roaming\mq1\" goto:skip
+dir /A /B "%userprofile%\AppData\Roaming\mq1" | findstr /R ".">NUL && goto:skip
+rd /s /q "%userprofile%\AppData\Roaming\mq1"> nul
 :skip
 
 if /i "%wbm%" NEQ "*" goto:skip
@@ -228,6 +233,7 @@ if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\Crazy Installer
 
 if /i "%ohnes%" NEQ "*" goto:skip
 if exist "Program Files\ohneschwanzenegger\" rd /s /q "Program Files\ohneschwanzenegger\"> nul
+if exist "%userprofile%\AppData\Roaming\WiiQt\" rd /s /q "%userprofile%\AppData\Roaming\WiiQt\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ohneschwanzenegger.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ohneschwanzenegger.lnk">nul
 if exist "%userprofile%\Desktop\ohneschwanzenegger.lnk" del "%userprofile%\Desktop\ohneschwanzenegger.lnk">nul
 :skip
@@ -248,6 +254,7 @@ if exist "%userprofile%\Desktop\Open Shop Channel.lnk" del "%userprofile%\Deskto
 
 if /i "%FILEZILLA%" NEQ "*" goto:skip
 if exist "Program Files\FileZilla_win%bit%\" rd /s /q "Program Files\FileZilla_win%bit%\"> nul
+if exist "%userprofile%\AppData\Roaming\FileZilla\" rd /s /q "%userprofile%\AppData\Roaming\FileZilla\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\FileZilla.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\FileZilla.lnk">nul
 if exist "%userprofile%\Desktop\FileZilla.lnk" del "%userprofile%\Desktop\FileZilla.lnk">nul
 :skip
@@ -287,6 +294,7 @@ if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\UWUVCI AIO.lnk"
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk">nul
 if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" del "%userprofile%\Desktop\UWUVCI AIO.lnk">nul
 if exist "Program Files\UWUVCI AIO\" rd /s /q "Program Files\UWUVCI AIO\"> nul
+if exist "%userprofile%\AppData\Local\UWUVCI-V3\" rd /s /q "%userprofile%\AppData\Local\UWUVCI-V3\"> nul
 :skip
 
 if /i "%WiiLink%" NEQ "*" goto:skip
@@ -299,6 +307,7 @@ if /i "%NUSGet%" NEQ "*" goto:skip
 if exist "Program Files\NUSGet\" rd /s /q "Program Files\NUSGet\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\NUSGet.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\NUSGet.lnk">nul
 if exist "%userprofile%\Desktop\NUSGet.lnk" del "%userprofile%\Desktop\NUSGet.lnk">nul
+if exist "%userprofile%\AppData\Roaming\NUSGet\" rd /s /q "%userprofile%\AppData\Roaming\NUSGet\"> nul
 :skip
 
 if /i "%Cemu%" NEQ "*" goto:skip
@@ -326,6 +335,7 @@ if /i "%ThemeMiiMod%" NEQ "*" goto:skip
 if exist "Program Files\ThemeMii\" rd /s /q "Program Files\ThemeMii\"> nul
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ThemeMii Mod.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\ModMii\ThemeMii Mod.lnk">nul
 if exist "%userprofile%\Desktop\ThemeMii Mod.lnk" del "%userprofile%\Desktop\ThemeMii Mod.lnk">nul
+if exist "%userprofile%\AppData\Local\ThemeMii\" rd /s /q "%userprofile%\AppData\Local\ThemeMii\"> nul
 :skip
 
 if /i "%UStealth%" NEQ "*" goto:skip

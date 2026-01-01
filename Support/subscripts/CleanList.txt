@@ -50,7 +50,6 @@
 \private\wii\title\aktn
 \wiiu\apps\compat_installer
 \wiiu\apps\decaffeinator
-\wiiu\apps\PayloadLoaderInstaller.wuhb
 \wiiu\apps\PriiloaderWiiUForwarder
 \wiiu\apps\UFDiine
 \wiiu\apps\vwii-compat-installer

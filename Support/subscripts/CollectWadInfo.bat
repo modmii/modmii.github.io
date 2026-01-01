@@ -1,5 +1,3 @@
-::don't echo\use any explanation points in this script (comments are okay), actually nevermind it's fine
-::set "WADinfo=%WadInput%"
 
 if exist "temp\__channel" rd /s /q "temp\__channel"> nul
 
@@ -18,7 +16,7 @@ Set WADregion=
 Set WadBlocks=
 set GetFileSize=
 Set GetFileSizeMB=
-Set WadContents=
+Set WadContents=0
 set cIOSChecks=
 Set SigningStatus=
 Set WadKorKey=

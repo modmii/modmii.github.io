@@ -25,7 +25,7 @@ chcp 437>nul
 ::::PUSHD "%~dp0"
 ::POPD
 
-set currentversion=8.0.5
+set currentversion=8.0.6
 set d2x-bundled=11-beta3
 set currentversioncopy=%currentversion%
 set agreedversion=
@@ -235,6 +235,7 @@ support\sfk filter -quiet "temp\temp.txt" -rep _*" "__ -rep _"."*__ -write -yes
 support\sfk filter -quiet "temp\temp.txt" -no-empty-lines -no-blank-lines -write -yes
 set /p winver= <temp\temp.txt
 ::echo %winver%
+
 if not exist "%homedrive%\Program Files (x86)" goto:winwarning
 if /i %winver% GEQ 9 goto:continue
 :winwarning
@@ -1637,13 +1638,12 @@ if not "%WiiIP%"=="" support\sfk.exe -spat echo \x20 \x20 S = Send WAD to Homebr
 echo  [IP] = Send WAD to Homebrew Channel with IP entered; e.g 192.168.1.6
 echo  HELP = Instructional video on checking your Wii\vWii IP Address
 :disableSEND
-
 set "NLtext=NandLoader, "
 If /i "%wadtype%" EQU "channelsystem" set NLtext=
+
 ::if content count is greater than 3 then skip (so channels like Region Select aren't attempted)
 if %WadContents% GTR 3 set NLtext=
 if %WadContents% LEQ 1 set NLtext=
-
 set DFtext=
 If /i "%channelpath%" EQU "00010001" set "DFtext=Deflicker, "
 If /i "%channelpath%" EQU "00010002" set "DFtext=Deflicker, "
@@ -9563,7 +9563,7 @@ if exist support\skipscam.txt goto:skip
 if /i "%agreedversion%" EQU "%currentversion%" goto:skip
 
 ::Bushing from Team Twizzers specifically requested ModMii include a scam warning
-
+cls
 set warning="
 echo                                        ModMii
 echo                                       by XFlak
@@ -9666,7 +9666,7 @@ if exist "Support\Skins\%skin%\splash.png" (set "splash.png=Support\Skins\%skin%
 
 
 ::by default legacy apps are disabled (107 at present) less retroarch which should be updated later in 2025 (but will continue to exclude more_ra_arcade & more_ra_cores which are relatively large downloads)
-if not exist Support\settings_skipped_apps.txt powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu-cbhc?`n?ftpiiu?`n?ftpiiu_everywhere?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?SuDokuL?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?u-paint?`n?Uclick?`n?UFDiine?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?vWii_decaffeinator?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
+if not exist Support\settings_skipped_apps.txt powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu?`n?ftpiiu_everywhere?`n?ftpiiu-cbhc?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?Uclick?`n?UFDiine?`n?u-paint?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
 
 ::check for supporting apps that AVs are known to remove
 if not exist support\hexalter.exe (echo One or more of ModMii's supporting files are missing, redownloading...) & (set currentversion=0.0.0) & (@ping 127.0.0.1 -n 2 -w 1000> nul) & (goto:UpdateModMii)
@@ -9989,6 +9989,7 @@ set Screenshot_WUPS=
 set appstore=
 set SaveMiiModWUTPort=
 set vWii80Installer=
+set BlueMii=
 set v43DB=
 set Swiss_cMIOS=
 set DiosMios=
@@ -10858,6 +10859,7 @@ if /i "%OSClib%" EQU "*" set "replacements=%replacements%-rep _"\x22OSClib\x22"_
 if /i "%csminstaller%" EQU "*" set "replacements=%replacements%-rep _"\x22ci\x22"_"\x22ci\x22 checked=\x22true\x22"_ "
 
 if /i "%vWii80Installer%" EQU "*" set "replacements=%replacements%-rep _"\x22vWii80Installer\x22"_"\x22vWii80Installer\x22 checked=\x22true\x22"_ "
+if /i "%BlueMii%" EQU "*" set "replacements=%replacements%-rep _"\x22BlueMii\x22"_"\x22BlueMii\x22 checked=\x22true\x22"_ "
 if /i "%v43DB%" EQU "*" set "replacements=%replacements%-rep _"\x22v43DB\x22"_"\x22v43DB\x22 checked=\x22true\x22"_ "
 if /i "%SCR%" EQU "*" set "replacements=%replacements%-rep _"\x22SCR\x22"_"\x22SCR\x22 checked=\x22true\x22"_ "
 if /i "%OHBC113%" EQU "*" set "replacements=%replacements%-rep _"\x22OHBC113\x22"_"\x22OHBC113\x22 checked=\x22true\x22"_ "
@@ -12175,7 +12177,7 @@ goto:EOF
 ::copy /y NUL "Support\settings_skipped_apps.txt">nul
 
 ::by default legacy apps are disabled (107 at present) less retroarch which should be updated later in 2025 (but will continue to exclude more_ra_arcade & more_ra_cores which are relatively large downloads)
-powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu-cbhc?`n?ftpiiu?`n?ftpiiu_everywhere?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?SuDokuL?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?u-paint?`n?Uclick?`n?UFDiine?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?vWii_decaffeinator?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
+powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu?`n?ftpiiu_everywhere?`n?ftpiiu-cbhc?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?Uclick?`n?UFDiine?`n?u-paint?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
 :notall
 
 
@@ -12917,6 +12919,7 @@ if exist temp\HBAScountCurrent.txt del temp\HBAScountCurrent.txt>nul
 if exist temp\HBAScountSkip.txt del temp\HBAScountSkip.txt>nul
 set HBASmode=list
 if exist "%DRIVE%\wiiu" call support\subscripts\HBAS.bat
+
 ::line count, count lines, if only 1 then don't show
 set /a HBASupdateitems=0
 if not exist temp\HBASupdateList.txt goto:skiplist
@@ -12929,7 +12932,6 @@ echo.
 
 ::OSC+HBAS
 set /a updateitems=%OSCupdateitems%+%HBASupdateitems%
-
 
 ::OTHER UPDATE ITEMS
 set SkipUpdateReturnTo=
@@ -13006,9 +13008,12 @@ goto:skip
 
 if exist "temp\%name%.txt" del "temp\%name%.txt">nul
 ::add line breaks
-support\sfk filter -spat "temp\check_versions.txt" -rep _,_\n_ +filter -spat -cut "*" to "\x22name\x22:\x22%name%\x22" +filter -spat -cut "\x22id\x22:\x22aroma-plugins\x22" to "*" -+"\x22path\x22:\x22wiiu/apps/" -+"\x22path\x22:\x22wiiu/environments/aroma/" -+"\x22sha1\x22" -rep _\x22__ -rep _*:__ -rep _[__ -rep _]__ -rep _{__ -rep _}__ -rep _/_\_ +filter -unique >"temp\%name%.txt"
+
+::also correcting for "wiiu/environments" line-break in the middle wii-u
+support\sfk filter -spat "temp\check_versions.txt" -rep _,_\n_ +filter -spat -lsrep _"u/environments/aroma"_"\x22path\x22:\x22wiiu/environments/aroma"_ +filter -spat -cut "*" to "\x22name\x22:\x22%name%\x22" +filter -spat -cut "\x22id\x22:\x22aroma-plugins\x22" to "*" -+"\x22path\x22:\x22wiiu/apps/" -+"\x22path\x22:\x22wiiu/environments/aroma/" -+"\x22sha1\x22" -rep _\x22__ -rep _*:__ -rep _[__ -rep _]__ -rep _{__ -rep _}__ -rep _/_\_ +filter -unique >"temp\%name%.txt"
 ::delete if file is empty
 >nul findstr "^" "temp\%name%.txt" || del "temp\%name%.txt"
+
 
 if not exist temp\%name%.txt goto:skip
 ::Loop through the following once for EACH line in *.txt
@@ -13064,6 +13069,7 @@ if /i "%Homedrive%" EQU "%ModMiiDrive%" set DrivePC=Program Files
 
 
 :nextpage
+if /i "%debug%" EQU "on" pause
 set SkipUpdateReturnTo=
 
 if /i "%cleanitems%" NEQ "0" goto:FileCleanup2
@@ -13467,7 +13473,7 @@ if /i "%linenum%" NEQ "%clean%" goto:EOF
 set "CurrentApp=%WiiUappName%"
 ::snip manifest.install from repo.summary
 if exist temp\HBASmanifest.install del temp\HBASmanifest.install>nul
-support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -rep _"\x22, "__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
+support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -lerep _"\x22,*"__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
 
 findStr /I /C:"/meta.xml" "temp\HBASmanifest.install" >nul
 IF ERRORLEVEL 1 goto:skipmeta
@@ -13719,7 +13725,7 @@ goto:EOF
 :quickskip
 copy /y NUL "Support\settings_skipped_apps.txt">nul
 
-if /i "%RestoreUpdate%" EQU "D" powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu-cbhc?`n?ftpiiu?`n?ftpiiu_everywhere?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?SuDokuL?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?u-paint?`n?Uclick?`n?UFDiine?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?vWii_decaffeinator?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
+if /i "%RestoreUpdate%" EQU "D" powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu?`n?ftpiiu_everywhere?`n?ftpiiu-cbhc?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?Uclick?`n?UFDiine?`n?u-paint?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
 
 if /i "%MENU1%" EQU "O" goto:OPTIONS
 
@@ -13740,7 +13746,7 @@ echo You Have Entered an Incorrect Key
 goto:rescan
 :notall
 
-if /i "%RestoreUpdate%" EQU "D" powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu-cbhc?`n?ftpiiu?`n?ftpiiu_everywhere?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?SuDokuL?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?u-paint?`n?Uclick?`n?UFDiine?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?vWii_decaffeinator?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
+if /i "%RestoreUpdate%" EQU "D" powershell echo "?100_Boxes_Wiiu?`n?AM64DSPatcher?`n?AocPatcher?`n?asturoids?`n?Bloopair?`n?cave?`n?cbhc?`n?cfwbooter?`n?CHIP8?`n?clock?`n?CloseHBL?`n?controller-test?`n?Crispy-Doom?`n?ddd?`n?diibugger?`n?disc2app?`n?disc2appWUTPort?`n?drc-test?`n?Fake-08?`n?fireplace-nx-wiiu?`n?flappy_bird?`n?flappy_bird_3d?`n?fsdumper?`n?ft2sd?`n?ftpiiu?`n?ftpiiu_everywhere?`n?ftpiiu-cbhc?`n?fuckyoustick?`n?gacubeboy?`n?GamepadTester?`n?gbiine?`n?geckiine?`n?haxchi?`n?HBL_Dpad?`n?hbl2hbc?`n?hid_keyboard_monitor?`n?hidtest?`n?hidtovpad?`n?homebrew_launcher?`n?IOSreboot?`n?iosuotp?`n?jezzballu?`n?keyboard_example?`n?lameIRCU?`n?LiveSynthesisU?`n?loadiine_gx2?`n?loadiine_gx2_y?`n?MegaZeux?`n?menu_sort?`n?Minesweeper_WiiU?`n?mocha?`n?mocha_fat32?`n?mocha_fshax?`n?mocha_sd_access?`n?more_ra_arcade?`n?more_ra_cores?`n?nanddumper?`n?nnupatcher?`n?Opensupaplex?`n?otp2sd?`n?ourloader?`n?PacmanGX2?`n?Pokemini?`n?PokeMiniU?`n?pong?`n?RemotePad?`n?savemii?`n?savemii_inject_mod?`n?saviine?`n?SDcafiine?`n?SDGeckiine?`n?seeprom2sd?`n?shutdown-hbl?`n?sign_c2w_patcher?`n?sigpatcher2HBL?`n?sigpatcher2sysmenu?`n?Simple_SDL_Snake?`n?sm4sh2sd?`n?snake?`n?spacegame?`n?spiik?`n?swapdrc?`n?swapdrc_lite?`n?swipswapme?`n?TetrisU?`n?tictactoe?`n?tik2sd?`n?timingu?`n?Uclick?`n?UFDiine?`n?u-paint?`n?UselessHomebrew?`n?VidChanger?`n?vwii-compat-installer?`n?vWii-NAND-Restorer?`n?WiiAlarmU?`n?wiiu-vnc?`n?wim?`n?wudump?`n?wup_installer_gx2?`n?wup_installer_gx2_mod?`n?wuphax?`n?wupinstaller?`n?wupymod?`n?yapesdl?">Support\settings_skipped_apps.txt
 if /i "%RestoreUpdate%" EQU "D" goto:SkipUpdateSettings
 
 if %RestoreUpdate% LSS 1 goto:badkey
@@ -13942,7 +13948,7 @@ goto:here
 
 ::snip manifest.install from repo.summary
 if exist temp\HBASmanifest.install del temp\HBASmanifest.install>nul
-support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -rep _"\x22, "__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
+support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -lerep _"\x22,*"__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
 
 ::snip info.json from repo.json
 if exist temp\HBASinfo.json del temp\HBASinfo.json >nul
@@ -14318,7 +14324,7 @@ echo.
 
 
 if exist "temp\HBASname_.txt" goto:skip
-support\wget --no-check-certificate -q -t 3 -O "temp\repo_.json" "https://wiiubru.com/appstore/repo.json"
+support\wget --no-check-certificate -q -t 3 -O "temp\repo_.json" "https://wiiu.cdn.fortheusers.org/repo.json"
 
 ::surround name in ?'s to avoid partial duplicates
 support\sfk filter -spat -quiet "temp\repo_.json" -+"\x22name\x22: \x22" -rep _"*\x22name\x22: \x22"_?_ -rep _"\x22*"_?_ >temp\HBASname_.txt
@@ -14977,6 +14983,7 @@ if /i "%MENU1%" EQU "1" goto:Wilbrand
 if /i "%MENU1%" EQU "2" goto:Wilbrand
 if /i "%MENU1%" EQU "3" goto:Wilbrand
 if /i "%MENU1%" EQU "4" goto:Wilbrand
+if /i "%MENU1%" EQU "5" goto:Wilbrand
 if /i "%MENU1%" EQU "A" goto:Wilbrand
 goto:notWilbrand
 :Wilbrand
@@ -15258,6 +15265,7 @@ if /i "%MENU1%" EQU "1" (echo         B = Back out and skip this download) & (go
 if /i "%MENU1%" EQU "2" (echo         B = Back out and skip this download) & (goto:skip)
 if /i "%MENU1%" EQU "3" (echo         B = Back out and skip this download) & (goto:skip)
 if /i "%MENU1%" EQU "4" (echo         B = Back out and skip this download) & (goto:skip)
+if /i "%MENU1%" EQU "5" (echo         B = Back out and skip this download) & (goto:skip)
 if /i "%MENU1%" EQU "A" (echo         B = Back out and skip this download) & (goto:skip)
 echo         S = Skip this for now and enter it later if you're not near your Wii
 echo         B = Back
@@ -15275,10 +15283,12 @@ if /i "%macaddress%" EQU "M" goto:MENU
 
 if /i "%macaddress%" NEQ "B" goto:notback
 set Wilbrand=
+set macaddress=
 if /i "%MENU1%" EQU "1" goto:DOWNLOADQUEUE
 if /i "%MENU1%" EQU "2" goto:DOWNLOADQUEUE
 if /i "%MENU1%" EQU "3" goto:DOWNLOADQUEUE
 if /i "%MENU1%" EQU "4" goto:DOWNLOADQUEUE
+if /i "%MENU1%" EQU "5" goto:DOWNLOADQUEUE
 if /i "%MENU1%" EQU "A" goto:DOWNLOADQUEUE
 goto:WPAGE3C
 :notback
@@ -15293,6 +15303,7 @@ if /i "%MENU1%" EQU "1" goto:skip
 if /i "%MENU1%" EQU "2" goto:skip
 if /i "%MENU1%" EQU "3" goto:skip
 if /i "%MENU1%" EQU "4" goto:skip
+if /i "%MENU1%" EQU "5" goto:skip
 if /i "%MENU1%" EQU "A" goto:skip
 if /i "%macaddress%" EQU "S" goto:WPAGE3D
 :skip
@@ -15364,6 +15375,7 @@ if /i "%MENU1%" EQU "1" goto:WPAGE3
 if /i "%MENU1%" EQU "2" goto:WPAGE3
 if /i "%MENU1%" EQU "3" goto:WPAGE3
 if /i "%MENU1%" EQU "4" goto:WPAGE3
+if /i "%MENU1%" EQU "5" goto:WPAGE3
 if /i "%MENU1%" EQU "A" goto:WPAGE3
 
 goto:WPAGE3D
@@ -25366,7 +25378,7 @@ if /i "%BCnand%" EQU "*" (echo "BC NAND vWii">>temp\DLnames.txt) & (echo "BCnand
 if /i "%BCwfs%" EQU "*" (echo "BC WFS vWii">>temp\DLnames.txt) & (echo "BCwfs">>temp\DLgotos.txt)
 
 if /i "%Bloopair%" EQU "*" (echo "Bloopair">>temp\DLnames.txt) & (echo "Bloopair">>temp\DLgotos.txt)
-
+if /i "%BlueMii%" EQU "*" (echo "BlueMii">>temp\DLnames.txt) & (echo "BlueMii">>temp\DLgotos.txt)
 
 if /i "%bootmiisd%" EQU "*" (echo "Bootmii SD Files">>temp\DLnames.txt) & (echo "bootmiisd">>temp\DLgotos.txt)
 if /i "%Casper%" EQU "*" (echo "Casper">>temp\DLnames.txt) & (echo "Casper">>temp\DLgotos.txt)
@@ -26379,6 +26391,7 @@ if /i "%Screenshot_WUPS%" EQU "*" echo SET Screenshot_WUPS=*>> "temp\DownloadQue
 if /i "%appstore%" EQU "*" echo SET appstore=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%SaveMiiModWUTPort%" EQU "*" echo SET SaveMiiModWUTPort=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%vWii80Installer%" EQU "*" echo SET vWii80Installer=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
+if /i "%BlueMii%" EQU "*" echo SET BlueMii=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%v43DB%" EQU "*" echo SET v43DB=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%Swiss_cMIOS%" EQU "*" echo SET Swiss_cMIOS=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
 if /i "%DiosMios%" EQU "*" echo SET DiosMios=*>> "temp\DownloadQueues\%DLQUEUENAME%.bat"
@@ -27567,7 +27580,9 @@ echo.
 if exist temp\%basecios% rd /s /q temp\%basecios%
 mkdir temp\%basecios%
 
-%WiiPy% wad unpack --skip-hash "temp\%basewad%.wad" "temp\%basecios%">nul
+if /i "%LegacyCIOS%" NEQ "Y" %WiiPy% wad unpack --skip-hash "temp\%basewad%.wad" "temp\%basecios%">nul
+if /i "%LegacyCIOS%" EQU "Y" support\wadmii -in temp\%basewad%.wad -out temp\%basecios%
+
 
 ::-----------DML Stuff------------
 :DML-stuff
@@ -27764,8 +27779,9 @@ echo.
 
 if exist temp\%basewadb% rd /s /q temp\%basewadb%
 mkdir temp\%basewadb%
-%WiiPy% wad unpack --skip-hash "temp\%basewadb%.wad" "temp\%basewadb%">nul
 
+if /i "%LegacyCIOS%" NEQ "Y" %WiiPy% wad unpack --skip-hash "temp\%basewadb%.wad" "temp\%basewadb%">nul
+if /i "%LegacyCIOS%" EQU "Y" support\wadmii -in temp\%basewadb%.wad -out temp\%basewadb%
 
 if /i "%wadname:~0,3%" EQU "cBC" goto:cbc-stuff
 
@@ -29647,11 +29663,9 @@ if /i "%path1%" NEQ "Program Files\UWUVCI AIO\" goto:notUWUVCI
 if exist "%Drive%\%path1%%filename%" (set shortcuts=n) else (set shortcuts=y)
 if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" (set KeepDesk=y) else (set KeepDesk=n)
 
-
-::start /wait temp\%wadname% /DIR="%Drive%\%path1%" /VERYSILENT
-
 if not exist "%Drive%\%path1%" mkdir "%Drive%\%path1%"
-support\7za x -aoa "temp\%wadname%" -o"%Drive%\%path1%" -r
+::all zipped files extracted to root of path
+support\7za e -aoa "temp\%wadname%" -o"%Drive%\%path1%" *.* -r
 
 if exist "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk" del "%appdata%\Microsoft\Windows\Start Menu\Programs\UWUVCI AIO.lnk">nul
 if /i "%KeepDesk%" EQU "n" if exist "%userprofile%\Desktop\UWUVCI AIO.lnk" del "%userprofile%\Desktop\UWUVCI AIO.lnk">nul
@@ -29851,7 +29865,9 @@ support\sfk filter "temp\%wadname%" -+"browser_download_url" -!"ARM64" +filter -
 set /p code3= <"temp\latest2.json"
 ::echo code3:"%code3%"
 
+
 if exist "temp\%wadname%" del "temp\%wadname%">nul
+if "%code3%"=="" goto:skipnormalextraction
 
 support\sfk filter -write -yes "temp\latest2.json" -rep _*/__ >nul
 set /p fullfilename= <"temp\latest2.json"
@@ -29879,6 +29895,8 @@ if /i "%Drive%" EQU "temp" goto:latestshortcut
 
 if /i "%fullfilename:~-4%" EQU ".exe" copy /y "temp\%fullfilename%" "%Drive%\%path1%%filename%" >nul
 if /i "%fullfilename:~-4%" EQU ".zip" support\7za e -aoa "temp\%fullfilename%" -o"%Drive%\%path1%" *.* -r>nul
+if /i "%name%" EQU "TinyWiiBackupManager" move /y "%Drive%\%path1%TinyWiiBackupManager.exe" "%Drive%\%path1%%filename%" >nul
+if /i "%name%" EQU "TinyWiiBackupManager" del "%Drive%\%path1%\Rename TinyWiiBackupManager*" >nul
 
 ::goto:latestshortcut
 

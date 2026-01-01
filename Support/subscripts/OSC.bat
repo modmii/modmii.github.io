@@ -70,6 +70,7 @@ if /i "%SCR%" EQU "*" del "temp\contents\system-channel-restorer.oscmeta">nul
 if /i "%usbfolder%" EQU "*" del "temp\contents\usb-loader.oscmeta">nul
 if /i "%csminstaller%" EQU "*" del "temp\contents\csm-installer.oscmeta">nul
 if /i "%DumpMii%" EQU "*" del "temp\contents\nanddumper_ios.oscmeta">nul
+if /i "%BlueMii%" EQU "*" del "temp\contents\bluemii.oscmeta">nul
 
 ::also exclude postloader if toggled as the versions provided by ModMii are better
 if /i "%postLoader%" EQU "*" del "temp\contents\postloader.oscmeta">nul

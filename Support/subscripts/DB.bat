@@ -1,4 +1,4 @@
-set DBversion=25.11.14
+set DBversion=26.01.01
 if "%CurrentDLNAME%"=="" goto:DBend
 call "Support\subscripts\ClearDB.bat"
 goto:%CurrentDLNAME%
@@ -2852,8 +2852,8 @@ set code2="https://api.github.com/repos/mq1/TinyWiiBackupManager/releases/latest
 set version=*
 set dlname=latest
 set wadname=latest.json
-set filename=TinyWiiBackupManager.exe
-if exist "%homedrive%\Program Files (x86)" (set parsename=windows-x64-portable.zip) else (set parsename=windows-x86-portable.zip)
+set filename=TinyWiiBackupManager-portable.exe
+if exist "%homedrive%\Program Files (x86)" (set parsename=windows-x86_64.zip) else (set parsename=windows-x86.zip)
 set "path1=Program Files\TinyWiiBackupManager\"
 goto:DBend
 
@@ -3141,7 +3141,7 @@ goto:DBend
 set "name=Ultimate Wii U VC Injectors (UWUVCI)"
 set category=auto
 set code1=fullextract
-set code2="https://github.com/stuff-by-3-random-dudes/UWUVCI-AIO-WPF/releases/latest/download/UWUVCI.zip"
+set code2="https://raw.githubusercontent.com/modmii/modmii.github.io/master/temp/UWUVCI.zip"
 set version=*
 set dlname=UWUVCI.zip
 set wadname=UWUVCI.zip
@@ -3259,7 +3259,7 @@ goto:DBend
 set name=Open Shop Channel
 set category=auto
 set code1=PC
-set code2="https://link.oscwii.org/oscdl-standalone"
+set code2="https://github.com/dhtdht020/osc-dl/releases/latest/download/oscdl-standalone.exe"
 set version=*
 set dlname=oscdl-standalone
 set wadname=oscdl-standalone.exe
@@ -3320,6 +3320,15 @@ goto:DBend
 set name=System Channel Restorer
 set category=OSC
 set code1=system-channel-restorer
+set "dlname=%code1%.zip"
+set "wadname=%dlname%"
+goto:DBend
+
+
+:BlueMii
+set name=BlueMii
+set category=OSC
+set code1=bluemii
 set "dlname=%code1%.zip"
 set "wadname=%dlname%"
 goto:DBend
@@ -4659,6 +4668,8 @@ set basecios=cIOS249[38]-d2x-v11-beta3
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS38-64-v4124) & (set version=4124) & (set md5base=769d98bebf9f8409133d1da7f6a4f6a0) & (set md5basealt=a96a3ff6e5c818e21401379d837abc58)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4680,6 +4691,8 @@ set basecios=cIOS249[38]-d2x-v11-beta3
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS38-64-v4124) & (set version=4124) & (set md5base=769d98bebf9f8409133d1da7f6a4f6a0) & (set md5basealt=a96a3ff6e5c818e21401379d837abc58)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4702,6 +4715,8 @@ set basecios=cIOS249[38]-d2x-v11-beta3
 set diffpath=cIOS249[38]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS38-64-v4124) & (set version=4124) & (set md5base=769d98bebf9f8409133d1da7f6a4f6a0) & (set md5basealt=a96a3ff6e5c818e21401379d837abc58)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4811,6 +4826,8 @@ set basecios=cIOS249[56]-d2x-v11-beta3
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS56-64-v5662) & (set version=5662) & (set md5base=cb7ea09293b88c6741816449617b454f) & (set md5basealt=72d1d1cff2634c531b15c64b01072c3f)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4832,6 +4849,8 @@ set basecios=cIOS249[56]-d2x-v11-beta3
 set diffpath=cIOS249[56]-v21
 set code2new=000000f9
 set lastbasemodule=0000000e
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS56-64-v5662) & (set version=5662) & (set md5base=cb7ea09293b88c6741816449617b454f) & (set md5basealt=72d1d1cff2634c531b15c64b01072c3f)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4854,6 +4873,8 @@ set basecios=cIOS249[57]-d2x-v11-beta3
 set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS57-64-5919) & (set version=5919) & (set md5base=eec44c0443caabbb839ddc8e130b433d) & (set md5basealt=ef0b35f66679a14db5e06835ebacf270)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4876,6 +4897,8 @@ set basecios=cIOS249[57]-d2x-v11-beta3
 set diffpath=cIOS249[57]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS57-64-5919) & (set version=5919) & (set md5base=eec44c0443caabbb839ddc8e130b433d) & (set md5basealt=ef0b35f66679a14db5e06835ebacf270)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4898,6 +4921,8 @@ set basecios=cIOS249[58]-d2x-v11-beta3
 set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS58-64-v6176) & (set version=6176) & (set md5base=e085bc2eb900c135a4b198cff0322289) & (set md5basealt=8ab886c3b1847769afdc51a6a113ff6d)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4919,6 +4944,8 @@ set basecios=cIOS249[58]-d2x-v11-beta3
 set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS58-64-v6176) & (set version=6176) & (set md5base=e085bc2eb900c135a4b198cff0322289) & (set md5basealt=8ab886c3b1847769afdc51a6a113ff6d)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend
@@ -4940,6 +4967,8 @@ set basecios=cIOS249[58]-d2x-v11-beta3
 set diffpath=cIOS249[58]-v21
 set code2new=000000f9
 set lastbasemodule=00000012
+::uncomment when bundled d2x switches to new base (i.e. d2x-v12)
+::if not exist support\d2x-beta\d2x-beta.bat (set basewad=IOS58-64-v6176) & (set version=6176) & (set md5base=e085bc2eb900c135a4b198cff0322289) & (set md5basealt=8ab886c3b1847769afdc51a6a113ff6d)
 if exist support\d2x-beta\d2x-beta.bat call support\d2x-beta\d2x-beta.bat
 if %ciosversion% GEQ 21009 set diffpath=%diffpath:~0,-3%d2x-v9
 goto:DBend

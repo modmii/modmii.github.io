@@ -35,8 +35,8 @@ IF not ERRORLEVEL 1 goto:skiperror
 if exist "temp\repo.json" del "temp\repo.json">nul
 if exist "temp\repo.summary" del "temp\repo.summary">nul
 if exist "temp\repo.date" del "temp\repo.date">nul
-support\wget --no-check-certificate -q -t 3 -O "temp\repo.json" "https://wiiubru.com/appstore/repo.json"
-support\wget --no-check-certificate -q -t 3 -O "temp\repo.summary" "https://wiiubru.com/appstore/repo.summary"
+support\wget --no-check-certificate -q -t 3 -O "temp\repo.json" "https://wiiu.cdn.fortheusers.org/repo.json"
+support\wget --no-check-certificate -q -t 3 -O "temp\repo.summary" "https://wiiu.cdn.fortheusers.org/repo.summary"
 
 ::delete if file is empty
 >nul findstr "^" "temp\repo.json" || del "temp\repo.json"
@@ -44,9 +44,9 @@ support\wget --no-check-certificate -q -t 3 -O "temp\repo.summary" "https://wiiu
 
 ::simple keyword check (in case of ISP blocking)
 if exist "temp\repo.json" findStr /C:"wiiu/apps/" "temp\repo.json" >nul
-IF ERRORLEVEL 1 (echo wiiubru.com blocked or down?) & (del "temp\repo.json")
+IF ERRORLEVEL 1 (echo HBAS Server blocked or down?) & (del "temp\repo.json")
 if exist "temp\repo.summary" findStr /C:"wiiu/apps/" "temp\repo.summary" >nul
-IF ERRORLEVEL 1 (echo wiiubru.com blocked or down?) & (del "temp\repo.summary")
+IF ERRORLEVEL 1 (echo HBAS Server blocked or down?) & (del "temp\repo.summary")
 
 if not exist "temp\repo.json" goto:error
 if not exist "temp\repo.summary" goto:error
@@ -103,8 +103,6 @@ goto:EOF
 :notall
 set CurrentApp=
 
-
-
 ::remove individual HBAS updating apps from HBAS Complete Library queue if also toggled, these will only ever be toggled in download mode
 if /i "%Bloopair%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fBloopair-Tiramisu\x3f" -write -yes
 if /i "%AccountSwap%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fWii-U-Account-Swap\x3f" -write -yes
@@ -117,6 +115,8 @@ if /i "%wup_installer_gx2_wuhb%" EQU "*" support\sfk filter -spat -quiet "temp\H
 if /i "%wudd%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fwudd\x3f" -write -yes
 if /i "%WiiVCLaunch%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fWiiVCLaunch\x3f" -write -yes
 if /i "%WiiUIdent%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fWiiUIdent\x3f" -write -yes
+if /i "%Inkay%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fInkay\x3f" -write -yes
+if /i "%GiveMiiYouTube%" EQU "*" support\sfk filter -spat -quiet "temp\HBASname.txt" -le!"\x3fGiveMiiYouTube\x3f" -write -yes
 
 :keepcontents
 ::if also doing file cleanup, don't update certain apps from HBAS
@@ -167,8 +167,7 @@ set PriorWiiUappName=
 
 ::snip manifest.install from repo.summary
 if exist temp\HBASmanifest.install del temp\HBASmanifest.install>nul
-support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -rep _"\x22, "__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
-
+support\sfk filter -spat -quiet "temp\repo.summary" -cut "*" to "\x22%WiiUappName%\x22:" -lerep _"\x22,*"__ -rep _"\x22"__ -rep _"*U:"_"U:"_ -rep _"*G:"_"G:"_ -rep _"*L:"_"L:"_ +filter -cut "]," to "*" >temp\HBASmanifest.install
 
 ::snip info.json from repo.json
 if exist temp\HBASinfo.json del temp\HBASinfo.json >nul
@@ -210,7 +209,7 @@ IF ERRORLEVEL 1 goto:skipmeta
 
 support\sfk filter -quiet "temp\HBASmanifest.install" -+"meta.xml" -rep _"*: "__ -rep _/_\_ >temp\temp.txt
 set /p file2check= <temp\temp.txt
-
+::echo %file2check%
 
 support\sfk filter -quiet -spat "temp\temp.txt" -rep _"\meta.xml*"__ -rep _"*\x5c"__ -write -yes
 set /p CurrentApp= <temp\temp.txt
@@ -260,12 +259,14 @@ support\sfk filter -spat -quiet "temp\HBASinfo.json" -ls+"*\x22binary\x22: \x22"
 set /p file2check= <temp\temp.txt
 if /i "%file2check:~0,1%" EQU "/" set "file2check=%file2check:~1%"
 ::echo %file2check%
+
 if /i "%file2check%" NEQ "none" goto:SkipFile2Check
 :skipthis
 
 support\sfk filter -spat -quiet "temp\HBASmanifest.install" -!".png\x22" -!"wiiu/themes/THIS IS WHERE THE THEMES GO" -rep _"*: "__ >temp\temp.txt
 set /p file2check= <temp\temp.txt
 ::echo %file2check%
+
 :SkipFile2Check
 
 if exist temp\temp.txt del temp\temp.txt >nul
@@ -366,7 +367,6 @@ if /i "%AUSKIP%" EQU "ON" goto:downloadHBAS
 
 
 :GetLatestVersion
-
 support\sfk filter -spat -quiet "temp\HBASinfo.json" -ls+"*\x22version\x22: \x22" -rep _"*version\x22: \x22"__ -rep _"\x22,*"__ >temp\version.txt
 set /p LatestVersion= <temp\version.txt
 if /i "%LatestVersion:~0,1%" EQU "v" set "LatestVersion=%LatestVersion:~1%"
@@ -401,7 +401,7 @@ if not "%CurrentAppVersion%"=="" echo Latest version: %LatestVersion%
 :skip
 
 if "%filedate%"=="" goto:miniskip
-if "%CurrentAppVersion%"=="" set "CurrentAppVersion=Unknown version: %Filedate%"
+if "%CurrentAppVersion%"=="" (set "CurrentAppVersion=Unknown version: %Filedate%") & (goto:skip)
 :miniskip
 
 ::check for version numbers that are greater or equal
@@ -409,7 +409,6 @@ if "%CurrentAppVersion%"=="" set "CurrentAppVersion=Unknown version: %Filedate%"
 call Support\subscripts\CompareVersions.bat "%CurrentAppVersion%" "%LatestVersion%"
 if /i "%CompareResult%" EQU "EQU" goto:UpToDate
 if /i "%CompareResult%" EQU "GTR" goto:newershit
-
 if /i "%CurrentAppVersion%" NEQ "%LatestVersion%" goto:skip
 :UpToDate
 if /i "%HBASmode%" EQU "list" goto:miniskip
