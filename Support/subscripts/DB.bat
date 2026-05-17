@@ -2852,8 +2852,12 @@ set code2="https://api.github.com/repos/mq1/TinyWiiBackupManager/releases/latest
 set version=*
 set dlname=latest
 set wadname=latest.json
-set filename=TinyWiiBackupManager-portable.exe
-if exist "%homedrive%\Program Files (x86)" (set parsename=windows-x86_64.zip) else (set parsename=windows-x86.zip)
+set filename=TinyWiiBackupManager.exe
+set "SYS_ARCH=%PROCESSOR_ARCHITEW6432%"
+if "%SYS_ARCH%"=="" set "SYS_ARCH=%PROCESSOR_ARCHITECTURE%"
+set "parsename=windows-x86.exe"
+if /i "%SYS_ARCH%"=="AMD64" set "parsename=windows-x64.exe"
+if /i "%SYS_ARCH%"=="ARM64" set "parsename=windows-arm64.exe"
 set "path1=Program Files\TinyWiiBackupManager\"
 goto:DBend
 
